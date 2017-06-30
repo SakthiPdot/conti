@@ -78,7 +78,7 @@
 	    	}, 1000); 
 			window.setTimeout( function(){
 				$(element).addClass('hideme');	
-	    	}, 2000);
+	    	}, 2500);
 			
 			window.setTimeout( function(){
 				animationOpenClick('.overlay','fadeOut');
