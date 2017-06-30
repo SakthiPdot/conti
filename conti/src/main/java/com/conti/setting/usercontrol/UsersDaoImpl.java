@@ -63,7 +63,7 @@ class UsersDaoImpl implements UsersDao {
 		@Override 
 		@Transactional
 		public User get(int id) {
-			String hql = "from User where id=" + id;
+			String hql = "from User where obsolete ='N' and active ='Y' and  id=" + id;
 			Query query = sessionFactory.getCurrentSession().createQuery(hql);
 			
 			@SuppressWarnings("unchecked")

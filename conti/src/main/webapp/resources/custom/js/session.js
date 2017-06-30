@@ -53,6 +53,43 @@
 */	    	}, 4000);
 	    } 
 	//------------------------- Success animate end ---------------------------------- //	
+	    
+	//------------------------- Success animate for forgot begin ---------------------------------- //    
+	    function successforgot_AnimateOpen(element){
+	    	
+	    	window.setTimeout( function(){
+	    		$('.overlay').removeClass('hideme');
+	    		
+	    		animationOpenClick('.overlay','fadeIn');
+	    	}, 1000);
+	    	
+	    	window.setTimeout( function(){
+	    		$(element).removeClass('hideme');
+	    		
+	    		animationOpenClick(element,'bounceInDown');
+	    	}, 2000);
+			
+			
+	    }
+	    function successforgot_AnimateClose(element){
+	    	window.setTimeout( function(){
+				animationOpenClick(element,'bounceOutUp');
+				
+	    	}, 1000); 
+			window.setTimeout( function(){
+				$(element).addClass('hideme');	
+	    	}, 2000);
+			
+			window.setTimeout( function(){
+				animationOpenClick('.overlay','fadeOut');
+				
+	    	}, 2000);
+			
+			window.setTimeout( function(){
+				$('.overlay').addClass('hideme');	
+	    	}, 3000);
+	    }
+	//------------------------- Success animate end ---------------------------------- //	
 	 
 // ------------------------ track Session ------------------------------------------------ // 
  		

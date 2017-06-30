@@ -173,7 +173,7 @@ public class User implements Serializable{
 	}
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-	@JsonManagedReference(value="userid")
+	@JsonManagedReference
 	public EmployeeMaster getEmployeeMaster() {
 		return employeeMaster;
 	}

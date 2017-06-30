@@ -23,11 +23,11 @@
 		  width: 100%;
 		  border: 0;
 		  margin: 0 0 15px;
-		  padding: 15px;
+		  padding: 10px;
 		  box-sizing: border-box;
 		  font-size: 14px;
 		}
-		.form button {
+		.form button, .goback {
 		  font-family: "Roboto", sans-serif;
 		  text-transform: uppercase;
 		  outline: 0;

@@ -53,6 +53,7 @@
 										    		<input class="form-control" type="hidden" name = "link" id = "link" value = "${hascode}" />
 									      	      <input class="form-control" data-ng-model = "ctrl.user.userpassword" placeholder="New password" id="userpassword" name="userpassword" type="password" data-ng-keyup = "ctrl.getPassword(ctrl.user.userpassword)" autofocus required />
 									      	      <input class="form-control" data-ng-model = "ctrl.user.confpassword" placeholder="Confirm Password" id="confpassword" name="confpassword" type="password" data-ng-keyup = "ctrl.checkPassword(ctrl.user.userpassword, ctrl.user.confpassword)" autofocus required />      		  
+											      <span data-ng-show = "!ctrl.checkPWD">Password doesn't match</span>
 									     	      <button type="submit" data-ng-disabled = "((ctrl.resetBtn) && (ctrl.checkPWD))? false : true">Reset</button>
 									     		  <!-- <p class="message"> << <a href="login">Go back</a></p> -->
 									     		  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

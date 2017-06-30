@@ -62,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 							
 							//.antMatchers("/admin/**").access("hasRole('FULL ACCESS')")
 							
-							.antMatchers("/","/admin/**").access("hasRole('SUPER_ADMIN') or hasRole('ADMIN')or hasRole('CONTI_STAFF')")
+							.antMatchers("/","/admin/**").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')or hasRole('STAFF')")
 							
 							.and()				
 							.formLogin().loginPage("/login").failureUrl("/login?error").successHandler(customAuthenticatonSuccessHandler)			

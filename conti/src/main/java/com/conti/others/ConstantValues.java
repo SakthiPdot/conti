@@ -42,7 +42,7 @@ public final class ConstantValues {
 	
 	// USER ROLE
 	public static final String ROLE_SADMIN = "SUPER_ADMIN";
-	public static final String ROLE_ADMIN = "ADMIN";
-	public static final String ROLE_CUSER = "CONTI_STAFF";
+	public static final String ROLE_ADMIN = "MANAGER";
+	public static final String ROLE_CUSER = "STAFF";
 	
 }

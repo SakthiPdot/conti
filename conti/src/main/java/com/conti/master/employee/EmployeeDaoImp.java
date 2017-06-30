@@ -34,7 +34,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 		// TODO Auto-generated method stub
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listemp = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
-				.createQuery("from EmployeeMaster WHERE branch_id = " + branch_id + " AND empcategory = '" + empcategory + "'").list();
+				.createQuery("from EmployeeMaster WHERE obsolete ='N' and active ='Y' and branch_id = " + branch_id + " AND empcategory = '" + empcategory + "'").list();
 		return listemp;
 		
 		/*String queryString = "FROM EmployeeMaster WHERE branch_id = " + branch_id + " AND empcategory = '" + empcategory + "'";
@@ -69,7 +69,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 	@SuppressWarnings("unchecked")
 	public EmployeeMaster findByMobileno(int mobileno)
 	{
-		String hql = "FROM EmployeeMaster WHERE emp_phoneno ="+ mobileno + "";
+		String hql = "FROM EmployeeMaster WHERE obsolete ='N' and active ='Y' and emp_phoneno ="+ mobileno + "";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
 		List<EmployeeMaster> emplist = (List<EmployeeMaster>) query.list();
