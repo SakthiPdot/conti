@@ -1,24 +1,21 @@
 .model-title
 	{
-		font-family:Myriad Pro;
-		font-size:30px;	
+		
+		font-size:28px;	
 	}
 
 .test-size
 	{
-		font-family:Myriad Pro;
-		font-size:15px;
-		padding-top:5%;
+		
+		font-size:14px;
+		padding-top:2%;
+		padding-left: 2%;
 	}
-.disabled { 
-	pointer-events: none;
-	 opacity:0.3; 
-	 tabindex:1000;
-	}
+
 
 .customer-font
    {
-		font-family:Myriad Pro;
+		
 		font-size:28px;	
    }
  .noPaddingLeft{
@@ -35,7 +32,7 @@
    }
  .customer-field
  	{
- 		font-family:Myriad Pro;
+ 		
 		font-size:15px;
  	}
 
@@ -52,7 +49,7 @@
  .company-font
  	{
  
- 		font-family:Myriad Pro;
+ 		
  		font-size:20px;	
  	}
  	
@@ -60,3 +57,41 @@
 	     {
 	       margin-left:60px !important;
 	     }
+	     
+.font-title
+         {
+         	font-size:16px;
+         	
+	     }
+	     
+	     
+.new-masters
+		{
+		padding-left: 30px !important;
+		font-size:16px;
+		padding-top: 10px;	
+		padding-bottom: 10px;		
+		}
+
+.content-body
+		{	
+		padding-left: 30px !important;;
+		padding-right: 30px !important;
+	    }
+	    
+.setup{
+	
+		    padding-top: 10px;
+           padding-bottom: 10px;
+      }
+ .header-size
+      {
+ 			height:72px;
+ 			font-size:28px;
+ 			 			
+      }
+      
+  .icons-button{
+  			       
+                padding-bottom: 10px;
+  }
