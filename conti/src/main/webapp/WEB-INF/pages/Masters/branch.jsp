@@ -39,7 +39,7 @@
  		
  		<div class="drawer hideme">
  			<div class="row">
- 			<div class="col-lg-12 trowserHeader" style="height: 60px;padding-top: 10px;background-color: antiquewhite;" >
+ 			<div class="col-lg-12 trowserHeader">
  				 
                    <div class="col-lg-6 headerLeft">
                    		 <b class="model-title">Branch Master</b>

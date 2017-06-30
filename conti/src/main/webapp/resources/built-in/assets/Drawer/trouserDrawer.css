@@ -176,8 +176,13 @@
 		
 		/* changes For conti */
 		.trowserHeader{
-			height:45px;
-		    background-color: #dedede;
+			/* height:45px;
+		    background-color: #dedede; */
+		    
+		    
+		    height: 60px;
+		    padding-top: 10px;
+		    background-color: antiquewhite;
 		}
 		.headerLeft{
 			padding-left: 18px ! important ;
