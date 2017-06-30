@@ -85,19 +85,29 @@ angular.module('contiApp').controller('companyController'
 						}
 					}
 					
+					submitButtonText();
+					
+					
 				}else{
 					console.log("no content for id");
+					submitButtonText();
 				}
 				
 			},
 			function(errResponse){
-				console.log("error while fetching company")
+				console.log("error while fetching company");
+				submitButtonText();
 			});
 	}
 	
 
-	
-
+	function submitButtonText(){
+	if(self.company.company_id==null){
+		$("#submitText").text("Save");
+	}else{
+		$("#submitText").text("Update");
+	}
+	}
 	
 	$scope.updateCountryAndState=function updateCountryAndState(){
 		console.log( self.company.selectedAddress);
@@ -109,7 +119,7 @@ angular.module('contiApp').controller('companyController'
 	
 	self.submit=function submit(){
 		
-		if(self.company.company_id==0){
+		if(self.company.company_id==null){
 			console.log("Company New Record");
 		    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"fileUpload")
 		    .then(
@@ -128,7 +138,7 @@ angular.module('contiApp').controller('companyController'
 		    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"fileUpload")
 		    .then(
 					function(d){	
-						self.message = "Company Details Updated..!..!";
+						self.message = "Company Details Updated..!";
 						successAnimate('.success');
 						fetchCS();					
 					},

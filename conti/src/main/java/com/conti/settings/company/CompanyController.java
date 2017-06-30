@@ -30,6 +30,7 @@ import com.conti.address.AddressModel;
 import com.conti.config.SessionListener;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
+import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.UsersDao;
 
 /**
@@ -111,15 +112,27 @@ public class CompanyController {
 	
 	public ResponseEntity<Void> saveCompanyDetail(@RequestBody Company company,HttpServletRequest request,UriComponentsBuilder ucBuilder){
 
+		System.out.println("++inside company");
+		
+		//intialize	
+		String userid = request.getSession().getAttribute("userid").toString();		
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+			
 		
-		company.setCompany_id(1);
-		company.setUpdated_by(1);	
-		company.setCreated_by(1);
-		company.setCreated_datetime(dateFormat.format(date));
+		//check create or update
+		if(company.getCompany_id()==0){
+			company.setCompany_id(1);	
+			company.setCreated_by(Integer.parseInt(userid));
+			company.setCreated_datetime(dateFormat.format(date));
+			company.setUpdated_by(Integer.parseInt(userid));
+		}else{
+			company.setUpdated_by(Integer.parseInt(userid));
+			company.setUpdated_datetime(dateFormat.format(date));
+		}	
 		
-		System.out.println("++inside company");
+		
+		//save company
 		try {
 			companyDao.saveOrUpdate(company);
 			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);

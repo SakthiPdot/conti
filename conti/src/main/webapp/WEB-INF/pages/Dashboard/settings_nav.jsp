@@ -20,7 +20,7 @@
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
-	
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	 
     <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
@@ -282,55 +282,51 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a class="active-menu" href="/Conti/"><i class="fa fa-dashboard"></i> Dashboard</a>
+                        <a class="active-menu" href="/Conti/"><i class="fa fa-dashboard"></i>Go Back to Dashboard</a>
+                    </li>
+                    
+                    <li>
+                        <a href="company_settings"><i class="fa fa-university"></i> Company Settings</a>
+                    </li>
+                    
+                     <li>
+                        <a href="user"><i class="fa fa-user-circle"></i> User Master</a>
+                    </li>
+                    
+                    <li>
+                        <a href="product"><i class="fa fa-desktop"></i> Product Master</a>
+                    </li>
+                    
+                    <li>
+                        <a href="location"><i class="fa fa-map-marker"></i> Location Master</a>
+                    </li>
+                    
+                    <li>
+                        <a href="branch"><i class="fa fa-sitemap"></i> Branch Master</a>
+                    </li>
+                    
+                    <li>
+                        <a href="service"><i class="fa fa-handshake-o"></i> Service Master</a>
+                    </li>
+                    
+                    <li>
+                        <a href="vehicle"><i class="fa fa-truck"></i> Vehicle Master</a>
+                    </li>
+                    
+                    <li>
+                        <a href="employee"><i class="fa fa-male"></i> Employee Master</a>
                     </li>
 					
 					 
-					
-                    <li>
-                        <a href="customer"><i class="fa fa-user"></i> Customer</a>
-                    </li>
 					<li>
-                        <a href="#"><i class="fa fa-truck"></i> Shipment Management<span class="fa arrow"></span></a>
-						
-						<ul class="nav nav-third-level">
-                                    <li>
-                                        <a href="add_shipment">Add Shipment</a>
-                                    </li>
-                                    <li>
-                                        <a href="view_shipment">View  Shipment</a>
-                                    </li>
-                                    
-
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-qrcode"></i> Manifest Management<span class="fa arrow"></span></a>
-							<ul class="nav nav-third-level">
-								<li>
-									<a href="add_manifest">Add Manifest</a>
-								</li>
-							
-							</ul>
+                        <a href="price_settings"><i class="fa fa-inr"></i> Price Settings</a>
                     </li>
                     
-                    <li>
-                        <a href="#"><i class="fa fa-file-text-o"></i> Receipt Management <span class="fa arrow"></span></a>
-						   <ul class="nav nav-third-level">
-							<li>
-								<a href="receipt_generate">Receipt Generation</a>
-							</li>
-							</ul>
-                    </li>
-                    <li>
-                        <a href="report"><i class="fa fa-flag"></i> Reports </a>
-                    </li>
+                  
                     
                     
-                    <li>
-                        <a href="settings"><i class="fa fa-wrench"></i> Settings</a>
-                        
-                    </li>
+                    
+                    
                 </ul>
 
             </div>
@@ -349,10 +345,7 @@
     </div>
     <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
-    <!-- Bootstrap Js -->
-    <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
+   
 	 
     <!-- Metis Menu Js -->
     <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>

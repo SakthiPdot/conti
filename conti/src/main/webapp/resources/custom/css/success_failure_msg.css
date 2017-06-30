@@ -12,6 +12,7 @@
 		    font-size: 5mm;
 		    z-index: 301;
   		}
+  		
   		.success:after{
 		    content:"";
 		    position:fixed;
@@ -25,6 +26,7 @@
 		    background:-webkit-radial-gradient(50% -3%, ellipse cover, rgba(00, 00, 00, 0.5), rgba(97, 97, 97, 0.0) 30%);
 		    background:radial-gradient(ellipse at 50% -3%, rgba(00, 00, 00, 0.5), rgba(97, 97, 97, 0.0) 30%);
 		}
+		
 		.failure {
   			background-color: #FF0000;
 		    padding: 25px;

@@ -371,10 +371,9 @@
 				
 					<div class="col-lg-12">
 						<div class="form-group text-center">
-						
 	     		 		 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						<button type="submit"   class="btn btn-success "><label><i class="fa fa-floppy-o" aria-hidden="true"></i>
-						Save & Update</label></button>
+						<button type="submit"   class="btn btn-success "><label><i class="fa fa-floppy-o"  aria-hidden="true"></i>
+						<span id="submitText">Save & Update</span></label></button>
 						</div>
 					</div>
 				</div>
