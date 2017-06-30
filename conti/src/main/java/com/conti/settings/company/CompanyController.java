@@ -127,14 +127,14 @@ public class CompanyController {
 			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
 			e.printStackTrace();
 		}
-		
+/*		
 		HttpHeaders headers=new HttpHeaders();
 		
 		UriComponents uricomponents=ucBuilder.path("/company/{id}").buildAndExpand(company.getCompany_id());
 		
 		headers.setLocation(uricomponents.toUri());
-		
-		return new ResponseEntity<Void>(headers,HttpStatus.CREATED);
+		*/
+		return new ResponseEntity<Void>(HttpStatus.CREATED);
 		
 	}
 }

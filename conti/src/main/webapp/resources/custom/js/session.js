@@ -37,7 +37,7 @@
 	    function successAnimate(element){
 	    	
 	    	window.setTimeout( function(){
-	    		$('body').addClass('scrollHidden');
+	    		/*$('body').addClass('scrollHidden');*/
 	    		$(element).removeClass('hideme');
 	    		
 	    		animationOpenClick(element,'bounceInDown');
@@ -49,8 +49,8 @@
 	    	}, 3000); 
 			window.setTimeout( function(){
 				$(element).addClass('hideme');	
-				$('body').removeClass('scrollHidden');
-	    	}, 4000);
+/*//				$('body').removeClass('scrollHidden');
+*/	    	}, 4000);
 	    } 
 	//------------------------- Success animate end ---------------------------------- //	
 	 

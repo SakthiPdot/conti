@@ -38,7 +38,7 @@
 <link href="resources/built-in/assets/Drawer/trouserDrawer.css"
 	rel="stylesheet" />
 <link href="resources/custom/css/custom.css" rel="stylesheet">
-
+<link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
  	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/custom/js/app.js"></script>
 
@@ -46,12 +46,18 @@
 </head>
 
 
-<body style="overflow-x: hidden;"  data-ng-app="contiApp">
+<body style="overflow-x: hidden;"  data-ng-app="contiApp" data-ng-controller="companyController as comctrl">
 
+<div class="success hideme"><i class="fa fa-check-circle" aria-hidden="true"></i> {{comctrl.message}}</div>
+<div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{comctrl.message}}</div>
+	
 
 	<jsp:include page="../Dashboard/nav.jsp" />
 
-	<div id="wrapper" data-ng-controller="companyController as comctrl" >
+	<div id="wrapper"  >
+			
+			
+		
 		<div id="page-wrapper"  >
 
 		<form data-ng-submit="comctrl.submit()"  >

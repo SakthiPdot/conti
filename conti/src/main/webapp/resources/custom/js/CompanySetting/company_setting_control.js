@@ -113,21 +113,29 @@ angular.module('contiApp').controller('companyController'
 			console.log("Company New Record");
 		    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"fileUpload")
 		    .then(
-					function(d){						
+					function(d){	
+						self.message = "Company Detail Created..!";
+						successAnimate('.success');
 						fetchCS();						
 					},
 					function(errResponse){
-						console.log("error while fetching company")
+						console.log("error while fetching company");
+						self.message = "Error While Creating Company Detail..!";
+						successAnimate('.failure');
 					});
 		}else{
 			console.log("Company Record Update");
 		    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"fileUpload")
 		    .then(
-					function(d){						
+					function(d){	
+						self.message = "Company Details Updated..!..!";
+						successAnimate('.success');
 						fetchCS();					
 					},
 					function(errResponse){
-						console.log("error while fetching company")
+						console.log("error while fetching company");
+						self.message = "Error While Updating Company Detail..!";
+						successAnimate('.failure');
 					});
 		}	
 	/*	
