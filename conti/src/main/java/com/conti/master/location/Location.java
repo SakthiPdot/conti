@@ -1,5 +1,7 @@
 package com.conti.master.location;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,11 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonManagedReference;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.conti.address.AddressModel;
+
 
 /**
  * @Project_Name conti
@@ -25,31 +28,31 @@ import com.conti.address.AddressModel;
  */
 @Entity 
 @Table(name="m_location")
-public class Location {
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY )
+public class Location implements Serializable {
+	
+	
+
 	
 	private int location_id,updated_by,created_by;
 	private String location_name,location_code,abbreviation,obsolete,active,
 	created_datetime,updated_datetime,pincode;
 	
 
-	
-
 	public Location() {
 	}
 	
-
-
-
 	
 	public AddressModel address;
 	
 
 	@JoinColumn(name="city_id")
-	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	public AddressModel getAddress() {
 		return this.address;
 	}
 
+	@JsonManagedReference
 	public void setAddress(AddressModel address) {
 		this.address = address;
 	}

@@ -38,6 +38,7 @@
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>
 	<script type="text/javascript" src="resources/custom/js/app.js"></script>
 
 	
