@@ -65,6 +65,7 @@
 
  	<script type="text/javascript" src="resources/built-in/js/jquery-1.11.1.min.js"></script>
  	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+ 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>
 	<script type="text/javascript" src="resources/custom/js/session.js"></script>
  	<script type="text/javascript" src="resources/custom/js/app.js"></script>
  	<script type="text/javascript" src="resources/custom/js/user_master/user_control.js"></script>

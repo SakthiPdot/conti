@@ -36,8 +36,11 @@
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
+	 
+
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script> 
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>    
+
    <script src="resources/custom/js/app.js"></script>
 </head>
 
@@ -132,7 +135,7 @@
 									              input-class="form-control form-control-small">
               						</angucomplete-alt>
 
-			           		<input type="hidden" data-ng-model = "ctrl.employee.branch_id" data-ng-value = "selected.originalObject.branch_id" />
+			           		<input type="hidden" id = "branch_id" name ="branch_id" value = "{{selected.originalObject.branch_id}}" />
 			             </div>         	
 			             </div>  
 			             
@@ -145,13 +148,13 @@
 			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_address" required>
 			                   
 			                   <span>Location</span>
-			                   <select class="form-control"  data-ng-model="ctrl.employee.location_id" required>
+			                  <!--  <select class="form-control"  data-ng-model="ctrl.employee.location_id" required>
 			                   		<option value="" selected>-- Select --</option>
 			                   		<option>Peelamedu</option>
 			                   		<option>RS Puram</option>
 			                   		<option>TownHall</option>
-			                   </select>
-			                
+			                   </select> -->
+			                	<input type="text" data-ng-model = "ctrl.employee.location_id" />
 			           
 			             </div>         	
 			             </div>
@@ -179,7 +182,7 @@
 			             <div class="col-lg-12">
 		                <div class="col-lg-6 content-body">
 		                 	   <span>Phone No </span>	         
-			                  <input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.employee.mobileno" required />
+			                  <input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.employee.emp_phoneno" required />
 			               
 			              </div> 
 			               <div class="col-lg-6 content-body">    
@@ -193,29 +196,34 @@
 			             
 			             
 			             <div class="col-lg-12">
-		                <div class="col-lg-6 content-body">
-		                 	   <span>Date of Birth </span>	         
-			                  <div class="form-group input-group">
-			                               <input type="text" class="form-control" data-ng-model="ctrl.employee.dob">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
-                                            </span>
-                                          
-                               </div>
-			               
-			              </div> 
-			               <div class="col-lg-6 content-body">    
-			                   <span>Date of Joining</span>
-			                  <div class="form-group input-group">
-			                               <input type="text" class="form-control" data-ng-model="ctrl.employee.doj">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
-                                            </span>
-                                          
-                               </div>
-			           	           
-			           	               
-              
-			             </div>         	
+			                <div class="col-lg-6 content-body">
+			                 	   <span>Date of Birth </span>	 
+								      
+								                 
+				                  <div class="form-group input-group">
+				                  
+				                  
+				                               <input type="text" class="form-control" data-ng-model="ctrl.employee.dob">
+	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
+	                                            </span>
+	                                          
+	                               </div>
+				               
+				              </div> 
+				               <div class="col-lg-6 content-body">    
+				                   <span>Date of Joining</span>
+				                  <div class="form-group input-group">
+				                               <input type="text" class="form-control" data-ng-model="ctrl.employee.doj">
+	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
+	                                            </span>
+	                                            
+	                               </div>
+				           	         
+				             </div>         	
 			             </div>  
+			             
+			            
+			             
 			       </div>
 	                
 	                                
@@ -398,9 +406,23 @@
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
          <!-- Custom Js -->
 
-
-     
-
+ <script >  
+   $( function() 
+	{
+	   $(".datepicker").datepicker({ 
+	        format: 'dd-mm-yyyy',
+	        orientation: 'auto top',
+	        autoclose: true,
+	        clearBtn:true,
+	        todayHighlight:true,
+	        forceParse:true,
+	    });
+	 
+	   
+ 	   $(".datepicker").datepicker({minDate: -10, maxDate: '+1M +10D'});
+ 	  
+	});
+</script> 
 </body>
 
 </html>

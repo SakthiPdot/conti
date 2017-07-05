@@ -27,7 +27,7 @@ import com.conti.setting.usercontrol.User;
 //@JsonIgnoreProperties(ignoreUnknown = true)
 public class EmployeeMaster implements Serializable{
 	private int emp_id, branch_id, location_id, emp_phoneno, update_by, created_by;
-	private String emp_name, emp_code, empcategory, emp_address, emp_email, created_datetime, updated_datetime, obsolete, active;
+	private String emp_name, emp_code, empcategory, emp_address, emp_email, dob, doj, created_datetime, updated_datetime, obsolete, active;
 	
 	private User user;
 	public EmployeeMaster() {
@@ -53,7 +53,7 @@ public class EmployeeMaster implements Serializable{
 	 * @param user
 	 */
 	public EmployeeMaster(int emp_id, int branch_id, int location_id, int emp_phoneno, int update_by, int created_by, String emp_name, String emp_code,
-			String empcategory, String emp_address, String emp_email, String created_datetime, String updated_datetime,
+			String empcategory, String emp_address, String emp_email, String dob, String doj, String created_datetime, String updated_datetime,
 			String obsolete, String active, User user) {
 		super();
 		this.emp_id = emp_id;
@@ -66,6 +66,8 @@ public class EmployeeMaster implements Serializable{
 		this.empcategory = empcategory;
 		this.emp_address = emp_address;
 		this.emp_email = emp_email;
+		this.dob = dob;
+		this.doj = doj;		
 		this.created_datetime = created_datetime;
 		this.updated_datetime = updated_datetime;
 		this.obsolete = obsolete;
@@ -156,6 +158,33 @@ public class EmployeeMaster implements Serializable{
 	public void setEmp_email(String emp_email) {
 		this.emp_email = emp_email;
 	}
+	
+	
+	@Column(name ="dob")  
+	public String getDob() {
+		return dob;
+	}
+
+
+
+	public void setDob(String dob) {
+		this.dob = dob;
+	}
+
+
+	@Column(name ="doj")  
+	public String getDoj() {
+		return doj;
+	}
+
+
+
+	public void setDoj(String doj) {
+		this.doj = doj;
+	}
+
+
+
 	@Column(name = "created_datetime")
 	public String getCreated_datetime() {
 		return created_datetime;

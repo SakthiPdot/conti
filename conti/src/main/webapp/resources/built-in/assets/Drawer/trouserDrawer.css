@@ -182,7 +182,9 @@
 		    
 		    height: 60px;
 		    padding-top: 10px;
-		    background-color: antiquewhite;
+		    color : white;
+		  /*  background-color: antiquewhite;*/
+		  background-color : #004e61;
 		}
 		.headerLeft{
 			padding-left: 18px ! important ;

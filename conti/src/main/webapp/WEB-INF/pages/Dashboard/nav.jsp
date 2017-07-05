@@ -26,6 +26,7 @@
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <!-- Custom Styles-->
     <link href="resources/built-in/assets/css/custom-styles.css" rel="stylesheet" />
+
     <!-- Google Fonts-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
@@ -353,10 +354,9 @@
     <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
     <!-- Bootstrap Js -->
     <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
-	 
+
     <!-- Metis Menu Js -->
     <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
-    
     
     <!-- Morris Chart Js -->
     <script src="resources/built-in/assets/js/morris/raphael-2.1.0.min.js"></script>

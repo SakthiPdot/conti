@@ -16,13 +16,18 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchS
 	self.employee = {
 			   emp_id : null,
 			   branch_id : null,
-			   update_by : 1,
-			   created_by : 1,
+			   update_by : null,
+			   created_by : null,
+			   branch_id : null,
 			   emp_name : "ss",
 			   emp_code : "ds",
 			   empcategory : "cd",
+			   emp_phoneno : 2,
 			   emp_address : "dddd",
+			   location_id : 1,
 			   emp_email : "rm",
+			   dob : '2017-06-26 17:34:54',
+			   doj : '2017-06-26 17:34:54',
 			   created_datetime : "da",
 			   updated_datetime : "da",
 			   obsolete : "N",
@@ -105,7 +110,7 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchS
     } 
     
     function submit() {
-    	
+    	self.employee.branch_id = $("#branch_id").val();
     	createEmployee(self.employee);
     }
 }]);
