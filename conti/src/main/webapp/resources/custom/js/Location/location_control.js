@@ -13,6 +13,7 @@ angular.module('contiApp').controller('locationController'
 			var self=this;			
 			self.Locations=[];
 			self.addresses=[];
+			self.Locations=[];
 			self.submit=submit;
 			self.Location={
 				    "location_id": null,
@@ -66,12 +67,28 @@ angular.module('contiApp').controller('locationController'
 				AddressService.fetchAddress()
 				.then(function(response){
 					self.addresses=response;
+					console.log(response);
 					console.log(self.addresses);
 				},
 				function(errRes){
 					console.log("error Fetchng address");
 				});
 				
+			}
+			
+			//===================================fetch Address====================================
+			fetchAllLocation();
+			
+			function fetchAllLocation(){
+				LocationService.fetchAllLocation()
+				.then(function(response){
+					self.Locations=response;
+					console.log(response);
+					console.log(self.Locations);
+				},
+				function(errResponse){
+					console.log("errror fetching all location");					
+				});
 			}
 			
 		

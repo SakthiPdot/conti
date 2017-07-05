@@ -404,7 +404,7 @@
   <script src="resources/custom/js/employee_master/employee_service.js"></script>
   <script src="resources/custom/js/branch_master/branch_service.js"></script>  
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
-         <!-- Custom Js -->
+  <!-- Custom Js -->
 
  <script >  
    $( function() 

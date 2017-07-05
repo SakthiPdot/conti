@@ -19,7 +19,7 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 	
 	return factory;
 
-	//=============================UPDATE COMPANY SETTINGS====================================
+	//=============================SAVE LOCATION====================================
 	function saveLocation(location){
 		console.log("Inside save location");
 		var deferred=$q.defer();
@@ -30,7 +30,7 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 			headers:getCsrfHeader()
 		}).then(
 				function(response){
-					deferred.resolve(response.date);
+					deferred.resolve(response.data);
 				},function(errResponse){
 					console.log("save failed");
 					deferred.reject(errResponse);
@@ -40,15 +40,27 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 	}	
 	
 	
+	//=============================FETCH ALL LOCATION====================================
+	function fetchAllLocation(){
+		console.log("Inside fetch all location");
+		var deferred=$q.defer();
+		$http.get('fetchAllLocation')
+			.then(function(response){
+				deferred.resolve(response.data);
+			},function(errResponse){
+				deferred.reject(errResponse);
+			}
+			);	
+		return deferred.promise;
+	}
+	
 	function fetchLocation(){
 		console.log("Inside fetch location");
 	}    
 	function deleteLocation(){
 		console.log("Inside delete location");
 	}
-	function fetchAllLocation(){
-		console.log("Inside fetch all location");
-	}
+
 	function updateLocation(){
 		console.log("Inside update location");
 	}

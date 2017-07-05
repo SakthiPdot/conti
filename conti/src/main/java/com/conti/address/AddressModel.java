@@ -1,25 +1,19 @@
 package com.conti.address;
 
-import javax.persistence.CascadeType;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.codehaus.jackson.annotate.JsonBackReference;
-
-import com.conti.master.location.Location;
 
 /**
  * Servlet implementation class AddressModel
  */
 @Entity 
 @Table(name="m_address")
-public class AddressModel {
+public class AddressModel  implements Serializable {
 
 	private int id;
 	private String CityCode;

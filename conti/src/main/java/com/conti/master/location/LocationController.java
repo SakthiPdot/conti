@@ -4,17 +4,18 @@ package com.conti.master.location;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,6 +40,7 @@ import com.conti.setting.usercontrol.UsersDao;
 
 
 @RestController
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LocationController {
 
 	final Logger logger = LoggerFactory.getLogger(LocationController.class);
@@ -84,9 +86,18 @@ public class LocationController {
 		return model;
 
 	}
-
+	//=================FETCH ALL LOCATION=====================================
 	
-	//=================GET LOCATION MODEL=====================================
+	@RequestMapping(value="fetchAllLocation",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Location>>  getAllLocation(){
+		List<Location> locations=locationDao.getLocation();
+		if(locations.isEmpty()){
+			return new ResponseEntity<List<Location>>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Location>>(locations,HttpStatus.OK);
+	}
+	
+	//=================GET LOCATION MODEL=====================================	
 	@RequestMapping(value="LocationModel",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Location> getLocationModel(){
 		
