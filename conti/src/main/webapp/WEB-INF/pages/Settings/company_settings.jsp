@@ -41,6 +41,7 @@
 <link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
 
  	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>
 	<script type="text/javascript" src="resources/custom/js/app.js"></script>
 
 	
@@ -406,6 +407,7 @@
 		    $('[data-toggle="popover"]').popover();
 		
 	</script>
+
 
 	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
 	<script type="text/javascript" src="resources/custom/js/CompanySetting/company_setting_directive.js"></script>

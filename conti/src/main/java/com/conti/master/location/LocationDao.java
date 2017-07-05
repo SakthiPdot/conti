@@ -18,3 +18,4 @@ public interface LocationDao {
 	public void deleteLocationById(int locationId);
 	
 }
+ 

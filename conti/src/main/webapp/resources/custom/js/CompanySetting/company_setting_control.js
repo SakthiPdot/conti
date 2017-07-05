@@ -204,5 +204,5 @@ angular.module('contiApp').controller('companyController'
 
 
 	
-}]);
+}])();
 

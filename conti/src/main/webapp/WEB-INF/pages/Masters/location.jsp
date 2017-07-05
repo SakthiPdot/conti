@@ -196,7 +196,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                             Advanced Tables
+                             Location Register
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
