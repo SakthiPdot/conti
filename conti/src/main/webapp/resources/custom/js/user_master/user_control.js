@@ -13,7 +13,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
     self.users=[];
     self.message = null;
     self.resetBtn = false;
-	self.checkPWD = false;
+	self.checkPWD = true;
 	/*    self.submit = submit;
     self.edit = edit;
     self.remove = remove;
@@ -24,6 +24,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
 	self.getPassword = getPassword; 
 	self.checkPassword = checkPassword; 	
 	self.findUserbyMbl = findUserbyMbl;
+	self.forgot_animateClose = forgot_animateClose;
     /*fetchAllUsers();*/
 
 
@@ -66,26 +67,28 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
 	    					if(response.data != "") {
 		    					if(response.data.obsolete == "SUPER_ADMIN") {
 		    						self.message = "Kindly contact your technical person..!";
-		    						successAnimate('.success');
+		    						successforgot_AnimateOpen('.success-forgot');
 	    				    		
-		    					} else if (response.data.obsolete == "ADMIN") {
+		    					} else if (response.data.obsolete == "MANGAER") {
 		    						self.message = "Password reset link sent to your E-mail : " + response.data.employeeMaster.emp_email;
-		    						successAnimate('.success');
+		    						successforgot_AnimateOpen('.success-forgot');
 		    					} else {
 		    						self.message = "Kindly contact your manager..! Manager contact no is "+ response.data.active;
-		    						successAnimate('.success');
+		    						successforgot_AnimateOpen('.success-forgot');
 		    					}
 		    				} else {
 		    					self.message = "User name does not match..!";
 		    				}
 	    					
-	    					window.setTimeout( function(){
-    							window.location.replace('/Conti/login');
-    				    	}, 5000);
 	    					
-	    				} else {
+	    				} else if(response.status == 226) {
+	    					
 	    					self.message = "Link already sent to your registered E-mail id..!";
-    						successAnimate('.failure');
+	    					successforgot_AnimateOpen('.failure-forgot');
+	    				} else {
+	    					self.message = "Invalid username..!";
+	    					successAnimate('.failure');
+	    					clear_username();
 	    				}
 	    				
 	    				
@@ -96,9 +99,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
     			);
     }
 
-    //----------------------  Find user by user name begin ----------------------------- //
-    
-    //----------------------  Delete user by user id begin ----------------------------- //
+
     
     function deleteUser(id) {
     	 UserService.deleteUser(id)
@@ -238,7 +239,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
     						
     					} else {
     						self.message = "Password is not changed..!";
-    						successAnimate('.success');
+    						successAnimate('.failure');
     					}
     					
     				},
@@ -261,17 +262,39 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
     			.then(
     					function(response) {
     						self.message = "Sent username to your registered mobile number";
-    						successAnimate('.success');
-    						window.setTimeout( function(){
-    							window.location.replace('/Conti/login');
-    				    	}, 5000);
+    						successforgot_AnimateOpen('.success-forgot');
+    						
     					},
     					function (errResponse) {
     						self.message = "Sorry..! Mobile number is not valid..!";
-    						successAnimate('.failure');
+	    					successAnimate('.failure');
+	    					clear_mobileno();
+	    					
     					}
     				);
     	}
     
     //----------------------- Find user by mobile end ------------------------------------------------//
+    	
+    //----------------------- Success / Failure animate Close for forgot begin ---------------------//
+    	function forgot_animateClose() {
+    		console.log("Inside animateclose");
+    		successforgot_AnimateClose('.success-forgot');
+    		successforgot_AnimateClose('.failure-forgot');
+    		window.setTimeout( function(){
+				window.location.replace('/Conti/login');
+	    	}, 3000);
+    	}
+    //----------------------- Success / Failure animate Close for forgot end ---------------------//    
+    	
+    //----------------------  Find user by user name begin ----------------------------- //
+    function clear_username() {
+    	self.user.username = '';
+    }
+    //----------------------  Delete user by user id begin ----------------------------- //
+    //----------------------  Find user by user name begin ----------------------------- //
+    function clear_mobileno() {
+    	self.user.mobileno = '';
+    }
+    //----------------------  Delete user by user id begin ----------------------------- //
 }]);

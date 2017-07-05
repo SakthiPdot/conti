@@ -133,6 +133,7 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
     
     function changePassword(user) {
     	console.log("Inside reset password service");
+    	console.log(user);
     	var deferred = $q.defer();
     	$http({
     		method : 'POST',

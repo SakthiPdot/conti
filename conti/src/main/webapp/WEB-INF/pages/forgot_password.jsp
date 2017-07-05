@@ -23,16 +23,32 @@
   	<link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
   	<link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
   	
-  	<link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
+<!--   	<link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" /> -->
   	 <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
   
 </head>
 
 <body data-ng-app = "contiApp" data-ng-controller = "UserController as ctrl">
-
-	<div class="success hideme"><i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}</div>
-	<div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}</div>
+<!-- ------------------------- Overlay for message begin ------------------ -----  -->
+	<div class="overlay hideme"></div>
+<!-- ------------------------- Overlay for message end ------------------ -----  -->	
+<!-- ------------------------- Success message begin ------------------ -----  -->
+	<div class="success-forgot hideme">
+		<i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
+	</div>
+<!-- ------------------------- Success message end ------------------ -----  -->
+<!-- ------------------------- Failure message begin ------------------ -----  -->	
+	<div class="failure hideme">
+		<i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<!-- <span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span> -->
+	</div>
+	<div class="failure-forgot hideme">
+		<i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
+	</div>
+<!-- ------------------------- Failure message end ------------------ -----  -->
 	<div class="login-page"  >
 	  <div class="form">
 	    

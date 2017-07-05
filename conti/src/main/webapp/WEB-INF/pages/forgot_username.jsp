@@ -23,34 +23,43 @@
   	<link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">  	
   	<link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
   	
-  	<link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
+  <!-- 	<link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" /> -->
   	 <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
   	
 </head>
 
 <body data-ng-app = "contiApp" data-ng-controller = "UserController as ctrl">
+<!-- ------------------------- Overlay for message begin ------------------ -----  -->
+	<div class="overlay hideme"></div>
+<!-- ------------------------- Overlay for message end ------------------ -----  -->	
 
-	<div class="success hideme"><i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}</div>
-	<div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}</div>
-	
+<!-- ------------------------- Success message begin ------------------ -----  -->
+	<div class="success-forgot hideme">
+		<i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
+	</div>
+<!-- ------------------------- Success message end ------------------ -----  -->
+<!-- ------------------------- Failure message begin ------------------ -----  -->	
+	<div class="failure hideme">
+		<i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<!-- <span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span> -->
+	</div>
+	<div class="failure-forgot hideme">
+		<i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
+	</div>
+<!-- ------------------------- Failure message end ------------------ -----  -->
+		
 	<div class="login-page"  >
 	  <div class="form">
 	    
 	    <form name="login-form" class="login-form" role="form" data-ng-submit = "ctrl.findUserbyMbl(ctrl.user.mobileno)" >
-      	      <input class="form-control" data-ng-model = "ctrl.user.mobileno" placeholder="Mobileno" id="mobileno" name="mobileno" type="number" data-ng-minlength="10" data-ng-maxlength="10" autofocus data-ng-required = "true" />      		  
-      	    <!--   <span class="help-block" data-ng-show="login-form.mobileno.$error.required || login-form.mobileno.$error.required">
-                           Valid phone number is required
-            </span>
-            <span class="help-block" data-ng-show="ctrl.user.mobileno.length != 10">
-                           phone number should be 10 digits 
-            </span>    -->        
-    		 <span class="help-block" data-ng-show="!ctrl.user.mobileno">
-                           phone number should be 10 digits 
-            </span>
-            
+      	      <input class="form-control" data-ng-model = "ctrl.user.mobileno" placeholder="Mobileno" id="mobileno" name="mobileno" type="text" maxlength="10" onKeyPress="return CheckIsNumeric(event)" autofocus data-ng-required = "true" />      		  
+      	   
      	      <button type="submit" data-ng-disabled = "!ctrl.user.mobileno">Get Username</button>
-     		  <p class="message"> << <a href="login">Go back</a></p> 
+     		   <p class="message"> << <a href="login">Go back</a></p>  
+     		   <!-- <a href="login" class = "goback"><< Go back</a> -->
      		  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	    </form>
 	    
@@ -64,7 +73,7 @@
  	<script type="text/javascript" src="resources/custom/js/app.js"></script>
  	<script type="text/javascript" src="resources/custom/js/user_master/user_control.js"></script>
  	<script type="text/javascript" src="resources/custom/js/user_master/user_service.js"></script>
-    
+    <script type="text/javascript" src="resources/custom/js/validation.js"></script>
 </body>
 
 </html>

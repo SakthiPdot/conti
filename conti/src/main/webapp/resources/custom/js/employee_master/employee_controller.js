@@ -8,14 +8,14 @@
  * @Updated_date_time Jun 26, 2017 12:59:17 PM
  */
 
-contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', function($scope, EmployeeService){
+contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchService', function($scope, EmployeeService, BranchService){
 	
 	var self = this;
 	self.employees = [];
 	
 	self.employee = {
 			   emp_id : null,
-			   branch_id : 1,
+			   branch_id : null,
 			   update_by : 1,
 			   created_by : 1,
 			   emp_name : "ss",
@@ -28,11 +28,18 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', function
 			   obsolete : "N",
 			   active : "Y"
 			};
-	self.submit = submit;
-	self.empmsg = "helloooooo";
-	//-------------------------- Fetch Allo Employees begin ---------------------//
-	fetchAllEmployees();
 	
+	self.employeecategory = {};  
+	
+	self.submit = submit;
+	self.selectedBranch = selectedBranch;
+	
+	fetchAllEmployees();
+	fetchEmpCat();
+	fetchAllBranches();
+	//-------------------------- Fetch All Employees begin ---------------------//
+	
+
 	function fetchAllEmployees() {
 		EmployeeService.fetchAllEmployees()
 			.then(
@@ -45,9 +52,48 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', function
 					}
 				);
 	}
-	//-------------------------- Fetch Allo Employees end ---------------------//
+	//-------------------------- Fetch All Employees end ---------------------//
+
+	//-------------------------- Fetch All Branch begin ---------------------//	
 	
+	function fetchAllBranches() {
+		BranchService.fetchAllBranches()
+			.then(
+					function (branches) {
+						self.branches = branches;
+						console.log(branches);						
+					}, 
+					function (errResponse) {
+						console.log('Error while fetching branches');
+					}
+				);
+	}
 	
+	//-------------------------- Fetch All Branch end ---------------------//	
+	
+	//-------------------------- Fetch All Employees begin ---------------------//
+	
+
+	function fetchEmpCat() {
+		EmployeeService.fetchEmpCat()
+			.then(
+					function (d) {
+						self.employeecategory = d;
+						console.log(d);						
+					}, 
+					function (errResponse) {
+						console.log('Error while fetching employees');
+					}
+				);
+	}
+	//-------------------------- Fetch All Employees end ---------------------//
+
+	//-------------------------- Selected branch details begin ---------------------//
+	function selectedBranch() {
+		console.log("Inside branch "+$("#branch_name_value").val());
+
+	}
+	//-------------------------- Selected branch details end ---------------------//	
     function createEmployee(employee){
     	EmployeeService.createEmployee(employee)
             .then(
@@ -59,7 +105,6 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', function
     } 
     
     function submit() {
-    	
     	
     	createEmployee(self.employee);
     }

@@ -4,6 +4,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -67,7 +72,35 @@ public class EmployeeRestController {
 		}
 		
 	}
-	
+	@RequestMapping( value = "/employees/category/", method = RequestMethod.GET)
+	public ResponseEntity<List<EmployeeMaster>> fetchEmployeesbycat(HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		
+		try {
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			List<EmployeeMaster> employees = employeeDao.getAllEmployees();
+			if(employees.isEmpty()) {
+				return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
+			} else {
+				List<EmployeeMaster> empCategory = employees.stream().filter(distinctByKey(emp->emp.getEmpcategory())).collect(Collectors.toList());
+				return new ResponseEntity<List<EmployeeMaster>> (empCategory, HttpStatus.OK);	
+			}			
+		} catch (Exception exception) {			
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+	}	
+	/**
+	 * @param object
+	 * @return
+	 */
+	 public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) 
+	    {
+	        Map<Object, Boolean> map = new ConcurrentHashMap<>();
+	        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+	    }
 	/* ------------------------- Create a Employee begin -------------------------------------  */
 	@RequestMapping( value = "/create_employee", method = RequestMethod.POST)
 	public ResponseEntity<Void> createEmployee(@RequestBody EmployeeMaster employee, UriComponentsBuilder ucBuilder, HttpServletRequest request) {

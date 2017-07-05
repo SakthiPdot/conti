@@ -12,11 +12,12 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 	
 	var factory = {
 			fetchAllEmployees : fetchAllEmployees,
+			fetchEmpCat :fetchEmpCat,
 			createEmployee : createEmployee
 	};
 	
 	return factory;
-	
+	//-------------------------- Fetch All Employees begin ---------------------//	
 	function fetchAllEmployees() {
 		var deferred = $q.defer();
 		$http.get(REST_SERVICE_URI)
@@ -31,8 +32,24 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 				);
 		return deferred.promise;
 	}
+	//-------------------------- Fetch All Employees end ---------------------//	
 	
-	
+	//-------------------------- Fetch Employee category begin ---------------------//
+	function fetchEmpCat() {
+		var deferred = $q.defer();
+		$http.get(REST_SERVICE_URI+'category/')
+			.then(
+					function (response) {
+						deferred.resolve(response.data);
+					},
+					function (errResponse) {
+						console.log("Error while fetching employees");
+						deferred.regject(erResponse);
+					}
+				);
+		return deferred.promise;
+	}
+	//-------------------------- Fetch Employee category end ---------------------//	
 	
     function createEmployee(employee) {
         var deferred = $q.defer();

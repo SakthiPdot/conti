@@ -195,7 +195,8 @@ public class UserRestController {
 					return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 				} else {
 					currentUser.setObsolete(userRole.getRole_Name());
-					if(userRole.getRole_Name().equals(constantVal.ROLE_CUSER)) {					
+					
+					if(userRole.getRole_Name().equals(constantVal.ROLE_CUSER)) {	
 						List<EmployeeMaster> listemp = employeeDao.getEmployee(currentUser.getBranch_id(), constantVal.ROLE_ADMIN);
 						currentUser.setActive(String.valueOf(listemp.get(0).getEmp_phoneno()));
 					} 
