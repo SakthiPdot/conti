@@ -356,6 +356,8 @@
 	 
     <!-- Metis Menu Js -->
     <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
+    
+    
     <!-- Morris Chart Js -->
     <script src="resources/built-in/assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="resources/built-in/assets/js/morris/morris.js"></script>

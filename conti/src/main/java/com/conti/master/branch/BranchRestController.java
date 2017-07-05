@@ -1,6 +1,8 @@
 package com.conti.master.branch;
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -8,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
+import com.conti.master.employee.EmployeeMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -42,19 +47,23 @@ import com.conti.setting.usercontrol.UsersDao;
  */
 
 @RestController
-public class BranchController {
+public class BranchRestController {
 
-	final Logger logger = LoggerFactory.getLogger(BranchController.class);
+	final Logger logger = LoggerFactory.getLogger(BranchRestController.class);
 
 	@Autowired
 	private UsersDao usersDao;
+	@Autowired
+	private BranchDao branchDao;
 		
 	@Autowired
 	@Qualifier("sessionRegistry")
 	private SessionRegistry sessionRegistry;
 		
 	Loggerconf loggerconf = new Loggerconf();
+	ConstantValues constantVal = new ConstantValues();
 	SessionListener sessionListener = new SessionListener();
+	UserInformation userInformation;
 
 	@RequestMapping(value =  "branch", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
@@ -88,7 +97,29 @@ public class BranchController {
 		return model;
 
 	}
+	
+	
+	@RequestMapping( value = "/branches/", method = RequestMethod.GET)
+	public ResponseEntity<List<BranchModel>> fetchAllBranches(HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		
+		try {
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			List<BranchModel> branches = branchDao.getAllBranches();
+			if(branches.isEmpty()) {
+				return new ResponseEntity<List<BranchModel>> (HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<List<BranchModel>> (branches, HttpStatus.OK);	
+			}			
+		} catch (Exception exception) {			
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<BranchModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+	}
 
+	
 	
 
 }

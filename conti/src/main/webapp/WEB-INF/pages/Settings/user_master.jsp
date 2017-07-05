@@ -49,7 +49,7 @@
  			<div class="col-lg-12 trowserHeader"  >
  			
                    <div class="col-lg-6  headerLeft">
-                   		 <b class="model-title">User Master</b>
+                   		 <b class="model-title">User Master : </b> Create User
                    </div>
                    
                    <div class="col-lg-6 headerRight">
@@ -68,7 +68,7 @@
 		                <div class="col-lg-12 title_area">	                
 		              
 			          	<div class="col-lg-12 new-masters" >
-			          		 <b> New User</b>	
+			          		 <!-- <b> New User</b>	 -->
 			          	</div>  
 			          	
 			          
@@ -186,7 +186,7 @@
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                             Advanced Tables
+                             User Register
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
