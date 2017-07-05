@@ -1,35 +1,31 @@
 package com.conti.master.location;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.session.SessionAuthenticationException;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.conti.address.AddressModel;
 import com.conti.config.SessionListener;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
-import com.conti.setting.usercontrol.RoleDao;
-import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 
 /**
@@ -49,10 +45,9 @@ public class LocationController {
 
 	@Autowired
 	private UsersDao usersDao;
-		
-	@Autowired
-	@Qualifier("sessionRegistry")
-	private SessionRegistry sessionRegistry;
+	
+	@Autowired 
+	private LocationDao locationDao; 
 		
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
@@ -91,5 +86,43 @@ public class LocationController {
 	}
 
 	
-
+	//=================GET LOCATION MODEL=====================================
+	@RequestMapping(value="LocationModel",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Location> getLocationModel(){
+		
+		Location location=new Location();
+		AddressModel address=new AddressModel();
+		location.setAddress(address);
+		return new  ResponseEntity<Location>(location,HttpStatus.CREATED);
+	}
+	
+	//=================SAVE =====================================
+	@RequestMapping(value="locationSave",method=RequestMethod.POST,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> saveLocation (@RequestBody Location location,
+			HttpServletRequest request ){
+		System.out.println("++ inside location save");
+		//intialize	
+		String userid = request.getSession().getAttribute("userid").toString();		
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+		
+		//set variable
+		location.setCreated_by(Integer.parseInt(userid));
+		location.setUpdated_by(Integer.parseInt(userid));
+		location.setCreated_datetime(dateFormat.format(date));
+		
+		
+		//save location
+		try {
+			locationDao.saveOrUpdate(location);
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
+		
+	}
 }

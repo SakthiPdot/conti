@@ -108,9 +108,11 @@ public class CompanyController {
 	}
 	
 	//=================Create company details=====================================
-	@RequestMapping(value="/companySave" ,method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/companySave" ,method=RequestMethod.POST,
+			produces=MediaType.APPLICATION_JSON_VALUE)
 	
-	public ResponseEntity<Void> saveCompanyDetail(@RequestBody Company company,HttpServletRequest request,UriComponentsBuilder ucBuilder){
+	public ResponseEntity<Void> saveCompanyDetail(@RequestBody Company company,
+			HttpServletRequest request,UriComponentsBuilder ucBuilder){
 
 		System.out.println("++inside company");
 		
@@ -136,9 +138,11 @@ public class CompanyController {
 		try {
 			companyDao.saveOrUpdate(company);
 			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
 			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 /*		
 		HttpHeaders headers=new HttpHeaders();
@@ -147,7 +151,7 @@ public class CompanyController {
 		
 		headers.setLocation(uricomponents.toUri());
 		*/
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+	
 		
 	}
 }

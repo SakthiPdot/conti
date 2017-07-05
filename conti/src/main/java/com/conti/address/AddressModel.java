@@ -1,10 +1,18 @@
 package com.conti.address;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonBackReference;
+
+import com.conti.master.location.Location;
 
 /**
  * Servlet implementation class AddressModel
@@ -21,8 +29,26 @@ public class AddressModel {
 	private String Country;
 	private String CountryCode;
 	private String Active;
+	private String District;
 	private String Obsolete;
+
 	
+	
+
+
+
+/*	public Location location;
+	
+	
+	@OneToOne (fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@JsonBackReference
+	public Location getLocation() {
+		return this.location;
+	}
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+	*/
 	@Id
 	@GeneratedValue
 	@Column(name="address_id")
@@ -80,5 +106,10 @@ public class AddressModel {
 	public void setObsolete(String obsolete) {
 		this.Obsolete = obsolete;
 	}
-	
+	public String getDistrict() {
+		return this.District;
+	}
+	public void setDistrict(String district) {
+		this.District = district;
+	}
 }

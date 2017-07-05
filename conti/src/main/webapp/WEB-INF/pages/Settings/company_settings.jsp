@@ -39,6 +39,7 @@
 	rel="stylesheet" />
 <link href="resources/custom/css/custom.css" rel="stylesheet">
 <link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
+
  	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/custom/js/app.js"></script>
 

@@ -8,10 +8,10 @@ angular.module('contiApp').controller('companyController'
 			
 			var self=this;
 		
-   self.addresses=[];
+	self.addresses=[];
 			
 	self.address={
-			    "id": 0,
+			    "id": null,
 			    "state": null,
 			    "country": null,
 			    "cityCode": null,
@@ -194,13 +194,12 @@ angular.module('contiApp').controller('companyController'
 				if(self.company.company_city==self.addresses[i].id){
 					self.company.selectedAddress=self.addresses[i];
 				}
-			}
+			}			
+			},
+			function(errRes){
+				console.log("error Fetchng address");
+			});
 			
-		},
-		function(errRes){
-			console.log("error Fetchng address");
-		});
-		
 	}
 
 

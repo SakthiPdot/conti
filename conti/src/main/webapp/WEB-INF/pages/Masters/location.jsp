@@ -11,6 +11,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="_csrf" content="${_csrf.token}"/>
+	<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
+    
     <title>${title}</title>
     <!-- Bootstrap Styles-->
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
@@ -32,14 +36,22 @@
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
 	  <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
+	
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/custom/js/app.js"></script>
+
+	
+
 </head>
 
 
-<body style="overflow-x:hidden;">
+<body style="overflow-x:hidden;"
+data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
  
  		<div class="overlay hideme"></div>
  		
- 		<div class="drawer hideme">
+ 		<form data-ng-submit="locctrl.submit()">
+ 		<div class="drawer ">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
@@ -59,58 +71,72 @@
                  <div class="model-body">
                  
 	                  <div class="row">
-			                <div class="col-lg-12 title_area">	                
-			              
-				          	<div class="col-lg-12 new-masters" >
-				          		 <b> New Location</b>	
-				          	</div> 
-				            
+			                <div class="col-lg-12 title_area">	
+					          	<div class="col-lg-12 new-masters" >
+					          		 <b> New Location</b>	
+					          	</div> 				            
 				            </div>                
 		             </div> 
                  
 	                <div class="row">
-		                <div class="col-lg-12">
-			                
+		                <div class="col-lg-12">			                
 			               <div class="col-lg-12 content-body">
 		                 	 
 		                 	  <span>Location Name</span>
-			                  <input type="text" class="form-control">
+			                  <input type="text"
+			                  data-ng-model="locctrl.Location.location_name" 
+			                  class="form-control">
 			                  
 			                  <span>Location Code</span>
-			                  <input type="text" class="form-control">
+			                  <input type="text"
+			                  data-ng-model="locctrl.Location.location_code"
+			                   class="form-control">
 			                  
 			                   <span>Abbreviation</span>
-			                  <input type="text" class="form-control">
-			                  
+			                  <input type="text"
+			                  data-ng-model="locctrl.Location.abbreviation"
+			                   class="form-control">    
 			                
-			          
-			
-			               
-			             </div>  
-			             </div> 
+		            	 </div>  
+			           </div> 
 			             
 			             
 			             <div class="col-lg-12">
 	                		<div class="col-lg-6 content-body">
 	                	     <span>City</span>
-			                  	<select class="form-control">
-									<option>Coimbatore</option>
-									<option>Chennai</option>
-									<option>Bangalore</option>
-								</select>
-								
+	                	     
+	                	     
+	                	     <select 
+	                	    	 data-ng-model="locctrl.location.selectedAddress"
+	                	    	 data-ng-options="x.city  for x in locctrl.addresses|orderBy:'city' track by x.id"
+	                	    	 class="form-control"
+	                	    	 data-ng-change="updateAddressDetail()"
+	                	    	 id="city">
+	                	    		<option value="">--Select City --</option> 
+	                	     </select>
+	                	     
+	                	     
+								<input type="text"
+								data-ng-hide="true"
+								data-ng-model="locctrl.Location.address.id"
+								id="city" 
+			                  	class="form-control"/>
+			                  	
 								 <span>State</span>
-			                     <input type="text" class="form-control">
+			                     <input type="text"
+			                     data-ng-model="locctrl.Location.address.state" class="form-control">
 	                		</div>
-	                		
+	                			
 	                		
 	                		<div class="col-lg-6 content-body">
 	                	           
 			                  <span>Country</span>
-			                  <input type="text" class="form-control">
+			                  <input type="text" class="form-control"
+			                  data-ng-model="locctrl.Location.address.country">
 			                  
 			                  <span>Pincode</span>
-			                  <input type="text" class="form-control">
+			                  <input type="text" class="form-control"
+			                  data-ng-model="locctrl.Location.pincode">
 			                  
 	                		</div>
 	                	</div>
@@ -139,7 +165,7 @@
 						
 						<div class="col-lg-4 footerRight">
 
-						 <button type="button" class="btn btn-success"><i class="fa fa-floppy-o "></i> Save</button>					
+						 <button type="submit" class="btn btn-success"><i class="fa fa-floppy-o "></i> Save</button>					
 						
 						</div>
 					</div>
@@ -149,9 +175,9 @@
  			
  			
  		</div>
- 
+ 		</form>
 	
-	<jsp:include page="../Dashboard/settings_nav.jsp"/>
+	<jsp:include page="../Dashboard/nav.jsp"/>
 	
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
@@ -254,10 +280,7 @@
                                             <td>India</td>
                                             <td>632541</td>
                                           
-                                        </tr>
-                                        
-                                        
-                                 
+                                        </tr>                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -276,24 +299,21 @@
     </div>
     <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
-    <!-- jQuery Js -->
+    <!--====================================================== SCRIPTS START=========================================-->
 
-   <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
-      <!-- Bootstrap Js -->
-    <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Js -->
-    <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
-     <!-- DATA TABLE SCRIPTS -->
-    <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
-     <script src="resources/custom/js/custom.js"></script>
-     <script src="resources/custom/js/session.js"></script>
        <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();
             });
         </script>
-         <!-- Custom Js -->
+        
+        
+	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
+	<script type="text/javascript" src="resources/custom/js/Location/location_service.js"></script>
+	<script type="text/javascript" src="resources/custom/js/Address/address_service.js"></script>
+	<script type="text/javascript" src="resources/custom/js/Location/location_control.js"></script>
+	
+   <!--====================================================== SCRIPTS END =========================================-->
 
 </body>
 

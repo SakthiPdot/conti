@@ -26,7 +26,7 @@ import com.conti.setting.usercontrol.User;
 @Table(name = "m_employee")
 //@JsonIgnoreProperties(ignoreUnknown = true)
 public class EmployeeMaster implements Serializable{
-	private int emp_id, branch_id, emp_phoneno, update_by, created_by;
+	private int emp_id, branch_id, location_id, emp_phoneno, update_by, created_by;
 	private String emp_name, emp_code, empcategory, emp_address, emp_email, created_datetime, updated_datetime, obsolete, active;
 	
 	private User user;
@@ -52,12 +52,13 @@ public class EmployeeMaster implements Serializable{
 	 * @param active
 	 * @param user
 	 */
-	public EmployeeMaster(int emp_id, int branch_id, int emp_phoneno, int update_by, int created_by, String emp_name, String emp_code,
+	public EmployeeMaster(int emp_id, int branch_id, int location_id, int emp_phoneno, int update_by, int created_by, String emp_name, String emp_code,
 			String empcategory, String emp_address, String emp_email, String created_datetime, String updated_datetime,
 			String obsolete, String active, User user) {
 		super();
 		this.emp_id = emp_id;
 		this.branch_id = branch_id;
+		this.location_id = location_id;
 		this.update_by = update_by;
 		this.created_by = created_by;
 		this.emp_name = emp_name;
@@ -89,6 +90,15 @@ public class EmployeeMaster implements Serializable{
 	public void setBranch_id(int branch_id) {
 		this.branch_id = branch_id;
 	}
+	
+	@Column(name = "location_id")	 
+	public int getLocation_id() {
+		return location_id;
+	}
+	public void setLocation_id(int location_id) {
+		this.location_id = location_id;
+	}
+
 	@Column(name = "emp_phoneno")
 	public int getEmp_phoneno() {
 		return emp_phoneno;
@@ -96,8 +106,6 @@ public class EmployeeMaster implements Serializable{
 	public void setEmp_phoneno(int emp_phoneno) {
 		this.emp_phoneno = emp_phoneno;
 	}
-
-
 
 	@Column(name = "updated_by")
 	public int getUpdate_by() {
