@@ -139,10 +139,7 @@
 							</div>
 								<div class="col-lg-12">
 								<button type="button" style="visibility: hidden;"
-									class="btn btn-default">Browse</button>
-							<button type="button" 
-								style="visibility: hidden;"
-								data-ng-click = "comctrl.uploadFile()">upload me</button>	
+									class="btn btn-default">Browse</button>	
 							</div>
 
 							<input 

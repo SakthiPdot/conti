@@ -90,7 +90,15 @@
  			font-size:28px;
  			 			
       }
-      
+   
+   	.mybutton{
+	
+	border:none;
+	background-color:snow;
+	margin-left:25px;
+	margin-top:5px;
+	margin-bottom:5px;
+	}   
   .icons-button{
   			       
                 padding-bottom: 10px;

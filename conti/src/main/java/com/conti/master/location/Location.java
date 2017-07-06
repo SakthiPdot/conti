@@ -32,7 +32,7 @@ import com.conti.address.AddressModel;
 public class Location implements Serializable {
 	
 	
-
+	
 	
 	private int location_id,updated_by,created_by;
 	private String location_name,location_code,abbreviation,obsolete,active,
@@ -52,7 +52,7 @@ public class Location implements Serializable {
 		return this.address;
 	}
 
-	@JsonManagedReference
+
 	public void setAddress(AddressModel address) {
 		this.address = address;
 	}

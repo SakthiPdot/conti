@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -86,8 +87,7 @@ public class LocationController {
 		return model;
 
 	}
-	//=================FETCH ALL LOCATION=====================================
-	
+	//=================FETCH ALL LOCATION=====================================	
 	@RequestMapping(value="fetchAllLocation",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Location>>  getAllLocation(){
 		List<Location> locations=locationDao.getLocation();
@@ -106,13 +106,13 @@ public class LocationController {
 		location.setAddress(address);
 		return new  ResponseEntity<Location>(location,HttpStatus.CREATED);
 	}
-	
 	//=================SAVE =====================================
 	@RequestMapping(value="locationSave",method=RequestMethod.POST,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> saveLocation (@RequestBody Location location,
 			HttpServletRequest request ){
 		System.out.println("++ inside location save");
+		
 		//intialize	
 		String userid = request.getSession().getAttribute("userid").toString();		
 		Date date = new Date();
@@ -122,6 +122,8 @@ public class LocationController {
 		location.setCreated_by(Integer.parseInt(userid));
 		location.setUpdated_by(Integer.parseInt(userid));
 		location.setCreated_datetime(dateFormat.format(date));
+		location.setObsolete("N");
+		location.setActive("Y");
 		
 		
 		//save location
@@ -133,7 +135,72 @@ public class LocationController {
 			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
 			e.printStackTrace();
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}	
+		}		
+	}
+	
+	
+	@RequestMapping(value="/locationDelete/{id}",method=RequestMethod.DELETE,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> deleteLocation(@PathVariable("id") long id,
+			HttpServletRequest request){
 		
+		System.out.println("++ updating user "+id);
+		Location locationFromDb=locationDao.getLocationById((int)id);
+		
+		if(locationFromDb==null){
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		}
+		
+		//intialize		
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+				
+		//set variable
+		locationFromDb.setUpdated_by(Integer.parseInt(request.getSession().getAttribute("userid").toString()));		
+		locationFromDb.setUpdated_datetime(dateFormat.format(date));
+		locationFromDb.setObsolete("Y");
+		locationFromDb.setActive("N");
+		
+		
+		try {
+			locationDao.saveOrUpdate(locationFromDb);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
+	
+	//=========================UPDATE USER===========================
+	@RequestMapping(value="/updateLocation/{id}",method=RequestMethod.PUT)
+	public ResponseEntity<Void> updateLocation(@PathVariable("id") long id,
+			HttpServletRequest request,@RequestBody Location location){
+		
+		System.out.println("++ updating user "+id);
+		Location locationFromDb=locationDao.getLocationById((int)id);
+		
+		//intialize		
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+				
+		//set variable
+		location.setUpdated_by(Integer.parseInt(request.getSession().getAttribute("userid").toString()));		
+		location.setUpdated_datetime(dateFormat.format(date));
+		
+		
+		if(locationFromDb==null){
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		}
+		
+		try {
+			locationDao.saveOrUpdate(location);
+			return new ResponseEntity<Void>(HttpStatus.OK);	
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
 	}
 }

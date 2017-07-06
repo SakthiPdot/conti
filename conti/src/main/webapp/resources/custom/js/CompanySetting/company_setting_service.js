@@ -16,42 +16,55 @@ angular.module('contiApp').factory('CompanySettingService',['$http','$q',functio
 
 	var factory={
 			fetchCompanySetting:fetchCompanyWithId,
-			addCompanySetting:addCS,
+			addCompanySetting:saveCompany,
 			updateCompanySetting:updateCS,
-			uploadFileToUrl:uploadFileToUrl
 	};
 	
 	return factory;
 	
 	
-	//=============================fileUpload====================================
-	function uploadFileToUrl(file, uploadUrl){
+	//=============================save file====================================
+	function saveCompany(company,file, Url){
 
-		console.log('uploading');
-		console.log(uploadUrl);
+
+		var deferred =$q.defer();
+		
+		console.log('saving');
+		console.log(Url);
+		console.log(file);
 	  
 		var fd = new FormData();
-        fd.append('file', file);
+
+		 if($("#image").val().length){	
+			  fd.append('file', file);
+			 console.log("file available");
+		 }else{				
+			 console.log("file not available");
+		 }
      
+        fd.append('company',JSON.stringify(company));
 		
 		$http({
 			  method: 'POST',
-			  url: uploadUrl,
+			  url: Url,
 			  data:fd,
 			  transformRequest: angular.identity,
 			  headers:getHeaderWithContentType()
 			})
 		.then(
 				function(response){
-					console.log('upload done');
+					console.log('save done');
 					console.log(response.data);
+					deferred.resolve(response.data);
 				},
 				function(errResponse){
-					console.log('upload error');
+					console.log('save error');
 					console.log(errResponse.data);
+					deferred.reject(errResponse);
 				}
 		);
-                      
+
+		return deferred.promise;           
 	}
 	
 	
@@ -73,37 +86,7 @@ angular.module('contiApp').factory('CompanySettingService',['$http','$q',functio
 		return deferred.promise;
 	}
 	
-	//=============================add company settings====================================
-	function addCS(company,file,uploadUrl){
 
-		var deferred=$q.defer();
-		
-		console.log(company);
-		
-		$http({
-			  method: 'POST',
-			  url: 'companySave',
-			  data:company,
-			  headers:getHeader()
-			})
-		.then(
-		function(response){
-			
-			console.log(response.data);
-			 if($("#image").val().length){	
-				 uploadFileToUrl(file, uploadUrl);
-				 console.log("file available");
-			 }else{
-				 console.log("file not available");
-			 }
-			 deferred.resolve(response.data);
-		},
-		function(errResponse){
-			console.error('Error creating company detail');
-			deferred.reject(errResponse);
-		});
-		 return deferred.promise;
-	}
 	//=============================update company settings====================================
 	function updateCS(){
 		

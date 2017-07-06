@@ -36,6 +36,7 @@
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
 	  <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
+	<link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
 	
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>
@@ -49,19 +50,24 @@
 <body style="overflow-x:hidden;"
 data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
  
+ 
+<div class="success hideme"><i class="fa fa-check-circle" aria-hidden="true"></i> {{locctrl.message}}</div>
+<div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{locctrl.message}}</div>
+ 
+ 
  		<div class="overlay hideme"></div>
  		
- 		<form data-ng-submit="locctrl.submit()">
- 		<div class="drawer ">
+ 		<form data-ng-submit="locctrl.submit()" name="locationForm">
+ 		<div class="drawer hideme ">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
-                   <div class="col-lg-6 headerLeft">
-                   		 <b class="model-title">Location Master</b>
+                   <div class="col-lg-10 col-md-10 headerLeft">
+                   		 <b class="model-title">Location {{locctrl.heading}}</b>
                    </div>
                    
-                   <div class="col-lg-6 headerRight">
-                   		<i class="fa fa-times fa-2x drawerClose  pull-right iconLeft"></i>
+                   <div class="col-lg-2 col-md-2 headerRight">
+                   		<i class="fa fa-times fa-2x   pull-right iconLeft"  onClick="drawerClose('.drawer')"  data-ng-click="reset()"></i>
                    </div>
             
              </div>
@@ -74,7 +80,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 	                  <div class="row">
 			                <div class="col-lg-12 title_area">	
 					          	<div class="col-lg-12 new-masters" >
-					          		 <b> New Location</b>	
+					          		 <b  data-ng-show="locctrl.Location.location_id == null" > New Location</b>	
 					          	</div> 				            
 				            </div>                
 		             </div> 
@@ -108,7 +114,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 	                	     
 	                	     
 	                	     <select 
-	                	    	 data-ng-model="locctrl.location.selectedAddress"
+	                	    	 data-ng-model="locctrl.Location.selectedAddress"
 	                	    	 data-ng-options="x.city  for x in locctrl.addresses|orderBy:'city' track by x.id"
 	                	    	 class="form-control"
 	                	    	 data-ng-change="updateAddressDetail()"
@@ -154,20 +160,52 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 				
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="col-lg-4 footerLeft">
-							<button type="button" class=" btn btn-danger drawerClose pull-left" ><i class="fa fa-trash-o"></i> Clear</button>
+						<div class="col-lg-4 col-xs-4 footerLeft">
+							<button type="button" class=" btn btn-danger  pull-left" onClick="drawerClose('.drawer')"  data-ng-click="reset()" > <i class="fa fa-times" aria-hidden="true"></i>
+							Cancel</button>
 						</div>
 						
-						<div class="col-lg-4" style="text-align:center; !important;">
-							<a id="" class="btnPadding btn btn-warning"	style="display: none; "><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
+						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
+							<a id="" class="btnPadding btn btn-warning"	 data-ng-click="locctrl.deleteLocation()"  data-ng-show="!(locctrl.Location.location_id== null)" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
 							
-							<a id="" class="btnPadding btn btn-primary" style="display:none;">Clear</a>							
+							<a id="" class="btnPadding btn btn-primary"  data-ng-click="reset()"  data-ng-show="!locationForm.$pristine && (locctrl.Location.location_id== null)"><i class="fa fa-eraser" aria-hidden="true"></i>
+							Clear</a>							
 						</div>
-						
-						<div class="col-lg-4 footerRight">
 
-						 <button type="submit" class="btn btn-success"><i class="fa fa-floppy-o "></i> Save</button>					
-						
+
+
+						<div class="col-lg-4 col-xs-4 footerRight" data-ng-show="!(locctrl.Location.location_id== null)">
+							<button class="btn btn-success " type="submit"
+								
+								id="saveclose" data-id="0" data-ng-click="save($event)"
+								type="submit">
+								<i class="fa fa-floppy-o "> </i> Update</button>
+							<br>
+						</div>
+
+
+
+						<div class="col-lg-4 col-xs-4 footerRight" 
+									data-ng-show="(locctrl.Location.location_id== null)">
+							<div class="btn-group dropup" id="savebutton">
+
+								<button type="button" class="btn btn-success dropdown-toggle"
+									data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
+									<i class="fa fa-floppy-o "></i> Save
+								</button>
+								<div class="dropdown-menu pull-right"
+									style="padding-right: 5px;">
+									<button class="farmsave mybutton" id="saveclose" data-id="0"
+										data-ng-click="save($event)" type="submit">Save and
+										Close</button>
+									<br>
+									<button class="farmsave mybutton" id="savenew" data-id="1"
+										data-ng-click="save($event)" type="submit">Save and
+										New</button>
+									<br>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -187,7 +225,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
              <div class="page-header header-size">
                  	  <b>${title}</b>
                  	  
-                 	  <button class="btn btn-info drawerOpen pull-right" >Add New Location</button>
+                 	  <button class="btn btn-info drawerOpen pull-right" onClick="drawerOpen('.drawer')" >Add New Location</button>
              </div>             										
 		   </div>
       		
@@ -232,9 +270,13 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                               </div>
                             </div>
                           
-                            
-                            
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                          
+                          <!-- ==================================LOCATION TABLE============================= -->
+                         <table>
+                        
+                          </table>
+                                <table class="table table-striped table-bordered table-hover" 
+                                 id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th>S.No</th>
@@ -248,40 +290,21 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                             
                                         </tr>
                                     </thead>
+                                    
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Peelamedu</td>
-                                            <td>cbe002</td>
-                                            <td>Landmark</td>
-                                            <td>Coimbatore</td>
-                                            <td>Tamilnadu</td>
-                                            <td>India</td>
-                                            <td>632541</td>
+                                      <tr 
+                                       data-ng-repeat="x in locctrl.Locations| orderBy :'location_name'  track by x.location_id"
+	                	    			 data-ng-dblclick="updateLocation(x,$index)">                                            
+                                            <td>{{$index+1}}</td>
+                                            <td>{{x.location_name}}</td>
+                                            <td>{{x.location_code}}</td>
+                                            <td>{{x.abbreviation}}</td>
+                                            <td>{{x.address.city}}</td>
+                                            <td>{{x.address.state}}</td>
+                                            <td>{{x.address.country}}</td>
+                                            <td>{{x.pincode}}</td>
                                           
-                                        </tr>
-                                          <tr>
-                                            <td>2</td>
-                                            <td>RS Puram</td>
-                                            <td>cbe003</td>
-                                            <td>Landmark</td>
-                                            <td>Coimbatore</td>
-                                            <td>Tamilnadu</td>
-                                            <td>India</td>
-                                            <td>632541</td>
-                                          
-                                        </tr>
-                                       <tr>
-                                            <td>3</td>
-                                            <td>RS Puram</td>
-                                            <td>cbe003</td>
-                                            <td>Landmark</td>
-                                            <td>Coimbatore</td>
-                                            <td>Tamilnadu</td>
-                                            <td>India</td>
-                                            <td>632541</td>
-                                          
-                                        </tr>                                        
+                                        </tr>                         
                                     </tbody>
                                 </table>
                             </div>
@@ -301,14 +324,14 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
     <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
     <!--====================================================== SCRIPTS START=========================================-->
-
        <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();
             });
         </script>
         
-        
+     
+    <script src="resources/custom/js/custom.js"></script>   
 	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Location/location_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Address/address_service.js"></script>

@@ -121,7 +121,7 @@ angular.module('contiApp').controller('companyController'
 		
 		if(self.company.company_id==null){
 			console.log("Company New Record");
-		    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"fileUpload")
+		    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"companySave")
 		    .then(
 					function(d){	
 						self.message = "Company Detail Created..!";
@@ -135,7 +135,7 @@ angular.module('contiApp').controller('companyController'
 					});
 		}else{
 			console.log("Company Record Update");
-		    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"fileUpload")
+		    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"companySave")
 		    .then(
 					function(d){	
 						self.message = "Company Details Updated..!";
@@ -157,24 +157,6 @@ angular.module('contiApp').controller('companyController'
         */
 		
 		
-	}
-	
-	//=============================fileUpload====================================
-	self.uploadFile=function uploadFile(){
-		console.log("uploadFile");
-		  var file = $scope.myFile;
-          
-          console.log('file is ' );
-          console.dir(file);
-          
-          var uploadUrl = "fileUpload";
-          var promise= CompanySettingService.uploadFileToUrl(file, uploadUrl);
-         
-          promise.then(function (response) {
-              $scope.serverResponse = response;
-          }, function () {
-              $scope.serverResponse = 'An error has occurred';
-          })   
 	}
 	
 

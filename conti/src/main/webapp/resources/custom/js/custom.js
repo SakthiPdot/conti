@@ -1,8 +1,12 @@
 
+
 // begin---------------------//
-$('.drawerOpen').click(function(){
 
 
+
+function drawerOpen(drawerName){
+	
+	
 	window.setTimeout(function(){	
 		animationOpenClick('.overlay', 'fadeIn');	
 	},750);
@@ -12,18 +16,34 @@ $('.drawerOpen').click(function(){
 	},1400);
 	
 	window.setTimeout(function(){	
-		$('.drawer').removeClass('hideme');
+		$(drawerName).removeClass('hideme');
 		$('body').addClass('scrollHidden');
 	},1500);
 
 	window.setTimeout(function(){	
-		animationOpenClick('.drawer', 'bounceInRight');
+		animationOpenClick(drawerName, 'bounceInRight');
 	},1500);
 	
+}
+
+function drawerClose(drawerName){
+	animationOpenClick(drawerName, 'bounceOutRight');
+	//$('.overlay').addClass('hideme');
+
+	window.setTimeout(function(){							
+	$(drawerName).addClass('hideme');
 	
-});
-
-
+	},1000);
+	
+	window.setTimeout(function(){	
+		animationOpenClick('.overlay', 'fadeOut');	
+	},1200);
+	
+	window.setTimeout(function(){	
+		$('.overlay').addClass('hideme');
+		$('body').removeClass('scrollHidden');
+	},1500);
+}
 //---------------------------- Animate function
 // begins----------------------------------//
 function animationOpenClick(element, animation){

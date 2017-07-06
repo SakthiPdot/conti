@@ -10,13 +10,13 @@
 		      -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
    			 box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
 		    font-size: 5mm;
-		    z-index: 301;
+		    z-index: 1500;
   		}
   		
   		.success:after{
 		    content:"";
 		    position:fixed;
-		    z-index:301;
+		    z-index:1500;
 		    top:100%;
 		    bottom:0;
 		    width:120%;
@@ -39,12 +39,12 @@
 		      -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
    			 box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
 		    font-size: 5mm;
-		    z-index: 301;
+		    z-index: 1500;
   		}
   		.failure:after{
 		    content:"";
 		    position:fixed;
-		    z-index:301;
+		    z-index:1500;
 		    top:100%;
 		    bottom:0;
 		    width:120%;
@@ -67,12 +67,12 @@
 		      -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
    			 box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
 		    font-size: 5mm;
-		    z-index: 301;
+		    z-index: 1500;
   		}
   		.success-forgot:after{
 		    content:"";
 		    position:fixed;
-		    z-index:301;
+		    z-index:1500;
 		    top:100%;
 		    bottom:0;
 		    width:120%;
@@ -94,12 +94,12 @@
 		      -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
    			 box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
 		    font-size: 5mm;
-		    z-index: 301;
+		    z-index: 1500;
   		}
   		.failure-forgot:after{
 		    content:"";
 		    position:fixed;
-		    z-index:301;
+		    z-index:1500;
 		    top:100%;
 		    bottom:0;
 		    width:120%;

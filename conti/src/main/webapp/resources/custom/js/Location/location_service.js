@@ -21,7 +21,6 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 
 	//=============================SAVE LOCATION====================================
 	function saveLocation(location){
-		console.log("Inside save location");
 		var deferred=$q.defer();
 		$http({
 			method:'POST',
@@ -40,9 +39,48 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 	}	
 	
 	
+	//=============================DELETE LOCATION====================================
+	function deleteLocation(id){
+		var deferred=$q.defer();
+		$http({
+			method:'DELETE',
+			url:'locationDelete/'+id,
+			headers:getCsrfHeader()			
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("delete failed");
+					deferred.reject(errResponse);
+				}
+				);
+		return deferred.promise;		
+	}
+	
+	//=============================UPDATE LOCATION====================================
+	function updateLocation(location,id){
+		var deferred=$q.defer();
+		
+		$http({
+			method:'PUT',
+			url:'updateLocation/'+id,
+			data:location,
+			headers:getCsrfHeader()
+		})
+		.then(
+				function(response){
+					deferred.resolve(response.data);
+				},
+				function(errResponse){
+					deferred.reject(errResponse);
+				}
+				);
+		return deferred.promise;
+	}
+	
+	
 	//=============================FETCH ALL LOCATION====================================
 	function fetchAllLocation(){
-		console.log("Inside fetch all location");
 		var deferred=$q.defer();
 		$http.get('fetchAllLocation')
 			.then(function(response){
@@ -54,16 +92,15 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 		return deferred.promise;
 	}
 	
+
+	//============================= LOCATION====================================
 	function fetchLocation(){
 		console.log("Inside fetch location");
 	}    
-	function deleteLocation(){
-		console.log("Inside delete location");
-	}
 
-	function updateLocation(){
-		console.log("Inside update location");
-	}
+	
+
+
 	
 }]);
 
