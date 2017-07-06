@@ -1,5 +1,7 @@
 package com.conti.others;
 
+import java.io.IOException;
+
 /**
  * @Project_Name conti
  * @Package_Name com.conti.others
@@ -12,4 +14,7 @@ public interface SendMailSMS {
 
 	
 	public void send_Mail(String[] email, String subject, String message);
+	
+	//multiple mobile number separated by comma (,) 
+	public String send_SMS(String mobileno, String message) throws IOException;
 }

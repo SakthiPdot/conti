@@ -35,10 +35,25 @@ public final class ConstantValues {
 	
 	//REFERENCE NUMBER FOR ENTRY SCREENS- STANDARDIZED
 	
-	//Email
-
+	//Send success
+	public static final String SEND_SUCCESS ="SEND_SUCCESS";
+	public static final String SEND_NOT_SUCCESS ="SEND_NOT_SUCCESS";	
+	
+	//Email config
 	public static final String MAIL_ID = "pointdot2016@gmail.com";
 	public static final String MAIL_PASSWORD = "pointdot@123";
+	
+	//SMS config
+	public static final String SMS_URL = "http://103.250.30.5/SendSMS/sendmsg.php";
+	public static final String SMS_USERNAME = "conti02";
+	//public static final String SMS_USERNAME = "ss";
+	public static final String SMS_PASSWORD = "abc321";
+	public static final String SMS_SENDER_CODE = "CONTIK";
+//	public static final String SMS_SENDER_CODE = "dd";
+	
+	// in minutes (2 hrs)
+	public static final int SMS_MAXHOUR_FORGOT_USERNAME = 120;
+	public static final int SMS_MAXCOUNT_FORGOT_USERNAME = 2;
 	
 	// USER ROLE
 	public static final String ROLE_SADMIN = "SUPER_ADMIN";

@@ -39,6 +39,7 @@ import com.conti.config.SessionListener;
 import com.conti.master.employee.EmployeeDao;
 import com.conti.master.employee.EmployeeMaster;
 import com.conti.others.ConstantValues;
+import com.conti.others.DateTimeCalculation;
 import com.conti.others.Loggerconf;
 import com.conti.others.SendMailSMS;
 import com.conti.others.UserInformation;
@@ -67,6 +68,8 @@ public class UserRestController {
 	private SendMailSMS sendMailSMS;
 	@Autowired
 	private UserLogDao userLogDao;
+	@Autowired
+	private DateTimeCalculation datetimeCalculation;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
@@ -190,7 +193,7 @@ public class UserRestController {
 			if(currentUser == null) {
 				return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
 			} else {
-				Role userRole = roleDao.get(currentUser.getUser_id());
+				Role userRole = roleDao.get(currentUser.getRole_id());
 				if( userRole == null ) {
 					return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 				} else {
@@ -206,14 +209,22 @@ public class UserRestController {
 						int noofDays = 0;
 						if(!userlog_list.isEmpty()) {
 							UserLogModel lastUserlog = Collections.max(userlog_list, Comparator.comparing(c -> c.getLog_id()));
-							String password_req_date = lastUserlog.getPassword_request().substring(0, lastUserlog.getPassword_request().length() - 2);
-							Date req_date =  dateFormat.parse(password_req_date);
-							String current_date = dateFormat.format(date);
-							Date curr_date =  dateFormat.parse(current_date);
 							
-							// calculate days 					
-							long diff = curr_date.getTime() - req_date.getTime();
-						    noofDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+							if( lastUserlog.getPassword_request() != null ) {
+								
+								String password_req_date = lastUserlog.getPassword_request().substring(0, lastUserlog.getPassword_request().length() - 2);
+								Date req_date =  dateFormat.parse(password_req_date);
+								String current_date = dateFormat.format(date);
+								Date curr_date =  dateFormat.parse(current_date);
+								
+								// calculate days 					
+								long diff = curr_date.getTime() - req_date.getTime();
+							    noofDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+							} else {
+								noofDays = 3;
+							}
+							
+							
 						}
 							if(noofDays < 3 ) {
 								return new ResponseEntity<User>(currentUser, HttpStatus.IM_USED);
@@ -381,20 +392,74 @@ public class UserRestController {
 	public ResponseEntity<Void> forgotUsername(@RequestBody String mobileno, EmployeeMaster employeeMaster, UserLogModel userLogModel) {
 		
 		try {
-			employeeMaster = employeeDao.findByMobileno(Integer.parseInt(mobileno));
+			employeeMaster = employeeDao.findByMobileno(Long.parseLong(mobileno));
+
 			if(employeeMaster != null) {
+				
+				
+				// get current date
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date date = new Date();
-				dateFormat.format(date);
-				
+				// get password requested date			
+
 				List<UserLogModel> userlog_list = userLogDao.getUserlogListbyId(employeeMaster.getUser().getUser_id());
 				userLogModel = Collections.max(userlog_list, Comparator.comparing(c -> c.getLog_id()));
-				userLogModel.setUsername_request(dateFormat.format(date));
-				//userLogModel.setUser_id(employeeMaster.getUser().getUser_id());
-				userLogModel.setPassword_reset_flag(0);
-				userLogDao.saveorupdate(userLogModel);
-				System.out.println(employeeMaster.getUser().getUsername());
-				loggerconf.saveLogger(Integer.toString(employeeMaster.getEmp_phoneno()), "forgotUsername", ConstantValues.FETCH_SUCCESS, null);
+				
+				int minute = 0;
+				if( userLogModel.getUsername_request() != null ) {
+					
+					String username_req_date =  userLogModel.getUsername_request().substring(0, userLogModel.getUsername_request().length() - 2);
+					// calculate days 					
+					String[] datetime_diff = datetimeCalculation.calculateDateDiff(username_req_date);
+					
+					minute = Integer.parseInt(datetime_diff[2]);
+										
+				}
+				
+				
+				if ( minute > constantVal.SMS_MAXHOUR_FORGOT_USERNAME ) {
+					userLogModel.setForgotusernme_count( 0 );
+				}	
+					
+					if ( (minute <= constantVal.SMS_MAXHOUR_FORGOT_USERNAME) && (userLogModel.getForgotusernme_count() >= constantVal.SMS_MAXCOUNT_FORGOT_USERNAME) ) {
+						 
+							loggerconf.saveLogger(Long.toString(employeeMaster.getEmp_phoneno()), "forgotUsername", ConstantValues.FETCH_NOT_SUCCESS, null);
+							return new ResponseEntity<Void> (HttpStatus.ALREADY_REPORTED);
+						
+						
+					} else {
+						
+						
+						loggerconf.saveLogger(Long.toString(employeeMaster.getEmp_phoneno()), "forgotUsername", ConstantValues.FETCH_SUCCESS, null);
+
+						userLogModel.setUsername_request(dateFormat.format(date));
+						//userLogModel.setUser_id(employeeMaster.getUser().getUser_id());
+						userLogModel.setPassword_reset_flag(0);
+						userLogModel.setForgotusernme_count( userLogModel.getForgotusernme_count() + 1 );
+						userLogDao.saveorupdate(userLogModel);
+						loggerconf.saveLogger(Long.toString(employeeMaster.getEmp_phoneno()), "forgotUsername", ConstantValues.SAVE_SUCCESS, null);
+						
+						String message= "Dear CONTI user, Your Conti Cargo courier portal username: " + employeeMaster.getUser().getUsername();
+						String sms_respone = sendMailSMS.send_SMS(mobileno, message); // call send_sms method
+						
+						// check sms send success or not
+						if( !(sms_respone.contains("0x2")) ) {
+							//success block
+							loggerconf.saveLogger(Long.toString(employeeMaster.getEmp_phoneno()), "forgotUsername", ConstantValues.SEND_SUCCESS, null);
+							return new ResponseEntity<Void> (HttpStatus.OK);
+						} else {
+							//not success block
+							loggerconf.saveLogger(Long.toString(employeeMaster.getEmp_phoneno()), "forgotUsername", ConstantValues.SEND_NOT_SUCCESS, null);
+							return new ResponseEntity<Void> (HttpStatus.SERVICE_UNAVAILABLE);
+						}
+						
+												
+					}
+					
+				
+				
+				//System.out.println(employeeMaster.getUser().getUsername());
+				
 			} else {
 				loggerconf.saveLogger(mobileno, "forgotUsername", ConstantValues.FETCH_NOT_SUCCESS, null);				
 				return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
@@ -405,7 +470,7 @@ public class UserRestController {
 			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		
-		return new ResponseEntity<Void> (HttpStatus.OK);
+		
 	}
 	
 	/*----------------------------- find Username by mobileno end -------------- */

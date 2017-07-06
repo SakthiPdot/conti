@@ -20,7 +20,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @Table(name = "t_userlog")
 public class UserLogModel {
 	
-	private int log_id, user_id, last_loginhours, password_reset_flag;
+	private int log_id, user_id, last_loginhours, password_reset_flag,forgotusernme_count;
 	private String loggedin_date, username_request, password_request, link;
 	
 	@Id
@@ -81,5 +81,16 @@ public class UserLogModel {
 	public void setPassword_reset_flag(int password_reset_flag) {
 		this.password_reset_flag = password_reset_flag;
 	}
+	
+	@Column(name = "forgotusernme_count")	
+	public int getForgotusernme_count() {
+		return forgotusernme_count;
+	}
+	public void setForgotusernme_count(int forgotusernme_count) {
+		this.forgotusernme_count = forgotusernme_count;
+	}
+	
+	
+	
 	
 }

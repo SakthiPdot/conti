@@ -1,6 +1,10 @@
 package com.conti.dashboard;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -15,9 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,9 +29,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.conti.config.SessionListener;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
-import com.conti.setting.usercontrol.RoleDao;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
+import com.conti.userlog.UserLogDao;
+import com.conti.userlog.UserLogModel;
 
 /**
  * @Project_Name conti
@@ -47,7 +50,9 @@ public class DashboardController {
 
 	@Autowired
 	private UsersDao usersDao;
-		
+	
+	@Autowired
+	private UserLogDao userLogDao;
 	@Autowired
 	@Qualifier("sessionRegistry")
 	private SessionRegistry sessionRegistry;
@@ -56,7 +61,7 @@ public class DashboardController {
 	SessionListener sessionListener = new SessionListener();
 
 	@RequestMapping(value = {"/","admin"}, method = RequestMethod.GET)
-	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
+	public ModelAndView adminPage(HttpServletRequest request, UserLogModel userLogModel) throws Exception {
 		
 		HttpSession session = request.getSession();
 		String username = request.getUserPrincipal().getName();
@@ -76,6 +81,16 @@ public class DashboardController {
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			
 			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			
+			// get current date
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date = new Date();
+			
+			userLogModel.setUser_id(userid);
+			userLogModel.setLoggedin_date(dateFormat.format(date));
+			userLogModel.setForgotusernme_count(0);
+			userLogDao.saveorupdate(userLogModel);
+			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.SAVE_SUCCESS, null);
 			if (principal instanceof UserDetails) {
 				String user1 = ((UserDetails) principal).getUsername();
 			} else {

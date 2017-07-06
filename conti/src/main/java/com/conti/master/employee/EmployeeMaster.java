@@ -26,7 +26,8 @@ import com.conti.setting.usercontrol.User;
 @Table(name = "m_employee")
 //@JsonIgnoreProperties(ignoreUnknown = true)
 public class EmployeeMaster implements Serializable{
-	private int emp_id, branch_id, location_id, emp_phoneno, update_by, created_by;
+	private int emp_id, branch_id, location_id, update_by, created_by;
+	private long emp_phoneno;
 	private String emp_name, emp_code, empcategory, emp_address, emp_email, dob, doj, created_datetime, updated_datetime, obsolete, active;
 	
 	private User user;
@@ -102,10 +103,11 @@ public class EmployeeMaster implements Serializable{
 	}
 
 	@Column(name = "emp_phoneno")
-	public int getEmp_phoneno() {
+	public long getEmp_phoneno() {
 		return emp_phoneno;
 	}
-	public void setEmp_phoneno(int emp_phoneno) {
+
+	public void setEmp_phoneno(long emp_phoneno) {
 		this.emp_phoneno = emp_phoneno;
 	}
 
@@ -113,6 +115,10 @@ public class EmployeeMaster implements Serializable{
 	public int getUpdate_by() {
 		return update_by;
 	}
+
+
+
+
 	public void setUpdate_by(int update_by) {
 		this.update_by = update_by;
 	}	

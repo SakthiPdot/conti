@@ -17,5 +17,5 @@ public interface EmployeeDao {
 	public List<EmployeeMaster> getEmployee(int branch_id, String empcategory);
 	public List<EmployeeMaster> getAllEmployees();
 	public void saveOrUpdate(EmployeeMaster employee);
-	public EmployeeMaster findByMobileno(int mobileno);
+	public EmployeeMaster findByMobileno(long mobileno);
 }

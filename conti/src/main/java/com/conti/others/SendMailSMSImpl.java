@@ -2,6 +2,12 @@ package com.conti.others;
 
 
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -84,6 +90,35 @@ public class SendMailSMSImpl implements SendMailSMS {
 			}
 		}
 		
+	}
+	
+	@Override
+	public String send_SMS(String mobileno, String message) throws IOException {
+
+		String destination = mobileno;
+		String msg = message; 
+		String urlParameters = "uname="+constantVal.SMS_USERNAME+"&pass="+constantVal.SMS_PASSWORD+"&send="+constantVal.SMS_SENDER_CODE+"&dest="+destination+"&msg="+msg+"";
+		URL url = new URL(constantVal.SMS_URL);
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		
+		con.setDoOutput(true);
+		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+		wr.writeBytes(urlParameters);
+		wr.flush();
+		wr.close();
+		int responseCode = con.getResponseCode();
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		
+		in.close();
+		
+		return response.toString();
 	}
 
 }

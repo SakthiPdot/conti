@@ -260,16 +260,38 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
    		
     		UserService.findUserbyMbl(mobileno)
     			.then(
+    					
     					function(response) {
-    						self.message = "Sent username to your registered mobile number";
-    						successforgot_AnimateOpen('.success-forgot');
-    						
+    						console.log(response);
+    						if( response.status == 208 ) {
+    							self.message = "Please check after 2 hrs.";
+    	    					successAnimate('.failure');
+    	    					clear_mobileno();
+    						} else if( response.status == 226 ) {
+    							self.message = "Please check after 2 hrs.";
+    	    					successAnimate('.failure');
+    	    					clear_mobileno();
+    						} else {
+    							self.message = "Sent username to your registered mobile number";
+        						successforgot_AnimateOpen('.success-forgot');	
+    						}
+							    						
     					},
     					function (errResponse) {
-    						self.message = "Sorry..! Mobile number is not valid..!";
-	    					successAnimate('.failure');
-	    					clear_mobileno();
-	    					
+    						console.log(errResponse);
+    						if( errResponse.status == 503 ) {
+    							self.message = "Please try again later..!";
+    	    					successAnimate('.failure');
+    	    					clear_mobileno();
+    						} else {
+    							
+    							self.message = "Sorry..! Mobile number is not valid..!";
+    	    					successAnimate('.failure');
+    	    					clear_mobileno();
+    							
+    						}
+    						
+    							
     					}
     				);
     	}

@@ -67,7 +67,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 	@Override
 	@Transactional
 	@SuppressWarnings("unchecked")
-	public EmployeeMaster findByMobileno(int mobileno)
+	public EmployeeMaster findByMobileno(long mobileno)
 	{
 		String hql = "FROM EmployeeMaster WHERE obsolete ='N' and active ='Y' and emp_phoneno ="+ mobileno + "";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
