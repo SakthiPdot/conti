@@ -18,6 +18,8 @@ angular.module('contiApp').controller('locationController'
 			self.selectedRow=null;
 			self.heading="Master";
 			self.save="saveclose";
+			self.fetched=true;
+			self.openDrawer=openDrawer;
 			
 			self.Location={
 				    "location_id": null,
@@ -60,23 +62,30 @@ angular.module('contiApp').controller('locationController'
 				self.Location=location;	
 				self.Location.selectedAddress=location.address;	
 				self.heading="- "+self.Location.location_name;
-
-					window.setTimeout(function(){	
-						animationOpenClick('.overlay', 'fadeIn');	
-					},750);
-					
-					window.setTimeout(function(){	
-						$('.overlay').removeClass('hideme');
-					},1400);
-					
-					window.setTimeout(function(){	
-						$('.drawer').removeClass('hideme');
-						$('body').addClass('scrollHidden');
-					},1500);
-
-					window.setTimeout(function(){	
-						animationOpenClick('.drawer', 'bounceInRight');						
-					},1500);	
+				self.openDrawer();
+			}
+			
+			//===================================open Drawer====================================
+			function openDrawer(){
+				
+				if(self.fetched==true){
+					fetchAddressDetail();
+					self.fetched=false;
+				}
+				
+				drawerOpen('.drawer');
+			}
+			//===================================fetch Address====================================
+			function fetchAddressDetail(){
+				
+				AddressService.fetchAddress()
+				.then(function(response){
+					self.addresses=response;
+					console.log(self.addresses);
+				},
+				function(errRes){
+					console.log("error Fetchng address");
+				});
 			}
 			
 			//======================================submit======================================
@@ -155,23 +164,9 @@ angular.module('contiApp').controller('locationController'
 						});			
 			}
 			
+	
 			//===================================fetch Address====================================
-			fetchAddressDetail();
-			
-			function fetchAddressDetail(){
-				
-				AddressService.fetchAddress()
-				.then(function(response){
-					self.addresses=response;
-					console.log(self.addresses);
-				},
-				function(errRes){
-					console.log("error Fetchng address");
-				});
-				
-			}
-			
-			//===================================fetch Address====================================
+
 			fetchAllLocation();
 			
 			function fetchAllLocation(){

@@ -39,7 +39,8 @@
 	rel="stylesheet" />
 <link href="resources/custom/css/custom.css" rel="stylesheet">
 <link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
-
+ 	<link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
+ 	
  	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>
 	<script type="text/javascript" src="resources/custom/js/app.js"></script>
@@ -192,14 +193,23 @@
 					<div class="col-lg-6">
 						<div class="form-group">
 							<label for="location">Location<span style="color:red">&nbsp;*</span></label> 
-							<input 
-							    data-ng-model="comctrl.company.company_location"
-							    placeholder="Enter Location"
-								type="text"
-								onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
-								maxlength="50"
-								class="form-control"
-								id="location">
+							 <angucomplete-alt id="branch_name" data-ng-model="comctrl.company.selectedLocation"
+									              placeholder="Ex : Coimbatore"
+									              pause="100"
+									              selected-object="location_name"
+									              local-data="comctrl.Locations"
+									              search-fields="location_name,pincode"
+									              title-field="location_name,address.district,address.stateCode,pincode"
+												  match-class="highlight"
+												  initial-value="{{}}"
+									              minlength="1"
+									              input-class="form-control form-control-small">
+              				</angucomplete-alt>
+              				
+              				<input type="hidden"  
+								class="form-control "								
+								id="locationId"
+								value="{{location_name.originalObject.location_id}}">
 						</div>
 					</div>
 					
@@ -222,7 +232,7 @@
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="city">City<span style="color:red">&nbsp;*</span></label> 
-							<select 
+					<!-- 		<select 
 								data-ng-model="comctrl.company.selectedAddress"
 								class="form-control" 
 								id="city"
@@ -231,12 +241,19 @@
 								>
 								<option value="">--Select City --</option>
 		 					 	</select>
-		 						<input type="text" 
-		 						data-ng-hide="true"
+		 					 	 -->
+		 					 	 
+		 					 	<input type="text" class="form-control disabled"	
+		 					 	tabindex="-1"							
+								 value="{{location_name.originalObject.address.city}}">
+		 					 	 
+		<!--  						<input type="text"  
 								data-ng-model="comctrl.company.company_city"
-								class="form-control" 
+								data-ng-hide="true"
+								class="form-control "
 								id="city"
-								onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"/> 
+								value="{{location_name.originalObject.address.id}}"
+								onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"/>  -->
 							
 		 					 	
 						</div>
@@ -244,12 +261,18 @@
 					<div class="col-lg-3">	
 						<div class="form-group">
 							<label for="state">State<span style="color:red">&nbsp;*</span></label>
-							 <input type="text"
+								
+								<input type="text" class="form-control disabled"	
+								tabindex="-1"										
+								 value="{{location_name.originalObject.address.state}}">
+								 
+							<!--  <input type="text"
 							 data-ng-model="comctrl.company.company_state"
 							 placeholder="Enter State"
+							 value="{{location_name.originalObject.state}}"
 							 onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 							maxlength="50"
-							class="form-control disabled" id="state">
+							class="form-control disabled" id="state"> -->
 						</div>
 						
 						
@@ -284,23 +307,33 @@
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="country">Country<span style="color:red">&nbsp;*</span></label> 
-							<input type="text"
+							
+								<input type="text" class="form-control disabled"
+								tabindex="-1"											
+								 value="{{location_name.originalObject.address.country}}">
+								 
+					<!-- 		<input type="text"
 							data-ng-model="comctrl.company.company_country"
 							placeholder="Enter Country"
 							class="form-control disabled" id="country"
 							onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
-							maxlength="50">
+							maxlength="50"> -->
 						</div>
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="pincode">Pincode<span style="color:red">&nbsp;*</span></label>
-							 <input type="text"
+							
+								<input type="text" class="form-control disabled"	
+								tabindex="-1"										
+								 value="{{location_name.originalObject.pincode}}">
+								 
+							<!--  <input type="text"
 							 	data-ng-model="comctrl.company.company_pincode"
 							 	placeholder="Enter Pincode"
 							 	onKeyPress="return CheckIsNumericAndHyphen(event,this.value)"
 								maxlength="50"
-								class="form-control" id="pincode">
+								class="form-control" id="pincode"> -->
 						</div>
 					</div>
 					<div class="col-lg-6">
@@ -407,6 +440,7 @@
 
 
 	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
+	<script type="text/javascript" src="resources/custom/js/Location/location_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/CompanySetting/company_setting_directive.js"></script>
 	<script type="text/javascript" src="resources/custom/js/CompanySetting/company_setting_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Address/address_service.js"></script>

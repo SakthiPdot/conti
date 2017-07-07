@@ -4,12 +4,13 @@
 
 
 angular.module('contiApp').controller('companyController'
-		,['$scope','CompanySettingService','AddressService',function($scope,CompanySettingService,AddressService){
+		,['$scope','LocationService','CompanySettingService','AddressService'
+			,function($scope,LocationService,CompanySettingService,AddressService){
 			
 			var self=this;
 		
 	self.addresses=[];
-			
+	self.Locations=[];		
 	self.address={
 			    "id": null,
 			    "state": null,
@@ -108,16 +109,11 @@ angular.module('contiApp').controller('companyController'
 		$("#submitText").text("Update");
 	}
 	}
-	
-	$scope.updateCountryAndState=function updateCountryAndState(){
-		console.log( self.company.selectedAddress);
-		self.company.company_city=self.company.selectedAddress.id;
-	    self.company.company_state=self.company.selectedAddress.state;
-	    self.company.company_country=self.company.selectedAddress.country;
-	}
-	
+
 	
 	self.submit=function submit(){
+		
+		self.company.company_location=$('#locationId').val();
 		
 		if(self.company.company_id==null){
 			console.log("Company New Record");
@@ -160,10 +156,7 @@ angular.module('contiApp').controller('companyController'
 	}
 	
 
-	//=============================fetch Address====================================
-	//AddressService
-	fetchAddressDetail();
-	
+	//=============================fetch Address====================================	
 	function fetchAddressDetail(){
 		
 		AddressService.fetchAddress()
@@ -184,7 +177,20 @@ angular.module('contiApp').controller('companyController'
 			
 	}
 
+	//===================================fetch Address====================================
 
+	fetchAllLocation();
 	
-}])();
+	function fetchAllLocation(){
+		LocationService.fetchAllLocation()
+		.then(function(response){
+			self.Locations=response;
+			console.log(self.Locations);
+		},
+		function(errResponse){
+			console.log("error fetching all location");					
+		});
+	}
+	
+}]);
 
