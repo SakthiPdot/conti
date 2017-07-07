@@ -105,7 +105,11 @@
                 padding-bottom: 10px;
   }
   
-  
+    .default-price
+     {
+  		padding-top:115px;
+  		
+     }
   	
 		@media (max-width: 768px) {
 			.icons-button {
