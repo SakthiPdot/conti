@@ -1,22 +1,17 @@
 package com.conti.settings.company;
 
-import java.io.Serializable;
-import java.sql.Date;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonManagedReference;
-import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.conti.setting.usercontrol.User;
+import com.conti.master.location.Location;
 
 /**
  * @Project_Name conti
@@ -31,10 +26,9 @@ import com.conti.setting.usercontrol.User;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Company {
 	
-	private int company_id,expct_deliverydate,company_apptimeout,created_by,updated_by,company_city;
-	private String company_name,company_address1,company_address2,company_location,
-	company_state,company_country,
-	company_pincode,TIN_number,GST_number,company_email;
+	private int company_id,expct_deliverydate,company_apptimeout,created_by,updated_by;
+	private String company_name,company_address1,company_address2,
+	TIN_number,GST_number,company_email;
 	private  byte[] company_logo;
 	private String created_datetime,updated_datetime;
 	private float Tax_GST;
@@ -44,37 +38,21 @@ public class Company {
 
 	public Company() {
 	}
-	//======================one to one mapping=============================
-/*	@OneToOne
-	@JsonProperty("created_by")
-	@JsonBackReference(value="userid")
-	@JoinColumn(name="created_by")
-	private User userCreatedBy;
+
+	public Location location;
 	
-	public User getUserCreatedBy() {
-		return this.userCreatedBy;
+	@JoinColumn(name="location_id")
+	@OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)	
+	public Location getLocation() {
+		return this.location;
 	}
 
-
-	public void setUserCreatedBy(User userCreatedBy) {
-		this.userCreatedBy = userCreatedBy;
-	}
-
-	@OneToOne	
-	@JsonProperty("created_by")
-	@JsonBackReference(value="userid")
-	@JoinColumn(name="updated_by")
-	private User userUpdatedBy;
-	
-
-	
-	public User getUserUpdatedBy() {
-		return this.userUpdatedBy;
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 	
-	public void setUserUpdatedBy(User userUpdatedBy) {
-		this.userUpdatedBy = userUpdatedBy;
-	}*/
+
+
 	//====================================================================
 	@Id
 	/*@GeneratedValue*/
@@ -139,37 +117,9 @@ public class Company {
 		return this.company_address2;
 	}
 	
-	@Column(name="company_location")
-	
-	public String getCompany_location() {
-		return this.company_location;
-	}
-	
-	
-	@JsonProperty("company_city")
-	@Column(name="company_city")
-	public int getCompany_city() {
-		return this.company_city;
-	}
 
-	@Column(name="company_state")
 	
-	public String getCompany_state() {
-		return this.company_state;
-	}
-	
-	@Column(name="company_country")
-	
-	public String getCompany_country() {
-		return this.company_country;
-	}
-	
-	@Column(name="company_pincode")
-	
-	public String getCompany_pincode() {
-		return this.company_pincode;
-	}
-	
+
 	@Column(name="TIN_number")
 	
 	public String getTIN_number() {
@@ -234,26 +184,11 @@ public class Company {
 	public void setCompany_address2(String company_address2) {
 		this.company_address2 = company_address2;
 	}
-	public void setCompany_location(String company_location) {
-		this.company_location = company_location;
-	}
-	public void setCompany_city(int company_city) {
-		this.company_city = company_city;
-	}
 	public void setCompany_landlineno(long company_landlineno) {
 		this.company_landlineno = company_landlineno;
 	}
 	public void setCompany_alternateno(long company_alternateno) {
 		this.company_alternateno = company_alternateno;
-	}
-	public void setCompany_state(String company_state) {
-		this.company_state = company_state;
-	}
-	public void setCompany_country(String company_country) {
-		this.company_country = company_country;
-	}
-	public void setCompany_pincode(String company_pincode) {
-		this.company_pincode = company_pincode;
 	}
 	public void setTIN_number(String tIN_number) {
 		this.TIN_number = tIN_number;

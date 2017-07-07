@@ -225,7 +225,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
              <div class="page-header header-size">
                  	  <b>${title}</b>
                  	  
-                 	  <button class="btn btn-info drawerOpen pull-right" onClick="drawerOpen('.drawer')" >Add New Location</button>
+                 	  <button class="btn btn-info  pull-right" data-ng-click="locctrl.openDrawer()" >Add New Location</button>
              </div>             										
 		   </div>
       		
