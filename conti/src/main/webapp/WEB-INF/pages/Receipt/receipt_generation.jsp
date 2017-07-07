@@ -168,32 +168,6 @@
     <!-- /. WRAPPER  -->
     
 
-      <script>
-    // ------------------------------ Drawer open event
-	// begin---------------------//
-	$('.drawerOpen').click(function(){
-	
-	
-	
-		$('.overlay').removeClass('hideme');
-		
-		$('.drawer').removeClass('hideme');
-		$('body').addClass('scrollHidden');
-		
-	
-		animationOpenClick('.drawer', 'bounceInRight');
-	});
-	// ------------------------------ Drawer Open event
-	// end---------------------//
-	
-	$('.drawerClose').click(function(){
-		
-			$('.overlay').addClass('hideme');		
-		     $('.drawer').addClass('hideme');
-		
-	});
-      </script>
-
 </body>
 
 </html>

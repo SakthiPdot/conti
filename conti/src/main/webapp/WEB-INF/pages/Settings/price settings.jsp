@@ -33,7 +33,7 @@
 <body style="overflow-x:hidden;">
  
 	
-	<jsp:include page="../Dashboard/nav.jsp"/>
+	<jsp:include page="../Dashboard/settings_nav.jsp"/>
 	
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
@@ -54,13 +54,18 @@
                 
                 <div class="row customer-field">
                 <div class="col-lg-12">
-                
-                	<div class="col-lg-3">
-                	
+               
+                   <div class="col-lg-2">
+                		
                 	</div>  
+               
+                <div class="col-lg-8">
+               
+                <div class="panel panel-default">
+                <div class="panel-body">
+                 <div class="col-lg-6 col-xs-12">
                 	
-                	<div class="col-lg-3">
-                		<span>From Branch</span>
+                			<span>From Branch</span>
                 		<select class="form-control">
                 			<option>Coimbatore Branch</option>
                 			<option>Chennai Branch</option>
@@ -84,17 +89,22 @@
                 			<option> Box </option>
                 			<option> Cover</option>                			
                 		</select>
-                	
-                	</div>                	
-                	
-                	<div class="col-lg-2" style="padding-top:50px;">
-                		 <input type="checkbox" value=""><span>Default Price</span>
+                </div>  
+                
+                
+                <div class="col-lg-6 col-xs-12 default-price">
+                		<input type="checkbox" value=""><span>Default Price</span>
                 		 <input type="text" class="form-control">
                 		 <input type="checkbox" value=""><span>Default Handling Charges</span>
                 		 <input type="text" class="form-control">
-                	</div>
-                	
-                  
+                </div>
+                
+                </div>
+                </div>
+                </div>
+            
+                <div class="col-lg-2"></div>
+                 
                 </div>
                 </div>
                 
@@ -108,15 +118,12 @@
                 <div class="col-lg-12">
                 
                 
-                        <div class="panel panel-default">                            
-						<div class="panel-heading">							
-						</div>
-						<div class="panel-body customer-field">
-							<div class="col-lg-3">
-	                	
-	                	    </div>  
+							
+                	<div class="col-lg-2">
+                		
+                	</div>  
                 	
-                	        <div class="col-lg-6">                	
+                	        <div class="col-lg-8">                	
                                <div class="panel panel-default">                                
                                 <div class="panel-body">
                                   <div class="table-responsive">
@@ -127,6 +134,7 @@
 	                                            <th>To Branch</th>
 	                                            <th colspan="3">Weight Range</th>	                                         
 	                                            <th>Price</th>
+	                                            <th>Actions</th>
 	                                        </tr>
 	                                    </thead>
 		                                    <tbody>
@@ -139,43 +147,55 @@
 								                		</select>
 								                    </td>
 		                                            <td class="col-sm-1"><input type="text" class="form-control"></td>
-		                                            <td class="col-sm-1">To</td>
+		                                            <td class="col-sm-1" style="text-align:center;">To</td>
 		                                            <td class="col-sm-1"><input type="text" class="form-control"></td>
 		                                            <td><input type="text" class="form-control"></td>
+		                                            <td><button class="btn btn-primary"><i class="fa fa-pencil-square-o fa-lg"></i>  Edit</button> 
+		                                            <button class="btn btn-danger"><i class="fa fa-trash fa-lg"></i>  Delete</button></td>
 		                                           
 		                                        </tr>
 		                                        
 		                                    </tbody>
                                    </table>
+                                   
+                                   <button class="btn btn-primary"><i class="fa fa-plus fa-lg"></i></button> 
                             </div>
                         </div>
                     </div>
                    </div>                	
                 	
                 	
-                	<div class="col-lg-3">
+                	<div class="col-lg-2">
                 		
                 	</div>  
-				</div>
-                </div>
-                	  
+			
+                	
                 </div>
                 </div>
                 
-                
+                               
                <br>
                <br>
                 
                 <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12 col-md-12 col-xs-12">
                 
-                	<div class="col-lg-6">
-                		<button type="button" class="btn btn-danger pull-right">Clear</button>
+                	<div class="col-lg-5 col-md-3">
+                	</div>
+                	
+                
+                	
+                	<div class="col-lg-1 col-md-3 col-xs-8">
+                		<button type="button" class="btn btn-danger"><i class="fa fa-times"></i>  Clear</button>
+                	</div>
+                	
+                	<div class="col-lg-2 col-md-3 col-xs-4">
+                		<button type="button" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i>    Save</button>
                 	</div>  
                 	
-                	<div class="col-lg-6">
-                		<button type="button" class="btn btn-success">Save</button>
-                	</div>  
+                	<div class="col-lg-4 col-md-3">
+                		
+                	</div>
                 	
                 	
                 </div>
@@ -188,34 +208,13 @@
 		
     </div>
     <!-- /. WRAPPER  -->
-   
 
-      <script>
-    // ------------------------------ Drawer open event
-	// begin---------------------//
-	$('.drawerOpen').click(function(){
-	
-	
-	
-		$('.overlay').removeClass('hideme');
-		
-		$('.drawer').removeClass('hideme');
-		$('body').addClass('scrollHidden');
-		
-	
-		animationOpenClick('.drawer', 'bounceInRight');
-	});
-	// ------------------------------ Drawer Open event
-	// end---------------------//
-	
-	$('.drawerClose').click(function(){
-		
-			$('.overlay').addClass('hideme');		
-		     $('.drawer').addClass('hideme');
-		
-	});
-      </script>
-
+ <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
+      <!-- Bootstrap Js -->
+    <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Js -->
+    <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
+    <script src="resources/custom/js/session.js"></script>
 </body>
 
 </html>
