@@ -59,7 +59,7 @@
                    </div>
                    
                    <div class="col-lg-6 headerRight">
-                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft"></i>
+                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" onClick="drawerClose('.drawer')"></i>
                    </div>
             
              </div>
@@ -102,10 +102,10 @@
 			                   		<option>System User</option>
 			                   </select> -->
 			               
-			               		<angucomplete-alt id="ex1" data-ng-model="ctrl.employee.empcategory"
+			               		<angucomplete-alt id="empcategory" data-ng-model="ctrl.employee.empcategory"
 									              placeholder="Ex : Driver"
 									              pause="100"
-									              selected-object="selected"
+									              selected-object="employeecategory"
 									              local-data="ctrl.employeecategory"
 									              search-fields="empcategory"
 									              title-field="empcategory"
@@ -113,6 +113,7 @@
 									              input-class="form-control form-control-small">
               						</angucomplete-alt>
 			              </div> 
+
 			               <div class="col-lg-6 content-body" >    
 			                   <span>Branch Name</span>
 			                  <!--  <select class="form-control" data-ng-model="ctrl.employee.branch_id" required>			                   
@@ -123,19 +124,19 @@
 			                   </select> -->
 			                
 			                <angucomplete-alt id="branch_name" data-ng-model="ctrl.employee.branch_name"
-									              placeholder="Ex : Coimbatore"
-									              pause="100"
-									              selected-object="selected"
-									              local-data="ctrl.branches"
-									              search-fields="branch_name"
-									              title-field="branch_name"
-												  match-class="highlight"
-												  initial-value=""
-									              minlength="1"
-									              input-class="form-control form-control-small">
-              						</angucomplete-alt>
+						              placeholder="Ex : Coimbatore"
+						              pause="100"
+						              selected-object="branch_name"
+						              local-data="ctrl.branches"
+						              search-fields="branch_name"
+						              title-field="branch_name"
+									  match-class="highlight"
+									  initial-value=""
+						              minlength="1"
+						              input-class="form-control form-control-small">
+              				</angucomplete-alt>
 
-			           		<input type="hidden" id = "branch_id" name ="branch_id" value = "{{selected.originalObject.branch_id}}" />
+			           		<input type="hidden" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject.branch_id}}" />
 			             </div>         	
 			             </div>  
 			             
@@ -154,26 +155,40 @@
 			                   		<option>RS Puram</option>
 			                   		<option>TownHall</option>
 			                   </select> -->
-			                	<input type="text" data-ng-model = "ctrl.employee.location_id" />
+			                	
 			           
+			           			 <angucomplete-alt id="branch_name" data-ng-model="ctrl.employee.location_name"
+									              placeholder="Ex : Coimbatore"
+									              pause="100"
+									              selected-object="location_name"
+									              local-data="ctrl.locations"
+									              search-fields="location_name,pincode"
+									              title-field="location_name,address.district,address.stateCode,pincode"
+												  match-class="highlight"
+												  initial-value=""
+									              minlength="1"
+									              input-class="form-control form-control-small">
+              						</angucomplete-alt>
+              						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject.location_id}}" />
+
 			             </div>         	
 			             </div>
 			             
 			             <div class="col-lg-12">
 		                <div class="col-lg-6 content-body">
 		                 	   <span>City </span>	         
-			                    <input type="text" class="form-control">
+			                    <input type="text" class="form-control disabled" value="{{location_name.originalObject.address.city}}">
 			                    
 			                     <span>State </span>	         
-			                    <input type="text" class="form-control">
+			                    <input type="text" class="form-control disabled" value="{{location_name.originalObject.address.state}}">
 			               
 			              </div> 
 			               <div class="col-lg-6 content-body">    
 			                     <span>Country </span>	         
-			                    <input type="text" class="form-control">
+			                    <input type="text" class="form-control disabled" value="{{location_name.originalObject.address.country}}">
 			                    
 			                     <span>Pincode </span>	         
-			                    <input type="text" class="form-control" >
+			                    <input type="text" class="form-control disabled" minlength = "6" maxlength="6" onKeyPress="return CheckIsNumeric(event)" value="{{location_name.originalObject.pincode}}">
 			           
 			             </div>         	
 			             </div> 
@@ -182,7 +197,7 @@
 			             <div class="col-lg-12">
 		                <div class="col-lg-6 content-body">
 		                 	   <span>Phone No </span>	         
-			                  <input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.employee.emp_phoneno" required />
+			                  <input type="text" class="form-control" minlength = "10" maxlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.employee.emp_phoneno" required />
 			               
 			              </div> 
 			               <div class="col-lg-6 content-body">    
@@ -198,18 +213,26 @@
 			             <div class="col-lg-12">
 			                <div class="col-lg-6 content-body">
 			                 	   <span>Date of Birth </span>	 
-								      
+								      `
+								<!--  <div class="form-group input-group">
+                                            <input type="text" class="form-control">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button"><i class="fa fa-search"></i>
+                                                </button>
+                                            </span>
+                                        </div> -->
 								                 
-				                  <div class="form-group input-group">
+				                   <div class="form-group input-group">
 				                  
 				                  
-				                               <input type="text" class="form-control" data-ng-model="ctrl.employee.dob">
+				                               <input type="text" class="form-control datepicker" data-ng-model="ctrl.employee.dob">
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                            </span>
 	                                          
-	                               </div>
+	                               </div> 
 				               
 				              </div> 
+				              
 				               <div class="col-lg-6 content-body">    
 				                   <span>Date of Joining</span>
 				                  <div class="form-group input-group">
@@ -266,7 +289,7 @@
              <div class="page-header header-size">
                  	  <b>${title}</b>
                  	  
-                 	  <button class="btn btn-info drawerOpen pull-right" >Add New Employee</button>
+                 	  <button class="btn btn-info drawerOpen pull-right" onClick="drawerOpen('.drawer')" >Add New Employee</button>
              </div>	   
              </div>
       		
@@ -398,30 +421,17 @@
                 $('#dataTables-example').dataTable();
             });
     </script> -->
-    
+
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/employee_master/employee_controller.js"></script>
   <script src="resources/custom/js/employee_master/employee_service.js"></script>
-  <script src="resources/custom/js/branch_master/branch_service.js"></script>  
+  <script src="resources/custom/js/branch_master/branch_service.js"></script>
+  <script src="resources/custom/js/Location/location_service.js"></script>  
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
   <!-- Custom Js -->
 
  <script >  
-   $( function() 
-	{
-	   $(".datepicker").datepicker({ 
-	        format: 'dd-mm-yyyy',
-	        orientation: 'auto top',
-	        autoclose: true,
-	        clearBtn:true,
-	        todayHighlight:true,
-	        forceParse:true,
-	    });
-	 
-	   
- 	   $(".datepicker").datepicker({minDate: -10, maxDate: '+1M +10D'});
- 	  
-	});
+
 </script> 
 </body>
 

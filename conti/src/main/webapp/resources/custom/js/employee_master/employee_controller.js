@@ -8,31 +8,31 @@
  * @Updated_date_time Jun 26, 2017 12:59:17 PM
  */
 
-contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchService', function($scope, EmployeeService, BranchService){
+contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchService', 'LocationService', function($scope, EmployeeService, BranchService, LocationService){
 	
 	var self = this;
 	self.employees = [];
 	
 	self.employee = {
-			   emp_id : null,
+/*			   emp_id : null,
 			   branch_id : null,
 			   update_by : null,
 			   created_by : null,
 			   branch_id : null,
-			   emp_name : "ss",
-			   emp_code : "ds",
-			   empcategory : "cd",
-			   emp_phoneno : 2,
-			   emp_address : "dddd",
-			   location_id : 1,
-			   emp_email : "rm",
-			   dob : '2017-06-26 17:34:54',
+			   emp_name : null,
+			   emp_code : null,
+			   empcategory : null,
+			   emp_phoneno : null,
+			   emp_address : null,
+			   location_id : null,
+			   emp_email : null,
+*/			   dob : '2017-06-26 17:34:54',
 			   doj : '2017-06-26 17:34:54',
-			   created_datetime : "da",
-			   updated_datetime : "da",
+/*			   created_datetime : null,
+			   updated_datetime : null,
 			   obsolete : "N",
 			   active : "Y"
-			};
+*/			};
 	
 	self.employeecategory = {};  
 	
@@ -42,6 +42,7 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchS
 	fetchAllEmployees();
 	fetchEmpCat();
 	fetchAllBranches();
+	fetchAllLocations();
 	//-------------------------- Fetch All Employees begin ---------------------//
 	
 
@@ -76,6 +77,23 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchS
 	
 	//-------------------------- Fetch All Branch end ---------------------//	
 	
+	//-------------------------- Fetch All Location begin ---------------------//	
+	
+	function fetchAllLocations() {
+		LocationService.fetchAllLocation()
+			.then(
+					function (locations) {
+						self.locations = locations;
+						console.log(locations);						
+					}, 
+					function (errResponse) {
+						console.log('Error while fetching branches');
+					}
+				);
+	}
+	
+	//-------------------------- Fetch All Location end ---------------------//	
+	
 	//-------------------------- Fetch All Employees begin ---------------------//
 	
 
@@ -83,8 +101,7 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchS
 		EmployeeService.fetchEmpCat()
 			.then(
 					function (d) {
-						self.employeecategory = d;
-						console.log(d);						
+						self.employeecategory = d;			
 					}, 
 					function (errResponse) {
 						console.log('Error while fetching employees');
@@ -96,7 +113,6 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchS
 	//-------------------------- Selected branch details begin ---------------------//
 	function selectedBranch() {
 		console.log("Inside branch "+$("#branch_name_value").val());
-
 	}
 	//-------------------------- Selected branch details end ---------------------//	
     function createEmployee(employee){
@@ -110,7 +126,10 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchS
     } 
     
     function submit() {
+    	self.employee.empcategory = $("#empcategory_value").val();
     	self.employee.branch_id = $("#branch_id").val();
+    	self.employee.location_id = $("#location_id").val();
+
     	createEmployee(self.employee);
     }
 }]);
