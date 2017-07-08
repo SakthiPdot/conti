@@ -1,5 +1,23 @@
 
 
+
+ $( function() 
+			{
+
+			   $(".datepicker").datepicker({ 
+			        format: 'dd-mm-yyyy',
+			        orientation: 'auto top',
+			        autoclose: true,
+			        clearBtn:true,
+			        todayHighlight:true,
+			        forceParse:true,
+			    });
+			 
+			   
+		 	   $(".datepicker").datepicker({minDate: -10, maxDate: '+1M +10D'});
+		 	  
+			});
+ 
 // begin---------------------//
 
 
@@ -59,7 +77,7 @@ function animationOpenClick(element, animation){
 // end----------------------------------//
 
 
-$('.drawerClose').click(function(){
+/*$('.drawerClose').click(function(){
 	
 	animationOpenClick('.drawer', 'bounceOutRight');
 	//$('.overlay').addClass('hideme');
@@ -78,7 +96,7 @@ $('.drawerClose').click(function(){
 		$('body').removeClass('scrollHidden');
 	},1500);
 	
-});
+});*/
 // ------------------------------ Drawer Open event
 // end---------------------//
 
