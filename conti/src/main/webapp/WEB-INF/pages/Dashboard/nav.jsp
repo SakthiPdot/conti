@@ -31,7 +31,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
-	
+	<link href="resources/built-in/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -372,6 +372,7 @@
     <script src="resources/built-in/assets/js/custom-scripts.js"></script>
 	<script src="resources/custom/js/session.js"></script>
 
+	<script type="text/javascript" src="resources/built-in/js/bootstrap-dialog.min.js"></script>
 </body>
 
 </html>

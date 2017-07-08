@@ -34,6 +34,7 @@
 	 <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 	 
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
+	 <link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
 	 
@@ -47,7 +48,21 @@
 
 <body style="overflow-x:hidden;" data-ng-app = "contiApp" data-ng-controller = "EmployeeController as ctrl">
  
- 		<div class="overlay hideme"></div>
+ <!-- ------------------------- Overlay for message begin ------------------ -----  -->
+	<div class="overlay hideme"></div>
+<!-- ------------------------- Overlay for message end ------------------ -----  -->	
+<!-- ------------------------- Success message begin ------------------ -----  -->
+	<div class="success hideme">
+		<i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
+	</div>
+<!-- ------------------------- Success message end ------------------ -----  -->
+<!-- ------------------------- Failure message begin ------------------ -----  -->	
+	<div class="failure hideme">
+		<i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<!-- <span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span> -->
+	</div>
+<!-- ------------------------- Failure message end ------------------ -----  -->
  		
  		<div class="drawer hideme">
  		  <form data-ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
@@ -83,10 +98,11 @@
 		                <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
 		                 	   <span>Employee Name </span>	         
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsCharacter(event)" data-ng-model="ctrl.employee.emp_name" required />
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsCharacter(event)" data-ng-model="ctrl.employee.emp_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee Name"
+			                    required />
 			                   
 			                   <span>Employee Code</span>
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_code" required />
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee code" required />
 			                
 			           
 			             </div>         	
@@ -110,6 +126,9 @@
 									              search-fields="empcategory"
 									              title-field="empcategory"
 									              minlength="0"
+									              field-required="true"
+												  data-trigger="focus" data-toggle="popover" 
+												  data-placement="top" data-content="Please Enter Employee category"
 									              input-class="form-control form-control-small">
               						</angucomplete-alt>
 			              </div> 
@@ -133,6 +152,9 @@
 									  match-class="highlight"
 									  initial-value=""
 						              minlength="1"
+						              field-required="true"
+						              data-trigger="focus" data-toggle="popover" 
+						              data-placement="top" data-content="Please Enter Employee branch name"
 						              input-class="form-control form-control-small">
               				</angucomplete-alt>
 
@@ -143,10 +165,13 @@
 			             <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
 		                 	   <span>Address Line 1 </span>	         
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_address" required>
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_address1"
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee address" required>
 			                   
 			                   <span>Address Line 2</span>
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_address" required>
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_address2" 
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee address"
+			                    required>
 			                   
 			                   <span>Location</span>
 			                  <!--  <select class="form-control"  data-ng-model="ctrl.employee.location_id" required>
@@ -157,16 +182,18 @@
 			                   </select> -->
 			                	
 			           
-			           			 <angucomplete-alt id="branch_name" data-ng-model="ctrl.employee.location_name"
+			           			 <angucomplete-alt id="location_name" data-ng-model="ctrl.employee.location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="100"
 									              selected-object="location_name"
 									              local-data="ctrl.locations"
 									              search-fields="location_name,pincode"
-									              title-field="location_name,address.district,address.stateCode,pincode"
+									              title-field="location_name,pincode"
 												  match-class="highlight"
 												  initial-value=""
 									              minlength="1"
+	   											 data-trigger="focus" data-toggle="popover" 
+	   											 data-placement="top" data-content="Please Enter Employee location"
 									              input-class="form-control form-control-small">
               						</angucomplete-alt>
               						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject.location_id}}" />
@@ -177,18 +204,18 @@
 			             <div class="col-lg-12">
 		                <div class="col-lg-6 content-body">
 		                 	   <span>City </span>	         
-			                    <input type="text" class="form-control disabled" value="{{location_name.originalObject.address.city}}">
+			                    <input type="text" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.city}}">
 			                    
 			                     <span>State </span>	         
-			                    <input type="text" class="form-control disabled" value="{{location_name.originalObject.address.state}}">
+			                    <input type="text" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.state}}">
 			               
 			              </div> 
 			               <div class="col-lg-6 content-body">    
 			                     <span>Country </span>	         
-			                    <input type="text" class="form-control disabled" value="{{location_name.originalObject.address.country}}">
+			                    <input type="text" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.country}}">
 			                    
 			                     <span>Pincode </span>	         
-			                    <input type="text" class="form-control disabled" minlength = "6" maxlength="6" onKeyPress="return CheckIsNumeric(event)" value="{{location_name.originalObject.pincode}}">
+			                    <input type="text" class="form-control disabled locations" tabindex="-1" minlength = "6" maxlength="6" onKeyPress="return CheckIsNumeric(event)" value="{{location_name.originalObject.pincode}}">
 			           
 			             </div>         	
 			             </div> 
@@ -197,12 +224,14 @@
 			             <div class="col-lg-12">
 		                <div class="col-lg-6 content-body">
 		                 	   <span>Phone No </span>	         
-			                  <input type="text" class="form-control" minlength = "10" maxlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.employee.emp_phoneno" required />
+			                  <input type="text" class="form-control" minlength = "10" maxlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.employee.emp_phoneno" 
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee mobile number" required />
 			               
 			              </div> 
 			               <div class="col-lg-6 content-body">    
 			                   <span>Email</span>
-			                   <input type="email" class="form-control" data-ng-model="ctrl.employee.emp_email" required />
+			                   <input type="email" class="form-control" data-ng-model="ctrl.employee.emp_email" 
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee email id" required />
 			                 
 			                
 			           
@@ -225,7 +254,8 @@
 				                   <div class="form-group input-group">
 				                  
 				                  
-				                               <input type="text" class="form-control datepicker" data-ng-model="ctrl.employee.dob">
+				                               <input type="text" class="form-control datepicker" data-ng-model="ctrl.employee.dob"
+				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" required/>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                            </span>
 	                                          
@@ -236,7 +266,9 @@
 				               <div class="col-lg-6 content-body">    
 				                   <span>Date of Joining</span>
 				                  <div class="form-group input-group">
-				                               <input type="text" class="form-control" data-ng-model="ctrl.employee.doj">
+				                               <input type="text" class="form-control" data-ng-model="ctrl.employee.doj" 
+				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of joining"
+				                               required>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                            </span>
 	                                            
@@ -266,10 +298,24 @@
 							<a id="" class="btnPadding btn btn-primary" style="display:none;">Clear</a>							
 						</div>
 						
-						<div class="col-lg-4 footerRight">
+						<div class="col-lg-4 footerRight" data-ng-show = "ctrl.employee.emp_id==null">
 
-						 	 <button type="submit" class="btn btn-success"><i class="fa fa-floppy-o "></i> Save</button>					
-						
+							<div class="btn-group dropup" id="savebutton">
+						 	 <button type="submit" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
+									<i class="fa fa-floppy-o "></i> Save
+							</button>
+							<div class="dropdown-menu pull-right" style="padding-right: 5px;">
+								<button class="farmsave mybutton" id="saveclose" data-id="0"
+										data-ng-click="save($event)" type="submit">Save and
+										Close</button>
+									<br>
+									<button class="farmsave mybutton" id="savenew" data-id="1"
+										data-ng-click="save($event)" type="submit">Save and
+										New</button>
+								<br>
+							</div>			
+							</div>
 						</div>
 					</div>
 				</div>
@@ -409,18 +455,7 @@
 		
     </div>
     <!-- /. WRAPPER  -->
-<!--      <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
-    <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
 
-    <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
-     <script src="resources/custom/js/custom.js"></script>
-  	<script src="resources/custom/js/session.js"></script>  -->
-<!--         <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
-    </script> -->
 
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/employee_master/employee_controller.js"></script>
@@ -430,9 +465,7 @@
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
   <!-- Custom Js -->
 
- <script >  
-
-</script> 
+<script>$('[data-toggle="popover"]').popover();</script>
 </body>
 
 </html>
