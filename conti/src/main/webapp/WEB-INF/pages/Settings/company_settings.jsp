@@ -95,7 +95,7 @@
 									data-trigger="focus" data-toggle="popover"
 									data-placement="top" data-content="Please Enter Company Name"
 									class="form-control" placeholder="Enter Company Name"
-									id="companyName" maxlength="30"
+									id="companyName" maxlength="50"
 									onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
 									data-ng-model="comctrl.company.company_name">
 							</div>
@@ -110,8 +110,7 @@
 							  type="text"
 							  id="address1"
 							  placeholder="Enter Address"
-					          class="form-control" 
-					          onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+					          class="form-control" 					         
 					          maxlength="100"
 					          >
 						</div>
@@ -177,12 +176,11 @@
 							
 							  data-trigger="focus" data-toggle="popover"
 							  data-placement="top" data-content="Please Enter AddressLine2"
-							id="address2"
-							data-ng-model="comctrl.company.company_address2"
-							placeholder="Enter Address"
-							type="text"
-							class="form-control"
-					          onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+							  id="address2"
+							  data-ng-model="comctrl.company.company_address2"
+							  placeholder="Enter Address"
+							  type="text"
+							  class="form-control"					        
 					          maxlength="100">
 						</div>
 					</div>
@@ -220,14 +218,15 @@
 									              field-required-class="selectedlocation"
 									              selected-object="location_name"
 									              local-data="comctrl.Locations"
-									              search-fields="location_name,pincode"
-									              title-field="location_name,pincode"
+									              search-fields="location_name,address.city,address.state,pincode"
+									              title-field="location_name,address.city,address.state,pincode"
 												  match-class="highlight"
 												  initial-value="{{comctrl.company.location.location_name}}"
 									              minlength="1"
 									              input-class="form-control form-control-small">
 									              </div>
-              				
+							
+								              
               				<input type="hidden"  
 								class="form-control"								
 								id="locationId"

@@ -10,7 +10,8 @@ angular.module('contiApp').controller('companyController'
 			var self=this;
 		
 	self.addresses=[];
-	self.Locations=[];		
+	self.Locations=[];
+	
 	self.address={
 			    "id": null,
 			    "state": null,
@@ -52,7 +53,23 @@ angular.module('contiApp').controller('companyController'
 	
 	$('#companyImageHide').hide();
     $('#companyImage').show();
-	  
+	 
+    $scope.location_name = function (selected) {
+	    console.log(selected); 
+	    //value=JSON.parse(selected);
+	    self.value=selected;
+
+		$('#locationId').val(JSON.stringify( self.value.originalObject));
+		$('#loccity').val( self.value.originalObject.address.city);
+		$('#state').val( self.value.originalObject.address.state);
+		$('#country').val( self.value.originalObject.address.country);
+		$('#pincode').val( self.value.originalObject.pincode);	
+	};	
+	
+    self.onAnguCompleteChange=function onAnguCompleteChange(val){
+    	console.log("123"+val);
+    }
+    
 	$scope.setFile = function(element) {
 		  $scope.currentFile = element.files[0];
 		   var reader = new FileReader();
@@ -79,7 +96,7 @@ angular.module('contiApp').controller('companyController'
 				if(d.status==200){
 					console.log("fetched  wit id data"+d.data);
 					self.company=d.data;					
-					$('#locationId').val(self.company.location.location_id);
+					$('#locationId').val(JSON.stringify(self.company.location));
 					$('#loccity').val(self.company.location.address.city);
 					$('#state').val(self.company.location.address.state);
 					$('#country').val(self.company.location.address.country);

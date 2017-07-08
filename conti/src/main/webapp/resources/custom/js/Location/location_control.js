@@ -120,8 +120,6 @@ angular.module('contiApp').controller('locationController'
 				}
 			}
 			
-			
-			
 			//===========================CHECK SAVEANDCLOSE or SAVEANDNEW============
 			function newOrClose(){
 				console.log(self.save);				

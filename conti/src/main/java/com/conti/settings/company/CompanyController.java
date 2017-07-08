@@ -102,7 +102,7 @@ public class CompanyController {
 			companyFromJson.setUpdated_datetime(dateFormat.format(date));
 		}	
 		
-				
+		
 			
 		
         if (fileUpload != null && fileUpload.length > 0) {
