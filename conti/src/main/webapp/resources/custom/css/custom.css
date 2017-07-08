@@ -126,5 +126,94 @@
   	
 			}
   
+  .GenLeftRight{
+		margin-left:25px;
+	    margin-right:25px ;
+	   
+ }
+ 
+  .subHead{
+  	margin-bottom:15px;
+   font-size: 20px;
+  }
   
-  
+  	.Paddingleft 
+  	      {
+  			padding-left:25px;
+  			padding-right:25px;
+  	       }
+  	       
+  	.branch-heading
+  	    {
+  			padding-top:8px;
+  			font-size:16px;
+  			font-weight:bold;
+  	     }
+  	     
+  	  .branchclass
+        { 
+        padding-left:0px !important;
+        padding-top: 5px;
+        display: flex;
+        }   
+     
+         .text-margin
+         {
+         	  margin-left: 10px;
+         }
+       
+        .text-padding
+        {
+        	padding-top:5px;
+        	width: 100px;
+        }
+        
+         .text-paddingspace
+        {
+        	padding-top:5px;
+        	width: 150px;
+        }
+        
+        
+        .sec-padding
+        {
+        	padding-top:20px;
+        	font-size: 16px;
+            font-weight: bold;
+        }
+        
+        
+          .subhead-padding
+        {
+        	padding-top:20px;
+        	font-size: 16px;           
+        }
+        
+         .boldletter{
+         	font-weight:bold;
+         }    
+         
+         .searchbar{
+         	border-radius:17px;
+         }
+         
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+  width:400px;
+  height:300px;
+}

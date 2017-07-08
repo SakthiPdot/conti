@@ -125,7 +125,7 @@
              <div class="page-header header-size">
                  	  <b>${title}</b>
                  	  
-                 	  <button class="btn btn-primary drawerOpen pull-right" >Add New Service</button>
+                 	  <button class="btn btn-primary drawerOpen pull-right" onClick="drawerOpen('.drawer')" >Add New Service</button>
              </div>	
              
              										

@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${title}</title>
     <!-- Bootstrap Styles-->
-    <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="resources/built-in/assets/ css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
 	
@@ -41,111 +41,189 @@
       	    		
       		  <div class="row">
                     <div class="col-lg-12">
-                        <div class="panel panel-default">                            
+                        <div class="panel panel-default panelMarginBottom">                            
 						<div class="panel-heading">
 							
 						</div>
 						<div class="panel-body customer-font">
-						<b>${title}</b>
+						<b>Manifest</b>
 						</div>
                         </div>
                     </div>
+              </div>
+                
+                
+              <div class="row">
+              <div class="col-lg-12">
+              	  <div class="GenLeftRight">
+	              <div  class="subHead">
+	              <b>${title}</b>
+	              </div>
+	              </div>
+              </div>
+              </div>
+                
+                
+                
+               <div class="row">
+                	<div class="col-lg-12">
+                		<div class="col-lg-12 ">                		
+                		<div class="panel panel-default">
+                			<div class="panel-body">
+                			     <div class="branch-heading">Branch</div>
+                			     
+                			     <div class="col-lg-12 noPaddingLeft"> 
+                			      <div class="col-lg-3 branchclass">
+                			      		<span class="text-padding">From</span>
+                			      		<select class="form-control">
+                			      			<option>--Select--</option>
+                			      			<option>Coimbatore</option>
+                			      			<option>Chennai</option>
+                			      			<option>Bangalore</option>
+                			      		</select>
+                			      </div>
+                			      
+                			       <div class="col-lg-3 branchclass">
+                			      		<span class="text-padding">To</span>
+                			      		<select class="form-control">
+                			      			<option>--Select--</option>
+                			      			<option>Coimbatore</option>
+                			      			<option>Chennai</option>
+                			      			<option>Bangalore</option>
+                			      		</select>
+                			      </div>
+                			      </div>
+                			      
+                			      
+                			     
+                			      
+                			      <div class="col-lg-12 noPaddingLeft"> 
+                			        <div class="sec-padding">Specific Period</div>
+                			      <div class="col-lg-3 branchclass">
+                			      		<span class="text-padding">From</span>	                	                                       
+                                            <input type="text" class="form-control">
+                                           
+                			      </div>
+                			      
+                			       <div class="col-lg-3 branchclass">
+                			      		<span class="text-padding">To</span>
+                			      		 <input type="text" class="form-control">
+                			      </div>
+                			      </div>
+                			       
+                			       <div class="col-lg-12 noPaddingLeft subhead-padding"> 
+                			       		<div class="col-lg-3 branchclass">
+                			      		 <span class="text-padding">Status</span>	                	                                       
+                                            <select class="form-control">
+                                            	<option>--Select--</option>
+                                            	<option>Booked</option>
+                                            </select>
+                                           
+                			            </div>
+                			            
+                			            <div class="col-lg-3 branchclass">
+                			      		                                            
+                			            </div>
+                			            
+                			            <div class="col-lg-4 branchclass">
+                			      		               	                                       
+                                           <button class="btn btn-primary"> View Shipment</button>
+                                           
+                			            </div>
+                			        
+                			       </div>
+                			      
+                			</div>
+                		</div>
+                		</div>
+                	</div>
+                </div>
+                 
+                
+                <div class="row">
+                	<div class="col-lg-12">
+                		<div class="col-lg-12 ">                		
+                		<div class="panel panel-default">
+                			<div class="panel-body">
+                			     <div class="col-lg-12 noPaddingLeft"> 
+                			       		<div class="col-lg-3 branchclass">
+                			      		 <span class="text-padding boldletter">Search</span>	                	                                       
+                                            <input type="text" class="form-control searchbar" placeholder="LR Number">                                           
+                                        </div>
+                			      </div>
+                			</div>
+                		</div>
+                		</div>
+                	</div>
                 </div>
                 
                 
-                
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default">                            
-						<div class="panel-heading">
-							Shipment Filter
-						</div>
-						<div class="panel-body customer-field">
-							<div class="col-lg-2">
-							  <span class="pull-right">From Branch</span>
-							</div>
-							
-							<div class="col-lg-2">
-								<select class="form-control">
-		                			<option>Coimbatore Branch</option>
-		                			<option>Chennai Branch</option>
-		                			<option>Bangalore Branch</option>
-	                		    </select>
-							</div>
-							
-							<div class="col-lg-1">
-							  To Branch
-							</div>
-							
-							<div class="col-lg-2">
-								<select class="form-control">
-		                			<option>Coimbatore Branch</option>
-		                			<option>Chennai Branch</option>
-		                			<option>Bangalore Branch</option>
-	                		    </select>
-							</div>
-							
-							<div class="col-lg-1">
-							  Shipment Date
-							</div>
-							
-							<div class="col-lg-1">
-								<input type="text" class="form-control">
-							</div>
-							
-							<div class="col-lg-1">
-							 <button type="button" class="btn btn-info">View Shipment</button>
-							</div>
-							
-						</div>
+                <div class="col-md-12">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                           Add Manifest
+                        </div>
+                        <div class="panel-body">
+                        <div class="row">
+                              <div class="col-lg-12">
+                               <div class="col-xs-6">
+                                     
+                                </div>
+                                
+                               <div class="col-xs-6 icons-button">
+                                   <div class="pull-right">
+                                     <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
+                                      <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button>
+                                      <button type="button" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+                                	</div>
+                                </div>
+                              </div>
+                            </div>
+                          
+                            <div class="table-responsive">                    
+                                
+                                
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox"></th>
+                                            <th>S.No</th>
+                                            <th>LR No</th>
+                                            <th>Origin</th>
+                                            <th>Destination</th>
+                                            <th>Sender</th>
+                                            <th>Consignee</th>
+                                            <th>Total Parcel</th>
+                                            <th>Weight</th>
+                                            <th>Service</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="checkbox"></td>
+                                            <td>1</td>
+                                            <td>LR 9843</td>
+                                            <td>Coimbatore</td>
+                                            <td>Chennai</td>
+                                            <td>Kumar</td>
+                                            <td>Raju</td>
+                                            <td>2</td>
+                                            <td>1.5 Kg</td>
+                                            <td>Service</td>
+                                        </tr>
+                                   </tbody>
+                                </table>
+                            </div>
+                            
                         </div>
                     </div>
-                </div>
-                
-                
-                
-                
-                <div class="row">
-                    <div class="col-lg-12">
-                       
-							<div class="col-lg-5">
-							 
-							</div>
-							
-							<div class="col-lg-3">
-							 <div class="panel panel-default">                    
-						
-						     <div class="panel-body customer-field">
-									<button type="button" class="btn btn-info" style="margin-left:35%;">Add Shipment</button>
-								<br>
-								<br>
-								<span>Vehicle Number</span>
-								<select class="form-control">
-		                			<option>Coimbatore</option>
-		                			<option>Chennai </option>
-		                			<option>Bangalore</option>
-	                		    </select>
-	                		    
-	                		    <span>Driver Name</span>
-								<select class="form-control">
-		                			<option>Kumar</option>
-		                			<option>Murali </option>
-		                			<option>Prakash</option>
-	                		    </select>
-	                		    
-	                		    <br>
-	                		    <button type="button" class="btn btn-danger" style="margin-left:15%">Cancel</button>
-	                		    <button type="button" class="btn btn-success" style="margin-left:30%">Save</button>
-	                		    </div>
-	                		    </div>
-							</div>
-							
-							<div class="col-lg-4">
-							  
-							</div>
-					
+                    <!--End Advanced Tables -->
                     </div>
                 </div>
+            </div>
                 
                 
                 

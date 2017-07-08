@@ -316,16 +316,24 @@
 								<li>
 									<a href="add_manifest">Add Manifest</a>
 								</li>
+								<li>
+									<a href="view_manifest">View Manifest</a>
+								</li>
 							
 							</ul>
                     </li>
                     
                     <li>
-                        <a href="#"><i class="fa fa-file-text-o"></i> Receipt Management <span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-file-text-o"></i> Receipt <span class="fa arrow"></span></a>
 						   <ul class="nav nav-third-level">
 							<li>
 								<a href="receipt_generate">Receipt Generation</a>
 							</li>
+							
+							<li>
+								<a href="view_receipt">View Receipt</a>
+							</li>
+							
 							</ul>
                     </li>
                     <li>

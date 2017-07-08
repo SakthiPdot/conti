@@ -202,7 +202,7 @@
              <div class="page-header header-size">
                  	  <b>${title}</b>
                  	  
-                 	  <button class="btn btn-primary drawerOpen pull-right" >Add New Branch</button>
+                 	  <button class="btn btn-primary drawerOpen pull-right" onClick="drawerOpen('.drawer')" >Add New Branch</button>
              </div>           
              </div>
       		
