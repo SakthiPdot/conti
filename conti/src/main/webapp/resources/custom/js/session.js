@@ -35,7 +35,7 @@
 	    
 	//------------------------- Success animate begin ---------------------------------- //    
 	    function successAnimate(element){
-	    	
+	    	console.log("inside successanimate");
 	    	window.setTimeout( function(){
 	    		/*$('body').addClass('scrollHidden');*/
 	    		$(element).removeClass('hideme');

@@ -102,7 +102,7 @@ angular.module('contiApp').controller('locationController'
 								successAnimate('.success');								
 								newOrClose();							
 							},function(errResponse){
-								self.message = "Error While  Location ("+locationName+") ..!";
+								self.message = "Error While Creating Location ("+locationName+") ..!";
 								successAnimate('.failure');
 							});					
 				}else{
@@ -114,13 +114,11 @@ angular.module('contiApp').controller('locationController'
 								successAnimate('.success');								
 								newOrClose();	
 							},function(errResponse){
-								self.message = "Error While Updated Location ("+locationName+") ..!";
+								self.message = "Error While Updating Location ("+locationName+") ..!";
 								successAnimate('.failure');
 							});	
 				}
 			}
-			
-			
 			
 			//===========================CHECK SAVEANDCLOSE or SAVEANDNEW============
 			function newOrClose(){

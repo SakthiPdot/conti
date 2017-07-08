@@ -1,17 +1,20 @@
 package com.conti.master.employee;
 
-import java.io.Serializable;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import com.conti.master.branch.BranchModel;
+import com.conti.master.location.Location;
 import com.conti.setting.usercontrol.User;
 
 /**
@@ -24,18 +27,51 @@ import com.conti.setting.usercontrol.User;
  */
 @Entity
 @Table(name = "m_employee")
-//@JsonIgnoreProperties(ignoreUnknown = true)
-public class EmployeeMaster implements Serializable{
-	private int emp_id, branch_id, location_id, update_by, created_by;
-	private long emp_phoneno;
-	private String emp_name, emp_code, empcategory, emp_address, emp_email, dob, doj, created_datetime, updated_datetime, obsolete, active;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class EmployeeMaster /*implements Serializable*/{
 	
-	private User user;
+
+	private int emp_id, /*branch_id, location_id,*/ update_by, created_by;
+	private long emp_phoneno;
+	private String emp_name, emp_code, empcategory, emp_address1, emp_address2, emp_email, dob, doj, created_datetime, updated_datetime, obsolete, active;
+	
 	public EmployeeMaster() {
 		
 	}
-		
-	 
+
+	private User user;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn
+	@JsonBackReference	
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Location location;
+	
+
+	@JoinColumn(name = "location_id")	 
+	@OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	public Location getLocation() {
+		return location;
+	}
+	public void setLocation(Location location) {
+		this.location = location;
+	}	
+	
+	public BranchModel branchModel;
+	@JoinColumn(name = "branch_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	public BranchModel getBranchModel() {
+		return branchModel;
+	}
+	public void setBranchModel(BranchModel branchModel) {
+		this.branchModel = branchModel;
+	}
 	
 	/**
 	 * @param emp_id
@@ -53,7 +89,7 @@ public class EmployeeMaster implements Serializable{
 	 * @param active
 	 * @param user
 	 */
-	public EmployeeMaster(int emp_id, int branch_id, int location_id, int emp_phoneno, int update_by, int created_by, String emp_name, String emp_code,
+/*	public EmployeeMaster(int emp_id, int branch_id, int location_id, int emp_phoneno, int update_by, int created_by, String emp_name, String emp_code,
 			String empcategory, String emp_address, String emp_email, String dob, String doj, String created_datetime, String updated_datetime,
 			String obsolete, String active, User user) {
 		super();
@@ -75,7 +111,7 @@ public class EmployeeMaster implements Serializable{
 		this.active = active;
 		this.user = user;
 	}
-
+*/
 
 
 	@Id
@@ -86,21 +122,23 @@ public class EmployeeMaster implements Serializable{
 	public void setEmp_id(int emp_id) {
 		this.emp_id = emp_id;
 	}
-	@Column(name = "branch_id")
+	/*	@Column(name = "branch_id")
 	public int getBranch_id() {
 		return branch_id;
 	}
 	public void setBranch_id(int branch_id) {
 		this.branch_id = branch_id;
-	}
+	}*/
 	
-	@Column(name = "location_id")	 
-	public int getLocation_id() {
+
+	
+/*	@Column(name = "location_id")
+	 public int getLocation_id() {
 		return location_id;
 	}
 	public void setLocation_id(int location_id) {
 		this.location_id = location_id;
-	}
+	}*/
 
 	@Column(name = "emp_phoneno")
 	public long getEmp_phoneno() {
@@ -150,17 +188,27 @@ public class EmployeeMaster implements Serializable{
 	public void setEmpcategory(String empcategory) {
 		this.empcategory = empcategory;
 	}
-	@Column(name = "emp_address")
-	public String getEmp_address() {
-		return emp_address;
+	@Column(name = "emp_address1")
+	public String getEmp_address1() {
+		return emp_address1;
 	}
-	public void setEmp_address(String emp_address) {
-		this.emp_address = emp_address;
+	public void setEmp_address1(String emp_address1) {
+		this.emp_address1 = emp_address1;
 	}
+	@Column(name = "emp_address2")
+	public String getEmp_address2() {
+		return emp_address2;
+	}
+	public void setEmp_address2(String emp_address2) {
+		this.emp_address2 = emp_address2;
+	}
+	
+	
 	@Column(name = "emp_email")
 	public String getEmp_email() {
 		return emp_email;
 	}
+	
 	public void setEmp_email(String emp_email) {
 		this.emp_email = emp_email;
 	}
@@ -220,15 +268,7 @@ public class EmployeeMaster implements Serializable{
 		this.active = active;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
-	@JsonBackReference	
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
+
 	
 	
 	

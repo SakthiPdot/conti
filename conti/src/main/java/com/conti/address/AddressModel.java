@@ -31,7 +31,9 @@ public class AddressModel  implements Serializable {
 
 
 
-/*	public Location location;
+public AddressModel() {
+	}
+	/*	public Location location;
 	
 	
 	@OneToOne (fetch=FetchType.LAZY,cascade=CascadeType.ALL)

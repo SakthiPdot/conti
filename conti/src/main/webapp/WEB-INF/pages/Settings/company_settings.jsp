@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ page isELIgnored="false"%>
 <%@page session="true"%>
 <html lang="en">
@@ -63,8 +64,13 @@
 		
 		<div id="page-wrapper"  >
 
-		<form data-ng-submit="comctrl.submit()"  >
- 
+		<form data-ng-submit="comctrl.submit($event)" name="companyForm" >
+	
+	<sec:authorize access="hasRole('STAFF')">
+ 		<fieldset data-ng-disabled=true>
+ 	</sec:authorize>
+ 	
+ 	
 			<input type="hidden" data-ng-model="comctrl.company.company_id"/>
 			
 			
@@ -85,10 +91,11 @@
 						<div class="form-group">
 							<label for="companyName">Company Name<span style="color:red">&nbsp;*</span></label> 
 							<input type="text" 
+									data-ng-required="true"
 									data-trigger="focus" data-toggle="popover"
 									data-placement="top" data-content="Please Enter Company Name"
 									class="form-control" placeholder="Enter Company Name"
-									id="companyName" maxlength="30"
+									id="companyName" maxlength="50"
 									onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
 									data-ng-model="comctrl.company.company_name">
 							</div>
@@ -96,12 +103,14 @@
 						<div class="form-group">
 							<label for="address1">Address Line 1<span style="color:red">&nbsp;*</span></label>
 							 <input
+							  data-ng-required="true"
 							  data-ng-model="comctrl.company.company_address1"
+							  data-trigger="focus" data-toggle="popover"
+							  data-placement="top" data-content="Please Enter AddressLine1"
 							  type="text"
 							  id="address1"
 							  placeholder="Enter Address"
-					          class="form-control" 
-					          onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+					          class="form-control" 					         
 					          maxlength="100"
 					          >
 						</div>
@@ -164,12 +173,14 @@
 						<div class="form-group">
 							<label for="address2">Address Line 2</label> 
 							<input 
-							id="address2"
-							data-ng-model="comctrl.company.company_address2"
-							placeholder="Enter Address"
-							type="text"
-							class="form-control"
-					          onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+							
+							  data-trigger="focus" data-toggle="popover"
+							  data-placement="top" data-content="Please Enter AddressLine2"
+							  id="address2"
+							  data-ng-model="comctrl.company.company_address2"
+							  placeholder="Enter Address"
+							  type="text"
+							  class="form-control"					        
 					          maxlength="100">
 						</div>
 					</div>
@@ -177,6 +188,9 @@
 					<div class="form-group">
 							<label for="tinNo">TIN No <span style="color:red">&nbsp;*</span></label> 
 							<input
+							data-ng-required="true"							
+							  data-trigger="focus" data-toggle="popover"
+							  data-placement="top" data-content="Please Enter TIN No"
 							 data-ng-model="comctrl.company.tin_number"
 							 type="text" id="tinNo"
 							 placeholder="Enter Tin Number"
@@ -193,31 +207,40 @@
 					<div class="col-lg-6">
 						<div class="form-group">
 							<label for="location">Location<span style="color:red">&nbsp;*</span></label> 
-							 <angucomplete-alt id="branch_name" data-ng-model="comctrl.company.selectedLocation"
+							 <div angucomplete-alt
+							 					 id="selectedAddress" 
 									              placeholder="Ex : Coimbatore"
-									              pause="100"
+									              pause="0"										              
+									  			  data-trigger="focus" data-toggle="popover"
+							 					  data-placement="top" data-content="Please Enter Location"
+									              field-required="true"
+									              input-name="selectedlocation"
+									              field-required-class="selectedlocation"
 									              selected-object="location_name"
 									              local-data="comctrl.Locations"
-									              search-fields="location_name,pincode"
-									              title-field="location_name,address.district,address.stateCode,pincode"
+									              search-fields="location_name,address.city,address.state,pincode"
+									              title-field="location_name,address.city,address.state,pincode"
 												  match-class="highlight"
-												  initial-value="{{}}"
+												  initial-value="{{comctrl.company.location.location_name}}"
 									              minlength="1"
 									              input-class="form-control form-control-small">
-              				</angucomplete-alt>
-              				
+									              </div>
+							
+								              
               				<input type="hidden"  
-								class="form-control "								
+								class="form-control"								
 								id="locationId"
-								value="{{location_name.originalObject.location_id}}">
+								value="{{location_name.originalObject}}">
 						</div>
 					</div>
 					
 					<div class="col-lg-6">
 						<div class="form-group">
 							<label for="gstNo">GST No</label>
-							 <input type="text"
-							 id="gstNo"
+							 <input type="text" data-ng-required="true"
+							 id="gstNo"							  
+				  			  data-trigger="focus" data-toggle="popover"
+		 					  data-placement="top" data-content="Please Enter GST No"
 							 data-ng-model="comctrl.company.gst_number"
 							 placeholder="Enter GST Number"
 							 class="form-control"
@@ -244,7 +267,7 @@
 		 					 	 -->
 		 					 	 
 		 					 	<input type="text" class="form-control disabled"	
-		 					 	tabindex="-1"							
+		 					 	tabindex="-1"	id="loccity"						
 								 value="{{location_name.originalObject.address.city}}">
 		 					 	 
 		<!--  						<input type="text"  
@@ -263,7 +286,7 @@
 							<label for="state">State<span style="color:red">&nbsp;*</span></label>
 								
 								<input type="text" class="form-control disabled"	
-								tabindex="-1"										
+								tabindex="-1" id="state"		 								
 								 value="{{location_name.originalObject.address.state}}">
 								 
 							<!--  <input type="text"
@@ -281,6 +304,9 @@
 						<div class="form-group">
 							<label for="landline">Landline<span style="color:red">&nbsp;*</span></label>
 							 <input type="text"
+							 data-ng-required="true"							  
+			  			  	data-trigger="focus" data-toggle="popover"
+	 					 	 data-placement="top" data-content="Please Enter Landline"
 							 data-ng-model="comctrl.company.company_landlineno"
 							 placeholder="Enter Landline Number"
 							 maxlength="12"
@@ -291,7 +317,10 @@
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="altNo">Alternate Number<span style="color:red">&nbsp;*</span></label> 
-							<input type="text"
+							<input type="text"							 
+		  			 	     data-trigger="focus" data-toggle="popover"
+	 					    data-placement="top" data-content="Please Enter Alternate Number"
+							data-ng-required="true"
 							maxlength="12
 							onKeyPress="return CheckIsNumeric(event)"
 							data-ng-model="comctrl.company.company_alternateno"
@@ -309,7 +338,7 @@
 							<label for="country">Country<span style="color:red">&nbsp;*</span></label> 
 							
 								<input type="text" class="form-control disabled"
-								tabindex="-1"											
+								tabindex="-1"  id="country"										
 								 value="{{location_name.originalObject.address.country}}">
 								 
 					<!-- 		<input type="text"
@@ -325,7 +354,7 @@
 							<label for="pincode">Pincode<span style="color:red">&nbsp;*</span></label>
 							
 								<input type="text" class="form-control disabled"	
-								tabindex="-1"										
+								tabindex="-1"  id="pincode"								
 								 value="{{location_name.originalObject.pincode}}">
 								 
 							<!--  <input type="text"
@@ -339,11 +368,14 @@
 					<div class="col-lg-6">
 						<div class="form-group">
 							<label for="email">Email<span style="color:red">&nbsp;*</span></label> 
-							<input type="email"
+							<input type="email"							 
+			  			  	data-trigger="focus" data-toggle="popover"
+	 					    data-placement="top" data-content="Please Enter Email"
+							data-ng-required="true"
 							data-ng-model="comctrl.company.company_email"
 							placeholder="Enter Email"
 							maxlength="60"
-								class="form-control" id="email">
+							class="form-control" id="email">
 						</div>
 					</div>
 
@@ -361,7 +393,10 @@
 					<div class="col-lg-6">
 						<div class="form-group">
 							<label for="gstPer">Tax GST%<span style="color:red">&nbsp;*</span></label> 
-							<input type="text"
+							<input type="text"							 
+				  			 	 data-trigger="focus" data-toggle="popover"
+		 					  	data-placement="top" data-content="Please Enter Tax GST%"
+								data-ng-required="true"
 								data-ng-model="comctrl.company.tax_GST"
 								placeholder="Enter GST%"
 								class="form-control" id="gstPer"
@@ -376,6 +411,9 @@
 						<div class="form-group">
 							<label for="email">No.of.days for Delivery<span style="color:red">&nbsp;*</span></label>
 							 <input type="number"
+							 data-ng-required="true" 
+    		  			     data-trigger="focus" data-toggle="popover"
+	 					     data-placement="top" data-content="Please Enter No.of.days"
 							 data-ng-model="comctrl.company.expct_deliverydate"
 							 placeholder="Enter No.of.days for Delivery"
 							 onKeyPress="return CheckIsNumeric(event)"
@@ -387,6 +425,9 @@
 						<label for="timeout">Application Timeout<span style="color:red">&nbsp;*</span></label>
 						<div class="input-group">
 							<input type="number"
+								data-ng-required="true"
+    		  			        data-trigger="focus" data-toggle="popover"
+	 					        data-placement="top" data-content="Please Enter Timeout(mins)"
 								data-ng-model="comctrl.company.company_apptimeout"
 								placeholder="Enter Application Timeout"
 							    class="form-control" id="timeout"
@@ -404,14 +445,17 @@
 					<div class="col-lg-12">
 						<div class="form-group text-center">
 	     		 		 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						<button type="submit"   class="btn btn-success "><label><i class="fa fa-floppy-o"  aria-hidden="true"></i>
-						<span id="submitText">Save & Update</span></label></button>
+						<button type="submit" data-ng-disabled="companyForm.$pristine==true"  class="btn btn-success "><label><i class="fa fa-floppy-o"  aria-hidden="true"></i>
+						<span id="submitText">Save</span></label></button>
 						</div>
 					</div>
 				</div>
 				
 			</div>
 
+		<sec:authorize access="hasRole('STAFF')">
+	 		</fieldset>
+	 	</sec:authorize>
 
 		</form>
 
@@ -421,24 +465,7 @@
 	<!-- /. WRAPPER  -->
 
 <!--====================================================== SCRIPTS START=========================================-->
-	<script>
-		$('.drawerOpen').click(function() {
-			$('.overlay').removeClass('hideme');
-			$('.drawer').removeClass('hideme');
-			$('body').addClass('scrollHidden');
-			animationOpenClick('.drawer', 'bounceInRight');
-		});
-
-		$('.drawerClose').click(function() {
-			$('.overlay').addClass('hideme');
-			$('.drawer').addClass('hideme');
-		});
-		
-		    $('[data-toggle="popover"]').popover();
-		
-	</script>
-
-
+	<script>$('[data-toggle="popover"]').popover();</script>
 	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Location/location_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/CompanySetting/company_setting_directive.js"></script>

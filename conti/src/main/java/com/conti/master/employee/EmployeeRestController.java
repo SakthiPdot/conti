@@ -111,7 +111,9 @@ public class EmployeeRestController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		
-		try {	
+		try {
+			employee.setObsolete("N");
+			employee.setActive("Y");
 			employee.setCreated_by(user_id);
 			employee.setUpdate_by(user_id);	
 			employee.setCreated_datetime(dateFormat.format(date).toString());

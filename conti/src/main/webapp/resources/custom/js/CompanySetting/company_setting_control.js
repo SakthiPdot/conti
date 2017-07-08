@@ -10,7 +10,8 @@ angular.module('contiApp').controller('companyController'
 			var self=this;
 		
 	self.addresses=[];
-	self.Locations=[];		
+	self.Locations=[];
+	
 	self.address={
 			    "id": null,
 			    "state": null,
@@ -52,7 +53,23 @@ angular.module('contiApp').controller('companyController'
 	
 	$('#companyImageHide').hide();
     $('#companyImage').show();
-	  
+	 
+    $scope.location_name = function (selected) {
+	    console.log(selected); 
+	    //value=JSON.parse(selected);
+	    self.value=selected;
+
+		$('#locationId').val(JSON.stringify( self.value.originalObject));
+		$('#loccity').val( self.value.originalObject.address.city);
+		$('#state').val( self.value.originalObject.address.state);
+		$('#country').val( self.value.originalObject.address.country);
+		$('#pincode').val( self.value.originalObject.pincode);	
+	};	
+	
+    self.onAnguCompleteChange=function onAnguCompleteChange(val){
+    	console.log("123"+val);
+    }
+    
 	$scope.setFile = function(element) {
 		  $scope.currentFile = element.files[0];
 		   var reader = new FileReader();
@@ -78,14 +95,12 @@ angular.module('contiApp').controller('companyController'
 				console.log(d);
 				if(d.status==200){
 					console.log("fetched  wit id data"+d.data);
-					self.company=d.data;
-					
-					for(var i = 0; i < self.addresses.length; i++) {
-						if(self.company.company_city==self.addresses[i].id){
-							self.company.selectedAddress=self.addresses[i];
-						}
-					}
-					
+					self.company=d.data;					
+					$('#locationId').val(JSON.stringify(self.company.location));
+					$('#loccity').val(self.company.location.address.city);
+					$('#state').val(self.company.location.address.state);
+					$('#country').val(self.company.location.address.country);
+					$('#pincode').val(self.company.location.pincode);					
 					submitButtonText();
 					
 					
@@ -108,42 +123,51 @@ angular.module('contiApp').controller('companyController'
 	}else{
 		$("#submitText").text("Update");
 	}
-	}
+	}	
 
 	
-	self.submit=function submit(){
+	self.submit=function ($event){
 		
-		self.company.company_location=$('#locationId').val();
+		console.log(JSON.parse($('#locationId').val()));
+	
+			  if ($('#locationId').val() == '' || $('#locationId').val() == null) {
+				  console.log("inside if");
+				  $('#selectedAddress_value').focus();
+			  }else{
+				  
+					self.company.location=JSON.parse($('#locationId').val());
+					
+					if(self.company.company_id==null){
+						console.log("Company New Record");
+					    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"companySave")
+					    .then(
+								function(d){	
+									self.message = "Company Detail Created..!";
+									successAnimate('.success');
+									fetchCS();						
+								},
+								function(errResponse){
+									console.log("error while fetching company");
+									self.message = "Error While Creating Company Detail..!";
+									successAnimate('.failure');
+								});
+					}else{
+						console.log("Company Record Update");
+					    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"companySave")
+					    .then(
+								function(d){	
+									self.message = "Company Details Updated..!";
+									successAnimate('.success');
+									fetchCS();					
+								},
+								function(errResponse){
+									console.log("error while fetching company");
+									self.message = "Error While Updating Company Detail..!";
+									successAnimate('.failure');
+								});
+					}	
 		
-		if(self.company.company_id==null){
-			console.log("Company New Record");
-		    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"companySave")
-		    .then(
-					function(d){	
-						self.message = "Company Detail Created..!";
-						successAnimate('.success');
-						fetchCS();						
-					},
-					function(errResponse){
-						console.log("error while fetching company");
-						self.message = "Error While Creating Company Detail..!";
-						successAnimate('.failure');
-					});
-		}else{
-			console.log("Company Record Update");
-		    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"companySave")
-		    .then(
-					function(d){	
-						self.message = "Company Details Updated..!";
-						successAnimate('.success');
-						fetchCS();					
-					},
-					function(errResponse){
-						console.log("error while fetching company");
-						self.message = "Error While Updating Company Detail..!";
-						successAnimate('.failure');
-					});
-		}	
+			  }
 	/*	
 		  if($("#image").val().length){	
   			self.uploadFile();
@@ -163,13 +187,7 @@ angular.module('contiApp').controller('companyController'
 		.then(function(response){
 			self.addresses=response;
 			console.log(self.addresses);
-			
-			
-			for(var i = 0; i < self.addresses.length; i++) {
-				if(self.company.company_city==self.addresses[i].id){
-					self.company.selectedAddress=self.addresses[i];
-				}
-			}			
+		
 			},
 			function(errRes){
 				console.log("error Fetchng address");

@@ -25,7 +25,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
 	self.checkPassword = checkPassword; 	
 	self.findUserbyMbl = findUserbyMbl;
 	self.forgot_animateClose = forgot_animateClose;
-    /*fetchAllUsers();*/
+    fetchAllUsers();
 
 
     //----------------------  Fetch All users begin ----------------------------- //    

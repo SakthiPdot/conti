@@ -41,7 +41,7 @@ public class LocationDaoImpl implements LocationDao {
 		
 		return sessionFactory.getCurrentSession()
 				.createQuery("from Location where  obsolete ='N' and active ='Y'  ")
-				
+				.setMaxResults(100)
 				.list();
 	}
 

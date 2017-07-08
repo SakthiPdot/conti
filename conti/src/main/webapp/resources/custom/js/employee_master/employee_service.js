@@ -27,7 +27,7 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 					},
 					function (errResponse) {
 						console.log("Error while fetching employees");
-						deferred.regject(erResponse);
+						deferred.reject(errResponse);
 					}
 				);
 		return deferred.promise;
@@ -44,7 +44,7 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 					},
 					function (errResponse) {
 						console.log("Error while fetching employees");
-						deferred.regject(erResponse);
+						deferred.reject(errResponse);
 					}
 				);
 		return deferred.promise;
