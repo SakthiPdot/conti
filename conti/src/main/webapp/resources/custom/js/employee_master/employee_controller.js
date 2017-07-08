@@ -37,6 +37,9 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchS
 	self.employeecategory = {};  
 	self.message = null;
 	self.submit = submit;
+	self.save = null;
+	self.reset = reset;
+	self.updateEmployee = updateEmployee;
 	//self.selectedBranch = selectedBranch;
 	
 	fetchAllEmployees();
@@ -122,7 +125,36 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchS
 	/*function selectedBranch() {
 		console.log("Inside branch "+$("#branch_name_value").val());
 	}*/
+	
+	$scope.save = function(event){
+		self.save=event.target.id;
+		
+		console.log(self.save);
+	}
+	
+	function newOrClose(){
+		console.log(self.save);				
+		if(self.save== "saveclose" ){
+			 drawerClose('.drawer') ;
+		}
+		reset();
+	}
+	
 	//-------------------------- Selected branch details end ---------------------//	
+	
+	//------------------------ Location block changes begin ----------------------//
+    $scope.location_name = function (loc_selected) {
+    	
+    	$('#location_id').val(JSON.stringify(loc_selected.originalObject));
+    	$('#city').val(loc_selected.originalObject.address.city);
+    	$('#country').val(loc_selected.originalObject.address.country);
+    	$('#state').val(loc_selected.originalObject.address.state);
+    	$('#pincode').val(loc_selected.originalObject.pincode);
+	    	    
+	};	
+	//------------------------ Location block changes end ----------------------//
+	
+	//------------------------- Create new employee begin ------------------//
     function createEmployee(employee){
     	EmployeeService.createEmployee(employee)
             .then(
@@ -137,7 +169,9 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchS
             }
         );
     } 
+	//------------------------- Create new employee end ----------------------------------------------//    
     
+    //------------------------- Submit for new employee / update employee begin ---------------------//
     function submit() {
     	var save_flag = 0;
     	if ( $("#branch_id").val() == "" || $("#branch_id").val() == null ){
@@ -171,15 +205,12 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchS
 	 			{
 	 				self.employee.branch_id = $("#branch_id").val();
 	 	    		self.employee.empcategory = $("#empcategory_value").val();  
-	 	    		self.employee.location_id = $("#location_id").val();    	
-	 	    		
-	 	    		self.employee.emp_address = self.employee.emp_address1 + self.employee_emp_address2;
-	 	        	delete self.employee.emp_address1;
-	 	        	delete self.employee.emp_address2;
+	 	    		self.employee.location = JSON.parse($("#location_id").val());    	
+
 	 	        	createEmployee(self.employee);  
 	 	        	reset();
 	 	        	window.setTimeout( function(){	 	        		
-	 	        		drawerClose('.drawer');
+	 	        		newOrClose();
 					},5000);
 	 	        	
 	  			}
@@ -189,9 +220,21 @@ contiApp.controller('EmployeeController', ['$scope', 'EmployeeService', 'BranchS
 	 		
 	  		});
     		
-    		 
-        	
     	} 
 
+    }
+    //------------------------- Submit for new employee / update employee end ---------------------//
+    
+    
+    function updateEmployee(employee) {
+    	self.employee = employee;
+    	
+    	$('#branch_id').val(JSON.stringify(self.employee.branch));
+    	$('#location_id').val(JSON.stringify(self.employee.location));
+    	$('#city').val(self.employee.location.address.city);
+    	$('#country').val(self.employee.location.address.country);
+    	$('#state').val(self.employee.location.address.state);
+    	$('#pincode').val(self.employee.location.pincode);
+    	drawerOpen('.drawer');
     }
 }]);
