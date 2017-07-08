@@ -1,21 +1,23 @@
 package com.conti.config;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import com.conti.others.ConstantValues;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 
 
 /**
@@ -36,9 +38,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		
 	@Autowired
 	private UsersDao usersdao;
-	/*@Autowired
-	private GeneralSettingDao generalSettingDao;
-	*/
+	@Autowired
+	private CompanySettingDAO companyDao;
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
@@ -60,18 +61,19 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		System.out.println("+++++++++++++++"+usern);
 		System.out.println("+++++++++++++++"+ userclientid);
 		
-		//GeneralSettingModel generalSettingModel=generalSettingDao.getlistbyclientid(userclientid);
-		/*
-		if(generalSettingModel != null){
-		if(generalSettingModel.getApplication_timeout() != 0 ){
-			session.setMaxInactiveInterval(60*generalSettingModel.getApplication_timeout());
+
+		Company company=companyDao.getById(1);
+	
+		if(company != null){
+		if(company.getCompany_apptimeout() != 0 ){
+			session.setMaxInactiveInterval(60*company.getCompany_apptimeout() );
 		}else{
 			session.setMaxInactiveInterval(60*Integer.parseInt(ConstantValues.APPLICATION_TIMEOUT));
 		}
 		}else{
 			session.setMaxInactiveInterval(60*Integer.parseInt(ConstantValues.APPLICATION_TIMEOUT));
 		}
-		*/
+		
 		System.out.println(session.getMaxInactiveInterval()+" == max interval session time =============");	
 		
 		redirectStrategy.sendRedirect(request, response, "/");

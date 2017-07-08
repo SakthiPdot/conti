@@ -105,13 +105,26 @@
                 padding-bottom: 10px;
   }
   
-  
+    .default-price
+     {
+  		padding-top:115px;
+  		
+     }
   	
 		@media (max-width: 768px) {
 			.icons-button {
 			    padding-left: 0px !important;
                 padding-right: 0px !important;
 			}}
+  
+  @media (max-width: 1199px) {
+			 .default-price
+			     {
+			  		padding-top:0px !important;
+			  		padding-bottom:0px !important;
+			     }
+  	
+			}
   
   
   

@@ -160,31 +160,18 @@
     <!-- /. WRAPPER  -->
 
 
-      <script>
-    // ------------------------------ Drawer open event
-	// begin---------------------//
-	$('.drawerOpen').click(function(){
-	
-	
-	
-		$('.overlay').removeClass('hideme');
-		
-		$('.drawer').removeClass('hideme');
-		$('body').addClass('scrollHidden');
-		
-	
-		animationOpenClick('.drawer', 'bounceInRight');
-	});
-	// ------------------------------ Drawer Open event
-	// end---------------------//
-	
-	$('.drawerClose').click(function(){
-		
-			$('.overlay').addClass('hideme');		
-		     $('.drawer').addClass('hideme');
-		
-	});
-      </script>
+  
+     <!-- DATA TABLE SCRIPTS -->
+    <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
+    <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
+     <script src="resources/custom/js/custom.js"></script>
+  	<script src="resources/custom/js/session.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
+    </script>
+         <!-- Custom Js -->
 
 </body>
 

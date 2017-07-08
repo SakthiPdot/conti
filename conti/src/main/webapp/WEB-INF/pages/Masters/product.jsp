@@ -173,7 +173,7 @@
              <div class="page-header header-size">
                  	  <b>${title}</b>
                  	  
-                 	  <button class="btn btn-info drawerOpen pull-right" >Add New Product</button>
+                 	  <button class="btn btn-primary drawerOpen pull-right" >Add New Product</button>
              </div>	        
              										
 		 </div>
@@ -194,7 +194,7 @@
                                <div class="col-xs-6">
                                      <div class="dataTables_length" id="dataTables-example_length">
 							<div class="dropdown">
-								<button class="btn btn-info dropdown-toggle"
+								<button class="btn btn-primary dropdown-toggle"
 									type="button" data-toggle="dropdown">
 									Batch Action <span class="caret"></span>
 								</button>
@@ -213,9 +213,9 @@
                                
                                 <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
-                                     <button type="button" class="btn btn-info"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" class="btn btn-info"><i class="fa fa-file-excel-o fa-lg"></i></button>
-                                      <button type="button" class="btn btn-info"><i class="fa fa-print fa-lg"></i></button>
+                                     <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
+                                      <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button>
+                                      <button type="button" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
                                 	</div>
                                 </div>
                               </div>

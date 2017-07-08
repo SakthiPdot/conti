@@ -194,7 +194,7 @@
              <div class="page-header header-size">
                  	  <b>${title}</b>
                  	  
-                 	  <button class="btn btn-info drawerOpen pull-right" >Add New Customer</button>
+                 	  <button class="btn btn-primary drawerOpen pull-right" >Add New Customer</button>
              </div>	   
              </div>
       		
@@ -204,7 +204,7 @@
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                             Advanced Tables
+                             Customer Register
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -213,13 +213,14 @@
                                <div class="col-xs-6">
                                      <div class="dataTables_length" id="dataTables-example_length">
 							<div class="dropdown">
-								<button class="btn btn-info dropdown-toggle"
+								<button class="btn btn-primary dropdown-toggle"
 									type="button" data-toggle="dropdown">
 									Batch Action <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a href="#">Email</a></li>
-									<li><a id="deletearchieve">Archive</a></li>
+									<li><a href="#">Active</a></li>
+									<li><a href="#">InActive</a></li>
+									<li><a href="#">Archive</a></li>
 
 								</ul>
 								
@@ -231,9 +232,9 @@
                                 
                                <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
-                                     <button type="button" class="btn btn-info"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" class="btn btn-info"><i class="fa fa-file-excel-o fa-lg"></i></button>
-                                      <button type="button" class="btn btn-info"><i class="fa fa-print fa-lg"></i></button>
+                                     <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
+                                      <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button>
+                                      <button type="button" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
                                 	</div>
                                 </div>
                               </div>
@@ -244,6 +245,7 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
+                                            <th><input type="checkbox"></th>
                                             <th>S.No</th>
                                             <th>Customer Name</th>
                                             <th>Customer Code</th>
@@ -257,6 +259,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td><input type="checkbox"></td>
                                             <td>1</td>
                                             <td>Kumar</td>
                                             <td>k001</td>
@@ -268,6 +271,7 @@
                                         
                                        </tr>
                                        <tr>
+                                            <td><input type="checkbox"></td>
                                             <td>2</td>
                                             <td>Kesavan</td>
                                             <td>k7001</td>
@@ -279,6 +283,7 @@
                                         
                                        </tr>
                                        <tr>
+                                            <td><input type="checkbox"></td>
                                             <td>3</td>
                                             <td>Chandru</td>
                                             <td>Ch001</td>
