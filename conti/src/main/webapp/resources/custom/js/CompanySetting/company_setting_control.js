@@ -3,7 +3,8 @@
 
 
 
-angular.module('contiApp').controller('companyController'
+angular.module('contiApp')
+ 		.controller('companyController'
 		,['$scope','LocationService','CompanySettingService','AddressService'
 			,function($scope,LocationService,CompanySettingService,AddressService){
 			
@@ -200,7 +201,7 @@ angular.module('contiApp').controller('companyController'
 	fetchAllLocation();
 	
 	function fetchAllLocation(){
-		LocationService.fetchAllLocation()
+		LocationService.fetchAllLocation()  
 		.then(function(response){
 			self.Locations=response;
 			console.log(self.Locations);
@@ -209,6 +210,10 @@ angular.module('contiApp').controller('companyController'
 			console.log("error fetching all location");					
 		});
 	}
+
 	
 }]);
+
+
+
 

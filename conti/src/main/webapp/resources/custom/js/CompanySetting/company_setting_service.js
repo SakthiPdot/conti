@@ -17,7 +17,8 @@ angular.module('contiApp').factory('CompanySettingService',['$http','$q',functio
 	var factory={
 			fetchCompanySetting:fetchCompanyWithId,
 			addCompanySetting:saveCompany,
-			updateCompanySetting:updateCS,
+			updateCompanySetting:updateCS
+		
 	};
 	
 	return factory;
@@ -104,6 +105,7 @@ angular.module('contiApp').factory('CompanySettingService',['$http','$q',functio
 	}; 
 	
 	
+	
 	function getHeaderWithContentType(){
 		 
 		 var csrfToken = $("input[name='_csrf']").val();
@@ -115,5 +117,8 @@ angular.module('contiApp').factory('CompanySettingService',['$http','$q',functio
 		 
 		 return headers;
 	}; 
+	
+	
+	
 }]);
 

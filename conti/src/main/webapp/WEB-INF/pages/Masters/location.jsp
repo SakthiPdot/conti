@@ -228,8 +228,10 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                  	  <button class="btn btn-info  pull-right" data-ng-click="locctrl.openDrawer()" >Add New Location</button>
              </div>             										
 		   </div>
+
+        
       		
-      		<div id="page-inner">  
+      		<div id="page-inner" >  
 		 <div class="row">
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
@@ -269,13 +271,11 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                 </div>
                               </div>
                             </div>
-                          
-                          
+                                  
                           <!-- ==================================LOCATION TABLE============================= -->
-                         <table>
-                        
-                          </table>
-                                <table class="table table-striped table-bordered table-hover" 
+                         
+                                <table 
+                                class="table table-striped table-bordered table-hover" 
                                  id="dataTables-example">
                                     <thead>
                                         <tr>
@@ -312,6 +312,9 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                         </div>
                     </div>
                     <!--End Advanced Tables -->
+                      <!-- pager -->
+                      
+
                 </div>
             </div>
       </div>

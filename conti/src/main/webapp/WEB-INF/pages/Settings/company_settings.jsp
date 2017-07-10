@@ -40,8 +40,8 @@
 	rel="stylesheet" />
 <link href="resources/custom/css/custom.css" rel="stylesheet">
 <link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
- 	<link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
- 	
+
+ 	<link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 	
  	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>
 	<script type="text/javascript" src="resources/custom/js/app.js"></script>
@@ -227,7 +227,7 @@
 									              </div>
 							
 								              
-              				<input type="hidden"  
+              				<input type="text"  
 								class="form-control"								
 								id="locationId"
 								value="{{location_name.originalObject}}">
@@ -464,7 +464,7 @@
 	</div>
 	<!-- /. WRAPPER  -->
 
-<!--====================================================== SCRIPTS START=========================================-->
+	<!--====================================================== SCRIPTS START=========================================-->
 	<script>$('[data-toggle="popover"]').popover();</script>
 	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Location/location_service.js"></script>
@@ -472,7 +472,6 @@
 	<script type="text/javascript" src="resources/custom/js/CompanySetting/company_setting_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Address/address_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/CompanySetting/company_setting_control.js"></script>
-	
    <!--====================================================== SCRIPTS END =========================================-->
 </body>
 </html>

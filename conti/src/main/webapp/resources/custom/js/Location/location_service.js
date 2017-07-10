@@ -94,13 +94,9 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 	
 
 	//============================= LOCATION====================================
-	function fetchLocation(){
+	function fetchLocation(){ 
 		console.log("Inside fetch location");
 	}    
-
-	
-
-
 	
 }]);
 

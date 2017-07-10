@@ -180,10 +180,12 @@ angular.module('contiApp').controller('locationController'
 			
 			//=============================RESET LOCATION====================================
 			function reset(){
-				self.Location={};
 				$scope.locationForm.$setPristine();
 				self.heading="Master";
 				self.save="saveclose";
 			}
+			
+
+	     
 			
 }]);
