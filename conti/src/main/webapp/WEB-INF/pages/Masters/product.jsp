@@ -180,6 +180,47 @@
 	
 	
 	<jsp:include page="../Dashboard/settings_nav.jsp"/>
+<<<<<<< HEAD
+=======
+	
+    <div id="wrapper">        	  
+		<div id="page-wrapper">	 
+		
+		
+		 <div class="header "> 
+             <div class="page-header header-size">
+                 	  <b>${title}</b>
+                 	  
+                 	  <button class="btn btn-primary drawerOpen pull-right" onClick="drawerOpen('.drawer')" >Add New Product</button>
+             </div>	        
+             										
+		 </div>
+		 
+		 
+		 <div id="page-inner">  
+		 <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             Product Register
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                            <div class="row">
+                              <div class="col-lg-12">
+                               <div class="col-xs-6">
+                                     <div class="dataTables_length" id="dataTables-example_length">
+							<div class="dropdown">
+								<button class="btn btn-primary dropdown-toggle"
+									type="button" data-toggle="dropdown">
+									Batch Action <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a href="#">Active</a></li>
+									<li><a href="#">InActive</a></li>
+									<li><a href="#">Archive</a></li>
+>>>>>>> branch 'master' of https://github.com/Pointdot2017/conti.git
 
 	<div id="wrapper">
 		<div id="page-wrapper">

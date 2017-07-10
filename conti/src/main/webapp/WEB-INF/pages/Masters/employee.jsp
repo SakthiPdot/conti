@@ -98,11 +98,11 @@
 		                <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
 		                 	   <span>Employee Name </span>	         
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsCharacter(event)" data-ng-model="ctrl.employee.emp_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee Name"
+			                   <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.employee.emp_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee Name"
 			                    required />
 			                   
 			                   <span>Employee Code</span>
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee code" required />
+			                   <input type="text" class="form-control" maxlength="5" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee code" required />
 			                
 			           
 			             </div>         	
@@ -129,6 +129,8 @@
 									              field-required="true"
 												  data-trigger="focus" data-toggle="popover" 
 												  data-placement="top" data-content="Please Enter Employee category"
+												  initial-value="{{ctrl.employee.empcategory}}"
+												  onKeyPress="return CheckIsCharacter(event)"
 									              input-class="form-control form-control-small">
               						</angucomplete-alt>
 			              </div> 
@@ -155,21 +157,22 @@
 						              field-required="true"
 						              data-trigger="focus" data-toggle="popover" 
 						              data-placement="top" data-content="Please Enter Employee branch name"
+						              onKeyPress="return CheckIsCharacter(event)"
 						              input-class="form-control form-control-small">
               				</angucomplete-alt>
 
-			           		<input type="hidden" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject.branch_id}}" />
+			           		<input type="text" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject.branch_id}}" />
 			             </div>         	
 			             </div>  
 			             
 			             <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
 		                 	   <span>Address Line 1 </span>	         
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_address1"
+			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address1"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee address" required>
 			                   
 			                   <span>Address Line 2</span>
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_address2" 
+			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address2" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee address"
 			                    required>
 			                   
@@ -184,19 +187,20 @@
 			           
 			           			 <angucomplete-alt id="location_name" data-ng-model="ctrl.employee.location_name"
 									              placeholder="Ex : Coimbatore"
-									              pause="100"
+									              pause="0"
 									              selected-object="location_name"
 									              local-data="ctrl.locations"
 									              search-fields="location_name,pincode"
 									              title-field="location_name,pincode"
 												  match-class="highlight"
-												  initial-value=""
+												  initial-value="{{ctrl.employee.location.location_name}}"
 									              minlength="1"
 	   											 data-trigger="focus" data-toggle="popover" 
 	   											 data-placement="top" data-content="Please Enter Employee location"
+	   											 onKeyPress="return CheckIsCharacter(event)"
 									              input-class="form-control form-control-small">
               						</angucomplete-alt>
-              						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject.location_id}}" />
+              						<input type="text" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
 
 			             </div>         	
 			             </div>
@@ -204,18 +208,18 @@
 			             <div class="col-lg-12">
 		                <div class="col-lg-6 content-body">
 		                 	   <span>City </span>	         
-			                    <input type="text" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.city}}">
+			                    <input type="text" id="city" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.city}}">
 			                    
 			                     <span>State </span>	         
-			                    <input type="text" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.state}}">
+			                    <input type="text" id="state" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.state}}">
 			               
 			              </div> 
 			               <div class="col-lg-6 content-body">    
 			                     <span>Country </span>	         
-			                    <input type="text" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.country}}">
+			                    <input type="text" id="country" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.country}}">
 			                    
 			                     <span>Pincode </span>	         
-			                    <input type="text" class="form-control disabled locations" tabindex="-1" minlength = "6" maxlength="6" onKeyPress="return CheckIsNumeric(event)" value="{{location_name.originalObject.pincode}}">
+			                    <input type="text" id="pincode" class="form-control disabled locations" tabindex="-1" minlength = "6" maxlength="6" onKeyPress="return CheckIsNumeric(event)" value="{{location_name.originalObject.pincode}}">
 			           
 			             </div>         	
 			             </div> 
@@ -289,7 +293,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 footerLeft">
-							<button type="button" class="btn btn-danger drawerClose pull-left"><i class="fa fa-trash-o"></i> Clear</button>
+							<button type="button" class="btn btn-danger drawerClose pull-left" data-ng-click = "ctrl.reset()"><i class="fa fa-trash-o"></i> Clear</button>
 						</div>
 						
 						<div class="col-lg-4" style="text-align:center; !important;">
@@ -398,45 +402,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Kumar</td>
-                                            <td>k001</td>
-                                            <td>Driver</td>
-                                            <td>Coimbatore</td>
-                                            <td>2nd Street</td>
-                                            <td>9632587412</td>
-                                            <td>kumar@gmail.com</td>
-                                            <td>22-06-1988</td>
-                                            <td>4-8-2014</td>
+                                        <tr
+                                        	data-ng-repeat = "emp in ctrl.employees | orderBy : 'emp_name'"
+                                        	data-ng-dblclick="ctrl.updateEmployee(emp)">
+                                            <td>{{$index+1}}</td>
+                                            <td>{{emp.emp_name}}</td>
+                                            <td>{{emp.emp_code}}</td>
+                                            <td>{{emp.empcategory}}</td>
+                                            <td>{{emp.branch_id}}</td>
+                                            <td>{{emp.emp_address}}</td>
+                                            <td>{{emp.emp_phoneno}}</td>
+                                            <td>{{emp.emp_email}}</td>
+                                            <td>{{emp.dob}}</td>
+                                            <td>{{emp.doj}}</td>
                                        </tr>
-                                       <tr>
-                                            <td>2</td>
-                                            <td>Sekar</td>
-                                            <td>s001</td>
-                                            <td>User</td>
-                                            <td>Coimbatore</td>
-                                            <td>Anna Nagar,1st Street</td>
-                                            <td>8845321478</td>
-                                            <td>sekar@gmail.com</td>
-                                            <td>29-11-1991</td>
-                                            <td>5-12-2013</td>
-                                       </tr>
-                                         <tr>
-                                            <td>3</td>
-                                            <td>Sekar</td>
-                                            <td>s002</td>
-                                            <td>User</td>
-                                            <td>Coimbatore</td>
-                                            <td>Anna Nagar,1st Street</td>
-                                            <td>8845321478</td>
-                                            <td>sekar@gmail.com</td>
-                                            <td>29-11-1991</td>
-                                            <td>5-12-2013</td>
-                                       </tr>
-                                        
-                                                               
-                                
+                                       
                                  
                                     </tbody>
                                 </table>

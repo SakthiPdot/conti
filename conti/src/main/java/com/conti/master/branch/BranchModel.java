@@ -2,8 +2,12 @@ package com.conti.master.branch;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * @Project_Name conti
@@ -15,9 +19,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "m_branch")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BranchModel {
 	int branch_id, location_id, updated_by, created_by;
 	String branch_name, branch_code, branch_contactperson, branch_email, lrno_prefix, receiptno_prefix, created_datetime, updated_datetime, obsolete, active;
+	
 	
 	@Id
 	@Column(name = "branch_id")

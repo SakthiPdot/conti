@@ -143,7 +143,7 @@
              <div class="page-header header-size">
                  	  <b>${title}</b>
                  	  
-                 	  <button class="btn btn-primary drawerOpen pull-right" >Add New Vehicle</button>
+                 	  <button class="btn btn-primary drawerOpen pull-right" onClick="drawerOpen('.drawer')" >Add New Vehicle</button>
              </div>
              </div>
       		
