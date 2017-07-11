@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -474,6 +475,40 @@ public class UserRestController {
 	}
 	
 	/*----------------------------- find Username by mobileno end -------------- */
+	
+	
+	@RequestMapping(value =  "password_change", method = RequestMethod.GET)
+	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		
+		UserInformation userinfo = new UserInformation(request);
+		String username = userinfo.getUserName();
+		
+		String userid = userinfo.getUserId();
+		
+		session.setAttribute("username", username);
+		session.setAttribute("userid", userid);
+		
+		
+		ModelAndView model = new ModelAndView();
+		
+		
+		try
+		{
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			
+			model.addObject("title", " Accounts Settings");
+			model.addObject("message", "This page is for ROLE_ADMIN only!");
+			model.setViewName("User Profile/change_password");
+
+			
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);
+		}
+		return model;
+
+	}
 }
 
 

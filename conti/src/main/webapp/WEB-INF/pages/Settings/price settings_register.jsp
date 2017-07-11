@@ -7,13 +7,12 @@
 <%@ page isELIgnored="false" %> 
 <%@page session="true"%>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${title}</title>
     <!-- Bootstrap Styles-->
-    <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
+       <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
 	
@@ -38,106 +37,28 @@
 
 <body style="overflow-x:hidden;">
  
- 		<div class="overlay hideme"></div>
- 		
- 		<div class="drawer hideme">
- 			<div class="row">
- 			<div class="col-lg-12 trowserHeader">
- 				 
-                   <div class="col-lg-6 headerLeft">
-                   		 <b class="model-title">Service Master</b>
-                   </div>
-                   
-                   <div class="col-lg-6 headerRight">
-                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft"></i>
-                   </div>
-            
-             </div>
- 			</div>
-               
-                 
-                 
-                 <div class="model-body">
-                 
-                 
-                 <div class="row">
-			                <div class="col-lg-12 title_area">	                
-			              
-				          	<div class="col-lg-12 new-masters" >
-				          		 <b> New Service</b>	
-				          	</div> 
-				            
-				            </div>                
-		          </div>
-		             
-	                <div class="row">
-		                <div class="col-lg-12">
-			                
-			               <div class="col-lg-12 content-body">
-		                 	 
-		                 	  <span>Service Name</span>
-			                  <input type="text" class="form-control">
-			                  
-			                   <span>Service Code</span>
-			                  <input type="text" class="form-control">
-			               
-			             </div>  
-			             
-			                
-			                	                
-		                </div>                
-	                </div>                
-                 </div>
-                 
-                 <div class="modal-footer footerHeight">
-				
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="col-lg-4 footerLeft">
-							<button type="button" class=" btn btn-danger drawerClose pull-left" ><i class="fa fa-trash-o"></i> Clear</button>
-						</div>
-						
-						<div class="col-lg-4" style="text-align:center; !important;">
-							<a id="" class="btnPadding btn btn-warning"	style="display: none; "><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
-							
-							<a id="" class="btnPadding btn btn-primary" style="display:none;">Clear</a>							
-						</div>
-						
-						<div class="col-lg-4 footerRight">
-
-							 <button type="button" class="btn btn-success"><i class="fa fa-floppy-o "></i> Save</button>
-						</div>
-					</div>
-				</div>
-            </div>
- 			
- 			
- 			
- 		</div>
- 
 	
 	<jsp:include page="../Dashboard/settings_nav.jsp"/>
 	
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
-       
-         <div class="header "> 
-             <div class="page-header header-size">
-                 	  <b>${title}</b>
-                 	  
-                 	  <button class="btn btn-primary drawerOpen pull-right" onClick="drawerOpen('.drawer')" >Add New Service</button>
-             </div>	
-             
-             										
-		 </div>
+      
+      	    		
+      		  <div class="header "> 
+	             <div class="page-header header-size">
+	                 	  <b>${title}</b>	                 	  
+	                 	 <a href="price_settings"><button class="btn btn-primary drawerOpen pull-right"> Add New Price Settings</button></a> 
+	             </div>  
+              </div>
       		
-     <div id="page-inner">  
+                
+                <div id="page-inner">  
 		 <div class="row">
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                             Service Register
+                             Price Settings Register
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -180,33 +101,26 @@
                                         <tr>
                                             <th><input type="checkbox"></th>
                                             <th>S.No</th>
-                                            <th>Service Name</th>
-                                            <th>Service Code</th>
+                                            <th>From Branch</th>
+                                            <th>Service</th>
+                                            <th>Product</th>
+                                            <th>Product Type</th>
+                                            <th>Default Price</th>
+                                            <th>Default Handling Charges</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td><input type="checkbox"></td>
                                             <td>1</td>
+                                            <td>Coimbatore</td>
                                             <td>Counter</td>
-                                            <td>SR001</td>
+                                            <td>Box</td>
+                                            <td>Small Box</td>
+                                            <td>14</td>
+                                            <td>10</td>
                                        </tr>
-                                       
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>2</td>
-                                            <td>Door Delivery</td>
-                                            <td>SR002</td>
-                                       </tr>
-                                       
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>3</td>
-                                            <td>Counter</td>
-                                            <td>SR003</td>
-                                       </tr>
-                                                                        
-                                    </tbody>
+                                      </tbody>
                                 </table>
                             </div>
                             
@@ -216,13 +130,16 @@
                 </div>
             </div>
       </div>
-      
-            
+                
+                
+           
         </div>
         <!-- /. PAGE WRAPPER  -->
 		
+		
     </div>
     <!-- /. WRAPPER  -->
+  <!-- /. WRAPPER  -->
     <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
       <!-- Bootstrap Js -->
     <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
@@ -231,7 +148,8 @@
      <!-- DATA TABLE SCRIPTS -->
     <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
-    
+     <!-- Custom Js -->
+    <script src="resources/built-in/assets/js/custom-scripts.js"></script>
      <script src="resources/custom/js/custom.js"></script>
   	<script src="resources/custom/js/session.js"></script>
         <script>
@@ -240,10 +158,6 @@
             });
     </script>
          <!-- Custom Js -->
-
-
-  
-
 </body>
 
 </html>

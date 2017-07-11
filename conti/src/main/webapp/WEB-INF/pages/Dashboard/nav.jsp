@@ -31,16 +31,15 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
-<<<<<<< HEAD
+
 	<link href="resources/built-in/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css">
-=======
+
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	 <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 	 
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
-	
->>>>>>> branch 'master' of https://github.com/Pointdot2017/conti.git
+
 </head>
 
 <body>
@@ -258,9 +257,9 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> View User Profile</a>
+                        <li><a href="user_profile"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Accounts Settings</a>
+                        <li><a href="password_change"><i class="fa fa-gear fa-fw"></i> Accounts Settings</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="javascript:formSubmit()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
