@@ -13,7 +13,9 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 	var factory = {
 			fetchAllEmployees : fetchAllEmployees,
 			fetchEmpCat :fetchEmpCat,
-			createEmployee : createEmployee
+			createEmployee : createEmployee,
+			updateEmployee :updateEmployee,
+			deleteEmployee : deleteEmployee
 	};
 	
 	return factory;
@@ -84,6 +86,44 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
         return deferred.promise;*/
     }
  
+    //------------------------------- Delete Employee begin -----------------------------//
+    function deleteEmployee(id) {
+    	var deferred = $q.defer();
+    	$http({
+    		method : 'DELETE',
+    		url : 'delete_employee/'+id,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
+    //------------------------------- Delete Employee end -----------------------------//
     
+    //------------------------------- Delete Employee begin -----------------------------//
+    function updateEmployee(employee, id) {
+    	var deferred = $q.defer();
+    	$http({
+    		method : 'PUT',
+    		url : 'update_employee/'+id,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
+    //------------------------------- Delete Employee end -----------------------------//
     
 }]);

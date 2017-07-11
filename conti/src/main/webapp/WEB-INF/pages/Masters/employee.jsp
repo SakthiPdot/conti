@@ -38,7 +38,7 @@
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
 	 
-
+ <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script> 
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>    
 
@@ -65,16 +65,17 @@
 <!-- ------------------------- Failure message end ------------------ -----  -->
  		
  		<div class="drawer hideme">
- 		  <form data-ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
+ 		  <form data-ng-submit="ctrl.submit()" name="empForm" class="form-horizontal">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
                    <div class="col-lg-6 headerLeft">
-                   		 <b class="model-title">Employee Master </b> 
+                   		 <b class="model-title">Employee {{ctrl.heading}} </b> 
                    </div>
                    
                    <div class="col-lg-6 headerRight">
-                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" onClick="drawerClose('.drawer')"></i>
+                   		<!-- <i class="fa fa-times fa-2x drawerClose pull-right iconLeft" onClick="drawerClose('.drawer')" data-ng-click = "ctrl.reset()"></i> -->
+                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close()"></i>
                    </div>
             
              </div>
@@ -85,15 +86,12 @@
                  <div class="model-body">
                  
                     <div class="row">
-			                <div class="col-lg-12 title_area">	                
-			              
-				          	<div class="col-lg-12 new-masters" >
-				          		 <!-- <b> New Employee</b> -->	
-				          	</div> 
-				            
+			                <div class="col-lg-12 title_area">	
+					          	<div class="col-lg-12 new-masters" >
+					          		 <b  data-ng-show="ctrl.employee.emp_id == null" > New Employee</b>	
+					          	</div> 				            
 				            </div>                
 		             </div> 
-
 	                <div class="row">
 		                <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
@@ -152,7 +150,7 @@
 						              search-fields="branch_name"
 						              title-field="branch_name"
 									  match-class="highlight"
-									  initial-value=""
+									  initial-value="{{ctrl.employee.branchModel.branch_name}}"
 						              minlength="1"
 						              field-required="true"
 						              data-trigger="focus" data-toggle="popover" 
@@ -161,7 +159,7 @@
 						              input-class="form-control form-control-small">
               				</angucomplete-alt>
 
-			           		<input type="text" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject.branch_id}}" />
+			           		<input type="hidden" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject}}" />
 			             </div>         	
 			             </div>  
 			             
@@ -200,7 +198,7 @@
 	   											 onKeyPress="return CheckIsCharacter(event)"
 									              input-class="form-control form-control-small">
               						</angucomplete-alt>
-              						<input type="text" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
+              						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
 
 			             </div>         	
 			             </div>
@@ -292,14 +290,24 @@
 				
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="col-lg-4 footerLeft">
-							<button type="button" class="btn btn-danger drawerClose pull-left" data-ng-click = "ctrl.reset()"><i class="fa fa-trash-o"></i> Clear</button>
+						<div class="col-lg-4 col-xs-4 footerLeft">
+							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close()" > <i class="fa fa-times" aria-hidden="true"></i>
+							Cancel</button>
 						</div>
 						
 						<div class="col-lg-4" style="text-align:center; !important;">
-							<a id="" class="btnPadding btn btn-warning"	style="display: none; "><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
 							
-							<a id="" class="btnPadding btn btn-primary" style="display:none;">Clear</a>							
+							<a id="" class="btnPadding btn btn-warning"	 data-ng-click="ctrl.deleteEmployee()"  data-ng-show="ctrl.employee.emp_id!=null" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a>
+							<a id="" class="btnPadding btn btn-primary" data-ng-click = "ctrl.clear()" data-ng-show="!empForm.$pristine && (ctrl.employee.emp_id==null)">Clear</a>							
+						</div>
+						
+						<div class="col-lg-4 col-xs-4 footerRight" data-ng-show="!(ctrl.employee.emp_id== null)">
+							<button class="btn btn-success " type="submit"
+								
+								id="saveclose" data-id="0" data-ng-click="save($event)"
+								type="submit">
+								<i class="fa fa-floppy-o "> </i> Update</button>
+							<br>
 						</div>
 						
 						<div class="col-lg-4 footerRight" data-ng-show = "ctrl.employee.emp_id==null">
@@ -384,7 +392,7 @@
                               </div>
                             </div>
                           
-                            
+                             
                             
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
@@ -421,15 +429,14 @@
                                     </tbody>
                                 </table>
                             </div>
-                            
+                           
                         </div>
                     </div>
                     <!--End Advanced Tables -->
                 </div>
             </div>
       </div>
-      
-            
+           
         </div>
         <!-- /. PAGE WRAPPER  -->
 		
@@ -441,7 +448,8 @@
   <script src="resources/custom/js/employee_master/employee_controller.js"></script>
   <script src="resources/custom/js/employee_master/employee_service.js"></script>
   <script src="resources/custom/js/branch_master/branch_service.js"></script>
-  <script src="resources/custom/js/Location/location_service.js"></script>  
+  <script src="resources/custom/js/Location/location_service.js"></script>
+  <script src="resources/custom/js/confirmDialog.js"></script>   
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
   <!-- Custom Js -->
 

@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.conti.setting.usercontrol.User;
-
 /**
  * @Project_Name conti
  * @Package_Name com.conti.master.employee
@@ -81,4 +79,21 @@ public class EmployeeDaoImp implements EmployeeDao {
 
 	
 	/*------------------------------- Find user by mobileno end ----------------------- */	
+	
+	/*------------------------------- Get employee by id begin -----------------------*/
+	
+	@Override
+	@Transactional
+	public EmployeeMaster getEmployeebyId(int id) {
+		String hql = "FROM EmployeeMaster WHERE obsolete ='N' and active ='Y' and emp_id ="+ id + "";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		List<EmployeeMaster> emplist = (List<EmployeeMaster>) query.list();
+		if(emplist != null && !emplist.isEmpty()) {
+			return emplist.get(0);
+		}
+		return null;
+	}
+	
+	/*------------------------------- Get employee by id begin -----------------------*/	
 }

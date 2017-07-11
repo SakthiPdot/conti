@@ -18,4 +18,5 @@ public interface EmployeeDao {
 	public List<EmployeeMaster> getAllEmployees();
 	public void saveOrUpdate(EmployeeMaster employee);
 	public EmployeeMaster findByMobileno(long mobileno);
+	public EmployeeMaster getEmployeebyId(int id);
 }

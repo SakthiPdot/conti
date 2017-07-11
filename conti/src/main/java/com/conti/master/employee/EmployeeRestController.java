@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -133,5 +134,67 @@ public class EmployeeRestController {
 		
 	}
 	/* ------------------------- Create a Employee end -------------------------------------  */
-
+	
+	/* ------------------------- Update Employee begin ------------------------------------- */
+	@RequestMapping(value = "update_employee/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<EmployeeMaster> updateEmployee(@PathVariable ("id") int id, @RequestBody EmployeeMaster employeeModel, HttpServletRequest request) {
+		EmployeeMaster employeeModelDB = employeeDao.getEmployeebyId(id);
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		int user_id = Integer.parseInt(userInformation.getUserId());
+		try {
+			
+			if(employeeModelDB == null) {
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+				return new ResponseEntity<EmployeeMaster>(HttpStatus.NOT_FOUND);
+			} else {
+				
+				Date date = new Date();
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+				
+				employeeModel.setUpdate_by(user_id);
+				employeeModel.setUpdated_datetime(dateFormat.format(date));
+								
+				employeeDao.saveOrUpdate(employeeModel);
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+				return new ResponseEntity<EmployeeMaster> (employeeModel,HttpStatus.OK);
+			}
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+			return new ResponseEntity<EmployeeMaster> (HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	/* ------------------------- Update Employee end ------------------------------------- */
+	/* ------------------------- Delete Employee begin ------------------------------------- */
+	@RequestMapping(value = "delete_employee/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<EmployeeMaster> deleteEmployee(@PathVariable ("id") int id, HttpServletRequest request) {
+		EmployeeMaster employeeModel = employeeDao.getEmployeebyId(id);
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		int user_id = Integer.parseInt(userInformation.getUserId());
+		try {
+			
+			if(employeeModel == null) {
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
+				return new ResponseEntity<EmployeeMaster>(HttpStatus.NOT_FOUND);
+			} else {
+				
+				Date date = new Date();
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+				
+				employeeModel.setUpdate_by(user_id);
+				employeeModel.setUpdated_datetime(dateFormat.format(date));
+				employeeModel.setActive("N");
+				employeeModel.setObsolete("Y");
+				
+				employeeDao.saveOrUpdate(employeeModel);
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
+				return new ResponseEntity<EmployeeMaster> (employeeModel,HttpStatus.OK);
+			}
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, exception);
+			return new ResponseEntity<EmployeeMaster> (HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	/* ------------------------- Delete Employee end ------------------------------------- */
 }
