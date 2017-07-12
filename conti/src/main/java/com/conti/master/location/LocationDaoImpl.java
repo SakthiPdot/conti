@@ -40,7 +40,8 @@ public class LocationDaoImpl implements LocationDao {
 	public List<Location> getLocation() {
 		
 		return sessionFactory.getCurrentSession()
-				.createQuery("from Location where  obsolete ='N' and active ='Y'  ")
+				.createQuery("from Location where  obsolete ='N' "
+						+ "order by IFNULL(updated_datetime,created_datetime)  DESC ")
 				.setMaxResults(100)
 				.list();
 	}

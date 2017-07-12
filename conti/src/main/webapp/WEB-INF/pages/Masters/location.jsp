@@ -37,12 +37,12 @@
 	  <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	<link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
+	<link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 
 	
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>
 	<script type="text/javascript" src="resources/custom/js/app.js"></script>
 
-	
 
 </head>
 
@@ -58,7 +58,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
  		<div class="overlay hideme"></div>
  		
  		<form data-ng-submit="locctrl.submit()" name="locationForm">
- 		<div class="drawer hideme ">
+ 		<div class="drawer hideme">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
@@ -89,34 +89,69 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 		                <div class="col-lg-12">			                
 			               <div class="col-lg-12 content-body">
 		                 	 
-		                 	  <span>Location Name</span>
+		                 	  <span>Location Name<span style="color:red">&nbsp;*</span></span>
 			                  <input type="text"
+			                  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value) "
+			                  data-ng-required="true"
+			                  data-trigger="focus" data-toggle="popover"
+							  data-placement="top" data-content="Please Enter Location Name"
 			                  data-ng-model="locctrl.Location.location_name" 
+			                  maxlength="50"
 			                  class="form-control">
 			                  
 			                  <span>Location Code</span>
 			                  <input type="text"
+			                  data-trigger="focus" data-toggle="popover"
+							  data-placement="top" data-content="Please Enter Location Code"							  
+			                  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value) "
+							  maxlength="10"
 			                  data-ng-model="locctrl.Location.location_code"
 			                   class="form-control">
 			                  
 			                   <span>Abbreviation</span>
-			                  <input type="text"
+			                  <input type="text"			                  
+			                  data-trigger="focus" data-toggle="popover"		              
+							  onKeyPress="return CheckIsCharacterWithspace(event,this.value) "
+							  data-placement="top" data-content="Please Enter Abbreviation"
 			                  data-ng-model="locctrl.Location.abbreviation"
-			                   class="form-control">    
+			                   class="form-control">  
+			                   
+			                    
+	                	    	     
 			                
 		            	 </div>  
 			           </div> 
 			             
+			              
 			             
 			             <div class="col-lg-12">
 	                		<div class="col-lg-6 content-body">
-	                	     <span>City</span>
-	                	     
-	                	     
+	                	     <span>City<span style="color:red">&nbsp;*</span></span>
+	                	   
+	                	      	
+									       	 <div angucomplete-alt
+							 					 id="selectedCity" 
+									              placeholder="Ex : Coimbatore"
+									              pause="0"		 data-ng-required="true"
+		                  						 data-trigger="focus" data-toggle="popover"
+							 					  data-placement="top" data-content="Please Enter city"	
+									              selected-object="city_name"
+									              local-data="locctrl.addresses"
+									              search-fields="city,state"
+									              title-field="city,state"
+												  match-class="highlight"
+												   onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
+												  initial-value="{{locctrl.Location.address.city}}"
+									              minlength="1"
+									              input-class="form-control form-control-small">
+									              </div>  
+									              
 	                	     <select 
 	                	    	 data-ng-model="locctrl.Location.selectedAddress"
 	                	    	 data-ng-options="x.city  for x in locctrl.addresses|orderBy:'city' track by x.id"
-	                	    	 class="form-control"
+	                	    	 class="form-control"	                	    	 
+								data-ng-hide="true"
+								
 	                	    	 data-ng-change="updateAddressDetail()"
 	                	    	 id="city">
 	                	    		<option value="">--Select City --</option> 
@@ -126,23 +161,32 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 								<input type="text"
 								data-ng-hide="true"
 								data-ng-model="locctrl.Location.address.id"
-								id="city" 
+								id="city_id" 
 			                  	class="form-control"/>
 			                  	
-								 <span>State</span>
+								 <span>State<span style="color:red">&nbsp;*</span></span>
 			                     <input type="text"
-			                     data-ng-model="locctrl.Location.address.state" class="form-control">
+			                     tabindex="-1"
+			                     id="stateValue"
+			                     data-ng-model="locctrl.Location.address.state" 
+			                      class="form-control disabled">
 	                		</div>
 	                			
 	                		
 	                		<div class="col-lg-6 content-body">
 	                	           
-			                  <span>Country</span>
-			                  <input type="text" class="form-control"
+			                  <span>Country<span style="color:red">&nbsp;*</span></span>
+			                  <input type="text" class="form-control disabled"
+			                  tabindex="-1"
 			                  data-ng-model="locctrl.Location.address.country">
 			                  
-			                  <span>Pincode</span>
+			                  <span>Pincode<span style="color:red">&nbsp;*</span></span>
 			                  <input type="text" class="form-control"
+			                   data-ng-required="true"
+			                    data-trigger="focus" data-toggle="popover"
+							 	data-placement="top" data-content="Please Enter Pincode"	
+								maxlength="8" 
+								onKeyPress="return CheckIsNumericAndHyphen(event,this.value) "           
 			                  data-ng-model="locctrl.Location.pincode">
 			                  
 	                		</div>
@@ -293,7 +337,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                     
                                     <tbody>
                                       <tr 
-                                       data-ng-repeat="x in locctrl.Locations| orderBy :'location_name'  track by x.location_id"
+                                       data-ng-repeat="x in locctrl.Locations  track by x.location_id"
 	                	    			 data-ng-dblclick="updateLocation(x,$index)">                                            
                                             <td>{{$index+1}}</td>
                                             <td>{{x.location_name}}</td>
@@ -327,11 +371,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
     <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
     <!--====================================================== SCRIPTS START=========================================-->
-       <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
-        </script>
+      <script>$('[data-toggle="popover"]').popover();</script>
         
      
     <script src="resources/custom/js/custom.js"></script>   

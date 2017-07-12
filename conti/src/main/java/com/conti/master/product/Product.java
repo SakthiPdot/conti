@@ -1,6 +1,12 @@
-package com.conti.product;
+package com.conti.master.product;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * @Project_Name conti
@@ -9,11 +15,16 @@ import javax.persistence.Column;
  * @author Monu.C
  * @Created_date_time Jul 8, 2017 5:38:27 PM
  */
+
+@Entity
+@Table(name="m_product")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Product {
 	
 	private int product_id;
 	private String product_name;
 	private String product_code;
+	private String product_Type;
 	private float max_weight;
 	private String dimension_flag;
 	private float  max_height;
@@ -29,7 +40,14 @@ public class Product {
 	public Product() {
 	}
 
+	
+	
 
+
+
+
+	@Id
+	@GeneratedValue
 	@Column(name="product_id")
 	public int getProduct_id() {
 		return this.product_id;
@@ -43,6 +61,14 @@ public class Product {
 	@Column(name="product_code")
 	public String getProduct_code() {
 		return this.product_code;
+	}
+	
+	@Column(name="product_Type")
+	public String getProduct_Type() {
+		return this.product_Type;
+	}
+	public void setProduct_Type(String product_Type) {
+		this.product_Type = product_Type;
 	}
 
 	@Column(name="max_weight")

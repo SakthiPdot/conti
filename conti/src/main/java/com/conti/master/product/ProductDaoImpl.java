@@ -1,4 +1,4 @@
-package com.conti.product;
+package com.conti.master.product;
 
 import java.util.List;
 
@@ -44,7 +44,8 @@ public class ProductDaoImpl implements ProductDAO {
 	@Transactional
 	public List<Product> getProduct() {
 		return sessionFactory.getCurrentSession()
-				.createQuery("from Product where  obsolete ='N' and active ='Y'  ")
+				.createQuery("from Product where  obsolete ='N' "
+						+ "order by IFNULL(updated_datetime,created_datetime)  DESC ")
 				.list();
 	}
 

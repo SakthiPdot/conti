@@ -41,7 +41,6 @@ import com.conti.setting.usercontrol.UsersDao;
 
 
 @RestController
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LocationController {
 
 	final Logger logger = LoggerFactory.getLogger(LocationController.class);
@@ -178,8 +177,11 @@ public class LocationController {
 	public ResponseEntity<Void> updateLocation(@PathVariable("id") long id,
 			HttpServletRequest request,@RequestBody Location location){
 		
-		System.out.println("++ updating user "+id);
+		System.out.println("++ updating Location "+id);
 		Location locationFromDb=locationDao.getLocationById((int)id);
+		if(locationFromDb==null){
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		}
 		
 		//intialize		
 		Date date = new Date();
@@ -190,10 +192,7 @@ public class LocationController {
 		location.setUpdated_datetime(dateFormat.format(date));
 		
 		
-		if(locationFromDb==null){
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-		}
-		
+
 		try {
 			locationDao.saveOrUpdate(location);
 			return new ResponseEntity<Void>(HttpStatus.OK);	
