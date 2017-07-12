@@ -31,9 +31,17 @@ public class Company {
 	TIN_number,GST_number,company_email;
 	private  byte[] company_logo;
 	private String created_datetime,updated_datetime;
-	private float Tax_GST;
+	private float SGST,CGST,IGST,HSN_code;
 	private long company_landlineno,company_alternateno;
 	
+
+	
+	
+
+	
+
+
+
 
 
 	public Company() {
@@ -56,8 +64,7 @@ public class Company {
 	//====================================================================
 	@Id
 	/*@GeneratedValue*/
-	@Column(name="company_id")
-	
+	@Column(name="company_id")	
 	public int getCompany_id() {
 		return this.company_id;
 	}
@@ -71,6 +78,27 @@ public class Company {
 	@Column(name="updated_by")
 	public int getUpdated_by() {
 		return this.updated_by;
+	}
+	
+	@Column(name="SGST")
+	public float getSGST() {
+		return this.SGST;
+	}
+
+	@Column(name="CGST")
+	public float getCGST() {
+		return this.CGST;
+	}
+
+	@Column(name="IGST")
+	public float getIGST() {
+		return this.IGST;
+	}
+
+
+	@Column(name="HSN_code")
+	public float getHSN_code() {
+		return this.HSN_code;
 	}
 
 
@@ -126,7 +154,7 @@ public class Company {
 		return this.TIN_number;
 	}
 	
-	@Column(name="GST_number")
+	@Column(name="GSTIN_number")
 	
 	public String getGST_number() {
 		return this.GST_number;
@@ -154,12 +182,6 @@ public class Company {
 		return this.updated_datetime;
 	}
 
-	
-	@Column(name="Tax_GST")
-	
-	public float getTax_GST() {
-		return this.Tax_GST;
-	}
 	
 	
 
@@ -208,15 +230,29 @@ public class Company {
 	public void setUpdated_datetime(String updated_datetime) {
 		this.updated_datetime = updated_datetime;
 	}
-	public void setTax_GST(float tax_GST) {
-		this.Tax_GST = tax_GST;
-	}
+
 	public void setCreated_by(int created_by) {
 		this.created_by = created_by;
 	}
 	public void setUpdated_by(int updated_by) {
 		this.updated_by = updated_by;
 	}
+	public void setSGST(float sGST) {
+		this.SGST = sGST;
+	}
 
+	public void setCGST(float cGST) {
+		this.CGST = cGST;
+	}
+
+	public void setIGST(float iGST) {
+		this.IGST = iGST;
+	}
+
+	public void setHSN_code(float hSN_code) {
+		this.HSN_code = hSN_code;
+	}
+
+	
 	
 }
