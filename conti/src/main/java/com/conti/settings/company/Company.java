@@ -30,8 +30,8 @@ public class Company {
 	private String company_name,company_address1,company_address2,
 	TIN_number,GST_number,company_email;
 	private  byte[] company_logo;
-	private String created_datetime,updated_datetime;
-	private float SGST,CGST,IGST,HSN_code;
+	private String created_datetime,updated_datetime,HSN_code;
+	private float SGST,CGST,IGST;
 	private long company_landlineno,company_alternateno;
 	
 
@@ -39,6 +39,7 @@ public class Company {
 	
 
 	
+
 
 
 
@@ -97,10 +98,9 @@ public class Company {
 
 
 	@Column(name="HSN_code")
-	public float getHSN_code() {
+	public String getHSN_code() {
 		return this.HSN_code;
 	}
-
 
 	@Column(name="expct_deliverydate")
 	
@@ -249,9 +249,12 @@ public class Company {
 		this.IGST = iGST;
 	}
 
-	public void setHSN_code(float hSN_code) {
+
+	public void setHSN_code(String hSN_code) {
 		this.HSN_code = hSN_code;
 	}
+
+
 
 	
 	

@@ -13,10 +13,32 @@ angular.module('contiApp').factory('ProductService',['$http','$q',function($http
 			saveProduct:saveProduct,
 			fetchAllProduct:fetchAllProduct,
 			deleteProduct:deleteProduct,
-			updateProduct:updateProduct
+			updateProduct:updateProduct,
+			changeActive:changeActive
 	};
 	
 	return factory;
+	
+
+	//=============================change Active====================================
+	function changeActive(id,status){	
+		console.log(id,status);
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:"productStaus/"+status,
+			data:id,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("status change failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
 	//=============================SAVE PRODUCT====================================
 	function saveProduct(Product){		
 		var deferred=$q.defer();

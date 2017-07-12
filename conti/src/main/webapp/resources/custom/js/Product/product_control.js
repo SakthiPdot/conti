@@ -9,6 +9,12 @@
 angular.module('contiApp').controller('productController',
 		['$scope','ProductService','ConfirmDialogService',function($scope,ProductService,ConfirmDialogService){
 	
+	/*	      $scope.exportToExcel=function(tableId){ // ex: '#my-table'
+		            var exportHref=Excel.tableToExcel(tableId,'WireWorkbenchDataExport');
+		            $timeout(function(){location.href=exportHref;},100); // trigger download
+		        }
+		      */
+			
 	var self=this;
 	self.submit=submit;
 	self.fetchProducts=fetchProducts;
@@ -22,6 +28,12 @@ angular.module('contiApp').controller('productController',
 	self.message="Message";
 	self.save="saveclose";
 	self.products=[];
+	self.selectProduct=[];
+	self.selectAll=selectAll;
+	self.makeActive=makeActive;
+	self.makeInActive=makeInActive;
+	self.selectProduct=selectProduct;
+	self.selectedProducts=[];
 	self.product={
 		    "product_id": null,
 		    "product_name": null,
@@ -40,19 +52,146 @@ angular.module('contiApp').controller('productController',
 		    "active": null
 		};
 	
+	//===================================select all====================================
+	function selectAll(){
 
-    
-/*	BootstrapDialog.TYPE_WARNING;
-	BootstrapDialog.TYPE_SUCCESS
-	 BootstrapDialog.TYPE_DANGER
-	 'btn-success';*/
+		console.log("select all");
+		angular.forEach(self.products,function(x){
+			x.select=self.selectAllProduct;
+		});
+		//self.selectedProducts=self.selectAllProduct?self.products:[];
+		if(self.selectAllProduct){
+			self.selectedProducts=self.products
+		}else{
+			self.selectedProducts=[];
+		}
+	}
+	//===================================select Product====================================
+	function selectProduct(x){
+		console.log(x);
+
+		if(x.select){
+			self.selectedProducts.push(x)
+			
+		}else{
+			self.selectAllProduct=x.select;
+			  var index = self.selectedProducts.indexOf(x);
+				console.log(index);
+				self.selectedProducts.splice(index,1);
+		}
+		
+		//(x.select)?self.selectedProducts.push(x):self.selectedProducts.splice(x,1);
+	}
 	
-	 
+	function selectOneRecord(){
+   		self.message ="Please select atleast one record..!";
+		successAnimate('.failure');
+	}
+	
+	function showStatus(status){
+	self.message ="Selected record(s) already in "+status+" status..!";
+	successAnimate('.failure');
+	}
+	
+	function showStatusAfterSave(status){
+		 fetchProducts();
+		self.message ="Selected record(s) has been made  "+status+"..!";
+		successAnimate('.success');
+		 self.selectedProducts=[];
+		 self.selectAllProduct=false;
+		}
+	
+	//===================================select all====================================
+	function makeActive(){
+		
+		
+		var hitController=true;
+		var active_id=[];
+		
+		
+		if(self.selectedProducts.length==0){
+			 selectOneRecord();
+		}else{
+			var loop=true;				
+				for(var i=0;i<self.selectedProducts.length;i++){
+					if(loop){
+						if(self.selectedProducts[i].active=="Y"){
+							loop=false;
+						    hitController=false;
+							showStatus("Active");
+						}
+	    				active_id[i] = self.selectedProducts[i].product_id;  
+					}
+				}			
+		}
+		
+		
+
+		if(hitController){
+			console.log(active_id);
+			ProductService.changeActive(active_id,"Active")
+			.then(
+					function(response){
+						showStatusAfterSave("Active");
+					},function(errRespone){
+						console.log("error making product active"+errResponse);
+					});
+		}
+		
+		
+		
+	}
+	//===================================select all====================================
+	function makeInActive(){
+		
+		var hitController=true;
+		var In_active_id=[];
+		
+		
+		if(self.selectedProducts.length==0){
+			 selectOneRecord();
+		}else{
+			
+			var loop=true;
+			
+			
+			for(var i=0;i<self.selectedProducts.length;i++){
+				if(loop){
+					
+					if(self.selectedProducts[i].active=="N"){
+						loop=false;
+					    hitController=false;
+						showStatus("InActive");
+					}
+					
+					In_active_id[i] = self.selectedProducts[i].product_id; 
+				}
+			}
+			
+
+			if(hitController){
+				console.log(In_active_id);
+				ProductService.changeActive(In_active_id,"InActive")
+				.then(
+						function(response){
+							showStatusAfterSave("InActive");
+						},function(errRespone){
+							console.log("error making product InActive"+errResponse);
+						});
+			}
+			
+			
+			
+			
+		}
+	}
+	
+	//===================================close====================================
 	function close(title){
 		ConfirmDialogService.confirmBox(title,
 				BootstrapDialog.TYPE_WARNING, title+" Without Save ..? ", 'btn-warning')
 		.then(function(response){
-			 drawerClose('.drawer') ;
+			 drawerClose('.drawer');
 		});
 	}
 		
@@ -119,6 +258,13 @@ angular.module('contiApp').controller('productController',
 		reset();
 	}
 	
+	//===================================onchange of angucomplete====================================
+	  $scope.product_type=function(selected){
+	       	console.log(selected);
+	       self.product.product_Type=selected.originalObject.product_Type;
+	       }      
+	          
+	
 	//===================================fetch product====================================
 	 fetchProducts();
 	 
@@ -164,8 +310,10 @@ angular.module('contiApp').controller('productController',
 	
 	//===================================update product====================================
 	function updateProduct(product,index){		
-		self.product=product;
-		self.heading=self.product.product_name;
+		self.product=product;		
+		(self.product.product_name).length> 15?
+			self.heading="- "+(self.product.product_name).substr(0,14)+"..."
+			:self.heading="- "+self.product.product_name ;
 		drawerOpen('.drawer');
 	}
 	

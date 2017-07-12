@@ -5,8 +5,8 @@
 
 angular.module('contiApp')
  		.controller('companyController'
-		,['$scope','LocationService','CompanySettingService','AddressService'
-			,function($scope,LocationService,CompanySettingService,AddressService){
+		,['$scope','LocationService','CompanySettingService','AddressService','ConfirmDialogService'
+			,function($scope,LocationService,CompanySettingService,AddressService,ConfirmDialogService){
 			
 			var self=this;
 		
@@ -47,7 +47,10 @@ angular.module('contiApp')
 			    "updated_datetime": null,
 			    "tin_number": null,
 			    "gst_number": null,
-			    "tax_GST": null
+			    "sgst": null,
+			    "cgst": null,
+			    "igst":null,
+			    "hsn_code": null,
 			    
 			};
 	
@@ -138,6 +141,11 @@ angular.module('contiApp')
 					
 					if(self.company.company_id==null){
 						console.log("Company New Record");
+
+						ConfirmDialogService.confirmBox("Save",
+			    				BootstrapDialog.TYPE_SUCCESS, "Save Company Details  ..?", 'btn-success')
+			    		.then(function(response){
+						
 					    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"companySave")
 					    .then(
 								function(d){	
@@ -150,8 +158,15 @@ angular.module('contiApp')
 									self.message = "Error While Creating Company Detail..!";
 									successAnimate('.failure');
 								});
+			    		});
 					}else{
 						console.log("Company Record Update");
+						
+						 ConfirmDialogService.confirmBox("Update",
+				    				BootstrapDialog.TYPE_SUCCESS, "Update Company Details  ..?", 'btn-success')
+				    		.then(function(response){
+						
+				    		
 					    CompanySettingService.addCompanySetting(self.company, $scope.myFile,"companySave")
 					    .then(
 								function(d){	
@@ -164,6 +179,7 @@ angular.module('contiApp')
 									self.message = "Error While Updating Company Detail..!";
 									successAnimate('.failure');
 								});
+				    		});
 					}	
 		
 			  }
