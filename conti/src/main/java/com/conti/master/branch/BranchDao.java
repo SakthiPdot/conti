@@ -2,6 +2,8 @@ package com.conti.master.branch;
 
 import java.util.List;
 
+import com.conti.master.employee.EmployeeMaster;
+
 /**
  * @Project_Name conti
  * @Package_Name com.conti.master.branch
@@ -12,4 +14,6 @@ import java.util.List;
  */
 public interface BranchDao {
 	public List<BranchModel> getAllBranches();
+	public void saveOrUpdate(BranchModel branchModel);
+	public BranchModel getBranchbyId(int id);
 }
