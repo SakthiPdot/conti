@@ -248,9 +248,9 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> View User Profile</a>
+                        <li><a href="user_profile"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Accounts Settings</a>
+                        <li><a href="password_change"><i class="fa fa-gear fa-fw"></i> Accounts Settings</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="javascript:formSubmit()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -319,7 +319,7 @@
 					
 					 
 					<li>
-                        <a href="price_settings"><i class="fa fa-inr"></i> Price Settings</a>
+                        <a href="price settings_register"><i class="fa fa-inr"></i> Price Settings</a>
                     </li>
                     
                   
@@ -349,6 +349,7 @@
 	 
     <!-- Metis Menu Js -->
     <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
+     <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
     <!-- Morris Chart Js -->
     <script src="resources/built-in/assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="resources/built-in/assets/js/morris/morris.js"></script>

@@ -57,12 +57,20 @@
               
               
               <div class="row">
-              <div class="col-lg-12">
-              	  <div class="GenLeftRight">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+              	  <div class="col-md-6 col-sm-6 col-xs-6 GenLeftRight">
 	              <div  class="subHead">
 	              <b>${title}</b>
 	              </div>
 	              </div>
+	              
+	              <div class="col-md-2">
+	              </div>
+	              
+	              <div class="col-md-3 col-sm-4 col-xs-6">	              
+	              <b>Last Receipt No : RECPT No 59202</b>	              
+	              </div>
+	              
               </div>
               </div>
               
@@ -101,15 +109,24 @@
                 			      
                 			      <div class="col-lg-12 noPaddingLeft"> 
                 			        <div class="sec-padding">Specific Period</div>
-                			      <div class="col-lg-3 branchclass">
-                			      		<span class="text-padding">From</span>	                	                                       
-                                            <input type="text" class="form-control">
-                                           
-                			      </div>
+                			         <div class="col-lg-3 branchclass">
+	                			      		 <span class="paddingtop">From  </span>   	                                       
+	                                          <div class="form-group input-group marginleftrightspace">
+					                                <input type="text" class="form-control"/>
+		                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
+		                                            </span>
+		                                          
+		                                     </div>
+	                                  </div>
                 			      
                 			       <div class="col-lg-3 branchclass">
-                			      		<span class="text-padding">To</span>
-                			      		 <input type="text" class="form-control">
+                			      		<span class="paddingtop">To</span>
+                			      		  <div class="form-group input-group spacemarginleftright">
+				                                <input type="text" class="form-control"/>
+	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
+	                                            </span>
+	                                          
+	                                     </div>
                 			      </div>
                 			      </div>
                 			       

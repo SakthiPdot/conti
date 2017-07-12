@@ -42,8 +42,7 @@
       		  <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default panelMarginBottom">                            
-						<div class="panel-heading">
-							
+						<div class="panel-heading">							
 						</div>
 						<div class="panel-body customer-font">
 						<b>Manifest</b>
@@ -54,12 +53,20 @@
                 
                 
               <div class="row">
-              <div class="col-lg-12">
-              	  <div class="GenLeftRight">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+              	  <div class="col-md-6 col-sm-6 col-xs-6 GenLeftRight">
 	              <div  class="subHead">
 	              <b>${title}</b>
 	              </div>
 	              </div>
+	              
+	              <div class="col-md-2">
+	              </div>
+	              
+	              <div class="col-md-3 col-sm-4 col-xs-6">	              
+	              <b>Last Manifest No : MNFT 59202</b>	              
+	              </div>
+	              
               </div>
               </div>
                 
@@ -99,16 +106,26 @@
                 			      
                 			      <div class="col-lg-12 noPaddingLeft"> 
                 			        <div class="sec-padding">Specific Period</div>
-                			      <div class="col-lg-3 branchclass">
-                			      		<span class="text-padding">From</span>	                	                                       
-                                            <input type="text" class="form-control">
-                                           
-                			      </div>
+	                			      <div class="col-lg-3 branchclass">
+	                			      		 <span class="paddingtop">From  </span>   	                                       
+	                                          <div class="form-group input-group marginleftrightspace">
+					                                <input type="text" class="form-control"/>
+		                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
+		                                            </span>
+		                                          
+		                                     </div>
+	                                  </div>
                 			      
                 			       <div class="col-lg-3 branchclass">
-                			      		<span class="text-padding">To</span>
-                			      		 <input type="text" class="form-control">
+                			      		<span class="paddingtop">To</span>
+                			      		  <div class="form-group input-group spacemarginleftright">
+				                                <input type="text" class="form-control"/>
+	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
+	                                            </span>
+	                                          
+	                                     </div>
                 			      </div>
+                			      
                 			      </div>
                 			       
                 			       <div class="col-lg-12 noPaddingLeft subhead-padding"> 
@@ -226,7 +243,70 @@
             </div>
                 
                 
+              <div class="row">
+                	<div class="col-lg-12">
+                		<div class="col-lg-12 ">                		
+                		<div class="panel panel-default">
+                			<div class="panel-body">
+                			     <div class="col-lg-12 noPaddingLeft"> 
+                			       		<div class="col-lg-5 branchclass">
+                			      		                                       
+                                        </div>
+                                        
+                                        <div class="col-lg-2 branchclass">
+                			      		   <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                               Add Manifest
+                                            </button>                                     
+                                        </div>
+                                        
+                                        <div class="col-lg-5 branchclass">
+                			      		                                       
+                                        </div>
+                                        
+                                        
+                			      </div>
+                			</div>
+                		</div>
+                		</div>
+                	</div>
+                </div> 
                 
+                
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Add Manifest</h4>
+                                        </div>
+                                        <div class="modal-body">
+										 
+										 <div class="branchclass">
+												
+												<span class="text-padding"> Driver Name</span>
+												<select class="form-control">
+													<option>--Select--</option>
+													<option>Murugan</option>
+												</select>
+										 </div>
+										 
+										  <div class="branchclass">	
+												<span> Vehicle Number</span>
+												<select class="form-control">
+													<option>--Select--</option>
+													<option>Vehicle No--</option>
+												</select>
+											
+                                         </div>
+											
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"> <i class="fa fa-times"></i> Cancel</button>
+                                            <button type="button" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
                 
               
             

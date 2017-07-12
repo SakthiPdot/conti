@@ -96,16 +96,27 @@
                 			      
                 			      <div class="col-lg-12 noPaddingLeft"> 
                 			        <div class="sec-padding">Specific Period</div>
-                			      <div class="col-lg-3 branchclass">
-                			      		<span class="text-padding">From</span>	                	                                       
-                                            <input type="text" class="form-control">
-                                           
-                			      </div>
+                			         
+                			         <div class="col-lg-3 branchclass">
+	                			      		 <span class="paddingtop">From  </span>   	                                       
+	                                          <div class="form-group input-group marginleftrightspace">
+					                                <input type="text" class="form-control"/>
+		                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
+		                                            </span>
+		                                          
+		                                     </div>
+	                                  </div>
                 			      
                 			       <div class="col-lg-3 branchclass">
-                			      		<span class="text-padding">To</span>
-                			      		   <input type="text" class="form-control">
+                			      		<span class="paddingtop">To</span>
+                			      		  <div class="form-group input-group spacemarginleftright">
+				                                <input type="text" class="form-control"/>
+	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
+	                                            </span>
+	                                          
+	                                     </div>
                 			      </div>
+                			      
                 			      </div>
                 			       
                 			       <div class="col-lg-12 noPaddingLeft subhead-padding"> 
