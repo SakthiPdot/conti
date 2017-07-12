@@ -52,12 +52,18 @@ angular.module('contiApp').controller('locationController'
 				self.Location.address=self.Location.selectedAddress;
 				console.log(self.Location.address);
 			}
+			//===================================onchange of angucomplete====================================
+			$scope.city_name=function (selected){
+				  console.log(selected);					
+				  self.Location.address=selected.originalObject;
+				  $("#selectedCity_value").val(selected.originalObject.city);	
+			}
 			
 			//===================================update Drawer====================================
 			$scope.updateLocation=function updateLocation(location,index){
 				
-				console.log(location.address, "=========="+index);
-				
+				console.log(location.address, "=========="+index);				
+				$("#selectedCity_value").val(location.address.city);				
 				self.selectedRow=location;				
 				self.Location=location;	
 				self.Location.selectedAddress=location.address;	
@@ -65,6 +71,7 @@ angular.module('contiApp').controller('locationController'
 				self.openDrawer();
 			}
 			
+			$scope.$broadcast('angucomplete-alt:clearInput');
 			//===================================open Drawer====================================
 			function openDrawer(){
 				
@@ -76,6 +83,8 @@ angular.module('contiApp').controller('locationController'
 				drawerOpen('.drawer');
 			}
 			//===================================fetch Address====================================
+			
+			
 			function fetchAddressDetail(){
 				
 				AddressService.fetchAddress()
@@ -90,34 +99,42 @@ angular.module('contiApp').controller('locationController'
 			
 			//======================================submit======================================
 			function submit(){
-				console.log($(this).data("id") +"id");
-				delete self.Location.selectedAddress;
-				var locationName=self.Location.location_name;
-				if(self.Location.location_id==null){
-					console.log('saving user',self.Location);
-					LocationService.saveLocation(self.Location)
-					.then(
-							function(response){
-								self.message =locationName+ "  Location Created..!";
-								successAnimate('.success');								
-								newOrClose();							
-							},function(errResponse){
-								self.message = "Error While Creating Location ("+locationName+") ..!";
-								successAnimate('.failure');
-							});					
-				}else{
-					console.log('Updating user',self.Location);
-					LocationService.updateLocation(self.Location,self.Location.location_id)	
-					.then(
-							function(response){
-								self.message =locationName+ "  Location Updated..!";
-								successAnimate('.success');								
-								newOrClose();	
-							},function(errResponse){
-								self.message = "Error While Updating Location ("+locationName+") ..!";
-								successAnimate('.failure');
-							});	
-				}
+				 if ($('#city_id').val() == '' || $('#city_id').val() == null) {					 
+					  $('#selectedCity_value').focus();
+				  }else if($('#stateValue').val() == '' || $('#stateValue').val() == null){
+					  $('#selectedCity_value').focus();
+				  } else{
+				  
+					  console.log($(this).data("id") +"id");
+						delete self.Location.selectedAddress;
+						var locationName=self.Location.location_name;
+						if(self.Location.location_id==null){
+							console.log('saving user',self.Location);
+							LocationService.saveLocation(self.Location)
+							.then(
+									function(response){
+										self.message =locationName+ "  Location Created..!";
+										successAnimate('.success');								
+										newOrClose();							
+									},function(errResponse){
+										self.message = "Error While Creating Location ("+locationName+") ..!";
+										successAnimate('.failure');
+									});					
+						}else{
+							console.log('Updating user',self.Location);
+							LocationService.updateLocation(self.Location,self.Location.location_id)	
+							.then(
+									function(response){
+										self.message =locationName+ "  Location Updated..!";
+										successAnimate('.success');								
+										newOrClose();	
+									},function(errResponse){
+										self.message = "Error While Updating Location ("+locationName+") ..!";
+										successAnimate('.failure');
+									});	
+						}
+				  }
+				
 			}
 			
 			//===========================CHECK SAVEANDCLOSE or SAVEANDNEW============
@@ -127,6 +144,7 @@ angular.module('contiApp').controller('locationController'
 					 drawerClose('.drawer') ;
 				}
 				reset();
+				fetchAllLocation();
 			}
 			
 			$scope.reset = function(){
@@ -183,6 +201,8 @@ angular.module('contiApp').controller('locationController'
 				$scope.locationForm.$setPristine();
 				self.heading="Master";
 				self.save="saveclose";
+				self.Location={};				
+				$("#selectedCity_value").val(null);
 			}
 			
 

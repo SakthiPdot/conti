@@ -1,4 +1,4 @@
-package com.conti.product;
+package com.conti.master.product;
 
 import java.util.List;
 
