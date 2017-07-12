@@ -41,8 +41,10 @@
 	      	      <input class="form-control" placeholder="Username" id="username" name="username" type="text" autofocus />
 	      		  <input class="form-control" placeholder="Password" id="password" name="password" type="password" value="">
 	     	      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	     	      <button>Login</button>
-	     		  <p class="message">Forgot <a href="forgot_password">Password</a> / <a href="forgot_username">User name</a></p>
+	     	      <button>LOGIN</button>
+	     	      <!-- <a href="forgot_password"><button class="forgot-button" style="width: 45%;">Forgot Password</button></a>  
+	     	      <a href="forgot_username"><button class="forgot-button1" style="width: 45%;">Forgot Username</button></a> -->
+	     		   <p class="message">Forgot <a href="forgot_password">Password</a> / <a href="forgot_username">User name</a></p>
 	     		  
 	    </form>
 	    
