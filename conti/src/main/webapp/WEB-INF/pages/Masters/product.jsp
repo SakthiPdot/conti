@@ -30,12 +30,12 @@
 	 <link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	  <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 
-	 	
-	 
 	
- 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
-	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>
-	<script type="text/javascript" src="resources/custom/js/app.js"></script>
+	 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="resources/custom/js/app.js"></script>
 	 
 </head>
 
@@ -329,10 +329,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 															<li data-ng-click="proctrl.makeActive()"><a>Active</a></li>
 															<li data-ng-click="proctrl.makeInActive()"><a>InActive</a></li>
 														</ul>
-
 													</div>
-
-
 												</div>
 											</div>
 

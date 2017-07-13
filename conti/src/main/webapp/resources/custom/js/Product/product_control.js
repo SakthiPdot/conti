@@ -129,6 +129,10 @@ angular.module('contiApp').controller('productController',
 
 		if(hitController){
 			console.log(active_id);
+			ConfirmDialogService.confirmBox("Active",
+    				BootstrapDialog.TYPE_SUCCESS, "Make Records Active  ..?", 'btn-success')
+    		.then(function(response){
+    			
 			ProductService.changeActive(active_id,"Active")
 			.then(
 					function(response){
@@ -136,6 +140,7 @@ angular.module('contiApp').controller('productController',
 					},function(errRespone){
 						console.log("error making product active"+errResponse);
 					});
+    		});
 		}
 		
 		
@@ -171,6 +176,10 @@ angular.module('contiApp').controller('productController',
 
 			if(hitController){
 				console.log(In_active_id);
+				ConfirmDialogService.confirmBox("InActive",
+	    				BootstrapDialog.TYPE_WARNING, "Make Records InActive  ..?", 'btn-warning')
+	    		.then(function(response){
+	    			
 				ProductService.changeActive(In_active_id,"InActive")
 				.then(
 						function(response){
@@ -178,6 +187,7 @@ angular.module('contiApp').controller('productController',
 						},function(errRespone){
 							console.log("error making product InActive"+errResponse);
 						});
+	    		});
 			}
 			
 			
