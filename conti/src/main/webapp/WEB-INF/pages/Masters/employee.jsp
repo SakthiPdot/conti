@@ -39,7 +39,7 @@
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
 	 
-<<<<<<< HEAD
+
 <!--  <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script> -->
 
 <!--  <script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>  -->
@@ -52,14 +52,10 @@
   <script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
    <script src="resources/custom/js/app.js"></script>
-=======
     <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script> 
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>    
     <script src="resources/custom/js/app.js"></script>
-    
-    
->>>>>>> branch 'master' of https://github.com/Pointdot2017/conti.git
 </head>
 
 
