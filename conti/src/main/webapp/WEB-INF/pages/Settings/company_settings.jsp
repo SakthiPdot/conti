@@ -213,9 +213,6 @@
 									              pause="0"										              
 									  			  data-trigger="focus" data-toggle="popover"
 							 					  data-placement="top" data-content="Please Enter Location"
-									              field-required="true"
-									              input-name="selectedlocation"
-									              field-required-class="selectedlocation"
 									              selected-object="location_name"
 									              local-data="comctrl.Locations"
 									              search-fields="location_name,address.city,address.state,pincode"
@@ -227,7 +224,7 @@
 									              </div>
 							
 								              
-              				<input type="text"  
+              				<input type="hidden"  
 								class="form-control"								
 								id="locationId"
 								value="{{location_name.originalObject}}">
@@ -456,7 +453,7 @@
 		<sec:authorize access="hasRole('STAFF')">
 	 		</fieldset>
 	 	</sec:authorize>
-
+       
 		</form>
 
 		</div>

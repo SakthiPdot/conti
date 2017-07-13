@@ -54,22 +54,20 @@ angular.module('contiApp')
 	
 	$('#companyImageHide').hide();
     $('#companyImage').show();
-	 
+	
+  //===================================onchange of angucomplete====================================
     $scope.location_name = function (selected) {
 	    console.log(selected); 
 	    //value=JSON.parse(selected);
-	    self.value=selected;
-
+	    self.value=selected;	    
 		$('#locationId').val(JSON.stringify( self.value.originalObject));
 		$('#loccity').val( self.value.originalObject.address.city);
-		$('#state').val( self.value.originalObject.address.state);
+		$('#state').val( self.	value.originalObject.address.state);
 		$('#country').val( self.value.originalObject.address.country);
 		$('#pincode').val( self.value.originalObject.pincode);	
 	};	
 	
-    self.onAnguCompleteChange=function onAnguCompleteChange(val){
-    	console.log("123"+val);
-    }
+    
     
 	$scope.setFile = function(element) {
 		  $scope.currentFile = element.files[0];

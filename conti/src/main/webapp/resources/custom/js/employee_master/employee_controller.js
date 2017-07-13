@@ -8,8 +8,13 @@
  * @Updated_date_time Jun 26, 2017 12:59:17 PM
  */
 
+<<<<<<< HEAD
 
 contiApp.controller('EmployeeController', ['$scope','$q','$timeout', '$window','EmployeeService', 'BranchService', 'LocationService', 'ConfirmDialogService', function($scope, $q, $timeout,  $window, EmployeeService, BranchService, LocationService, ConfirmDialogService){
+=======
+contiApp.controller('EmployeeController', ['$scope', '$timeout','LocationService', 'ConfirmDialogService', function($scope, $timeout, EmployeeService, BranchService, LocationService, ConfirmDialogService)
+	{
+>>>>>>> branch 'master' of https://github.com/Pointdot2017/conti.git
 	
 	var self = this;
 	self.employees = [];
