@@ -1,13 +1,17 @@
 package com.conti.master.branch;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+import com.conti.master.location.Location;
 
 /**
  * @Project_Name conti
@@ -21,8 +25,9 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @Table(name = "m_branch")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BranchModel {
-	int branch_id, location_id, updated_by, created_by;
+	int branch_id,  branch_mobileno, updated_by, created_by;
 	String branch_name, branch_code, branch_contactperson, branch_email, lrno_prefix, receiptno_prefix, created_datetime, updated_datetime, obsolete, active;
+	
 	
 	
 	@Id
@@ -33,13 +38,23 @@ public class BranchModel {
 	public void setBranch_id(int branch_id) {
 		this.branch_id = branch_id;
 	}
-	@Column(name = "location_id")
-	public int getLocation_id() {
-		return location_id;
+	
+	
+public Location location;
+	
+
+	@JoinColumn(name = "location_id")	 
+	@OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	public Location getLocation() {
+		return location;  
 	}
-	public void setLocation_id(int location_id) {
-		this.location_id = location_id;
-	}
+	public void setLocation(Location location) {
+		this.location = location;
+	}	
+		
+		
+		
+	
 	@Column(name = "updated_by")
 	public int getUpdated_by() {
 		return updated_by;
@@ -54,6 +69,14 @@ public class BranchModel {
 	public void setCreated_by(int created_by) {
 		this.created_by = created_by;
 	}
+	@Column(name = "branch_mobileno")
+	public int getBranch_mobileno() {
+		return branch_mobileno;
+	}
+	public void setBranch_mobileno(int branch_mobileno) {
+		this.branch_mobileno = branch_mobileno;
+	}
+	
 	@Column(name = "branch_name")
 	public String getBranch_name() {
 		return branch_name;
@@ -61,6 +84,7 @@ public class BranchModel {
 	public void setBranch_name(String branch_name) {
 		this.branch_name = branch_name;
 	}
+	
 	@Column(name = "branch_code")
 	public String getBranch_code() {
 		return branch_code;

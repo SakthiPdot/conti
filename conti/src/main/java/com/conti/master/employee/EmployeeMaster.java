@@ -57,7 +57,7 @@ public class EmployeeMaster /*implements Serializable*/{
 	@JoinColumn(name = "location_id")	 
 	@OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	public Location getLocation() {
-		return location;
+		return location;  
 	}
 	public void setLocation(Location location) {
 		this.location = location;

@@ -8,11 +8,14 @@
  * @Updated_date_time Jun 26, 2017 12:59:17 PM
  */
 
-contiApp.controller('EmployeeController', ['$scope', '$timeout', 'EmployeeService', 'BranchService', 'LocationService', 'ConfirmDialogService', function($scope, $timeout, EmployeeService, BranchService, LocationService, ConfirmDialogService){
+
+contiApp.controller('EmployeeController', ['$scope','$q','$timeout', '$window','EmployeeService', 'BranchService', 'LocationService', 'ConfirmDialogService', function($scope, $q, $timeout,  $window, EmployeeService, BranchService, LocationService, ConfirmDialogService){
+	
+
 	
 	var self = this;
 	self.employees = [];
-	
+
 	self.employee = {
 				
 /*			   emp_id : null,
@@ -44,17 +47,26 @@ contiApp.controller('EmployeeController', ['$scope', '$timeout', 'EmployeeServic
 	self.updateEmployee = updateEmployee;
 	self.close = close;
 	self.clear = clear;
+	self.empSelect = empSelect;
+	self.empSelectall = empSelectall;
+	self.makeActive = makeActive;
+	self.makeinActive = makeinActive;
+	self.print = print;
+	
+	self.selected_employee = [];
 	self.confirm_title = 'Save';
 	self.confirm_type = 'TYPE_SUCCESS';
 	self.confirm_msg = self.confirm_title+ ' ' + self.employee.emp_name + ' employee?';
 	self.confirm_btnclass = 'btn-success';
 	//self.selectedBranch = selectedBranch;
-	
+
 	fetchAllEmployees();
 	fetchEmpCat();
 	fetchAllBranches();
 	fetchAllLocations();
+
 	
+	console.log($scope.$root.printEmp);
 	function reset () {
 		   self.employee = {};
 		   $('#empcategory_value').val('');
@@ -103,7 +115,8 @@ contiApp.controller('EmployeeController', ['$scope', '$timeout', 'EmployeeServic
 					function (employee) {
 						self.employees = employee;
 						/*fetchAllBranches();
-						fetchAllLocations();	*/				
+						fetchAllLocations();	*/	
+						pagination();
 					}, 
 					function (errResponse) {
 						console.log('Error while fetching employees');
@@ -118,8 +131,7 @@ contiApp.controller('EmployeeController', ['$scope', '$timeout', 'EmployeeServic
 		BranchService.fetchAllBranches()
 			.then(
 					function (branches) {
-						self.branches = branches;
-						console.log(branches);						
+						self.branches = branches;				
 					}, 
 					function (errResponse) {
 						console.log('Error while fetching branches');
@@ -135,8 +147,7 @@ contiApp.controller('EmployeeController', ['$scope', '$timeout', 'EmployeeServic
 		LocationService.fetchAllLocation()
 			.then(
 					function (locations) {
-						self.locations = locations;
-						console.log(locations);						
+						self.locations = locations;				
 					}, 
 					function (errResponse) {
 						console.log('Error while fetching branches');
@@ -173,7 +184,7 @@ contiApp.controller('EmployeeController', ['$scope', '$timeout', 'EmployeeServic
 	//===========================on save button click set value as SAVEANDCLOSE or SAVEANDNEW end============	
 	
 	function newOrClose(){
-		console.log(self.save);				
+		
 		if(self.save== "saveclose" ){
 			 drawerClose('.drawer') ;
 		}
@@ -279,7 +290,6 @@ contiApp.controller('EmployeeController', ['$scope', '$timeout', 'EmployeeServic
     							self.employee.branch_id = $("#branch_id").val();
     			 	    		self.employee.empcategory = $("#empcategory_value").val();  
     			 	    		self.employee.location = JSON.parse($("#location_id").val());    	
-    			 	    		console.log(self.employee);
     			 	        	createEmployee(self.employee);  
     			 	        	reset();
     			 	        	window.setTimeout( function(){	 	        		
@@ -296,7 +306,7 @@ contiApp.controller('EmployeeController', ['$scope', '$timeout', 'EmployeeServic
     			self.confirm_title = 'Update';
     			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
     			self.confirm_msg = self.confirm_title+ ' ' + self.employee.emp_name + ' employee?';
-    			self.confirm_btnclass = 'btn-warning';
+    			self.confirm_btnclass = 'btn-success';
     			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
     				.then(
     						function (res) {
@@ -356,12 +366,11 @@ contiApp.controller('EmployeeController', ['$scope', '$timeout', 'EmployeeServic
 						EmployeeService.deleteEmployee(self.employee.emp_id)
 						.then(
 								function (employee) {
+									self.employees.splice(employee,1);
 									self.message =employee.emp_name+ " employee Deleted..!";
 									successAnimate('.success');
 									newOrClose();
-									self.employees.splice(employee,1);
-									console.log(employee);	
-									console.log(self.employees);	
+									
 								}, 
 								function (errResponse) {
 					                console.error('Error while Delete employee' + errResponse );
@@ -374,4 +383,173 @@ contiApp.controller('EmployeeController', ['$scope', '$timeout', 'EmployeeServic
     }
     
   //------------------------- delete employee end ---------------------//
+    
+    //------------------------- Register select begin ------------------//
+    function empSelect(employee){
+    	(employee.select)? self.selected_employee.push(employee) : self.selected_employee.splice(employee, 1);    		  	
+
+    }
+    //------------------------- Register select end ------------------//
+    //------------------------- Register select all begin ------------------//   
+    function empSelectall() {
+
+    		angular.forEach(self.employees, function(employee){
+        		employee.select = $scope.selectall;
+        	});
+        	
+        	self.selected_employee = self.employees;
+        
+    }
+    //------------------------- Register select all end ------------------//       
+    
+    //-------------------------- Make Active begin ----------------------//
+    function makeActive(){
+   	if(self.selected_employee.length == 0 ) {
+	   		self.message ="Please select atleast one record..!";
+			successAnimate('.failure');
+    	} else {
+    		var activate_flag = 0;
+    		angular.forEach(self.selected_employee, function(employee){
+    			if(employee.active == 'Y') {
+    				activate_flag = 1;
+    			} 
+    			
+    		});
+    		if(activate_flag == 1) {
+				self.message ="Selected record(s) already in active status..!";
+				successAnimate('.failure');
+    			
+    		} else {
+    			var active_id = [];
+    			for(var i=0; i<self.selected_employee.length; i++) {
+    				active_id[i] = self.selected_employee[i].emp_id;    				
+    			}
+				EmployeeService.makeActive(active_id)
+					.then(
+							function(response) {
+								fetchAllEmployees();
+								self.selected_employee = [];
+								self.message ="Selected record(s) has in activat status..!";
+								successAnimate('.success');
+							}, function(errResponse) {
+								console.log(errResponse);    								
+							}
+						);
+    		}
+
+
+    	}
+    	
+    }
+    //-------------------------- Make Active end ----------------------//    
+    
+    
+  //-------------------------- Make inActive begin ----------------------//
+    function makeinActive(){
+   	if(self.selected_employee.length == 0 ) {
+	   		self.message ="Please select atleast one record..!";
+			successAnimate('.failure');
+    	} else {
+    		var inactivate_flag = 0;
+    		angular.forEach(self.selected_employee, function(employee){
+    			if(employee.active == 'N') {
+    				inactivate_flag = 1;
+    			} 
+    			
+    		});
+    		if(inactivate_flag == 1) {
+				self.message ="Selected record(s) already in inactive status..!";
+				successAnimate('.failure');
+    			
+    		} else {
+    			var inactive_id = [];
+    			for(var i=0; i<self.selected_employee.length; i++) {
+    				inactive_id[i] = self.selected_employee[i].emp_id;        				
+    			}
+				EmployeeService.makeinActive(inactive_id)
+					.then(
+							function(response) {
+								fetchAllEmployees();
+								self.selected_employee = [];
+								self.message ="Selected record(s) has in inactive status..!";
+								successAnimate('.success');
+							}, function(errResponse) {
+								console.log(errResponse);    								
+							}
+						);
+    		}
+
+
+    	}
+    	
+    }
+    //-------------------------- Make inActive end ----------------------//   
+    
+    //-------------------------- Pagnation begin -----------------------//
+    
+    function pagination() {
+        
+    	$scope.viewby = 10;
+		$scope.totalItems = self.employees.length;
+		$scope.currentPage = 1;
+		$scope.itemsPerPage = $scope.viewby;
+		$scope.maxSize = 2; //Number of pager buttons to show
+			
+		$scope.setPage = function (pageNo) {
+			$scope.currentPage = pageNo;
+		  };
+
+		  $scope.pageChanged = function() {
+			console.log('Page changed to: ' + $scope.currentPage);
+		  };
+
+		  $scope.setItemsPerPage = function(num) {
+			  $scope.itemsPerPage = num;
+			  $scope.currentPage = 1; //reset to first paghe
+		}
+		
+    }
+
+   /* $scope.$watch('currentPage', function(){
+    	console.log($scope.currentPage);
+    });*/
+/*	$timeout(function() { 
+		fetchAllEmployees();		
+	}, 2, false);	
+	
+	$timeout(function(){
+		pagination();
+		console.log($scope.totalItems);
+	},150, false);*/
+    //-------------------------- Pagnation end -----------------------//	
+    
+    //-------------------------------------- Print begin -----------------------------//
+    function print() {
+    	if(self.selected_employee.length == 0 ) {
+	   		self.message ="Please select atleast one record..!";
+			successAnimate('.failure');
+    	} else {
+    			/*var print_id = [];
+    			for(var i=0; i<self.selected_employee.length; i++) {
+    				print_id[i] = self.selected_employee[i].emp_id;        				
+    			}
+				EmployeeService.print(print_id)
+					.then(
+							function(response) {
+								fetchAllEmployees();
+								self.selected_employee = response;	
+								console.log(response);
+							}, function(errResponse) {
+								console.log(errResponse);    								
+							}
+						);*/
+    			$scope.$root.printEmp = self.selected_employee;
+    			console.log("inside print");
+    			console.log($scope.$root.printEmp);
+    			/*$window.location.href = 'listprint'; */
+    	}
+    }
+    
+    //-------------------------------------- Print end -----------------------------//
+	
 }]);

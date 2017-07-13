@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
@@ -11,8 +12,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-       <meta name="_csrf" content="${_csrf.token}"/>
-   <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     
     <title>  ${title}</title>
     <!-- Bootstrap Styles-->
@@ -38,11 +39,23 @@
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
 	 
- <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
+
+<!--  <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script> -->
+
+<!--  <script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>  -->
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script> -->
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	
+	<!-- <script src="resources/built-in/js/angular-route.js"></script> -->
+	   <script src = "https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.js"></script>
+  <script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+   <script src="resources/custom/js/app.js"></script>
+    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script> 
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>    
-
-   <script src="resources/custom/js/app.js"></script>
+    <script src="resources/custom/js/app.js"></script>
 </head>
 
 
@@ -340,6 +353,9 @@
 	
 	<jsp:include page="../Dashboard/nav.jsp"/>
 	
+	
+ 		
+ 	<sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
       
@@ -371,9 +387,8 @@
 									Batch Action <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a href="#">Email</a></li>
-									<li><a id="deletearchieve">Archive</a></li>
-
+									<li><a data-ng-click = "ctrl.makeActive()">Active</a></li>
+									<li><a data-ng-click = "ctrl.makeinActive()">In Active</a></li>
 								</ul>
 								<!--<button type="button" class="btn btn-primary">Filter</button>-->
 							</div>
@@ -386,17 +401,17 @@
                                    <div class="pull-right">
                                      <button type="button" class="btn btn-info"><i class="fa fa-cog fa-lg"></i></button>
                                       <button type="button" class="btn btn-info"><i class="fa fa-file-excel-o fa-lg"></i></button>
-                                      <button type="button" class="btn btn-info"><i class="fa fa-print fa-lg"></i></button>
+                                      <button type="button" class="btn btn-info" data-ng-click="ctrl.print()"><i class="fa fa-print fa-lg"></i></button>
                                 	</div>
                                 </div>
                               </div>
                             </div>
-                          
                              
                             
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
+                                        	<th><input type="checkbox" data-ng-click="ctrl.empSelectall()" data-ng-model = "selectall" /></th>
                                             <th>S.No</th>
                                             <th>Employee Name</th>
                                             <th>Employee Code</th>
@@ -407,29 +422,43 @@
                                             <th>Email</th>
                                             <th>Date of Birth</th>
                                             <th>Date of Joining</th>
+                                            <th>Active</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr
-                                        	data-ng-repeat = "emp in ctrl.employees | orderBy : 'emp_name'"
+                                        	data-ng-repeat = "emp in ctrl.employees.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage)) | orderBy : 'emp_name'"
                                         	data-ng-dblclick="ctrl.updateEmployee(emp)">
-                                            <td>{{$index+1}}</td>
+                                        	<td><input type="checkbox" data-ng-change="ctrl.empSelect(emp)" data-ng-model = "emp.select" /></td>
+                                            <td>{{(currentPage*10)-(10-($index+1))}}</td>
                                             <td>{{emp.emp_name}}</td>
                                             <td>{{emp.emp_code}}</td>
                                             <td>{{emp.empcategory}}</td>
-                                            <td>{{emp.branch_id}}</td>
-                                            <td>{{emp.emp_address}}</td>
+                                            <td>{{emp.branchModel.branch_name}}</td>
+                                            <td>{{emp.emp_address1}}, {{emp.emp_address2}}, 
+                                            	{{emp.location.location_name}}, {{emp.location.address.city}}, 
+                                            	{{emp.location.address.district}}, {{emp.location.address.state}}, {{emp.location.address.pincode}}</td>
                                             <td>{{emp.emp_phoneno}}</td>
                                             <td>{{emp.emp_email}}</td>
                                             <td>{{emp.dob}}</td>
                                             <td>{{emp.doj}}</td>
+                                            <td>{{emp.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
                                        
                                  
                                     </tbody>
                                 </table>
+                                
+                                <div class="col-lg-6 icons-button">
+                                   <div class="pull-right">
+                                   		<!-- <ul>
+                                   		<li></li>
+                                   		</ul> -->
+                                     	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage"></pagination> 
+                                	</div>
+                                </div>
                             </div>
-                           
+
                         </div>
                     </div>
                     <!--End Advanced Tables -->
@@ -441,8 +470,34 @@
         <!-- /. PAGE WRAPPER  -->
 		
     </div>
+    </sec:authorize>
     <!-- /. WRAPPER  -->
-
+    <sec:authorize access="hasRole('STAFF')">
+	    <div id="wrapper">        	  
+			<div id="page-wrapper"> 
+				<div class="header "> 
+		             <div class="page-header header-size">
+		                 	  <b>${title}</b>		                 	 
+		             </div>	   
+             	</div>	
+             	
+             	<div id="page-inner">  
+					<div class="row">
+                		<div class="col-md-12">
+                			 <div class="panel panel-default">
+		                        <div class="panel-heading">
+		                             Employees Register
+		                        </div>
+		                        <div class="panel-body">
+		                        	Sorry..! You have no authorized for view this master..!
+		                        </div>
+		                      </div>
+                		</div>
+                	</div>
+                </div>		
+			 </div>
+		</div>
+	</sec:authorize>
 
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/employee_master/employee_controller.js"></script>

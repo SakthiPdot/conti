@@ -28,8 +28,7 @@
 		  font-size: 14px;
 		}
 		.form button, .goback {
-		  font-family: "Roboto", sans-serif;
-		  text-transform: uppercase;
+		  font-family: "Roboto", sans-serif;		  
 		  outline: 0;
 		  background: #00aff0;
 		  width: 100%;
@@ -89,6 +88,24 @@
 		.container .info span .fa {
 		  color: #EF3B3A;
 		}
+		
+		.forgot-button{
+		
+			margin-top:15px;
+			width: 45%;
+            float: left;
+            margin-right: 10%;
+		}
+		.forgot-button1{
+		  margin-top:15px;
+			width: 45%;
+		}
+		
+		.buttonlink{
+			text-decoration: none;
+            color: white;
+		}
+		
 		body {
 		  background: #76b852; /* fallback for old browsers */
 		  background: -webkit-linear-gradient(right, #00aff0, #00aff0);
