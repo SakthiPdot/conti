@@ -3,5 +3,5 @@
  */
 
 'use strict';
-var contiApp = angular.module('contiApp', ['angucomplete-alt']);
+var contiApp = angular.module('contiApp', ['ui.bootstrap', 'angucomplete-alt']);
 
