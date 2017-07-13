@@ -48,7 +48,7 @@
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
 	
 	<!-- <script src="resources/built-in/js/angular-route.js"></script> -->
-	   <script src = "https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.js"></script>
+	<!--    <script src = "https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.js"></script> -->
   <script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
    <script src="resources/custom/js/app.js"></script>
