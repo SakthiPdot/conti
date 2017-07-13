@@ -99,7 +99,7 @@
 	 		
 	 		 var token = $("meta[name='_csrf']").attr("content");
 	 		 var header = $("meta[name='_csrf_header']").attr("content");
-	 		 alert("call force_logout");
+
 	 		 $.ajax({
 	 		        url : 'logout',
 	 		        type : 'POST',
@@ -123,13 +123,13 @@
 		 
 			window.onbeforeunload = function(e) {	
 				console.log(e);
-				
 	 	        if( !valid ){
-	 	        	force_logout();
+	 	        	//force_logout();
 	 	        }
 	 	       } 
 			 
 			$("button").on("click", function() {
+				console.log(valid);
 		 		  valid = true;			
 		 		}); 
 			
@@ -141,6 +141,10 @@
 	 		  valid = true;			
 	 		}); 
 	 	  
+	 	 $("form").submit(function (e) {
+	 		 valid = true;	
+	 	});
+	 	 
 	 		  $(document.body).on("keydown", this,
 	 		     function (event) {
 	 			  

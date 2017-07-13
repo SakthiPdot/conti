@@ -401,7 +401,13 @@
                                    <div class="pull-right">
                                      <button type="button" class="btn btn-info"><i class="fa fa-cog fa-lg"></i></button>
                                       <button type="button" class="btn btn-info"><i class="fa fa-file-excel-o fa-lg"></i></button>
-                                      <button type="button" class="btn btn-info" data-ng-click="ctrl.print()"><i class="fa fa-print fa-lg"></i></button>
+                                      
+                                      <form name="listprint" method = "POST" action = "employee_print" >
+	                                      <button type="submit" class="btn btn-info"><i class="fa fa-print fa-lg"></i></button>
+	                                      <input type = "hidden" name = "emp" value = "{{ctrl.selected_employee}}" />
+	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                      </form>
+                                      
                                 	</div>
                                 </div>
                               </div>
@@ -499,6 +505,13 @@
 		</div>
 	</sec:authorize>
 
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script> -->
+
+<!-- 	<script src="resources/libs/jspdf.min.js"></script>
+	<script src="resources/libs/jspdf.plugin.autotable.src.js"></script>		
+	<script src="resources/libs/examples.js"></script>   -->
+
+
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/employee_master/employee_controller.js"></script>
   <script src="resources/custom/js/employee_master/employee_service.js"></script>
@@ -508,6 +521,7 @@
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
   <!-- Custom Js -->
 
+ 	  
 <script>$('[data-toggle="popover"]').popover();</script>
 </body>
 

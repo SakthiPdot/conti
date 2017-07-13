@@ -9,7 +9,7 @@
  */
 
 
-contiApp.controller('EmployeeController', ['$scope','$q','$timeout', '$window','EmployeeService', 'BranchService', 'LocationService', 'ConfirmDialogService', function($scope, $q, $timeout,  $window, EmployeeService, BranchService, LocationService, ConfirmDialogService){
+contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$window','EmployeeService', 'BranchService', 'LocationService', 'ConfirmDialogService', function($http, $scope, $q, $timeout,  $window, EmployeeService, BranchService, LocationService, ConfirmDialogService){
 	
 
 	
@@ -386,8 +386,8 @@ contiApp.controller('EmployeeController', ['$scope','$q','$timeout', '$window','
     
     //------------------------- Register select begin ------------------//
     function empSelect(employee){
-    	(employee.select)? self.selected_employee.push(employee) : self.selected_employee.splice(employee, 1);    		  	
-
+    	var index = self.selected_employee.indexOf(employee);
+    	(employee.select)? self.selected_employee.push(employee) : self.selected_employee.splice(index, 1);    		  	
     }
     //------------------------- Register select end ------------------//
     //------------------------- Register select all begin ------------------//   
@@ -396,8 +396,7 @@ contiApp.controller('EmployeeController', ['$scope','$q','$timeout', '$window','
     		angular.forEach(self.employees, function(employee){
         		employee.select = $scope.selectall;
         	});
-        	
-        	self.selected_employee = self.employees;
+    		self.selected_employee=$scope.selectall?self.employees:[];
         
     }
     //------------------------- Register select all end ------------------//       
@@ -543,10 +542,25 @@ contiApp.controller('EmployeeController', ['$scope','$q','$timeout', '$window','
 								console.log(errResponse);    								
 							}
 						);*/
-    			$scope.$root.printEmp = self.selected_employee;
+    			/*$scope.$root.printEmp = self.selected_employee;
     			console.log("inside print");
-    			console.log($scope.$root.printEmp);
+    			console.log($scope.$root.printEmp);*/
     			/*$window.location.href = 'listprint'; */
+    		
+    		/*var doc = new jsPDF();
+    		var specialElementHandlers = {
+    		    '#dataTables-example': function (element, renderer) {
+    		        return true;
+    		    }
+    		};
+    		
+    		 doc.fromHTML($('#dataTables-example').html(), 15, 15, {
+    		        'width': 170,
+    		            'elementHandlers': specialElementHandlers
+    		    });
+    		    doc.save('sample-file.pdf');*/
+    		console.log(self.selected_employee);
+    		$http.get('http://localhost:8080/Conti/listprint');
     	}
     }
     

@@ -43,9 +43,9 @@
 	   <script src="resources/custom/js/app.js"></script>
    
    
-	    <title> Print-PDF</title>
+	    <title>Conti - ${title} - PDF</title>
 	    <style>
-           /*    * {
+                * {
             box-sizing: border-box;
         }
 
@@ -115,18 +115,18 @@
             width: 100%;
             height: 100%;
             background: rgba(193, 193, 193, 1);
-        }    */
+        }     
     </style>
 	    
     </head>
     <body data-ng-app = "contiApp" data-ng-controller = "EmployeeController as ctrl">
     
-    {{ctrl.printEmp}}
-    {{ctrl.employee}}
+   
+
 			<div class="pure-g" style="height: 100%;">
 			    <div id="panel" class="pure-u-1 pure-u-md-1-5">
 			        <ul class="menu" >
-			            <li style="color:white;">title</li>
+			            <li style="color:white;">Conti</li>
 			        </ul>
 			        <button id="download-btn" class="pure-button">Download PDF</button>
 			        <button id="clearback" class="pure-button">Back</button>
@@ -167,12 +167,13 @@
 					</div>
 				
 				
-				Company master<div id="companyname">company name</div>
-				<div id="area">area</div>
+				
+				Company master<div id="companyname">${company.company_name}</div>
+				<div id="area">${company.company_address1}, ${company.company_address2}</div>
 				<div id="street">street</div>
-				<div id="city">city</div>
-				<div id="phoneno">phoneno</div>
-				<div id="title">title Details</div>
+				<div id="city">${company.location.address.city}</div>
+				<div id="phoneno">${company.company_landlineno}</div>
+				<div id="title">${title}</div>
 				<div id="logo">${image}</div>
 			
 			
@@ -188,21 +189,24 @@
 	               <thead>	    
 	        				 <tr>
 	                            <th>S.No</th>
-	                            <th>Category Name</th>	                                 
+	                            <th>Employee Name</th>
+	                            <th>Employee code</th>	                                 
+	                            <th>Employee Category</th>
+	                            <th>DOJ</th>
 	                        </tr>	                        
 	                    </thead>
 	                    <tbody>
 	                    
-	                 <%--    <c:forEach var="category" items="${itemcategoryl}" varStatus="loop">	                    
+	                    <c:forEach var="emp" items="${listEmp}" varStatus="loop">	                    
 	                        <tr>
                               	<td><c:out value="${loop.count}" />
-                                <td>${category.itemcategory_name}</td>                   
-                                                      
+                                <td>${emp.emp_name}</td>                   
+                               <td>${emp.emp_code}</td> 
+                               <td>${emp.empcategory}</td> 
+                               <td>${emp.doj}</td>                        
                             </tr>                           
-	                      </c:forEach> --%>
-	                      <tr><td>1</td><td>{{ctrl.employee}}</td></tr>
-	                      <tr><td>1</td><td>category name</td></tr>
-	                      <tr><td>1</td><td>category name</td></tr>
+	                      </c:forEach> 
+	                      
 	                    </tbody>
 	                </table>
 	            <%-- </c:if> --%>
@@ -241,12 +245,12 @@
 		        var doc = examples[funcStr]();
 		
 		        doc.setProperties({
-		            title: 'Broman: ' + funcStr,
+		            title: 'Conti: Employee',
 		            subject: 'Broman Master (' + funcStr + ')'
 		        });
 		
 		        if (shouldDownload) {
-		            doc.save('broman.pdf');
+		            doc.save('conti_employee.pdf');
 		        } else {
 		            document.getElementById("output").src = doc.output('datauristring');
 		        }

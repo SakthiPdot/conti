@@ -1,5 +1,6 @@
 package com.conti.master.employee;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +14,10 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonProcessingException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,6 +37,8 @@ import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.RoleDao;
 import com.conti.setting.usercontrol.UsersDao;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 
 /**
  * @Project_Name conti
@@ -49,6 +57,8 @@ public class EmployeeRestController {
 	private RoleDao roleDao;
 	@Autowired
 	private EmployeeDao employeeDao;
+	@Autowired
+	private CompanySettingDAO companySettingDAO;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
@@ -303,4 +313,32 @@ public class EmployeeRestController {
 		return model;	
 	}*/
 	
+	@RequestMapping(value = "/employee_print", method = RequestMethod.POST)
+	public ModelAndView farmPrint(@RequestParam("emp") String emp) throws JsonProcessingException, IOException{
+
+		JSONArray jsonArray = new JSONArray(emp);
+		String[] empid = new String[jsonArray.length()];
+		for(int i=0; i <jsonArray.length();i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			empid[i] = Integer.toString(jsonObject.getInt("emp_id"));			
+		}
+		
+		List<EmployeeMaster> listEmp = new ArrayList<EmployeeMaster> ();
+		for(int i=0; i<empid.length;i++) {
+			EmployeeMaster employeeModel = employeeDao.getEmployeebyId(Integer.parseInt(empid[i]));
+			listEmp.add(employeeModel);
+		}
+		Company company = companySettingDAO.getById(1);
+		ModelAndView model = new ModelAndView("print");
+		
+		byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+		String base64DataString = new String(encodeBase64 , "UTF-8");
+		
+		model.addObject("title", "Employee");
+		model.addObject("company", company);
+		model.addObject("listEmp", listEmp);
+		model.addObject("image",base64DataString);
+			
+		return model;
+	}
 }
