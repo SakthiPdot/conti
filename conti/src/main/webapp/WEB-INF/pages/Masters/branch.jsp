@@ -30,30 +30,53 @@
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
 	  <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
+	  <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
+	 
+    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script> 
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>    
+    <script src="resources/custom/js/app.js"></script>
 </head>
 
 
-<body style="overflow-x:hidden;">
- 
+<body style="overflow-x:hidden;" data-ng-app="contiApp" data-ng-controller="BranchController as ctrl">
+  <!-- ------------------------- Overlay for message begin ------------------ -----  -->
  		<div class="overlay hideme"></div>
+ 
+  <!-- ------------------------- Success message begin ------------------ -----  -->
  		
+ <!-- ------------------------- Success message begin ------------------ -----  -->
+	<div class="success hideme">
+		<i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
+	</div>
+<!-- ------------------------- Success message end ------------------ -----  -->
+<!-- ------------------------- Failure message begin ------------------ -----  -->	
+	<div class="failure hideme">
+		<i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<!-- <span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span> -->
+	</div>
+<!-- ------------------------- Failure message end ------------------ -----  -->
+ 
  		<div class="drawer hideme">
+ 		<form data-ng-submit="ctrl.submit()" name="branchForm" class="form-horizonral">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
                    <div class="col-lg-6 headerLeft">
-                   		 <b class="model-title">Branch Master</b>
+                   		 <b class="model-title">Branch {{ctrl.heading}}</b>
                    </div>
                    
                    <div class="col-lg-6 headerRight">
-                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft"></i>
+                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click="ctrl.close()"></i>
                    </div>
             
              </div>
  			</div>
                
                  
-                 
+                 <input type="hidden" data-ng-model="ctrl.branch.branch_id" />
                  <div class="model-body">
                  
                    <div class="row">
@@ -71,24 +94,35 @@
 		                <div class="col-lg-12">
 			                <div class="col-lg-12 content-body">
 			                	<span>Branch Name</span>			                	
-			                	<input type="text" class="form-control">
+			                	<input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.branch.branch_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Name">
 			                	
 			                	<span>Branch Code</span>			                	
-			                	<input type="text" class="form-control">
+			                	<input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.branch.branch_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch code">
 			                	
 			                		                	
 			                	<span>Address Line 1</span>			                	
-			                	<input type="text" class="form-control">
+			                	<input type="text" class="form-control" maxlength="100" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.branch.branch_addressline1" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 1">
 			                	
 			                	<span>Address Line 2</span>			                	
-			                	<input type="text" class="form-control">
+			                	<input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.branch.branch_addressline2" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 2">
 			                	
 			                	<span>Location</span>			                	
-			                	<select class="form-control">
-			                		<option>Peelamedu</option>
-			                		<option>RS Puram</option>
-			                		<option>Ukkadam</option>
-			                	</select>
+			                	<angucomplete-alt id="location_name" data-ng-model="ctrl.branch.location_name"
+									              placeholder="Ex : Coimbatore"
+									              pause="0"
+									              selected-object="location_name"
+									              local-data="ctrl.locations"
+									              search-fields="location_name,pincode"
+									              title-field="location_name,pincode"
+												  match-class="highlight"
+												  initial-value="{{ctrl.branch.location.location_name}}"
+									              minlength="1"
+	   											 data-trigger="focus" data-toggle="popover" 
+	   											 data-placement="top" data-content="Please Enter branch location"
+	   											 onKeyPress="return CheckIsCharacter(event)"
+									              input-class="form-control form-control-small">
+              						</angucomplete-alt>
+              						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
 			               </div>		                                
 		                </div> 
 		                
@@ -96,22 +130,21 @@
 		                
 		                <div class="col-lg-12">
 			                <div class="col-lg-6 content-body">
-			                	<span>City</span>			                	
-			                	<input type="text" class="form-control">
-			                	
-			                	<span>State</span>			                	
-			                	<input type="text" class="form-control">
-			              
-			               </div>	
+		                 	   <span>City </span>	         
+			                    <input type="text" id="city" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.city}}">
+			                    
+			                     <span>State </span>	         
+			                    <input type="text" id="state" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.state}}">
 			               
-			               <div class="col-lg-6 content-body">
-			                	<span>Country</span>			                	
-			                	<input type="text" class="form-control">
-			                	
-			                	<span>Pincode</span>			                	
-			                	<input type="text" class="form-control">
-			              
-			               </div>		                                
+			              </div> 
+			               <div class="col-lg-6 content-body">    
+			                     <span>Country </span>	         
+			                    <input type="text" id="country" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.country}}">
+			                    
+			                     <span>Pincode </span>	         
+			                    <input type="text" id="pincode" class="form-control disabled locations" tabindex="-1" minlength = "6" maxlength="6" onKeyPress="return CheckIsNumeric(event)" value="{{location_name.originalObject.pincode}}">
+			           
+			             </div> 	                                
 		                </div> 
 		                
 		                
@@ -119,15 +152,17 @@
 		                <div class="col-lg-12">
 			                <div class="col-lg-6 content-body">
 			                	<span>Contact  Person</span>			                	
-			                	<input type="text" class="form-control">
 			                	
+			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_contactperson" 
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact person" required />
 			                	
 			              
 			               </div>	
 			               
 			               <div class="col-lg-6 content-body">
 			                	<span>Contact Number</span>			                	
-			                	<input type="text" class="form-control">
+			                	<input type="text" class="form-control" minlenth="10" maxlength = "12" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_contactperson" 
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact Number" required />
 			              
 			               </div>		                                
 		                </div>
@@ -136,7 +171,8 @@
 		                <div class="col-lg-12">
 			                <div class="col-lg-12 content-body">
 			                	 <span>Contact Mail</span>			                	
-			                	<input type="text" class="form-control">
+			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_mailid" 
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Email id" required />
 			               </div>		                                
 		                </div>
 		                
@@ -144,7 +180,8 @@
 		                <div class="col-lg-12">
 			                <div class="col-lg-6 content-body">
 			                	<span>LR Invoice No Prefix</span>			                	
-			                	<input type="text" class="form-control">
+			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.LRnumber_prefix" 
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Invoice no prefix" required />
 			                	
 			                	
 			              
@@ -152,8 +189,8 @@
 			               
 			               <div class="col-lg-6 content-body">
 			                	<span>Receipt Invoice No Prefix</span>			                	
-			                	<input type="text" class="form-control">
-			              
+			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.receipt_prefix" 
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Receipt number" required />
 			               </div>		                                
 		                </div>  
 		                               
@@ -188,9 +225,9 @@
 				</div>
             </div>
  			
+ 			</form>
  			
- 			
- 		</div>
+ </div>
  
 	
 	<jsp:include page="../Dashboard/settings_nav.jsp"/>
@@ -278,125 +315,8 @@
                                             <td>LRC001</td>
                                             <td>RC008</td>
                                         </tr>
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>2</td>
-                                            <td>Coimbatore</td>
-                                            <td>cbe002</td>
-                                            <td>TownHall</td>
-                                            <td>Sekar</td>
-                                            <td>9876012589</td>
-                                            <td>Sekar@gmail.com</td>
-                                            <td>LRC008</td>
-                                            <td>RC0078</td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>3</td>
-                                            <td>Coimbatore</td>
-                                            <td>cbe002</td>
-                                            <td>Ukkadam</td>
-                                            <td>John</td>
-                                            <td>9985693214</td>
-                                            <td>john@gmail.com</td>
-                                            <td>LRC011</td>
-                                            <td>RC0044</td>
-                                        </tr>
-                                        
-                                         <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>4</td>
-                                            <td>Coimbatore</td>
-                                            <td>cbe002</td>
-                                            <td>Ukkadam</td>
-                                            <td>John</td>
-                                            <td>9985693214</td>
-                                            <td>john@gmail.com</td>
-                                            <td>LRC011</td>
-                                            <td>RC0044</td>
-                                        </tr>
-                                        
-                                         <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>5</td>
-                                            <td>Coimbatore</td>
-                                            <td>cbe002</td>
-                                            <td>Ukkadam</td>
-                                            <td>John</td>
-                                            <td>9985693214</td>
-                                            <td>john@gmail.com</td>
-                                            <td>LRC011</td>
-                                            <td>RC0044</td>
-                                        </tr>
-                                        
-                                         <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>6</td>
-                                            <td>Coimbatore</td>
-                                            <td>cbe002</td>
-                                            <td>Ukkadam</td>
-                                            <td>John</td>
-                                            <td>9985693214</td>
-                                            <td>john@gmail.com</td>
-                                            <td>LRC011</td>
-                                            <td>RC0044</td>
-                                        </tr>
-                                        
-                                         <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>7</td>
-                                            <td>Coimbatore</td>
-                                            <td>cbe002</td>
-                                            <td>Ukkadam</td>
-                                            <td>John</td>
-                                            <td>9985693214</td>
-                                            <td>john@gmail.com</td>
-                                            <td>LRC011</td>
-                                            <td>RC0044</td>
-                                        </tr>
-                                        
-                                         <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>8</td>
-                                            <td>Coimbatore</td>
-                                            <td>cbe002</td>
-                                            <td>Ukkadam</td>
-                                            <td>John</td>
-                                            <td>9985693214</td>
-                                            <td>john@gmail.com</td>
-                                            <td>LRC011</td>
-                                            <td>RC0044</td>
-                                        </tr>
-                                        
-                                         <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>9</td>
-                                            <td>Coimbatore</td>
-                                            <td>cbe002</td>
-                                            <td>Ukkadam</td>
-                                            <td>John</td>
-                                            <td>9985693214</td>
-                                            <td>john@gmail.com</td>
-                                            <td>LRC011</td>
-                                            <td>RC0044</td>
-                                        </tr>
-                                        
-                                         <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>10</td>
-                                            <td>Coimbatore</td>
-                                            <td>cbe002</td>
-                                            <td>Ukkadam</td>
-                                            <td>John</td>
-                                            <td>9985693214</td>
-                                            <td>john@gmail.com</td>
-                                            <td>LRC011</td>
-                                            <td>RC0044</td>
-                                        </tr>
                                         
                                         
-                               
-                                
                                  
                                     </tbody>
                                 </table>
@@ -415,27 +335,15 @@
         <!-- /. PAGE WRAPPER  -->
 		
     </div>
-    <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    
     
 
-    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
-      <!-- Bootstrap Js -->
-    <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Js -->
-    <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
-     <!-- DATA TABLE SCRIPTS -->
-    <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
-     <script src="resources/custom/js/custom.js"></script>
-  	<script src="resources/custom/js/session.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
-    </script>
+  <script src="resources/custom/js/custom.js"></script>
+  <script src="resources/custom/js/branch_master/branch_controller.js"></script>
+  <script src="resources/custom/js/branch_master/branch_service.js"></script>
+  <script src="resources/custom/js/Location/location_service.js"></script>
+  <script src="resources/custom/js/confirmDialog.js"></script>   
+  <script type="text/javascript" src="resources/custom/js/validation.js"></script>
+       
   
 
 </body>
