@@ -43,12 +43,7 @@ public class ProductController {
 	//======================================Excel==========================================
 	@RequestMapping(value="downloadExcelProduct",method=RequestMethod.GET)
 	public ModelAndView downloadExcelProduct(){
-		List<Product> productList=productDao.getProduct();
-	
-		/*if(productList.isEmpty()){
-			return new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT);
-		}
-		*/  
+		List<Product> productList=productDao.getProduct(); 
 		return new ModelAndView("productExcelView","ProductList",productList);
 	}
 	
@@ -57,8 +52,6 @@ public class ProductController {
 	public ResponseEntity<Void> productInActive(@RequestBody int[] idArray,@PathVariable("status") String status,HttpServletRequest request){	
 		
 		System.out.println(status+"464644");
-		System.out.println(status.trim());
-		System.out.println("InActive");
 		//intialize		
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
