@@ -419,21 +419,32 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 				successAnimate('.failure');
     			
     		} else {
-    			var active_id = [];
-    			for(var i=0; i<self.selected_employee.length; i++) {
-    				active_id[i] = self.selected_employee[i].emp_id;    				
-    			}
-				EmployeeService.makeActive(active_id)
-					.then(
-							function(response) {
-								fetchAllEmployees();
-								self.selected_employee = [];
-								self.message ="Selected record(s) has in activat status..!";
-								successAnimate('.success');
-							}, function(errResponse) {
-								console.log(errResponse);    								
-							}
-						);
+    			
+    			self.confirm_title = 'Active';
+    			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+    			self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+    			self.confirm_btnclass = 'btn-success';
+    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+    			.then(
+    					function (res) {
+    						var active_id = [];
+    		    			for(var i=0; i<self.selected_employee.length; i++) {
+    		    				active_id[i] = self.selected_employee[i].emp_id;    				
+    		    			}
+    						EmployeeService.makeActive(active_id)
+    							.then(
+    									function(response) {
+    										fetchAllEmployees();
+    										self.selected_employee = [];
+    										self.message ="Selected record(s) has in activat status..!";
+    										successAnimate('.success');
+    									}, function(errResponse) {
+    										console.log(errResponse);    								
+    									}
+    								);
+    					}
+    				);
+    			
     		}
 
 
@@ -461,21 +472,32 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 				successAnimate('.failure');
     			
     		} else {
-    			var inactive_id = [];
-    			for(var i=0; i<self.selected_employee.length; i++) {
-    				inactive_id[i] = self.selected_employee[i].emp_id;        				
-    			}
-				EmployeeService.makeinActive(inactive_id)
-					.then(
-							function(response) {
-								fetchAllEmployees();
-								self.selected_employee = [];
-								self.message ="Selected record(s) has in inactive status..!";
-								successAnimate('.success');
-							}, function(errResponse) {
-								console.log(errResponse);    								
-							}
-						);
+    			
+    			self.confirm_title = 'In-Active';
+    			self.confirm_type = BootstrapDialog.TYPE_DANGER;
+    			self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+    			self.confirm_btnclass = 'btn-danger';
+    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+    			.then(
+    						function (res) {
+    							var inactive_id = [];
+    			    			for(var i=0; i<self.selected_employee.length; i++) {
+    			    				inactive_id[i] = self.selected_employee[i].emp_id;        				
+    			    			}
+    							EmployeeService.makeinActive(inactive_id)
+    								.then(
+    										function(response) {
+    											fetchAllEmployees();
+    											self.selected_employee = [];
+    											self.message ="Selected record(s) has in inactive status..!";
+    											successAnimate('.success');
+    										}, function(errResponse) {
+    											console.log(errResponse);    								
+    										}
+    									);
+    						}
+    					);
+    			
     		}
 
 

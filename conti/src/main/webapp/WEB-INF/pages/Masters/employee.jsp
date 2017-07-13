@@ -40,22 +40,12 @@
 	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
 	 
 
-<!--  <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script> -->
-
-<!--  <script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>  -->
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
-	<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script> -->
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
-	
-	<!-- <script src="resources/built-in/js/angular-route.js"></script> -->
-	<!--    <script src = "https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.js"></script> -->
-  <script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
-   <script src="resources/custom/js/app.js"></script>
-    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
-	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script> 
-	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>    
     <script src="resources/custom/js/app.js"></script>
+
 </head>
 
 
@@ -363,7 +353,7 @@
              <div class="page-header header-size">
                  	  <b>${title}</b>
                  	  
-                 	  <button class="btn btn-info drawerOpen pull-right" onClick="drawerOpen('.drawer')" >Add New Employee</button>
+                 	  <button class="btn btn-primary drawerOpen pull-right" onClick="drawerOpen('.drawer')" >Add New Employee</button>
              </div>	   
              </div>
       		
@@ -382,7 +372,7 @@
                                <div class="col-lg-6">
                                      <div class="dataTables_length" id="dataTables-example_length">
 							<div class="dropdown">
-								<button class="btn btn-info dropdown-toggle"
+								<button class="btn btn-primary dropdown-toggle"
 									type="button" data-toggle="dropdown">
 									Batch Action <span class="caret"></span>
 								</button>
@@ -399,11 +389,11 @@
                                 
                                <div class="col-lg-6 icons-button">
                                    <div class="pull-right">
-                                     <button type="button" class="btn btn-info"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" class="btn btn-info"><i class="fa fa-file-excel-o fa-lg"></i></button>
+                                     <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
+                                      <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button>
                                       
                                       <form name="listprint" method = "POST" action = "employee_print" >
-	                                      <button type="submit" class="btn btn-info"><i class="fa fa-print fa-lg"></i></button>
+	                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
 	                                      <input type = "hidden" name = "emp" value = "{{ctrl.selected_employee}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                       </form>
