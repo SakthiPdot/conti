@@ -26,7 +26,8 @@ import com.conti.master.location.Location;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BranchModel {
 	int branch_id,  branch_mobileno, updated_by, created_by;
-	String branch_name, branch_code, branch_contactperson, branch_email, lrno_prefix, receiptno_prefix, created_datetime, updated_datetime, obsolete, active;
+	String branch_name, branch_code, branch_addressline1,branch_addressline2,branch_contactperson, branch_email, lrno_prefix, receiptno_prefix, created_datetime, updated_datetime, obsolete, active;
+	
 	
 	
 	
@@ -40,6 +41,23 @@ public class BranchModel {
 	}
 	
 	
+	@Column(name = "BRANCH_ADDRESSLINE1")
+	public String getBranch_addressline1() {
+		return branch_addressline1;
+	}
+	public void setBranch_addressline1(String branch_addressline1) {
+		this.branch_addressline1 = branch_addressline1;
+	}
+	
+	@Column(name = "BRANCH_ADDRESSLINE2")
+	public String getBranch_addressline2() {
+		return branch_addressline2;
+	}
+	public void setBranch_addressline2(String branch_addressline2) {
+		this.branch_addressline2 = branch_addressline2;
+	}
+
+
 public Location location;
 	
 

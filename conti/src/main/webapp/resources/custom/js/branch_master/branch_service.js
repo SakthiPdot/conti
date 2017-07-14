@@ -14,7 +14,7 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 	var factory = {
 			fetchAllBranches : fetchAllBranches,
 			createBranch:createBranch,
-		//	updatedBranch:updatedBranch,
+			updateBranch:updateBranch,
 			deleteBranch:deleteBranch
 			};
 	
@@ -28,8 +28,8 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 						deferred.resolve(response.data);
 					},
 					function (errResponse) {
-						console.log("Error while fetching employees"); 
-						deferred.regject(erResponse);
+						console.log("Error while fetching branches"); 
+						deferred.reject(errResponse);
 					}
 				);
 		return deferred.promise;
@@ -41,7 +41,7 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 	function createBranch(branch)
 	{
 		var deferred=$q.defer();
-		var headers=getCsrfHesder();
+		var headers=getCsrfHeader();
 		$http({
 			method:'POST',
 			url:'create_branch',
@@ -50,10 +50,11 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 		})
 		.then(function(response)
 				{
-					deferred.resolve(response.date);
+					deferred.resolve(response.data);
 				},
 				function (errResponse)
 				{
+					//console.log("save error");
 					deferred.reject(errResponse);
 				}
 			);
