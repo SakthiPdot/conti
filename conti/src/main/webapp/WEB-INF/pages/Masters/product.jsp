@@ -29,9 +29,9 @@
     
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
 	 <link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
-	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	  <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 
-	
+	  
+		 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
@@ -309,108 +309,197 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 			</div>
 
 
-			<div id="page-inner">
-				<div class="row">
-					<div class="col-md-12">
-						<!-- Advanced Tables -->
-						<div class="panel panel-default">
-							<div class="panel-heading">Product Register</div>
-							<div class="panel-body">
-								<div class="table-responsive">
-									<div class="row">
-										<div class="col-lg-12">
-											<div class="col-xs-6">
-												<div class="dataTables_length"
-													id="dataTables-example_length">
-													<div class="dropdown">
-														<button class="btn btn-primary dropdown-toggle"
-															type="button" data-toggle="dropdown">
-															Batch Action <span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu">
-															<li data-ng-click="proctrl.makeActive()"><a>Active</a></li>
-															<li data-ng-click="proctrl.makeInActive()"><a>InActive</a></li>
-														</ul>
+				<div id="page-inner">
+					<div class="row">
+						<div class="col-md-12">
+							<!-- Advanced Tables -->
+							<div class="panel panel-default">
+								<div class="panel-heading">Product Register</div>
+								<div class="panel-body">
+									<div class="table-responsive">
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="col-xs-6">
+													<div class="dataTables_length"
+														id="dataTables-example_length">
+														<div class="dropdown">
+															<button class="btn btn-primary dropdown-toggle"
+																type="button" data-toggle="dropdown">
+																Batch Action <span class="caret"></span>
+															</button>
+															<ul class="dropdown-menu">
+																<li data-ng-click="proctrl.makeActive()"><a>Active</a></li>
+																<li data-ng-click="proctrl.makeInActive()"><a>InActive</a></li>
+															</ul>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-xs-6 icons-button">
+													<div class="pull-right">
+														<form name="selectedProductForm" method="POST"
+															action="product_print">
+															<a type="button" class="btn btn-primary dropdown-toggle"
+																data-toggle="dropdown"> <i class="fa fa-cog fa-lg"></i>
+															</a>
+															<div class="dropdown-menu regSettings pull-right"
+																style="padding-right: 5px;">
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_proname == true, 'fa-times':setting_proname == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_proname=true"
+																		data-ng-model="setting_proname" /> Product Name
+																	</label>
+																</div>
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_procodename == true, 'fa-times':setting_procodename == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_procodename=true"
+																		data-ng-model="setting_procodename" /> Product Code
+																	</label>
+																</div>
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_protype == true, 'fa-times':setting_protype == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_protype=true"
+																		data-ng-model="setting_protype" /> Product Type
+																	</label>
+																</div>
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_maxweight == true, 'fa-times':setting_maxweight == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_maxweight=true"
+																		data-ng-model="setting_maxweight" /> Max Weight
+																	</label>
+																</div>
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_Dimension == true, 'fa-times':setting_Dimension == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_Dimension=true"
+																		data-ng-model="setting_Dimension" /> Dimension Setup
+																	</label>
+																</div>
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_height == true, 'fa-times':setting_height == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_height=true"
+																		data-ng-model="setting_height" /> Max Height
+																	</label>
+																</div>
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_Width == true, 'fa-times':setting_Width == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_Width=true"
+																		data-ng-model="setting_Width" /> Max Width
+																	</label>
+																</div>
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_Length== true, 'fa-times':setting_Length==false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_Length=true"
+																		data-ng-model="setting_Length" /> Max Length
+																	</label>
+																</div>
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_status== true, 'fa-times':setting_status==  false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_status=true"
+																		data-ng-model="setting_status" /> Active/Inactive
+																	</label>
+																</div>
+															</div>
+
+
+															<!--=============== excel============== -->
+															<a type="button" class="btn btn-primary"
+																onclick="location.href='downloadExcelProduct'"> <i
+																class="fa fa-file-excel-o fa-lg"></i>
+															</a>
+															<!--=============== print============== -->
+															<button type="submit" class="btn btn-primary">
+																<i class="fa fa-print fa-lg"></i>
+															</button>
+															<input type="hidden" name="SelectedProduct"
+																value="{{proctrl.selectedProducts}}" /> <input
+																type="hidden" name="${_csrf.parameterName}"
+																value="${_csrf.token}" />
+														</form>
+														<!--=============== print end============== -->
 													</div>
 												</div>
 											</div>
+										</div>
 
-											<div class="col-xs-6 icons-button">
-												<div class="pull-right">
-												
-													<form name="selectedProductForm" method="POST" action="product_print">
-													<a type="button" class="btn btn-primary">
-														<i class="fa fa-cog fa-lg"></i>
-													</a>
-													
-													<a type="button" class="btn btn-primary"
-													onclick="location.href='downloadExcelProduct'">
-														<i class="fa fa-file-excel-o fa-lg"></i>
-													</a>
-													<!--=============== print============== -->
-													<button type="submit" class="btn btn-primary">
-														<i class="fa fa-print fa-lg"></i>														
-													</button>
-													<input type="hidden" name="SelectedProduct" value="{{proctrl.selectedProducts}}"/>
-	                                      			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-													</form>
-													<!--=============== print end============== -->
-												</div>
-											</div>
+
+
+										<table class="table table-striped table-bordered table-hover"
+											id="dataTables-example">
+											<thead>
+												<tr>
+													<th><input type="checkbox"
+														data-ng-model="proctrl.selectAllProduct"
+														data-ng-click="proctrl.selectAll()"></th>
+													<th>S.No</th>
+													<th data-ng-show="setting_proname">Product Name</th>
+													<th data-ng-show="setting_procodename">Product Code</th>
+													<th data-ng-show="setting_protype">Product Type</th>
+													<th data-ng-show="setting_maxweight">Maximum Weight
+														(Kg)</th>
+													<th data-ng-show="setting_Dimension">Dimension Setup</th>
+													<th data-ng-show="setting_height">Maximum Height(Cm)</th>
+													<th data-ng-show="setting_Width">Maximum Width(Cm)</th>
+													<th data-ng-show="setting_Length">Maximum Length(Cm)</th>
+													<th data-ng-show="setting_status">Active/InActive</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr data-ng-dblclick="proctrl.updateProduct(x,$index)"
+													data-ng-repeat="x in  proctrl.products.slice((currentPage-1)*itemsPerPage,(currentPage)*itemsPerPage) track by x.product_id">
+													<td><input type="checkbox" data-ng-model="x.select"
+														data-ng-click="proctrl.selectProduct(x)"></td>
+													<td>{{(currentPage*10)-(10-($index+1))}}</td>
+													<td data-ng-show="setting_proname">{{x.product_name}}</td>
+													<td data-ng-show="setting_procodename">{{x.product_code}}</td>
+													<td data-ng-show="setting_protype">{{x.product_Type}}</td>
+													<td data-ng-show="setting_maxweight">{{x.max_weight}}</td>
+													<td data-ng-show="setting_Dimension">{{x.dimension_flag}}</td>
+													<td data-ng-show="setting_height">{{x.dimension_flag=="Y"?x.max_height:""}}</td>
+													<td data-ng-show="setting_Width">{{x.dimension_flag=="Y"?x.max_width:""}}</td>
+													<td data-ng-show="setting_Length">{{x.dimension_flag=="Y"?x.max_length:""}}</td>
+													<td data-ng-show="setting_status" 
+													data-ng-class="{'makeGreen': x.active=='Y', 'makeRed': x.active=='N'}">
+													{{x.active=="Y"?"ACTIVE" : "INACTIVE" }}</td>
+												</tr>
+											</tbody>
+										</table>
+
+										<div class="col-lg-6 col-lg-offset-3 " align="center">
+											<pagination total-items="totalItems" ng-model="currentPage"	max-size="maxSize" class="pagination-sm"
+												boundary-links="true" rotate="false" num-pages="numPages"
+												items-per-page="itemsPerPage"></pagination>
 										</div>
 									</div>
-
-
-
-									<table class="table table-striped table-bordered table-hover"
-										id="dataTables-example">
-										<thead>
-											<tr>
-												<th><input type="checkbox" data-ng-model="proctrl.selectAllProduct" data-ng-click="proctrl.selectAll()"></th>
-												<th>S.No</th>
-												<th>Product Name</th>
-												<th>Product Code</th>
-												<th>Product Type</th>
-												<th>Maximum Weight (Kg)</th>		
-												<th>Dimension Setup</th>										
-												<th>Maximum Height(Cm)</th>
-												<th>Maximum Width(Cm)</th>
-												<th>Maximum Length(Cm)</th>
-												<th>Active/InActive</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr
-											data-ng-dblclick="proctrl.updateProduct(x,$index)"
-											data-ng-repeat="x in  proctrl.products track by x.product_id">
-												<td><input type="checkbox"  data-ng-model="x.select" data-ng-click="proctrl.selectProduct(x)"></td>
-												<td>{{$index+1}}</td>
-												<td>{{x.product_name}}</td>
-												<td>{{x.product_code}}</td>
-												<td>{{x.product_Type}}</td>
-												<td>{{x.max_weight}}</td>												
-												<td>{{x.dimension_flag}}</td>												
-												<td>{{x.dimension_flag=="Y"?x.max_height:""}}</td>
-												<td>{{x.dimension_flag=="Y"?x.max_width:""}}</td>
-												<td>{{x.dimension_flag=="Y"?x.max_length:""}}</td>												
-												<td>{{x.active=="Y"? "ACTIVE" : "INACTIVE" }}</td>
-											</tr>
-										</tbody>
-									</table>
 								</div>
-
 							</div>
+							<!--End Advanced Tables -->
 						</div>
-						<!--End Advanced Tables -->
 					</div>
 				</div>
+
+
+
+
+
 			</div>
-
-
-
-
-
-		</div>
 		<!-- /. PAGE WRAPPER  -->
 	</div>
 	<!-- /. WRAPPER  -->
@@ -444,8 +533,13 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 			</div>
 		</sec:authorize>
 	<!--====================================================== SCRIPTS START=========================================-->
-	<script>$('[data-toggle="popover"]').popover();</script>	
-    <script src="resources/custom/js/custom.js"></script>  
+	<script>
+		$('[data-toggle="popover"]').popover();
+		$('.regSettings').click(function(e) {
+			e.stopPropagation();
+		});
+	</script>
+	<script src="resources/custom/js/custom.js"></script>  
 	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Location/location_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/CompanySetting/company_setting_directive.js"></script>
@@ -457,5 +551,4 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 
 
 </body>
-
 </html>
