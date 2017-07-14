@@ -19,6 +19,15 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	self.updateService = updateService;
 	self.close = close;
 	self.clear = clear;
+	
+	
+	self.servSelect = servSelect;
+	/*self.servSelectall = servSelectall;*/
+	self.makeActive = makeActive;
+	self.makeinActive = makeinActive;
+	
+	
+	self.selected_service = [];
 	self.confirm_title ='save';
 	self.confirm_type = 'TYPE_SUCCESS';
 	self.confirm_msg = self.confirm_title + '' + self.service.service_name + 'service?'; 
@@ -102,7 +111,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			.then(
 				   function () {
 					   fetchAllServices();					  
-					   self.message = service.service_name + "service created..!";
+					   self.message = service.service_name + " service created..!";
 					   successAnimate('.success');
 				   },
 				   
@@ -118,7 +127,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 		
 		if(self.service.service_id == null ) {
 			
-			self.confirm_title = 'save';
+			self.confirm_title = 'Save';
 			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
 			self.confirm_msg = self.confirm_title + ' ' + self.service.service_name + ' service?';
 			self.confirm_btnclass = 'btn-success';
@@ -154,7 +163,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	}
 	//=================== Submit for New Service and Update Service End =================//
 
-			
+	//================== Update Existing Service Function Begin ========================//		
 			function editService(service) {
 				ServiceService.createService(service)
 				.then(
@@ -171,6 +180,8 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 					  );
 			}
 	
+			//================== Update Existing Service Function End ========================//
+			
 	//=========== Update Service Begin ===============//
 			function updateService(service) {
 				self.service = service;
@@ -180,15 +191,19 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 				
 			}
 	//=========== Update Service End ================//
-			function deleteService () {
+			
+	//============= Delete Function Begin ===========//		
+			function deleteService() {
+				
 				self.confirm_title = 'Delete';
-				self.confirm_type = Bootstrap.TYPE_DANGER;
+				self.confirm_type = BootstrapDialog.TYPE_DANGER;
 				self.confirm_msg = self.confirm_title+ ' ' + self.service.service_name + ' service?';
 				self.confirm_btnclass = 'btn-danger';
-				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_msg, self.confirm_btnclass)
+				ConfirmDialogService.confirmBox(self.confirm_title,self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 					.then(
 							function (res) {
-								ServiceService.deleteService(self.service.servcie_id)
+								
+								ServiceService.deleteService(self.service.service_id)
 								.then(
 										function (service) {
 											self.message = service.service_name+ " service Deleted..!";
@@ -205,4 +220,101 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 							}
 					     );
 			}
+			
+			//============= Delete Function Begin ===========//	
+					function servSelect(service) {
+						var index = self.selected_service.indexOf(service);
+						(service.select)? self.selected_service.push(service) : self.selected_service.splice(index, 1);
+						
+					} 
+					
+					
+					function servSelectAll() {
+						angular.forEach(self.services, function(service){
+							service.select = $scope.selectall;
+						});
+						self.selected_service = $scope.selectall?self.services:[];
+					}
+			
+			//============== Make Active Begin ===================//
+			
+						function makeActive(){
+							if(self.selected_service.length == 0) {
+								self.message = "Please select atleast one record..!";
+								successAnimate('.failure');
+							} else {
+								var activate_flag = 0;
+								angular.forEach(self.selected_service, function(service) {
+									if(service.active == 'Y') {
+										activate_flag = 1;
+									}
+								});
+							 
+							 if(activate_flag ==1) {
+								 self.message = "Selected record(s) already in active status..!";
+								 successAnimate('.failure');
+							
+							 } else {
+								 var active_id = [];
+								 for(var i=0; i<self.selected_service.length; i++) {
+									 active_id[i] = self.selected_service[i].service_id;
+								 }
+								 
+								 ServiceService.makeActive(active_id)
+								 	.then(
+								 			function(response) {
+								 				fetchAllServices();
+								 				self.selected_service = [];
+								 				self.message = "Selected record(s) has in active status ..!";
+								 				successAnimate('.success');
+								 			}, function(errResponse) {
+								 				console.log(errResponse);
+								 			}
+								 	     );
+							 }
+							}
+						}
+			
+			//============== Make Active End =====================//
+						
+			//============== Make InActive Begin ================//
+						
+						function makeinActive() {
+							if(self.selected_service.length == 0) {
+								self.message = "Please select atleast one record..!";
+								successAnimate('.failure');
+							} else {
+								var inactivate_flag = 0 ;
+								angular.forEach(self.selected_service, function(service){
+									if(service.active == 'N') {
+										inactivate_flag = 1;
+									}
+								});
+								
+								if(inactivate_flag == 1) {
+									self.message = " Selected record(s) already in active status ..!";
+									successAnimate('.failure');
+								} else {
+									var inactive_id = [];
+									for(var i=0; i<self.selected_service.length; i++) {
+										inactive_id[i] = self.selected_service[i].service_id;
+									}
+									
+									ServiceService.makeinActive(inactive_id)
+										.then(
+												function(response) {
+													fetchAllServices();
+													self.selected_service = [];
+													self.message = "Selected record(s) has in inactive status..!";
+													successAnimate('.success');													
+												}, function(errResponse) {
+													console.log(errResponse);
+												}
+										     );
+								}
+							}
+						}
+						
+			//============== Make InActive End ==================//
+			
 }]);

@@ -114,11 +114,11 @@
 			                    <span>Confirm Password</span>
 			                  <input type="text" class="form-control">
 			                  
-			                    <span>Phone Number</span>
+			                <!--     <span>Phone Number</span>
 			                  <input type="text" class="form-control">
 			                  
 			                   <span>Email</span>
-			                  <input type="text" class="form-control">
+			                  <input type="text" class="form-control"> -->
 			                  	
 			               
 			              </div>         
@@ -233,8 +233,8 @@
                                             <th>Employee Name</th>
                                             <th>Role Name</th>
                                             <th>User Name</th>
-                                            <th>Phone Number</th>
-                                            <th>Email</th>                                        
+                                            <!-- <th>Phone Number</th>
+                                            <th>Email</th>  -->                                       
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -245,8 +245,8 @@
                                             <td>Raju</td>
                                             <td>Driver</td>
                                             <td>raju</td>
-                                            <td>9876543210</td>
-                                            <td>raju@gmail.com</td>
+                                          <!--   <td>9876543210</td>
+                                            <td>raju@gmail.com</td> -->
                                         </tr>
                                         
                                         <tr>
@@ -256,8 +256,8 @@
                                             <td>Ramesh</td>
                                             <td>User</td>
                                             <td>ramesh</td>
-                                            <td>9876012589</td>
-                                            <td>ramesh@gmail.com</td>
+                                           <!--  <td>9876012589</td>
+                                            <td>ramesh@gmail.com</td> -->
                                            
                                         </tr>
                                         <tr>
@@ -267,8 +267,8 @@
                                             <td>Santhosh</td>
                                             <td>Driver</td>
                                             <td>santhosh</td>
-                                            <td>9985693214</td>
-                                            <td>ms@gmail.com</td>
+                                          <!--   <td>9985693214</td>
+                                            <td>ms@gmail.com</td> -->
                                           
                                         </tr>
                                         

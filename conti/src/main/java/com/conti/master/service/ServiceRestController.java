@@ -160,6 +160,96 @@ public class ServiceRestController {
 				}
 			
 	//================= Delete Service Function End ========================//
+		
+		//================ Active Service Function Begin ===================//
 			
+					@RequestMapping(value = "make_serviceactive", method = RequestMethod.POST)
+					public ResponseEntity<Void> make_serviceactive(@RequestBody int[] id, HttpServletRequest request) {
+						userInformation = new UserInformation(request);
+						String username = userInformation.getUserName();
+						int user_id = Integer.parseInt(userInformation.getUserId());
+						
+						int active_flag =0;
+						try {
+								for(int i=0; i<id.length; i++) {
+									ServiceMaster serviceModelDB = serviceDao.getServiceId(id[i]);
+									
+									if(serviceModelDB == null) {
+										loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+										active_flag = 1;
+									} else {
+										
+										Date date = new Date();
+										DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+										
+										serviceModelDB.setActive("Y");
+										serviceModelDB.setUpdated_by(user_id);
+										serviceModelDB.setUpdated_datetime(dateFormat.format(date));
+										
+										serviceDao.saveOrUpdate(serviceModelDB);
+										loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+									}
+								}
+								
+								if( active_flag ==1) {
+									return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+								} else {
+									return new ResponseEntity<Void> (HttpStatus.OK);
+								}
+						 } catch (Exception exception) {
+								loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+								return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+							}
+												
+					}
+			
+			
+		 //=============== Active Service Function End ======================//
+					
+		//================ InActive Service Function Begin =================//
+					
+					@RequestMapping(value = "make_serviceinactive", method = RequestMethod.POST)
+					public ResponseEntity<Void> make_serviceinactive(@RequestBody int[] id, HttpServletRequest request) {
+						userInformation = new UserInformation(request);
+						String username = userInformation.getUserName();
+						int user_id = Integer.parseInt(userInformation.getUserId());
+						
+						int active_flag = 0;
+						try {
+							for(int i=0; i<id.length;i++) {
+								ServiceMaster serviceModelDB = serviceDao.getServiceId(id[i]);
+								
+								if(serviceModelDB == null) {
+									loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+									active_flag = 1;
+								} else {
+									
+									Date date = new Date();
+									DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+									
+									serviceModelDB.setActive("N");
+									serviceModelDB.setUpdated_by(user_id);
+									serviceModelDB.setUpdated_datetime(dateFormat.format(date));
+									
+									serviceDao.saveOrUpdate(serviceModelDB);
+									loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+								}
+							}
+							
+							if( active_flag ==1) {
+								return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+							} else {
+								return new ResponseEntity<Void> (HttpStatus.OK);
+							}
+						} catch (Exception exception) {
+							loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+							return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+						}
+						
+						
+					}
+					
+					
+		//================ Inactive service Function End ==================//
 			
 }

@@ -36,10 +36,10 @@
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
     
      <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
-	 
-    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
-	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script> 
-	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>    
+     <script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
     
 </head>
@@ -71,11 +71,11 @@
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
-                   <div class="col-lg-6 col-md-8 col-sm-10 headerLeft">
+                   <div class="col-lg-8 col-md-8 col-sm-10 headerLeft">
                    		 <b class="model-title">Service {{ctrl.heading}}</b>
                    </div>
                    
-                   <div class="col-lg-6 col-md-4 col-sm-2 headerRight">
+                   <div class="col-lg-4 col-md-4 col-sm-2 headerRight">
                    		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close()"></i>
                    </div>
             
@@ -121,11 +121,11 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4  footerLeft">
-							<button type="button" class=" btn btn-danger drawerClose pull-left" data-ng-click = "ctrl.clear()" ><i class="fa fa-trash-o"></i> Clear</button>
+							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close()" ><i class="fa fa-trash-o"></i> Clear</button>
 						</div>
 						
 						 <div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
-							<!-- <a id="" class="btnPadding btn btn-warning" data-ng-click = "ctrl.deleteService" data-ng-show="ctrl.service.service_id! = null"><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> --> 
+							<a id="" class="btnPadding btn btn-warning" data-ng-click = "ctrl.deleteService()" data-ng-show="ctrl.service.service_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i>  Delete</a> 
 							
 							<a id="" class="btnPadding btn btn-primary" data-ng-click="ctrl.clear()" data-ng-show="!serviceForm.$pristine && (ctrl.service.service_id==null)"><i class="fa fa-eraser"></i> Clear</a>							
 						</div> 
@@ -191,8 +191,8 @@
                              Service Register
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive">
-                            <div class="row">
+                        
+                        <div class="row">
                               <div class="col-lg-12">
                                <div class="col-xs-6">
                                      <div class="dataTables_length" id="dataTables-example_length">
@@ -202,8 +202,8 @@
 									Batch Action <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a href="#">Active</a></li>
-									<li><a href="#">InActive</a></li>
+									<li><a data-ng-click = "ctrl.makeActive()">Active</a></li>
+									<li><a data-ng-click = "ctrl.makeinActive()">InActive</a></li>
 									
 								</ul>
 								
@@ -222,25 +222,26 @@
                                 </div>
                               </div>
                             </div>
-                          
                             
-                            
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <div class="table-responsive">
+                              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox"></th>
                                             <th>S.No</th>
                                             <th>Service Name</th>
                                             <th>Service Code</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr data-ng-repeat = "service in ctrl.services | orderBy : 'service_name' "
                                         data-ng-dblclick = "ctrl.updateService(service)">
-                                            <td><input type="checkbox"></td>
+                                            <td><input type="checkbox" data-ng-change="ctrl.servSelect(service)" data-ng-model = "service.select"/></td>
                                             <td>{{$index+1}}</td>
                                             <td>{{service.service_name}}</td>
                                             <td>{{service.service_code}}</td>
+                                            <td>{{service.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
                                     </tbody>
                                 </table>

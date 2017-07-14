@@ -32,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
+import com.conti.master.product.Product;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -329,10 +330,15 @@ public class EmployeeRestController {
 			listEmp.add(employeeModel);
 		}
 		Company company = companySettingDAO.getById(1);
-		ModelAndView model = new ModelAndView("print");
-		
-		byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
-		String base64DataString = new String(encodeBase64 , "UTF-8");
+		ModelAndView model = new ModelAndView("print/employee_print");
+
+		String base64DataString ="";
+		if(company!=null){
+			if(company.getCompany_logo()!=null){
+				byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			}
+		}
 		
 		model.addObject("title", "Employee");
 		model.addObject("company", company);
@@ -341,4 +347,12 @@ public class EmployeeRestController {
 			
 		return model;
 	}
+	
+	//======================================Excel==========================================
+	@RequestMapping(value="downloadExcelEmployee",method=RequestMethod.GET)
+	public ModelAndView downloadExcelEmployee(){
+		List<EmployeeMaster> employeeList=employeeDao.getAllEmployees();
+		return new ModelAndView("employeeExcelView","employeeList",employeeList);
+	}
+	
 }

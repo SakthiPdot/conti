@@ -22,7 +22,9 @@ public class ServiceMaster {
 		private String obsolete;
 		private String active;
 		
-		
+		public ServiceMaster() {
+			
+		}
 		
 		@Id
 		@Column(name = "service_id")
