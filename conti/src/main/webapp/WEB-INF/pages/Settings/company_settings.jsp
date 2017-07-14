@@ -37,14 +37,18 @@
 	href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css">
 
 <link href="resources/built-in/assets/Drawer/trouserDrawer.css"
-	rel="stylesheet" />
+	rel="stylesheet" />  
 <link href="resources/custom/css/custom.css" rel="stylesheet">
 <link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
 
  	<link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 	
- 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
-	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>
-	<script type="text/javascript" src="resources/custom/js/app.js"></script>
+ 
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="resources/custom/js/app.js"></script>
+
 
 	
 </head>
@@ -233,7 +237,7 @@
 					
 					<div class="col-lg-6">
 						<div class="form-group">
-							<label for="gstNo">GSTIN No</label>
+							<label for="gstNo">GSTIN No<span style="color:red">&nbsp;*</span></label>
 							 <input type="text" data-ng-required="true"
 							 id="gstNo"							  
 				  			  data-trigger="focus" data-toggle="popover"

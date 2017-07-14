@@ -67,10 +67,7 @@ public class Product {
 	public String getProduct_Type() {
 		return this.product_Type;
 	}
-	public void setProduct_Type(String product_Type) {
-		this.product_Type = product_Type;
-	}
-
+	
 	@Column(name="max_weight")
 	public float getMax_weight() {
 		return this.max_weight;
@@ -132,6 +129,10 @@ public class Product {
 
 	public void setProduct_name(String product_name) {
 		this.product_name = product_name;
+	}
+	
+	public void setProduct_Type(String product_Type) {
+		this.product_Type = product_Type;
 	}
 
 	public void setProduct_code(String product_code) {

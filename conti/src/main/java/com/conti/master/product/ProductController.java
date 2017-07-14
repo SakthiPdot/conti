@@ -1,13 +1,23 @@
 package com.conti.master.product;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,6 +34,8 @@ import com.conti.config.SessionListener;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 
 /**
  * @Project_Name conti
@@ -36,6 +49,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductDAO productDao;
+
+	@Autowired
+	private CompanySettingDAO companySettingDAO;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
@@ -43,12 +59,7 @@ public class ProductController {
 	//======================================Excel==========================================
 	@RequestMapping(value="downloadExcelProduct",method=RequestMethod.GET)
 	public ModelAndView downloadExcelProduct(){
-		List<Product> productList=productDao.getProduct();
-	
-		/*if(productList.isEmpty()){
-			return new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT);
-		}
-		*/  
+		List<Product> productList=productDao.getProduct(); 
 		return new ModelAndView("productExcelView","ProductList",productList);
 	}
 	
@@ -57,8 +68,6 @@ public class ProductController {
 	public ResponseEntity<Void> productInActive(@RequestBody int[] idArray,@PathVariable("status") String status,HttpServletRequest request){	
 		
 		System.out.println(status+"464644");
-		System.out.println(status.trim());
-		System.out.println("InActive");
 		//intialize		
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
@@ -242,6 +251,55 @@ public class ProductController {
 		return model;
 
 	}
+	
+	
+	@RequestMapping(value="product_print",method=RequestMethod.POST)
+	public ModelAndView productPrint(HttpServletRequest request,
+			@RequestParam("SelectedProduct") String selectedProduct) throws IOException{
+			
+		ObjectMapper mapper=new ObjectMapper();
+		
+		List<Product> productList=null;
+		
+		
+		try {
+			JSONArray jsonProductArray=new JSONArray(selectedProduct);
+			
+			String[] product_id=new String[jsonProductArray.length()];
+			productList = new ArrayList<Product>();
+			
+			for(int i=0;i<jsonProductArray.length();i++){
+				JSONObject productObject=jsonProductArray.getJSONObject(i);
+				Product product=productDao.getProduct(productObject.getInt("product_id"));
+				productList.add(product);
+			}
+		} catch (Exception e1) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Json parse error", e1);
+			e1.printStackTrace();
+		}
+		
+		Company company = companySettingDAO.getById(1);
+		String base64DataString = "";
+		if(company!=null && company.getCompany_logo()!=null){
+			byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+			try {
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+			}		
+		}else{
+			base64DataString = ConstantValues.NO_IMAGE;	
+		}
 
+		ModelAndView model = new ModelAndView("print/product_print");
+		
+		model.addObject("title", "Product");
+		model.addObject("company", company);
+		model.addObject("productList", productList);
+		model.addObject("image",base64DataString);
+		return model;
+	}
+
+	
 	
 }

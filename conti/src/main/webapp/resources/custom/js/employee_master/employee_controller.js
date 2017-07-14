@@ -52,6 +52,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	self.makeActive = makeActive;
 	self.makeinActive = makeinActive;
 	self.print = print;
+	self.registerSearch = registerSearch;
+	
 	
 	self.selected_employee = [];
 	self.confirm_title = 'Save';
@@ -419,21 +421,32 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 				successAnimate('.failure');
     			
     		} else {
-    			var active_id = [];
-    			for(var i=0; i<self.selected_employee.length; i++) {
-    				active_id[i] = self.selected_employee[i].emp_id;    				
-    			}
-				EmployeeService.makeActive(active_id)
-					.then(
-							function(response) {
-								fetchAllEmployees();
-								self.selected_employee = [];
-								self.message ="Selected record(s) has in activat status..!";
-								successAnimate('.success');
-							}, function(errResponse) {
-								console.log(errResponse);    								
-							}
-						);
+    			
+    			self.confirm_title = 'Active';
+    			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+    			self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+    			self.confirm_btnclass = 'btn-success';
+    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+    			.then(
+    					function (res) {
+    						var active_id = [];
+    		    			for(var i=0; i<self.selected_employee.length; i++) {
+    		    				active_id[i] = self.selected_employee[i].emp_id;    				
+    		    			}
+    						EmployeeService.makeActive(active_id)
+    							.then(
+    									function(response) {
+    										fetchAllEmployees();
+    										self.selected_employee = [];
+    										self.message ="Selected record(s) has in activat status..!";
+    										successAnimate('.success');
+    									}, function(errResponse) {
+    										console.log(errResponse);    								
+    									}
+    								);
+    					}
+    				);
+    			
     		}
 
 
@@ -461,21 +474,32 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 				successAnimate('.failure');
     			
     		} else {
-    			var inactive_id = [];
-    			for(var i=0; i<self.selected_employee.length; i++) {
-    				inactive_id[i] = self.selected_employee[i].emp_id;        				
-    			}
-				EmployeeService.makeinActive(inactive_id)
-					.then(
-							function(response) {
-								fetchAllEmployees();
-								self.selected_employee = [];
-								self.message ="Selected record(s) has in inactive status..!";
-								successAnimate('.success');
-							}, function(errResponse) {
-								console.log(errResponse);    								
-							}
-						);
+    			
+    			self.confirm_title = 'In-Active';
+    			self.confirm_type = BootstrapDialog.TYPE_DANGER;
+    			self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+    			self.confirm_btnclass = 'btn-danger';
+    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+    			.then(
+    						function (res) {
+    							var inactive_id = [];
+    			    			for(var i=0; i<self.selected_employee.length; i++) {
+    			    				inactive_id[i] = self.selected_employee[i].emp_id;        				
+    			    			}
+    							EmployeeService.makeinActive(inactive_id)
+    								.then(
+    										function(response) {
+    											fetchAllEmployees();
+    											self.selected_employee = [];
+    											self.message ="Selected record(s) has in inactive status..!";
+    											successAnimate('.success');
+    										}, function(errResponse) {
+    											console.log(errResponse);    								
+    										}
+    									);
+    						}
+    					);
+    			
     		}
 
 
@@ -528,42 +552,19 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	   		self.message ="Please select atleast one record..!";
 			successAnimate('.failure');
     	} else {
-    			/*var print_id = [];
-    			for(var i=0; i<self.selected_employee.length; i++) {
-    				print_id[i] = self.selected_employee[i].emp_id;        				
-    			}
-				EmployeeService.print(print_id)
-					.then(
-							function(response) {
-								fetchAllEmployees();
-								self.selected_employee = response;	
-								console.log(response);
-							}, function(errResponse) {
-								console.log(errResponse);    								
-							}
-						);*/
-    			/*$scope.$root.printEmp = self.selected_employee;
-    			console.log("inside print");
-    			console.log($scope.$root.printEmp);*/
-    			/*$window.location.href = 'listprint'; */
-    		
-    		/*var doc = new jsPDF();
-    		var specialElementHandlers = {
-    		    '#dataTables-example': function (element, renderer) {
-    		        return true;
-    		    }
-    		};
-    		
-    		 doc.fromHTML($('#dataTables-example').html(), 15, 15, {
-    		        'width': 170,
-    		            'elementHandlers': specialElementHandlers
-    		    });
-    		    doc.save('sample-file.pdf');*/
-    		console.log(self.selected_employee);
+    			
     		$http.get('http://localhost:8080/Conti/listprint');
     	}
     }
     
     //-------------------------------------- Print end -----------------------------//
+    
+    //---------------------------- Register search begin ---------------------------------------//
+    function registerSearch(searchkey) {
+    	if( searchkey.length > 3 ) {
+    		console.log(searchkey);
+    	}
+    }
+    //---------------------------- Register search end ---------------------------------------//
 	
 }]);

@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.address.AddressModel;
 import com.conti.config.SessionListener;
+import com.conti.master.product.Product;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -86,6 +87,14 @@ public class LocationController {
 		return model;
 
 	}
+	
+	//=================EXCEL DOWNLOAD=====================================
+	@RequestMapping(value="downloadExcelLocation",method=RequestMethod.GET)
+	public ModelAndView downloadExcelProduct(){
+		List<Location> locationList=locationDao.getLocation(); 
+		return new ModelAndView("locationExcelView","locationList",locationList);
+	}
+	
 	//=================FETCH ALL LOCATION=====================================	
 	@RequestMapping(value="fetchAllLocation",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Location>>  getAllLocation(){
@@ -123,6 +132,7 @@ public class LocationController {
 		location.setCreated_datetime(dateFormat.format(date));
 		location.setObsolete("N");
 		location.setActive("Y");
+		
 		
 		
 		//save location
