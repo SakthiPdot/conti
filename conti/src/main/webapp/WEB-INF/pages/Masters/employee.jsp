@@ -390,7 +390,7 @@
                                <div class="col-lg-6 icons-button">
                                    <div class="pull-right">
                                      <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button>
+                                      <button type="button" class="btn btn-primary" onclick="location.href='downloadExcelEmployee'"><i class="fa fa-file-excel-o fa-lg"></i></button>
                                       
                                       <form name="listprint" method = "POST" action = "employee_print" >
 	                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
