@@ -8,10 +8,10 @@
  * @Updated_date_time July 11, 2017 12:59:17 PM
  */
 
-contiApp.controller('BranchController', ['$scope', '$timeout', 'BranchService',  'LocationService', 'ConfirmDialogService', function($scope, $timeout, BranchService, LocationService, ConfirmDialogService)
+contiApp.controller('BranchController', ['$scope','$timeout','BranchService','LocationService','ConfirmDialogService', function($scope, $timeout, BranchService, LocationService, ConfirmDialogService)
 {
 	var self=this;
-	self.branchs=[];
+	self.branches=[];
 	self.branch={};
 	
 	self.heading = "Master";
@@ -90,11 +90,11 @@ contiApp.controller('BranchController', ['$scope', '$timeout', 'BranchService', 
 	
 	//-------------------------- Fetch All Branches start ---------------------//
 	
-	function fetchAllEmployees() 
+	function fetchAllBranches() 
 	{
-		BranchService.fetchAllbranches()
+		BranchService.fetchAllBranches()
 			.then(
-					function (branches) {
+					function (branch) {
 						self.branches = branch;
 											}, 
 					function (errResponse) {
@@ -146,7 +146,7 @@ contiApp.controller('BranchController', ['$scope', '$timeout', 'BranchService', 
 				},
 				function(errResponse)
 				{
-					console.error('Error while creating Branch'+branch.branch_name);
+					console.error('Error while creating Branch '+branch.branch_name);
 				}
 		);
 	}
@@ -175,25 +175,26 @@ contiApp.controller('BranchController', ['$scope', '$timeout', 'BranchService', 
 	
 	function submit()
 	{
+		console.log("branch save call")
 		if(self.branch.branch_id==null)
 		{
 			self.confirm_title='Save';
-			self.confirm_type=BoostrapDialog.TYPE_SUCCESS;
-			self.confirm_msg=self.confirm_title+''+self.branch.branch_name+'employee?';
+			self.confirm_type=BootstrapDialog.TYPE_SUCCESSSS;
+			self.confirm_msg=self.confirm_title +''+self.branch.branch_name+' branch?';
 			self.confirm_btnclass = 'btn-success';
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(function(res)
-					{
-						self.branch.branch_id=$("#branch_id").val();
-						self.branch.location = JSON.parse($("#location_id").val());   
-						editBranch(self.branch);
-						reset();
-						window.setTimeout(function()
-						{
-								newOrClose();
-						},5000);
-					});
-		}
+			{
+				self.branch.branch_id=$("#branch_id").val();
+				self.branch.location = JSON.parse($("#location_id").val());   
+				createBranch(self.branch);
+				reset();	
+				window.setTimeout(function()
+				{
+						newOrClose();
+				},5000);
+			});
+		}		
 		else
 		{
 			self.confirm_title='Update';
