@@ -18,6 +18,7 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 			deleteEmployee : deleteEmployee,
 			makeActive : makeActive,
 			makeinActive : makeinActive,
+			registerSearch : registerSearch
 			/*print : print*/
 	};
 	
@@ -25,7 +26,7 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 	//-------------------------- Fetch All Employees begin ---------------------//	
 	function fetchAllEmployees() {
 		var deferred = $q.defer();
-		$http.get(REST_SERVICE_URI)
+		$http.get('employees/')
 			.then(
 					function (response) {
 						deferred.resolve(response.data);
@@ -42,7 +43,7 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 	//-------------------------- Fetch Employee category begin ---------------------//
 	function fetchEmpCat() {
 		var deferred = $q.defer();
-		$http.get(REST_SERVICE_URI+'category/')
+		$http.get('employees/category/')
 			.then(
 					function (response) {
 						deferred.resolve(response.data);
@@ -197,6 +198,26 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 
     //------------------------------- Print Employee end -----------------------------//
 
-    
+    //--------------------------- Register search begin -----------------------------//
+    function registerSearch(searchkey) {
+    	var deferred = $q.defer();
+    	
+    	$http({
+    		method : 'POST',
+    		url : 'register_search',
+    		data : searchkey,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
+    //--------------------------- Register search end -----------------------------//    
     
 }]);

@@ -118,6 +118,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 						self.employees = employee;
 						/*fetchAllBranches();
 						fetchAllLocations();	*/	
+						self.Filteremployees = self.employees;
 						pagination();
 					}, 
 					function (errResponse) {
@@ -513,7 +514,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     function pagination() {
         
     	$scope.viewby = 10;
-		$scope.totalItems = self.employees.length;
+		$scope.totalItems = self.Filteremployees.length;
 		$scope.currentPage = 1;
 		$scope.itemsPerPage = $scope.viewby;
 		$scope.maxSize = 2; //Number of pager buttons to show
@@ -561,8 +562,19 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     
     //---------------------------- Register search begin ---------------------------------------//
     function registerSearch(searchkey) {
+    	if ( searchkey.length == 0 ) {
+    		self.Filteremployees = self.employees;
+    	}
     	if( searchkey.length > 3 ) {
-    		console.log(searchkey);
+    		EmployeeService.registerSearch(searchkey)
+	    		.then(
+						function (filterEmp) {
+							self.Filteremployees = filterEmp;
+						}, 
+						function (errResponse) {
+							console.log('Error while fetching employees');
+						}
+					);
     	}
     }
     //---------------------------- Register search end ---------------------------------------//

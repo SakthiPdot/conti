@@ -19,4 +19,5 @@ public interface EmployeeDao {
 	public void saveOrUpdate(EmployeeMaster employee);
 	public EmployeeMaster findByMobileno(long mobileno);
 	public EmployeeMaster getEmployeebyId(int id);
+	public List<EmployeeMaster> searchbyeyEmployee(String searchkey);
 }
