@@ -71,7 +71,8 @@
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
-                   <div class="col-lg-8 col-md-8 col-sm-10 headerLeft">                   		 <b class="model-title">Vehicle {{ctrl.heading}}</b>
+                   <div class="col-lg-8 col-md-8 col-sm-10 headerLeft">                   		 
+                   <b class="model-title">Vehicle {{ctrl.heading}}</b>
                    </div>
                    
                    <div class="col-lg-4 col-md-4 col-sm-2 headerRight">

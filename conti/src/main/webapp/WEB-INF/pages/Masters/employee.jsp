@@ -46,78 +46,7 @@
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
 
-<style>
-/* 	.checkbox * {
-  box-sizing: border-box;
-  position: relative;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.checkbox {
-  display: inline-block;
-}
-.checkbox > input {
-  display: none;
-}
-.checkbox > label {
-  vertical-align: top;
-  font-size: 18px;
-  padding-left: 30px;
-}
-.checkbox > [type="checkbox"] + label:before {
-  color: #777;
-  content: '';
-  position: absolute;
-  left: 0px;
-  display: inline-block;
-  min-height: 20px;
-  height: 20px;
-  width: 20px;
-  border: 2px solid #777;
-  font-size: 15px;
-  vertical-align: top;
-  text-align: center;
-  transition: all 0.2s ease-in;
-  content: '';
-}
-.checkbox.radio-square > [type="checkbox"] + label:before {
-  border-radius: 0px;
-}
-.checkbox.radio-rounded > [type="checkbox"] + label:before {
-  border-radius: 25%;
-}
-.checkbox.radio-blue > [type="checkbox"] + label:before {
-  border: 2px solid #ccc;
-}
-.checkbox > [type="checkbox"] + label:hover:before {
-  border-color: lightgreen;
-}
-.checkbox > [type="checkbox"]:checked + label:before {
-  width: 8px;
-  height: 16px;
-  border-top: transparent;
-  border-left: transparent;
-  border-color: green;
-  border-width: 4px;
-  transform: rotate(45deg);
-  top: -4px;
-  left: 4px;
-} */
-/* .checkbox > [type="checkbox"] + label:hover:before {
-  border-color: lightgreen;
-} */
 
-	.checkbox input[type="checkbox"] {
-		-webkit-appearance: none !important;
-		-moz-appearance: none !important;
-		appearance: none !important;
-	}
-
-</style>
 </head>
 
 
@@ -564,7 +493,7 @@
                                     </thead>
                                     <tbody>
                                         <tr
-                                        	data-ng-repeat = "emp in ctrl.employees.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage)) | orderBy : 'emp_name'"
+                                        	data-ng-repeat = "emp in ctrl.Filteremployees.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage)) | orderBy : 'emp_name'"
                                         	data-ng-dblclick="ctrl.updateEmployee(emp)">
                                         	<td><input type="checkbox" data-ng-change="ctrl.empSelect(emp)" data-ng-model = "emp.select" /></td>
                                             <td>{{(currentPage*10)-(10-($index+1))}}</td>
@@ -579,7 +508,7 @@
                                             <td data-ng-show = "setting_empemail">{{emp.emp_email}}</td>
                                             <td data-ng-show = "setting_empdob">{{emp.dob}}</td>
                                             <td data-ng-show = "setting_empdoj">{{emp.doj}}</td>
-                                            <td data-ng-show = "setting_empstatus">{{emp.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
+                                            <td data-ng-show = "setting_empstatus" data-ng-class="{'makeGreen': emp.active=='Y', 'makeRed': emp.active=='N'}">{{emp.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
                                        
                                  

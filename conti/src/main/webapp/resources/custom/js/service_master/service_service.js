@@ -22,7 +22,7 @@ contiApp.factory('ServiceService',['$http','$q', function ($http,$q){
 		
 			function fetchAllServices() {
 				var deferred = $q.defer();
-				$http.get(REST_SERVICE_URI)
+				$http.get('services/')
 					.then(
 							function (response) {
 								console.log(response)
