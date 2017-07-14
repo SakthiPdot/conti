@@ -46,6 +46,78 @@
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
 
+<style>
+/* 	.checkbox * {
+  box-sizing: border-box;
+  position: relative;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.checkbox {
+  display: inline-block;
+}
+.checkbox > input {
+  display: none;
+}
+.checkbox > label {
+  vertical-align: top;
+  font-size: 18px;
+  padding-left: 30px;
+}
+.checkbox > [type="checkbox"] + label:before {
+  color: #777;
+  content: '';
+  position: absolute;
+  left: 0px;
+  display: inline-block;
+  min-height: 20px;
+  height: 20px;
+  width: 20px;
+  border: 2px solid #777;
+  font-size: 15px;
+  vertical-align: top;
+  text-align: center;
+  transition: all 0.2s ease-in;
+  content: '';
+}
+.checkbox.radio-square > [type="checkbox"] + label:before {
+  border-radius: 0px;
+}
+.checkbox.radio-rounded > [type="checkbox"] + label:before {
+  border-radius: 25%;
+}
+.checkbox.radio-blue > [type="checkbox"] + label:before {
+  border: 2px solid #ccc;
+}
+.checkbox > [type="checkbox"] + label:hover:before {
+  border-color: lightgreen;
+}
+.checkbox > [type="checkbox"]:checked + label:before {
+  width: 8px;
+  height: 16px;
+  border-top: transparent;
+  border-left: transparent;
+  border-color: green;
+  border-width: 4px;
+  transform: rotate(45deg);
+  top: -4px;
+  left: 4px;
+} */
+/* .checkbox > [type="checkbox"] + label:hover:before {
+  border-color: lightgreen;
+} */
+
+	.checkbox input[type="checkbox"] {
+		-webkit-appearance: none !important;
+		-moz-appearance: none !important;
+		appearance: none !important;
+	}
+
+</style>
 </head>
 
 
@@ -389,36 +461,105 @@
                                 
                                <div class="col-lg-6 icons-button">
                                    <div class="pull-right">
-                                     <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" class="btn btn-primary" onclick="location.href='downloadExcelEmployee'"><i class="fa fa-file-excel-o fa-lg"></i></button>
+                                   
+                                   <form name="empPrint" method = "POST" action = "employee_print" >
+                                     <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a> 
+                                     <div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
+                                     	<div class ="checkbox">
+                                     		<label>
+                                     			<i class = "fa" data-ng-class="{'fa-check': setting_empname == true, 'fa-times': setting_empname == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_empname=true" data-ng-model="setting_empname" /> Employee Name
+											</label>
+										</div>
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_empcode == true, 'fa-times': setting_empcode == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_empcode=true" data-ng-model="setting_empcode" /> Employee code
+											</label>
+										</div>
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_empcategory == true, 'fa-times': setting_empcategory == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_empcategory=true" data-ng-model="setting_empcategory" /> Employee category
+											</label>
+										</div>
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_empbranch == true, 'fa-times': setting_empbranch == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_empbranch=true" data-ng-model="setting_empbranch" /> Branch
+											</label>
+										</div>
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_empaddress == true, 'fa-times': setting_empaddress == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_empaddress=true" data-ng-model="setting_empaddress" /> Address
+											</label>
+										</div>
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_empmobileno == true, 'fa-times': setting_empmobileno == false}"></i>																				
+												<input type="checkbox" data-ng-init = "setting_empmobileno=true" data-ng-model="setting_empmobileno" /> Mobileno
+											</label>
+										</div>
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_empemail == true, 'fa-times': setting_empemail == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_empemail=true" data-ng-model="setting_empemail" /> Email
+											</label>
+										</div>										
+										<div class = "checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_empdob == true, 'fa-times': setting_empdob == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_empdob=true" data-ng-model="setting_empdob" /> DOB
+											</label>
+										</div>
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_empdoj == true, 'fa-times': setting_empdoj == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_empdoj=true" data-ng-model="setting_empdoj" /> DOJ
+											</label>
+										</div>
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_empstatus == true, 'fa-times': setting_empstatus == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_empstatus=true" data-ng-model="setting_empstatus" /> Status
+											</label>
+										</div>
+										
+									</div>	
+							
+                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelEmployee'"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                       
-                                      <form name="listprint" method = "POST" action = "employee_print" >
+                                      
 	                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
 	                                      <input type = "hidden" name = "emp" value = "{{ctrl.selected_employee}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                       </form>
                                       
+                                      <div class = "row paddingtop">
+	                                    <div class = "col-md-12"><input type = "text" name = "search" placeholder = "Ex: Driver" data-ng-model = "ctrl.emp_regSearch" /></div>
+                                      </div>
                                 	</div>
                                 </div>
                               </div>
                             </div>
                              
-                            
+
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
                                         	<th><input type="checkbox" data-ng-click="ctrl.empSelectall()" data-ng-model = "selectall" /></th>
                                             <th>S.No</th>
-                                            <th>Employee Name</th>
-                                            <th>Employee Code</th>
-                                            <th>Employee Category</th>
-                                            <th>Branch</th>
-                                            <th>Address</th>
-                                            <th>Mobile</th>
-                                            <th>Email</th>
-                                            <th>Date of Birth</th>
-                                            <th>Date of Joining</th>
-                                            <th>Active</th>
+                                            <th data-ng-show = "setting_empname">Employee Name</th>
+                                            <th data-ng-show = "setting_empcode">Employee Code</th>
+                                            <th data-ng-show = "setting_empcategory">Employee Category</th>
+                                            <th data-ng-show = "setting_empbranch">Branch</th>
+                                            <th data-ng-show = "setting_empaddress">Address</th>
+                                            <th data-ng-show = "setting_empmobileno">Mobile</th>
+                                            <th data-ng-show = "setting_empemail">Email</th>
+                                            <th data-ng-show = "setting_empdob">Date of Birth</th>
+                                            <th data-ng-show = "setting_empdoj">Date of Joining</th>
+                                            <th data-ng-show = "setting_empstatus">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -427,18 +568,18 @@
                                         	data-ng-dblclick="ctrl.updateEmployee(emp)">
                                         	<td><input type="checkbox" data-ng-change="ctrl.empSelect(emp)" data-ng-model = "emp.select" /></td>
                                             <td>{{(currentPage*10)-(10-($index+1))}}</td>
-                                            <td>{{emp.emp_name}}</td>
-                                            <td>{{emp.emp_code}}</td>
-                                            <td>{{emp.empcategory}}</td>
-                                            <td>{{emp.branchModel.branch_name}}</td>
-                                            <td>{{emp.emp_address1}}, {{emp.emp_address2}}, 
+                                            <td data-ng-show = "{{setting_empname}}">{{emp.emp_name}}</td>
+                                            <td data-ng-show = "setting_empcode">{{emp.emp_code}}</td>
+                                            <td data-ng-show = "setting_empcategory">{{emp.empcategory}}</td>
+                                            <td data-ng-show = "setting_empbranch">{{emp.branchModel.branch_name}}</td>
+                                            <td data-ng-show = "setting_empaddress">{{emp.emp_address1}}, {{emp.emp_address2}}, 
                                             	{{emp.location.location_name}}, {{emp.location.address.city}}, 
                                             	{{emp.location.address.district}}, {{emp.location.address.state}}, {{emp.location.address.pincode}}</td>
-                                            <td>{{emp.emp_phoneno}}</td>
-                                            <td>{{emp.emp_email}}</td>
-                                            <td>{{emp.dob}}</td>
-                                            <td>{{emp.doj}}</td>
-                                            <td>{{emp.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
+                                            <td data-ng-show = "setting_empmobileno">{{emp.emp_phoneno}}</td>
+                                            <td data-ng-show = "setting_empemail">{{emp.emp_email}}</td>
+                                            <td data-ng-show = "setting_empdob">{{emp.dob}}</td>
+                                            <td data-ng-show = "setting_empdoj">{{emp.doj}}</td>
+                                            <td data-ng-show = "setting_empstatus">{{emp.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
                                        
                                  
@@ -512,7 +653,12 @@
   <!-- Custom Js -->
 
  	  
-<script>$('[data-toggle="popover"]').popover();</script>
+<script>
+	$('[data-toggle="popover"]').popover();
+	$('.regSettings').click(function(e) {
+	    e.stopPropagation();
+	});
+</script>
 </body>
 
 </html>
