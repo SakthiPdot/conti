@@ -40,8 +40,11 @@
 	<link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 
 	
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
-	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>
-	<script type="text/javascript" src="resources/custom/js/app.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="resources/custom/js/app.js"></script>
+
 
 
 </head>
@@ -67,7 +70,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                    </div>
                    
                    <div class="col-lg-2 col-md-2 headerRight">
-                   		<i class="fa fa-times fa-2x   pull-right iconLeft"  onClick="drawerClose('.drawer')"  data-ng-click="reset()"></i>
+                   		<i class="fa fa-times fa-2x   pull-right iconLeft"  data-ng-click="locctrl.close('Close')"  data-ng-click="reset()"></i>
                    </div>
             
              </div>
@@ -205,14 +208,14 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" onClick="drawerClose('.drawer')"  data-ng-click="reset()" > <i class="fa fa-times" aria-hidden="true"></i>
+							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="locctrl.close('Cancel')"  > <i class="fa fa-times" aria-hidden="true"></i>
 							Cancel</button>
 						</div>
 						
 						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
 							<a id="" class="btnPadding btn btn-warning"	 data-ng-click="locctrl.deleteLocation()"  data-ng-show="!(locctrl.Location.location_id== null)" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
 							
-							<a id="" class="btnPadding btn btn-primary"  data-ng-click="reset()"  data-ng-show="!locationForm.$pristine && (locctrl.Location.location_id== null)"><i class="fa fa-eraser" aria-hidden="true"></i>
+							<a id="" class="btnPadding btn btn-primary"  data-ng-click="locctrl.resetForm()"  data-ng-show="!locationForm.$pristine && (locctrl.Location.location_id== null)"><i class="fa fa-eraser" aria-hidden="true"></i>
 							Clear</a>							
 						</div>
 
@@ -269,7 +272,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
              <div class="page-header header-size">
                  	  <b>${title}</b>
                  	  
-                 	  <button class="btn btn-info  pull-right" data-ng-click="locctrl.openDrawer()" >Add New Location</button>
+                 	  <button class="btn btn-info  pull-right"   data-ng-click="locctrl.openDrawer();" >Add New Location</button>
              </div>             										
 		   </div>
 
@@ -309,7 +312,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                               <div class="col-lg-6 icons-button">
                                    <div class="pull-right">
                                      <button type="button" class="btn btn-info"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" class="btn btn-info"><i class="fa fa-file-excel-o fa-lg"></i></button>
+                                      <button type="button" onclick="location.href='downloadExcelLocation'" class="btn btn-info"><i class="fa fa-file-excel-o fa-lg"></i></button>
                                       <button type="button" class="btn btn-info"><i class="fa fa-print fa-lg"></i></button>
                                 	</div>
                                 </div>
@@ -323,6 +326,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                  id="dataTables-example">
                                     <thead>
                                         <tr>
+                                        	<th><input type="checkbox"></th>
                                             <th>S.No</th>
                                             <th>Location Name</th>
                                             <th>Location Code</th>
@@ -330,8 +334,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                             <th>City</th>
                                             <th>State</th>
                                             <th>Country</th>
-                                            <th>Pincode</th>
-                                            
+                                            <th>Pincode</th>                                            
                                         </tr>
                                     </thead>
                                     
@@ -339,6 +342,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                       <tr 
                                        data-ng-repeat="x in locctrl.Locations  track by x.location_id"
 	                	    			 data-ng-dblclick="updateLocation(x,$index)">                                            
+                                            <td><input type="checkbox"></td>
                                             <td>{{$index+1}}</td>
                                             <td>{{x.location_name}}</td>
                                             <td>{{x.location_code}}</td>
@@ -379,7 +383,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 	<script type="text/javascript" src="resources/custom/js/Location/location_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Address/address_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Location/location_control.js"></script>
-	
+	  <script src="resources/custom/js/confirmDialog.js"></script>
    <!--====================================================== SCRIPTS END =========================================-->
 
 </body>

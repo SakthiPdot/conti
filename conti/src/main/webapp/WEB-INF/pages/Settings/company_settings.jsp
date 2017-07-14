@@ -42,9 +42,13 @@
 <link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
 
  	<link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 	
- 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
-	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>
-	<script type="text/javascript" src="resources/custom/js/app.js"></script>
+ 
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="resources/custom/js/app.js"></script>
+
 
 	
 </head>
@@ -233,13 +237,13 @@
 					
 					<div class="col-lg-6">
 						<div class="form-group">
-							<label for="gstNo">GST No</label>
+							<label for="gstNo">GSTIN No</label>
 							 <input type="text" data-ng-required="true"
 							 id="gstNo"							  
 				  			  data-trigger="focus" data-toggle="popover"
-		 					  data-placement="top" data-content="Please Enter GST No"
+		 					  data-placement="top" data-content="Please Enter GSTIN No"
 							 data-ng-model="comctrl.company.gst_number"
-							 placeholder="Enter GST Number"
+							 placeholder="Enter GSTIN Number"
 							 class="form-control"
 							onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 							maxlength="20">
@@ -383,28 +387,100 @@
 
 			<div class="marginLeftRight">
 
-			<div  class="subHeading"><span>Other Setting</span></div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="subHeading">
+								<span>Tax Setting</span>
+							</div>
+							
+							
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label for="gstPer">HSN Code<span style="color:red">&nbsp;*</span></label> 
+									<input type="text"							 
+						  			 	 data-trigger="focus" data-toggle="popover"
+				 					  	data-placement="top" data-content="Please Enter Tax GST%"
+										data-ng-required="true"
+										data-ng-model="comctrl.company.hsn_code"
+										placeholder="Enter GST%"
+										class="form-control" id="gstPer"
+										onKeyPress="return CheckIsNumericAnddot(event,this.value)"
+										maxlength="5">
+								</div>
+							</div>
+							
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label for="gstPer">SGST%<span style="color:red">&nbsp;*</span></label> 
+									<div class="input-group">
+									<input type="text"							 
+						  			 	 data-trigger="focus" data-toggle="popover"
+				 					  	data-placement="top" data-content="Please Enter Tax GST%"
+										data-ng-required="true"
+										data-ng-model="comctrl.company.sgst"
+										placeholder="Enter GST%"
+										class="form-control" id="gstPer"
+										onKeyPress="return CheckIsNumericAnddot(event,this.value)"
+										maxlength="5">
+							<span class="input-group-addon" id="basic-addon1"><label>%</label></span>
+						</div>
+								</div>
+							</div>
+					</div>
+					
+					
+			<div class="row">
 
-				<div class="row">
-
+	
 					<div class="col-lg-6">
 						<div class="form-group">
-							<label for="gstPer">Tax GST%<span style="color:red">&nbsp;*</span></label> 
+							<label for="gstPer">CGST%<span style="color:red">&nbsp;*</span></label> 
+							<div class="input-group">
 							<input type="text"							 
 				  			 	 data-trigger="focus" data-toggle="popover"
 		 					  	data-placement="top" data-content="Please Enter Tax GST%"
 								data-ng-required="true"
-								data-ng-model="comctrl.company.tax_GST"
+								data-ng-model="comctrl.company.cgst"
+								placeholder="Enter GST%"
+								class="form-control" id="gstPer"
+								onKeyPress="return CheckIsNumericAnddot(event,this.value)"
+								maxlength="5">	
+							<span class="input-group-addon" id="basic-addon1"><label>%</label></span>
+						</div>
+						</div>
+					</div>
+					
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="gstPer">IGST%<span style="color:red">&nbsp;*</span></label> 
+						<div class="input-group">
+							<input type="text"							 
+				  			 	 data-trigger="focus" data-toggle="popover"
+		 					  	data-placement="top" data-content="Please Enter Tax GST%"
+								data-ng-required="true"
+								data-ng-model="comctrl.company.igst"
 								placeholder="Enter GST%"
 								class="form-control" id="gstPer"
 								onKeyPress="return CheckIsNumericAnddot(event,this.value)"
 								maxlength="5">
+								
+							<span class="input-group-addon" id="basic-addon1"><label>%</label></span>
+						</div>
 						</div>
 					</div>
+				
 				</div>
 				
+			
+					</div>
+						<div class="col-lg-6">
+							<div class="subHeading">
+								<span>Other Setting</span>
+							</div>
+							
 				<div class="row">
-					<div class="col-lg-3">
+					<div class="col-lg-6">
 						<div class="form-group">
 							<label for="email">No.of.days for Delivery<span style="color:red">&nbsp;*</span></label>
 							 <input type="number"
@@ -418,7 +494,7 @@
 							 class="form-control" id="email">
 						</div>
 					</div>
-					<div class="col-lg-3">
+					<div class="col-lg-6">
 						<label for="timeout">Application Timeout<span style="color:red">&nbsp;*</span></label>
 						<div class="input-group">
 							<input type="number"
@@ -435,6 +511,11 @@
 					</div>
 				</div>
 				
+				
+						</div>
+						
+						
+								
 				<div class="row">
 				
 				<div class="col-lg-12"><br><br></div>
@@ -448,8 +529,17 @@
 					</div>
 				</div>
 				
+				
+					</div>
+					
+					
+		
+			
+				
 			</div>
-
+			
+			
+		
 		<sec:authorize access="hasRole('STAFF')">
 	 		</fieldset>
 	 	</sec:authorize>
@@ -469,6 +559,7 @@
 	<script type="text/javascript" src="resources/custom/js/CompanySetting/company_setting_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Address/address_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/CompanySetting/company_setting_control.js"></script>
+   <script src="resources/custom/js/confirmDialog.js"></script>
    <!--====================================================== SCRIPTS END =========================================-->
 </body>
 </html>

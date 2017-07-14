@@ -8,7 +8,8 @@
  * 
  */
 angular.module('contiApp').controller('locationController'
-		,['$scope','LocationService','AddressService',function($scope,LocationService,AddressService){
+		,['$scope','LocationService','AddressService','ConfirmDialogService',
+			function($scope,LocationService,AddressService,ConfirmDialogService){
 			
 			var self=this;			
 			self.Locations=[];
@@ -18,6 +19,9 @@ angular.module('contiApp').controller('locationController'
 			self.selectedRow=null;
 			self.heading="Master";
 			self.save="saveclose";
+			self.cancel=close;
+			self.close=close;
+			self.resetForm=resetForm;
 			self.fetched=true;
 			self.openDrawer=openDrawer;
 			
@@ -47,6 +51,22 @@ angular.module('contiApp').controller('locationController'
 				    }
 				};
 			
+			function close(title){
+				ConfirmDialogService.confirmBox(title,
+						BootstrapDialog.TYPE_WARNING, title+" Without Save ..? ", 'btn-warning')
+				.then(function(response){
+					 drawerClose('.drawer') ;
+					 reset();
+				});
+			}
+			//===================================reset====================================
+			function resetForm(){
+				 ConfirmDialogService.confirmBox("Clear",
+		 				BootstrapDialog.TYPE_WARNING, "Clear Details  ..?", 'btn-warning')
+		 		.then(function(response){
+				reset();
+		 		});
+			}			
 			//===================================update Addresses====================================
 			$scope.updateAddressDetail=function updateAddressDetail(){				
 				self.Location.address=self.Location.selectedAddress;
@@ -62,12 +82,18 @@ angular.module('contiApp').controller('locationController'
 			//===================================update Drawer====================================
 			$scope.updateLocation=function updateLocation(location,index){
 				
+				
 				console.log(location.address, "=========="+index);				
 				$("#selectedCity_value").val(location.address.city);				
 				self.selectedRow=location;				
 				self.Location=location;	
 				self.Location.selectedAddress=location.address;	
-				self.heading="- "+self.Location.location_name;
+				
+				
+				(self.Location.location_name).length> 15?
+					self.heading="- "+(self.Location.location_name).substr(0,14)+"..."
+					:self.heading="- "+self.Location.location_name ;
+				
 				self.openDrawer();
 			}
 			
@@ -110,7 +136,14 @@ angular.module('contiApp').controller('locationController'
 						var locationName=self.Location.location_name;
 						if(self.Location.location_id==null){
 							console.log('saving user',self.Location);
-							LocationService.saveLocation(self.Location)
+							
+							
+							ConfirmDialogService.confirmBox("Save",
+				    				BootstrapDialog.TYPE_SUCCESS, "Save Location "+self.Location.location_name+"  ..?", 'btn-success')
+				    		.then(function(response){
+							
+				    			
+				    			LocationService.saveLocation(self.Location)
 							.then(
 									function(response){
 										self.message =locationName+ "  Location Created..!";
@@ -119,10 +152,15 @@ angular.module('contiApp').controller('locationController'
 									},function(errResponse){
 										self.message = "Error While Creating Location ("+locationName+") ..!";
 										successAnimate('.failure');
-									});					
+									});	
+				    		});
 						}else{
 							console.log('Updating user',self.Location);
-							LocationService.updateLocation(self.Location,self.Location.location_id)	
+							 ConfirmDialogService.confirmBox("Update",
+					    				BootstrapDialog.TYPE_SUCCESS, "Update Location "+self.Location.location_name+"  ..?", 'btn-success')
+					    		.then(function(response){
+							
+					    			LocationService.updateLocation(self.Location,self.Location.location_id)	
 							.then(
 									function(response){
 										self.message =locationName+ "  Location Updated..!";
@@ -132,6 +170,9 @@ angular.module('contiApp').controller('locationController'
 										self.message = "Error While Updating Location ("+locationName+") ..!";
 										successAnimate('.failure');
 									});	
+					    			
+					    			
+					    		});	
 						}
 				  }
 				
@@ -161,7 +202,12 @@ angular.module('contiApp').controller('locationController'
 			//===================================delete location====================================
 			function deleteLocation(){
 				var locationName=self.Location.location_name;
-				
+			
+				ConfirmDialogService.confirmBox("Delete",
+						BootstrapDialog.TYPE_DANGER, "Delete Location "+self.Location.location_name+"  ..?", 'btn-danger')
+				.then(function(response){
+					
+					
 				LocationService.deleteLocation(self.Location.location_id)
 				.then(
 						function(response){
@@ -177,7 +223,9 @@ angular.module('contiApp').controller('locationController'
 						},function(errResponse){
 							self.message = "Error While Deleting Location ("+locationName+") ..!";
 							successAnimate('.failure');
-						});			
+						});	
+				
+				});
 			}
 			
 	

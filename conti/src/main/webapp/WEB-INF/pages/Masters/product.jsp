@@ -30,12 +30,12 @@
 	 <link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	  <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 
-	 
-	 
 	
- 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
-	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>
-	<script type="text/javascript" src="resources/custom/js/app.js"></script>
+	 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="resources/custom/js/app.js"></script>
 	 
 </head>
 
@@ -120,21 +120,20 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 							 					 id="selectedProductType" 
 									              pause="0"										              
 									  			  data-trigger="focus" data-toggle="popover"
-							 					  data-placement="top" data-content="Please Enter Location"
-									              selected-object="location_name"
-									              local-data="comctrl.Locations"
+							 					  data-placement="top" data-content="Please Enter Product Type"
+									              selected-object="product_type"
+									              local-data="proctrl.products"
 									              placeholder="Eg.Box"
-									              search-fields="location_name,address.city,address.state,pincode"
-									              title-field="location_name,address.city,address.state,pincode"
+									              search-fields="product_Type"
+									              title-field="product_Type"
 												  match-class="highlight"
-												  initial-value="{{comctrl.company.location.location_name}}"
+												  initial-value="{{proctrl.product.product_Type}}"
 									              minlength="1"
 									              input-class="form-control form-control-small">
 									              </div>
 									              
-									              
-									              	                  
-		                  <input type="text" class="form-control"
+									         	                  
+		                  <input type="hidden" class="form-control"
 		                  maxlength="30"
 		                  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 		                    data-ng-required="true"
@@ -205,7 +204,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 							<span class="input-group-addon" id="basic-addon1"><label>cm</label></span>
 						</div>
 			                  
-			                   <span>Maximum Length</span>
+						<span>Maximum Length</span>
 		                  <div class="input-group">
 			                  <input type="text" class="form-control"				                  
 		                    onKeyPress="return CheckIsNumericAnddot(event,this.value) "
@@ -217,7 +216,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 							<span class="input-group-addon" id="basic-addon1"><label>cm</label></span>
 						</div>	
 						
-						 <!-- <pre>{{proctrl.product | json}}</pre>   -->                 
+						             
 			                 	
 			           </div>  
 			       
@@ -327,15 +326,10 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 															Batch Action <span class="caret"></span>
 														</button>
 														<ul class="dropdown-menu">
-															<li><a href="#">Active</a></li>
-															<li><a href="#">InActive</a></li>
-															<li><a href="#">Archive</a></li>
-
+															<li data-ng-click="proctrl.makeActive()"><a>Active</a></li>
+															<li data-ng-click="proctrl.makeInActive()"><a>InActive</a></li>
 														</ul>
-
 													</div>
-
-
 												</div>
 											</div>
 
@@ -344,7 +338,8 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 													<button type="button" class="btn btn-primary">
 														<i class="fa fa-cog fa-lg"></i>
 													</button>
-													<button type="button" class="btn btn-primary">
+													<button type="button" class="btn btn-primary"
+													onclick="location.href='downloadExcelProduct'">
 														<i class="fa fa-file-excel-o fa-lg"></i>
 													</button>
 													<button type="button" class="btn btn-primary">
@@ -361,7 +356,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 										id="dataTables-example">
 										<thead>
 											<tr>
-												<th><input type="checkbox"></th>
+												<th><input type="checkbox" data-ng-model="proctrl.selectAllProduct" data-ng-click="proctrl.selectAll()"></th>
 												<th>S.No</th>
 												<th>Product Name</th>
 												<th>Product Code</th>
@@ -371,14 +366,14 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 												<th>Maximum Height(Cm)</th>
 												<th>Maximum Width(Cm)</th>
 												<th>Maximum Length(Cm)</th>
-												<th>Active</th>
+												<th>Active/InActive</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr
 											data-ng-dblclick="proctrl.updateProduct(x,$index)"
 											data-ng-repeat="x in  proctrl.products track by x.product_id">
-												<td><input type="checkbox"></td>
+												<td><input type="checkbox"  data-ng-model="x.select" data-ng-click="proctrl.selectProduct(x)"></td>
 												<td>{{$index+1}}</td>
 												<td>{{x.product_name}}</td>
 												<td>{{x.product_code}}</td>

@@ -15,7 +15,10 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 			fetchEmpCat :fetchEmpCat,
 			createEmployee : createEmployee,
 			updateEmployee :updateEmployee,
-			deleteEmployee : deleteEmployee
+			deleteEmployee : deleteEmployee,
+			makeActive : makeActive,
+			makeinActive : makeinActive,
+			/*print : print*/
 	};
 	
 	return factory;
@@ -125,5 +128,75 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
     	return deferred.promise;
     }
     //------------------------------- Delete Employee end -----------------------------//
+    
+    
+    //------------------------------- make active Employee begin -----------------------------//
+    function makeActive(id) {
+    	var deferred = $q.defer();
+    	
+    	$http({
+    		method : 'POST',
+    		url : 'make_active',
+    		data : id,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
+    //------------------------------- make active Employee end -----------------------------//
+
+    //------------------------------- make inactive Employee begin -----------------------------//
+    function makeinActive(id) {
+    	var deferred = $q.defer();
+    	
+    	$http({
+    		method : 'POST',
+    		url : 'make_inactive',
+    		data : id,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
+    //------------------------------- make inactive Employee end -----------------------------//
+
+    //------------------------------- Print Employee begin -----------------------------//
+  /*  function print(id) {
+    	var deferred = $q.defer();
+    	
+    	$http({
+    		method : 'POST',
+    		url : 'print_employee',
+    		data : id,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }*/
+
+    //------------------------------- Print Employee end -----------------------------//
+
+    
     
 }]);

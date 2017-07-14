@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
@@ -38,12 +39,13 @@
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
 	 
-    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
-	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script> 
-	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script>    
+
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
-    
-    
+
 </head>
 
 
@@ -341,6 +343,9 @@
 	
 	<jsp:include page="../Dashboard/nav.jsp"/>
 	
+	
+ 		
+ 	<sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
       
@@ -348,7 +353,7 @@
              <div class="page-header header-size">
                  	  <b>${title}</b>
                  	  
-                 	  <button class="btn btn-info drawerOpen pull-right" onClick="drawerOpen('.drawer')" >Add New Employee</button>
+                 	  <button class="btn btn-primary drawerOpen pull-right" onClick="drawerOpen('.drawer')" >Add New Employee</button>
              </div>	   
              </div>
       		
@@ -367,14 +372,13 @@
                                <div class="col-lg-6">
                                      <div class="dataTables_length" id="dataTables-example_length">
 							<div class="dropdown">
-								<button class="btn btn-info dropdown-toggle"
+								<button class="btn btn-primary dropdown-toggle"
 									type="button" data-toggle="dropdown">
 									Batch Action <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a href="#">Email</a></li>
-									<li><a id="deletearchieve">Archive</a></li>
-
+									<li><a data-ng-click = "ctrl.makeActive()">Active</a></li>
+									<li><a data-ng-click = "ctrl.makeinActive()">In Active</a></li>
 								</ul>
 								<!--<button type="button" class="btn btn-primary">Filter</button>-->
 							</div>
@@ -385,19 +389,25 @@
                                 
                                <div class="col-lg-6 icons-button">
                                    <div class="pull-right">
-                                     <button type="button" class="btn btn-info"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" class="btn btn-info"><i class="fa fa-file-excel-o fa-lg"></i></button>
-                                      <button type="button" class="btn btn-info"><i class="fa fa-print fa-lg"></i></button>
+                                     <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
+                                      <button type="button" class="btn btn-primary" onclick="location.href='downloadExcelEmployee'"><i class="fa fa-file-excel-o fa-lg"></i></button>
+                                      
+                                      <form name="listprint" method = "POST" action = "employee_print" >
+	                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+	                                      <input type = "hidden" name = "emp" value = "{{ctrl.selected_employee}}" />
+	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                      </form>
+                                      
                                 	</div>
                                 </div>
                               </div>
                             </div>
-                          
                              
                             
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
+                                        	<th><input type="checkbox" data-ng-click="ctrl.empSelectall()" data-ng-model = "selectall" /></th>
                                             <th>S.No</th>
                                             <th>Employee Name</th>
                                             <th>Employee Code</th>
@@ -408,29 +418,43 @@
                                             <th>Email</th>
                                             <th>Date of Birth</th>
                                             <th>Date of Joining</th>
+                                            <th>Active</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr
-                                        	data-ng-repeat = "emp in ctrl.employees | orderBy : 'emp_name'"
+                                        	data-ng-repeat = "emp in ctrl.employees.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage)) | orderBy : 'emp_name'"
                                         	data-ng-dblclick="ctrl.updateEmployee(emp)">
-                                            <td>{{$index+1}}</td>
+                                        	<td><input type="checkbox" data-ng-change="ctrl.empSelect(emp)" data-ng-model = "emp.select" /></td>
+                                            <td>{{(currentPage*10)-(10-($index+1))}}</td>
                                             <td>{{emp.emp_name}}</td>
                                             <td>{{emp.emp_code}}</td>
                                             <td>{{emp.empcategory}}</td>
-                                            <td>{{emp.branch_id}}</td>
-                                            <td>{{emp.emp_address}}</td>
+                                            <td>{{emp.branchModel.branch_name}}</td>
+                                            <td>{{emp.emp_address1}}, {{emp.emp_address2}}, 
+                                            	{{emp.location.location_name}}, {{emp.location.address.city}}, 
+                                            	{{emp.location.address.district}}, {{emp.location.address.state}}, {{emp.location.address.pincode}}</td>
                                             <td>{{emp.emp_phoneno}}</td>
                                             <td>{{emp.emp_email}}</td>
                                             <td>{{emp.dob}}</td>
                                             <td>{{emp.doj}}</td>
+                                            <td>{{emp.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
                                        
                                  
                                     </tbody>
                                 </table>
+                                
+                                <div class="col-lg-6 icons-button">
+                                   <div class="pull-right">
+                                   		<!-- <ul>
+                                   		<li></li>
+                                   		</ul> -->
+                                     	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage"></pagination> 
+                                	</div>
+                                </div>
                             </div>
-                           
+
                         </div>
                     </div>
                     <!--End Advanced Tables -->
@@ -442,7 +466,40 @@
         <!-- /. PAGE WRAPPER  -->
 		
     </div>
+    </sec:authorize>
     <!-- /. WRAPPER  -->
+    <sec:authorize access="hasRole('STAFF')">
+	    <div id="wrapper">        	  
+			<div id="page-wrapper"> 
+				<div class="header "> 
+		             <div class="page-header header-size">
+		                 	  <b>${title}</b>		                 	 
+		             </div>	   
+             	</div>	
+             	
+             	<div id="page-inner">  
+					<div class="row">
+                		<div class="col-md-12">
+                			 <div class="panel panel-default">
+		                        <div class="panel-heading">
+		                             Employees Register
+		                        </div>
+		                        <div class="panel-body">
+		                        	Sorry..! You have no authorized for view this master..!
+		                        </div>
+		                      </div>
+                		</div>
+                	</div>
+                </div>		
+			 </div>
+		</div>
+	</sec:authorize>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script> -->
+
+<!-- 	<script src="resources/libs/jspdf.min.js"></script>
+	<script src="resources/libs/jspdf.plugin.autotable.src.js"></script>		
+	<script src="resources/libs/examples.js"></script>   -->
 
 
   <script src="resources/custom/js/custom.js"></script>
@@ -454,6 +511,7 @@
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
   <!-- Custom Js -->
 
+ 	  
 <script>$('[data-toggle="popover"]').popover();</script>
 </body>
 

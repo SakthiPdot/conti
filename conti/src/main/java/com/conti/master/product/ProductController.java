@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
-import com.conti.master.location.Location;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -41,6 +40,54 @@ public class ProductController {
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
 
+	//======================================Excel==========================================
+	@RequestMapping(value="downloadExcelProduct",method=RequestMethod.GET)
+	public ModelAndView downloadExcelProduct(){
+		List<Product> productList=productDao.getProduct(); 
+		return new ModelAndView("productExcelView","ProductList",productList);
+	}
+	
+	//======================================product Inactive==========================================
+	@RequestMapping(value="productStaus/{status}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> productInActive(@RequestBody int[] idArray,@PathVariable("status") String status,HttpServletRequest request){	
+		
+		System.out.println(status+"464644");
+		//intialize		
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+		
+		try {
+			
+			
+			for(int i=0;i<idArray.length;i++){				
+				Product product=productDao.getProduct(idArray[i]);			
+				//set variable	
+				if(status.trim().equals("InActive") ||status.trim()=="InActive" ){
+					product.setActive("N");					
+				}else{
+					product.setActive("Y");
+				}	
+				
+				product.setUpdated_by(Integer.parseInt(request.getSession().getAttribute("userid").toString()));
+				product.setUpdated_datetime(dateFormat.format(date));
+				productDao.saveOrUpdate(product);
+			}
+				return new ResponseEntity<Void>(HttpStatus.OK);
+			
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
+
+	//======================================product active==========================================
+	@RequestMapping(value="productActive",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> productActive(@RequestBody int[] idArray,HttpServletRequest request){
+		return null;
+	}
+	
 	//======================================save product==========================================
 	@RequestMapping(value="productSave",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> saveProduct(@RequestBody Product product,HttpServletRequest request){

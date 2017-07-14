@@ -32,7 +32,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 		// TODO Auto-generated method stub
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listemp = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
-				.createQuery("from EmployeeMaster WHERE obsolete ='N' and active ='Y' and branch_id = " + branch_id + " AND empcategory = '" + empcategory + "'").list();
+				.createQuery("from EmployeeMaster WHERE obsolete ='N' and branch_id = " + branch_id + " AND empcategory = '" + empcategory + "'").list();
 		return listemp;
 		
 		/*String queryString = "FROM EmployeeMaster WHERE branch_id = " + branch_id + " AND empcategory = '" + empcategory + "'";
@@ -49,7 +49,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 	public List<EmployeeMaster> getAllEmployees() {
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
-				.createQuery("from EmployeeMaster where obsolete ='N' and active ='Y'").list();
+				.createQuery("from EmployeeMaster where obsolete ='N'").list();
 		return listEmployee;
 	}
 
@@ -67,7 +67,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 	@SuppressWarnings("unchecked")
 	public EmployeeMaster findByMobileno(long mobileno)
 	{
-		String hql = "FROM EmployeeMaster WHERE obsolete ='N' and active ='Y' and emp_phoneno ="+ mobileno + "";
+		String hql = "FROM EmployeeMaster WHERE obsolete ='N' and emp_phoneno ="+ mobileno + "";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
 		List<EmployeeMaster> emplist = (List<EmployeeMaster>) query.list();
@@ -85,7 +85,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 	@Override
 	@Transactional
 	public EmployeeMaster getEmployeebyId(int id) {
-		String hql = "FROM EmployeeMaster WHERE obsolete ='N' and active ='Y' and emp_id ="+ id + "";
+		String hql = "FROM EmployeeMaster WHERE obsolete ='N' and emp_id ="+ id + "";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
 		List<EmployeeMaster> emplist = (List<EmployeeMaster>) query.list();
