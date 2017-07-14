@@ -144,8 +144,8 @@ public class BranchRestController {
 		
 		DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date=new Date();
-		try
-		{
+		/*try
+		{*/
 			branchModel.setObsolete("N");
 			branchModel.setActive("Y");
 			branchModel.setCreated_by(user_id);
@@ -154,19 +154,23 @@ public class BranchRestController {
 			branchModel.setUpdated_datetime(dateFormat.format(date).toString());
 			branchDao.saveOrUpdate(branchModel);
 			HttpHeaders headers=new HttpHeaders();
+			System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
 			headers.setLocation(ucBuilder.path("/branches/{id}").buildAndExpand(branchModel.getBranch_id()).toUri());
+			System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
 			loggerconf.saveLogger(username,request.getServletPath(), ConstantValues.SAVE_SUCCESS,null);
-			return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+			
+			
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
+		/*}
 		catch(Exception exception)
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
 			return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		}*/
 	}
 	
 	/* ------------------------- Update Branch begin ------------------------------------- */
-	@RequestMapping(value = "branch/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "update_branch/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<BranchModel> updateBranch(@PathVariable ("id") int id, @RequestBody BranchModel branchModel, HttpServletRequest request) 
 	{
 		BranchModel branchModelDB = branchDao.getBranchbyId(id);
