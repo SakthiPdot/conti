@@ -568,7 +568,7 @@
                                         	data-ng-dblclick="ctrl.updateEmployee(emp)">
                                         	<td><input type="checkbox" data-ng-change="ctrl.empSelect(emp)" data-ng-model = "emp.select" /></td>
                                             <td>{{(currentPage*10)-(10-($index+1))}}</td>
-                                            <td data-ng-show = "{{setting_empname}}">{{emp.emp_name}}</td>
+                                            <td data-ng-show = "setting_empname">{{emp.emp_name}}</td>
                                             <td data-ng-show = "setting_empcode">{{emp.emp_code}}</td>
                                             <td data-ng-show = "setting_empcategory">{{emp.empcategory}}</td>
                                             <td data-ng-show = "setting_empbranch">{{emp.branchModel.branch_name}}</td>
