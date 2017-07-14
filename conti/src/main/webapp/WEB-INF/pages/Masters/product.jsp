@@ -5,6 +5,7 @@
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
 %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ page isELIgnored="false" %> 
 <%@page session="true"%>
 <html lang="en">
@@ -291,6 +292,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 	<jsp:include page="../Dashboard/nav.jsp"/>
 
 
+<sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">
 	<div id="wrapper">
 		<div id="page-wrapper">
 
@@ -335,16 +337,24 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 
 											<div class="col-xs-6 icons-button">
 												<div class="pull-right">
-													<button type="button" class="btn btn-primary">
+												
+													<form name="selectedProductForm" method="POST" action="product_print">
+													<a type="button" class="btn btn-primary">
 														<i class="fa fa-cog fa-lg"></i>
-													</button>
-													<button type="button" class="btn btn-primary"
+													</a>
+													
+													<a type="button" class="btn btn-primary"
 													onclick="location.href='downloadExcelProduct'">
 														<i class="fa fa-file-excel-o fa-lg"></i>
+													</a>
+													<!--=============== print============== -->
+													<button type="submit" class="btn btn-primary">
+														<i class="fa fa-print fa-lg"></i>														
 													</button>
-													<button type="button" class="btn btn-primary">
-														<i class="fa fa-print fa-lg"></i>
-													</button>
+													<input type="hidden" name="SelectedProduct" value="{{proctrl.selectedProducts}}"/>
+	                                      			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+													</form>
+													<!--=============== print end============== -->
 												</div>
 											</div>
 										</div>
@@ -402,10 +412,37 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 
 		</div>
 		<!-- /. PAGE WRAPPER  -->
-
 	</div>
 	<!-- /. WRAPPER  -->
+	 </sec:authorize>
 
+  <!--======================================================ONLY FOR STAFF=========================================-->
+		<sec:authorize access="hasRole('STAFF')">
+			<div id="wrapper">        	  
+				<div id="page-wrapper"> 
+					<div class="header "> 
+						 <div class="page-header header-size">
+								  <b>${title}</b>		                 	 
+						 </div>	   
+					</div>	
+					
+					<div id="page-inner">  
+						<div class="row">
+							<div class="col-md-12">
+								 <div class="panel panel-default">
+									<div class="panel-heading">
+										 Product Register
+									</div>
+									<div class="panel-body">
+										Sorry..! You are not authorized to view this master..!
+									</div>
+								  </div>
+							</div>
+						</div>
+					</div>		
+				 </div>
+			</div>
+		</sec:authorize>
 	<!--====================================================== SCRIPTS START=========================================-->
 	<script>$('[data-toggle="popover"]').popover();</script>	
     <script src="resources/custom/js/custom.js"></script>  

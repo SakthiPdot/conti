@@ -331,9 +331,14 @@ public class EmployeeRestController {
 		}
 		Company company = companySettingDAO.getById(1);
 		ModelAndView model = new ModelAndView("print/employee_print");
-		
-		byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
-		String base64DataString = new String(encodeBase64 , "UTF-8");
+
+		String base64DataString ="";
+		if(company!=null){
+			if(company.getCompany_logo()!=null){
+				byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			}
+		}
 		
 		model.addObject("title", "Employee");
 		model.addObject("company", company);
