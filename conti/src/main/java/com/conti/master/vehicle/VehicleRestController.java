@@ -1,11 +1,19 @@
 package com.conti.master.vehicle;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonProcessingException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,18 +22,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 @RestController
 public class VehicleRestController {
 	
 	@Autowired
 	private VehicleDao vehicleDao;
+	@Autowired
+	private CompanySettingDAO companySettingDAO;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
@@ -70,12 +84,8 @@ public class VehicleRestController {
 			vehicle.setUpdated_by(user_id);	
 			vehicle.setCreated_datetime(dateFormat.format(date).toString());
 			vehicle.setUpdated_datetime(dateFormat.format(date).toString());
-			
-			System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-			
+		
 			vehicleDao.saveOrUpdate(vehicle);	
-			
-			System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + vehicle);
 			
 			HttpHeaders headers = new HttpHeaders();
 
@@ -248,6 +258,61 @@ public class VehicleRestController {
 		}
 //================ Inactive Vehicle Function End ====================//
 	
-	
+//================== Excel Begin ===========================//
+		
+		@RequestMapping(value = "downloadExcelVehicle",method= RequestMethod.GET)
+		public ModelAndView downloadExcelVehicle() {
+			List<VehicleMaster> vehicleList = vehicleDao.getAllVehicles();
+			return new ModelAndView("vehicleExcelView", "vehicleList", vehicleList);
+			
+		}
+		
+//================== Excel End =============================//
+		
+	//================ Print Begin ========================//
+		
+		@RequestMapping(value = "/vehicle_print", method = RequestMethod.POST)
+		public ModelAndView vehiclePrint(@RequestParam("vehicle") String vehicle,HttpServletRequest request) throws JsonProcessingException, IOException {
+			
+			JSONArray jsonArray = new JSONArray(vehicle);
+			String[] vehicleid = new String[jsonArray.length()];
+			for(int i=0; i<jsonArray.length();i++){
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				vehicleid[i] = Integer.toString(jsonObject.getInt("vehicle_id"));
+				
+			}
+			
+			List<VehicleMaster> listVehicle = new ArrayList<VehicleMaster> ();
+			for(int i=0;i<vehicleid.length;i++) {
+				VehicleMaster vehicleModel = vehicleDao.getVehiclebyId(Integer.parseInt(vehicleid[i]));
+				listVehicle.add(vehicleModel);	
+			}
+			
+			Company company = companySettingDAO.getById(1);
+			ModelAndView model = new ModelAndView("print/vehicle_print");
+			
+			String base64DataString = "";
+			if(company!=null && company.getCompany_logo()!= null) {
+				byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+				try {
+					base64DataString = new String(encodeBase64 , "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					
+					loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), "Image support error", e);
+				}
+			} else {
+				base64DataString = ConstantValues.NO_IMAGE;	
+			}
+			
+			model.addObject("title", "Vehicle");
+			model.addObject("company", company);
+			model.addObject("listVehicle", listVehicle);
+			model.addObject("image", base64DataString);
+			return model;
+			
+		}
+		
+		
+	//=============== Print Begin =========================//
 	
 }
