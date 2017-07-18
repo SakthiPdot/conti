@@ -14,11 +14,32 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 			fetchLocation:fetchLocation,
 			deleteLocation:deleteLocation,
 			updateLocation:updateLocation,
-			fetchAllLocation:fetchAllLocation
+			fetchAllLocation:fetchAllLocation,
+			changeActive:changeActive
 		}
 	
 	return factory;
 
+	//=============================change Active====================================
+	function changeActive(id,status){	
+		console.log(id,status);
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:"locationStaus/"+status,
+			data:id,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("status change failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
+	
 	//=============================SAVE LOCATION====================================
 	function saveLocation(location){
 		var deferred=$q.defer();

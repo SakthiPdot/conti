@@ -16,4 +16,11 @@ public interface ProductDAO {
 	public Product getProduct(int productId);
 	public void deleteProductById(int productId);
 	
+	public List<Product> getProductBy100();
+	public List<Product> getProductWithLimit(int from,int to,String order);
+	
+	public List<Product> searchByProduct(String SearchString);
+	
+	public String checkProductName(String SearchString);
+	
 }

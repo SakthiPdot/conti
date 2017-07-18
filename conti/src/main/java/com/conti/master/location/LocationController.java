@@ -9,7 +9,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.address.AddressModel;
 import com.conti.config.SessionListener;
-import com.conti.master.product.Product;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -88,6 +86,11 @@ public class LocationController {
 
 	}
 	
+	//=================CHANGE ACTIVE STATUS=====================================
+	@RequestMapping (value="locationStaus",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void>  LocationStatus(@RequestBody int[] idArray,@PathVariable("status") String Status,HttpServletRequest request){
+		return null;
+	}
 	//=================EXCEL DOWNLOAD=====================================
 	@RequestMapping(value="downloadExcelLocation",method=RequestMethod.GET)
 	public ModelAndView downloadExcelProduct(){
