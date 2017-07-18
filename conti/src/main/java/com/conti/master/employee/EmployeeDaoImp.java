@@ -50,6 +50,17 @@ public class EmployeeDaoImp implements EmployeeDao {
 				.setMaxResults(100).list();
 		return listEmployee;
 	}
+	
+	@Override
+	@Transactional
+	public List<EmployeeMaster> getEmployeesbyBranchId(int branch_id) {
+		@SuppressWarnings("unchecked")
+		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from EmployeeMaster where obsolete ='N'AND branchModel.branch_id =" + branch_id + " "
+						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
+				.list();
+		return listEmployee;
+	}
 
 	
 	@Override

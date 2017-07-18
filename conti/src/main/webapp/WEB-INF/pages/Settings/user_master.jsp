@@ -18,30 +18,32 @@
     
     <title>${title}</title>
     <!-- Bootstrap Styles-->
-       <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
+	
+	 <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
 	 
-	  <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
-	 <!-- Morris Chart Styles-->
+    <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <!-- Custom Styles-->
-    <link href="resources/built-in/assets/css/custom-styles.css" rel="stylesheet" />
+   <!--  <link href="resources/built-in/assets/css/custom-styles.css" rel="stylesheet" /> -->
     <!-- Google Fonts-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	<link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
-	
+	 <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+	 
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
-	<link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
+	 <link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
-    
-     <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
-   
-    <script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
+	 
+
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
@@ -50,7 +52,7 @@
 </head>
 
 
-<body style="overflow-x:hidden;" data-ng-app = "contiApp" data-ng-controller = "UserController" >
+<body style="overflow-x:hidden;" data-ng-app = "contiApp" data-ng-controller = "UserController as ctrl" >
  
   <!-- ------------------------- Overlay for message begin ------------------ -----  -->
 	<div class="overlay hideme"></div>
@@ -70,6 +72,7 @@
 	</div>
 <!-- ------------------------- Failure message end ------------------ -----  -->
  
+
  		
  		<div class="drawer hideme">
  		<form data-ng-submit = "ctrl.submit()" name = "userForm" class="form-horizontal">
@@ -97,7 +100,7 @@
 		                <div class="col-lg-12 title_area">	                
 		              
 			          	<div class="col-lg-12 new-masters" >
-			          		<b data-ng-show = "ctrl.user.user_id == null"> New Vehicle</b>
+			          		<b data-ng-show = "ctrl.user.user_id == null"> New User</b>
 			          	</div>  
 			          </div>                
 	                </div> 
@@ -107,9 +110,9 @@
 			              
 			         	<div class="col-lg-12 content-body" >
 		                 	 
-		                 	  <span>Branch Name</span>
+		                 	  <span>Branch Name <span class="required">*</span></span>
 			                  
-			                  <angucomplete-alt id="branch_name" data-ng-model="ctrl.user.branch_name"
+			                 <angucomplete-alt id="branch_name" data-ng-model="ctrl.user.branch_name"
 						              placeholder="Ex : Coimbatore"
 						              pause="100"
 						              selected-object="branch_name"
@@ -121,20 +124,21 @@
 						              minlength="1"
 						              field-required="true"
 						              data-trigger="focus" data-toggle="popover" 
-						              data-placement="top" data-content="Please Enter Vehicle Branch Name"
+						              data-placement="top" data-content="Please enter branch name"
 						              onKeyPress="return CheckIsCharacter(event)"
 						              input-class="form-control form-control-small">
-              				 </angucomplete-alt>
+              				</angucomplete-alt>
+			                  <input type="text" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject}}" />
 			                  
-			                   <span>Employee Name</span>
+			                   <span>Employee Name <span class="required">*</span></span>
 			                  <angucomplete-alt id="employee_name" data-ng-model = "ctrl.user.emp_name"
-			                  placeholder = "Ex: Coimbatore" pause="100"
+			                  placeholder = "Ex: Sankar" pause="100"
 			                  selected-object="emp_name"
-			                  local-data="ctrl.users"
+			                  local-data="ctrl.employees"
 			                  search-fields="emp_name"
 			                  title-field = "emp_name"
 			                  match-class="highlight"
-			                  initial-value = "{{ctrl.user.employeeModel.emp_name}}"
+			                  initial-value = "{{ctrl.user.employeeMaster.emp_name}}"
 			                  minlength="1"
 			                  field-required="true"
 			                  data-trigger = "focus" data-toggle="popover"
@@ -142,43 +146,60 @@
 			                  onKeyPress = "return CheckIsCharacter(event)"
 			                  input-class="form-control form-control-small">
 			                  </angucomplete-alt>
+			                  			                  
+			                  <input type="text" id="emp_id" name="emp_id" value="{{emp_name.originalObject}}"/>
 			                  
-			                  <input type="hidden" id="emp_id" name="emp_id" value="{{emp_name.originalObject}}"/>
-			                   <span>Role Name</span>
-			                  <select class="form-control" data-ng-model="ctrl.user.role_id">
-			                  		<option value="1">Super Admin</option>
-			                  		<option value="2">Manager</option>
-			                  		<option value="3">Staff</option>
+			                   <span>Role Name <span class="required">*</span></span>
+			                  <select class="form-control" data-ng-options="role.role_Id as role.role_Name for role in ctrl.roles" data-ng-model="ctrl.user.role_id" required>
+			                  	<option value = "">--Select Role--</option>
 			                  </select>
 			                  
-			                   <span>User Name</span>
-			                  <input type="text" class="form-control" onKeyPress="return CheckIsCharacter(event)" data-ng-model="ctrl.user.username" data-trigger="focus"
-			                  data-toggle="popover" data-placement="top" data-content="Please Enter Username" required>
+			                   <span>User Name <span class="required">*</span></span>
+			                  <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" minlength="5" maxlength= "20" data-ng-model="ctrl.user.username" data-trigger="focus"
+			                  data-toggle="popover" data-placement="top" data-content="Please Enter Username" data-ng-blur="ctrl.checkUsername(ctrl.user.username)" required >
+			                  <span data-ng-show = "ctrl.errorUsername" class ="makeRed">This username is not available</span>
+			                    <span>Password <span class="required">*</span></span>
+			                  <input type="text" class="form-control" min= "8" data-ng-model="ctrl.user.userpassword" data-trigger="focus"
+			                  data-toggle="popover" data-placement="top" data-content="Please Enter Password" data-ng-keyup = "ctrl.getPassword(ctrl.user.userpassword)" required>
 			                  
-			                    <span>Password</span>
-			                  <input type="text" class="form-control" onKeyPress="return CheckIsCharacter(event)" data-ng-model="ctrl.user.userpassword" data-trigger="focus"
-			                  data-toggle="popover" data-placement="top" data-content="Please Enter Password" required>
 			                  
+			                    <span>Confirm Password <span class="required">*</span></span>
+			                   <input type="text" class="form-control" min= "8" data-ng-model="ctrl.user.confpassword" data-trigger="focus"
+			                  data-toggle="popover" data-placement="top" data-content="Please Enter ConfirmPassword" data-ng-keyup = "ctrl.checkPassword(ctrl.user.userpassword, ctrl.user.confpassword)" required>
 			                  
-			                    <span>Confirm Password</span>
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsCharacter(event)" data-ng-model="ctrl.user.userpassword" data-trigger="focus"
-			                  data-toggle="popover" data-placement="top" data-content="Please Enter ConfirmPassword" required>
-			                  
-		                  	
+		                  	<span data-ng-show = "!ctrl.checkPWD" class ="makeRed">Password doesn't match</span>
 			               
+			               
+			                <div class="passward_validate hidden">
+											<ul>
+												<li>
+													<i class="fa fa-check-circle caps makeRed" aria-hidden="true"></i> at least one capital letter
+												</li>
+												<li>
+													<i class="fa fa-check-circle num makeRed" aria-hidden="true"></i> at least one numeric
+												</li>
+												<li>
+													<i class="fa fa-check-circle specialchar makeRed" aria-hidden="true"></i> at least one special character
+												</li>
+												<li>
+													<i class="fa fa-check-circle minchar makeRed" aria-hidden="true"></i> minimum 8 characters
+												</li>
+											</ul>
+										</div> 
+										
+										
 			              </div>         
-			                	                
-		                </div>                
+			                	 
+			                	              
+		                </div>   
+		                
+		                			
+										             
 	                </div>  
-	                
-	                
-	             
-  
-  
-   
-   
-	               
-	                
+	                   
+	                    				
+										
+										             
 	                              
                  </div>
                  
@@ -206,7 +227,7 @@
 
 							<div class="btn-group dropup" id="savebutton">
 						 	 <button type="submit" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">
+									aria-expanded="false" data-ng-disabled = "((!ctrl.errorUsername) && (ctrl.resetBtn) && (ctrl.checkPWD))? false : true">
 									<i class="fa fa-floppy-o "></i> Save
 							</button>
 							<div class="dropdown-menu pull-right" style="padding-right: 5px;">
@@ -232,7 +253,7 @@
  			</form>
  			
  		</div>
- 
+ 								
 	
 	<jsp:include page="../Dashboard/nav.jsp"/>
 	

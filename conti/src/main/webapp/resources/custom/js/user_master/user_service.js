@@ -8,8 +8,7 @@
  * @Updated_date_time Jun 20, 2017 3:24:17 PM
  */
 contiApp.factory('UserService', ['$http', '$q', function($http, $q){
- 
-    var REST_SERVICE_URI = 'http://localhost:8080/Conti/users/';
+
  
     var factory = {
         fetchAllUsers: fetchAllUser,
@@ -19,7 +18,11 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
         findUserbyMbl :findUserbyMbl,
         
         makeActive : makeActive,
-        makeinActive : makeinActive
+        makeinActive : makeinActive,
+        
+        fetchAllRoles : fetchAllRoles,
+        checkUsername : checkUsername,
+        createUser : createUser
     };
  
     return factory;
@@ -39,7 +42,7 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
     			);*/
     	
         var deferred = $q.defer();
-        $http.get(REST_SERVICE_URI)
+        $http.get('users/')
             .then(
             function (response) {
                 deferred.resolve(response.data);
@@ -56,7 +59,7 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
     //----------------------  Find user by user id with PUT begin ----------------------------- //    
     function findUser(user, id) {
         var deferred = $q.defer();
-        $http.put(REST_SERVICE_URI+id, user)
+        $http.put('users/'+id, user)
             .then(
             function (response) {
                 deferred.resolve(response.data);
@@ -119,7 +122,7 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
   //----------------------  Delete user by user id begin ----------------------------- //  
     function deleteUser(id) {
     	var deferred = $q.defer();
-    	$http.delete(REST_SERVICE_URI+id)
+    	$http.delete('users/'+id)
     		.then(
     				function(response){
     					deferred.resolve(response.data);
@@ -234,6 +237,74 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
 			}
 			
 	//========== InActive Vehicle End ===============//
-    
+			
+	//-------------------- Fetch all Roles begin -------------------//		
+		function fetchAllRoles() {
+	        var deferred = $q.defer();
+	        $http.get('roles/')
+	            .then(
+	            function (response) {
+	                deferred.resolve(response.data);
+	            },
+	            function(errResponse){
+	                console.error('Error while fetching Roles');
+	                deferred.reject(errResponse);
+	            }
+	        );
+	        return deferred.promise;
+	    }
+		
+	//-------------------- Fetch all Roles end -------------------//
+		
+		
+	//============= check Username Begin ===========//
+		
+		function checkUsername(username) {
+
+			var deferred = $q.defer();
+			
+			$http({
+				method : 'POST',
+				url : 'check_username',
+				data : username,
+				headers : getCsrfHeader()
+			})
+			.then(
+					function (response) {
+						deferred.resolve(response);
+					},
+					function(errResponse) {
+						deferred.reject(errResponse);
+					}
+			     );
+			return deferred.promise;
+		}
+		
+		//============= Active Vehicle End ============//
+		
+		//--------------------------------- Create new user begin --------------------------------//
+		 function createUser(user) {
+		        var deferred = $q.defer();
+		        var headers = getCsrfHeader();
+		        
+		    	$http({
+		    		method : 'POST',
+		    		url : 'create_user',
+		    		data : user,
+		    		headers : headers
+		    	})
+		    	.then(
+		    			function (response) {    				
+		    				deferred.resolve(response.data);
+		    			},
+		    			function (errResponse) {
+		    				deferred.reject(errResponse);
+		    			}
+		    		);
+		    		return deferred.promise;
+
+		    }
+		 
+			//--------------------------------- Create new user end --------------------------------//    
     
 }]);

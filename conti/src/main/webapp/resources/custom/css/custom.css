@@ -268,3 +268,16 @@
 	.required {
 		color : #FF0000;
 	}
+	
+	.passward_validate {
+			    background-color: #FFFFFF;
+			    padding-top: 15px;
+			    padding-bottom: 7px;
+			    width: 50%;
+			    z-index: 9999;
+			    position: absolute;
+			     -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
+   			 	box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
+		}
+		
+	

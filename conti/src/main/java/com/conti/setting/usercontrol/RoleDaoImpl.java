@@ -40,7 +40,7 @@ class RoleDaoImpl implements RoleDao {
 	public List<Role> list() {
 		@SuppressWarnings("unchecked")
 		List<Role> listFeed = (List<Role>) sessionFactory.getCurrentSession()
-				.createQuery("from Role where obsolete ='N' and active ='Y'").list();
+				.createQuery("from Role where obsolete ='N'").list();
 		return listFeed;
 	}
 	
