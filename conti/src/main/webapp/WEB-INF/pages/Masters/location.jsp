@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
@@ -264,7 +265,8 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
  		</form>
 	
 	<jsp:include page="../Dashboard/nav.jsp"/>
-	
+
+<sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">	
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
       
@@ -372,8 +374,39 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
         <!-- /. PAGE WRAPPER  -->
 		
     </div>
+     </sec:authorize>
     <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
+    
+     <!--======================================================ONLY FOR STAFF=========================================-->
+       <sec:authorize access="hasRole('STAFF')">
+	    <div id="wrapper">        	  
+			<div id="page-wrapper"> 
+				<div class="header "> 
+		             <div class="page-header header-size">
+		                 	  <b>${title}</b>		                 	 
+		             </div>	   
+             	</div>	
+             	
+             	<div id="page-inner">  
+					<div class="row">
+                		<div class="col-md-12">
+                			 <div class="panel panel-default">
+		                        <div class="panel-heading">
+		                             Location Register
+		                        </div>
+		                        <div class="panel-body">
+		                        	Sorry..! You are not authorized view this master..!
+		                        </div>
+		                      </div>
+                		</div>
+                	</div>
+                </div>		
+			 </div>
+		</div>
+	</sec:authorize>
+	
+	
     <!--====================================================== SCRIPTS START=========================================-->
       <script>$('[data-toggle="popover"]').popover();</script>
         

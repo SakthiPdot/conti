@@ -177,7 +177,7 @@ angular.module('contiApp').controller('productController',
 			if(hitController){
 				console.log(In_active_id);
 				ConfirmDialogService.confirmBox("InActive",
-	    				BootstrapDialog.TYPE_WARNING, "Make Records InActive  ..?", 'btn-warning')
+	    				BootstrapDialog.TYPE_DANGER, "Make Records InActive  ..?", 'btn-danger')
 	    		.then(function(response){
 	    			
 				ProductService.changeActive(In_active_id,"InActive")
@@ -191,8 +191,7 @@ angular.module('contiApp').controller('productController',
 			}
 			
 			
-			
-			
+		
 		}
 	}
 	
@@ -285,6 +284,7 @@ angular.module('contiApp').controller('productController',
 			ProductService.fetchAllProduct()
 			.then(function(Response){
 				self.products=Response;
+				pagination();
 				console.log(Response);
 			},function(errResponse){			
 				console.log("error Fetching product");
@@ -340,8 +340,32 @@ angular.module('contiApp').controller('productController',
 		self.product={};
 		self.product.dimension_flag="Y";
 		self.heading="Master";
+		$("#selectedProductType_value").val("");
 		$scope.productForm.$setPristine();
 	}
 
+	//===================================pagination====================================
+    function pagination() {
+        
+    	$scope.viewby = 10;
+		$scope.totalItems = self.products.length;
+		$scope.currentPage = 1;
+		$scope.itemsPerPage = $scope.viewby;
+		$scope.maxSize = 2; //Number of pager buttons to show
+			
+		$scope.setPage = function (pageNo) {
+			$scope.currentPage = pageNo;
+		  };
+
+		  $scope.pageChanged = function() {
+			console.log('Page changed to: ' + $scope.currentPage);
+		  };
+
+		  $scope.setItemsPerPage = function(num) {
+			  $scope.itemsPerPage = num;
+			  $scope.currentPage = 1; //reset to first paghe
+		}
+		
+    }
 	
 }]);

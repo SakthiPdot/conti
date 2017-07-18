@@ -52,6 +52,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	self.makeActive = makeActive;
 	self.makeinActive = makeinActive;
 	self.print = print;
+	self.registerSearch = registerSearch;
+	
 	
 	self.selected_employee = [];
 	self.confirm_title = 'Save';
@@ -116,6 +118,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 						self.employees = employee;
 						/*fetchAllBranches();
 						fetchAllLocations();	*/	
+						self.Filteremployees = self.employees;
 						pagination();
 					}, 
 					function (errResponse) {
@@ -511,7 +514,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     function pagination() {
         
     	$scope.viewby = 10;
-		$scope.totalItems = self.employees.length;
+		$scope.totalItems = self.Filteremployees.length;
 		$scope.currentPage = 1;
 		$scope.itemsPerPage = $scope.viewby;
 		$scope.maxSize = 2; //Number of pager buttons to show
@@ -550,42 +553,30 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	   		self.message ="Please select atleast one record..!";
 			successAnimate('.failure');
     	} else {
-    			/*var print_id = [];
-    			for(var i=0; i<self.selected_employee.length; i++) {
-    				print_id[i] = self.selected_employee[i].emp_id;        				
-    			}
-				EmployeeService.print(print_id)
-					.then(
-							function(response) {
-								fetchAllEmployees();
-								self.selected_employee = response;	
-								console.log(response);
-							}, function(errResponse) {
-								console.log(errResponse);    								
-							}
-						);*/
-    			/*$scope.$root.printEmp = self.selected_employee;
-    			console.log("inside print");
-    			console.log($scope.$root.printEmp);*/
-    			/*$window.location.href = 'listprint'; */
-    		
-    		/*var doc = new jsPDF();
-    		var specialElementHandlers = {
-    		    '#dataTables-example': function (element, renderer) {
-    		        return true;
-    		    }
-    		};
-    		
-    		 doc.fromHTML($('#dataTables-example').html(), 15, 15, {
-    		        'width': 170,
-    		            'elementHandlers': specialElementHandlers
-    		    });
-    		    doc.save('sample-file.pdf');*/
-    		console.log(self.selected_employee);
+    			
     		$http.get('http://localhost:8080/Conti/listprint');
     	}
     }
     
     //-------------------------------------- Print end -----------------------------//
+    
+    //---------------------------- Register search begin ---------------------------------------//
+    function registerSearch(searchkey) {
+    	if ( searchkey.length == 0 ) {
+    		self.Filteremployees = self.employees;
+    	}
+    	if( searchkey.length > 3 ) {
+    		EmployeeService.registerSearch(searchkey)
+	    		.then(
+						function (filterEmp) {
+							self.Filteremployees = filterEmp;
+						}, 
+						function (errResponse) {
+							console.log('Error while fetching employees');
+						}
+					);
+    	}
+    }
+    //---------------------------- Register search end ---------------------------------------//
 	
 }]);

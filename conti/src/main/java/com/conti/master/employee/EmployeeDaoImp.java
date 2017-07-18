@@ -35,13 +35,6 @@ public class EmployeeDaoImp implements EmployeeDao {
 				.createQuery("from EmployeeMaster WHERE obsolete ='N' and branch_id = " + branch_id + " AND empcategory = '" + empcategory + "'").list();
 		return listemp;
 		
-		/*String queryString = "FROM EmployeeMaster WHERE branch_id = " + branch_id + " AND empcategory = '" + empcategory + "'";
-		Query query = sessionFactory.getCurrentSession().createQuery(queryString);
-		
-		@SuppressWarnings("unchecked")
-		List<EmployeeMaster> listemp = (List<EmployeeMaster>) query.list();
-				
-		return listemp;*/
 	}
 	
 	@Override
@@ -96,4 +89,15 @@ public class EmployeeDaoImp implements EmployeeDao {
 	}
 	
 	/*------------------------------- Get employee by id begin -----------------------*/	
+	
+	@Override
+	@Transactional
+	public List<EmployeeMaster> searchbyeyEmployee(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		List<EmployeeMaster> listemp = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from EmployeeMaster WHERE obsolete ='N' and emp_name LIKE '%" + search_key + "%'").list();
+		return listemp;
+		
+	}
 }

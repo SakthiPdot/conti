@@ -1,6 +1,7 @@
 package com.conti.master.employee;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
-import com.conti.master.product.Product;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -313,9 +313,9 @@ public class EmployeeRestController {
 			
 		return model;	
 	}*/
-	
+	/* ------------------------- Print in Employee begin ------------------------------------- */	
 	@RequestMapping(value = "/employee_print", method = RequestMethod.POST)
-	public ModelAndView farmPrint(@RequestParam("emp") String emp) throws JsonProcessingException, IOException{
+	public ModelAndView farmPrint(@RequestParam("emp") String emp, HttpServletRequest request) throws JsonProcessingException, IOException{
 
 		JSONArray jsonArray = new JSONArray(emp);
 		String[] empid = new String[jsonArray.length()];
@@ -331,9 +331,18 @@ public class EmployeeRestController {
 		}
 		Company company = companySettingDAO.getById(1);
 		ModelAndView model = new ModelAndView("print/employee_print");
-		
-		byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
-		String base64DataString = new String(encodeBase64 , "UTF-8");
+
+		String base64DataString ="";
+		if(company!=null && company.getCompany_logo()!=null){
+			byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+			try {
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+			}		
+		}else{
+			base64DataString = ConstantValues.NO_IMAGE;	
+		}
 		
 		model.addObject("title", "Employee");
 		model.addObject("company", company);
@@ -342,12 +351,20 @@ public class EmployeeRestController {
 			
 		return model;
 	}
+	/* ------------------------- Print in Employee end ------------------------------------- */	
 	
 	//======================================Excel==========================================
 	@RequestMapping(value="downloadExcelEmployee",method=RequestMethod.GET)
 	public ModelAndView downloadExcelEmployee(){
 		List<EmployeeMaster> employeeList=employeeDao.getAllEmployees();
 		return new ModelAndView("employeeExcelView","employeeList",employeeList);
+	}
+	
+	@RequestMapping(value = "register_search", method=RequestMethod.POST)
+	public ResponseEntity<List<EmployeeMaster>> register_search(@RequestBody String searchkey, HttpServletRequest request) {
+		
+		List<EmployeeMaster> empList = employeeDao.searchbyeyEmployee(searchkey);
+		return new ResponseEntity<List<EmployeeMaster>> (empList, HttpStatus.OK);
 	}
 	
 }

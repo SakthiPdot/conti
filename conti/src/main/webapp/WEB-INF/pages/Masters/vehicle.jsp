@@ -12,15 +12,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    
     <title>${title}</title>
     <!-- Bootstrap Styles-->
-    <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
+       <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
-	
-	
 	 
-    <!-- Morris Chart Styles-->
+	  <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
+	 <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <!-- Custom Styles-->
     <link href="resources/built-in/assets/css/custom-styles.css" rel="stylesheet" />
@@ -29,45 +32,71 @@
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	 <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+	<link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+	
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
-	  <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
+	<link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
+    
+     <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
+   
+    <script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="resources/custom/js/app.js"></script>
 </head>
 
 
-<body style="overflow-x:hidden;">
+<body style="overflow-x:hidden;" data-ng-app = "contiApp" data-ng-controller = "VehicleController as ctrl">
  
- 		<div class="overlay hideme"></div>
+ <!-- ------------------------- Overlay for message begin ------------------ -----  -->
+	<div class="overlay hideme"></div>
+<!-- ------------------------- Overlay for message end ------------------ -----  -->	
+
+<!-- ------------------------- Success message begin ------------------ -----  -->
+	<div class="success hideme">
+		<i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
+	</div>
+<!-- ------------------------- Success message end ------------------ -----  -->
+
+<!-- ------------------------- Failure message begin ------------------ -----  -->	
+	<div class="failure hideme">
+		<i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}
+		
+	</div>
+<!-- ------------------------- Failure message end ------------------ -----  -->
  		
  		<div class="drawer hideme">
+ 		  <form data-ng-submit= "ctrl.submit()" name="vehicleForm" class="form-horizonal">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
-                   <div class="col-lg-6 headerLeft">
-                   		 <b class="model-title">Vehicle Master</b>
+                   <div class="col-lg-8 col-md-8 col-sm-10 headerLeft">                   		 
+                   <b class="model-title">Vehicle {{ctrl.heading}}</b>
                    </div>
                    
-                   <div class="col-lg-6 headerRight">
-                   		<i class="fa fa-times fa-2x drawerClose  pull-right iconLeft"></i>
+                   <div class="col-lg-4 col-md-4 col-sm-2 headerRight">
+                   		<i class="fa fa-times fa-2x drawerClose  pull-right iconLeft" data-ng-click = "ctrl.close()"></i>
                    </div>
             
              </div>
  			</div>
                
                  
-                 
+                <input type="hidden" data-ng-model = "ctrl.vehicle.vehicle_id"/> 
                  <div class="model-body">
                  
                  		 <div class="row">
 			                <div class="col-lg-12 title_area">	                
 			              
 				          	<div class="col-lg-12 new-masters" >
-				          		 <b> New Vehicle</b>	
+				          		 <b data-ng-show = "ctrl.vehicle.vehicle_id == null"> New Vehicle</b>	
 				          	</div> 
 				            
 				            </div>                
-		             </div> 
+		                 </div> 
 		             
 	                <div class="row">
 		                <div class="col-lg-12">
@@ -75,23 +104,38 @@
 			               <div class="col-lg-12 content-body">
 		                 	 
 		                 	  <span>Vehicle Reg No</span>
-			                  <input type="text" class="form-control">
+			                  <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model= "ctrl.vehicle.vehicle_regno"
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Reg No" required>
 			                  
 			                  <span>Vehicle Code</span>
-			                  <input type="text" class="form-control">
+			                 <input type="text" class="form-control" maxlength="6" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.vehicle.vehicle_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee code" required />
 			                  
 			                   <span>Branch Name</span>
-			                  <select class="form-control">
-			                  		<option>Coimbatore</option>
-			                  		<option>Chennai</option>
-			                  		<option>Bangalore</option>
-			                  </select>
+			                   <angucomplete-alt id="branch_name" data-ng-model="ctrl.vehicle.branch_name"
+						              placeholder="Ex : Coimbatore"
+						              pause="100"
+						              selected-object="branch_name"
+						              local-data="ctrl.branches"
+						              search-fields="branch_name"
+						              title-field="branch_name"
+									  match-class="highlight"
+									  initial-value="{{ctrl.vehicle.branchModel.branch_name}}"
+						              minlength="1"
+						              field-required="true"
+						              data-trigger="focus" data-toggle="popover" 
+						              data-placement="top" data-content="Please Enter Vehicle Branch Name"
+						              onKeyPress="return CheckIsCharacter(event)"
+						              input-class="form-control form-control-small">
+              				</angucomplete-alt>
+
+			           		<input type="hidden" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject}}" />
 			                  
 			                  <span>Vehicle Model No</span>
-			                  <input type="text" class="form-control">
+			                 <input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.vehicle.vehicle_modelno" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Model No" required />
 			                  
 			                  <span> Vehicle Type</span>
-			                  <input type="text" class="form-control">
+			                 <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.vehicle.vehicle_type" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Type"
+			                    required />
 			               
 			             </div>  
 			             
@@ -105,28 +149,52 @@
 				
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="col-lg-4  footerLeft">
-							<button type="button" class=" btn btn-danger drawerClose pull-left"><i class="fa fa-trash-o"></i> Clear</button>
+						<div class="col-lg-4 col-xs-4 footerLeft">
+							<button type="button" class=" btn btn-danger pull-left" data-ng-click="ctrl.close()"><i class="fa fa-trash-o"></i> Cancel</button>
 						</div>
 						
-						<div class="col-lg-4" style="text-align:center; !important;">
-							<a id="" class="btnPadding btn btn-warning"	style="display: none; "><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
+						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
+						   <a id="" class="btnPadding btn btn-warning" data-ng-click="ctrl.deleteVehicle()" data-ng-show="ctrl.vehicle.vehicle_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i>  Delete</a>
 							
-							<a id="" class="btnPadding btn btn-primary" style="display:none;">Clear</a>							
+							<a id="" class="btnPadding btn btn-primary" data-ng-click = "ctrl.clear()" data-ng-show="!vehicleForm.$pristine && (ctrl.vehicle.vehicle_id==null)"><i class="fa fa-eraser"></i> Clear</a>							
 						</div>
 						
-						<div class="col-lg-4 footerRight">
-							 <button type="button" class="btn btn-success"><i class="fa fa-floppy-o "></i> Save</button>
-								      
+						
+						<div class="col-lg-4 col-xs-4 footerRight" data-ng-show="!(ctrl.vehicle.vehicle_id== null)">
+							<button class="btn btn-success " type="submit"
+								
+								id="saveclose" data-id="0" data-ng-click="save($event)"
+								type="submit">
+								<i class="fa fa-floppy-o "> </i> Update</button>
+							<br>
 						</div>
+						
+						<div class="col-lg-4 col-xs-4 footerRight" data-ng-show = "ctrl.vehicle.vehicle_id==null">
 
-
+							<div class="btn-group dropup" id="savebutton">
+						 	 <button type="submit" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
+									<i class="fa fa-floppy-o "></i> Save
+							</button>
+							<div class="dropdown-menu pull-right" style="padding-right: 5px;">
+								<button class="farmsave mybutton" id="saveclose" data-id="0"
+										data-ng-click="save($event)" type="submit">Save and
+										Close</button>
+									<br>
+									<button class="farmsave mybutton" id="savenew" data-id="1"
+										data-ng-click="save($event)" type="submit">Save and
+										New</button>
+								<br>
+							</div>			
+							</div>
+						</div>
 
 						
 						
 						</div>
 					</div>
 				</div>
+				</form>
             </div>
  			
  			
@@ -134,7 +202,7 @@
  
  
 	
-	<jsp:include page="../Dashboard/settings_nav.jsp"/>
+	<jsp:include page="../Dashboard/nav.jsp"/>
 	
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
@@ -156,8 +224,8 @@
                              Vehicle Master
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive">
-                            <div class="row">
+                        
+                        <div class="row">
                               <div class="col-lg-12">
                                <div class="col-xs-6">
                                    		<div class="dataTables_length" id="dataTables-example_length">
@@ -167,9 +235,9 @@
 									Batch Action <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a href="#">Active</a></li>
-									<li><a href="#">InActive</a></li>
-									<li><a href="#">Archive</a></li>
+									<li><a data-ng-click = "ctrl.makeActive()">Active</a></li>
+									<li><a data-ng-click = "ctrl.makeinActive()">InActive</a></li>
+								
 
 								</ul>
 								<!--<button type="button" class="btn btn-primary">Filter</button>-->
@@ -181,59 +249,94 @@
                                 
                                 <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
-                                     <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button>
-                                      <button type="button" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+                                   <form name = "vehiclePrint" method = "POST" action = "vehicle_print">
+                                     <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
+                                    <div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
+                                  
+										
+										<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check': setting_vehicleregno == true, 'fa-times': setting_vehicleregno == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_vehicleregno=true" data-ng-model ="setting_vehicleregno"/> Vehicle RegNo
+                                      			</label>
+                                      	</div>
+                                      	
+                                      	
+                                      		 <div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class = "{'fa-check' : setting_vehiclecode == true, 'fa-times': setting_vehiclecode == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_vehiclecode=true" data-ng-model = "setting_vehiclecode"/> Vehicle Code
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check' : setting_branchname == true, 'fa-times' : setting_branchname == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_branchname = true" data-ng-model = "setting_branchname"/> Branch Name
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check' : setting_vehiclemodelno == true, 'fa-times' : setting_vehiclemodelno == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_vehiclemodelno = true" data-ng-model = "setting_vehiclemodelno"/> Vehicle Model No
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check': setting_vehicletype == true, 'fa-times' : setting_vehicletype == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_vehicletype = true" data-ng-model = "setting_vehicletype"/> Vehicle Type
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check': setting_vehiclestatus == true, 'fa-times' : setting_vehiclestatus == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_vehiclestatus = true" data-ng-model = "setting_vehiclestatus"/> Status
+                                      			</label>
+                                      		</div> 
+                                      		
+									</div>
+                                     
+                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelVehicle'"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                      
+                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+                                      <input type="hidden" name="vehicle" value = "{{ctrl.selected_vehicle}}"/>
+                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                	</form>
                                 	</div>
                                 </div>
                               </div>
                             </div>
                           
-                            
-                            
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <div class="table-responsive">
+                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox"></th>
+                                            <th><input type="checkbox" data-ng-click="ctrl.vehicSelectall()" data-ng-model = "selectall"/></th>
                                             <th>S.No</th>
-                                            <th>Vehicle Reg No</th>
-                                            <th>Vehicle Code</th>
-                                            <th>Branch Name</th>
-                                            <th>Vehicle Model No</th>
-                                            <th>Vehicle Type</th>
+                                            <th data-ng-show = "setting_vehicleregno">Vehicle Reg No</th>
+                                            <th data-ng-show = "setting_vehiclecode">Vehicle Code</th>
+                                            <th data-ng-show = "setting_branchname">Branch Name</th>
+                                            <th data-ng-show = "setting_vehiclemodelno">Vehicle Model No</th>
+                                            <th data-ng-show = "setting_vehicletype">Vehicle Type</th>
+                                            <th data-ng-show = "setting_vehiclestatus">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>1</td>
-                                            <td>REG001</td>
-                                            <td>VE001</td>
-                                            <td>Coimbatore</td>
-                                            <td>2009</td>
-                                            <td>Track</td>
+                                        <tr data-ng-repeat = "vehicle in ctrl.vehicles | orderBy : 'vehicle_regno' " 
+                                        data-ng-dblclick = "ctrl.updateVehicle(vehicle)">
+                                            <td><input type="checkbox" data-ng-change= "ctrl.vehicSelect(vehicle)" data-ng-model = "vehicle.select"></td>
+                                            <td>{{$index+1}}</td>
+                                            <td data-ng-show = "setting_vehicleregno">{{vehicle.vehicle_regno}}</td>
+                                            <td data-ng-show = "setting_vehiclecode">{{vehicle.vehicle_code}}</td>
+                                            <td data-ng-show = "setting_branchname">{{vehicle.branchModel.branch_name}}</td>
+                                            <td data-ng-show = "setting_vehiclemodelno">{{vehicle.vehicle_modelno}}</td>
+                                            <td data-ng-show = "setting_vehicletype">{{vehicle.vehicle_type}}</td>
+                                            <td data-ng-show = "setting_vehiclestatus" data-ng-class="{'makeGreen': vehicle.active == 'Y', 'makeRed' : vehicle.active=='N'}">{{vehicle.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
-                                       <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>2</td>
-                                            <td>REG002</td>
-                                            <td>VE002</td>
-                                            <td>Coimbatore</td>
-                                            <td>2013</td>
-                                            <td>Omni</td>
-                                       </tr>
-                                           
-                                         <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>3</td>
-                                            <td>REG003</td>
-                                            <td>VE003</td>
-                                            <td>Coimbatore</td>
-                                            <td>2015</td>
-                                            <td>Eicher</td>
-                                       </tr>                                                             
-                                
-                                 
+                                                      
                                     </tbody>
                                 </table>
                             </div>
@@ -254,22 +357,20 @@
     <!-- jQuery Js -->
     
    
-     <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
-      <!-- Bootstrap Js -->
-    <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Js -->
-    <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
-     <!-- DATA TABLE SCRIPTS -->
-    <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
-     <script src="resources/custom/js/custom.js"></script>
-  	<script src="resources/custom/js/session.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
-    </script>
-  
+  <script src="resources/custom/js/custom.js"></script>
+  <script src="resources/custom/js/vehicle_master/vehicle_controller.js"></script>
+  <script src="resources/custom/js/vehicle_master/vehicle_service.js"></script>
+  <script src="resources/custom/js/branch_master/branch_service.js"></script>  
+  <script src="resources/custom/js/confirmDialog.js"></script>   
+  <script type="text/javascript" src="resources/custom/js/validation.js"></script>
+  <!-- Custom Js -->
+
+	<script>
+		$('[data-toggle="popover"]').popover();
+		$('.regSettings').click(function(e) {
+		    e.stopPropagation();
+		});
+	</script>
 
 </body>
 

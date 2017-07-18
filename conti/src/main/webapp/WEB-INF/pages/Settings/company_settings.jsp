@@ -37,7 +37,7 @@
 	href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css">
 
 <link href="resources/built-in/assets/Drawer/trouserDrawer.css"
-	rel="stylesheet" />
+	rel="stylesheet" />  
 <link href="resources/custom/css/custom.css" rel="stylesheet">
 <link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
 
@@ -237,7 +237,7 @@
 					
 					<div class="col-lg-6">
 						<div class="form-group">
-							<label for="gstNo">GSTIN No</label>
+							<label for="gstNo">GSTIN No<span style="color:red">&nbsp;*</span></label>
 							 <input type="text" data-ng-required="true"
 							 id="gstNo"							  
 				  			  data-trigger="focus" data-toggle="popover"

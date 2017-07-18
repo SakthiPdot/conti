@@ -14,10 +14,12 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
     self.message = null;
     self.resetBtn = false;
 	self.checkPWD = true;
-	/*    self.submit = submit;
-    self.edit = edit;
+	 /*self.submit = submit;
+	     self.edit = edit;
     self.remove = remove;
     self.reset = reset;*/
+	
+	
  
     self.findUsername = findUsername;
 	self.resetPassword = resetPassword;
@@ -25,7 +27,15 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
 	self.checkPassword = checkPassword; 	
 	self.findUserbyMbl = findUserbyMbl;
 	self.forgot_animateClose = forgot_animateClose;
+	
+	
+	self.makeActive = makeActive;
+	self.makeinActive = makeinActive;
+	self.print = print;
+	
     fetchAllUsers();
+    
+    
 
 
     //----------------------  Fetch All users begin ----------------------------- //    
@@ -319,4 +329,119 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
     	self.user.mobileno = '';
     }
     //----------------------  Delete user by user id begin ----------------------------- //
+    
+    
+    //======================== Print Function Begin =================//
+    		
+    	function print() {
+    		if(self.selected_user.length == 0){
+    			self.message = "Please select atleast one record..!";
+    			successAnimate('.failure');
+    		} else{
+    			$http.get('http://localhost:8080/Conti/listprint');
+    		}
+    	}
+    
+    //======================== Print Function End =================//
+    	
+    //======================== Make Active Begin =================//
+    	
+    	function makeActive(){
+    		
+    		if(self.selected_user.length == 0 ) {
+    			self.message = " Please select atleast one record..!";
+    			successAnimate('.failure');
+    		} else {
+    			var activate_flag = 0;
+    			angular.forEach (self.selected_user, function(user) {
+    				if(user.active == 'Y') {
+    					activate_flag = 1;
+    				}
+    			});
+    			
+    			if(activate_flag == 1) {
+    				self.message = " Selected record(s) already in active status..!";
+    				successAnimate('.failure');
+    			} else {
+    				
+    				self.confirm_title = 'Active';
+    				self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+    				self.confirm_msg = self.confirm_title + 'selected record(s)?';
+    				self.confirm_btnclass = 'btn-success';
+					ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+						.then(
+								function(res) {
+									var active_id = [];
+									for(var i=0; i<self.selected_user.length;i++) {
+										active_id[i] = self.selected_user[i].user_id;
+									}
+									UserService.makeActive(active_id)
+										.then(
+												function(response) {
+													fetchAllUser();
+													self.selected_user = [];
+													self.message = " Selected record(s) has in active status..!";
+													successAnimate('.failure');
+												}, function (errResponse) {
+													console.log(errResponse);
+												}
+										      );
+								}
+							);
+    			}
+    		}
+    	}
+    	
+    //======================== Make Active End ================//
+    	
+    	//============== Make InActive Begin ====================//
+    	
+		function makeinActive() {
+			if(self.selected_user.length == 0) {
+				self.message = "Please select atleast one record..!";
+				successAnimate('.failure');
+			} else {
+				var inactivate_flag = 0 ;
+				angular.forEach(self.selected_user, function(user){
+					if(user.active == 'N') {
+						inactivate_flag = 1;
+					}
+				});
+				
+				if(inactivate_flag == 1) {
+					self.message = "Selected record(s) already in active status..!";
+					successAnimate('.failure')
+				} else {
+					
+					self.confirm_title = 'In-Active';
+					self.confirm_type = BootstrapDialog.TYPE_DANGER;
+					self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+					self.confirm_btnclass = 'btn-danger';
+					ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+						.then(
+								function(res) {
+									var inactive_id = [];
+									for(var i=0; i<self.selected_user.length; i++) {
+										inactive_id[i] = self.selected_user[i].user_id;
+									}
+								
+								UserService.makeinActive(inactive_id)
+									.then(
+											function(response) {
+												fetchAllUser();
+												self.selected_user = [];
+												self.message = " Selected record(s) has in inactive status..!";
+												successAnimate('.success');
+											}, function(errResponse) {
+												console.log(errResponse);
+											}
+									     );
+								}
+						     );
+				}
+			}
+		}	
+		
+//============== Make InActive End =======================//
+    	
 }]);

@@ -10,17 +10,20 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
+<meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    
     <title>${title}</title>
     <!-- Bootstrap Styles-->
-    <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
+       <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
-	
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	  <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
-    <!-- Morris Chart Styles-->
+	 
+	  <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
+	 <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <!-- Custom Styles-->
     <link href="resources/built-in/assets/css/custom-styles.css" rel="stylesheet" />
@@ -28,32 +31,58 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+	
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
-	  <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
+	<link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
-	<!--   <link href="resources/custom/css/footer.css" rel="stylesheet"> -->
-	
-	
+    
+     <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
+   
+    <script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="resources/custom/js/app.js"></script>
 
 	
 </head>
 
 
-<body style="overflow-x:hidden;">
+<body style="overflow-x:hidden;" data-ng-app = "contiApp" data-ng-controller = "UserController" >
  
- 		<div class="overlay hideme"></div>
+  <!-- ------------------------- Overlay for message begin ------------------ -----  -->
+	<div class="overlay hideme"></div>
+<!-- ------------------------- Overlay for message end ------------------ -----  -->	
+
+<!-- ------------------------- Success message begin ------------------ -----  -->
+	<div class="success hideme">
+		<i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
+	</div>
+<!-- ------------------------- Success message end ------------------ -----  -->
+
+<!-- ------------------------- Failure message begin ------------------ -----  -->	
+	<div class="failure hideme">
+		<i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}
+		
+	</div>
+<!-- ------------------------- Failure message end ------------------ -----  -->
+ 
  		
  		<div class="drawer hideme">
+ 		<form data-ng-submit = "ctrl.submit()" name = "userForm" class="form-horizontal">
  			
  			<div class="row">
  			<div class="col-lg-12 trowserHeader"  >
  			
-                   <div class="col-lg-6  headerLeft">
-                   		 <b class="model-title">User Master : </b> Create User
+                   <div class="col-lg-8 col-md-8 col-sm-10  headerLeft">
+                   		 <b class="model-title">User {{ctrl.heading}} </b>
                    </div>
                    
-                   <div class="col-lg-6 headerRight">
-                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft"></i>
+                    <div class="col-lg-4 col-md-4 col-sm-2 headerRight">
+                   		<i class="fa fa-times fa-2x drawerClose  pull-right iconLeft" data-ng-click = "ctrl.close()"></i>
                    </div>
             
              </div>
@@ -61,21 +90,16 @@
  			
                
                  
-                 
+                 <input type="hidden" data-ng-model = "ctrl.user.user_id"/>
                  <div class="model-body">
                  
                      <div class="row">
 		                <div class="col-lg-12 title_area">	                
 		              
 			          	<div class="col-lg-12 new-masters" >
-			          		 <!-- <b> New User</b>	 -->
+			          		<b data-ng-show = "ctrl.user.user_id == null"> New Vehicle</b>
 			          	</div>  
-			          	
-			          
-			              	                
-			                                    
-			                	                
-		                </div>                
+			          </div>                
 	                </div> 
 	                
 	                <div class="row">
@@ -84,42 +108,63 @@
 			         	<div class="col-lg-12 content-body" >
 		                 	 
 		                 	  <span>Branch Name</span>
-			                  <select class="form-control">
-			                  		<option>Coimbatore</option>
-			                  		<option>Chennai</option>
-			                  		<option>Bangalore</option>
-			                  </select>
+			                  
+			                  <angucomplete-alt id="branch_name" data-ng-model="ctrl.user.branch_name"
+						              placeholder="Ex : Coimbatore"
+						              pause="100"
+						              selected-object="branch_name"
+						              local-data="ctrl.branches"
+						              search-fields="branch_name"
+						              title-field="branch_name"
+									  match-class="highlight"
+									  initial-value="{{ctrl.user.branchModel.branch_name}}"
+						              minlength="1"
+						              field-required="true"
+						              data-trigger="focus" data-toggle="popover" 
+						              data-placement="top" data-content="Please Enter Vehicle Branch Name"
+						              onKeyPress="return CheckIsCharacter(event)"
+						              input-class="form-control form-control-small">
+              				 </angucomplete-alt>
 			                  
 			                   <span>Employee Name</span>
-			                  <select class="form-control">
-			                  		<option>Kumar</option>
-			                  		<option>Murugan</option>
-			                  		<option>Raja</option>
-			                  </select>
+			                  <angucomplete-alt id="employee_name" data-ng-model = "ctrl.user.emp_name"
+			                  placeholder = "Ex: Coimbatore" pause="100"
+			                  selected-object="emp_name"
+			                  local-data="ctrl.users"
+			                  search-fields="emp_name"
+			                  title-field = "emp_name"
+			                  match-class="highlight"
+			                  initial-value = "{{ctrl.user.employeeModel.emp_name}}"
+			                  minlength="1"
+			                  field-required="true"
+			                  data-trigger = "focus" data-toggle="popover"
+			                  data-placement="top" data-content="Please Enter Employee Name"
+			                  onKeyPress = "return CheckIsCharacter(event)"
+			                  input-class="form-control form-control-small">
+			                  </angucomplete-alt>
 			                  
-			                  
+			                  <input type="hidden" id="emp_id" name="emp_id" value="{{emp_name.originalObject}}"/>
 			                   <span>Role Name</span>
-			                  <select class="form-control">
-			                  		<option>Super Admin</option>
-			                  		<option>Admin</option>
-			                  		<option>Staffs</option>
+			                  <select class="form-control" data-ng-model="ctrl.user.role_id">
+			                  		<option value="1">Super Admin</option>
+			                  		<option value="2">Manager</option>
+			                  		<option value="3">Staff</option>
 			                  </select>
 			                  
 			                   <span>User Name</span>
-			                  <input type="text" class="form-control">
+			                  <input type="text" class="form-control" onKeyPress="return CheckIsCharacter(event)" data-ng-model="ctrl.user.username" data-trigger="focus"
+			                  data-toggle="popover" data-placement="top" data-content="Please Enter Username" required>
 			                  
 			                    <span>Password</span>
-			                  <input type="text" class="form-control">
+			                  <input type="text" class="form-control" onKeyPress="return CheckIsCharacter(event)" data-ng-model="ctrl.user.userpassword" data-trigger="focus"
+			                  data-toggle="popover" data-placement="top" data-content="Please Enter Password" required>
+			                  
 			                  
 			                    <span>Confirm Password</span>
-			                  <input type="text" class="form-control">
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsCharacter(event)" data-ng-model="ctrl.user.userpassword" data-trigger="focus"
+			                  data-toggle="popover" data-placement="top" data-content="Please Enter ConfirmPassword" required>
 			                  
-			                    <span>Phone Number</span>
-			                  <input type="text" class="form-control">
-			                  
-			                   <span>Email</span>
-			                  <input type="text" class="form-control">
-			                  	
+		                  	
 			               
 			              </div>         
 			                	                
@@ -141,31 +186,55 @@
                  <div class="modal-footer footerHeight">
                  	<div class="row">
                  		<div class="col-lg-12">
-                 				<div class="col-lg-4  footerLeft">
-                 					<button type ="button" class="btn btn-danger pull-left drawerClose"><i class="fa fa-trash-o"></i> Clear</button>
+                 				<div class="col-lg-4 col-xs-4  footerLeft">
+                 					<button type ="button" class="btn btn-danger pull-left " data-ng-click="ctrl.close()"><i class="fa fa-trash-o"></i> Cancel</button>
                  				</div>
                  				
-                 					<div class="col-lg-4" style="text-align:center; !important;">
-							<a id="" class="btnPadding btn btn-warning"	style="display: none; "><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
+                 					<div class="col-lg-4 col-xs-4 " style="text-align:center; !important;">
+							<a id="" class="btnPadding btn btn-warning"	data-ng-click="ctrl.deleteUser()" data-ng-show="ctrl.user.user_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i>  Delete</a> 
 							
-							<a id="" class="btnPadding btn btn-primary" style="display:none;">Clear</a>							
+							<a id="" class="btnPadding btn btn-primary" data-ng-click="ctrl.clear()" data-ng-show="!userForm.$pristine && (ctrl.user.user_id==null)"><i class="fa fa-eraser"></i> Clear</a>							
 						</div>
                  				
-                 				<div class="col-lg-4 footerRight">
-                 					<button type="button" class="btn btn-success pull-right"><i class="fa fa-floppy-o "></i> Save</button>
-                 				</div>                 	
+           				<div class="col-lg-4 col-xs-4 footerRight" data-ng-show="!(ctrl.user.user_id == null)">
+           					<button type="button" class="btn btn-success" type="submit" id="saveclose" data-id="0" data-ng-click="save($event)"
+           					type="submit"><i class="fa fa-floppy-o "></i> Update</button>
+           				</div>  
+           				
+           				
+           				<div class="col-lg-4 col-xs-4 footerRight" data-ng-show = "ctrl.user.user_id==null">
+
+							<div class="btn-group dropup" id="savebutton">
+						 	 <button type="submit" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
+									<i class="fa fa-floppy-o "></i> Save
+							</button>
+							<div class="dropdown-menu pull-right" style="padding-right: 5px;">
+								<button class="farmsave mybutton" id="saveclose" data-id="0"
+										data-ng-click="save($event)" type="submit">Save and
+										Close</button>
+									<br>
+									<button class="farmsave mybutton" id="savenew" data-id="1"
+										data-ng-click="save($event)" type="submit">Save and
+										New</button>
+								<br>
+							</div>			
+							</div>
+						</div>
+						
+           				               	
                  		</div>
                  	</div>                 		
                  </div>
                  
                   
  			
- 			
+ 			</form>
  			
  		</div>
  
 	
-	<jsp:include page="../Dashboard/settings_nav.jsp"/>
+	<jsp:include page="../Dashboard/nav.jsp"/>
 	
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
@@ -189,8 +258,8 @@
                              User Register
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive">
-                            <div class="row">
+                        
+                        <div class="row">
                               <div class="col-lg-12">
                                <div class="col-xs-6">
                                      <div class="dataTables_length" id="dataTables-example_length">
@@ -200,9 +269,8 @@
 									Batch Action <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a href="#">Active </a></li>
-									<li><a id="#">InActive</a></li>
-									<li><a href="#">Archive</a></li>
+									<li><a data-ng-click = "ctrl.makeActive()">Active </a></li>
+									<li><a data-ng-click = "ctrl.makeinActive()">InActive</a></li>					
 
 								</ul>
 								<!--<button type="button" class="btn btn-primary">Filter</button>-->
@@ -214,64 +282,89 @@
                                 
                                 <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
-                                     <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button>
-                                      <button type="button" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+                                     <form name = "userPrint" method = "POST" action = "user_print">
+                                     <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
+                                    <div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
+                                  
+										
+										<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check': setting_branchname == true, 'fa-times': setting_branchname == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_branchname=true" data-ng-model ="setting_branchname"/> Branch Name
+                                      			</label>
+                                      	</div>
+                                      	
+                                      	
+                                      		 <div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class = "{'fa-check' : setting_employeename == true, 'fa-times': setting_employeename == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_employeename=true" data-ng-model = "setting_employeename"/> Employee Name
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check' : setting_rolename == true, 'fa-times' : setting_rolename == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_rolename = true" data-ng-model = "setting_rolename"/> Role Name
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check' : setting_username == true, 'fa-times' : setting_username == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_username = true" data-ng-model = "setting_username"/> User Name
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check': setting_userstatus == true, 'fa-times' : setting_userstatus == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_userstatus = true" data-ng-model = "setting_userstatus"/> Status
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		                                      		
+									</div>
+                                     
+                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelUser'"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                      
+                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+                                      <input type="hidden" name="user" value = "{{ctrl.selected_user}}"/>
+                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                	</form>
                                 	</div>
                                 </div>
                               </div>
                             </div>
                           
-                            
-                            
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox"></th>
+                                            <th><input type="checkbox" data-ng-click="ctrl.userSelectall()" data-ng-model = "selectall"></th>
                                             <th>S.No</th>
-                                            <th>Branch Name</th>
-                                            <th>Employee Name</th>
-                                            <th>Role Name</th>
-                                            <th>User Name</th>
-                                            <th>Phone Number</th>
-                                            <th>Email</th>                                        
+                                            <th data-ng-show = "setting_branchname">Branch Name</th>
+                                            <th data-ng-show = "setting_employeename">Employee Name</th>
+                                            <th data-ng-show = "setting_rolename">Role Name</th>
+                                            <th data-ng-show = "setting_username">User Name</th>
+                                            <th data-ng-show = "setting_userstatus">Status</th>
+                                                                                
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                           	<td><input type="checkbox"></td>
-                                            <td>1</td>
-                                            <td>Coimbatore</td>
-                                            <td>Raju</td>
-                                            <td>Driver</td>
-                                            <td>raju</td>
-                                            <td>9876543210</td>
-                                            <td>raju@gmail.com</td>
-                                        </tr>
-                                        
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>2</td>
-                                            <td>Coimbatore</td>
-                                            <td>Ramesh</td>
-                                            <td>User</td>
-                                            <td>ramesh</td>
-                                            <td>9876012589</td>
-                                            <td>ramesh@gmail.com</td>
-                                           
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>3</td>
-                                            <td>Coimbatore</td>
-                                            <td>Santhosh</td>
-                                            <td>Driver</td>
-                                            <td>santhosh</td>
-                                            <td>9985693214</td>
-                                            <td>ms@gmail.com</td>
+                                        <tr data-ng-repeat = "user in ctrl.users | orderBy : 'username' "
+                                        data-ng-dblclick = "ctrl.updateUser(user)">
+                                           	<td><input type="checkbox" data-ng-change = "ctrl.userSelect(user)" data-ng-model = "user.select"></td>
+                                            <td>{{$index+1}}</td>
+                                            <td data-ng-show = "setting_branchname">Coimbatore</td>
+                                            <td data-ng-show = "setting_employeename">Raju</td>
+                                            <td data-ng-show = "setting_rolename">Staff</td>
+                                            <td data-ng-show = "setting_username">raju</td>
+                                            <td data-ng-show = "setting_userstatus" data-ng-class = "{'makeGreen' : user.active == 'Y', 'makeRed' : user.active == 'N'}"></td>
                                           
                                         </tr>
                                         
+                                                                               
                                    </tbody>
                                 </table>
                             </div>
@@ -292,22 +385,22 @@
     <!-- JS Scripts-->
     <!-- jQuery Js -->
     
- <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
-      <!-- Bootstrap Js -->
-    <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Js -->
-    <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
-     <!-- DATA TABLE SCRIPTS -->
-    <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
-     <script src="resources/custom/js/custom.js"></script>
- <script src="resources/custom/js/session.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
-    </script>
-
+  <script src="resources/custom/js/custom.js"></script>
+  <script src="resources/custom/js/user_master/user_control.js"></script>
+  <script src="resources/custom/js/user_master/user_service.js"></script>
+  <script src="resources/custom/js/branch_master/branch_service.js"></script>  
+  <script src="resources/custom/js/employee_master/employee_service.js"></script>
+  <script src="resources/custom/js/confirmDialog.js"></script>   
+  <script type="text/javascript" src="resources/custom/js/validation.js"></script>
+  <!-- Custom Js -->
+  
+  <script>
+  	$('[data-toggle="popover"]').popover();
+  	$('.regSettings').click(function(e) {
+	    e.stopPropagation();
+	});
+  </script>
+ 
 </body>
 
 </html>

@@ -1,22 +1,17 @@
+
 <!DOCTYPE html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
-<%@ taglib
-    prefix="c"
-    uri="http://java.sun.com/jsp/jstl/core" 
-%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page isELIgnored="false" %> 
 <%@page session="true"%>
 
 <html lang="en">
-    <head lang="en">
-<!--         <meta charset="UTF-8"> -->
+
 	    <meta name="viewport" content="width=device-width">	
 	    <link rel="stylesheet" href="resources/built-in/pdf_print/pure-min.css">	
 	    <link rel="stylesheet" href="resources/built-in/pdf_print/grids-responsive-min.css">
-	    <link rel="icon" type="image/gif/png" href="resources/image/broman.png">
-	    
+	    <link href="resources/custom/css/print.css" rel="stylesheet">
 	 
 
     <!-- Bootstrap Js -->
@@ -33,93 +28,24 @@
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	   	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
 	
-	<script src="resources/built-in/js/angular-route.js"></script>
+
 	   
   	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
   	
 	       
 	   <script src="resources/custom/js/custom.js"></script>
+	   
 	   <script src="resources/custom/js/app.js"></script>
    
    
 	    <title>Conti - ${title} - PDF</title>
 	    <style>
-                * {
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .navbar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: #e74c3c;
-            border-bottom: 5px solid #c0392b;
-            height: 50px;
-            white-space: nowrap;F
-            overflow-x: auto;
-            overflow-y: hidden;
-            padding: 0 10px;
-        }
-
-        .navbar h1 {
-            font-size: 20px;
-            color: #fff;
-        }
-
-        .menu {
-            padding: 0;
-            list-style: none;
-        }
-
-        .menu li {
-            vertical-align: top;
-        }
-
-        .menu li a {
-            text-decoration: none;
-            color: #fff;
-            font-weight: bold;
-            font-family: sans-serif;
-            padding: 10px 0;
-            line-height: 25px;
-        }
-
-        .menu li a:hover {
-            font-style: italic;
-        }
-
-        #panel {
-            background: #141f2b;
-            padding: 10px;
-            height: 100%;
-        }
-
-        #panel .editor {
-            background: #fff;
-        }
-
-        #wrapper {
-            overflow: hidden;
-            height: 100%;
-            background: rgba(193, 193, 193, 1);
-        }
-
-        #output {
-            width: 100%;
-            height: 100%;
-            background: rgba(193, 193, 193, 1);
-        }     
+       
     </style>
 	    
     </head>
-    <body data-ng-app = "contiApp" data-ng-controller = "EmployeeController as ctrl">
+    <body>
     
    
 
@@ -229,8 +155,7 @@
 // 		        update();
 // 		    };
 		//====== Back Function=====//
-		   document.getElementById('clearback').onclick = function(){
-		    	
+		   document.getElementById('clearback').onclick = function(){		    	
 		    	history.go(-1);
 		    };
 		    
@@ -258,8 +183,5 @@
 		
 		    update();
 		</script> 
-
-	 
-	  
     </body>
 </html>

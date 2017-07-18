@@ -16,7 +16,10 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
         findUser: findUser,
         findUserbyName : findUser,
         changePassword : changePassword,
-        findUserbyMbl :findUserbyMbl
+        findUserbyMbl :findUserbyMbl,
+        
+        makeActive : makeActive,
+        makeinActive : makeinActive
     };
  
     return factory;
@@ -177,5 +180,60 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
     	return deferred.promise;
     }
     
-    //----------------------- Find user by mobileno end ----------------------------------------------//    
+    //----------------------- Find user by mobileno end ----------------------------------------------//  
+    
+	
+	//============= Active Vehicle Begin ===========//
+	
+			function makeActive(id) {
+	
+				var deferred = $q.defer();
+				
+				$http({
+					method : 'POST',
+					url : 'makeuseractive',
+					data : id,
+					headers : getCsrfHeader()
+				})
+				.then(
+						function (response) {
+							deferred.resolve(response.data);
+						},
+						function(errResponse) {
+							deferred.reject(errResponse);
+						}
+				     );
+				return deferred.promise;
+			}
+			
+	//============= Active Vehicle End ============//
+	
+			
+	//========= InActive Vehicle Begin =============//
+	
+			function makeinActive(id) {
+				
+				console.log(id);
+				var deferred = $q.defer();
+				
+				$http({
+					method : 'POST',
+					url : 'makeuserinactive',
+					data : id,
+					headers : getCsrfHeader()
+				})
+				.then(
+						function (response) {
+							deferred.resolve(response.data);
+						},
+						function(errResponse) {
+							deferred.reject(errResponse);
+						}
+				     );
+				return deferred.promise;
+			}
+			
+	//========== InActive Vehicle End ===============//
+    
+    
 }]);

@@ -19,7 +19,7 @@ contiApp.factory('ConfirmDialogService', ['$http', '$q', function ($http, $q){
     	var deferred = $q.defer();
     	BootstrapDialog.confirm({
 	  		
-				title: title+' confirmation',
+				title: title+' Confirmation',
 				message: 'Do you want to '+msg,
 				type: type, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
 				closable: false, 

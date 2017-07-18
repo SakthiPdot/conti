@@ -251,3 +251,16 @@
   width:400px;
   height:300px;
 }
+
+.makeRed{
+	color:red;
+}
+.makeGreen{
+	color:green;
+}
+			
+	.checkbox input[type="checkbox"] {
+		-webkit-appearance: none !important;
+		-moz-appearance: none !important;
+		appearance: none !important;
+	}
