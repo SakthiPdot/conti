@@ -403,14 +403,14 @@ public class EmployeeRestController {
 		String order = "DESC";
 		if(page == 1) { // First
 			from_limit = 0;
-			to_limit = page * 10;
+			to_limit = page * 100;
 		} else if ( page == 0 ) { // Last
 			order = "ASC";
 			from_limit = page;
 			to_limit = 10;
 		} else {
-			from_limit = (page * 10) + 1;
-			to_limit =  (page + 1 ) * 2;
+			from_limit = (page * 100) + 1;
+			to_limit =  (page + 1 ) * 100;
 		}
 		
 		List<EmployeeMaster> empList = employeeDao.getEmployeeswithLimit(Integer.parseInt(branch_id), from_limit, to_limit, order);

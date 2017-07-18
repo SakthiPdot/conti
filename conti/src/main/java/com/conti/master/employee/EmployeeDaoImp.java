@@ -47,7 +47,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
 				.createQuery("from EmployeeMaster where obsolete ='N'AND branchModel.branch_id =" + branch_id + " "
 						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
-				.setMaxResults(20).list();
+				.setMaxResults(100).list();
 		return listEmployee;
 	}
 

@@ -471,7 +471,7 @@
 	                                      <input type = "hidden" name = "emp" value = "{{ctrl.selected_employee}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                       </form>
-                                      
+                                       
                                       <div class = "row paddingtop">
 	                                    <div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Driver" data-ng-model = "ctrl.emp_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.emp_regSearch)"/></div>
                                       </div>

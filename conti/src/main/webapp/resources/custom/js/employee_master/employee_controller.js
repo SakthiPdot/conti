@@ -577,10 +577,11 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     }*/
     
     $scope.paginate = function(nextPrevMultiplier) {
-    	console.log($scope.pageSize);
+
     	$scope.currentPage += (nextPrevMultiplier * 1);
     	self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
     	
+    	console.log(self.Filteremployees.length);
     	
     	if(self.Filteremployees.length == 0) {
     		EmployeeService.pagination_byPage($scope.currentPage)
@@ -601,7 +602,13 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     					console.log('Error while pagination');
     				}
     			);
+    	} 
+    	
+    	if(self.Filteremployees.length < $scope.pageSize) {
+    		$scope.nextDisabled = true;
     	}
+    	
+    	console.log(nextPrevMultiplier);
     	if($scope.currentPage == 0) {
     		$scope.previouseDisabled = true;
     	}
