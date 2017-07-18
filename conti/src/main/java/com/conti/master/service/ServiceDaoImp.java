@@ -36,7 +36,7 @@ public class ServiceDaoImp implements ServiceDao {
 		@Override
 		@Transactional
 		public ServiceMaster getServiceId(int id) {
-			String hql = "FROM ServiceMaster WHERE obsolete = 'N' and active = 'Y' and service_id= " +id+ "";
+			String hql = "FROM ServiceMaster WHERE obsolete = 'N' and service_id= " +id+ "";
 			Query query = sessionFactory.getCurrentSession().createQuery(hql);
 			
 			@SuppressWarnings("unchecked")

@@ -17,8 +17,10 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		
 		
 		self.vehicSelect = vehicSelect;
+		self.vehicSelectall = vehicSelectall;		
 		self.makeActive = makeActive;
 		self.makeinActive = makeinActive;
+		self.print = print;
 		self.selected_vehicle = [];
 		
 		self.confirm_title = 'Save';
@@ -253,63 +255,61 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				
 			}
 			
+			function vehicSelectall(){
+				angular.forEach(self.vehicles,function(vehicle){
+					vehicle.select = $scope.selectall;
+				});
+				self.selected_vehicle = $scope.selectall?self.vehicles:[];
+			}
+			
 	//============== Make Active Begin =====================//
 			
 			function makeActive() {
-				/*if(self.selected_vehicle.length == 0) {
-					self.message = "Please select atleast one record..!";
+				
+				if(self.selected_vehicle.length == 0){
+					self.message = " Please select atleast one record..!";
 					successAnimate('.failure');
 				} else {
-					var inactivate_flag = 0 ;
+					var activate_flag = 0;
 					angular.forEach(self.selected_vehicle, function(vehicle){
-						if(vehicle.active == 'Y') {
-							inactivate_flag = 1;
+						if(vehicle.active == 'Y'){
+							activate_flag = 1;
 						}
 					});
 					
-					if(inactivate_flag == 1) {
-						self.message = "Selected record(s) already in active status..!";
-						successAnimate('.failure')
+					if(activate_flag == 1) {
+						self.message = " Selected record(s) already in active status..!";
+						successAnimate('.failure');
 					} else {
-						var inactive_id = [];
-						for(var i=0; i<self.selected_vehicle.length; i++) {
-							inactive_id[i] = self.selected_vehicle[i].vehicle_id;
-						}
-					
-					VehicleService.makeinActive(inactive_id)
-						.then(
-								function(response) {
-									fetchAllVehicles();
-									self.selected_vehicle = [];
-									self.message = " Selected record(s) has in inactive status..!";
-									successAnimate('.success');
-								}, function(errResponse) {
-									console.log(errResponse);
-								}
-						     );
-				
+						
+						self.confirm_title = 'Active';
+						self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+						self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+						self.confirm_btnclass = 'btn-success';
+						ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+							.then(
+								 
+									function(res){
+										var active_id = [];
+										for(var i=0; i<self.selected_vehicle.length;i++) {
+											active_id[i] = self.selected_vehicle[i].vehicle_id;
+										}
+										VehicleService.makeActive(active_id)
+											.then(
+													function(response) {
+														fetchAllVehicles();
+														self.selected_vehicle = [];
+														self.message = " Selected record(s) has in active status..!";
+														successAnimate('.success');
+														
+													}, function (errResponse) {
+														console.log(errResponse);
+													}
+											     );
+									}
+							      );
 					}
-				}*/
-				
-				var inactive_id = [];
-				for(var i=0; i<self.selected_vehicle.length; i++) {
-					inactive_id[i] = self.selected_vehicle[i].vehicle_id;
 				}
-				console.log(inactive_id);
-				VehicleService.makeinActive(inactive_id)
-				.then(
-						function(response) {
-							
-							fetchAllVehicles();
-							self.selected_vehicle = [];
-							self.message = " Selected record(s) has in inactive status..!";
-							successAnimate('.success');
-							
-						}, function(errResponse) {
-							console.log(errResponse);
-						}
-				     );
-				
 			}
 			
 	//============== Make Active End ======================//
@@ -332,27 +332,49 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 						self.message = "Selected record(s) already in active status..!";
 						successAnimate('.failure')
 					} else {
-						var inactive_id = [];
-						for(var i=0; i<self.selected_vehicle.length; i++) {
-							inactive_id[i] = self.selected_vehicle[i].vehicle_id;
-						}
-					
-					VehicleService.makeinActive(inactive_id)
-						.then(
-								function(response) {
-									fetchAllVehicles();
-									self.selected_vehicle = [];
-									self.message = " Selected record(s) has in inactive status..!";
-									successAnimate('.success');
-								}, function(errResponse) {
-									console.log(errResponse);
-								}
-						     );
-				
+						
+						self.confirm_title = 'In-Active';
+						self.confirm_type = BootstrapDialog.TYPE_DANGER;
+						self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+						self.confirm_btnclass = 'btn-danger';
+						ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+							.then(
+									function(res) {
+										var inactive_id = [];
+										for(var i=0; i<self.selected_vehicle.length; i++) {
+											inactive_id[i] = self.selected_vehicle[i].vehicle_id;
+										}
+									
+									VehicleService.makeinActive(inactive_id)
+										.then(
+												function(response) {
+													fetchAllVehicles();
+													self.selected_vehicle = [];
+													self.message = " Selected record(s) has in inactive status..!";
+													successAnimate('.success');
+												}, function(errResponse) {
+													console.log(errResponse);
+												}
+										     );
+									}
+							     );
 					}
 				}
 			}	
 			
 	//============== Make InActive End =======================//
+			
+	//================== Print Begin ======================//
+	
+			function print(){
+				if(self.selected_vehicle.length == 0) {
+					self.message = "Please select atleast one record..!";
+					success.Animate('.failure');
+				} else {
+					$http.get('http://localhost:8080/Conti/listprint');
+				}
+			}
+			
+	//================= Print End =============================//
 			
 }]);

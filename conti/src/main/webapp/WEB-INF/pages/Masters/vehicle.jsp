@@ -21,6 +21,8 @@
        <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
+	 
+	  <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
 	 <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <!-- Custom Styles-->
@@ -31,9 +33,9 @@
 	
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
-	<link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
+	
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
-	 <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
+	<link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
     
      <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
@@ -71,7 +73,8 @@
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
-                   <div class="col-lg-8 col-md-8 col-sm-10 headerLeft">                   		 <b class="model-title">Vehicle {{ctrl.heading}}</b>
+                   <div class="col-lg-8 col-md-8 col-sm-10 headerLeft">                   		 
+                   <b class="model-title">Vehicle {{ctrl.heading}}</b>
                    </div>
                    
                    <div class="col-lg-4 col-md-4 col-sm-2 headerRight">
@@ -93,7 +96,7 @@
 				          	</div> 
 				            
 				            </div>                
-		             </div> 
+		                 </div> 
 		             
 	                <div class="row">
 		                <div class="col-lg-12">
@@ -246,9 +249,62 @@
                                 
                                 <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
-                                     <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button>
-                                      <button type="button" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+                                   <form name = "vehiclePrint" method = "POST" action = "vehicle_print">
+                                     <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
+                                    <div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
+                                  
+										
+										<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check': setting_vehicleregno == true, 'fa-times': setting_vehicleregno == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_vehicleregno=true" data-ng-model ="setting_vehicleregno"/> Vehicle RegNo
+                                      			</label>
+                                      	</div>
+                                      	
+                                      	
+                                      		 <div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class = "{'fa-check' : setting_vehiclecode == true, 'fa-times': setting_vehiclecode == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_vehiclecode=true" data-ng-model = "setting_vehiclecode"/> Vehicle Code
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check' : setting_branchname == true, 'fa-times' : setting_branchname == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_branchname = true" data-ng-model = "setting_branchname"/> Branch Name
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check' : setting_vehiclemodelno == true, 'fa-times' : setting_vehiclemodelno == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_vehiclemodelno = true" data-ng-model = "setting_vehiclemodelno"/> Vehicle Model No
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check': setting_vehicletype == true, 'fa-times' : setting_vehicletype == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_vehicletype = true" data-ng-model = "setting_vehicletype"/> Vehicle Type
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check': setting_vehiclestatus == true, 'fa-times' : setting_vehiclestatus == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_vehiclestatus = true" data-ng-model = "setting_vehiclestatus"/> Status
+                                      			</label>
+                                      		</div> 
+                                      		
+									</div>
+                                     
+                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelVehicle'"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                      
+                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+                                      <input type="hidden" name="vehicle" value = "{{ctrl.selected_vehicle}}"/>
+                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                	</form>
                                 	</div>
                                 </div>
                               </div>
@@ -258,14 +314,14 @@
                              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox"></th>
+                                            <th><input type="checkbox" data-ng-click="ctrl.vehicSelectall()" data-ng-model = "selectall"/></th>
                                             <th>S.No</th>
-                                            <th>Vehicle Reg No</th>
-                                            <th>Vehicle Code</th>
-                                            <th>Branch Name</th>
-                                            <th>Vehicle Model No</th>
-                                            <th>Vehicle Type</th>
-                                            <th>Status</th>
+                                            <th data-ng-show = "setting_vehicleregno">Vehicle Reg No</th>
+                                            <th data-ng-show = "setting_vehiclecode">Vehicle Code</th>
+                                            <th data-ng-show = "setting_branchname">Branch Name</th>
+                                            <th data-ng-show = "setting_vehiclemodelno">Vehicle Model No</th>
+                                            <th data-ng-show = "setting_vehicletype">Vehicle Type</th>
+                                            <th data-ng-show = "setting_vehiclestatus">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -273,12 +329,12 @@
                                         data-ng-dblclick = "ctrl.updateVehicle(vehicle)">
                                             <td><input type="checkbox" data-ng-change= "ctrl.vehicSelect(vehicle)" data-ng-model = "vehicle.select"></td>
                                             <td>{{$index+1}}</td>
-                                            <td>{{vehicle.vehicle_regno}}</td>
-                                            <td>{{vehicle.vehicle_code}}</td>
-                                            <td>{{vehicle.branch_id}}</td>
-                                            <td>{{vehicle.vehicle_modelno}}</td>
-                                            <td>{{vehicle.vehicle_type}}</td>
-                                            <td>{{vehicle.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
+                                            <td data-ng-show = "setting_vehicleregno">{{vehicle.vehicle_regno}}</td>
+                                            <td data-ng-show = "setting_vehiclecode">{{vehicle.vehicle_code}}</td>
+                                            <td data-ng-show = "setting_branchname">{{vehicle.branchModel.branch_name}}</td>
+                                            <td data-ng-show = "setting_vehiclemodelno">{{vehicle.vehicle_modelno}}</td>
+                                            <td data-ng-show = "setting_vehicletype">{{vehicle.vehicle_type}}</td>
+                                            <td data-ng-show = "setting_vehiclestatus" data-ng-class="{'makeGreen': vehicle.active == 'Y', 'makeRed' : vehicle.active=='N'}">{{vehicle.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
                                                       
                                     </tbody>
@@ -309,7 +365,12 @@
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
   <!-- Custom Js -->
 
-<script>$('[data-toggle="popover"]').popover();</script>
+	<script>
+		$('[data-toggle="popover"]').popover();
+		$('.regSettings').click(function(e) {
+		    e.stopPropagation();
+		});
+	</script>
 
 </body>
 

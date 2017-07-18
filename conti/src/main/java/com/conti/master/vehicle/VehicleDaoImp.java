@@ -41,7 +41,7 @@ public class VehicleDaoImp implements VehicleDao  {
 	@Override
 	@Transactional
 	public VehicleMaster getVehiclebyId(int id) {
-		String hql = "FROM VehicleMaster WHERE obsolete = 'N' and active = 'Y' and vehicle_id =" + id+"";
+		String hql = "FROM VehicleMaster WHERE obsolete = 'N' and vehicle_id =" + id+"";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
 		@SuppressWarnings("unchecked")

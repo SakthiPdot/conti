@@ -22,9 +22,10 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	
 	
 	self.servSelect = servSelect;
-	/*self.servSelectall = servSelectall;*/
+	self.servSelectall = servSelectall;
 	self.makeActive = makeActive;
 	self.makeinActive = makeinActive;
+	self.print = print;
 	
 	
 	self.selected_service = [];
@@ -225,11 +226,11 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 					function servSelect(service) {
 						var index = self.selected_service.indexOf(service);
 						(service.select)? self.selected_service.push(service) : self.selected_service.splice(index, 1);
-						
+	
 					} 
 					
 					
-					function servSelectAll() {
+					function servSelectall() {
 						angular.forEach(self.services, function(service){
 							service.select = $scope.selectall;
 						});
@@ -239,40 +240,49 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			//============== Make Active Begin ===================//
 			
 						function makeActive(){
-							if(self.selected_service.length == 0) {
-								self.message = "Please select atleast one record..!";
-								successAnimate('.failure');
-							} else {
-								var activate_flag = 0;
-								angular.forEach(self.selected_service, function(service) {
-									if(service.active == 'Y') {
-										activate_flag = 1;
+								if(self.selected_service.length == 0 ) {
+									self.message = " Please select atleast one record..!";
+									successAnimate('.failure');
+								} else {
+									var activate_flag = 0;
+									angular.forEach(self.selected_service, function(service){
+										if(service.active == 'Y'){
+											activate_flag = 1;
+										}
+									});
+									
+									if(activate_flag == 1) {
+										self.message = " Selected record(s) already in active status..!";
+										successAnimate('.failure');
+									} else {
+										
+										self.confirm_title = 'Active';
+										self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+										self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+										self.confirm_btnclass = 'btn-success';
+										ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+											.then(
+													function(res) {
+														var active_id = [];
+														for(var i=0;i<self.selected_service.length;i++) {
+															active_id[i] = self.selected_service[i].service_id;
+														}
+														
+														ServiceService.makeActive(active_id)
+															.then(
+																	function(response) {
+																		fetchAllServices();
+																		self.selected_service = [];
+																		self.message = " Selected record(s) has in active status..!";
+																		successAnimate('.success');
+																	}, function (errResponse) {
+																		console.log(errResponse);
+																	}
+																 );
+													}
+											      );
 									}
-								});
-							 
-							 if(activate_flag ==1) {
-								 self.message = "Selected record(s) already in active status..!";
-								 successAnimate('.failure');
-							
-							 } else {
-								 var active_id = [];
-								 for(var i=0; i<self.selected_service.length; i++) {
-									 active_id[i] = self.selected_service[i].service_id;
-								 }
-								 
-								 ServiceService.makeActive(active_id)
-								 	.then(
-								 			function(response) {
-								 				fetchAllServices();
-								 				self.selected_service = [];
-								 				self.message = "Selected record(s) has in active status ..!";
-								 				successAnimate('.success');
-								 			}, function(errResponse) {
-								 				console.log(errResponse);
-								 			}
-								 	     );
-							 }
-							}
+								}
 						}
 			
 			//============== Make Active End =====================//
@@ -295,26 +305,49 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 									self.message = " Selected record(s) already in active status ..!";
 									successAnimate('.failure');
 								} else {
-									var inactive_id = [];
-									for(var i=0; i<self.selected_service.length; i++) {
-										inactive_id[i] = self.selected_service[i].service_id;
-									}
 									
-									ServiceService.makeinActive(inactive_id)
+									self.confirm_title = 'In-Active';
+									self.confirm_type = BootstrapDialog.TYPE_DANGER;
+									self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+									self.confirm_btnclass = 'btn-danger';
+									ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 										.then(
-												function(response) {
-													fetchAllServices();
-													self.selected_service = [];
-													self.message = "Selected record(s) has in inactive status..!";
-													successAnimate('.success');													
-												}, function(errResponse) {
-													console.log(errResponse);
-												}
-										     );
+													function(res) {
+														var inactive_id = [];
+														for(var i=0; i<self.selected_service.length; i++) {
+															inactive_id[i] = self.selected_service[i].service_id;
+														}
+														ServiceService.makeinActive(inactive_id)
+														.then(
+																function(response) {
+																	fetchAllServices();
+																	self.selected_service = [];
+																	self.message = "Selected record(s) has in inactive status..!";
+																	successAnimate('.success');													
+																}, function(errResponse) {
+																	console.log(errResponse);
+																}
+														     );
+													}
+											  );
+					
 								}
 							}
 						}
 						
 			//============== Make InActive End ==================//
+						
+			//========== Print Begin==========================//
+						
+						function print() {
+							if(self.selected_service.length == 0 ){
+								self.message = " Please select atleast one record..!";
+								successAnimate('.failure');
+							} else {
+								$http.get('http://localhost:8080/Conti/listprint');
+							}
+						}
+						
+			//=========== Print End ======================//
 			
 }]);

@@ -215,10 +215,41 @@
                               
                                 <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
-                                     <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button>
-                                      <button type="button" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
-                                	</div>
+                                   <form name="servicePrint" method = "POST" action = "service_print" >
+                                     <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a> 
+                                     <div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
+                                     	<div class ="checkbox">
+                                     		<label>
+                                     			<i class = "fa" data-ng-class="{'fa-check': setting_servicename == true, 'fa-times': setting_servicename == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_servicename=true" data-ng-model="setting_servicename" /> Service Name
+											</label>
+										</div>
+										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_servicecode == true, 'fa-times': setting_servicecode == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_servicecode=true" data-ng-model="setting_servicecode" /> Service Code
+											</label>
+										</div>
+										
+										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_servicestatus == true, 'fa-times': setting_servicestatus == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_servicestatus=true" data-ng-model="setting_servicestatus" /> Status
+											</label>
+										</div>
+										
+									</div>	
+							
+                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelService'"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                      
+                                      
+	                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+	                                      <input type = "hidden" name = "service" value = "{{ctrl.selected_service}}" />
+	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                      </form>
+                                    </div>
                                 </div>
                               </div>
                             </div>
@@ -227,11 +258,11 @@
                               <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox"></th>
+                                            <th><input type="checkbox" data-ng-click="ctrl.servSelectall()" data-ng-model = "selectall"></th>
                                             <th>S.No</th>
-                                            <th>Service Name</th>
-                                            <th>Service Code</th>
-                                            <th>Status</th>
+                                            <th data-ng-show = "setting_servicename">Service Name</th>
+                                            <th data-ng-show = "setting_servicecode">Service Code</th>
+                                            <th data-ng-show = "setting_servicestatus">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -239,9 +270,9 @@
                                         data-ng-dblclick = "ctrl.updateService(service)">
                                             <td><input type="checkbox" data-ng-change="ctrl.servSelect(service)" data-ng-model = "service.select"/></td>
                                             <td>{{$index+1}}</td>
-                                            <td>{{service.service_name}}</td>
-                                            <td>{{service.service_code}}</td>
-                                            <td>{{service.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
+                                            <td data-ng-show = "setting_servicename">{{service.service_name}}</td>
+                                            <td data-ng-show = "setting_servicecode">{{service.service_code}}</td>
+                                            <td data-ng-show = "setting_servicestatus" data-ng-class="{'makeGreen' : service.active=='Y', 'makeRed' : service.active=='N'}">{{service.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
                                     </tbody>
                                 </table>
@@ -272,7 +303,12 @@
     
 
 
-  <script>$('[data-toggle="popover"]').popover();</script>
+  <script>
+		$('[data-toggle="popover"]').popover();
+		$('.regSettings').click(function(e) {
+		    e.stopPropagation();
+		});
+	</script>
 
 </body>
 
