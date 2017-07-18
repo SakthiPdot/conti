@@ -77,4 +77,66 @@ public class ProductDaoImpl implements ProductDAO {
 		.executeUpdate();
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Product> getProductBy100() {		
+		
+		return sessionFactory.getCurrentSession()
+				.createQuery("from Product where  obsolete ='N' "
+						+ "order by IFNULL(updated_datetime,created_datetime)  DESC ").setMaxResults(100)
+				.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Product> getProductWithLimit(int from, int to, String order) {
+		
+		return sessionFactory.getCurrentSession()
+				.createQuery("from Product where  obsolete ='N' "
+						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
+				.setFirstResult(from).setMaxResults(to).list();
+		
+	
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Product> searchByProduct(String searchString) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from Product where  obsolete ='N' "
+						+ "and product_name LIKE '%" +searchString + "%'"
+						+ "OR product_Type LIKE '%"+searchString+ "%'"
+						+ "OR product_code LIKE '%"+searchString+ "%'"
+						+ "OR max_weight LIKE '%"+searchString+ "%'"
+						+ "OR dimension_flag LIKE '%"+searchString+ "%'"
+						+ "OR max_height LIKE '%"+searchString+ "%'"
+						+ "OR max_width LIKE '%"+searchString+ "%'"
+						+ "OR max_length LIKE '%"+searchString+ "%'"
+						+ "OR active LIKE '%"+searchString+ "%'"					
+						).list();
+
+		
+		
+		
+	}
+
+	@Override
+	@Transactional
+	public String checkProductName(String name) {
+		@SuppressWarnings("unchecked")
+		List<Product> ProductList=sessionFactory.getCurrentSession()
+				.createQuery("from Product where obsolete ='N' AND product_name IN ('"+name.toUpperCase()+"','"+name.toLowerCase()+"')").list();
+		
+		if(!ProductList.isEmpty()&& ProductList!=null){
+			return "AVAILABLE";
+		}
+		
+		return "NOTAVAILABLE";
+	}
+
 }

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
+import com.conti.master.employee.EmployeeMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -55,7 +57,7 @@ public class ProductController {
 	
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
-
+	UserInformation userInformation;
 	//======================================Excel==========================================
 	@RequestMapping(value="downloadExcelProduct",method=RequestMethod.GET)
 	public ModelAndView downloadExcelProduct(){
@@ -63,6 +65,45 @@ public class ProductController {
 		return new ModelAndView("productExcelView","ProductList",productList);
 	}
 	
+	//======================================Pagination begin==========================================
+	@RequestMapping(value = "paginationProduct", method=RequestMethod.POST)
+	public ResponseEntity<List<Product>> paginationProduct(@RequestBody int page, HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		
+		//intialize	
+		int from_limit = 0, to_limit = 0;
+		String order = "DESC";
+		if(page == 1) { // First
+			from_limit = 0;
+			to_limit = page * 100;
+		} else if ( page == 0 ) { // Last
+			order = "ASC";
+			from_limit = page;
+			to_limit = 10;
+		} else {
+			from_limit = (page * 10) + 1;
+			to_limit =  (page + 1 ) * 100;
+		}
+		
+		List<Product> productList=productDao.getProductWithLimit(from_limit, to_limit, order); 
+		return new ResponseEntity<List<Product>>(productList,HttpStatus.OK);
+		
+	}
+	
+	
+	@RequestMapping(value="checkProductName",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> checkProductName(@RequestBody String name,HttpServletRequest request){
+		
+	
+		 
+		String status=productDao.checkProductName(name.trim());
+		if(status=="AVAILABLE"){
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);			
+		}else{
+			return	new ResponseEntity<Void>(HttpStatus.OK);
+		}			
+				
+	}	
 	//======================================product Inactive==========================================
 	@RequestMapping(value="productStaus/{status}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> productInActive(@RequestBody int[] idArray,@PathVariable("status") String status,HttpServletRequest request){	
@@ -133,10 +174,24 @@ public class ProductController {
 		}	
 		
 	}
+
+	//======================================search product by 4 strings==========================================
+	@RequestMapping(value = "searchProuct4String", method=RequestMethod.POST)
+	public ResponseEntity<List<Product>> searchProuct4String(@RequestBody String SearchString, HttpServletRequest request) {
+		
+	
+			List<Product> productList = productDao.searchByProduct(SearchString);
+		
+			/*if(productList.isEmpty()){
+				return new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT);
+			}*/
+			return new ResponseEntity<List<Product>> (productList, HttpStatus.OK);
+	
+	}
 	//======================================fetch all product==========================================
 	@RequestMapping(value="fetchAllProduct",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Product>> getFetchAllProduct(){
-		List<Product> productList=productDao.getProduct();
+		List<Product> productList=productDao.getProductBy100();
 		if(productList.isEmpty()){
 			return new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT);
 		}
