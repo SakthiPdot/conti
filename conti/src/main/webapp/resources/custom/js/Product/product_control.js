@@ -1,20 +1,18 @@
 /**
  * @Project_Name conti
- * @Package_Name com.conti.product  com.conti.product
- * @File_name ProductDaoImpl.java com.conti.product
+ * @Package_Name com.conti.product 
+ * @File_name ProductDaoImpl.java 
  * @author Monu.C
  * @Created_date_time Jul 8, 2017 6:23:19 PM
  */
 
 angular.module('contiApp').controller('productController',
 		['$scope','ProductService','ConfirmDialogService',function($scope,ProductService,ConfirmDialogService){
+		
+
+	$scope.shownoofrec = 10;
+	$scope.nameWrong=false;
 	
-	/*	      $scope.exportToExcel=function(tableId){ // ex: '#my-table'
-		            var exportHref=Excel.tableToExcel(tableId,'WireWorkbenchDataExport');
-		            $timeout(function(){location.href=exportHref;},100); // trigger download
-		        }
-		      */
-			
 	var self=this;
 	self.submit=submit;
 	self.fetchProducts=fetchProducts;
@@ -34,6 +32,8 @@ angular.module('contiApp').controller('productController',
 	self.makeInActive=makeInActive;
 	self.selectProduct=selectProduct;
 	self.selectedProducts=[];
+	self.registerSearch=registerSearch;
+	self.FilteredProducts=[];
 	self.product={
 		    "product_id": null,
 		    "product_name": null,
@@ -52,19 +52,166 @@ angular.module('contiApp').controller('productController',
 		    "active": null
 		};
 	
+
+	//===================================check for product name====================================
+	self.checkProductName=function checkProductName(name){
+		console.log('product name blurred');
+		ProductService.checkProductName(name)
+		.then(function (response){
+			if(response=="204"){
+				$scope.nameWrong=true;
+				self.product.product_name=null;
+			}else{
+				$scope.nameWrong=false;
+			}
+		},function(errResponse){
+			$scope.nameWrong=false;
+			self.product.product_name=null;
+			console.log("error checking name");
+		});
+	}
+	//===================================change no of page to view in register====================================
+    self.shownoofRecord=function shownoofRecord() {    
+    	$scope.pageSize = $scope.shownoofrec;
+    }
+    
+    
+   //===================================next and previous page====================================  
+    $scope.paginate=function(nextPrevMultiplier){
+    	self.selectAllProduct=false;
+    	$scope.currentPage += (nextPrevMultiplier * 1);
+    	console.log(self.products.length);
+    	self.FilteredProducts = self.products.slice($scope.currentPage*$scope.pageSize);
+    	console.log(self.FilteredProducts.length);
+    	
+    	
+    	if(self.FilteredProducts.length == 0) {
+        	console.log("empty");
+        	ProductService.paginateFirstOrLast($scope.currentPage)
+			.then(function (response) {
+				console.log(response);
+				
+				if ( response.length == 0 ) {
+					$scope.nextDisabled = true;
+				} else if ( response.length < 10 ) {
+					self.FilteredProducts = response;
+					$scope.nextDisabled = true;
+				} else {
+					self.FilteredProducts = response;
+				}
+				
+			}, 
+			function (errResponse) {
+				console.log('Error while pagination');
+			}
+		);
+    	}
+    	
+    	
+       	if(self.FilteredProducts.length < $scope.pageSize) {
+    		$scope.nextDisabled = true;
+    	}
+    	
+    	if($scope.currentPage == 0) {
+    		$scope.previouseDisabled = true;
+    	}
+    	if(nextPrevMultiplier == -1) {    		
+    		$scope.nextDisabled = false;
+    	} else {
+    		$scope.previouseDisabled = false;
+    	}
+    }
+	//===================================first last login page====================================
+	$scope.firstlastPaginate = function (page) {
+		self.selectAllProduct=false;
+		ProductService.paginateFirstOrLast(page)
+		.then(
+				function(response){
+					self.FilteredProducts=response;
+					console.log(response);
+				},function(errRespone){
+					console.log("error while fetching products in search"+errResponse);
+				});
+		
+		
+		if( page == 1 ) {
+    		$scope.currentPage = 0;
+    		$scope.previouseDisabled = true;
+    		$scope.nextDisabled = false;
+    	} else {
+    		$scope.previouseDisabled = false;
+    		$scope.nextDisabled = true;
+    		
+    	}
+	}
+		
+	//===================================SEARCH REGISTER====================================
+	function registerSearch(searchString){
+		if(searchString.length == 0){
+			self.FilteredProducts=self.products;
+		}else if(searchString.length>3){
+			console.log("more than 3");
+			ProductService.searchProduct(searchString)
+			.then(
+					function(response){
+						self.FilteredProducts=response	;
+					},function(errRespone){
+						console.log("error while fetching products in search"+errResponse);
+					});
+		}else{
+			console.log("less than 3");
+			self.FilteredProducts=_.filter(self.products,function(item){
+				return searchProduct(item,searchString);
+			});
+		}
+	}
+	
+	function searchProduct(item,toSearch){
+		
+		var success=false;
+		
+		try{
+			if(
+					item.product_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
+					item.product_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
+					item.product_Type.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
+					String(item.max_weight).indexOf(toSearch) > -1 ||
+					item.dimension_flag.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
+					String(item.max_height).indexOf(toSearch) > -1 ||
+					String(item.max_width).indexOf(toSearch) > -1 ||
+					String(item.max_length).indexOf(toSearch) > -1	 		
+			){
+				success = true;
+			} else {
+				success = false;
+			}
+		}catch(e){
+			success = false;
+		}
+		
+		return success;	
+	}
 	//===================================select all====================================
 	function selectAll(){
 
-		console.log("select all");
+		
+		self.selectedProducts=[];
+		
+		for(var i=0;i<$scope.pageSize;i++){
+			self.FilteredProducts[i].select = self.selectAllProduct;
+			self.selectedProducts.push(self.FilteredProducts[i]);
+		}
+		console.log(self.selectedProducts);
+		/*
 		angular.forEach(self.products,function(x){
 			x.select=self.selectAllProduct;
-		});
-		//self.selectedProducts=self.selectAllProduct?self.products:[];
-		if(self.selectAllProduct){
+		});*/
+
+	/*	if(self.selectAllProduct){
 			self.selectedProducts=self.products
 		}else{
 			self.selectedProducts=[];
-		}
+		}*/
 	}
 	//===================================select Product====================================
 	function selectProduct(x){
@@ -287,6 +434,7 @@ angular.module('contiApp').controller('productController',
 			ProductService.fetchAllProduct()
 			.then(function(Response){
 				self.products=Response;
+				self.FilteredProducts=self.products;
 				pagination();
 				console.log(Response);
 			},function(errResponse){			
@@ -341,6 +489,7 @@ angular.module('contiApp').controller('productController',
 	
 	function reset(){
 		self.product={};
+		$scope.nameWrong=false;
 		self.product.dimension_flag="Y";
 		self.heading="Master";
 		$("#selectedProductType_value").val("");
@@ -349,13 +498,15 @@ angular.module('contiApp').controller('productController',
 
 	//===================================pagination====================================
     function pagination() {
-        
+
+
+		$scope.currentPage = 0;
+    	$scope.pageSize = $scope.shownoofrec;
     	$scope.viewby = 10;
 		$scope.totalItems = self.products.length;
-		$scope.currentPage = 1;
 		$scope.itemsPerPage = $scope.viewby;
 		$scope.maxSize = 2; //Number of pager buttons to show
-			
+		$scope.previouseDisabled = true;	
 		$scope.setPage = function (pageNo) {
 			$scope.currentPage = pageNo;
 		  };

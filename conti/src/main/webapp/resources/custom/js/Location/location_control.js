@@ -177,6 +177,16 @@ angular.module('contiApp').controller('locationController'
 						ConfirmDialogService.confirmBox("InActive",
 			    				BootstrapDialog.TYPE_DANGER, "Make Records InActive  ..?", 'btn-danger')
 			    		.then(function(response){
+			    			
+			    			LocationService.changeActive(active_id,"Active")
+							.then(
+									function(response){
+										showStatusAfterSave("Active");
+									},function(errRespone){
+										console.log("error making product active"+errResponse);
+									});
+			    			
+			    			
 			    		});
 			    		}
 				}

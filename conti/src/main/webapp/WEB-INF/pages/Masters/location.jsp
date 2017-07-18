@@ -185,11 +185,12 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 			                  data-ng-model="locctrl.Location.address.country">
 			                  
 			                  <span>Pincode<span style="color:red">&nbsp;*</span></span>
-			                  <input type="text" class="form-control"
+			                  <input type="number" class="form-control"
 			                   data-ng-required="true"
 			                    data-trigger="focus" data-toggle="popover"
 							 	data-placement="top" data-content="Please Enter Pincode"	
-								maxlength="8" 
+							 	min="100000"
+								max="1000000 " 
 								onKeyPress="return CheckIsNumericAndHyphen(event,this.value) "           
 			                  data-ng-model="locctrl.Location.pincode">
 			                  
@@ -363,7 +364,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                             <td>{{x.address.country}}</td>
                                             <td>{{x.pincode}}</td>
                                             <td
-                                            data-ng-class="{'makeGreen':x.active='Y','makeRed':x.active=='N'}">
+                                            data-ng-class="{'makeGreen':x.active=='Y','makeRed':x.active=='N'}">
                                             {{x.active=="Y"?"ACTIVE":"INACTIVE"}}</td>
                                           
                                         </tr>                         

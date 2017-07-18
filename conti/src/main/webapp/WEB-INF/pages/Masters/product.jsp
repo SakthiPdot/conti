@@ -59,7 +59,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
   <!-- Master Drawer Beginning  -->
   
   
- 		<div class="drawer hideme">
+ 		<div class="drawer hideme ">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
@@ -102,15 +102,18 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 		                  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 		                    data-ng-required="true"
 		                    placeholder="Eg. Name"
+							data-ng-blur="proctrl.checkProductName(proctrl.product.product_name)"
 			                  data-trigger="focus" data-toggle="popover"
 							  data-placement="top" data-content="Please Enter Product Name"
 		                  data-ng-model="proctrl.product.product_name">
+		                  
+		                  <span class="makeRed" data-ng-show="nameWrong">Product Name Already Existing..!<br><br></span>
 		                  
 		                  <span>Product Code</span>
 		                  <input type="text" class="form-control"
 		                  maxlength="10"		                 
 		                  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
-			                  data-trigger="focus" data-toggle="popover"
+			                  data-trigger="focus" data-toggle="pop	over"
 			                  placeholder="Eg. XYZ01"
 							  data-placement="top" data-content="Please Enter Product Code"
 		                  data-ng-model="proctrl.product.product_code">
@@ -332,6 +335,20 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 																<li data-ng-click="proctrl.makeInActive()"><a>InActive</a></li>
 															</ul>
 														</div>
+														
+														
+														<div class="row paddingtop">
+															<div class="col-md-12">
+																<select name="shownoofrec" data-ng-model="shownoofrec"
+																	data-ng-options="noofrec for noofrec in [10, 15, 25, 50, 100]"
+																	class="form-control"
+																	data-ng-click="proctrl.shownoofRecord()">
+
+																</select>
+															</div>
+														</div>
+														
+														
 													</div>
 												</div>
 
@@ -433,13 +450,22 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 																type="hidden" name="${_csrf.parameterName}"
 																value="${_csrf.token}" />
 														</form>
-														<!--=============== print end============== -->
+														<!--===============seatch tab============== -->														
+				                                      <div class = "row paddingtop">
+				                                      
+					                                    <div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Box" 
+					                                     data-ng-model = "proctrl.product_search"
+					                                     data-ng-keyup = "proctrl.registerSearch(proctrl.product_search)"/></div>
+					                                     
+				                                      </div>
+				                                      
+				                                      
 													</div>
 												</div>
 											</div>
 										</div>
 
-										<div class="col-xs-6  col-xs-offset-6 ">
+										<div class="col-xs-6  col-xs-offset-6 " data-ng-hide="true">
 											<div class="pull-right">
 												<input type="text" class="form-control"
 													placeholder="Search " ng-model="search">
@@ -454,7 +480,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 													<th><input type="checkbox"
 														data-ng-model="proctrl.selectAllProduct"
 														data-ng-click="proctrl.selectAll()"></th>
-													<th>S.No</th>
+													<!-- <th>S.No</th> -->
 													<th data-ng-show="setting_proname">Product Name</th>
 													<th data-ng-show="setting_procodename">Product Code</th>
 													<th data-ng-show="setting_protype">Product Type</th>
@@ -469,10 +495,10 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 											</thead>
 											<tbody>
 												<tr data-ng-dblclick="proctrl.updateProduct(x,$index)"
-													data-ng-repeat="x in  proctrl.products.slice((currentPage-1)*itemsPerPage,(currentPage)*itemsPerPage) | filter:search track by x.product_id">
+													data-ng-repeat="x in  proctrl.FilteredProducts| limitTo:pageSize  track by x.product_id">
 													<td><input type="checkbox" data-ng-model="x.select"
 														data-ng-click="proctrl.selectProduct(x)"></td>
-													<td>{{(currentPage*10)-(10-($index+1))}}</td>
+													<!-- <td>{{(currentPage*10)-(10-($index+1))}}</td> -->
 													<td data-ng-show="setting_proname">{{x.product_name}}</td>
 													<td data-ng-show="setting_procodename">{{x.product_code}}</td>
 													<td data-ng-show="setting_protype">{{x.product_Type}}</td>
@@ -489,10 +515,19 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 										</table>
 
 										<div class="col-lg-6 col-lg-offset-3 " align="center">
-											<pagination total-items="totalItems" ng-model="currentPage"	max-size="maxSize" class="pagination-sm"
+								<!-- 			<pagination total-items="totalItems" ng-model="currentPage"	max-size="maxSize" class="pagination-sm"
 												boundary-links="true" rotate="false" num-pages="numPages"
-												items-per-page="itemsPerPage"></pagination>
+												items-per-page="itemsPerPage"></pagination> -->
+												
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                                     											
+										
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previous</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "paginate(1)">Next</button>
+										
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
 										</div>
+										
+										<div class="col-lg-6"><br><br></div>
 									</div>
 								</div>
 							</div>
@@ -552,7 +587,8 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 	<script type="text/javascript" src="resources/custom/js/Product/product_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Address/address_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Product/product_control.js"></script>
-	  <script src="resources/custom/js/confirmDialog.js"></script>   
+	 <script src="resources/custom/js/confirmDialog.js"></script>   
+	 <script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
 <!--====================================================== SCRIPTS END =========================================-->
 
 

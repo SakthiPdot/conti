@@ -14,12 +14,79 @@ angular.module('contiApp').factory('ProductService',['$http','$q',function($http
 			fetchAllProduct:fetchAllProduct,
 			deleteProduct:deleteProduct,
 			updateProduct:updateProduct,
-			changeActive:changeActive
+			changeActive:changeActive,
+			searchProduct:searchProduct,
+			paginateFirstOrLast:paginateFirstOrLast,
+			checkProductName:checkProductName
 	};
 	
 	return factory;
-	
+	//=============================paginate first or last====================================
+	function checkProductName(name){
+		var deferred = $q.defer();
+		
+		$http({
+			method : 'POST',
+			url : 'checkProductName',
+			data : name,
+			headers : getCsrfHeader()
+		})
+		.then (
+			function (response) {
+				console.log(response);
+				deferred.resolve(response.status);
+			},
+			function (errResponse) {
 
+				console.log(errResponse);
+				deferred.reject(errResponse);
+			}
+		);
+		return deferred.promise;
+		
+	}
+	//=============================paginate first or last====================================
+    function paginateFirstOrLast(page) {
+	var deferred = $q.defer();
+	
+	$http({
+		method : 'POST',
+		url : 'paginationProduct',
+		data : page,
+		headers : getCsrfHeader()
+	})
+	.then (
+		function (response) {
+			console.log(response);
+			deferred.resolve(response.data);
+		},
+		function (errResponse) {
+			deferred.reject(errResponse);
+		}
+	);
+	return deferred.promise;
+}
+	
+	//=============================search product====================================
+    function searchProduct(searchkey) {
+    	var deferred = $q.defer();
+    	
+    	$http({
+    		method : 'POST',
+    		url : 'searchProuct4String',
+    		data : searchkey,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
 	//=============================change Active====================================
 	function changeActive(id,status){	
 		console.log(id,status);
