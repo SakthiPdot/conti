@@ -264,3 +264,7 @@
 		-moz-appearance: none !important;
 		appearance: none !important;
 	}
+	
+	.required {
+		color : #FF0000;
+	}

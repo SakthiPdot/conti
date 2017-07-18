@@ -278,6 +278,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
              </div>             										
 		   </div>
 
+
         
       		
       		<div id="page-inner" >  
@@ -300,8 +301,8 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 									Batch Action <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a href="#">Email</a></li>
-									<li><a id="deletearchieve">Archive</a></li>
+									<li data-ng-click="locctrl.makeActive()" ><a>Active</a></li>
+									<li data-ng-click="locctrl.makeInActive()"><a>InActive</a></li>
 
 								</ul>
 								<!--<button type="button" class="btn btn-primary">Filter</button>-->
@@ -312,23 +313,28 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                 </div>
                                 
                               <div class="col-lg-6 icons-button">
-                                   <div class="pull-right">
-                                     <button type="button" class="btn btn-info"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" onclick="location.href='downloadExcelLocation'" class="btn btn-info"><i class="fa fa-file-excel-o fa-lg"></i></button>
+                                   <div class="pull-right">                                   
+									<form name="selectedLocationform" method='POST' action="location_print">
+                                     <a type="button" class="btn btn-info"><i class="fa fa-cog fa-lg"></i></a>
+                                    <!--=============== excel============== -->
+                                      <a type="button" onclick="location.href='downloadExcelLocation'" class="btn btn-info"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                     <!--=============== print============== -->
                                       <button type="button" class="btn btn-info"><i class="fa fa-print fa-lg"></i></button>
+                                      </form>
                                 	</div>
                                 </div>
                               </div>
                             </div>
                                   
-                          <!-- ==================================LOCATION TABLE============================= -->
-                         
+                          <!-- ==================================LOCATION TABLE============================= -->                        
                                 <table 
                                 class="table table-striped table-bordered table-hover" 
                                  id="dataTables-example">
                                     <thead>
                                         <tr>
-                                        	<th><input type="checkbox"></th>
+                                        	<th><input type="checkbox"
+                                        	data-ng-model="locctrl.selectAllLocation"
+                                        	data-ng-click="locctrl.selectAll()"></th>
                                             <th>S.No</th>
                                             <th>Location Name</th>
                                             <th>Location Code</th>
@@ -336,7 +342,8 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                             <th>City</th>
                                             <th>State</th>
                                             <th>Country</th>
-                                            <th>Pincode</th>                                            
+                                            <th>Pincode</th>   
+                                            <th>Active</th>                                          
                                         </tr>
                                     </thead>
                                     
@@ -344,7 +351,9 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                       <tr 
                                        data-ng-repeat="x in locctrl.Locations  track by x.location_id"
 	                	    			 data-ng-dblclick="updateLocation(x,$index)">                                            
-                                            <td><input type="checkbox"></td>
+                                            <td><input type="checkbox"
+                                            data-ng-model="x.select"
+                                            data-ng-click="locctrl.selectLocation(x);"></td>
                                             <td>{{$index+1}}</td>
                                             <td>{{x.location_name}}</td>
                                             <td>{{x.location_code}}</td>
@@ -353,6 +362,9 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                             <td>{{x.address.state}}</td>
                                             <td>{{x.address.country}}</td>
                                             <td>{{x.pincode}}</td>
+                                            <td
+                                            data-ng-class="{'makeGreen':x.active='Y','makeRed':x.active=='N'}">
+                                            {{x.active=="Y"?"ACTIVE":"INACTIVE"}}</td>
                                           
                                         </tr>                         
                                     </tbody>

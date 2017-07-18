@@ -62,7 +62,7 @@ class UsersDaoImpl implements UsersDao {
 		@Override 
 		@Transactional
 		public User get(int id) {
-			String hql = "from User where obsolete ='N' id=" + id;
+			String hql = "from User where obsolete ='N'  and id=" + id;
 			Query query = sessionFactory.getCurrentSession().createQuery(hql);
 			
 			@SuppressWarnings("unchecked")
@@ -97,6 +97,40 @@ class UsersDaoImpl implements UsersDao {
 		}
 		/*------------------------------- Find user by username end ----------------------- */
 
+
+		/*@Override
+		@Transactional
+		public User getBranchId(int id) {
+			String hql = "FROM User WHERE obsolete = 'N' and branch_id = " + id+ "";
+			Query query = sessionFactory.getCurrentSession().createQuery(hql);
+			
+			@SuppressWarnings("unchecked")
+			List<User> userlist = (List<User>) query.list();
+			if(userlist !=null && !userlist.isEmpty()){
+				return userlist.get(0);
+			}
+			return null;
+		}
+
+		@Override
+		@Transactional
+		public List<User> getUser(int emp_id) {
+			@SuppressWarnings("unchecked")
+			List<User> listuser = (List<User>) sessionFactory.getCurrentSession()
+					.createQuery("from User WHERE obsolete = 'N' and active = 'Y' and emp_id = '"+ emp_id+"'").list();
+			
+			return listuser;
+		}
+
+		@Override
+		@Transactional
+		public List<User> getAllUsers() {
+			@SuppressWarnings("unchecked")
+			List<User> listUser = (List<User>) sessionFactory.getCurrentSession()
+					.createQuery("from User where obsolete = 'N'").list();
+			return listUser;
+		}	*/					
+
 		@Override
 		@Transactional
 		public User getBranchId(int id) {
@@ -129,6 +163,7 @@ class UsersDaoImpl implements UsersDao {
 					.createQuery("from User where obsolete = 'N'").list();
 			return listUser;
 		}						
+
 		
 	
 }

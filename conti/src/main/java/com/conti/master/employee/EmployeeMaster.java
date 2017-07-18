@@ -65,7 +65,7 @@ public class EmployeeMaster /*implements Serializable*/{
 	
 	public BranchModel branchModel;
 	@JoinColumn(name = "branch_id")
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	public BranchModel getBranchModel() {
 		return branchModel;
 	}

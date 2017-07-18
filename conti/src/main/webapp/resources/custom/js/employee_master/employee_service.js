@@ -18,7 +18,8 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 			deleteEmployee : deleteEmployee,
 			makeActive : makeActive,
 			makeinActive : makeinActive,
-			registerSearch : registerSearch
+			registerSearch : registerSearch,
+			pagination_byPage : pagination_byPage
 			/*print : print*/
 	};
 	
@@ -111,7 +112,7 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
     //------------------------------- Delete Employee end -----------------------------//
     
     //------------------------------- Delete Employee begin -----------------------------//
-    function updateEmployee(employee, id) {
+ /*   function updateEmployee(employee, id) {
     	var deferred = $q.defer();
     	$http({
     		method : 'PUT',
@@ -127,6 +128,28 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
     		}
     	);
     	return deferred.promise;
+    }*/
+    
+    function updateEmployee(employee) {
+        var deferred = $q.defer();
+        var headers = getCsrfHeader();
+        
+    	$http({
+    		method : 'POST',
+    		url : 'update_employee',
+    		data : employee,
+    		headers : headers
+    	})
+    	.then(
+    			function (response) {    				
+    				deferred.resolve(response.data);
+    			},
+    			function (errResponse) {
+    				deferred.reject(errResponse);
+    			}
+    		);
+    		return deferred.promise;
+    		
     }
     //------------------------------- Delete Employee end -----------------------------//
     
@@ -219,5 +242,27 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
     	return deferred.promise;
     }
     //--------------------------- Register search end -----------------------------//    
+    
+    // --------------------------- Pagination begin ------------------------------//
+    function pagination_byPage(page) {
+    	var deferred = $q.defer();
+    	
+    	$http({
+    		method : 'POST',
+    		url : 'pagination',
+    		data : page,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
+    // --------------------------- Pagination end ------------------------------//    
     
 }]);

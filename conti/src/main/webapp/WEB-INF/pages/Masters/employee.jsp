@@ -42,6 +42,7 @@
 
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
@@ -99,12 +100,12 @@
 	                <div class="row">
 		                <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
-		                 	   <span>Employee Name </span>	         
+		                 	   <span>Employee Name <span class="required">*</span></span>	         
 			                   <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.employee.emp_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee Name"
 			                    required />
 			                   
 			                   <span>Employee Code</span>
-			                   <input type="text" class="form-control" maxlength="5" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee code" required />
+			                   <input type="text" class="form-control" maxlength="5" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee code" />
 			                
 			           
 			             </div>         	
@@ -113,7 +114,7 @@
 			             
 			             <div class="col-lg-12">
 		                <div class="col-lg-6 content-body">
-		                 	   <span>Employee Category </span>	         
+		                 	   <span>Employee Category <span class="required">*</span></span>	         
 			                   <!-- <select class="form-control" data-ng-model="ctrl.employee.empcategory" required>
 			                   		<option>Driver</option>
 			                   		<option>Courier Staff</option>
@@ -138,7 +139,7 @@
 			              </div> 
 
 			               <div class="col-lg-6 content-body" >    
-			                   <span>Branch Name</span>
+			                   <span>Branch Name <span class="required">*</span></span>
 			                  <!--  <select class="form-control" data-ng-model="ctrl.employee.branch_id" required>			                   
 			                   		<option value ="" selected>--Select--</option>
 			                   		<option>Coimbatore</option>
@@ -169,16 +170,16 @@
 			             
 			             <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
-		                 	   <span>Address Line 1 </span>	         
+		                 	   <span>Address Line 1 <span class="required">*</span></span>	         
 			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address1"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee address" required>
 			                   
 			                   <span>Address Line 2</span>
 			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address2" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee address"
-			                    required>
+			                    >
 			                   
-			                   <span>Location</span>
+			                   <span>Location <span class="required">*</span></span>
 			                  <!--  <select class="form-control"  data-ng-model="ctrl.employee.location_id" required>
 			                   		<option value="" selected>-- Select --</option>
 			                   		<option>Peelamedu</option>
@@ -229,13 +230,13 @@
 			             
 			             <div class="col-lg-12">
 		                <div class="col-lg-6 content-body">
-		                 	   <span>Phone No </span>	         
+		                 	   <span>Phone No <span class="required">*</span></span>	         
 			                  <input type="text" class="form-control" minlength = "10" maxlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.employee.emp_phoneno" 
 			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee mobile number" required />
 			               
 			              </div> 
 			               <div class="col-lg-6 content-body">    
-			                   <span>Email</span>
+			                   <span>Email <span class="required">*</span></span>
 			                   <input type="email" class="form-control" data-ng-model="ctrl.employee.emp_email" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee email id" required />
 			                 
@@ -247,7 +248,7 @@
 			             
 			             <div class="col-lg-12">
 			                <div class="col-lg-6 content-body">
-			                 	   <span>Date of Birth </span>	 
+			                 	   <span>Date of Birth <span class="required">*</span></span> 
 								      `
 								<!--  <div class="form-group input-group">
                                             <input type="text" class="form-control">
@@ -270,7 +271,7 @@
 				              </div> 
 				              
 				               <div class="col-lg-6 content-body">    
-				                   <span>Date of Joining</span>
+				                   <span>Date of Joining <span class="required">*</span></span>
 				                  <div class="form-group input-group">
 				                               <input type="text" class="form-control" data-ng-model="ctrl.employee.doj" 
 				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of joining"
@@ -384,7 +385,13 @@
 								<!--<button type="button" class="btn btn-primary">Filter</button>-->
 							</div>
 							<!-- dropdown -->
-
+							 <div class = "row paddingtop">
+	                                    <div class = "col-md-12"> 
+	                                    <select name ="shownoofrec" data-ng-model="shownoofrec" data-ng-options = "noofrec for noofrec in [10, 15, 25, 50, 100]" class ="form-control" data-ng-click="ctrl.shownoofRecord()">
+	                                    	
+	                                    </select>
+	                                    </div>
+                             </div>
 						</div> 
                                 </div>
                                 
@@ -464,9 +471,9 @@
 	                                      <input type = "hidden" name = "emp" value = "{{ctrl.selected_employee}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                       </form>
-                                      
+                                       
                                       <div class = "row paddingtop">
-	                                    <div class = "col-md-12"><input type = "text" name = "search" placeholder = "Ex: Driver" data-ng-model = "ctrl.emp_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.emp_regSearch)"/></div>
+	                                    <div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Driver" data-ng-model = "ctrl.emp_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.emp_regSearch)"/></div>
                                       </div>
                                 	</div>
                                 </div>
@@ -478,7 +485,7 @@
                                     <thead>
                                         <tr>
                                         	<th><input type="checkbox" data-ng-click="ctrl.empSelectall()" data-ng-model = "selectall" /></th>
-                                            <th>S.No</th>
+                                            <!-- <th>S.No</th> -->
                                             <th data-ng-show = "setting_empname">Employee Name</th>
                                             <th data-ng-show = "setting_empcode">Employee Code</th>
                                             <th data-ng-show = "setting_empcategory">Employee Category</th>
@@ -492,11 +499,15 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr
+                                       <!--  <tr
                                         	data-ng-repeat = "emp in ctrl.Filteremployees.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage)) | orderBy : 'emp_name'"
+                                        	data-ng-dblclick="ctrl.updateEmployee(emp)"> -->
+                                        	 <tr
+                                        	data-ng-repeat = "emp in ctrl.Filteremployees | limitTo:pageSize"
                                         	data-ng-dblclick="ctrl.updateEmployee(emp)">
                                         	<td><input type="checkbox" data-ng-change="ctrl.empSelect(emp)" data-ng-model = "emp.select" /></td>
-                                            <td>{{(currentPage*10)-(10-($index+1))}}</td>
+                                            <!-- <td>{{(currentPage*10)-(10-($index+1))}}</td> -->
+                                            <!-- <td>{{(currentPage*10)+($index+1)}}</td> -->
                                             <td data-ng-show = "setting_empname">{{emp.emp_name}}</td>
                                             <td data-ng-show = "setting_empcode">{{emp.emp_code}}</td>
                                             <td data-ng-show = "setting_empcategory">{{emp.empcategory}}</td>
@@ -518,9 +529,15 @@
                                 <div class="col-lg-6 icons-button">
                                    <div class="pull-right">
                                    		<!-- <ul>
-                                   		<li></li>
-                                   		</ul> -->
-                                     	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage"></pagination> 
+                                   			<li class="btn btn-primary" data-ng-click = "paginatebyno($index+1)" data-ng-repeat = "i in counter(noofpages) track by $index"> {{$index+1}}</li>
+                                   		</ul>  -->
+                                     	<!-- <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage"></pagination>  -->
+										 <button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                                     											
+										
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previouse</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "paginate(1)">Next</button>
+										
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
                                 	</div>
                                 </div>
                             </div>

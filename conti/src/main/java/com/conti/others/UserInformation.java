@@ -22,7 +22,7 @@ public class UserInformation {
 	private  final Logger logger = LoggerFactory.getLogger(UserInformation.class);
 	Loggerconf loggerconf = new Loggerconf();
 		public String userName;
-		public String userClientId;
+		public String userBranchId;
 		public String userId;
 		public String currentDate;
 		
@@ -39,6 +39,7 @@ public class UserInformation {
 //			{
 				this.userName=(String) request.getSession().getAttribute("username");	
 				this.userId=(String) request.getSession().getAttribute("userid").toString();
+				this.userBranchId = (String) request.getSession().getAttribute("branch_id").toString();
 				this.currentDate = dateformat.format(date);
 			//} 
 		}
@@ -60,8 +61,8 @@ public class UserInformation {
 	}
 
 
-	public String getUserClientId() {
-		return this.userClientId;
+	public String getUserBranchId() {
+		return this.userBranchId;
 	}
 
 

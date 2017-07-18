@@ -439,6 +439,12 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 											</div>
 										</div>
 
+										<div class="col-xs-6  col-xs-offset-6 ">
+											<div class="pull-right">
+												<input type="text" class="form-control"
+													placeholder="Search " ng-model="search">
+											</div>
+										</div>
 
 
 										<table class="table table-striped table-bordered table-hover"
@@ -463,7 +469,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 											</thead>
 											<tbody>
 												<tr data-ng-dblclick="proctrl.updateProduct(x,$index)"
-													data-ng-repeat="x in  proctrl.products.slice((currentPage-1)*itemsPerPage,(currentPage)*itemsPerPage) track by x.product_id">
+													data-ng-repeat="x in  proctrl.products.slice((currentPage-1)*itemsPerPage,(currentPage)*itemsPerPage) | filter:search track by x.product_id">
 													<td><input type="checkbox" data-ng-model="x.select"
 														data-ng-click="proctrl.selectProduct(x)"></td>
 													<td>{{(currentPage*10)-(10-($index+1))}}</td>

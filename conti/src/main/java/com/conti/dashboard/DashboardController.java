@@ -71,6 +71,9 @@ public class DashboardController {
 		session.setAttribute("username", username);
 		session.setAttribute("userid", userid);
 		
+		User userDetails = usersDao.get(userid);
+		int branch_id = userDetails.getEmployeeMaster().getBranchModel().getBranch_id();
+		session.setAttribute("branch_id", branch_id);
 		
 		ModelAndView model = new ModelAndView();
 		
