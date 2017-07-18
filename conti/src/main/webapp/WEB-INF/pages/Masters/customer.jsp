@@ -126,7 +126,7 @@
 						              input-class="form-control form-control-small">
               				</angucomplete-alt>
 
-			           		<input type="hidden" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject}}" />
+			           		<input type="" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject}}" />
 				                
 				           
 				             	</div>         	
