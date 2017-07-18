@@ -109,4 +109,99 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 		}
 		//------------------Update Branch begin End--------------
 		
+		
+		//------------------------------- make active Customer begin -----------------------------//
+	    function makeActive(id) {
+	    	var deferred = $q.defer();
+	    	
+	    	$http({
+	    		method : 'POST',
+	    		url : 'make_active_branch',
+	    		data : id,
+	    		headers : getCsrfHeader()
+	    	})
+	    	.then (
+	    		function (response) {
+	    			deferred.resolve(response.data);
+	    		},
+	    		function (errResponse) {
+	    			deferred.reject(errResponse);
+	    		}
+	    	);
+	    	return deferred.promise;
+	    }
+	    //------------------------------- make active Customer end -----------------------------//
+	    
+	    
+	    
+	    //------------------------------- make inactive Customer begin -----------------------------//
+	    function makeinActive(id) {
+	    	var deferred = $q.defer();
+	    	
+	    	$http({
+	    		method : 'POST',
+	    		url : 'make_inactive_branch',
+	    		data : id,
+	    		headers : getCsrfHeader()
+	    	})
+	    	.then (
+	    		function (response) {
+	    			deferred.resolve(response.data);
+	    		},
+	    		function (errResponse) {
+	    			deferred.reject(errResponse);
+	    		}
+	    	);
+	    	return deferred.promise;
+	    }
+	    //------------------------------- make inactive Customer end -----------------------------//
+  
+
+	  //--------------------------- Register search begin -----------------------------//
+	    function registerSearch(searchkey) {
+	    	var deferred = $q.defer();
+	    	
+	    	$http({
+	    		method : 'POST',
+	    		url : 'register_search_branch',
+	    		data : searchkey,
+	    		headers : getCsrfHeader()
+	    	})
+	    	.then (
+	    		function (response) {
+	    			deferred.resolve(response.data);
+	    		},
+	    		function (errResponse) {
+	    			deferred.reject(errResponse);
+	    		}
+	    	);
+	    	return deferred.promise;
+	    }
+	    //--------------------------- Register search end -----------------------------// 
+	    
+	    
+	    
+	 // --------------------------- Pagination begin ------------------------------//
+	    function pagination_byPage(page) {
+	    	var deferred = $q.defer();
+	    	
+	    	$http({
+	    		method : 'POST',
+	    		url : 'pagination_branch',
+	    		data : page,
+	    		headers : getCsrfHeader()
+	    	})
+	    	.then (
+	    		function (response) {
+	    			deferred.resolve(response.data);
+	    		},
+	    		function (errResponse) {
+	    			deferred.reject(errResponse);
+	    		}
+	    	);
+	    	return deferred.promise;
+	    }
+	    // --------------------------- Pagination end ------------------------------//    
+	      
+
 }]);

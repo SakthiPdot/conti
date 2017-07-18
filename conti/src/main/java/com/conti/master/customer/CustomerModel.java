@@ -31,7 +31,7 @@ public class CustomerModel
 {
 	private int customer_id,updated_by, created_by;
 	private long customer_mobileno;
-	private String customer_name,customer_code,company_name,customer_addressline1,customer_addressline2,customer_type,taxin_payable,gstin_number,obsolete,active;
+	private String customer_name,customer_code,company_name,customer_addressline1,customer_addressline2,customer_type,taxin_payable,gstin_number,obsolete,active,customer_email;
 	private String created_datetime,updated_datetime;
 	
 	@Id
@@ -60,7 +60,13 @@ public class CustomerModel
 		this.updated_datetime = updated_datetime;
 	}
 
-
+	@Column(name = "CUSTOMER_EMAIL")
+	public String getCustomer_email() {
+		return customer_email;
+	}
+	public void setCustomer_email(String customer_email) {
+		this.customer_email = customer_email;
+	}
 
 public Location location;
 	
@@ -76,7 +82,7 @@ public Location location;
 	
 	public BranchModel branchModel;
 	@JoinColumn(name = "branch_id")
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	public BranchModel getBranchModel() {
 		return branchModel;
 	}
