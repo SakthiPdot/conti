@@ -41,7 +41,7 @@ import com.conti.setting.usercontrol.UsersDao;
  */
 
 
-@RestController
+@Controller
 public class CustomerController {
 
 	final Logger logger = LoggerFactory.getLogger(CustomerController.class);
