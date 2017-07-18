@@ -9,7 +9,7 @@
  */
 
 contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
-	var REST_SERVICE_URI = 'http://localhost:8080/Conti/branches/';
+	
 	
 	var factory = {
 			fetchAllBranches : fetchAllBranches,
@@ -22,7 +22,7 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 	//-------------------------- Fetch All Branches begin ---------------------//	
 	function fetchAllBranches() {
 		var deferred = $q.defer();
-		$http.get(REST_SERVICE_URI)
+		$http.get('branches/')
 			.then(
 					function (response) {
 						deferred.resolve(response.data);
