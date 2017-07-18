@@ -25,6 +25,19 @@ angular.module('contiApp').controller('locationController'
 			self.fetched=true;
 			self.openDrawer=openDrawer;
 			
+			//check box select
+			self.selectAllLocation=false;
+			self.selectLocation=selectLocation;
+			self.selectAll=selectAll;
+			self.selectedLocation=[];
+			
+			 
+		
+			//active inactive 
+			self.makeActive=makeActive;
+			self.makeInActive=makeInActive;
+			
+		
 			self.Location={
 				    "location_id": null,
 				    "updated_by": null,
@@ -51,6 +64,129 @@ angular.module('contiApp').controller('locationController'
 				    }
 				};
 			
+			//===================================select Product====================================
+			function selectLocation(x){
+				console.log(x);
+				if(x.select){
+					self.selectedLocation.push(x);
+				}else{
+					self.selectAllLocation=x.select;
+					var index=self.selectedLocation.indexOf(x);
+					console.log(x);
+					self.selectedLocation.splice(index,1);
+				}
+				
+			}
+			
+			//===================================select all====================================
+			function selectAll(){
+				angular.forEach(self.Locations,function(x){
+					x.select=self.selectAllLocation;
+				});				
+				
+				if(self.selectAllLocation){
+					self.selectedLocation=self.Locations;
+				}else{
+					self.selectAllLocation=[];
+				}
+			}
+			
+			function selectOneRecord(){
+		   		self.message ="Please select atleast one record..!";
+				successAnimate('.failure');
+			}
+			
+			function showStatus(status){
+				self.message ="Selected record(s) already in "+status+" status..!";
+				successAnimate('.failure');
+				}
+				
+				function showStatusAfterSave(status){
+					 fetchProducts();
+					self.message ="Selected record(s) has been made  "+status+"..!";
+					successAnimate('.success');
+					 self.selectedLocation=[];
+					 self.selectAllLocation=false;
+					}
+				
+			//===================================close====================================
+			function makeActive(){
+				
+				var hitController=true;
+				var active_id=[];
+				
+				if(self.selectedLocation.length==0){
+					selectOneRecord();
+				}else{
+					var loop=true;	
+					for(var i=0;i<self.selectedLocation.length;i++){
+						if(loop){
+							if(self.selectedLocation[i].active=="Y"){
+								loop=false;
+							    hitController=false;
+								showStatus("Active");
+							}
+
+		    				active_id[i] = self.selectedLocation[i].location_id; 
+						}
+					}
+					
+					
+					if(hitController){					
+						console.log(active_id);
+						ConfirmDialogService.confirmBox("Active",
+			    				BootstrapDialog.TYPE_SUCCESS, "Make Records Active  ..?", 'btn-success')
+			    		.then(function(response){
+			    		});
+					}
+				
+				
+				
+				}
+				
+				
+			
+			
+			}
+			
+			//===================================close====================================
+			function  makeInActive(){
+
+				var hitController=true;
+				var In_active_id=[];
+				
+				
+				if(self.selectedLocation.length==0){
+					selectOneRecord();
+				}else{
+					var loop=true;	
+					for(var i=0;i<self.selectedLocation.length;i++){
+						if(loop){
+							if(self.selectedLocation[i].active=="N"){
+								loop=false;
+							    hitController=false;
+								showStatus("InActive");
+							}
+
+							In_active_id[i] = self.selectedLocation[i].location_id; 
+						}
+					}
+					
+					if(hitController){
+						console.log(In_active_id);
+						ConfirmDialogService.confirmBox("InActive",
+			    				BootstrapDialog.TYPE_DANGER, "Make Records InActive  ..?", 'btn-danger')
+			    		.then(function(response){
+			    		});
+			    		}
+				}
+				
+				
+				
+			}
+			
+			
+			//===================================close====================================
 			function close(title){
 				ConfirmDialogService.confirmBox(title,
 						BootstrapDialog.TYPE_WARNING, title+" Without Save ..? ", 'btn-warning')

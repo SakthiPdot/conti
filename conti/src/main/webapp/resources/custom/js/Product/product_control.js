@@ -101,7 +101,7 @@ angular.module('contiApp').controller('productController',
 		 self.selectAllProduct=false;
 		}
 	
-	//===================================select all====================================
+	//===================================make acive====================================
 	function makeActive(){
 		
 		
@@ -122,31 +122,34 @@ angular.module('contiApp').controller('productController',
 						}
 	    				active_id[i] = self.selectedProducts[i].product_id;  
 					}
-				}			
+				}
+				
+
+				if(hitController){
+					console.log(active_id);
+					ConfirmDialogService.confirmBox("Active",
+		    				BootstrapDialog.TYPE_SUCCESS, "Make Records Active  ..?", 'btn-success')
+		    		.then(function(response){
+		    			
+					ProductService.changeActive(active_id,"Active")
+					.then(
+							function(response){
+								showStatusAfterSave("Active");
+							},function(errRespone){
+								console.log("error making product active"+errResponse);
+							});
+		    		});
+				}
+				
+				
+				
 		}
 		
 		
 
-		if(hitController){
-			console.log(active_id);
-			ConfirmDialogService.confirmBox("Active",
-    				BootstrapDialog.TYPE_SUCCESS, "Make Records Active  ..?", 'btn-success')
-    		.then(function(response){
-    			
-			ProductService.changeActive(active_id,"Active")
-			.then(
-					function(response){
-						showStatusAfterSave("Active");
-					},function(errRespone){
-						console.log("error making product active"+errResponse);
-					});
-    		});
-		}
-		
-		
 		
 	}
-	//===================================select all====================================
+	//===================================make inactive====================================
 	function makeInActive(){
 		
 		var hitController=true;
