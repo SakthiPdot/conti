@@ -97,7 +97,7 @@ class UsersDaoImpl implements UsersDao {
 		}
 		/*------------------------------- Find user by username end ----------------------- */
 
-<<<<<<< HEAD
+
 		/*@Override
 		@Transactional
 		public User getBranchId(int id) {
@@ -130,7 +130,7 @@ class UsersDaoImpl implements UsersDao {
 					.createQuery("from User where obsolete = 'N'").list();
 			return listUser;
 		}	*/					
-=======
+
 		@Override
 		@Transactional
 		public User getBranchId(int id) {
@@ -163,7 +163,7 @@ class UsersDaoImpl implements UsersDao {
 					.createQuery("from User where obsolete = 'N'").list();
 			return listUser;
 		}						
->>>>>>> branch 'master' of https://github.com/Pointdot2017/conti.git
+
 		
 	
 }
