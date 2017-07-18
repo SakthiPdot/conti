@@ -57,10 +57,13 @@ public class EmployeeExcelBuilder extends AbstractExcelView {
 		header.createCell(0).setCellValue("Employee Name");
 		header.createCell(1).setCellValue("Employee Code");
 		header.createCell(2).setCellValue("Employee Category");
-		header.createCell(3).setCellValue("Date of joining");
-		header.createCell(4).setCellValue("Address");
-		header.createCell(5).setCellValue("Mobileno");
-		header.createCell(6).setCellValue("Email");
+		header.createCell(3).setCellValue("DOB");
+		header.createCell(4).setCellValue("DOJ");
+		header.createCell(5).setCellValue("Branch");
+		header.createCell(6).setCellValue("Address");
+		header.createCell(7).setCellValue("Date of joining");
+		header.createCell(8).setCellValue("Mobileno");
+		header.createCell(9).setCellValue("Email");
 		
 		
 		header.getCell(0).setCellStyle(style);
@@ -70,6 +73,10 @@ public class EmployeeExcelBuilder extends AbstractExcelView {
 		header.getCell(4).setCellStyle(style);
 		header.getCell(5).setCellStyle(style);
 		header.getCell(6).setCellStyle(style);
+		header.getCell(7).setCellStyle(style);
+		header.getCell(8).setCellStyle(style);
+		header.getCell(9).setCellStyle(style);
+
 		
 		//decimal format
 		DecimalFormat f=new DecimalFormat("##.00");		
@@ -81,9 +88,16 @@ public class EmployeeExcelBuilder extends AbstractExcelView {
 			row.createCell(1).setCellValue(employee.getEmp_code());
 			row.createCell(2).setCellValue(employee.getEmpcategory());
 			row.createCell(3).setCellValue(employee.getDob());
-			row.createCell(4).setCellValue(employee.getEmp_address1());
-			row.createCell(5).setCellValue(employee.getEmp_phoneno());
-			row.createCell(6).setCellValue(employee.getEmp_email());
+			row.createCell(4).setCellValue(employee.getDoj());
+			row.createCell(5).setCellValue(employee.getBranchModel().getBranch_name());			
+			row.createCell(6).setCellValue(employee.getEmp_address1()+", "+employee.getEmp_address2()
+									+", "+employee.getLocation().getLocation_name()
+									+", "+employee.getLocation().getAddress().getCity()
+									+", "+employee.getLocation().getAddress().getDistrict()
+									+", "+employee.getLocation().getAddress().getState());
+			row.createCell(7).setCellValue(employee.getDoj());
+			row.createCell(8).setCellValue(employee.getEmp_phoneno());
+			row.createCell(9).setCellValue(employee.getEmp_email());
 		}
 		
 	}

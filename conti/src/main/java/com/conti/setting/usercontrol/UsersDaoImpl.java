@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.conti.userlog.UserLogModel;
 
 /**
  * @Project_Name conti
@@ -96,7 +95,40 @@ class UsersDaoImpl implements UsersDao {
 			}
 
 		}
-		/*------------------------------- Find user by username end ----------------------- */						
+		/*------------------------------- Find user by username end ----------------------- */
+
+		/*@Override
+		@Transactional
+		public User getBranchId(int id) {
+			String hql = "FROM User WHERE obsolete = 'N' and branch_id = " + id+ "";
+			Query query = sessionFactory.getCurrentSession().createQuery(hql);
+			
+			@SuppressWarnings("unchecked")
+			List<User> userlist = (List<User>) query.list();
+			if(userlist !=null && !userlist.isEmpty()){
+				return userlist.get(0);
+			}
+			return null;
+		}
+
+		@Override
+		@Transactional
+		public List<User> getUser(int emp_id) {
+			@SuppressWarnings("unchecked")
+			List<User> listuser = (List<User>) sessionFactory.getCurrentSession()
+					.createQuery("from User WHERE obsolete = 'N' and active = 'Y' and emp_id = '"+ emp_id+"'").list();
+			
+			return listuser;
+		}
+
+		@Override
+		@Transactional
+		public List<User> getAllUsers() {
+			@SuppressWarnings("unchecked")
+			List<User> listUser = (List<User>) sessionFactory.getCurrentSession()
+					.createQuery("from User where obsolete = 'N'").list();
+			return listUser;
+		}	*/					
 		
 	
 }

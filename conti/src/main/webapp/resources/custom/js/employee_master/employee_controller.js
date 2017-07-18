@@ -15,7 +15,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	
 	var self = this;
 	self.employees = [];
-
+	self.Filteremployees = [];
 	self.employee = {
 				
 /*			   emp_id : null,
@@ -51,9 +51,9 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	self.empSelectall = empSelectall;
 	self.makeActive = makeActive;
 	self.makeinActive = makeinActive;
-	self.print = print;
+/*	self.print = print;*/
 	self.registerSearch = registerSearch;
-	
+	self.shownoofRecord = shownoofRecord;
 	
 	self.selected_employee = [];
 	self.confirm_title = 'Save';
@@ -62,13 +62,14 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	self.confirm_btnclass = 'btn-success';
 	//self.selectedBranch = selectedBranch;
 
+	$scope.shownoofrec = 10;
+	
 	fetchAllEmployees();
 	fetchEmpCat();
 	fetchAllBranches();
 	fetchAllLocations();
 
-	
-	console.log($scope.$root.printEmp);
+
 	function reset () {
 		   self.employee = {};
 		   $('#empcategory_value').val('');
@@ -118,7 +119,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 						self.employees = employee;
 						/*fetchAllBranches();
 						fetchAllLocations();	*/	
-						self.Filteremployees = self.employees;
+						/*self.Filteremployees = self.employees;*/
 						pagination();
 					}, 
 					function (errResponse) {
@@ -208,6 +209,16 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	};	
 	//------------------------ Location block changes end ----------------------//
 	
+	//------------------------ Branch block changes begin ----------------------//
+    $scope.branch_name = function (branch_selected) {
+    	
+    	$('#branch_id').val(JSON.stringify(branch_selected.originalObject));
+
+	    	    
+	};	
+	//------------------------ Branch block changes end ----------------------//
+	
+	
 	//------------------------- Create new employee begin ------------------//
     function createEmployee(employee){
     	EmployeeService.createEmployee(employee)
@@ -245,7 +256,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
         );*/
     	
     	
-	    	EmployeeService.createEmployee(employee)
+	    	EmployeeService.updateEmployee(employee)
 	        .then(
 	        		function () {
 	                    fetchAllEmployees();
@@ -290,10 +301,12 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
     				.then(
     						function (res) {
-    							self.employee.branch_id = $("#branch_id").val();
+    							self.employee.branchModel = JSON.parse($("#branch_id").val());
     			 	    		self.employee.empcategory = $("#empcategory_value").val();  
-    			 	    		self.employee.location = JSON.parse($("#location_id").val());    	
-    			 	        	createEmployee(self.employee);  
+    			 	    		self.employee.location = JSON.parse($("#location_id").val());  
+    			 	    		
+    			 	    		console.log(self.employee);
+    			 	    		createEmployee(self.employee);  
     			 	        	reset();
     			 	        	window.setTimeout( function(){	 	        		
     			 	        		newOrClose();
@@ -313,10 +326,13 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
     				.then(
     						function (res) {
-    							self.employee.branch_id = $("#branch_id").val();
+    							/*self.employee.branchModel = JSON.parse($("#branch_id").val());*/
+    							self.employee.branchModel = JSON.parse($("#branch_id").val());
     			 	    		self.employee.empcategory = $("#empcategory_value").val();  
-    			 	    		self.employee.location = JSON.parse($("#location_id").val());    	
+    			 	    		self.employee.location = JSON.parse($("#location_id").val());  	
 
+    			 	    		console.log(self.employee);
+    			 	    		
     			 	    		editEmployee(self.employee);  
     			 	        	reset();
     			 	        	window.setTimeout( function(){	 	        		
@@ -390,16 +406,36 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     //------------------------- Register select begin ------------------//
     function empSelect(employee){
     	var index = self.selected_employee.indexOf(employee);
-    	(employee.select)? self.selected_employee.push(employee) : self.selected_employee.splice(index, 1);    		  	
+    	/*(employee.select)? self.selected_employee.push(employee) : self.selected_employee.splice(index, 1);*/
+    	
+    	if (employee.select){
+    		self.selected_employee.push(employee);
+    	} else {
+    		$scope.selectall = false;
+    		self.selected_employee.splice(index, 1);
+    	}
+    	
     }
     //------------------------- Register select end ------------------//
     //------------------------- Register select all begin ------------------//   
     function empSelectall() {
 
-    		angular.forEach(self.employees, function(employee){
+    		/*angular.forEach(self.Filteremployees, function(employee){
         		employee.select = $scope.selectall;
-        	});
-    		self.selected_employee=$scope.selectall?self.employees:[];
+        	});*/
+    		try {
+    			
+    			for(var i = 0; i < $scope.pageSize; i++) {
+        			self.Filteremployees[i].select = $scope.selectall;
+        		}
+        		
+        		self.selected_employee=$scope.selectall?self.Filteremployees:[];
+
+        		
+    		} catch(e) {
+    			
+    		}
+    		
         
     }
     //------------------------- Register select all end ------------------//       
@@ -513,42 +549,114 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     
     function pagination() {
         
-    	$scope.viewby = 10;
-		$scope.totalItems = self.Filteremployees.length;
-		$scope.currentPage = 1;
-		$scope.itemsPerPage = $scope.viewby;
-		$scope.maxSize = 2; //Number of pager buttons to show
-			
-		$scope.setPage = function (pageNo) {
-			$scope.currentPage = pageNo;
-		  };
-
-		  $scope.pageChanged = function() {
-			console.log('Page changed to: ' + $scope.currentPage);
-		  };
-
-		  $scope.setItemsPerPage = function(num) {
-			  $scope.itemsPerPage = num;
-			  $scope.currentPage = 1; //reset to first paghe
-		}
+    	$scope.pageSize = $scope.shownoofrec;
+    	console.log($scope.pageSize);
+		$scope.currentPage = 0;
+		$scope.totalPages = 0;
+		$scope.totalItems = Math.ceil(self.Filteremployees.length/$scope.pageSize);
+		self.Filteremployees = self.employees;
 		
+		$scope.nextDisabled = false;
+		$scope.previouseDisabled = true;
+		
+		
+		 
+		/*getNoofpages();		
+		$scope.counter = Array;*/
+				
     }
 
-   /* $scope.$watch('currentPage', function(){
-    	console.log($scope.currentPage);
-    });*/
-/*	$timeout(function() { 
-		fetchAllEmployees();		
-	}, 2, false);	
-	
-	$timeout(function(){
-		pagination();
-		console.log($scope.totalItems);
-	},150, false);*/
+    
+  
+  /*  function getNoofpages () {
+    	if( Math.round(self.Filteremployees.length/$scope.pageSize) >= (self.Filteremployees.length/$scope.pageSize) ) {
+			$scope.noofpages = ( Math.round(self.Filteremployees.length/$scope.pageSize) );
+		} else {
+			$scope.noofpages = ( Math.round(self.Filteremployees.length/$scope.pageSize) + 1 );
+		}
+    }*/
+    
+    $scope.paginate = function(nextPrevMultiplier) {
+    	console.log($scope.pageSize);
+    	$scope.currentPage += (nextPrevMultiplier * 1);
+    	self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
+    	
+    	
+    	if(self.Filteremployees.length == 0) {
+    		EmployeeService.pagination_byPage($scope.currentPage)
+    		.then(
+    				function (filterEmp) {
+    					
+    					if ( filterEmp.length == 0 ) {
+    						$scope.nextDisabled = true;
+    					} else if ( filterEmp.length < 10 ) {
+    						self.Filteremployees = filterEmp;
+    						$scope.nextDisabled = true;
+    					} else {
+    						self.Filteremployees = filterEmp;
+    					}
+    					
+    				}, 
+    				function (errResponse) {
+    					console.log('Error while pagination');
+    				}
+    			);
+    	}
+    	if($scope.currentPage == 0) {
+    		$scope.previouseDisabled = true;
+    	}
+    	if(nextPrevMultiplier == -1) {    		
+    		$scope.nextDisabled = false;
+    	} else {
+    		$scope.previouseDisabled = false;
+    	}
+    	
+    }
+
+  /*  $scope.paginatebyno = function (pageno) {
+    	$scope.currentPage += (pageno * 1);
+    	self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
+    }*/
     //-------------------------- Pagnation end -----------------------//	
     
+  //---------------------------- Pagination begin ---------------------------------------//
+    
+    $scope.firstlastPaginate = function (page) {
+    	 
+    	EmployeeService.pagination_byPage(page)
+		.then(
+				function (filterEmp) {
+					self.Filteremployees = filterEmp;
+				}, 
+				function (errResponse) {
+					console.log('Error while fetching employees');
+				}
+			);
+    	
+    	if( page == 1 ) {
+    		$scope.currentPage = 0;
+    		$scope.previouseDisabled = true;
+    		$scope.nextDisabled = false;
+    	} else {
+    		$scope.previouseDisabled = false;
+    		$scope.nextDisabled = true;
+    		
+    	}
+    }
+    
+
+  //---------------------------- Pagination end ---------------------------------------//
+   
+    //-------------------------------- Show no of record begin ----------------------------------------//
+    
+    function shownoofRecord() {    
+    	$scope.pageSize = $scope.shownoofrec;
+    }
+    //-------------------------------- Show no of record end ----------------------------------------//  
+    
+    
     //-------------------------------------- Print begin -----------------------------//
-    function print() {
+/*    function print() {
     	if(self.selected_employee.length == 0 ) {
 	   		self.message ="Please select atleast one record..!";
 			successAnimate('.failure');
@@ -556,7 +664,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     			
     		$http.get('http://localhost:8080/Conti/listprint');
     	}
-    }
+    }*/
     
     //-------------------------------------- Print end -----------------------------//
     
@@ -564,8 +672,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     function registerSearch(searchkey) {
     	if ( searchkey.length == 0 ) {
     		self.Filteremployees = self.employees;
-    	}
-    	if( searchkey.length > 3 ) {
+    	}else if( searchkey.length > 3 ) {
     		EmployeeService.registerSearch(searchkey)
 	    		.then(
 						function (filterEmp) {
@@ -575,8 +682,38 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 							console.log('Error while fetching employees');
 						}
 					);
-    	}
+    	} else {
+    		
+    		self.Filteremployees = _.filter(self.employees,
+					 function(item){  
+						 return searchUtil(item,searchkey); 
+					 });
+				
+    		}
+    	
     }
+    
+    function searchUtil(item,toSearch)
+	{
+		var success = false;
+		
+		if ( (item.emp_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.emp_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.empcategory.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+		//		|| (item.emp_address1.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.emp_address2.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
+				|| ((String(item.emp_phoneno)).indexOf(toSearch) > -1 ) ||  (item.emp_email.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || ((String(item.dob)).indexOf(toSearch) > -1 ) 
+				|| ((String(item.doj)).indexOf(toSearch) > -1 )) {
+			success = true;
+		} else {
+			success = false;
+		}
+		
+		return success;
+	}
     //---------------------------- Register search end ---------------------------------------//
+     
+
+  
 	
 }]);

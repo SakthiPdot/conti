@@ -15,9 +15,11 @@ import java.util.List;
 public interface EmployeeDao {
 	
 	public List<EmployeeMaster> getEmployee(int branch_id, String empcategory);
-	public List<EmployeeMaster> getAllEmployees();
+	public List<EmployeeMaster> getAllEmployees(int branch_id);
 	public void saveOrUpdate(EmployeeMaster employee);
 	public EmployeeMaster findByMobileno(long mobileno);
 	public EmployeeMaster getEmployeebyId(int id);
 	public List<EmployeeMaster> searchbyeyEmployee(String searchkey);
+	
+	public List<EmployeeMaster> getEmployeeswithLimit(int branch_id, int from_limit, int to_limit, String order);
 }
