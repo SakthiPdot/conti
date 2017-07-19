@@ -84,7 +84,7 @@ public class ProductController {
 			to_limit = 10;
 		} else {
 			from_limit = (page * 10) + 1;
-			to_limit =  (page + 1 ) * 100;
+			to_limit =  (page + 1 ) * 10;
 		}
 		
 		List<Product> productList=productDao.getProductWithLimit(from_limit, to_limit, order); 

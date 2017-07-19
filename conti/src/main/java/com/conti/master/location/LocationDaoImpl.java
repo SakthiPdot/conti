@@ -87,4 +87,33 @@ public class LocationDaoImpl implements LocationDao {
 		return "NOTAVAILABLE";
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Location> getLocationWithLimit(int from, int to, String order) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from Location where obsolete ='N'"
+						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
+					.setFirstResult(from).setMaxResults(to).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Location> searchByLocation(String searchString) {
+		
+		return sessionFactory.getCurrentSession()
+				.createQuery("from Location where obsolete ='N' "
+						+ "and location_name  LIKE '%"+searchString + "%'"
+						+ "OR location_code LIKE '%"+searchString+ "%'"
+						+ "OR pincode LIKE '%"+searchString+ "%'"
+						+ "OR abbreviation LIKE '%"+searchString+ "%'"
+						+ "OR obsolete LIKE '%"+searchString+ "%'"
+						+ "OR address.city LIKE '%"+searchString+ "%'"
+						+ "OR address.state LIKE '%"+searchString+ "%'"
+						+ "OR address.country LIKE '%"+searchString+ "%'"
+						).list();
+		
+	}
+
 }
