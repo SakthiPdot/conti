@@ -62,7 +62,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
  		<div class="overlay hideme"></div>
  		
  		<form data-ng-submit="locctrl.submit()" name="locationForm">
- 		<div class="drawer hideme">
+ 		<div class="drawer hideme ">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
@@ -100,8 +100,11 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 			                  data-trigger="focus" data-toggle="popover"
 							  data-placement="top" data-content="Please Enter Location Name"
 			                  data-ng-model="locctrl.Location.location_name" 
+			                  data-ng-blur="locctrl.checkLocationName(locctrl.Location.location_name)"
 			                  maxlength="50"
 			                  class="form-control">
+			                  
+			                  <span class="makeRed" data-ng-show="locctrl.nameWrong">Location Name Already Existing..!<br><br></span>
 			                  
 			                  <span>Location Code</span>
 			                  <input type="text"

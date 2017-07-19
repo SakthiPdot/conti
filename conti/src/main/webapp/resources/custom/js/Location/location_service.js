@@ -15,7 +15,8 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 			deleteLocation:deleteLocation,
 			updateLocation:updateLocation,
 			fetchAllLocation:fetchAllLocation,
-			changeActive:changeActive
+			changeActive:changeActive,
+			checkLocationName:checkLocationName
 		}
 	
 	return factory;
@@ -113,7 +114,30 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 		return deferred.promise;
 	}
 	
+	//============================= check Location name====================================
+	function checkLocationName(name){
+		var deferred = $q.defer();
+		
+		$http({
+			method : 'POST',
+			url : 'checkLocationName',
+			data : name,
+			headers : getCsrfHeader()
+		})
+		.then (
+			function (response) {
+				console.log(response);
+				deferred.resolve(response.status);
+			},
+			function (errResponse) {
 
+				console.log(errResponse);
+				deferred.reject(errResponse);
+			}
+		);
+		return deferred.promise;
+	}
+	
 	//============================= LOCATION====================================
 	function fetchLocation(){ 
 		console.log("Inside fetch location");

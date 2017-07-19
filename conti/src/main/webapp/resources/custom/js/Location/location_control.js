@@ -24,6 +24,8 @@ angular.module('contiApp').controller('locationController'
 			self.resetForm=resetForm;
 			self.fetched=true;
 			self.openDrawer=openDrawer;
+			self.nameWrong=false;
+			self.checkLocationName=checkLocationName;
 			
 			//check box select
 			self.selectAllLocation=false;
@@ -99,16 +101,16 @@ angular.module('contiApp').controller('locationController'
 			function showStatus(status){
 				self.message ="Selected record(s) already in "+status+" status..!";
 				successAnimate('.failure');
-				}
+			}
 				
-				function showStatusAfterSave(status){
-					 fetchProducts();
-					self.message ="Selected record(s) has been made  "+status+"..!";
-					successAnimate('.success');
-					 self.selectedLocation=[];
-					 self.selectAllLocation=false;
-					}
-				
+			function showStatusAfterSave(status){
+				 fetchProducts();
+				self.message ="Selected record(s) has been made  "+status+"..!";
+				successAnimate('.success');
+				 self.selectedLocation=[];
+				 self.selectAllLocation=false;
+			}
+			
 			//===================================close====================================
 			function makeActive(){
 				
@@ -137,16 +139,17 @@ angular.module('contiApp').controller('locationController'
 						ConfirmDialogService.confirmBox("Active",
 			    				BootstrapDialog.TYPE_SUCCESS, "Make Records Active  ..?", 'btn-success')
 			    		.then(function(response){
+			    			LocationService.changeActive(active_id,"Active")
+							.then(
+									function(response){
+										showStatusAfterSave("Active");
+									},function(errRespone){
+										console.log("error making product active"+errResponse);
+									});
+			    			
 			    		});
 					}
-				
-				
-				
 				}
-				
-				
-			
-			
 			}
 			
 			//===================================close====================================
@@ -178,12 +181,12 @@ angular.module('contiApp').controller('locationController'
 			    				BootstrapDialog.TYPE_DANGER, "Make Records InActive  ..?", 'btn-danger')
 			    		.then(function(response){
 			    			
-			    			LocationService.changeActive(active_id,"Active")
+			    			LocationService.changeActive(active_id,"InActive")
 							.then(
 									function(response){
-										showStatusAfterSave("Active");
+										showStatusAfterSave("InActive");
 									},function(errRespone){
-										console.log("error making product active"+errResponse);
+										console.log("error making location InActive"+errResponse);
 									});
 			    			
 			    			
@@ -393,6 +396,7 @@ angular.module('contiApp').controller('locationController'
 			//=============================RESET LOCATION====================================
 			function reset(){
 				$scope.locationForm.$setPristine();
+				self.nameWrong=false;
 				self.heading="Master";
 				self.save="saveclose";
 				self.Location={};				
@@ -400,6 +404,24 @@ angular.module('contiApp').controller('locationController'
 			}
 			
 
-	     
+		//=============================CHECK  LOCATION====================================
+			function checkLocationName(name){
+				LocationService.checkLocationName(name)
+				.then(function(response){
+
+					console.log(response);
+					if(response=='204'){
+						self.nameWrong=true;
+						self.Location.location_name=null;
+					}else{
+						self.nameWrong=false;
+					}
+					
+				},function(errResponse){
+					self.Location.location_name=null;
+					self.nameWrong=false;
+					console.log("error checking name");
+				})
+			}
 			
 }]);

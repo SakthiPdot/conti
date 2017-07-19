@@ -85,6 +85,11 @@ public class LocationController {
 		return model;
 
 	}
+	//=================CHECK LOCATION NAME=====================================
+	@RequestMapping(value="checkLocationName",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> checkProductName(@RequestBody String name,HttpServletRequest request){
+		return (locationDao.checkLocationName(name.trim())=="AVAILABLE")? new ResponseEntity<Void>(HttpStatus.NO_CONTENT):new ResponseEntity<Void>(HttpStatus.OK);	
+	}
 	
 	//=================CHANGE ACTIVE STATUS=====================================
 	@RequestMapping (value="locationStaus",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)

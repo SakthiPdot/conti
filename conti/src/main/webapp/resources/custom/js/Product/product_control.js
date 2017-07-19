@@ -55,7 +55,6 @@ angular.module('contiApp').controller('productController',
 
 	//===================================check for product name====================================
 	self.checkProductName=function checkProductName(name){
-		console.log('product name blurred');
 		ProductService.checkProductName(name)
 		.then(function (response){
 			if(response=="204"){

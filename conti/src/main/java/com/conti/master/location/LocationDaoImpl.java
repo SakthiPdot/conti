@@ -73,4 +73,18 @@ public class LocationDaoImpl implements LocationDao {
 		
 	}
 
+	
+	@Override
+	@Transactional
+	public String checkLocationName(String name) {
+		@SuppressWarnings("unchecked")
+		List<Location> locationList=sessionFactory.getCurrentSession()
+				.createQuery("from Location where obsolete ='N' AND location_name IN ('"+name.toUpperCase()+"','"+name.toLowerCase()+"')").list();
+		
+		if(locationList!=null && !locationList.isEmpty()){
+			return "AVAILABLE";
+		}
+		return "NOTAVAILABLE";
+	}
+
 }
