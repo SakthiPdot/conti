@@ -7,19 +7,22 @@
  * @Created_date_time Jun 21, 2017 8:24:17 PM
  * @Updated_date_time Jun 20, 2017 3:24:17 PM
  */
-contiApp.controller('UserController', ['$scope', 'UserService', function($scope, UserService) {
+contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService', 'BranchService', 'ConfirmDialogService', function($scope, UserService, EmployeeService, BranchService, ConfirmDialogService) {
     var self = this;
     self.user={user_id:null,username:''};
     self.users=[];
+    self.save = "saveclose";
     self.message = null;
     self.resetBtn = false;
 	self.checkPWD = true;
-	 /*self.submit = submit;
-	     self.edit = edit;
+	self.errorUsername = false;
+	self.submit = submit;
+	self.reset = reset;
+	 /*    self.edit = edit;
     self.remove = remove;
     self.reset = reset;*/
 	
-	
+	self.heading = "Master";
  
     self.findUsername = findUsername;
 	self.resetPassword = resetPassword;
@@ -27,16 +30,28 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
 	self.checkPassword = checkPassword; 	
 	self.findUserbyMbl = findUserbyMbl;
 	self.forgot_animateClose = forgot_animateClose;
-	
+	self.checkUsername = checkUsername;
 	
 	self.makeActive = makeActive;
 	self.makeinActive = makeinActive;
 	self.print = print;
 	
+    fetchAllRoles();
+    
     fetchAllUsers();
-    
-    
+    fetchAllBranches();
 
+
+	function reset () {
+		   self.user = {};
+		   $('#employee_name_value').val('');
+		   $('#branch_name_value').val('');
+		  
+	    	self.heading = "Master";
+		   /*$scope.$broadcast('angucomplete-alt:clearInput');*/
+
+
+	}
 
     //----------------------  Fetch All users begin ----------------------------- //    
     function fetchAllUsers(){
@@ -129,23 +144,25 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
     var num = false;    
     var specialchar = false;    
     function getPassword(password) {
+    	
+    	console.log(password);
     	var upperCase= new RegExp('[A-Z]');
     	var numbers = new RegExp('[0-9]');
     	var special_char = /^[a-zA-Z0-9- ]*$/;
     	
     	if( password == undefined ) {
     		
-    		$('.minchar').removeClass('green');
-			$('.minchar').addClass('red');
+    		$('.minchar').removeClass('makeGreen');
+			$('.minchar').addClass('makeRed');
 			
-			$('.caps').removeClass('green');
-			$('.caps').addClass('red');
+			$('.caps').removeClass('makeGreen');
+			$('.caps').addClass('makeRed');
 			
-			$('.num').removeClass('green');
-			$('.num').addClass('red');
+			$('.num').removeClass('makeGreen');
+			$('.num').addClass('makeRed');
 			
-			$('.specialchar').removeClass('green');
-			$('.specialchar').addClass('red');
+			$('.specialchar').removeClass('makeGreen');
+			$('.specialchar').addClass('makeRed');
 			
     	}
     	
@@ -156,56 +173,56 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
 		
 		
 		if ( password.length >= 8 ) {
-			$('.minchar').removeClass('red');
-			$('.minchar').addClass('green');
+			$('.minchar').removeClass('makeRed');
+			$('.minchar').addClass('makeGreen');
 			minchar = true;
 
 		} else {
-			$('.minchar').removeClass('green');
-			$('.minchar').addClass('red');
+			$('.minchar').removeClass('makeGreen');
+			$('.minchar').addClass('makeRed');
 			
 			minchar = false;
 		}
     	
 		if(password.match(upperCase)) {
 						
-			$('.caps').removeClass('red');
-			$('.caps').addClass('green');
+			$('.caps').removeClass('makeRed');
+			$('.caps').addClass('makeGreen');
 			
 			caps = true;
 
 		} else {
 			
 			console.log("inside else  match");
-			$('.caps').removeClass('green');
-			$('.caps').addClass('red');
+			$('.caps').removeClass('makeGreen');
+			$('.caps').addClass('makeRed');
 			
 		    caps = false;
 		}
 		
 		if(password.match(numbers)) {
 			
-			$('.num').removeClass('red');
-			$('.num').addClass('green');
+			$('.num').removeClass('makeRed');
+			$('.num').addClass('makeGreen');
 			
 			num = true;
 			
 		} else {
 			
-			$('.num').removeClass('green');
-			$('.num').addClass('red');
+			$('.num').removeClass('makeGreen');
+			$('.num').addClass('makeRed');
 			
 			num = false;
 		}
 		
 		if( special_char.test(password) == false ) {
-			$('.specialchar').removeClass('red');
-			$('.specialchar').addClass('green');
+			$('.specialchar').removeClass('makeRed');
+			$('.specialchar').addClass('makeGreen');
 			
 			specialchar = true;
 		} else {
-			$('.specialchar').removeClass('green');
-			$('.specialchar').addClass('red');
+			$('.specialchar').removeClass('makeGreen');
+			$('.specialchar').addClass('makeRed');
 			
 			specialchar = false;
 		}
@@ -378,7 +395,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
 									UserService.makeActive(active_id)
 										.then(
 												function(response) {
-													fetchAllUser();
+													fetchAllUsers();
 													self.selected_user = [];
 													self.message = " Selected record(s) has in active status..!";
 													successAnimate('.failure');
@@ -443,5 +460,172 @@ contiApp.controller('UserController', ['$scope', 'UserService', function($scope,
 		}	
 		
 //============== Make InActive End =======================//
+		
+		//-------------------------- Fetch All Branch begin ---------------------//	
+		
+		function fetchAllBranches() {
+			BranchService.fetchAllBranches()
+				.then(
+						function (branches) {
+							self.branches = branches;				
+						}, 
+						function (errResponse) {
+							console.log('Error while fetching branches');
+						}
+					);
+		}
+		
+		//-------------------------- Fetch All Branch end ---------------------//
+		
+		//------------------------ Branch block changes begin ----------------------//
+	    $scope.branch_name = function (branch_selected) {
+	    	
+	    	$('#branch_id').val(JSON.stringify(branch_selected.originalObject));
+
+	    	fetchEmployeebyBranchid(branch_selected.originalObject.branch_id);	    
+		};	
+		//------------------------ Branch block changes end ----------------------//
+
+		
+		//-------------------------- Fetch All Branch begin ---------------------//	
+		
+		function fetchEmployeebyBranchid(branch_id) {
+
+			EmployeeService.fetchEmployeebyBranchid(branch_id)
+				.then(
+						function (employees) {
+							self.employees = employees;				
+						}, 
+						function (errResponse) {
+							console.log('Error while fetching branches');
+						}
+					);
+		}
+		
+		//-------------------------- Fetch All Branch end ---------------------//
+		
+		//------------------------ Branch block changes begin ----------------------//
+	    $scope.emp_name = function (emp_selected) {
+	    	
+	    	$('#emp_id').val(JSON.stringify(emp_selected.originalObject));
+	    
+		};	
+		//------------------------ Branch block changes end ----------------------//
+		
+		//-------------------------- Fetch All Branch begin ---------------------//	
+		
+		function fetchAllRoles() {
+			UserService.fetchAllRoles()
+				.then(
+						function (roles) {
+
+							self.roles = roles;				
+						}, 
+						function (errResponse) {
+							console.log('Error while fetching branches');
+						}
+					);
+		}
+		
+		//-------------------------- Fetch All Branch end ---------------------//
+		
+		//===========================on save button click set value as SAVEANDCLOSE or SAVEANDNEW begin============
+		$scope.save = function(event){
+			self.save=event.target.id;
+		}
+		//===========================on save button click set value as SAVEANDCLOSE or SAVEANDNEW end============	
+		
+		function newOrClose(){
+			
+			if(self.save== "saveclose" ){
+				 drawerClose('.drawer') ;
+			}
+			reset();
+		}
+		
+		//------------------------- Submit for new User / update user begin --------//
+		function submit() {
+			if( $("#branch_id").val() == "" || $("#branch_id").val() == null 
+					|| $("#branch_name_value").val() == "" || $("#branch_name_value").val() == null ) {
+				$("#branch_name_value").focus();
+			} else if( $("#emp_id").val() == "" || $("#emp_id").val() == null 
+					|| $("#employee_name_value").val() == "" || $("#employee_name_value").val() == null ) {
+				$("#employee_name_value").focus();
+			} else {
+				
+				if( self.user.user_id == null ) {
+					
+					self.confirm_title = 'Save';
+	    			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+	    			self.confirm_msg = self.confirm_title+ ' ' + self.user.username + ' user?';
+	    			self.confirm_btnclass = 'btn-success';
+	    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+	    				.then(
+	    						function (res) {
+	    							self.user.branchModel = JSON.parse($("#branch_id").val());
+	    			 	    		var emp = JSON.parse($("#emp_id").val());  
+	    			 	    		self.user.emp_id = emp.emp_id;
+	    			 	    		delete self.user.confpassword;
+	    			 	    		createUser(self.user);  
+	    			 	        	reset();
+	    			 	        	window.setTimeout( function(){	 	        		
+	    			 	        		newOrClose();
+	    							},5000);
+	    						}
+	    					);
+	    			
+				} else {
+					console.log("update");
+				}
+				
+			}
+		}
+		
+		//------------------------- Submit for new User / update user end --------//
+		
+		//------------------------- Create new User begin ------------------//
+	    function createUser(user){
+	    	
+	    	console.log(user);
+	    	UserService.createUser(user)
+	            .then(
+	            		function () {
+	                        fetchAllUser();
+	                      
+	            			self.message = user.usernmae+" user created..!";
+	            			successAnimate('.success');            			
+	            		},
+	           
+	            function(errResponse){
+	                console.error('Error while creating user' + user.username );
+	            }
+	        );
+	    } 
+		//------------------------- Create new User end ----------------------------------------------//   
+		
+		//------------------------- Check username begin -------------------------------------//
+		
+		function checkUsername(username){
+			
+			UserService.checkUsername(username)
+				.then(
+						function(response) {
+							if( response.status == 200 ) {
+								self.errorUsername = true;
+								
+								console.log(response.status);
+							} else {
+								self.errorUsername = false;
+								console.log(response.status);
+							}
+
+						}, function (errResponse) {
+							console.log(errResponse);
+						}
+					);
+			
+		}
+		
+		//------------------------- Check username end -------------------------------------//
     	
 }]);

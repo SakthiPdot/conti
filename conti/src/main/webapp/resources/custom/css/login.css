@@ -135,9 +135,9 @@
 		ul li {
 			padding : 5px;
 		}
-		.red {
-			color : red;
+		.makeRed{
+			color:red;
 		}
-		.green {
-			color : green;
+		.makeGreen{
+			color:green;
 		}

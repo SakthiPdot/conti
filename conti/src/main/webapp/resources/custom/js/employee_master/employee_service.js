@@ -19,7 +19,8 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 			makeActive : makeActive,
 			makeinActive : makeinActive,
 			registerSearch : registerSearch,
-			pagination_byPage : pagination_byPage
+			pagination_byPage : pagination_byPage,
+			fetchEmployeebyBranchid : fetchEmployeebyBranchid
 			/*print : print*/
 	};
 	
@@ -40,6 +41,23 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 		return deferred.promise;
 	}
 	//-------------------------- Fetch All Employees end ---------------------//	
+	
+	//-------------------------- Fetch All Employees begin ---------------------//	
+	function fetchEmployeebyBranchid(id) {
+		var deferred = $q.defer();
+		$http.get('employees/branch/'+id)
+			.then(
+					function (response) {
+						deferred.resolve(response.data);
+					},
+					function (errResponse) {
+						console.log("Error while fetching employees by branch id");
+						deferred.reject(errResponse);
+					}
+				);
+		return deferred.promise;
+	}
+	//-------------------------- Fetch All Employees end ---------------------//
 	
 	//-------------------------- Fetch Employee category begin ---------------------//
 	function fetchEmpCat() {

@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -82,7 +81,7 @@ public class UserRestController {
 	public ResponseEntity<List<User>> fetchAllUsers(HttpServletRequest request) {
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();		
-		try {
+		/*try {*/
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			List<User> users = usersDao.list();
 			if(users.isEmpty()) {
@@ -90,10 +89,10 @@ public class UserRestController {
 			} else {
 				return new ResponseEntity<List<User>> (users, HttpStatus.OK);	
 			}			
-		} catch (Exception exception) {			
+		/*} catch (Exception exception) {			
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
 			return new ResponseEntity<List<User>> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		}*/
 				
 	}
 	/* ------------------------- Retrieve all Users end-------------------------------- */
@@ -123,17 +122,34 @@ public class UserRestController {
 	public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder, HttpServletRequest request) {
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
-		try {			
+		int user_id = Integer.parseInt(userInformation.getUserId());
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		
+		/*try {	*/		
+		
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			String hashedPassword = passwordEncoder.encode(user.getUserpassword());
+			user.setUserpassword(hashedPassword);
+			user.setCompany_id(1);
+			user.setCreated_datetime(dateFormat.format(date).toString());
+			user.setUpdated_datetime(dateFormat.format(date).toString());
+			user.setCreated_by(user_id);
+			user.setUpdated_by(user_id);
+			user.setObsolete("N");
+			user.setActive("Y");
 			usersDao.saveOrUpdate(user);			
 			HttpHeaders headers = new HttpHeaders();
 	        headers.setLocation(ucBuilder.path("/users/{id}").buildAndExpand(user.getUser_id()).toUri());
+	        
+	       
 	        loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<Void> (headers, HttpStatus.CREATED);
 			
-		} catch (Exception exception) {
+		/*} catch (Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
 			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		}*/
 		
 	}
 	/* ------------------------- Create a User end -------------------------------------  */
@@ -201,7 +217,7 @@ public class UserRestController {
 					currentUser.setObsolete(userRole.getRole_Name());
 				
 					if(userRole.getRole_Name().equals(constantVal.ROLE_CUSER)) {	
-						List<EmployeeMaster> listemp = employeeDao.getEmployee(currentUser.getBranch_id(), constantVal.ROLE_ADMIN);
+						List<EmployeeMaster> listemp = employeeDao.getEmployee(currentUser.getBranchModel().getBranch_id(), constantVal.ROLE_ADMIN);
 						currentUser.setActive(String.valueOf(listemp.get(0).getEmp_phoneno()));
 					} 
 					if(userRole.getRole_Name().equals(constantVal.ROLE_ADMIN)){
@@ -509,6 +525,50 @@ public class UserRestController {
 		return model;
 
 	}
+	
+	/* ------------------------- Retrieve all Roles begin-------------------------------- */
+	@RequestMapping( value = "/roles/", method = RequestMethod.GET	)
+	public ResponseEntity<List<Role>> fetchAllRoles(HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();		
+		try {
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			List<Role> roles = roleDao.list();
+			if(roles.isEmpty()) {
+				return new ResponseEntity<List<Role>> (HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<List<Role>> (roles, HttpStatus.OK);	
+			}			
+		} catch (Exception exception) {			
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<Role>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+				
+	}
+	/* ------------------------- Retrieve all Roles end-------------------------------- */
+	
+	/* ------------------------------ Check username begin ----------------------------------------- */
+	@RequestMapping(value = "check_username", method = RequestMethod.POST)
+	public ResponseEntity<Void> checkUsername(HttpServletRequest request, @RequestBody String check_username) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		try {
+			User user = usersDao.findByUserName(check_username);
+			if( user == null ) {
+				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				return new ResponseEntity<Void> (HttpStatus.NO_CONTENT);
+			} else {
+				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				return new ResponseEntity<Void> (HttpStatus.OK);	
+			}
+			
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+	}
+	/* ------------------------------ Check username end ----------------------------------------- */
 }
 
 

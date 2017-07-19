@@ -85,6 +85,25 @@ public class EmployeeRestController {
 		}
 		
 	}
+	@RequestMapping( value = "/employees/branch/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<EmployeeMaster>> fetchEmployeesbybranchid(@PathVariable ("id") int id,  HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+
+		try {
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			List<EmployeeMaster> employees = employeeDao.getEmployeesbyBranchId(id);
+			if(employees.isEmpty()) {
+				return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
+			}			
+		} catch (Exception exception) {			
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+	}
 	@RequestMapping( value = "/employees/category/", method = RequestMethod.GET)
 	public ResponseEntity<List<EmployeeMaster>> fetchEmployeesbycat(HttpServletRequest request) {
 		userInformation = new UserInformation(request);
@@ -124,7 +143,7 @@ public class EmployeeRestController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		
-		/*try {*/
+		try {
 			employee.setObsolete("N");
 			employee.setActive("Y");
 			employee.setCreated_by(user_id);
@@ -139,10 +158,10 @@ public class EmployeeRestController {
 	        loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<Void> (headers, HttpStatus.CREATED);
 			
-		/*} catch (Exception exception) {
+		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
 			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}*/
+		}
 		
 	}
 	/* ------------------------- Create a Employee end -------------------------------------  */
@@ -409,7 +428,7 @@ public class EmployeeRestController {
 			from_limit = page;
 			to_limit = 10;
 		} else {
-			from_limit = (page * 100) + 1;
+			from_limit = (page * 10) + 1;
 			to_limit =  (page + 1 ) * 100;
 		}
 		
