@@ -194,11 +194,19 @@ angular.module('contiApp').controller('productController',
 		
 		self.selectedProducts=[];
 		
+		if(!self.selectAllProduct){
+			self.selectedProducts=[];
+		}
+		
 		for(var i=0;i<$scope.pageSize;i++){
 			self.FilteredProducts[i].select = self.selectAllProduct;
-			self.selectedProducts.push(self.FilteredProducts[i]);
+			if(self.selectAllProduct){
+				self.selectedProducts.push(self.FilteredProducts[i]);
+			}
+		
 		}
-		console.log(self.selectedProducts);
+			
+		
 		/*
 		angular.forEach(self.products,function(x){
 			x.select=self.selectAllProduct;

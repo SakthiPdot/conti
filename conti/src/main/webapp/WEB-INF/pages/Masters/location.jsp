@@ -405,7 +405,9 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                     <!--=============== excel============== -->
                                       <a type="button" onclick="location.href='downloadExcelLocation'" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                      <!--=============== print============== -->
-                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+                                      <button type="submit" class="btn btn-primary"
+                                      data-ng-disabled="locctrl.selectedLocation.length<1">
+                                      <i class="fa fa-print fa-lg"></i></button>
                                       <input type="hidden" name="SelectedLocation"
 																value="{{locctrl.selectedLocation}}" /> <input
 																type="hidden" name="${_csrf.parameterName}"

@@ -34,7 +34,6 @@ angular.module('contiApp').controller('locationController'
 			self.selectLocation=selectLocation;
 			self.selectAll=selectAll;
 			self.selectedLocation=[];
-			
 			 
 		
 			//active inactive 
@@ -68,7 +67,7 @@ angular.module('contiApp').controller('locationController'
 				    }
 				};
 			
-			
+		
 			//===================================SEARCH REGISTER====================================
 			function registerSearch(searchString){
 				if(searchString.length==0){
@@ -133,10 +132,18 @@ angular.module('contiApp').controller('locationController'
 				
 				self.selectedLocation=[];
 				
-				for(var i=0;i<$scope.pageSize;i++){
-					self.FilteredLocations[i].select=self.selectAllLocation;
-					self.selectedLocation.push(self.FilteredLocations[i]);
+				if(!self.selectAllLocation){
+					self.selectedLocation=[];	
 				}
+			
+					for(var i=0;i<$scope.pageSize;i++){
+						self.FilteredLocations[i].select=self.selectAllLocation;
+						if(self.selectAllLocation){
+							self.selectedLocation.push(self.FilteredLocations[i]);
+						}
+					}
+			
+				
 				
 				console.log(self.selectedLocation);
 				
