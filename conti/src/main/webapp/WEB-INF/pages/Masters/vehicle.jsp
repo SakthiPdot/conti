@@ -42,6 +42,7 @@
    
     <script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script>
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
@@ -240,9 +241,18 @@
 								
 
 								</ul>
-								<!--<button type="button" class="btn btn-primary">Filter</button>-->
+								
 							</div>
-							<!-- dropdown -->
+					
+					
+					       <div class="row paddingtop">
+								<div class="col-md-12">
+									<select name="shownoofrec" data-ng-model="shownoofrec" data-ng-options = "noofrec for noofrec in [10, 15, 25, 50, 100]" class="form-control" data-ng-click = "ctrl.shownoofRecord()">
+									</select>
+								</div>
+							</div>
+					
+					
 
 						</div>  
                                 </div>
@@ -305,6 +315,14 @@
                                       <input type="hidden" name="vehicle" value = "{{ctrl.selected_vehicle}}"/>
                                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 	</form>
+                                	
+                                	  <div class="row paddingtop">
+                                      	<div class="col-md-12">
+                                      		<input type="text" class="form-control" name="search" placeholder ="Search" data-ng-model = "ctrl.vehicle_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.vehicle_regSearch)"/>
+                                      	</div>
+                                      </div>
+                                      
+                                      
                                 	</div>
                                 </div>
                               </div>
@@ -315,7 +333,7 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.vehicSelectall()" data-ng-model = "selectall"/></th>
-                                            <th>S.No</th>
+                                            <!-- <th>S.No</th> -->
                                             <th data-ng-show = "setting_vehicleregno">Vehicle Reg No</th>
                                             <th data-ng-show = "setting_vehiclecode">Vehicle Code</th>
                                             <th data-ng-show = "setting_branchname">Branch Name</th>
@@ -325,10 +343,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr data-ng-repeat = "vehicle in ctrl.vehicles | orderBy : 'vehicle_regno' " 
+                                        <tr data-ng-repeat = "vehicle in ctrl.Filtervehicles | limitTo:pageSize" 
                                         data-ng-dblclick = "ctrl.updateVehicle(vehicle)">
                                             <td><input type="checkbox" data-ng-change= "ctrl.vehicSelect(vehicle)" data-ng-model = "vehicle.select"></td>
-                                            <td>{{$index+1}}</td>
+                                           <!--  <td>{{$index+1}}</td> -->
                                             <td data-ng-show = "setting_vehicleregno">{{vehicle.vehicle_regno}}</td>
                                             <td data-ng-show = "setting_vehiclecode">{{vehicle.vehicle_code}}</td>
                                             <td data-ng-show = "setting_branchname">{{vehicle.branchModel.branch_name}}</td>
@@ -340,6 +358,16 @@
                                     </tbody>
                                 </table>
                             </div>
+                            
+                            
+                             <div class="col-lg-12 icons-button">
+                                	<div class="pull-right">
+                                		<button class="btn btn-primary" type="button" data-ng-disabled = "previousDisabled" data-ng-click = "firstlastPaginate(1)">First</button>
+                                		<button class="btn btn-primary" type="button" data-ng-disabled = "previousDisabled" data-ng-click = "paginate(-1)">Previous</button>
+                                		<button class="btn btn-primary" type="button" data-ng-disabled = "nextDisabled" data-ng-click = "paginate(1)">Next</button>
+                                		<button class="btn btn-primary" type="button" data-ng-disabled = "nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
+                                	</div>
+                                </div>
                             
                         </div>
                     </div>

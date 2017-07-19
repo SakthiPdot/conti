@@ -4,6 +4,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		
 		var self = this;
 		self.vehicles = [];
+		self.Filtervehicles = [];
 		self.vehicle = {};
 		self.heading = "Master";
 		self.message = null;
@@ -20,6 +21,10 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		self.vehicSelectall = vehicSelectall;		
 		self.makeActive = makeActive;
 		self.makeinActive = makeinActive;
+		
+		self.registerSearch = registerSearch;
+		self.shownoofRecord = shownoofRecord;
+		
 		self.print = print;
 		self.selected_vehicle = [];
 		
@@ -28,6 +33,8 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		self.confirm_msg = self.confirm_title + ' ' + self.vehicle.vehicle_regno + ' vehicle?';
 		self.confirm_btnclass = 'btn-sucsess';
 		
+		
+		$scope.shownoofrec = 10;
 		
 		fetchAllVehicles();
 		fetchAllBranches();
@@ -82,6 +89,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 							function (vehicle) {
 								self.vehicles = vehicle;
 								console.log(self.vehicles);
+								pagination();
 							},
 							function (errResponse) {
 								console.log('Error while fetching vehicles');
@@ -167,19 +175,22 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 						
 					} else {
 						
-						self.confirm_title = 'update';
+						self.confirm_title = 'Update';
 						self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
 						self.confirm_msg = self.confirm_title + ' ' + self.vehicle.vehicle_regno+ ' vehicle?';
-						self.confirm_btnclass = 'btn-warning';
+						self.confirm_btnclass = 'btn-success';
 		    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 		    				.then(
 		    						function (res) {
 		    							self.vehicle.branch_id = $("#branch_id").val();
 		    							editVehicle(self.vehicle);
-		    							reset();
+		    						/*	reset();*/
 		    							window.setTimeout(function(){
+		    								
 		    								newOrClose();
+		    								
 		    							},5000);
+		    							
 		    						}
 		    				      );
 						
@@ -212,6 +223,8 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			function updateVehicle(vehicle) {
 				self.vehicle = vehicle;				
 				self.heading = self.vehicle.vehicle_regno;
+				$('#branch_id').val(JSON.stringify(self.vehicle.branchModel));
+				$('#branch_name_value').val(self.vehicle.branchModel.branch_name);
 				drawerOpen('.drawer');
 			}
 			
@@ -376,5 +389,142 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			}
 			
 	//================= Print End =============================//
+			
+	//=============== Show no of Record Begin =============//
+			function shownoofRecord() {
+				$scope.pageSize = $scope.shownoofrec;
+			}
+			
+	//============== Show no of Record End ================//
+			
+	//============= Register Search Begin =================//
+			
+			function registerSearch(searchkey) {
+				if(searchkey.length == 0 ) {
+					self.Filtervehicles = self.vehicles;
+				} else if (searchkey.length > 3) {
+					VehicleService.registerSearch(searchkey)
+						.then(
+								function(filterVehicle) {
+									self.Filtervehicles = filterVehicle;
+								},
+								function (errResponse) {
+									console.log('Error while fetching services');
+								}
+						      );
+				} else {
+					
+					self.Filtervehicles = _.filter(self.vehicles, function(item){
+						return searchUtil(item,searchkey);
+					});
+				}
+					
+				}
+			
+			function searchUtil(item,toSearch)
+			{
+				var success = false;
+				
+				if( ( item.vehicle_regno.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.vehicle_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 )
+						|| (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
+						|| (item.vehicle_modelno.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
+						|| (item.vehicle_type.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)) {
+					success = true;
+				 	
+				} else {
+					success = false;
+				}
+				return success;
+			}
+			
+	//=============== Register Search End ================//
+			
+	//============== Pagination Function Begin ===========//
+	
+			function pagination() {
+				$scope.pageSize = $scope.shownoofrec;
+				console.log($scope.pageSize);
+				$scope.currentPage = 0;
+				$scope.totalPages = 0;
+				self.Filtervehicles = self.vehicles;
+				
+				$scope.nextDisabled = false;
+				$scope.previousDisabled = true;
+			}
+			
+			
+			$scope.paginate = function(nextPrevMultiplier) {
+				
+				$scope.currentPage += (nextPrevMultiplier * 1);
+				console.log($scope.currentPage);
+				self.Filtervehicles = self.vehicles.slice($scope.currentPage*$scope.pageSize);
+				
+				console.log("TTTTTTTT"+self.Filtervehicles.length);
+				
+				if(self.Filtervehicles.length == 0) {
+					VehicleService.pagination_byPage($scope.currentPage)
+					.then(
+							function (filterVervice) {
+								
+								if(filterService.length == 0 ) {
+									$scope.nextDisabled = true;
+								} else if (filterVehicle.length < 10 ) {
+									self.Filtervehicles = filterVehicle;
+								} else {
+									self.Filtervehicles = filterVehicle;
+								}
+							},
+							function (errResponse) {
+								console.log('Error while pagination');
+							}
+					      );
+				}
+				
+				if(self.Filtervehicles.length < $scope.pageSize) {
+					$scope.nextDisabled = true;
+				}
+				
+				console.log(nextPrevMultiplier);
+				if($scope.currentPage == 0 ) {
+					$scope.previousDisabled = true;
+				}
+				if(nextPrevMultiplier == -1) {
+					$scope.nextDisabled = false;
+				} else {
+					$scope.previousDisabled =false;
+				}
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			$scope.firstlastPaginate = function (page) {
+				VehicleService.pagination_byPage(page)
+					.then(
+							function (filterVehicle) {
+								self.Filtervehicles = filterVehicle;
+							},
+							function (errResponse) {
+								console.log("Error while fetching services");
+							}
+					      );
+				
+				if(page == 1) {
+					$scope.currentPage = 0;
+					$scope.previousDisabled = true;
+					$scope.nextDisabled = false;
+				} else {
+					$scope.previousDisabled = false;
+					$scope.nextDisabled = true;
+				}
+			}
+			
+			
+    //============== Pagination Function End =============//
 			
 }]);

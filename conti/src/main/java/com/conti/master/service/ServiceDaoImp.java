@@ -46,4 +46,28 @@ public class ServiceDaoImp implements ServiceDao {
 			}
 			return null;
 		}
+
+
+		@Override
+		@Transactional
+		public List<ServiceMaster> searchbyService(String search_key) {
+			
+			@SuppressWarnings("unchecked")
+			List<ServiceMaster> listservice = (List<ServiceMaster>) sessionFactory.getCurrentSession()
+					.createQuery("from ServiceMaster WHERE obsolete = 'N' and service_name LIKE '%" + search_key + "%'"
+							+ " OR service_code LIKE '%" + search_key + "%'").list();
+			return listservice;
+		}
+
+
+		@Override
+		@Transactional
+		public List<ServiceMaster> getServiceswithLimit(int from_limit, int to_limit, String order) {
+			
+			@SuppressWarnings("unchecked")
+			List<ServiceMaster> listServ = (List<ServiceMaster>) sessionFactory.getCurrentSession()
+					.createQuery("from ServiceMaster where obsolete = 'N' " + "ORDER BY IFNULL(created_datetime,updated_datetime)" + order)
+					.setFirstResult(from_limit).setMaxResults(to_limit).list();
+			return listServ;
+		}
 }

@@ -38,6 +38,7 @@
      <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
      <script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script>
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
@@ -209,6 +210,13 @@
 								
 							</div>
 							
+							<div class="row paddingtop">
+								<div class="col-md-12">
+									<select name="shownoofrec" data-ng-model="shownoofrec" data-ng-options = "noofrec for noofrec in [10, 15, 25, 50, 100]" class="form-control" data-ng-click = "ctrl.shownoofRecord()">
+									</select>
+								</div>
+							</div>
+							
 
 						</div> 
                                 </div>
@@ -249,6 +257,13 @@
 	                                      <input type = "hidden" name = "service" value = "{{ctrl.selected_service}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                       </form>
+                                      
+                                      <div class="row paddingtop">
+                                      	<div class="col-md-12">
+                                      		<input type="text" class="form-control" name="search" placeholder ="Search" data-ng-model = "ctrl.service_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.service_regSearch)"/>
+                                      	</div>
+                                      </div>
+                                      
                                     </div>
                                 </div>
                               </div>
@@ -259,24 +274,36 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.servSelectall()" data-ng-model = "selectall"></th>
-                                            <th>S.No</th>
+                                         <!--    <th>S.No</th> -->
                                             <th data-ng-show = "setting_servicename">Service Name</th>
                                             <th data-ng-show = "setting_servicecode">Service Code</th>
                                             <th data-ng-show = "setting_servicestatus">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr data-ng-repeat = "service in ctrl.services | orderBy : 'service_name' "
+                                        <tr data-ng-repeat = "service in ctrl.Filterservices | limitTo:pageSize "
                                         data-ng-dblclick = "ctrl.updateService(service)">
                                             <td><input type="checkbox" data-ng-change="ctrl.servSelect(service)" data-ng-model = "service.select"/></td>
-                                            <td>{{$index+1}}</td>
+                                        <!--     <td>{{$index+1}}</td> -->
                                             <td data-ng-show = "setting_servicename">{{service.service_name}}</td>
                                             <td data-ng-show = "setting_servicecode">{{service.service_code}}</td>
                                             <td data-ng-show = "setting_servicestatus" data-ng-class="{'makeGreen' : service.active=='Y', 'makeRed' : service.active=='N'}">{{service.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
                                     </tbody>
-                                </table>
+                                </table>                               
+                               
+                                
                             </div>
+                            
+                             
+                                <div class="col-lg-12 icons-button">
+                                	<div class="pull-right">
+                                		<button class="btn btn-primary" type="button" data-ng-disabled = "previousDisabled" data-ng-click = "firstlastPaginate(1)">First</button>
+                                		<button class="btn btn-primary" type="button" data-ng-disabled = "previousDisabled" data-ng-click = "paginate(-1)">Previous</button>
+                                		<button class="btn btn-primary" type="button" data-ng-disabled = "nextDisabled" data-ng-click = "paginate(1)">Next</button>
+                                		<button class="btn btn-primary" type="button" data-ng-disabled = "nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
+                                	</div>
+                                </div>
                             
                         </div>
                     </div>
