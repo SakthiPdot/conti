@@ -414,7 +414,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 																value="${_csrf.token}" />
                                       
                                       </form>
-                                  	<!--===============seatch tab============== -->
+                                  	<!--===============search tab============== -->
 									<div class="row paddingtop">
 										<div class="col-md-12">
 											<input type="text" class="form-control" name="search"

@@ -425,9 +425,12 @@ angular.module('contiApp').controller('productController',
 	//===================================onchange of angucomplete====================================
 	  $scope.product_type=function(selected){
 	       	console.log(selected);
-	       self.product.product_Type=selected.originalObject.product_Type;
-	       }      
-	          
+	    	if(typeof selected.originalObject.product_Type != 'undefined'){
+	    		self.product.product_Type=selected.originalObject.product_Type;
+	    	}else{
+	    		self.product.product_Type=selected.originalObject;	
+	    	}
+	       } 
 	
 	//===================================fetch product====================================
 	 fetchProducts();

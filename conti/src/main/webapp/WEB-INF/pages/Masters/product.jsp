@@ -126,7 +126,8 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 									  			  data-trigger="focus" data-toggle="popover"
 							 					  data-placement="top" data-content="Please Enter Product Type"
 									              selected-object="product_type"
-									              local-data="proctrl.products"
+									              local-data="proctrl.products"									              
+  												  override-suggestions="true"
 									              placeholder="Eg.Box"
 									              search-fields="product_Type"
 									              title-field="product_Type"
@@ -138,7 +139,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 									              
 									         	                  
 		                  <input type="hidden" class="form-control"
-		                  maxlength="30"
+		                  maxlength="30" 
 		                  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 		                    data-ng-required="true"
 			                  data-trigger="focus" data-toggle="popover"
