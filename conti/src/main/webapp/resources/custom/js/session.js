@@ -124,7 +124,7 @@
 			window.onbeforeunload = function(e) {	
 				console.log(e);
 	 	        if( !valid ){
-	 	        	//force_logout();
+	 	        	force_logout();
 	 	        }
 	 	       } 
 			 
@@ -141,9 +141,10 @@
 	 		  valid = true;			
 	 		}); 
 	 	  
-	 	 $("form").submit(function (e) {
-	 		 valid = true;	
-	 	});
+	 	 $(document).on("submit", "form", function(event){
+	 		valid = true;
+	     });
+	 	 
 	 	 
 	 		  $(document.body).on("keydown", this,
 	 		     function (event) {

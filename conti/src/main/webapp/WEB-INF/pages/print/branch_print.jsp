@@ -115,25 +115,30 @@
 	               <thead>	    
 	        				 <tr>
 	                            <th>S.No</th>
-	                            <th>Customer Name</th>
-	                            <th>Customer Code</th>	                                 
-	                            <th>Phone Number</th>
-	                            <td>Customer Type</td>    
-<!-- 	                            <th>Branch Name</th> -->
-	                            <th>Company Name</th>
+	                            <th>Branch Name</th>
+<!-- 	                            <th>Branch code</th>	                                  -->
+<!-- 	                            <th>Branch Address</th> -->
+<!-- 	                            <th>Contact Person</th> -->
+	                            <th>Contact Number</th>
+	                            <th>Contact Email</th>
+	                            <th>LR no Prefix</th>
+	                            <th>Receipt no Prefix</th>
 	                        </tr>	                        
 	                    </thead>
 	                    <tbody>
 	                    
-	                    <c:forEach var="cust" items="${listCust}" varStatus="loop">	                    
+	                    <c:forEach var="branch" items="${listBranch}" varStatus="loop">	                    
 	                        <tr>
                               	<td><c:out value="${loop.count}" />
-                                <td>${cust.customer_name}</td>                   
-                               <td>${cust.customer_code}</td> 
-                               <td>${cust.customer_mobileno}</td> 
-                               <td>${cust.customer_type}</td>  
-<%--                                <td>${cust.customer_type}</td> --%>
-                               <td>${cust.company_name}</td>                      
+                                <td>${branch.branch_name}</td>                   
+<%--                               	<td>${branch.branch_code}</td>  --%>
+<%--                                 <td>${branch.branch_addressline1} ,${branch.location.location_name},${branch.location.address.city},  --%>
+<%--                                             	${branch.location.address.district}, ${branch.location.address.state}, ${branch.location.address.pincode}</td>  --%>
+<%--                                 <td>${branch.branch_contactperson}</td> --%>
+                                <td>${branch.branch_mobileno}</td> 
+                                <td>${branch.branch_email}</td>  
+                                <td>${branch.lrno_prefix}</td>
+                                <td>${branch.receiptno_prefix}</td>               
                             </tr>                           
 	                      </c:forEach> 
 	                      
@@ -143,8 +148,7 @@
 	         <!-- - Item Category Print -->
 	            
 	
-	  <script src="resources/custom/js/customer_master/customer_controller.js"></script>
-	  <script src="resources/custom/js/customer_master/customer_service.js"></script>
+	  <script src="resources/custom/js/branch_master/branch_controller.js"></script>
 	  <script src="resources/custom/js/branch_master/branch_service.js"></script>
 	  <script src="resources/custom/js/Location/location_service.js"></script>
 	  <script src="resources/custom/js/confirmDialog.js"></script>   
@@ -174,12 +178,12 @@
 		        var doc = examples[funcStr]();
 		
 		        doc.setProperties({
-		            title: 'Conti: Coustomer',
+		            title: 'Conti: Branch',
 		            subject: 'Conti Master (' + funcStr + ')'
 		        });
 		
 		        if (shouldDownload) {
-		            doc.save('conti_customer.pdf');
+		            doc.save('conti_branch.pdf');
 		        } else {
 		            document.getElementById("output").src = doc.output('datauristring');
 		        }

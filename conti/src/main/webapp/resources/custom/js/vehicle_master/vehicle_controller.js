@@ -50,8 +50,8 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 	
 	//=================== Close Function Begin ==================//
 		
-		function close(){
-			self.confirm_title = 'Close';
+		function close(open){
+			self.confirm_title = open;
 			self.confirm_type = BootstrapDialog.TYPE_WARNING;
 			self.confirm_msg = self.confirm_title + ' without saving data?';
 			self.confirm_btnclass = 'btn-warning';
@@ -67,8 +67,8 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		
 	//=================== Clear Function Begin ======================//
 	
-			function clear() {
-				self.confirm_title = 'Clear';
+			function clear(clearopen) {
+				self.confirm_title = clearopen;
 				self.confirm_type = BootstrapDialog.TYPE_WARNING;
 				self.confirm_msg = self.confirm_title + ' the data?';
 				self.confirm_btnclass  =  'btn-warning';
@@ -162,7 +162,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 						ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 							.then(
 									function (res) {
-										self.vehicle.branch_id = JSON.parse($("#branch_id").val());
+										self.vehicle.branchModel = JSON.parse($("#branch_id").val());
 										console.log(self.vehicle);
 										createVehicle(self.vehicle);										
 										reset();
@@ -182,7 +182,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 		    				.then(
 		    						function (res) {
-		    							self.vehicle.branch_id = $("#branch_id").val();
+		    							self.vehicle.branchModel = JSON.parse($("#branch_id").val());
 		    							editVehicle(self.vehicle);
 		    						/*	reset();*/
 		    							window.setTimeout(function(){
@@ -209,6 +209,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 							self.message = vehicle.vehicle_regno + " vehicle updated..!";
 							successAnimate('.success');
 						},
+						
 						
 						function(errResponse) {
 							console.error('Error while creating vehicle' + vehicle.vehicle_regno);
@@ -268,11 +269,27 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				
 			}
 			
+		    function empSelectall() {
+				self.selected_employee=[];
+				
+				for(var i = 0; i < $scope.pageSize; i++) {
+					self.Filteremployees[i].select = $scope.selectall;
+					if($scope.selectall){
+						self.selected_employee.push(self.Filteremployees[i]);
+					}
+				}	
+		    }
+		    
+			
 			function vehicSelectall(){
-				angular.forEach(self.vehicles,function(vehicle){
-					vehicle.select = $scope.selectall;
-				});
-				self.selected_vehicle = $scope.selectall?self.vehicles:[];
+				self.selected_vehicle=[];
+				
+				for(var i = 0; i < $scope.pageSize; i++) {
+					self.Filtervehicles[i].select = $scope.selectall;
+					if($scope.selectall){
+						self.selected_vehicle.push(self.Filtervehicles[i]);
+					}
+				}
 			}
 			
 	//============== Make Active Begin =====================//

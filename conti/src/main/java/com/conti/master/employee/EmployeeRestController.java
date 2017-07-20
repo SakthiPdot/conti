@@ -37,6 +37,7 @@ import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.RoleDao;
+import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
@@ -93,10 +94,18 @@ public class EmployeeRestController {
 		try {
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			List<EmployeeMaster> employees = employeeDao.getEmployeesbyBranchId(id);
+			List<EmployeeMaster> noUserEmp = new ArrayList<EmployeeMaster>();
+			for ( EmployeeMaster employee : employees ) {
+				User user = usersDao.getUserbyEmp(employee.getEmp_id());
+				if( user == null) {
+					noUserEmp.add(employee);
+				}
+			}
+			
 			if(employees.isEmpty()) {
 				return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
 			} else {
-				return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
+				return new ResponseEntity<List<EmployeeMaster>> (noUserEmp, HttpStatus.OK);	
 			}			
 		} catch (Exception exception) {			
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);

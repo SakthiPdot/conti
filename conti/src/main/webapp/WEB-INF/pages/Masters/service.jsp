@@ -46,6 +46,7 @@
 </head>
 
 
+
 <body style="overflow-x:hidden;" data-ng-app = "contiApp" data-ng-controller = "ServiceController as ctrl">
  
  <!-- ---------------------  Overlay for message begin  -------------------- -->
@@ -54,7 +55,7 @@
  
  <!-- ----------------------  Success message begin -------------------------- -->
  		<div class="success hideme">
- 			<i class="fa fa-check-circle"  aria-hidden="true"></i>{{ctrl.message}}
+ 			<i class="fa fa-check-circle"  aria-hidden="true"></i>  {{ctrl.message}}
  			<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
  		</div>	
  <!-- ----------------------  Success message end  --------------------------- -->
@@ -77,7 +78,7 @@
                    </div>
                    
                    <div class="col-lg-4 col-md-4 col-sm-2 headerRight">
-                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close()"></i>
+                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close('Close')"></i>
                    </div>
             
              </div>
@@ -122,7 +123,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4  footerLeft">
-							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close()" ><i class="fa fa-trash-o"></i> Clear</button>
+							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close('Clear')" ><i class="fa fa-trash-o"></i> Clear</button>
 						</div>
 						
 						 <div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
@@ -223,7 +224,7 @@
                               
                                 <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
-                                   <form name="servicePrint" method = "POST" action = "service_print" >
+                                   <form name="servicePrint" method = "POST" action = "service_print" class="padding-button" >
                                      <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a> 
                                      <div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
                                      	<div class ="checkbox">
@@ -253,7 +254,7 @@
                                       <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelService'"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                       
                                       
-	                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+	                                      <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_service.length == 0"><i class="fa fa-print fa-lg"></i></button>
 	                                      <input type = "hidden" name = "service" value = "{{ctrl.selected_service}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                       </form>

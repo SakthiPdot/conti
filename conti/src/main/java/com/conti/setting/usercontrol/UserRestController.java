@@ -25,6 +25,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,19 +78,69 @@ public class UserRestController {
 	SessionListener sessionListener = new SessionListener();
 	UserInformation userInformation;
 	
+	/* ------------------------- User page begin-------------------------------- */
+	@RequestMapping(value =  "user", method = RequestMethod.GET)
+	public ModelAndView userPage(HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		
+		UserInformation userinfo = new UserInformation(request);
+		String username = userinfo.getUserName();		
+		String userid = userinfo.getUserId();
+		ModelAndView model = new ModelAndView();
+		
+		try
+		{
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			
+			model.addObject("title", "User Master");
+			model.addObject("message", "This page is for ROLE_ADMIN only!");
+			model.setViewName("Settings/user_master");
+
+			
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);
+		}
+		return model;
+
+	}
+	/* ------------------------- User page end-------------------------------- */
+	
 	/* ------------------------- Retrieve all Users begin-------------------------------- */
 	@RequestMapping( value = "/users/", method = RequestMethod.GET	)
 	public ResponseEntity<List<User>> fetchAllUsers(HttpServletRequest request) {
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();		
+		int userid = Integer.parseInt(userInformation.getUserId());
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		
 		/*try {*/
-			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			List<User> users = usersDao.list();
-			if(users.isEmpty()) {
-				return new ResponseEntity<List<User>> (HttpStatus.NO_CONTENT);
+			
+			User user = usersDao.get(userid);
+			if( user.getRole().getRole_Name() == constantVal.ROLE_SADMIN ) {
+				
+				List<User> users = usersDao.list();
+				if(users.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<User>> (HttpStatus.NO_CONTENT);
+				} else {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<User>> (users, HttpStatus.OK);	
+				}	
+				
 			} else {
-				return new ResponseEntity<List<User>> (users, HttpStatus.OK);	
-			}			
+				
+				List<User> usersbybranch_id = usersDao.getUsersbyBranchId(branch_id);
+				if(usersbybranch_id.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<User>> (HttpStatus.NO_CONTENT);
+				} else {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<User>> (usersbybranch_id, HttpStatus.OK);	
+				}
+			}
+			
+					
 		/*} catch (Exception exception) {			
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
 			return new ResponseEntity<List<User>> (HttpStatus.UNPROCESSABLE_ENTITY);
@@ -126,7 +178,7 @@ public class UserRestController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		
-		/*try {	*/		
+		/*try {			*/
 		
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			String hashedPassword = passwordEncoder.encode(user.getUserpassword());
@@ -153,6 +205,42 @@ public class UserRestController {
 		
 	}
 	/* ------------------------- Create a User end -------------------------------------  */
+	
+	/* ------------------------- Update a User begin -------------------------------------  */
+	@RequestMapping( value = "/update_user", method = RequestMethod.POST)
+	public ResponseEntity<User> updateUser(@RequestBody User user, HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		int user_id = Integer.parseInt(userInformation.getUserId());
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		
+		/*try {			*/
+		
+			User user_pwdexists = usersDao.get(user.getUser_id());
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+						
+			if( !(user.getUserpassword().equals(user_pwdexists.getUserpassword())) ) {
+				String hashedPassword = passwordEncoder.encode(user.getUserpassword());
+				user.setUserpassword(hashedPassword);			
+			} else {
+				user.setUserpassword(user_pwdexists.getUserpassword());
+			}
+			
+			user.setUpdated_datetime(dateFormat.format(date).toString());
+			user.setUpdated_by(user_id);
+			usersDao.saveOrUpdate(user);			
+			 
+	        loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+			return new ResponseEntity<User> (user, HttpStatus.CREATED);
+			
+		/*} catch (Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}*/
+		
+	}
+	/* ------------------------- Update a User end -------------------------------------  */
 	
 	/* ------------------------- Update a User begin -------------------------------------  */
 	@RequestMapping( value = "/users/{id}", method = RequestMethod.PUT)
@@ -210,7 +298,7 @@ public class UserRestController {
 			if(currentUser == null) {
 				return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
 			} else {
-				Role userRole = roleDao.get(currentUser.getRole_id());
+				Role userRole = roleDao.get(currentUser.getRole().getRole_Id());
 				if( userRole == null ) {
 					return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 				} else {
@@ -389,7 +477,7 @@ public class UserRestController {
 	/* --------------------------- Change Password for Admin end ----------------------- */
 	
 	/* --------------------------- Forgot Username GET begin ----------------------- */	
-	@RequestMapping(value = {"forgot_username"}, method = RequestMethod.GET)
+	@RequestMapping(value = "forgot_username", method = RequestMethod.GET)
 	public ModelAndView forgot_username() throws Exception {
 		
 		ModelAndView model = new ModelAndView();
@@ -404,8 +492,24 @@ public class UserRestController {
 	}
 	/* --------------------------- Forgot Username GET end ----------------------- */		
 	
+	/* --------------------------- Forgot Username GET begin ----------------------- */	
+	@RequestMapping(value = "forgot_password", method = RequestMethod.GET)
+	public ModelAndView forgot_password() throws Exception {
+		
+		ModelAndView model = new ModelAndView();
+			
+			model.addObject("title", "Conti - Forgot Password");
+			model.addObject("message", "Forgot password in Conti");
+			model.setViewName("forgot_password");
+			
+		
+		return model;
+
+	}
+	/* --------------------------- Forgot Username GET end ----------------------- */	
+	
 	/*----------------------------- find Username by mobileno begin -------------- */
-	@RequestMapping(value = "{forgotUsername}", method = RequestMethod.POST)
+	@RequestMapping(value = "forgotUsername", method = RequestMethod.POST)
 	public ResponseEntity<Void> forgotUsername(@RequestBody String mobileno, EmployeeMaster employeeMaster, UserLogModel userLogModel) {
 		
 		try {
@@ -494,7 +598,7 @@ public class UserRestController {
 	
 	
 	@RequestMapping(value =  "password_change", method = RequestMethod.GET)
-	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
+	public ModelAndView changePassword(HttpServletRequest request) throws Exception {
 		
 		HttpSession session = request.getSession();
 		
@@ -533,10 +637,18 @@ public class UserRestController {
 		String username = userInformation.getUserName();		
 		try {
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			
 			List<Role> roles = roleDao.list();
 			if(roles.isEmpty()) {
 				return new ResponseEntity<List<Role>> (HttpStatus.NO_CONTENT);
 			} else {
+				if( request.isUserInRole(constantVal.ROLE_ADMIN) ) {
+					for ( Role role : roles ) {
+						if( role.getRole_Name().equals(constantVal.ROLE_ADMIN) ) {
+							roles.remove(role);
+						}	
+					}
+				}
 				return new ResponseEntity<List<Role>> (roles, HttpStatus.OK);	
 			}			
 		} catch (Exception exception) {			
@@ -569,6 +681,8 @@ public class UserRestController {
 		
 	}
 	/* ------------------------------ Check username end ----------------------------------------- */
+	
+
 }
 
 

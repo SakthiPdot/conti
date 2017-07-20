@@ -1,8 +1,6 @@
 package com.conti.setting.usercontrol;
 
 
-import java.io.Serializable;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import com.conti.master.branch.BranchModel;
 import com.conti.master.employee.EmployeeMaster;
@@ -28,15 +26,15 @@ import com.conti.master.employee.EmployeeMaster;
 
 @Entity
 @Table(name="a_user")
-//@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 
-public class User implements Serializable{
+public class User /*implements Serializable*/{
 
-	private int company_id, user_id, /*branch_id,*/ role_id, emp_id, created_by, updated_by;
+	private int company_id, user_id, /*branch_id,*//* role_id,*/ /*emp_id,*/ created_by, updated_by;
 	private String username, userpassword; 
 	private String obsolete, active, created_datetime, updated_datetime;
 	
-	private EmployeeMaster employeeMaster;
+	
 	
 	
 	/**
@@ -57,15 +55,15 @@ public class User implements Serializable{
 	 */
 	
 	public User () {}
-	public User(int company_id, int user_id, int role_id, int emp_id, int created_by, int updated_by, String username,
+	public User(int company_id, int user_id, /*int role_id,*/ /*int emp_id,*/ int created_by, int updated_by, String username,
 			String userpassword, String obsolete, String active,
 			String created_datetime, String updated_datetime, EmployeeMaster employeeMaster) {
 		super();
 		this.company_id = company_id;
 		this.user_id = user_id;
 		/*this.branch_id = branch_id;*/
-		this.role_id = role_id;
-		this.emp_id = emp_id;
+		/*this.role_id = role_id;*/
+		/*this.emp_id = emp_id;*/
 		this.created_by = created_by;
 		this.updated_by = updated_by;
 		this.username = username;
@@ -96,14 +94,41 @@ public class User implements Serializable{
 		this.user_id = user_id;
 	}
 	
+	private EmployeeMaster employeeMaster;
+	
+	/*@OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonManagedReference*/
+	
+	@OneToOne(fetch = FetchType.EAGER, optional=false, cascade = CascadeType.MERGE)
+	@JoinColumn(name = "emp_id")
+	public EmployeeMaster getEmployeeMaster() {
+		return employeeMaster;
+	}
+
+	public void setEmployeeMaster(EmployeeMaster employeeMaster) {
+		this.employeeMaster = employeeMaster;
+	}
+	
 	public BranchModel branchModel;
+	@OneToOne(fetch = FetchType.EAGER, optional=false, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "branch_id")
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	public BranchModel getBranchModel() {
 		return branchModel;
 	}
 	public void setBranchModel(BranchModel branchModel) {
 		this.branchModel = branchModel;
+	}
+	
+
+
+	public Role role;
+	@JoinColumn(name = "role_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	
 	/*@Column(name = "branch_id")
@@ -113,13 +138,13 @@ public class User implements Serializable{
 	public void setBranch_id(int branch_id) {
 		this.branch_id = branch_id;
 	}*/
-	@Column(name = "role_id")
+	/*@Column(name = "role_id")
 	public int getRole_id() {
 		return role_id;
 	}
 	public void setRole_id(int role_id) {
 		this.role_id = role_id;
-	}
+	}*/
 	@Column(name = "username")
 	public String getUsername() {
 		return username;
@@ -134,13 +159,13 @@ public class User implements Serializable{
 	public void setUserpassword(String userpassword) {
 		this.userpassword = userpassword;
 	}
-	@Column(name = "emp_id")
+	/*@Column(name = "emp_id")
 	public int getEmp_id() {
 		return emp_id;
 	}
 	public void setEmp_id(int emp_id) {
 		this.emp_id = emp_id;
-	}
+	}*/
 	
 	
 /*	@Column(name = "update_by")
@@ -197,16 +222,5 @@ public class User implements Serializable{
 		this.active = active;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-	@JsonManagedReference
-	public EmployeeMaster getEmployeeMaster() {
-		return employeeMaster;
-	}
-
-	public void setEmployeeMaster(EmployeeMaster employeeMaster) {
-		this.employeeMaster = employeeMaster;
-	}
-
-	 
 	
 }

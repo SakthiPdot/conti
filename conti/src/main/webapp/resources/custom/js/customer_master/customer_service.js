@@ -19,6 +19,8 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
 			deleteCustomer : deleteCustomer,
 			makeActive : makeActive,
 			makeinActive : makeinActive,
+			registerSearch : registerSearch,
+			pagination_byPage : pagination_byPage
 			/*print : print*/
 	};
 	
@@ -32,6 +34,7 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
 			.then(
 					function (response) {
 						deferred.resolve(response.data);
+						console.log(response.data);
 					},
 					function (errResponse) {
 						console.log("Error while fetching Customers");
@@ -190,6 +193,7 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
     	})
     	.then (
     		function (response) {
+    			console.log(response.data);
     			deferred.resolve(response.data);
     		},
     		function (errResponse) {

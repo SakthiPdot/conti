@@ -37,6 +37,7 @@
 	 
 
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
@@ -115,9 +116,9 @@
 			             <div class="col-lg-12">
 			                	<div class="col-lg-6 content-body">
 			                 	   <span>Customer Type </span>	         
-				                   <select class="form-control" name="customer_type" data-ng-options="custtype for custtype in ['Credit','Debit','Regular']" data-ng-model="ctrl.customer.customer_type">
+				                   <select class="form-control" name="customer_type" data-ng-init="select" data-ng-options="custtype for custtype in ['Credit','Debit','Regular']" data-ng-model="ctrl.customer.customer_type">
 				                   
-<!-- 				                   		<option>Credit</option> -->
+				                   		<option selected="selected"></option> 
 <!-- 				                   		<option>Credit</option>	 -->
 <!-- 				                   		<option>Credit</option> -->
 				                   </select>
@@ -332,7 +333,7 @@
                                 
                                <div class="col-xs-6 icons-button">
                                   <div class="pull-right">
-                                   	<form name="custPrint" method="POST" action="customer_print">
+                                   	<form name="custPrint" method="POST" action="customer_print" class="padding-button">
                                      <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
                                      	<div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
                                      	<div class ="checkbox">
@@ -420,14 +421,14 @@
                                    			<th data-ng-show = "setting_custstatus">Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody>	
 <!--                                         <tr -->
 <!--                                         data-ng-repeat="cust in ctrl.customers.slice(((currentPage-1)*itemsPerPage),((currentPage)*itemsPerPage)) | orderBy:'customer_name'" -->
 <!--                                         data-ng-dblclick="ctrl.updateCustomer(cust)"> -->
 
 											<tr data-ng-repeat="cust in ctrl.Filtercustomers | limitTo:pageSize"
 												data-ng-dblclick="ctrl.updateCustomer(cust)">
-                                            <td><input type="checkbox" data-ng-change="ctrl.empSelect(emp)" data-ng-model = "emp.select" /></td>
+                                            <td><input type="checkbox" data-ng-change="ctrl.customerSelect(cust)" data-ng-model = "cust.select" /></td>
 <!--                                             <td>{{(currentPage*10)-(10-($index+1))}}</td> -->
                                             <td data-ng-show = "setting_custname">{{cust.customer_name}}</td>
                                             <td data-ng-show = "setting_custcode">{{cust.customer_code}}</td>

@@ -15,7 +15,12 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 			fetchAllBranches : fetchAllBranches,
 			createBranch:createBranch,
 			updateBranch:updateBranch,
-			deleteBranch:deleteBranch
+			deleteBranch:deleteBranch,
+			makeActive : makeActive,
+			makeinActive : makeinActive,
+			registerSearch : registerSearch,
+			pagination_byPage : pagination_byPage,
+			fetchBranchbyBranchid : fetchBranchbyBranchid
 			};
 	
 	return factory;
@@ -35,6 +40,27 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 		return deferred.promise;
 	}
 	//-------------------------- Fetch All Branches end ---------------------//	
+	
+	
+	//-------------------------- Fetch All Branches begin ---------------------//	
+	function fetchBranchbyBranchid(id) {
+		var deferred = $q.defer();
+		$http.get('branches/branch/'+id)
+			.then(
+					function (response) {
+						deferred.resolve(response.data);
+					},
+					function (errResponse) {
+						console.log("Error while fetching Branches by branch id");
+						deferred.reject(errResponse);
+					}
+				);
+		return deferred.promise;
+	}
+	//-------------------------- Fetch All Branches end ---------------------//
+	
+	
+	
 	
 	//-----------Fetch Create branch--------------
 	
@@ -69,8 +95,8 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 			var deferred=$q.defer();
 			$http({
 				method:'DELETE',
-				url:delete_employee/+id,
-				headers:getCrsfHeader()
+				url:'delete_branch/'+id,
+				headers:getCsrfHeader()
 			}).then(
 				function (response)
 				{
@@ -87,26 +113,30 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 		//-----------------Delete Branch begin End----------------
 		
 		//------------------Update Branch begin start --------------
-		function updateBranch(branch,id)
-		{
-			var deferred=$q.defer();
-			$http({
-				method:'PUT',
-				url:'update_branch/'+id,
-				header:getCsrfHeader()
-			})
-			.then(
-					function(response)
-					{
-						deferred.resolve(response.data);
-					},
-					function (errResponse)
-					{
-						deferred.reject(errResponse);
-					}
-				);
-				return deferred.promise;
-		}
+		
+		function updateBranch(branch) {
+	        var deferred = $q.defer();
+	        var headers = getCsrfHeader();
+	        console.log("update service call" +branch)
+	    	$http({
+	    		method : 'POST',
+	    		url : 'update_branch',
+	    		data : branch,
+	    		headers : headers
+	    	})
+	    	.then(
+	    			function (response) {    				
+	    				deferred.resolve(response.data);
+	    			},
+	    			function (errResponse) {
+	    				deferred.reject(errResponse);
+	    			}
+	    		);
+	    		return deferred.promise;
+	    		
+	    }
+		
+		
 		//------------------Update Branch begin End--------------
 		
 		
