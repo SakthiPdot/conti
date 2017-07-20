@@ -162,7 +162,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 						ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 							.then(
 									function (res) {
-										self.vehicle.branch_id = JSON.parse($("#branch_id").val());
+										self.vehicle.branchModel = JSON.parse($("#branch_id").val());
 										console.log(self.vehicle);
 										createVehicle(self.vehicle);										
 										reset();
@@ -182,7 +182,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 		    				.then(
 		    						function (res) {
-		    							self.vehicle.branch_id = $("#branch_id").val();
+		    							self.vehicle.branchModel = JSON.parse($("#branch_id").val());
 		    							editVehicle(self.vehicle);
 		    						/*	reset();*/
 		    							window.setTimeout(function(){

@@ -54,7 +54,7 @@
  
  <!-- ----------------------  Success message begin -------------------------- -->
  		<div class="success hideme">
- 			<i class="fa fa-check-circle"  aria-hidden="true"></i>{{ctrl.message}}
+ 			<i class="fa fa-check-circle"  aria-hidden="true"></i>  {{ctrl.message}}
  			<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
  		</div>	
  <!-- ----------------------  Success message end  --------------------------- -->
