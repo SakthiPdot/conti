@@ -1,14 +1,21 @@
 package com.conti.master.location;
 
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +26,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.address.AddressModel;
 import com.conti.config.SessionListener;
+import com.conti.master.product.Product;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.UsersDao;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 
 /**
  * @Project_Name conti
@@ -49,9 +60,13 @@ public class LocationController {
 	
 	@Autowired 
 	private LocationDao locationDao; 
+	
+	@Autowired
+	private CompanySettingDAO companySettingDAO;
 		
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
+	UserInformation userInformation;
 
 	@RequestMapping(value =  "location", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
@@ -85,6 +100,93 @@ public class LocationController {
 		return model;
 
 	}
+
+	
+	@RequestMapping(value="location_print",method=RequestMethod.POST)
+	public ModelAndView location_print(HttpServletRequest request,
+			@RequestParam("SelectedLocation") String SelectedLocation) throws IOException{
+	
+		ObjectMapper mapper=new ObjectMapper();
+		
+		List<Location> locationList=null;
+		
+		
+		try {
+			JSONArray jsonProductArray=new JSONArray(SelectedLocation);
+			
+			
+			String[] location_id=new String[jsonProductArray.length()];
+			locationList = new ArrayList<Location>();
+			
+			for(int i=0;i<jsonProductArray.length();i++){
+				JSONObject LocationObject=jsonProductArray.getJSONObject(i);
+				Location location=locationDao.getLocationById(LocationObject.getInt("location_id"));
+				locationList.add(location);
+			}
+		} catch (Exception e1) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Json parse error", e1);
+			e1.printStackTrace();
+		}
+		
+		Company company = companySettingDAO.getById(1);
+		String base64DataString = "";
+		if(company!=null && company.getCompany_logo()!=null){
+			byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+			try {
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+			}		
+		}else{
+			base64DataString = ConstantValues.NO_IMAGE;	
+		}
+		ModelAndView model = new ModelAndView("print/Location_print");
+		
+		model.addObject("title", "Location");
+		model.addObject("company", company);
+		model.addObject("locationList",locationList);
+		model.addObject("image",base64DataString);
+		return model;
+	}
+
+	
+	
+
+
+
+	//======================================Pagination begin==========================================
+	@RequestMapping(value = "paginationLocation", method=RequestMethod.POST)
+	public ResponseEntity<List<Location>> paginationLocation(@RequestBody int page, HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		System.err.println(String.valueOf(page)+"++++++++++++++++++++++++++++++++++++++++");
+		//intialize	
+		int from_limit = 0, to_limit = 0;
+		String order = "DESC";
+		if(page == 1) { // First
+			from_limit = 0;
+			to_limit = page * 100;
+		} else if ( page == 0 ) { // Last
+			order = "ASC";
+			from_limit = page;
+			to_limit = 10;
+		} else {
+			from_limit = (page * 10) + 1;
+			to_limit =  (page + 1 ) * 10;
+		}
+		
+		System.err.println(String.valueOf(from_limit)+String.valueOf(to_limit)+"++++++++++++++++++++++++++++++++++++++++");
+		
+		List<Location> Locationlist=locationDao.getLocationWithLimit(from_limit, to_limit, order); 
+		return new ResponseEntity<List<Location>>(Locationlist,HttpStatus.OK);
+		
+	}
+	
+	//======================================search product by 4 strings==========================================
+		@RequestMapping(value = "searchLocation4String", method=RequestMethod.POST)
+		public ResponseEntity<List<Location>> searchProuct4String(@RequestBody String SearchString, HttpServletRequest request) {				
+				List<Location> locationList=locationDao.searchByLocation(SearchString) ;		
+				return new ResponseEntity<List<Location>> (locationList, HttpStatus.OK);		
+		}
 	//=================CHECK LOCATION NAME=====================================
 	@RequestMapping(value="checkLocationName",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> checkProductName(@RequestBody String name,HttpServletRequest request){
@@ -92,9 +194,34 @@ public class LocationController {
 	}
 	
 	//=================CHANGE ACTIVE STATUS=====================================
-	@RequestMapping (value="locationStaus",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void>  LocationStatus(@RequestBody int[] idArray,@PathVariable("status") String Status,HttpServletRequest request){
-		return null;
+	@RequestMapping (value="locationStaus/{status}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void>  LocationStatus(@RequestBody int[] idArray,@PathVariable("status") String status,HttpServletRequest request){
+		
+		System.out.println(status+"464644");		
+		//intialize		
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+		
+		try {
+			for(int i=0;i<idArray.length;i++){
+				Location location =locationDao.getLocationById(idArray[i]);
+				//set variable	
+				if(status.trim().equals("InActive") ||status.trim()=="InActive" ){
+					location.setActive("N");					
+				}else{
+					location.setActive("Y");
+				}
+				location.setUpdated_by(Integer.parseInt(request.getSession().getAttribute("userid").toString()));
+				location.setUpdated_datetime(dateFormat.format(date));
+				locationDao.saveOrUpdate(location);
+			}
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	//=================EXCEL DOWNLOAD=====================================
 	@RequestMapping(value="downloadExcelLocation",method=RequestMethod.GET)

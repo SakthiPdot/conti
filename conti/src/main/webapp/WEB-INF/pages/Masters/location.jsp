@@ -278,7 +278,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
              <div class="page-header header-size">
                  	  <b>${title}</b>
                  	  
-                 	  <button class="btn btn-info  pull-right"   data-ng-click="locctrl.openDrawer();" >Add New Location</button>
+                 	  <button class="btn btn-primary  pull-right"   data-ng-click="locctrl.openDrawer();" >Add New Location</button>
              </div>             										
 		   </div>
 
@@ -300,7 +300,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                <div class="col-lg-6">
                                      <div class="dataTables_length" id="dataTables-example_length">
 							<div class="dropdown">
-								<button class="btn btn-info dropdown-toggle"
+								<button class="btn btn-primary dropdown-toggle"
 									type="button" data-toggle="dropdown">
 									Batch Action <span class="caret"></span>
 								</button>
@@ -312,6 +312,19 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 								<!--<button type="button" class="btn btn-primary">Filter</button>-->
 							</div>
 							<!-- dropdown -->
+							
+							
+														<div class="row paddingtop">
+															<div class="col-md-12">
+																<select name="shownoofrec" data-ng-model="shownoofrec"
+																	data-ng-options="noofrec for noofrec in [10, 15, 25, 50, 100]"
+																	class="form-control"
+																	data-ng-click="locctrl.shownoofRecord()">
+
+																</select>
+															</div>
+														</div>
+														
 
 						</div> 
                                 </div>
@@ -319,13 +332,99 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                               <div class="col-lg-6 icons-button">
                                    <div class="pull-right">                                   
 									<form name="selectedLocationform" method='POST' action="location_print">
-                                     <a type="button" class="btn btn-info"><i class="fa fa-cog fa-lg"></i></a>
+                                     <a type="button" class="btn btn-primary dropdown-toggle"
+                                     data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
+                                    
+                                    	<div class="dropdown-menu regSettings pull-right"
+																style="padding-right: 5px;">
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_locName == true, 'fa-times': setting_locName == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_locName = true"
+																		data-ng-model="setting_locName" /> Location Name
+																	</label>
+																</div>
+											 <div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_locCode == true, 'fa-times': setting_locCode == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_locCode = true"
+																		data-ng-model="setting_locCode" /> Location Code
+																	</label>
+																</div>
+                                         	 <div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_abbr == true, 'fa-times': setting_abbr == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_abbr = true"
+																		data-ng-model="setting_abbr" /> Abbreviation
+																	</label>
+																</div>
+                                            	 <div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_city == true, 'fa-times': setting_city == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_city = true"
+																		data-ng-model="setting_city" /> City
+																	</label>
+																</div>
+                                                	 <div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_state == true, 'fa-times': setting_state == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_state = true"
+																		data-ng-model="setting_state" /> State
+																	</label>
+																</div>
+                                            	 <div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_country == true, 'fa-times': setting_country == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_country = true"
+																		data-ng-model="setting_country" /> Country
+																	</label>
+																</div>
+                                            	 <div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_pincode == true, 'fa-times': setting_pincode == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_pincode = true"
+																		data-ng-model="setting_pincode" /> Pincode
+																	</label>
+																</div>
+                                             <div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_active == true, 'fa-times': setting_active == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_active = true"
+																		data-ng-model="setting_active" /> Active
+																	</label>
+																</div>   
+										</div>
                                     <!--=============== excel============== -->
-                                      <a type="button" onclick="location.href='downloadExcelLocation'" class="btn btn-info"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                      <a type="button" onclick="location.href='downloadExcelLocation'" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                      <!--=============== print============== -->
-                                      <button type="button" class="btn btn-info"><i class="fa fa-print fa-lg"></i></button>
+                                      <button type="submit" class="btn btn-primary"
+                                      data-ng-disabled="locctrl.selectedLocation.length<1">
+                                      <i class="fa fa-print fa-lg"></i></button>
+                                      <input type="hidden" name="SelectedLocation"
+																value="{{locctrl.selectedLocation}}" /> <input
+																type="hidden" name="${_csrf.parameterName}"
+																value="${_csrf.token}" />
+                                      
                                       </form>
-                                	</div>
+                                  	<!--===============seatch tab============== -->
+									<div class="row paddingtop">
+										<div class="col-md-12">
+											<input type="text" class="form-control" name="search"
+												placeholder="Ex: Chennai"
+												data-ng-model="locctrl.location_search"
+												data-ng-keyup="locctrl.registerSearch(locctrl.location_search)" />
+										</div>
+									</div>
+
+									</div>
                                 </div>
                               </div>
                             </div>
@@ -339,40 +438,54 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                         	<th><input type="checkbox"
                                         	data-ng-model="locctrl.selectAllLocation"
                                         	data-ng-click="locctrl.selectAll()"></th>
-                                            <th>S.No</th>
-                                            <th>Location Name</th>
-                                            <th>Location Code</th>
-                                            <th>Abbreviation</th>
-                                            <th>City</th>
-                                            <th>State</th>
-                                            <th>Country</th>
-                                            <th>Pincode</th>   
-                                            <th>Active</th>                                          
+                                           <!--  <th data-ng-show="">S.No</th> -->
+                                           <td >{{location_id}}</td>
+                                            <th data-ng-show="setting_locName">Location Name</th>
+                                            <th data-ng-show="setting_locCode">Location Code</th>
+                                            <th data-ng-show="setting_abbr">Abbreviation</th>
+                                            <th data-ng-show="setting_city">City</th>
+                                            <th data-ng-show="setting_state">State</th>
+                                            <th data-ng-show="setting_country">Country</th>
+                                            <th data-ng-show="setting_pincode">Pincode</th>   
+                                            <th data-ng-show="setting_active">Active</th>                                          
                                         </tr>
                                     </thead>
                                     
                                     <tbody>
                                       <tr 
-                                       data-ng-repeat="x in locctrl.Locations  track by x.location_id"
+                                       data-ng-repeat="x in locctrl.FilteredLocations | limitTo:pageSize  track by x.location_id"
 	                	    			 data-ng-dblclick="updateLocation(x,$index)">                                            
                                             <td><input type="checkbox"
                                             data-ng-model="x.select"
                                             data-ng-click="locctrl.selectLocation(x);"></td>
-                                            <td>{{$index+1}}</td>
-                                            <td>{{x.location_name}}</td>
-                                            <td>{{x.location_code}}</td>
-                                            <td>{{x.abbreviation}}</td>
-                                            <td>{{x.address.city}}</td>
-                                            <td>{{x.address.state}}</td>
-                                            <td>{{x.address.country}}</td>
-                                            <td>{{x.pincode}}</td>
+                                            <!-- <td data-ng-show="">{{$index+1}}</td> -->
+                                             <td >{{x.location_id}}</td>
+                                            <td data-ng-show="setting_locName">{{x.location_name}}</td>
+                                            <td data-ng-show="setting_locCode">{{x.location_code}}</td>
+                                            <td data-ng-show="setting_abbr">{{x.abbreviation}}</td>
+                                            <td data-ng-show="setting_city">{{x.address.city}}</td>
+                                            <td data-ng-show="setting_state">{{x.address.state}}</td>
+                                            <td data-ng-show="setting_country">{{x.address.country}}</td>
+                                            <td data-ng-show="setting_pincode">{{x.pincode}}</td>
                                             <td
+                                            data-ng-show="setting_active"
                                             data-ng-class="{'makeGreen':x.active=='Y','makeRed':x.active=='N'}">
                                             {{x.active=="Y"?"ACTIVE":"INACTIVE"}}</td>
                                           
                                         </tr>                         
                                     </tbody>
                                 </table>
+                                
+                                
+                                  		<!--====================pagination tab============================ -->
+                                		<div class="col-lg-6 col-lg-offset-3 " align="center">
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                      											
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previous</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "paginate(1)">Next</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
+										</div>	
+									   <!--double space -->									
+										<div class="col-lg-6"><br><br></div>
                             </div>
                             
                         </div>
@@ -424,7 +537,11 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 	
 	
     <!--====================================================== SCRIPTS START=========================================-->
-      <script>$('[data-toggle="popover"]').popover();</script>
+      <script>$('[data-toggle="popover"]').popover();
+      $('.regSettings').click(function(e) {
+			e.stopPropagation();
+		});
+      </script>
         
      
     <script src="resources/custom/js/custom.js"></script>   
@@ -433,6 +550,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 	<script type="text/javascript" src="resources/custom/js/Address/address_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Location/location_control.js"></script>
 	  <script src="resources/custom/js/confirmDialog.js"></script>
+	  <script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
    <!--====================================================== SCRIPTS END =========================================-->
 
 </body>

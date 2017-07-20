@@ -16,11 +16,54 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 			updateLocation:updateLocation,
 			fetchAllLocation:fetchAllLocation,
 			changeActive:changeActive,
-			checkLocationName:checkLocationName
+			checkLocationName:checkLocationName,
+			searchLocation:searchLocation,
+			paginateFirstOrLast:paginateFirstOrLast
 		}
 	
 	return factory;
-
+	
+	//=============================paginate first or last====================================
+    function paginateFirstOrLast(page) {
+	var deferred = $q.defer();
+	
+	$http({
+		method : 'POST',
+		url : 'paginationLocation',
+		data : page,
+		headers : getCsrfHeader()
+	})
+	.then (
+		function (response) {
+			console.log(response);
+			deferred.resolve(response.data);
+		},
+		function (errResponse) {
+			deferred.reject(errResponse);
+		}
+	);
+	return deferred.promise;
+}
+	//=============================change Active====================================
+	function searchLocation(searchString){
+  	var deferred = $q.defer();
+    	
+    	$http({
+    		method : 'POST',
+    		url : 'searchLocation4String',
+    		data : searchString,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
 	//=============================change Active====================================
 	function changeActive(id,status){	
 		console.log(id,status);

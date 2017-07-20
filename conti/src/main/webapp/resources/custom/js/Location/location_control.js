@@ -11,6 +11,7 @@ angular.module('contiApp').controller('locationController'
 		,['$scope','LocationService','AddressService','ConfirmDialogService',
 			function($scope,LocationService,AddressService,ConfirmDialogService){
 			
+			$scope.shownoofrec = 10;
 			var self=this;			
 			self.Locations=[];
 			self.addresses=[];
@@ -26,20 +27,20 @@ angular.module('contiApp').controller('locationController'
 			self.openDrawer=openDrawer;
 			self.nameWrong=false;
 			self.checkLocationName=checkLocationName;
+			self.registerSearch=registerSearch;
 			
 			//check box select
 			self.selectAllLocation=false;
 			self.selectLocation=selectLocation;
 			self.selectAll=selectAll;
 			self.selectedLocation=[];
-			
 			 
 		
 			//active inactive 
 			self.makeActive=makeActive;
 			self.makeInActive=makeInActive;
 			
-		
+
 			self.Location={
 				    "location_id": null,
 				    "updated_by": null,
@@ -66,6 +67,51 @@ angular.module('contiApp').controller('locationController'
 				    }
 				};
 			
+		
+			//===================================SEARCH REGISTER====================================
+			function registerSearch(searchString){
+				if(searchString.length==0){
+					self.FilteredLocations=self.Locations;
+				}else if(searchString.length>3){
+					LocationService.searchLocation(searchString)
+					.then(
+							function(response){
+								self.FilteredLocations=response	;
+							},function(errRespone){
+								console.log("error while fetching Location in search"+errResponse);
+							});
+				}else{
+					console.log("less than 3");
+					self.FilteredLocations=_.filter(self.Locations,function(item){
+						return searchProduct(item,searchString);
+					});
+				}
+			}
+			function searchProduct(item,toSearch){
+				
+				var success=false;
+				
+				try{
+					if(
+							
+							item.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
+							item.location_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
+							item.abbreviation.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
+							item.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
+							item.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
+							item.address.country.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
+							String(item.pincode).indexOf(toSearch) > -1	 		
+					){
+						success = true;
+					} else {
+						success = false;
+					}
+				}catch(e){
+					success = false;
+				}
+				
+				return success;	
+			}
 			//===================================select Product====================================
 			function selectLocation(x){
 				console.log(x);
@@ -77,12 +123,31 @@ angular.module('contiApp').controller('locationController'
 					console.log(x);
 					self.selectedLocation.splice(index,1);
 				}
+				console.log(self.selectedLocation);
 				
 			}
 			
 			//===================================select all====================================
 			function selectAll(){
-				angular.forEach(self.Locations,function(x){
+				
+				self.selectedLocation=[];
+				
+				if(!self.selectAllLocation){
+					self.selectedLocation=[];	
+				}
+			
+					for(var i=0;i<$scope.pageSize;i++){
+						self.FilteredLocations[i].select=self.selectAllLocation;
+						if(self.selectAllLocation){
+							self.selectedLocation.push(self.FilteredLocations[i]);
+						}
+					}
+			
+				
+				
+				console.log(self.selectedLocation);
+				
+			/*	angular.forEach(self.Locations,function(x){
 					x.select=self.selectAllLocation;
 				});				
 				
@@ -90,7 +155,7 @@ angular.module('contiApp').controller('locationController'
 					self.selectedLocation=self.Locations;
 				}else{
 					self.selectAllLocation=[];
-				}
+				}*/
 			}
 			
 			function selectOneRecord(){
@@ -104,7 +169,7 @@ angular.module('contiApp').controller('locationController'
 			}
 				
 			function showStatusAfterSave(status){
-				 fetchProducts();
+				fetchAllLocation();
 				self.message ="Selected record(s) has been made  "+status+"..!";
 				successAnimate('.success');
 				 self.selectedLocation=[];
@@ -181,15 +246,13 @@ angular.module('contiApp').controller('locationController'
 			    				BootstrapDialog.TYPE_DANGER, "Make Records InActive  ..?", 'btn-danger')
 			    		.then(function(response){
 			    			
-			    			LocationService.changeActive(active_id,"InActive")
+			    			LocationService.changeActive(In_active_id,"InActive")
 							.then(
 									function(response){
 										showStatusAfterSave("InActive");
-									},function(errRespone){
-										console.log("error making location InActive"+errResponse);
+									},function(errResponse){
+										console.log("error making location InActive",errResponse);
 									});
-			    			
-			    			
 			    		});
 			    		}
 				}
@@ -385,14 +448,88 @@ angular.module('contiApp').controller('locationController'
 			function fetchAllLocation(){
 				LocationService.fetchAllLocation()
 				.then(function(response){
+					 pagination();
 					self.Locations=response;
+					self.FilteredLocations=response;
 					console.log(self.Locations);
 				},
 				function(errResponse){
 					console.log("error fetching all location");					
 				});
 			}
-			
+			  //===================================next and previous page====================================  
+		    $scope.paginate=function(nextPrevMultiplier){
+		    	
+		    	self.selectAllLocation=false;
+		    	$scope.currentPage += (nextPrevMultiplier * 1);
+		    	console.log(self.Locations.length);
+		    	self.FilteredLocations = self.Locations.slice($scope.currentPage*$scope.pageSize);
+		    	console.log(self.FilteredLocations.length);
+		    	
+		    	
+		    	
+		    	if(self.FilteredLocations.length == 0) {
+		           	console.log("empty");
+		           	console.log($scope.currentPage);
+		           	LocationService.paginateFirstOrLast($scope.currentPage)		           	
+					.then(function (response) {
+						console.log(response);
+						
+						if ( response.length == 0 ) {
+							$scope.nextDisabled = true;
+						} else if ( response.length < 10 ) {
+							self.FilteredLocations = response;
+							$scope.nextDisabled = true;
+						} else {
+							self.FilteredLocations = response;
+						}
+						
+					}, 
+					function (errResponse) {
+						console.log('Error while pagination');
+					}
+				);
+		    	}
+		    	
+		    	
+		       	if(self.FilteredLocations.length < $scope.pageSize) {
+		    		$scope.nextDisabled = true;
+		    	}
+		    	
+		    	if($scope.currentPage == 0) {
+		    		$scope.previouseDisabled = true;
+		    	}
+		    	if(nextPrevMultiplier == -1) {    		
+		    		$scope.nextDisabled = false;
+		    	} else {
+		    		$scope.previouseDisabled = false;
+		    	}
+		    }
+			//===================================first last login page====================================
+			$scope.firstlastPaginate = function (page) {
+				
+				self.selectAllLocation=false;
+				LocationService.paginateFirstOrLast(page)
+				.then(
+						function(response){
+							self.FilteredLocations=response;
+							console.log(response);
+						},function(errRespone){
+							console.log("error while fetching Location in search"+errResponse);
+						});
+				
+				
+				if( page == 1 ) {
+		    		$scope.currentPage = 0;
+		    		$scope.previouseDisabled = true;
+		    		$scope.nextDisabled = false;
+		    	} else {
+		    		$scope.previouseDisabled = false;
+		    		$scope.nextDisabled = true;
+		    		
+		    	}
+			}
+				
 			//=============================RESET LOCATION====================================
 			function reset(){
 				$scope.locationForm.$setPristine();
@@ -423,5 +560,20 @@ angular.module('contiApp').controller('locationController'
 					console.log("error checking name");
 				})
 			}
+			
+			//===================================change no of page to view in register====================================
+		    self.shownoofRecord=function shownoofRecord() {    
+		    	$scope.pageSize = $scope.shownoofrec;
+		    }
+		    
+		    
+			//===================================pagination====================================
+		    function pagination() {
+		    	$scope.pageSize = $scope.shownoofrec;
+				$scope.currentPage = 0;
+				$scope.totalPages = 0;	
+				$scope.previouseDisabled = true;	
+				$scope.nextDisabled = false;	
+		    }
 			
 }]);

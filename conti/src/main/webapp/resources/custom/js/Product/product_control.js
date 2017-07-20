@@ -149,7 +149,6 @@ angular.module('contiApp').controller('productController',
 		if(searchString.length == 0){
 			self.FilteredProducts=self.products;
 		}else if(searchString.length>3){
-			console.log("more than 3");
 			ProductService.searchProduct(searchString)
 			.then(
 					function(response){
@@ -158,7 +157,6 @@ angular.module('contiApp').controller('productController',
 						console.log("error while fetching products in search"+errResponse);
 					});
 		}else{
-			console.log("less than 3");
 			self.FilteredProducts=_.filter(self.products,function(item){
 				return searchProduct(item,searchString);
 			});
@@ -196,11 +194,19 @@ angular.module('contiApp').controller('productController',
 		
 		self.selectedProducts=[];
 		
+		if(!self.selectAllProduct){
+			self.selectedProducts=[];
+		}
+		
 		for(var i=0;i<$scope.pageSize;i++){
 			self.FilteredProducts[i].select = self.selectAllProduct;
-			self.selectedProducts.push(self.FilteredProducts[i]);
+			if(self.selectAllProduct){
+				self.selectedProducts.push(self.FilteredProducts[i]);
+			}
+		
 		}
-		console.log(self.selectedProducts);
+			
+		
 		/*
 		angular.forEach(self.products,function(x){
 			x.select=self.selectAllProduct;
@@ -498,26 +504,16 @@ angular.module('contiApp').controller('productController',
 	//===================================pagination====================================
     function pagination() {
 
+    	$scope.pageSize = $scope.shownoofrec;
 
 		$scope.currentPage = 0;
-    	$scope.pageSize = $scope.shownoofrec;
-    	$scope.viewby = 10;
-		$scope.totalItems = self.products.length;
-		$scope.itemsPerPage = $scope.viewby;
-		$scope.maxSize = 2; //Number of pager buttons to show
+		$scope.totalPages = 0;	
+    	
+    	
 		$scope.previouseDisabled = true;	
-		$scope.setPage = function (pageNo) {
-			$scope.currentPage = pageNo;
-		  };
-
-		  $scope.pageChanged = function() {
-			console.log('Page changed to: ' + $scope.currentPage);
-		  };
-
-		  $scope.setItemsPerPage = function(num) {
-			  $scope.itemsPerPage = num;
-			  $scope.currentPage = 1; //reset to first paghe
-		}
+		$scope.nextDisabled = false;
+	
+	
 		
     }
 	
