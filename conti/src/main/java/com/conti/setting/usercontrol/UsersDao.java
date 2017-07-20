@@ -16,9 +16,10 @@ public interface UsersDao {
 	public void delete(int id);
 	public User findByUserName(String username);
 	
+	public List<User> getUsersbyBranchId(int branch_id);
 	
 	//======== User Master Functions Begin ============//
-	
+	public User getUserbyEmp(int emp_id);
 	public User getBranchId(int id);
 	public List<User> getUser(int emp_id);
 	public List<User> getAllUsers();

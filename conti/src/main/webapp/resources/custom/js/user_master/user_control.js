@@ -10,14 +10,19 @@
 contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService', 'BranchService', 'ConfirmDialogService', function($scope, UserService, EmployeeService, BranchService, ConfirmDialogService) {
     var self = this;
     self.user={user_id:null,username:''};
+    self.user.role = {};
     self.users=[];
     self.save = "saveclose";
+    
     self.message = null;
     self.resetBtn = false;
 	self.checkPWD = true;
 	self.errorUsername = false;
 	self.submit = submit;
+	self.updateUser = updateUser;
 	self.reset = reset;
+	self.close = close;
+	self.clear = clear;
 	 /*    self.edit = edit;
     self.remove = remove;
     self.reset = reset;*/
@@ -41,6 +46,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
     fetchAllUsers();
     fetchAllBranches();
 
+    /*var currentUserRole = $('#currentUserRole').val();*/
 
 	function reset () {
 		   self.user = {};
@@ -52,15 +58,43 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 
 
 	}
+	
+	function close(oper) {
+		self.confirm_title = oper;
+		self.confirm_type = BootstrapDialog.TYPE_WARNING;
+		self.confirm_msg = self.confirm_title+ ' without saving data?';
+		self.confirm_btnclass = 'btn-warning';
+		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+			.then(
+					function (res) {
+		 	        	reset();
+		 	        	newOrClose();
+					}
+				);
+	}
+
+	function clear() {
+		self.confirm_title = 'Clear';
+		self.confirm_type = BootstrapDialog.TYPE_WARNING;
+		self.confirm_msg = self.confirm_title+ ' the data?';
+		self.confirm_btnclass = 'btn-warning';
+		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+			.then(
+					function (res) {
+		 	        	reset();
+		 	        	
+					}
+				);
+	}
 
     //----------------------  Fetch All users begin ----------------------------- //    
     function fetchAllUsers(){
         UserService.fetchAllUsers()
             .then(
-            function(d) {
-                self.users = d;
+            function(users) {
+                self.users = users;
                 
-                console.log(d);
+                console.log(users);
             },
             function(errResponse){
                 console.error('Error while fetching Users');
@@ -494,7 +528,9 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 			EmployeeService.fetchEmployeebyBranchid(branch_id)
 				.then(
 						function (employees) {
-							self.employees = employees;				
+							self.employeesforname = employees;	
+							
+							console.log(employees);
 						}, 
 						function (errResponse) {
 							console.log('Error while fetching branches');
@@ -518,8 +554,18 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 			UserService.fetchAllRoles()
 				.then(
 						function (roles) {
-
-							self.roles = roles;				
+							/*
+							if ( currentUserRole == "MANAGER") {
+								for(var i =0; i< roles.length; i++) {
+									if( roles[i].role_Name == "SUPER_ADMIN" ) {
+										console.log(roles.indexOf(roles[i]));
+										roles.splice(roles.indexOf(roles[i]),1);
+									}
+								}
+							}
+							*/
+							self.roles = roles;
+							
 						}, 
 						function (errResponse) {
 							console.log('Error while fetching branches');
@@ -563,8 +609,9 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    				.then(
 	    						function (res) {
 	    							self.user.branchModel = JSON.parse($("#branch_id").val());
-	    			 	    		var emp = JSON.parse($("#emp_id").val());  
-	    			 	    		self.user.emp_id = emp.emp_id;
+	    			 	    		self.user.employeeMaster = JSON.parse($("#emp_id").val()); 
+	    			 	    		self.user.role.role_Id = self.user.role_id;
+	    			 	    		delete self.user.role_id;
 	    			 	    		delete self.user.confpassword;
 	    			 	    		createUser(self.user);  
 	    			 	        	reset();
@@ -575,13 +622,36 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    					);
 	    			
 				} else {
-					console.log("update");
+					
+					
+					self.confirm_title = 'Update';
+	    			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+	    			self.confirm_msg = self.confirm_title+ ' ' + self.user.username + ' user?';
+	    			self.confirm_btnclass = 'btn-success';
+	    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+	    				.then(
+	    						function (res) {
+	    							self.user.branchModel = JSON.parse($("#branch_id").val());
+	    			 	    		self.user.employeeMaster = JSON.parse($("#emp_id").val()); 
+	    			 	    		self.user.role.role_Id = self.user.role_id;
+	    			 	    		delete self.user.role_id;
+	    			 	    		delete self.user.confpassword;	    			 	    		
+	    			 	    		editUser(self.user);  
+	    			 	        	reset();
+	    			 	        	window.setTimeout( function(){	 	        		
+	    			 	        		newOrClose();
+	    							},5000);
+	    						}
+	    					);
+					
 				}
 				
 			}
 		}
 		
 		//------------------------- Submit for new User / update user end --------//
+		
+		
 		
 		//------------------------- Create new User begin ------------------//
 	    function createUser(user){
@@ -590,7 +660,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    	UserService.createUser(user)
 	            .then(
 	            		function () {
-	                        fetchAllUser();
+	                        fetchAllUsers();
 	                      
 	            			self.message = user.usernmae+" user created..!";
 	            			successAnimate('.success');            			
@@ -603,17 +673,80 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    } 
 		//------------------------- Create new User end ----------------------------------------------//   
 		
+	    //------------------------- update User begin ---------------------//
+	    function updateUser(user) {
+	    	self.user = user;
+	    	self.usernameupdateCheck = user.username;
+	    	self.heading = self.user.username;
+	    	$('#branch_id').val(JSON.stringify(self.user.branchModel));
+	    	$('#branch_name_value').val(self.user.branchModel.branch_name);
+	    	$('#employee_name_value').val(self.user.employeeMaster.emp_name);
+	    	$('#emp_id').val(JSON.stringify(self.user.employeeMaster));
+			 
+	    	self.user.role_id = user.role.role_Id;
+	    	self.user.confpassword = user.userpassword;
+	    	drawerOpen('.drawer');
+	    }
+	    //------------------------- update User end ---------------------//
+	    
+	  //------------------------- Update existing employee begin ------------------//
+	    function editUser(user){
+	 
+	    	/*EmployeeService.updateEmployee(employee,employee.emp_id)
+	            .then(
+	            		function () {
+	                        fetchAllEmployees();
+
+	                        self.message = employee.emp_name+" employee updated..!";
+	            			successAnimate('.success');              			
+	            		},
+	           
+	            function(errResponse){
+	                console.error('Error while updating employee' + employee.emp_name );
+	                console.error(employee);
+	            }
+	        );*/
+	    	
+	    	
+		    	UserService.updateUser(user)
+		        .then(
+		        		function (user) {
+		        			console.log(user);
+		                    /*fetchAllUsers();*/
+		                    self.message = user.username+" user updated..!";
+		        			successAnimate('.success');            			
+		        		},
+		       
+		        function(errResponse){
+		            console.error('Error while update user' + user.username );
+		        }
+		    );
+	    } 
+		//------------------------- Update existing employee end ----------------------------------------------//  
+	    
 		//------------------------- Check username begin -------------------------------------//
 		
 		function checkUsername(username){
 			
-			UserService.checkUsername(username)
+			var user_check  = 0;
+			if (self.user.user_id != null) {
+				
+				if(username == self.usernameupdateCheck) {
+					user_check = 1;
+					
+					self.errorUsername = false;
+				}
+				
+			}
+			
+			if ( user_check == 0 ) {
+				
+				UserService.checkUsername(username)
 				.then(
 						function(response) {
 							if( response.status == 200 ) {
 								self.errorUsername = true;
 								
-								console.log(response.status);
 							} else {
 								self.errorUsername = false;
 								console.log(response.status);
@@ -623,6 +756,9 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 							console.log(errResponse);
 						}
 					);
+				
+			}
+			
 			
 		}
 		

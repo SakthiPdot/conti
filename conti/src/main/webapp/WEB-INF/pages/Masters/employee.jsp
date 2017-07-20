@@ -52,7 +52,7 @@
 
 
 <body style="overflow-x:hidden;" data-ng-app = "contiApp" data-ng-controller = "EmployeeController as ctrl">
- 
+
  <!-- ------------------------- Overlay for message begin ------------------ -----  -->
 	<div class="overlay hideme"></div>
 <!-- ------------------------- Overlay for message end ------------------ -----  -->	
@@ -80,7 +80,7 @@
                    
                    <div class="col-lg-6 headerRight">
                    		<!-- <i class="fa fa-times fa-2x drawerClose pull-right iconLeft" onClick="drawerClose('.drawer')" data-ng-click = "ctrl.reset()"></i> -->
-                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close()"></i>
+                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close('Close')"></i>
                    </div>
             
              </div>
@@ -296,7 +296,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close()" > <i class="fa fa-times" aria-hidden="true"></i>
+							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" > <i class="fa fa-times" aria-hidden="true"></i>
 							Cancel</button>
 						</div>
 						
@@ -398,7 +398,7 @@
                                <div class="col-lg-6 icons-button">
                                    <div class="pull-right">
                                    
-                                   <form name="empPrint" method = "POST" action = "employee_print" >
+                                   <form name="empPrint" method = "POST" action = "employee_print" class="padding-button">
                                      <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a> 
                                      <div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
                                      	<div class ="checkbox">
@@ -464,11 +464,11 @@
 										
 									</div>	
 							
-                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelEmployee'"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelEmployee'; valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                       
                                       
-	                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
-	                                      <input type = "hidden" name = "emp" value = "{{ctrl.selected_employee}}" />
+	                                      <button type="submit" class="btn btn-primary"  data-ng-disabled = "ctrl.selected_employee.length == 0" ><i class="fa fa-print fa-lg"></i></button>
+	                                      <input type = "hidden" name = "emp" value = "{{ctrl.selected_employee}}"/>
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                       </form>
                                        

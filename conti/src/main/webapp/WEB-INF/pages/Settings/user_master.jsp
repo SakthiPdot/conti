@@ -1,10 +1,7 @@
 
 <!DOCTYPE html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib
-    prefix="c"
-    uri="http://java.sun.com/jsp/jstl/core" 
-%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ page isELIgnored="false" %> 
 <%@page session="true"%>
 <html lang="en">
@@ -53,7 +50,7 @@
 
 
 <body style="overflow-x:hidden;" data-ng-app = "contiApp" data-ng-controller = "UserController as ctrl" >
- 
+ <%-- <input type = "text" id = "currentUserRole" value = "<sec:authentication property="principal.authorities[0]"/>" /> --%>
   <!-- ------------------------- Overlay for message begin ------------------ -----  -->
 	<div class="overlay hideme"></div>
 <!-- ------------------------- Overlay for message end ------------------ -----  -->	
@@ -85,7 +82,7 @@
                    </div>
                    
                     <div class="col-lg-4 col-md-4 col-sm-2 headerRight">
-                   		<i class="fa fa-times fa-2x drawerClose  pull-right iconLeft" data-ng-click = "ctrl.close()"></i>
+                   		<i class="fa fa-times fa-2x drawerClose  pull-right iconLeft" data-ng-click = "ctrl.close('Close')"></i>
                    </div>
             
              </div>
@@ -126,17 +123,17 @@
 						              data-trigger="focus" data-toggle="popover" 
 						              data-placement="top" data-content="Please enter branch name"
 						              onKeyPress="return CheckIsCharacter(event)"
-						              input-class="form-control form-control-small">
+						              input-class="form-control form-control-small" tabindex = "-1" data-ng-class = "{'disabled' : ctrl.user.user_id != null}">
               				</angucomplete-alt>
-			                  <input type="text" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject}}" />
+			                  <input type="hidden" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject}}" />
 			                  
 			                   <span>Employee Name <span class="required">*</span></span>
 			                  <angucomplete-alt id="employee_name" data-ng-model = "ctrl.user.emp_name"
 			                  placeholder = "Ex: Sankar" pause="100"
 			                  selected-object="emp_name"
-			                  local-data="ctrl.employees"
+			                  local-data="ctrl.employeesforname"
 			                  search-fields="emp_name"
-			                  title-field = "emp_name"
+			                  title-field = "emp_name,emp_code"
 			                  match-class="highlight"
 			                  initial-value = "{{ctrl.user.employeeMaster.emp_name}}"
 			                  minlength="1"
@@ -144,10 +141,10 @@
 			                  data-trigger = "focus" data-toggle="popover"
 			                  data-placement="top" data-content="Please Enter Employee Name"
 			                  onKeyPress = "return CheckIsCharacter(event)"
-			                  input-class="form-control form-control-small">
+			                  input-class="form-control form-control-small" data-ng-class = "{'disabled' : ctrl.user.user_id != null}">
 			                  </angucomplete-alt>
 			                  			                  
-			                  <input type="text" id="emp_id" name="emp_id" value="{{emp_name.originalObject}}"/>
+			                  <input type="hidden" id="emp_id" name="emp_id" value="{{emp_name.originalObject}}"/>
 			                  
 			                   <span>Role Name <span class="required">*</span></span>
 			                  <select class="form-control" data-ng-options="role.role_Id as role.role_Name for role in ctrl.roles" data-ng-model="ctrl.user.role_id" required>
@@ -157,7 +154,7 @@
 			                   <span>User Name <span class="required">*</span></span>
 			                  <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" minlength="5" maxlength= "20" data-ng-model="ctrl.user.username" data-trigger="focus"
 			                  data-toggle="popover" data-placement="top" data-content="Please Enter Username" data-ng-blur="ctrl.checkUsername(ctrl.user.username)" required >
-			                  <span data-ng-show = "ctrl.errorUsername" class ="makeRed">This username is not available</span>
+			                  <div data-ng-show = "ctrl.errorUsername" class ="makeRed">This username is not available</div>
 			                    <span>Password <span class="required">*</span></span>
 			                  <input type="text" class="form-control" min= "8" data-ng-model="ctrl.user.userpassword" data-trigger="focus"
 			                  data-toggle="popover" data-placement="top" data-content="Please Enter Password" data-ng-keyup = "ctrl.getPassword(ctrl.user.userpassword)" required>
@@ -168,7 +165,6 @@
 			                  data-toggle="popover" data-placement="top" data-content="Please Enter ConfirmPassword" data-ng-keyup = "ctrl.checkPassword(ctrl.user.userpassword, ctrl.user.confpassword)" required>
 			                  
 		                  	<span data-ng-show = "!ctrl.checkPWD" class ="makeRed">Password doesn't match</span>
-			               
 			               
 			                <div class="passward_validate hidden">
 											<ul>
@@ -196,9 +192,8 @@
 		                			
 										             
 	                </div>  
-	                   
 	                    				
-										
+							 				
 										             
 	                              
                  </div>
@@ -208,7 +203,7 @@
                  	<div class="row">
                  		<div class="col-lg-12">
                  				<div class="col-lg-4 col-xs-4  footerLeft">
-                 					<button type ="button" class="btn btn-danger pull-left " data-ng-click="ctrl.close()"><i class="fa fa-trash-o"></i> Cancel</button>
+                 					<button type ="button" class="btn btn-danger pull-left " data-ng-click="ctrl.close('Cancel')"><i class="fa fa-trash-o"></i> Cancel</button>
                  				</div>
                  				
                  					<div class="col-lg-4 col-xs-4 " style="text-align:center; !important;">
@@ -218,8 +213,8 @@
 						</div>
                  				
            				<div class="col-lg-4 col-xs-4 footerRight" data-ng-show="!(ctrl.user.user_id == null)">
-           					<button type="button" class="btn btn-success" type="submit" id="saveclose" data-id="0" data-ng-click="save($event)"
-           					type="submit"><i class="fa fa-floppy-o "></i> Update</button>
+           					<button type="submit" class="btn btn-success" type="submit" id="saveclose" data-id="0" data-ng-click="save($event)"
+           					data-ng-disabled = "((!ctrl.errorUsername) && (ctrl.resetBtn) && (ctrl.checkPWD))? false : true"><i class="fa fa-floppy-o "></i> Update</button>
            				</div>  
            				
            				
@@ -363,31 +358,30 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.userSelectall()" data-ng-model = "selectall"></th>
-                                            <th>S.No</th>
-                                            <th data-ng-show = "setting_branchname">Branch Name</th>
                                             <th data-ng-show = "setting_employeename">Employee Name</th>
-                                            <th data-ng-show = "setting_rolename">Role Name</th>
-                                            <th data-ng-show = "setting_username">User Name</th>
+                                            <th data-ng-show = "setting_branchname">Employee Code</th>
+                                            <th data-ng-show = "setting_rolename">User Name</th>
+                                            <th data-ng-show = "setting_username">Role</th>
                                             <th data-ng-show = "setting_userstatus">Status</th>
                                                                                 
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr data-ng-repeat = "user in ctrl.users | orderBy : 'username' "
+                                        <tr data-ng-repeat = "user in ctrl.users | limitTo:pageSize"
                                         data-ng-dblclick = "ctrl.updateUser(user)">
                                            	<td><input type="checkbox" data-ng-change = "ctrl.userSelect(user)" data-ng-model = "user.select"></td>
-                                            <td>{{$index+1}}</td>
-                                            <td data-ng-show = "setting_branchname">Coimbatore</td>
-                                            <td data-ng-show = "setting_employeename">Raju</td>
-                                            <td data-ng-show = "setting_rolename">Staff</td>
-                                            <td data-ng-show = "setting_username">raju</td>
-                                            <td data-ng-show = "setting_userstatus" data-ng-class = "{'makeGreen' : user.active == 'Y', 'makeRed' : user.active == 'N'}"></td>
+                                            <td data-ng-show = "setting_employeename">{{user.employeeMaster.emp_name}}</td>
+                                            <td data-ng-show = "setting_employeename">{{user.employeeMaster.emp_code}}</td>
+                                            <td data-ng-show = "setting_branchname">{{user.username}}</td>
+                                            <td data-ng-show = "setting_rolename">{{user.role.role_Name}}</td>
+                                            <td data-ng-show = "setting_userstatus" data-ng-class = "{'makeGreen' : user.active == 'Y', 'makeRed' : user.active == 'N'}">{{user.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                           
                                         </tr>
                                         
                                                                                
                                    </tbody>
                                 </table>
+                                
                             </div>
                             
                         </div>

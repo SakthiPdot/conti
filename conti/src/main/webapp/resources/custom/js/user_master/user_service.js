@@ -11,7 +11,7 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
 
  
     var factory = {
-        fetchAllUsers: fetchAllUser,
+        fetchAllUsers: fetchAllUsers,
         findUser: findUser,
         findUserbyName : findUser,
         changePassword : changePassword,
@@ -22,14 +22,15 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
         
         fetchAllRoles : fetchAllRoles,
         checkUsername : checkUsername,
-        createUser : createUser
+        createUser : createUser,
+        updateUser : updateUser
     };
  
     return factory;
     
 
     //----------------------  Fetch All users begin ----------------------------- //
-    function fetchAllUser() {
+    function fetchAllUsers() {
     	
     	/*Service.get(REST_SERVICE_URI,"Fetch all user")
     		.then(
@@ -305,6 +306,46 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
 
 		    }
 		 
-			//--------------------------------- Create new user end --------------------------------//    
-    
+			//--------------------------------- Create new user end --------------------------------//  
+		 
+		//--------------------------------- Update user begin --------------------------------//  
+		    function updateUser(user) {
+		
+		        var deferred = $q.defer();
+		        var headers = getCsrfHeader();
+		        
+		    	$http({
+		    		method : 'POST',
+		    		url : 'update_user',
+		    		data : user,
+		    		headers : headers
+		    	})
+		    	.then(
+		    			function (response) {    				
+		    				deferred.resolve(response.data);
+		    			},
+		    			function (errResponse) {
+		    				deferred.reject(errResponse);
+		    			}
+		    		);
+		    		return deferred.promise;
+		    	
+		    	/*var deferred = $q.defer();
+		    	$http({
+		    		method : 'PUT',
+		    		url : 'users/'+id,
+		    		headers : getCsrfHeader()
+		    	})
+		    	.then (
+		    		function (response) {
+		    			deferred.resolve(response.data);
+		    		},
+		    		function (errResponse) {
+		    			deferred.reject(errResponse);
+		    		}
+		    	);
+		    	return deferred.promise;*/
+		    		
+		    }
+		//--------------------------------- Update user end --------------------------------//
 }]);
