@@ -38,11 +38,13 @@
      <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
      <script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script>
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
     
 </head>
+
 
 
 <body style="overflow-x:hidden;" data-ng-app = "contiApp" data-ng-controller = "ServiceController as ctrl">
@@ -53,7 +55,7 @@
  
  <!-- ----------------------  Success message begin -------------------------- -->
  		<div class="success hideme">
- 			<i class="fa fa-check-circle"  aria-hidden="true"></i>{{ctrl.message}}
+ 			<i class="fa fa-check-circle"  aria-hidden="true"></i>  {{ctrl.message}}
  			<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
  		</div>	
  <!-- ----------------------  Success message end  --------------------------- -->
@@ -76,7 +78,7 @@
                    </div>
                    
                    <div class="col-lg-4 col-md-4 col-sm-2 headerRight">
-                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close()"></i>
+                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close('Close')"></i>
                    </div>
             
              </div>
@@ -121,7 +123,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4  footerLeft">
-							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close()" ><i class="fa fa-trash-o"></i> Clear</button>
+							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close('Clear')" ><i class="fa fa-trash-o"></i> Clear</button>
 						</div>
 						
 						 <div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
@@ -209,13 +211,20 @@
 								
 							</div>
 							
+							<div class="row paddingtop">
+								<div class="col-md-12">
+									<select name="shownoofrec" data-ng-model="shownoofrec" data-ng-options = "noofrec for noofrec in [10, 15, 25, 50, 100]" class="form-control" data-ng-click = "ctrl.shownoofRecord()">
+									</select>
+								</div>
+							</div>
+							
 
 						</div> 
                                 </div>
                               
                                 <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
-                                   <form name="servicePrint" method = "POST" action = "service_print" >
+                                   <form name="servicePrint" method = "POST" action = "service_print" class="padding-button" >
                                      <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a> 
                                      <div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
                                      	<div class ="checkbox">
@@ -245,10 +254,17 @@
                                       <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelService'"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                       
                                       
-	                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+	                                      <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_service.length == 0"><i class="fa fa-print fa-lg"></i></button>
 	                                      <input type = "hidden" name = "service" value = "{{ctrl.selected_service}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                       </form>
+                                      
+                                      <div class="row paddingtop">
+                                      	<div class="col-md-12">
+                                      		<input type="text" class="form-control" name="search" placeholder ="Search" data-ng-model = "ctrl.service_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.service_regSearch)"/>
+                                      	</div>
+                                      </div>
+                                      
                                     </div>
                                 </div>
                               </div>
@@ -259,24 +275,36 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.servSelectall()" data-ng-model = "selectall"></th>
-                                            <th>S.No</th>
+                                         <!--    <th>S.No</th> -->
                                             <th data-ng-show = "setting_servicename">Service Name</th>
                                             <th data-ng-show = "setting_servicecode">Service Code</th>
                                             <th data-ng-show = "setting_servicestatus">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr data-ng-repeat = "service in ctrl.services | orderBy : 'service_name' "
+                                        <tr data-ng-repeat = "service in ctrl.Filterservices | limitTo:pageSize "
                                         data-ng-dblclick = "ctrl.updateService(service)">
                                             <td><input type="checkbox" data-ng-change="ctrl.servSelect(service)" data-ng-model = "service.select"/></td>
-                                            <td>{{$index+1}}</td>
+                                        <!--     <td>{{$index+1}}</td> -->
                                             <td data-ng-show = "setting_servicename">{{service.service_name}}</td>
                                             <td data-ng-show = "setting_servicecode">{{service.service_code}}</td>
                                             <td data-ng-show = "setting_servicestatus" data-ng-class="{'makeGreen' : service.active=='Y', 'makeRed' : service.active=='N'}">{{service.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
                                     </tbody>
-                                </table>
+                                </table>                               
+                               
+                                
                             </div>
+                            
+                             
+                                <div class="col-lg-12 icons-button">
+                                	<div class="pull-right">
+                                		<button class="btn btn-primary" type="button" data-ng-disabled = "previousDisabled" data-ng-click = "firstlastPaginate(1)">First</button>
+                                		<button class="btn btn-primary" type="button" data-ng-disabled = "previousDisabled" data-ng-click = "paginate(-1)">Previous</button>
+                                		<button class="btn btn-primary" type="button" data-ng-disabled = "nextDisabled" data-ng-click = "paginate(1)">Next</button>
+                                		<button class="btn btn-primary" type="button" data-ng-disabled = "nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
+                                	</div>
+                                </div>
                             
                         </div>
                     </div>

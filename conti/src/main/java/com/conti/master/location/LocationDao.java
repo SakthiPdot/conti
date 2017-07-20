@@ -16,6 +16,9 @@ public interface LocationDao {
 	public List<Location> getLocation();
 	public Location getLocationById(int locationId);
 	public void deleteLocationById(int locationId);
+	public String checkLocationName(String name);
 	
+	public List<Location> getLocationWithLimit(int from,int to,String order);
+	public List<Location> searchByLocation(String SearchString);
 }
  

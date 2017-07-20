@@ -9,7 +9,9 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 				updateVehicle : updateVehicle,
 				deleteVehicle : deleteVehicle,
 				makeActive : makeActive,
-				makeinActive : makeinActive
+				makeinActive : makeinActive,
+				registerSearch : registerSearch,
+				pagination_byPage : pagination_byPage
 		  };
 		
 		return factory;
@@ -158,4 +160,56 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 					}
 					
 			//========== InActive Vehicle End ===============//
+					
+					
+					//============= Register Search Begin =========//
+					
+					function registerSearch(searchkey) {
+						var deferred = $q.defer();
+						
+						$http({
+							
+							method : 'POST',
+							url : 'vehicle_registersearch',
+							data : searchkey,
+							headers : getCsrfHeader()
+							
+						})
+						
+						.then (
+							   function (response) {
+								   deferred.resolve(response.data);
+							   },
+							   function (errResponse) {
+								   deferred.reject(errResponse);
+							   }
+						       );
+						return deferred.promise;
+					}
+					
+			//============= Register Search End ==========//
+					
+			//============== Pagination Function Begin ======//
+			
+					function pagination_byPage(page) {
+						var deferred = $q.defer();
+						
+						$http({
+							method : 'POST',
+							url : 'vehicle_pagination',
+							data : page,
+							headers : getCsrfHeader()
+						})
+						.then (
+								function (response) {
+									deferred.resolve(response.data);
+								},
+								function (errResponse) {
+									deferred.reject(errResponse);
+								}
+						      );
+						return deferred.promise;
+					}
+					
+			//============== Pagination Function Begin =======//
 }]);

@@ -51,6 +51,31 @@ public class VehicleDaoImp implements VehicleDao  {
 		}
 		return null;
 	}
+
+	@Override
+	@Transactional
+	public List<VehicleMaster> searchbyVehicle(String search_key) {
+		
+		@SuppressWarnings("unchecked")
+		List<VehicleMaster> listservice = (List<VehicleMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster WHERE obsolete = 'N' and vehicle_regno LIKE '%" + search_key + "%'" 
+						+ "OR vehicle_code LIKE '%" + search_key + "%'" 
+						+ "OR branchModel.branch_name LIKE '%" + search_key + "%'"
+						+ "OR vehicle_modelno LIKE '%" + search_key + "%'" 
+						+ "OR vehicle_type LIKE '%" + search_key + "%'").list();
+		return listservice;
+	}
+
+	@Override
+	@Transactional
+	public List<VehicleMaster> getVehicleswithLimit(int branch_id, int from_limit, int to_limit, String order) {
+		@SuppressWarnings("unchecked")
+		List<VehicleMaster> listVehicle = (List<VehicleMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster where obsolete = 'N' AND branchModel.branch_id = " + branch_id + " "
+						+ "ORDER BY IFNULL (created_datetime, updated_datetime)" +order)
+				.setFirstResult(from_limit).setMaxResults(to_limit).list();
+		return listVehicle;
+	}
 	
 	
 

@@ -58,6 +58,8 @@ public class ProductController {
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
 	UserInformation userInformation;
+	
+	
 	//======================================Excel==========================================
 	@RequestMapping(value="downloadExcelProduct",method=RequestMethod.GET)
 	public ModelAndView downloadExcelProduct(){
@@ -82,7 +84,7 @@ public class ProductController {
 			to_limit = 10;
 		} else {
 			from_limit = (page * 10) + 1;
-			to_limit =  (page + 1 ) * 100;
+			to_limit =  (page + 1 ) * 10;
 		}
 		
 		List<Product> productList=productDao.getProductWithLimit(from_limit, to_limit, order); 
@@ -90,20 +92,18 @@ public class ProductController {
 		
 	}
 	
-	
+	//=================CHECK PRODUCT NAME=====================================
 	@RequestMapping(value="checkProductName",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> checkProductName(@RequestBody String name,HttpServletRequest request){
-		
-	
-		 
+	public ResponseEntity<Void> checkProductName(@RequestBody String name,HttpServletRequest request){		 
 		String status=productDao.checkProductName(name.trim());
 		if(status=="AVAILABLE"){
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);			
 		}else{
 			return	new ResponseEntity<Void>(HttpStatus.OK);
 		}			
-				
 	}	
+	
+	
 	//======================================product Inactive==========================================
 	@RequestMapping(value="productStaus/{status}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> productInActive(@RequestBody int[] idArray,@PathVariable("status") String status,HttpServletRequest request){	

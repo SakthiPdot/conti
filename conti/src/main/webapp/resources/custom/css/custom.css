@@ -229,7 +229,9 @@
             margin-left: 62px;
         }
         
-        
+        .padding-button{
+        padding-left: 25px;
+        }
         
 .modal {
   text-align: center;

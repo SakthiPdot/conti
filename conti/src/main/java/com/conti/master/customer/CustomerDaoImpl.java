@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.conti.master.customer.CustomerModel;
+import com.conti.master.employee.EmployeeMaster;
 import com.conti.master.customer.CustomerDao;
 
 @Repository
@@ -43,17 +44,20 @@ public class CustomerDaoImpl implements CustomerDao
 	
 	@Override
 	@Transactional
-	public List<CustomerModel> getAllCustomers() {
+	public List<CustomerModel> getAllCustomers(int branch_id) {
 		@SuppressWarnings("unchecked")
 		List<CustomerModel> listCustomer = (List<CustomerModel>) sessionFactory.getCurrentSession()
-				.createQuery("from CustomerModel where obsolete ='N'").list();
+				.createQuery("from CustomerModel where obsolete ='N'AND branchModel.branch_id =" + branch_id + " "
+						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC").setMaxResults(100).list();
 		return listCustomer;
 	}
 
 	
 	@Override
 	@Transactional
-	public void saveOrUpdate(CustomerModel customerModel) {
+	public void saveOrUpdate(CustomerModel customerModel) 
+	{
+
 		sessionFactory.getCurrentSession().saveOrUpdate(customerModel);
 	}
 	
@@ -93,5 +97,40 @@ public class CustomerDaoImpl implements CustomerDao
 	}
 	
 	/*------------------------------- Get Customer by id begin -----------------------*/	
+	
+	
+	
+/*------------------------------- Get Customer by id begin -----------------------*/	
+	
+	@Override
+	@Transactional
+	public List<CustomerModel> searchbyeyCustomer(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<CustomerModel> listcust = (List<CustomerModel>) sessionFactory.getCurrentSession()
+		.createQuery("from CustomerModel WHERE obsolete ='N' and customer_name LIKE '%" + search_key + "%'"
+				+ " OR customer_code LIKE '%" + search_key + "%'"
+				+ " OR branchModel.branch_name LIKE '%" + search_key + "%' OR customer_addressline1 LIKE '%" + search_key + "%'"
+				+ " OR customer_addressline2 LIKE '%" + search_key + "%' OR location.location_name LIKE '%" + search_key + "%'"
+				+ " OR location.address.city LIKE '%" + search_key + "%' OR location.address.district LIKE '%" + search_key + "%'"
+				+ " OR location.address.state LIKE '%" + search_key + "%' OR customer_email LIKE '%" + "%'").list();
+		return listcust;
+		
+	}
+	
+	/*------------------------------- Get Customer  by id End -----------------------*/
+	
+	@Override
+	@Transactional
+	public List<CustomerModel> getCustomerswithLimit(int branch_id, int from_limit, int to_limit, String order) 
+	{
+		@SuppressWarnings("unchecked")
+		List<CustomerModel> listCustomer = (List<CustomerModel>) sessionFactory.getCurrentSession()
+				.createQuery("from CustomerModel where obsolete ='N' AND branchModel.branch_id =" + branch_id + " "
+						+ "ORDER BY IFNULL(created_datetime, updated_datetime) "+order)
+				.setFirstResult(from_limit).setMaxResults(to_limit).list();
+		return listCustomer;
+	}
 }
 

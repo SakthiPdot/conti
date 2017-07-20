@@ -442,10 +442,12 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 																class="fa fa-file-excel-o fa-lg"></i>
 															</a>
 															<!--=============== print============== -->
-															<button type="submit" class="btn btn-primary">
+															<button type="submit" class="btn btn-primary"
+															data-ng-disabled="proctrl.selectedProducts.length<1">
 																<i class="fa fa-print fa-lg"></i>
 															</button>
 															<input type="hidden" name="SelectedProduct"
+															
 																value="{{proctrl.selectedProducts}}" /> <input
 																type="hidden" name="${_csrf.parameterName}"
 																value="${_csrf.token}" />

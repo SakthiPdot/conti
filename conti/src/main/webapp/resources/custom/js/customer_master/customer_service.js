@@ -9,7 +9,7 @@
  */
 
 contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
-	var REST_SERVICE_URI = 'http://localhost:8080/Conti/customers/';
+	//var REST_SERVICE_URI = 'http://localhost:8080/Conti/customers/';
 	
 	var factory = {
 			fetchAllCustomers : fetchAllCustomers,
@@ -19,6 +19,8 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
 			deleteCustomer : deleteCustomer,
 			makeActive : makeActive,
 			makeinActive : makeinActive,
+			registerSearch : registerSearch,
+			pagination_byPage : pagination_byPage
 			/*print : print*/
 	};
 	
@@ -28,10 +30,11 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
 	//-------------------------- Fetch All Customers begin ---------------------//	
 	function fetchAllCustomers() {
 		var deferred = $q.defer();
-		$http.get(REST_SERVICE_URI)
+		$http.get('customers/')
 			.then(
 					function (response) {
 						deferred.resolve(response.data);
+						console.log(response.data);
 					},
 					function (errResponse) {
 						console.log("Error while fetching Customers");
@@ -139,7 +142,7 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
     	
     	$http({
     		method : 'POST',
-    		url : 'make_active',
+    		url : 'make_active_customer',
     		data : id,
     		headers : getCsrfHeader()
     	})
@@ -161,7 +164,7 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
     	
     	$http({
     		method : 'POST',
-    		url : 'make_inactive',
+    		url : 'make_inactive_customer',
     		data : id,
     		headers : getCsrfHeader()
     	})
@@ -176,6 +179,55 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
     	return deferred.promise;
     }
     //------------------------------- make inactive Customer end -----------------------------//
+
+    
+  //--------------------------- Register search begin -----------------------------//
+    function registerSearch(searchkey) {
+    	var deferred = $q.defer();
+    	
+    	$http({
+    		method : 'POST',
+    		url : 'register_search_customer',
+    		data : searchkey,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			console.log(response.data);
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
+    //--------------------------- Register search end -----------------------------// 
+    
+    
+    
+ // --------------------------- Pagination begin ------------------------------//
+    function pagination_byPage(page) {
+    	var deferred = $q.defer();
+    	
+    	$http({
+    		method : 'POST',
+    		url : 'pagination_customer',
+    		data : page,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
+    // --------------------------- Pagination end ------------------------------//    
+      
 
 	
 }]);

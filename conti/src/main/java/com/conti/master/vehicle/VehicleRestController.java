@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
+import com.conti.master.employee.EmployeeMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -314,5 +315,44 @@ public class VehicleRestController {
 		
 		
 	//=============== Print Begin =========================//
+		
+	//================== Vehicle Register Function Begin ==========//
+		
+		@RequestMapping(value = "vehicle_registersearch", method=RequestMethod.POST)
+		public ResponseEntity<List<VehicleMaster>> vehicle_registersearch(@RequestBody String search_key, HttpServletRequest request) {
+			
+			List<VehicleMaster> vehicleList =  vehicleDao.searchbyVehicle(search_key);
+			return new ResponseEntity<List<VehicleMaster>> (vehicleList, HttpStatus.OK);
+		}
+		
+    //================== Vehicle Register Function Begin ==========//
+	
+		//=================== Pagination Function Begin ==============//
+	
+		@RequestMapping(value = "vehicle_pagination", method=RequestMethod.POST)
+		public ResponseEntity<List<VehicleMaster>> vehicle_pagination(@RequestBody int page, HttpServletRequest request) {
+			
+			userInformation = new UserInformation(request);
+			String branch_id = userInformation.getUserBranchId();
+		
+			int from_limit = 0, to_limit = 0;
+			String order = "DESC";
+			if(page == 1) { // First
+				from_limit = 0;
+				to_limit = page * 100;
+			} else if ( page == 0 ) { // Last
+				order = "ASC";
+				from_limit = page;
+				to_limit = 10;
+			} else {
+				from_limit = (page * 100) + 1;
+				to_limit =  (page + 1 ) * 100;
+			}
+			
+			List<VehicleMaster> vehicList = vehicleDao.getVehicleswithLimit(Integer.parseInt(branch_id), from_limit, to_limit, order);
+			return new ResponseEntity<List<VehicleMaster>> (vehicList, HttpStatus.OK);
+		}
+		
+		//=================== Pagination Function End ================//
 	
 }

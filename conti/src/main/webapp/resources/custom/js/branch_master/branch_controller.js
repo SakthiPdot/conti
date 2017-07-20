@@ -12,8 +12,8 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 {
 	var self=this;
 	self.branches=[];
+	self.Filterbranches=[];
 	self.branch={};
-	
 	self.heading = "Master";
 	self.message = null;
 	self.submit = submit;
@@ -23,12 +23,20 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	self.updateBranch = updateBranch;
 	self.close = close;
 	self.clear = clear;
+	self.branchSelect=branchSelect;
+	self.branchSelectall=branchSelectall;
+	self.makeActive=makeActive;
+	self.makeinActive=makeinActive;
+	self.registerSearch=registerSearch;
+	self.shownoofRecord=shownoofRecord;
+	self.selected_branch=[];
 	self.confirm_title = 'Save';
 	self.confirm_type = 'TYPE_SUCCESS';
 	self.confirm_msg = self.confirm_title+ ' ' + self.branch.branch_name + ' branch?';
 	self.confirm_btnclass = 'btn-success';
+	$scope.shownoofrec = 10;
 	fetchAllLocations();
-	
+	fetchAllBranches();
 	function reset () 
 	{
 		   self.branch = {};
@@ -54,21 +62,36 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	}
 	//----------Branch Master drawer close begin-----------
 	
-	function close() 
-	{
-		self.confirm_title = 'Cancel';
-		self.confirm_type = BootstrapDialog.TYPE_WARNING;
-		self.confirm_msg = self.confirm_title+ ' without saving data?';
-		self.confirm_btnclass = 'btn-warning';
-		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-			.then(function (res) 
-					{
-		 	        	reset();
-		 	        	newOrClose();
-					}
-				);
-	}
+	
 	//----------Branch Master drawer close begin-----------
+	
+//----------Branch Master drawer close begin-----------
+	
+//	function close() 
+//	{
+//		self.confirm_title = 'Close';
+//		self.confirm_type = BootstrapDialog.TYPE_WARNING;
+//		self.confirm_msg = self.confirm_title+ ' without saving data?';
+//		self.confirm_btnclass = 'btn-warning';
+//		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+//			.then(function (res) 
+//					{
+//		 	        	reset();
+//		 	        	newOrClose();
+//					}
+//				);
+//	}
+	//----------Branch Master drawer close begin-----------
+	
+	
+	function close(title){
+		ConfirmDialogService.confirmBox(title,
+				BootstrapDialog.TYPE_WARNING, title+" Without Save ..? ", 'btn-warning')
+		.then(function(response){
+			 drawerClose('.drawer');
+		});
+	}
+		
 	
 	//----------Branch Master drawer field clear begin-----------
 	
@@ -94,9 +117,11 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	{
 		BranchService.fetchAllBranches()
 			.then(
-					function (branch) {
+					function (branch) 
+					{
 						self.branches = branch;
-											}, 
+						pagination();
+					}, 
 					function (errResponse) {
 						console.log('Error while fetching branches');
 					}
@@ -155,19 +180,19 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	
 	
 	//------------------Updated existing Branch details-------------------
-	function editBranch(Branch)
+	function editBranch(branch,branch_id)
 	{
-		BranchService.createBranch(branch)
+		BranchService.updateBranch(branch_id)
 		.then(
 				function()
 				{
-					fetchAllBranch();
-					self.message=branch.branch_name+"branch updated...!";
+					fetchAllBranches();
+					//self.message=branch.branch_name+ " branch updated...!";
 					successAnimate('success');
 				},
 				function(errResponse)
 				{
-					console.error('Error while creating Branch'+branch.branch_name);
+					console.error('Error while creating Branch '+branch.branch_name);
 				}
 			);
 	}
@@ -175,9 +200,22 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	
 	function submit()
 	{
-		console.log("branch save call")
+		
+//		if ( $("#branch_id").val() == "" || $("#branch_id").val() == null )
+//		{
+//    		$("#branch_name_value").focus();
+//    	}
+//		else if ( $("#location_id").val() == "" || $("#location_id").val() == null )
+//		{
+//    		$("#branch_name_value").focus(); 
+//    	} 
+//		else 
+//    	{	
+		
+
 		if(self.branch.branch_id==null)
 		{
+			console.log("branch save call"+self.branch.branch_id)
 			self.confirm_title='Save';
 			self.confirm_type=BootstrapDialog.TYPE_SUCCESSSS;
 			self.confirm_msg=self.confirm_title +''+self.branch.branch_name+' branch?';
@@ -194,19 +232,22 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 						newOrClose();
 				},5000);
 			});
-		}		
+		}	
+		
 		else
 		{
+			console.log("branch Update function call"+self.branch.branch_id)
 			self.confirm_title='Update';
-			self.confirm_type=BoostrapDialog.TYPE_SUCCESS;
-			self.confirm_msg=self.confirm_title+''+self.branch.branch_name+'branch?';
+			self.confirm_type=BootstrapDialog.TYPE_SUCCESS;
+			self.confirm_msg=self.confirm_title +''+self.branch.branch_name +'branch?';
 			self.confirm_btnclass = 'btn-warning';
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(function(res)
 			{
-				self.branch.branch_id=$("#branch_id").val();
-				self.branch.location=JSON.parse($("location_id").val());
-				editBranch(self.branch);
+				//self.branch.branch_id=$("#branch_id").val();
+				self.branch.location=JSON.parse($("#location_id").val());
+				console.log(self.branch);
+				editBranch(self.branch.branch_id);
 				reset();
 				window.setTimeout(function()
 				{
@@ -216,6 +257,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 		}
 	}
 	
+	//}
 	
 	//------------------------- update branch begin ---------------------//
     function updateBranch(branch) {
@@ -247,19 +289,18 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 					function (res) {
 												
 							BranchService.deleteBranch(self.branch.branch_id)
-						.then(
-								function (branch) {
-									self.message =branch.branch_name+ " Branch Deleted..!";
-									successAnimate('.success');
-									newOrClose();
-									self.branches.splice(branch,1);
-									console.log(branch);	
-									console.log(self.branches);	
-								}, 
-								function (errResponse) {
-					                console.error('Error while Delete branch' + errResponse );
-								}
-							);
+							.then(
+									function (branch) {
+										self.branches.splice(branch,1);
+										self.message =branch.branch_name+ " branch Deleted..!";
+										successAnimate('.success');
+										newOrClose();
+										
+									}, 
+									function (errResponse) {
+						                console.error('Error while Delete branch' + errResponse );
+									}
+								);
 						
 					}
 				);
@@ -267,4 +308,308 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     }
     
   //------------------------- delete branch end ---------------------//
+    
+    
+    
+    //------------------------- Register select begin ------------------//
+    function branchSelect(branch){
+    	var index = self.selected_branch.indexOf(branch);
+    	/*(employee.select)? self.selected_employee.push(employee) : self.selected_employee.splice(index, 1);*/
+    	
+    	if (branch.select){
+    		self.selected_branch.push(branch);
+    	} else {
+    		$scope.selectall = false;
+    		self.selected_branch.splice(index, 1);
+    	}
+    	
+    }
+    //------------------------- Register select end ------------------//
+    
+  //------------------------- Register select all begin ------------------//   
+    function branchSelectall() 
+    {
+    	console.log("call selectall")
+    	self.selected_branch=[];
+    	try {
+			
+			for(var i = 0; i < $scope.pageSize; i++) {
+    			self.Filterebranches[i].select = $scope.selectallbranches;
+    		}
+			if($scope.selectallbranches)
+			{
+				self.selected_branch=$scope.selectallbranches?self.Filterbranches:[];
+			}
+    		
+		} catch(e) 
+		{
+			
+		}
+    		
+		
+    }
+    //------------------------- Register select all end ------------------//
+    
+    
+    
+    //-------------------------- Make Active begin ----------------------//
+    function makeActive(){
+   	if(self.selected_branch.length == 0 ) {
+	   		self.message ="Please select atleast one record..!";
+			successAnimate('.failure');
+    	} else {
+    		var activate_flag = 0;
+    		angular.forEach(self.selected_branch, function(branch){
+    			if(branch.active == 'Y') {
+    				activate_flag = 1;
+    			} 
+    			
+    		});
+    		if(activate_flag == 1) {
+				self.message ="Selected record(s) already in active status..!";
+				successAnimate('.failure');
+    			
+    		} else {
+    			
+    			self.confirm_title = 'Active';
+    			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+    			self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+    			self.confirm_btnclass = 'btn-success';
+    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+    			.then(
+    					function (res) {
+    						var active_id = [];
+    		    			for(var i=0; i<self.selected_branch.length; i++) {
+    		    				active_id[i] = self.selected_branch[i].branch_id;    				
+    		    			}
+    						BranchService.makeActive(active_id)
+    							.then(
+    									function(response) {
+    										fetchAllBranches();
+    										self.selected_branch = [];
+    										self.message ="Selected record(s) has in activat status..!";
+    										successAnimate('.success');
+    									}, function(errResponse) {
+    										console.log(errResponse);    								
+    									}
+    								);
+    					}
+    				);
+    			
+    		}
+
+
+    	}
+    	
+    }
+    //-------------------------- Make Active end ----------------------//    
+    
+    
+  //-------------------------- Make inActive begin ----------------------//
+    function makeinActive(){
+    	
+    	console.log("inside inactive");
+   	if(self.selected_branch.length == 0 ) {
+	   		self.message ="Please select atleast one record..!";
+			successAnimate('.failure');
+    	} else {
+    		var inactivate_flag = 0;
+    		angular.forEach(self.selected_branch, function(branch){
+    			if(branch.active == 'N') {
+    				inactivate_flag = 1;
+    			} 
+    			
+    		});
+    		if(inactivate_flag == 1) {
+				self.message ="Selected record(s) already in inactive status..!";
+				successAnimate('.failure');
+    			
+    		} else {
+    			
+    			self.confirm_title = 'In-Active';
+    			self.confirm_type = BootstrapDialog.TYPE_DANGER;
+    			self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+    			self.confirm_btnclass = 'btn-danger';
+    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+    			.then(
+    						function (res) {
+    							var inactive_id = [];
+    			    			for(var i=0; i<self.selected_branch.length; i++) {
+    			    				inactive_id[i] = self.selected_branch[i].branch_id;        				
+    			    			}
+    							BranchService.makeinActive(inactive_id)
+    								.then(
+    										function(response) {
+    											fetchAllBranches();
+    											self.selected_branch = [];
+    											self.message ="Selected record(s) has in inactive status..!";
+    											successAnimate('.success');
+    										}, function(errResponse) {
+    											console.log(errResponse);    								
+    										}
+    									);
+    						}
+    					);
+    			
+    		}
+
+
+    	}
+    	
+    }
+    //-------------------------- Make inActive end ----------------------//   
+   
+ //-------------------------- Pagnation begin -----------------------//
+    
+    function pagination() {
+        
+    	$scope.pageSize = $scope.shownoofrec;
+    	console.log($scope.pageSize);
+		$scope.currentPage = 0;
+		$scope.totalPages = 0;
+		$scope.totalItems = Math.ceil(self.Filterbranches.length/$scope.pageSize);
+		self.Filterbranches = self.branches;
+		
+		$scope.nextDisabled = false;
+		$scope.previouseDisabled = true;
+					
+    }
+    
+    $scope.paginate = function(nextPrevMultiplier) {
+
+    	$scope.currentPage += (nextPrevMultiplier * 1);
+    	self.Filterbranches = self.branches.slice($scope.currentPage*$scope.pageSize);
+    	
+    	console.log(self.Filterbranches.length);
+    	
+    	if(self.Filterbranches.length == 0) {
+    		BranchService.pagination_byPage($scope.currentPage)
+    		.then(
+    				function (filterBranch) {
+    					
+    					if ( filterBranch.length == 0 ) {
+    						$scope.nextDisabled = true;
+    					} else if ( filterBranch.length < 10 ) {
+    						self.Filterbranches = filterBranch;
+    						$scope.nextDisabled = true;
+    					} else {
+    						self.Filterbranches = filterBranch;
+    					}
+    					
+    				}, 
+    				function (errResponse) {
+    					console.log('Error while pagination');
+    				}
+    			);
+    	} 
+    	
+    	if(self.Filterbranches.length < $scope.pageSize) {
+    		$scope.nextDisabled = true;
+    	}
+    	
+    	console.log(nextPrevMultiplier);
+    	if($scope.currentPage == 0) {
+    		$scope.previouseDisabled = true;
+    	}
+    	if(nextPrevMultiplier == -1) {    		
+    		$scope.nextDisabled = false;
+    	} else {
+    		$scope.previouseDisabled = false;
+    	}
+    	
+    }
+
+  
+    //-------------------------- Pagnation end -----------------------//	
+
+    
+ //---------------------------- Pagination begin ---------------------------------------//
+    
+    $scope.firstlastPaginate = function (page) {
+    	 
+    	BranchService.pagination_byPage(page)
+		.then(
+				function (filterBranch) {
+					
+					console.log(filterBranch);
+					
+					self.Filterbranches = filterBranch;
+				}, 
+				function (errResponse) {
+					console.log('Error while fetching branches');
+				}
+			);
+    	
+    	if( page == 1 ) {
+    		$scope.currentPage = 0;
+    		$scope.previouseDisabled = true;
+    		$scope.nextDisabled = false;
+    	} else {
+    		$scope.previouseDisabled = false;
+    		$scope.nextDisabled = true;
+    		
+    	}
+    }
+    
+
+  //---------------------------- Pagination end ---------------------------------------//
+    
+ //-------------------------------- Show no of record begin ----------------------------------------//
+    
+    function shownoofRecord() {    
+    	$scope.pageSize = $scope.shownoofrec;
+    }
+    //-------------------------------- Show no of record end ----------------------------------------//  
+    
+   
+    
+    //---------------------------- Register search begin ---------------------------------------//
+    function registerSearch(searchkey) {
+    	if ( searchkey.length == 0 ) {
+    		self.Filterbranches = self.branches;
+    	}else if( searchkey.length > 3 ) {
+    		BranchService.registerSearch(searchkey)
+	    		.then(
+						function (filterBranch) {
+							self.Filterbranches = filterBranch;
+						}, 
+						function (errResponse) {
+							console.log('Error while fetching branches');
+						}
+					);
+    	} else {
+    		
+    		self.Filterbranches = _.filter(self.branches,
+					 function(item){  
+						 return searchUtil(item,searchkey); 
+					 });
+				
+    		}
+    	
+    }
+    
+    function searchUtil(item,toSearch)
+	{
+		var success = false;
+		
+		if ( (item.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.branch_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+		//      || (item.empcategory.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+		//		|| (item.emp_address1.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.emp_address2.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
+				|| (item.branch_contactperson.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| ((String(item.branch_mobileno)).indexOf(toSearch) > -1 ) ||  (item.branch_email.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)  
+				|| (item.lrno_prefix.toLowerCase().indexOf(toSearch.toLowerCase())) ||(item.receiptno_prefix.toLowerCase().indexOf(toSearch.toLowerCase()))) 
+		{
+			success = true;
+		} else {
+			success = false;
+		}
+		
+		return success;
+	}
+    //---------------------------- Register search end ---------------------------------------//
+     
+
+
 }]);

@@ -9,4 +9,7 @@ public interface VehicleDao {
 	public List<VehicleMaster> getAllVehicles();
 	public void saveOrUpdate(VehicleMaster vehicle);
 	public VehicleMaster getVehiclebyId(int id);
+	
+	public List<VehicleMaster> searchbyVehicle(String search_key);
+	public List<VehicleMaster> getVehicleswithLimit(int branch_id, int from_limit, int to_limit, String order);
 }

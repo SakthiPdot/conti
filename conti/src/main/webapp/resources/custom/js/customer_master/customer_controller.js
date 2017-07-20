@@ -12,6 +12,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 {
 	var self=this;
 	self.customers=[];
+	self.Filtercustomer = [];
 	self.customer={};
 	
 	self.heading = "Master";
@@ -29,7 +30,9 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 	self.makeActive = makeActive;
 	self.makeinActive = makeinActive;
 	self.print = print;
-	
+	self.shownoofRecord = shownoofRecord;
+	self.registerSearch = registerSearch;
+	$scope.shownoofrec = 10;
 	self.selected_customer = [];
 	self.confirm_title = 'Save';
 	self.confirm_type = 'TYPE_SUCCESS';
@@ -50,7 +53,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 
 	    	self.heading = "Master";
 		   /*$scope.$broadcast('angucomplete-alt:clearInput');*/
-
+	    	fetchAllCustomers();
 
 	}
 	
@@ -158,6 +161,18 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 	    	    
 	};	
 	//------------------------ Location block changes end ----------------------//
+	
+	
+	//------------------------ Branch block changes begin ----------------------//
+    $scope.branch_name = function (branch_selected) {
+    	
+    	$('#branch_id').val(JSON.stringify(branch_selected.originalObject));
+
+	    	    
+	};	
+	//------------------------ Branch block changes end ----------------------//
+	
+	
 
 	//------------------------- Create new Customer begin ------------------//
     function createCustomer(customer){
@@ -185,7 +200,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 	    	CustomerService.createCustomer(customer)
 	        .then(
 	        		function () {
-	                    fetchAllCustomer();
+	                    fetchAllCustomers();
 	                  
 	        			self.message = customer.customer_name+" Customer updated..!";
 	        			successAnimate('.success');            			
@@ -212,8 +227,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
     				.then(
     						function (res) {
-    							self.customer.branch_id = $("#branch_id").val();
-    			 	    		
+    							self.customer.branchModel = JSON.parse($("#branch_id").val());
     			 	    		self.customer.location = JSON.parse($("#location_id").val());    	
     			 	        	createCustomer(self.customer);  
     			 	        	reset();
@@ -226,16 +240,16 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     			
 
     		} else {
-    			// update employeee
+    			// update customer
     					    			
     			self.confirm_title = 'Update';
     			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
-    			self.confirm_msg = self.confirm_title+ ' ' + self.customer.customer_name + ' employee?';
+    			self.confirm_msg = self.confirm_title+ ' ' + self.customer.customer_name + ' Customer?';
     			self.confirm_btnclass = 'btn-success';
     			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
     				.then(
     						function (res) {
-    							self.customer.branch_id = $("#branch_id").val();
+    							self.customer.branchModel =JSON.parse($("#branch_id").val());
     			 	    		//self.employee.empcategory = $("#empcategory_value").val();  
     			 	    		self.customer.location = JSON.parse($("#location_id").val());    	
 
@@ -250,10 +264,10 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     	} 
 
     
-    //------------------------- Submit for new employee / update employee end ---------------------//
+    //------------------------- Submit for new customer / update customer end ---------------------//
    
     
-  //------------------------- update employee begin ---------------------//
+  //------------------------- update customer begin ---------------------//
     function updateCustomer(customer) {
     	self.customer = customer;
   
@@ -272,16 +286,16 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 		 
     	drawerOpen('.drawer');
     }
-    //------------------------- update employee end ---------------------//    
+    //------------------------- update customer end ---------------------//    
     
 
-//------------------------- delete employee begin ---------------------//
+//------------------------- delete customer begin ---------------------//
     
     function deleteCustomer() {
     	
     	self.confirm_title = 'Delete';
 		self.confirm_type = BootstrapDialog.TYPE_DANGER;
-		self.confirm_msg = self.confirm_title+ ' ' + self.customer.customer_name + ' customer?';
+		self.confirm_msg = self.confirm_title+ ' ' + self.customer.customer_name + ' Customer?';
 		self.confirm_btnclass = 'btn-danger';
 		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(
@@ -291,13 +305,13 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 						.then(
 								function (customer) {
 									self.customers.splice(customer,1);
-									self.message =customer.customer_name+ " customer Deleted..!";
+									self.message =customer.customer_name+ " Customer Deleted..!";
 									successAnimate('.success');
 									newOrClose();
 									
 								}, 
 								function (errResponse) {
-					                console.error('Error while Delete employee' + errResponse );
+					                console.error('Error while Delete Customer' + errResponse );
 								}
 							);
 						
@@ -306,21 +320,36 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 		
     }
     
-  //------------------------- delete employee end ---------------------//
+  //------------------------- delete Customer end ---------------------//
     
     //------------------------- Register select begin ------------------//
     function customerSelect(customer){
     	var index = self.selected_customer.indexOf(customer);
-    	(customer.select)? self.selected_customer.push(customer) : self.selected_customer.splice(index, 1);    		  	
+    	//(customer.select)? self.selected_customer.push(customer) : self.selected_customer.splice(index, 1);
+
+    	if (customer.select){
+    		self.selected_customer.push(customer);
+    	} else {
+    		$scope.selectall = false;
+    		self.selected_customer.splice(index, 1);
+    	}
     }
     //------------------------- Register select end ------------------//
     //------------------------- Register select all begin ------------------//   
     function customerSelectall() {
 
-    		angular.forEach(self.customers, function(customer){
-    			customer.select = $scope.selectall;
-        	});
-    		self.selected_customer=$scope.selectall?self.customers:[];
+    	try {
+			
+			for(var i = 0; i < $scope.pageSize; i++) {
+    			self.Filtercustomers[i].select = $scope.selectall;
+    		}
+			if($scope.selectall){
+    		self.selected_customer=$scope.selectall?self.Filtercustomers:[];
+			}
+    		
+		} catch(e) {
+			
+		}
         
     }
     //------------------------- Register select all end ------------------//       
@@ -405,14 +434,14 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     			.then(
     						function (res) {
     							var inactive_id = [];
-    			    			for(var i=0; i<self.selected_employee.length; i++) {
-    			    				inactive_id[i] = self.selected_employee[i].emp_id;        				
+    			    			for(var i=0; i<self.selected_customer.length; i++) {
+    			    				inactive_id[i] = self.selected_customer[i].customer_id;        				
     			    			}
     			    			CustomerService.makeinActive(inactive_id)
     								.then(
     										function(response) {
     											fetchAllCustomers();
-    											self.selected_employee = [];
+    											self.selected_customer = [];
     											self.message ="Selected record(s) has in inactive status..!";
     											successAnimate('.success');
     										}, function(errResponse) {
@@ -434,42 +463,174 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     
     function pagination() {
         
-    	$scope.viewby = 10;
-		$scope.totalItems = self.customers.length;
-		$scope.currentPage = 1;
-		$scope.itemsPerPage = $scope.viewby;
-		$scope.maxSize = 2; //Number of pager buttons to show
-			
-		$scope.setPage = function (pageNo) {
-			$scope.currentPage = pageNo;
-		  };
-
-		  $scope.pageChanged = function() {
-			console.log('Page changed to: ' + $scope.currentPage);
-		  };
-
-		  $scope.setItemsPerPage = function(num) {
-			  $scope.itemsPerPage = num;
-			  $scope.currentPage = 1; //reset to first paghe
-		}
+    	$scope.pageSize = $scope.shownoofrec;
+    	//console.log($scope.pageSize);
+		$scope.currentPage = 0;
+		$scope.totalPages = 0;
+		//$scope.totalItems = Math.ceil(self.Filtercustomers.length/$scope.pageSize);
+		self.Filtercustomers = self.customers;
 		
+		$scope.nextDisabled = false;
+		$scope.previouseDisabled = true;
+		
+    }
+    
+    
+    $scope.paginate = function(nextPrevMultiplier) {
+
+    	$scope.currentPage += (nextPrevMultiplier * 1);
+    	self.Filtercustomers = self.customers.slice($scope.currentPage*$scope.pageSize);
+    	
+    	
+    	
+    	if(self.Filtercustomers.length == 0) {
+    		CustomerService.pagination_byPage($scope.currentPage)
+    		.then(
+    				function (filterCust) {
+    					
+    					if ( filterCust.length == 0 ) {
+    						$scope.nextDisabled = true;
+    					} else if ( filterCust.length < 10 ) {
+    						self.Filtercustomers = filterCust;
+    						$scope.nextDisabled = true;
+    					} else {
+    						self.Filtercustomers = filterCust;
+    					}
+    					
+    				}, 
+    				function (errResponse) {
+    					console.log('Error while pagination');
+    				}
+    			);
+    	} 
+    	
+    	if(self.Filtercustomers.length < $scope.pageSize) {
+    		console.log(self.Filtercustomers.length);
+    		$scope.nextDisabled = true;
+    	}
+    	
+    	console.log(nextPrevMultiplier);
+    	if($scope.currentPage == 0) {
+    		$scope.previouseDisabled = true;
+    	}
+    	if(nextPrevMultiplier == -1) {    		
+    		$scope.nextDisabled = false;
+    	} else {
+    		$scope.previouseDisabled = false;
+    	}
+    	
+    }
+    
+    
+    
+    
+    
+    $scope.firstlastPaginate = function (page) {
+   	 
+    	CustomerService.pagination_byPage(page)
+		.then(
+				function (filterCust) {
+					self.Filtercustomers = filterCust;
+				}, 
+				function (errResponse) {
+					console.log('Error while fetching Customers');
+				}
+			);
+    	
+    	if( page == 1 ) {
+    		$scope.currentPage = 0;
+    		$scope.previouseDisabled = true;
+    		$scope.nextDisabled = false;
+    	} else {
+    		$scope.previouseDisabled = false;
+    		$scope.nextDisabled = true;
+    		
+    	}
     }
 
       //-------------------------- Pagnation end -----------------------//	
     
+    
+//-------------------------------- Show no of record begin ----------------------------------------//
+    
+    function shownoofRecord() {    
+    	$scope.pageSize = $scope.shownoofrec;
+    }
+    //-------------------------------- Show no of record end ----------------------------------------//  
+    
+    
+    
+    
     //-------------------------------------- Print begin -----------------------------//
     function print() {
-    	if(self.selected_employee.length == 0 ) {
+    	if(self.selected_customer.length == 0 ) {
 	   		self.message ="Please select atleast one record..!";
 			successAnimate('.failure');
     	} else {
     			
-    		console.log(self.selected_employee);
+    		console.log(self.selected_customer);
     		$http.get('http://localhost:8080/Conti/listprint');
     	}
     }
     
     //-------------------------------------- Print end -----------------------------//
+    
+    
+    
+    
+    
+  //---------------------------- Register search begin ---------------------------------------//
+    function registerSearch(searchkey) {
+    	
+    	if ( searchkey.length == 0 ) {
+    		self.Filtercustomers = self.customers;
+    	}else if( searchkey.length > 3 ) {
+    		CustomerService.registerSearch(searchkey)
+	    		.then(
+						function (filterCust) {
+							self.FilterCustomer = filterCust;
+							console.log(filterCust);
+						}, 
+						function (errResponse) {
+							console.log('Error while fetching Customers');
+						}
+					);
+    	} else {
+    		
+    		console.log(searchkey);
+    		
+    		self.Filtercustomers = _.filter(self.customers,
+					 function(item){  
+						 return searchUtil(item,searchkey); 
+					 });
+				
+    		}
+    	
+    }
+    
+    
+    
+    
+    function searchUtil(item,toSearch)
+	{
+    	
+		var success = false;
+		
+		if ( (item.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.customer_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
+				|| (item.customer_email.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)) {
+			
+			success = true;
+		} else {
+			success = false;
+		}
+		
+		return success;
+	}
+    //---------------------------- Register search end ---------------------------------------//
+   
 	
 }]);
 	

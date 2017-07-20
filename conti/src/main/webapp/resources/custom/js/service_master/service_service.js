@@ -11,7 +11,9 @@ contiApp.factory('ServiceService',['$http','$q', function ($http,$q){
 				updateService : updateService,
 				deleteService : deleteService,
 				makeActive : makeActive,
-				makeinActive : makeinActive
+				makeinActive : makeinActive,
+				registerSearch : registerSearch,
+				pagination_byPage : pagination_byPage
 				
 				
 		};
@@ -155,5 +157,56 @@ contiApp.factory('ServiceService',['$http','$q', function ($http,$q){
 				}
 				
 		//========= InActive Service End ============//
+				
+		//============= Register Search Begin =========//
+		
+				function registerSearch(searchkey) {
+					var deferred = $q.defer();
+					
+					$http({
+						
+						method : 'POST',
+						url : 'service_registersearch',
+						data : searchkey,
+						headers : getCsrfHeader()
+						
+					})
+					
+					.then (
+						   function (response) {
+							   deferred.resolve(response.data);
+						   },
+						   function (errResponse) {
+							   deferred.reject(errResponse);
+						   }
+					       );
+					return deferred.promise;
+				}
+				
+		//============= Register Search End ==========//
+				
+		//============== Pagination Function Begin ======//
+		
+				function pagination_byPage(page) {
+					var deferred = $q.defer();
+					
+					$http({
+						method : 'POST',
+						url : 'service_pagination',
+						data : page,
+						headers : getCsrfHeader()
+					})
+					.then (
+							function (response) {
+								deferred.resolve(response.data);
+							},
+							function (errResponse) {
+								deferred.reject(errResponse);
+							}
+					      );
+					return deferred.promise;
+				}
+				
+		//============== Pagination Function Begin =======//
 			
 }]);

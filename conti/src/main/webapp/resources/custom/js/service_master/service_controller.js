@@ -9,6 +9,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	
 	var self = this;
 	self.services = [];	
+	self.Filterservices = [];
 	self.service = {};	
 	self.heading = "Master";	
 	self.message = null;
@@ -25,7 +26,9 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	self.servSelectall = servSelectall;
 	self.makeActive = makeActive;
 	self.makeinActive = makeinActive;
-	self.print = print;
+	self.registerSearch = registerSearch;
+	self.shownoofRecord = shownoofRecord;
+
 	
 	
 	self.selected_service = [];
@@ -35,6 +38,8 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	self.confirm_btnclass = 'btn-success';
 	
 	
+	$scope.shownoofrec = 10;
+	
 	fetchAllServices();
 
 	function reset(){
@@ -43,8 +48,8 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	
 	//============= Close Function Begins ======================//
 		
-		function close(){
-			self.confirm_title = 'Close';
+		function close(open){
+			self.confirm_title = open;
 			self.confirm_type = BootstrapDialog.TYPE_WARNING;
 			self.confirm_msg = self.confirm_title + ' without Saving Data?';
 			self.confirm_btnclass = 'btn-warning';
@@ -59,8 +64,8 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	//============= Close Function End =========================//
 	
 	//============= Clear Function Begins =======================//
-		function clear () {
-			self.confirm_title = 'Clear';
+		function clear (clearopen) {
+			self.confirm_title = clearopen;
 			self.confirm_type = BootstrapDialog.TYPE_WARNING;
 			self.confirm_msg = self.confirm_title + ' the Data?';
 			self.confirm_btnclass = 'btn-warning';
@@ -68,7 +73,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 				.then(
 						function (res) {
 							reset();
-							newOrClose();
+							
 						}
 				      );
 		}
@@ -82,6 +87,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 					function (service) {
 						self.services = service;
 						console.log(self.services);
+						pagination();
 					},
 					function (errResponse) {
 						console.log('Error while fetching services')
@@ -146,15 +152,15 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 				      );
 		  } else {
 			  
-			  self.confirm_title = 'update';
+			  self.confirm_title = 'Update';
 			  self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
 			  self.confirm_msg = self.confirm_title + ' ' + self.service.service_name + ' service?';
-			  self.confirm_btnclass='btn-warning';
+			  self.confirm_btnclass='btn-success';
 			  ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg,self.confirm_btnclass)
 			  	.then(
 			  			function (res) {
 			  				editService(self.service);
-			  				reset();
+			  				/*reset();*/
 			  				window.setTimeout(function(){
 			  					newOrClose();
 			  				},5000);
@@ -230,11 +236,17 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 					} 
 					
 					
+					
+				
 					function servSelectall() {
-						angular.forEach(self.services, function(service){
-							service.select = $scope.selectall;
-						});
-						self.selected_service = $scope.selectall?self.services:[];
+						self.selected_service = [];
+						
+						for(var i=0; i< $scope.pageSize; i++) {
+							self.Filterservices[i].select = $scope.selectall;
+							if($scope.selectall) {
+								self.selected_service.push(self.Filterservices[i]);
+							}
+						}
 					}
 			
 			//============== Make Active Begin ===================//
@@ -337,17 +349,152 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 						
 			//============== Make InActive End ==================//
 						
-			//========== Print Begin==========================//
+			
+			//================ Show no of Record Begin ============//
+			
+						function shownoofRecord(){
+							$scope.pageSize = $scope.shownoofrec;
+						}
 						
-						function print() {
-							if(self.selected_service.length == 0 ){
-								self.message = " Please select atleast one record..!";
-								successAnimate('.failure');
+			//================ Show no of Record Begin ============//
+			
+						
+			//============ Register Search Begin ================//
+						
+						function registerSearch(searchkey) {
+							if(searchkey.length == 0 ){
+								self.Filterservices = self.services;
+							} else if( searchkey.length > 3 ) {
+								ServiceService.registerSearch(searchkey)
+									.then(
+											function (filterService) {
+												self.Filterservices = filterService;
+											},
+											function (errResponse) {
+												console.log('Error while fetching services');
+											}
+									      );
 							} else {
-								$http.get('http://localhost:8080/Conti/listprint');
+								
+								self.Filterservices = _.filter(self.services, 
+										function(item){									
+										return searchUtil(item,searchkey);
+									});
+								}
+							}
+							
+							
+						function searchUtil(item,toSearch)
+						{
+								var success = false;
+								
+								
+								if( (item.service_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.service_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)) {
+									success = true;
+								} else {
+									success = false ;
+								}
+								
+								return success;
+						}
+						
+					
+						
+						
+			//============ Register Search End ==================//
+						
+						
+			//============= Pagination Function Begin ==========//
+						
+						function pagination() {
+							
+							$scope.pageSize = $scope.shownoofrec;
+							console.log($scope.pageSize);							
+							$scope.currentPage = 0;
+							$scope.totalPages = 0;							
+							self.Filterservices = self.services;
+							
+							$scope.nextDisabled = false;
+							$scope.previousDisabled = true;
+						}
+						
+						
+						
+						
+						
+						$scope.paginate = function(nextPrevMultiplier) {
+							
+							$scope.currentPage += (nextPrevMultiplier * 1);
+							console.log($scope.currentPage);
+							self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
+							
+							console.log("TTTTTTTT"+self.Filterservices.length);
+							
+							if(self.Filterservices.length == 0) {
+								ServiceService.pagination_byPage($scope.currentPage)
+								.then(
+										function (filterService) {
+											
+											if(filterService.length == 0 ) {
+												$scope.nextDisabled = true;
+											} else if (filterService.length < 10 ) {
+												self.Filterservices = filterService;
+											} else {
+												self.Filterservices = filterService;
+											}
+										},
+										function (errResponse) {
+											console.log('Error while pagination');
+										}
+								      );
+							}
+							
+							if(self.Filterservices.length < $scope.pageSize) {
+								$scope.nextDisabled = true;
+							}
+							
+							console.log(nextPrevMultiplier);
+							if($scope.currentPage == 0 ) {
+								$scope.previousDisabled = true;
+							}
+							if(nextPrevMultiplier == -1) {
+								$scope.nextDisabled = false;
+							} else {
+								$scope.previousDisabled =false;
 							}
 						}
 						
-			//=========== Print End ======================//
+						
+						
+						
+						
+						
+						
+						
+						
+						$scope.firstlastPaginate = function (page) {
+							ServiceService.pagination_byPage(page)
+								.then(
+										function (filterService) {
+											self.Filterservices = filterService;
+										},
+										function (errResponse) {
+											console.log("Error while fetching services");
+										}
+								      );
+							
+							if(page == 1) {
+								$scope.currentPage = 0;
+								$scope.previousDisabled = true;
+								$scope.nextDisabled = false;
+							} else {
+								$scope.previousDisabled = false;
+								$scope.nextDisabled = true;
+							}
+						}
+						
+			//============= Pagination Function End =============//
+						
+			
 			
 }]);
