@@ -111,8 +111,8 @@ public class CustomerDaoImpl implements CustomerDao
 		List<CustomerModel> listcust = (List<CustomerModel>) sessionFactory.getCurrentSession()
 		.createQuery("from CustomerModel WHERE obsolete ='N' and customer_name LIKE '%" + search_key + "%'"
 				+ " OR customer_code LIKE '%" + search_key + "%'"
-				+ " OR branchModel.branch_name LIKE '%" + search_key + "%' OR emp_address1 LIKE '%" + search_key + "%'"
-				+ " OR emp_address2 LIKE '%" + search_key + "%' OR location.location_name LIKE '%" + search_key + "%'"
+				+ " OR branchModel.branch_name LIKE '%" + search_key + "%' OR customer_addressline1 LIKE '%" + search_key + "%'"
+				+ " OR customer_addressline2 LIKE '%" + search_key + "%' OR location.location_name LIKE '%" + search_key + "%'"
 				+ " OR location.address.city LIKE '%" + search_key + "%' OR location.address.district LIKE '%" + search_key + "%'"
 				+ " OR location.address.state LIKE '%" + search_key + "%' OR customer_email LIKE '%" + "%'").list();
 		return listcust;

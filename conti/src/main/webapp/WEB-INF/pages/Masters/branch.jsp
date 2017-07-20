@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
@@ -34,6 +35,7 @@
 	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
 	 
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
@@ -42,12 +44,10 @@
 
 
 <body style="overflow-x:hidden;" data-ng-app="contiApp" data-ng-controller="BranchController as ctrl">
-  <!-- ------------------------- Overlay for message begin ------------------ -----  -->
- 		<div class="overlay hideme"></div>
- 
-  <!-- ------------------------- Success message begin ------------------ -----  -->
- 		
- <!-- ------------------------- Success message begin ------------------ -----  -->
+ <!-- ------------------------- Overlay for message begin ------------------ -----  -->
+	<div class="overlay hideme"></div>
+<!-- ------------------------- Overlay for message end ------------------ -----  -->	
+<!-- ------------------------- Success message begin ------------------ -----  -->
 	<div class="success hideme">
 		<i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}
 		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
@@ -59,7 +59,7 @@
 		<!-- <span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span> -->
 	</div>
 <!-- ------------------------- Failure message end ------------------ -----  -->
- 
+
  		<div class="drawer hideme">
  		<form data-ng-submit="ctrl.submit()" name="branchForm" class="form-horizonral">
  			<div class="row">
@@ -122,9 +122,9 @@
 												  match-class="highlight"
 												  initial-value="{{ctrl.branch.location.location_name}}"
 									              minlength="1"
-	   											 data-trigger="focus" data-toggle="popover" 
-	   											 data-placement="top" data-content="Please Enter branch location"
-	   											 onKeyPress="return CheckIsCharacter(event)"
+	   											  data-trigger="focus" data-toggle="popover" 
+	   											  data-placement="top" data-content="Please Enter branch location"
+	   											  onKeyPress="return CheckIsCharacter(event)"
 									              input-class="form-control form-control-small">
               						</angucomplete-alt>
               						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
@@ -309,14 +309,14 @@
 	                                     	<div class ="checkbox">
 	                                     		<label>
 	                                     			<i class = "fa" data-ng-class="{'fa-check': setting_branchname == true, 'fa-times': setting_branchname == false}"></i>
-													<input type="checkbox" data-ng-init = "setting_branchname=true" data-ng-model="setting_branchname" /> Employee Name
+													<input type="checkbox" data-ng-init = "setting_branchname=true" data-ng-model="setting_branchname" /> Branch Name
 												</label>
 											</div>
 										
 											<div class ="checkbox">
 												<label>
 													<i class = "fa" data-ng-class="{'fa-check': setting_branchcode == true, 'fa-times': setting_branchcode == false}"></i>
-													<input type="checkbox" data-ng-init = "setting_branchcode=true" data-ng-model="setting_branchcode" /> Employee code
+													<input type="checkbox" data-ng-init = "setting_branchcode=true" data-ng-model="setting_branchcode" /> Branch code
 												</label>
 											</div>
 										
@@ -345,21 +345,28 @@
 										<div class = "checkbox">
 											<label>
 												<i class = "fa" data-ng-class="{'fa-check': setting_branchcontactemail == true, 'fa-times': setting_branchcontactemail == false}"></i>
-												<input type="checkbox" data-ng-init = "setting_branchcontactemail=true" data-ng-model="setting_branchcontactemail" /> DOB
+												<input type="checkbox" data-ng-init = "setting_branchcontactemail=true" data-ng-model="setting_branchcontactemail" /> Contact Email
 											</label>
 										</div>
 										
 										<div class = "checkbox">
 											<label>
 												<i class = "fa" data-ng-class="{'fa-check': setting_branchlrnoprefix == true, 'fa-times': setting_brachlrnoprefix == false}"></i>
-												<input type="checkbox" data-ng-init = "setting_branchlrnoprefix=true" data-ng-model="setting_branchlrnoprefix" /> DOB
+												<input type="checkbox" data-ng-init = "setting_branchlrnoprefix=true" data-ng-model="setting_branchlrnoprefix" /> LRno_prefix
 											</label>
 										</div>
 										
 										<div class = "checkbox">
 											<label>
 												<i class = "fa" data-ng-class="{'fa-check': setting_branchreceiptnoprefix == true, 'fa-times': setting_branchreceiptnoprefix == false}"></i>
-												<input type="checkbox" data-ng-init = "setting_branchreceiptnoprefix=true" data-ng-model="setting_branchreceiptnoprefix" /> DOB
+												<input type="checkbox" data-ng-init = "setting_branchreceiptnoprefix=true" data-ng-model="setting_branchreceiptnoprefix" /> Receiptno_prefix
+											</label>
+										</div>
+										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_branchstatus == true, 'fa-times': setting_branchstatus == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_branchstatus=true" data-ng-model="setting_branchstatus" /> Status
 											</label>
 										</div>
 										
@@ -387,32 +394,35 @@
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.branchSelectall()" data-ng-mode="selectall"></th>
                                             
-                                            <th data-ng-click="setting_branchname">Branch Name</th>
-                                            <th data-ng-click="setting_branchcode">Branch Code</th>
-                                            <th data-ng-click="setting_branchaddress">Address</th>
-                                            <th data-ng-click="setting_branchcontactperson">Contact Person</th>
-                                            <th data-ng-click="setting_branchcontactnumber">Contact Number</th>
-                                            <th data-ng-click="setting_branchcontactemail">Contact Mail</th>
-                                            <th data-ng-click="setting_branchlrnoprefix">LR No Prefix</th>
-                                            <th data-ng-click="setting_branchreceiptnoprefix">Receipt No Prefix</th>
+                                            <th data-ng-show="setting_branchname">Branch Name</th>
+                                            <th data-ng-show="setting_branchcode">Branch Code</th>
+                                            <th data-ng-show="setting_branchaddress">Address</th>
+                                            <th data-ng-show="setting_branchcontactperson">Contact Person</th>
+                                            <th data-ng-show="setting_branchcontactnumber">Contact Number</th>
+                                            <th data-ng-show="setting_branchcontactemail">Contact Mail</th>
+                                            <th data-ng-show="setting_branchlrnoprefix">LR No Prefix</th>
+                                            <th data-ng-show="setting_branchreceiptnoprefix">Receipt No Prefix</th>
+                                            <th data-ng-show="setting_branchstatus">Status</th>
+                                            
                                         </tr>
                                     </thead>
                                     
                                     <tbody>
-                                        <tr data-ng-repeat="bat in ctrl.Filterbranches|limitTo:pageSize"
+                                        <tr data-ng-repeat="branch in ctrl.Filterbranches|limitTo:pageSize"
                                         data-ng-dblclick="ctrl.updateBranch(branch)">
                                             <td><input type="checkbox" data-ng-change="ctrl.branchSelect(branch)" data-ng-model="branch.select"/></td>
                                            
-                                            <td data-ng-click="setting_branchname">{{branch.branch_name}}</td>
-                                            <td data-ng-click="setting_branchcode">{{branch.branch_code}}</td>
-                                            <td data-ng-click="setting_branchaddress">{{branch.branch_address1}}, {{branch.branch_address2}}, 
+                                            <td data-ng-show="setting_branchname">{{branch.branch_name}}</td>
+                                            <td data-ng-show="setting_branchcode">{{branch.branch_code}}</td>
+                                            <td data-ng-show="setting_branchaddress">{{branch.branch_address1}}, {{branch.branch_address2}}, 
                                             	{{branch.location.location_name}}, {{branch.location.address.city}}, 
                                             	{{branch.location.address.district}}, {{branch.location.address.state}}, {{branch.location.address.pincode}}</td>
-                                            <td data-ng-click="setting_branchcontactperson">{{branch.branch_contactperson}}</td>
-                                            <td data-ng-click="setting_branchcontactnumber">{{branch.branch_mobileno}}</td>
-                                            <td data-ng-click="setting_branchcontactemail">{{branch.branch_email}}</td>
-                                            <td data-ng-click="setting_branchlrnoprefix">{{branch.lrno_prefix}}</td>
-                                            <td data-ng-click="setting_branchreceiptnoprefix">{{branch.receiptno_prefix</td>
+                                            <td data-ng-show="setting_branchcontactperson">{{branch.branch_contactperson}}</td>
+                                            <td data-ng-show="setting_branchcontactnumber">{{branch.branch_mobileno}}</td>
+                                            <td data-ng-show="setting_branchcontactemail">{{branch.branch_email}}</td>
+                                            <td data-ng-show="setting_branchlrnoprefix">{{branch.lrno_prefix}}</td>
+                                            <td data-ng-show="setting_branchreceiptnoprefix">{{branch.receiptno_prefix}}</td>
+                                           	<td data-ng-show="setting_branchstatus" data-ng-class="{'makeGreen': branch.active=='Y', 'makeRed': branch.active=='N'}">{{branch.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                         </tr>
                                      
                                     </tbody>
@@ -421,7 +431,7 @@
                                 <div class="col-lg-6 icons-button">
                                    <div class="pull-right">
                                    		<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                                     											
-										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previouse</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previous</button>
 										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "paginate(1)">Next</button>
 										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
                                 	</div>

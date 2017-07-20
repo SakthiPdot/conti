@@ -376,7 +376,8 @@ public class CustomerRestController
 		}
 		
 		@RequestMapping(value = "register_search_customer", method=RequestMethod.POST)
-		public ResponseEntity<List<CustomerModel>> register_search(@RequestBody String searchkey, HttpServletRequest request) {
+		public ResponseEntity<List<CustomerModel>> register_search_customer(@RequestBody String searchkey, HttpServletRequest request) 
+		{
 			
 			List<CustomerModel> customerList = customerDao.searchbyeyCustomer(searchkey);
 			return new ResponseEntity<List<CustomerModel>> (customerList, HttpStatus.OK);
