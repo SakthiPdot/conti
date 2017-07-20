@@ -48,8 +48,8 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	
 	//============= Close Function Begins ======================//
 		
-		function close(){
-			self.confirm_title = 'Close';
+		function close(open){
+			self.confirm_title = open;
 			self.confirm_type = BootstrapDialog.TYPE_WARNING;
 			self.confirm_msg = self.confirm_title + ' without Saving Data?';
 			self.confirm_btnclass = 'btn-warning';
@@ -64,8 +64,8 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	//============= Close Function End =========================//
 	
 	//============= Clear Function Begins =======================//
-		function clear () {
-			self.confirm_title = 'Clear';
+		function clear (clearopen) {
+			self.confirm_title = clearopen;
 			self.confirm_type = BootstrapDialog.TYPE_WARNING;
 			self.confirm_msg = self.confirm_title + ' the Data?';
 			self.confirm_btnclass = 'btn-warning';

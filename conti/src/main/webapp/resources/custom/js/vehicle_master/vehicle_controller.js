@@ -50,8 +50,8 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 	
 	//=================== Close Function Begin ==================//
 		
-		function close(){
-			self.confirm_title = 'Close';
+		function close(open){
+			self.confirm_title = open;
 			self.confirm_type = BootstrapDialog.TYPE_WARNING;
 			self.confirm_msg = self.confirm_title + ' without saving data?';
 			self.confirm_btnclass = 'btn-warning';
@@ -67,8 +67,8 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		
 	//=================== Clear Function Begin ======================//
 	
-			function clear() {
-				self.confirm_title = 'Clear';
+			function clear(clearopen) {
+				self.confirm_title = clearopen;
 				self.confirm_type = BootstrapDialog.TYPE_WARNING;
 				self.confirm_msg = self.confirm_title + ' the data?';
 				self.confirm_btnclass  =  'btn-warning';
