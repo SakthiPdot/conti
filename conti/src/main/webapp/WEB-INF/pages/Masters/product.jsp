@@ -141,7 +141,6 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 		                  <input type="hidden" class="form-control"
 		                  maxlength="30" 
 		                  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
-		                    data-ng-required="true"
 			                  data-trigger="focus" data-toggle="popover"
 							  data-placement="top" data-content="Please Enter Product Type"
 		                  data-ng-model="proctrl.product.product_Type">
@@ -355,7 +354,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 
 												<div class="col-xs-6 icons-button">
 													<div class="pull-right">
-														<form name="selectedProductForm" method="POST"
+														<form name="selectedProductForm" method="POST" class="padding-button"
 															action="product_print">
 															<a type="button" class="btn btn-primary dropdown-toggle"
 																data-toggle="dropdown"> <i class="fa fa-cog fa-lg"></i>
@@ -439,7 +438,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 
 															<!--=============== excel============== -->
 															<a type="button" class="btn btn-primary"
-																onclick="location.href='downloadExcelProduct'"> <i
+																onclick="location.href='downloadExcelProduct';valid = true;"> <i
 																class="fa fa-file-excel-o fa-lg"></i>
 															</a>
 															<!--=============== print============== -->
