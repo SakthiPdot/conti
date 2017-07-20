@@ -269,11 +269,27 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				
 			}
 			
+		    function empSelectall() {
+				self.selected_employee=[];
+				
+				for(var i = 0; i < $scope.pageSize; i++) {
+					self.Filteremployees[i].select = $scope.selectall;
+					if($scope.selectall){
+						self.selected_employee.push(self.Filteremployees[i]);
+					}
+				}	
+		    }
+		    
+			
 			function vehicSelectall(){
-				angular.forEach(self.vehicles,function(vehicle){
-					vehicle.select = $scope.selectall;
-				});
-				self.selected_vehicle = $scope.selectall?self.vehicles:[];
+				self.selected_vehicle=[];
+				
+				for(var i = 0; i < $scope.pageSize; i++) {
+					self.Filtervehicles[i].select = $scope.selectall;
+					if($scope.selectall){
+						self.selected_vehicle.push(self.Filtervehicles[i]);
+					}
+				}
 			}
 			
 	//============== Make Active Begin =====================//

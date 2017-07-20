@@ -236,11 +236,17 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 					} 
 					
 					
+					
+				
 					function servSelectall() {
-						angular.forEach(self.services, function(service){
-							service.select = $scope.selectall;
-						});
-						self.selected_service = $scope.selectall?self.services:[];
+						self.selected_service = [];
+						
+						for(var i=0; i< $scope.pageSize; i++) {
+							self.Filterservices[i].select = $scope.selectall;
+							if($scope.selectall) {
+								self.selected_service.push(self.Filterservices[i]);
+							}
+						}
 					}
 			
 			//============== Make Active Begin ===================//
