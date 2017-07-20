@@ -117,7 +117,7 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 		function updateBranch(branch) {
 	        var deferred = $q.defer();
 	        var headers = getCsrfHeader();
-	        
+	        console.log("update service call" +branch)
 	    	$http({
 	    		method : 'POST',
 	    		url : 'update_branch',

@@ -124,7 +124,7 @@
 			window.onbeforeunload = function(e) {	
 				console.log(e);
 	 	        if( !valid ){
-	 	        	//force_logout();
+	 	        	force_logout();
 	 	        }
 	 	       } 
 			 

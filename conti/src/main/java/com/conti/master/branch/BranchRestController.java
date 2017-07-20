@@ -189,9 +189,7 @@ public class BranchRestController {
 			branchModel.setUpdated_datetime(dateFormat.format(date).toString());
 			branchDao.saveOrUpdate(branchModel);
 			HttpHeaders headers=new HttpHeaders();
-			System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
 			headers.setLocation(ucBuilder.path("/branches/{id}").buildAndExpand(branchModel.getBranch_id()).toUri());
-			System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
 			loggerconf.saveLogger(username,request.getServletPath(), ConstantValues.SAVE_SUCCESS,null);
 			
 			

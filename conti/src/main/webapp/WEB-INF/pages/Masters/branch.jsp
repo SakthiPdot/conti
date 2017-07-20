@@ -70,14 +70,14 @@
                    </div>
                    
                    <div class="col-lg-6 headerRight">
-                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click="ctrl.close()"></i>
+                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click="ctrl.close('Close')"></i>
                    </div>
             
              </div>
  			</div>
                
                  
-                 <input type="hidden" data-ng-model="ctrl.branch.branch_id" />
+                 <input type="" data-ng-model="ctrl.branch.branch_id" />
                  <div class="model-body">
                  
                    <div class="row">
@@ -212,7 +212,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close()" ><i class="fa fa-times" area-hidden="true"></i> Cancle</button>
+							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" ><i class="fa fa-times" area-hidden="true"></i> Cancle</button>
 						</div>
 						
 						<div class="col-lg-4" style="text-align:center; !important;">
@@ -303,7 +303,7 @@
                                
                                 <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
-                                    <form name="branchPrint" method = "POST" action = "branch_print" >
+                                    <form name="branchPrint" method = "POST" action = "branch_print" class="padding-button" >
                                      <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a> 
                                      	<div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
 	                                     	<div class ="checkbox">
@@ -392,7 +392,7 @@
                              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox" data-ng-click="ctrl.branchSelectall()" data-ng-mode="selectall"></th>
+                                            <th><input type="checkbox" data-ng-click="ctrl.branchSelectall()" data-ng-model="selectallbranches"></th>
                                             
                                             <th data-ng-show="setting_branchname">Branch Name</th>
                                             <th data-ng-show="setting_branchcode">Branch Code</th>

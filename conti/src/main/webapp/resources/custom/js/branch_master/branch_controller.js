@@ -62,21 +62,36 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	}
 	//----------Branch Master drawer close begin-----------
 	
-	function close() 
-	{
-		self.confirm_title = 'Cancel';
-		self.confirm_type = BootstrapDialog.TYPE_WARNING;
-		self.confirm_msg = self.confirm_title+ ' without saving data?';
-		self.confirm_btnclass = 'btn-warning';
-		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-			.then(function (res) 
-					{
-		 	        	reset();
-		 	        	newOrClose();
-					}
-				);
-	}
+	
 	//----------Branch Master drawer close begin-----------
+	
+//----------Branch Master drawer close begin-----------
+	
+//	function close() 
+//	{
+//		self.confirm_title = 'Close';
+//		self.confirm_type = BootstrapDialog.TYPE_WARNING;
+//		self.confirm_msg = self.confirm_title+ ' without saving data?';
+//		self.confirm_btnclass = 'btn-warning';
+//		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+//			.then(function (res) 
+//					{
+//		 	        	reset();
+//		 	        	newOrClose();
+//					}
+//				);
+//	}
+	//----------Branch Master drawer close begin-----------
+	
+	
+	function close(title){
+		ConfirmDialogService.confirmBox(title,
+				BootstrapDialog.TYPE_WARNING, title+" Without Save ..? ", 'btn-warning')
+		.then(function(response){
+			 drawerClose('.drawer');
+		});
+	}
+		
 	
 	//----------Branch Master drawer field clear begin-----------
 	
@@ -165,14 +180,14 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	
 	
 	//------------------Updated existing Branch details-------------------
-	function editBranch(branch)
+	function editBranch(branch,branch_id)
 	{
-		BranchService.createBranch(branch)
+		BranchService.updateBranch(branch_id)
 		.then(
 				function()
 				{
 					fetchAllBranches();
-					self.message=branch.branch_name+" branch updated...!";
+					//self.message=branch.branch_name+ " branch updated...!";
 					successAnimate('success');
 				},
 				function(errResponse)
@@ -185,20 +200,22 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	
 	function submit()
 	{
-		console.log("branch save call"+self.branch.branch_id)
-		if ( $("#branch_id").val() == "" || $("#branch_id").val() == null )
-		{
-    		$("#branch_name_value").focus();
-    	}
-		else if ( $("#location_id").val() == "" || $("#location_id").val() == null )
-		{
-    		$("#branch_name_value").focus(); 
-    	} 
-		else 
-    	{	
 		
+//		if ( $("#branch_id").val() == "" || $("#branch_id").val() == null )
+//		{
+//    		$("#branch_name_value").focus();
+//    	}
+//		else if ( $("#location_id").val() == "" || $("#location_id").val() == null )
+//		{
+//    		$("#branch_name_value").focus(); 
+//    	} 
+//		else 
+//    	{	
+		
+
 		if(self.branch.branch_id==null)
 		{
+			console.log("branch save call"+self.branch.branch_id)
 			self.confirm_title='Save';
 			self.confirm_type=BootstrapDialog.TYPE_SUCCESSSS;
 			self.confirm_msg=self.confirm_title +''+self.branch.branch_name+' branch?';
@@ -215,20 +232,22 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 						newOrClose();
 				},5000);
 			});
-		}		
+		}	
+		
 		else
 		{
 			console.log("branch Update function call"+self.branch.branch_id)
 			self.confirm_title='Update';
 			self.confirm_type=BootstrapDialog.TYPE_SUCCESS;
-			self.confirm_msg=self.confirm_title+''+self.branch.branch_name+'branch?';
+			self.confirm_msg=self.confirm_title +''+self.branch.branch_name +'branch?';
 			self.confirm_btnclass = 'btn-warning';
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(function(res)
 			{
-				self.branch.branch_id=$("#branch_id").val();
+				//self.branch.branch_id=$("#branch_id").val();
 				self.branch.location=JSON.parse($("#location_id").val());
-				editBranch(self.branch);
+				console.log(self.branch);
+				editBranch(self.branch.branch_id);
 				reset();
 				window.setTimeout(function()
 				{
@@ -237,7 +256,8 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 			});
 		}
 	}
-	}
+	
+	//}
 	
 	//------------------------- update branch begin ---------------------//
     function updateBranch(branch) {
@@ -309,20 +329,24 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
   //------------------------- Register select all begin ------------------//   
     function branchSelectall() 
     {
-    	try 
-    	{
-    		for(var i = 0; i < $scope.pageSize; i++) 
-    		{
-        		self.Filterbranches[i].select = $scope.selectall;
-        	}
-    		if($scope.selectall){
-        		self.selected_branch=$scope.selectall?self.Filterbranches:[];
+    	console.log("call selectall")
+    	self.selected_branch=[];
+    	try {
+			
+			for(var i = 0; i < $scope.pageSize; i++) {
+    			self.Filterebranches[i].select = $scope.selectallbranches;
     		}
-		}
-		catch(e) 
+			if($scope.selectallbranches)
+			{
+				self.selected_branch=$scope.selectallbranches?self.Filterbranches:[];
+			}
+    		
+		} catch(e) 
 		{
 			
 		}
+    		
+		
     }
     //------------------------- Register select all end ------------------//
     
