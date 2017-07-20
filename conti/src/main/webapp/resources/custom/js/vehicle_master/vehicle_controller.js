@@ -210,6 +210,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 							successAnimate('.success');
 						},
 						
+						
 						function(errResponse) {
 							console.error('Error while creating vehicle' + vehicle.vehicle_regno);
 							
