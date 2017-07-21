@@ -7,7 +7,10 @@ angular.module('contiApp')
  		.controller('companyController'
 		,['$scope','LocationService','CompanySettingService','AddressService','ConfirmDialogService'
 			,function($scope,LocationService,CompanySettingService,AddressService,ConfirmDialogService){
-			
+		
+		    $("#screen_company_settings").addClass("active-menu");
+		    
+		    
 			var self=this;
 		
 	self.addresses=[];
