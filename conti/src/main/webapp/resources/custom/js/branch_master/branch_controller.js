@@ -22,7 +22,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	self.deleteBranch = deleteBranch;
 	self.updateBranch = updateBranch;
 	self.close = close;
-	self.clear = clear;
+	self.clear = clear; 
 	self.branchSelect=branchSelect;
 	self.branchSelectall=branchSelectall;
 	self.makeActive=makeActive;
@@ -247,7 +247,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 				//self.branch.branch_id=$("#branch_id").val();
 				self.branch.location=JSON.parse($("#location_id").val());
 				console.log(self.branch);
-				editBranch(self.branch.branch_id);
+				editBranch(self.branch,self.branch.branch_id);
 				reset();
 				window.setTimeout(function()
 				{
@@ -329,17 +329,19 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
   //------------------------- Register select all begin ------------------//   
     function branchSelectall() 
     {
-    	console.log("call selectall")
+    	console.log($scope.pageSize,"call selectall")
     	self.selected_branch=[];
+    	
     	try {
 			
 			for(var i = 0; i < $scope.pageSize; i++) {
-    			self.Filterebranches[i].select = $scope.selectallbranches;
+    			self.Filterbranches[i].select = $scope.selectallbranches;
+    			if($scope.selectallbranches)
+    			{
+    				self.selected_branch.push(self.Filterbranches[i]);
+    			}
     		}
-			if($scope.selectallbranches)
-			{
-				self.selected_branch=$scope.selectallbranches?self.Filterbranches:[];
-			}
+			
     		
 		} catch(e) 
 		{
@@ -387,7 +389,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     									function(response) {
     										fetchAllBranches();
     										self.selected_branch = [];
-    										self.message ="Selected record(s) has in activat status..!";
+    										self.message ="Selected record(s) has in active status..!";
     										successAnimate('.success');
     									}, function(errResponse) {
     										console.log(errResponse);    								
@@ -467,7 +469,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     	console.log($scope.pageSize);
 		$scope.currentPage = 0;
 		$scope.totalPages = 0;
-		$scope.totalItems = Math.ceil(self.Filterbranches.length/$scope.pageSize);
+		//$scope.totalItems = Math.ceil(self.Filterbranches.length/$scope.pageSize);
 		self.Filterbranches = self.branches;
 		
 		$scope.nextDisabled = false;

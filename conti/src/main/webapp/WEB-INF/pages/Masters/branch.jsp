@@ -77,7 +77,7 @@
  			</div>
                
                  
-                 <input type="" data-ng-model="ctrl.branch.branch_id" />
+                 <input type="hidden" data-ng-model="ctrl.branch.branch_id" />
                  <div class="model-body">
                  
                    <div class="row">
@@ -212,7 +212,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" ><i class="fa fa-times" area-hidden="true"></i> Cancle</button>
+							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" ><i class="fa fa-times" area-hidden="true"></i> Cancel</button>
 						</div>
 						
 						<div class="col-lg-4" style="text-align:center; !important;">
@@ -254,7 +254,7 @@
  </div>
  
 	
-	<jsp:include page="../Dashboard/nav.jsp"/>
+	<jsp:include page="../Dashboard/settings_nav.jsp"/>
 	<sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
@@ -372,7 +372,7 @@
 										
 									</div>	
 							
-                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelBranch'"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelBranch';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                       
                                       
 	                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
@@ -414,9 +414,9 @@
                                            
                                             <td data-ng-show="setting_branchname">{{branch.branch_name}}</td>
                                             <td data-ng-show="setting_branchcode">{{branch.branch_code}}</td>
-                                            <td data-ng-show="setting_branchaddress">{{branch.branch_address1}}, {{branch.branch_address2}}, 
+                                            <td data-ng-show="setting_branchaddress">{{branch.branch_addressline1}}, {{branch.branch_addressline2}}, 
                                             	{{branch.location.location_name}}, {{branch.location.address.city}}, 
-                                            	{{branch.location.address.district}}, {{branch.location.address.state}}, {{branch.location.address.pincode}}</td>
+                                            	{{branch.location.address.district}}, {{branch.location.address.state}}</td>
                                             <td data-ng-show="setting_branchcontactperson">{{branch.branch_contactperson}}</td>
                                             <td data-ng-show="setting_branchcontactnumber">{{branch.branch_mobileno}}</td>
                                             <td data-ng-show="setting_branchcontactemail">{{branch.branch_email}}</td>

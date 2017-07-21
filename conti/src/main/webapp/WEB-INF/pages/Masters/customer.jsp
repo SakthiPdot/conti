@@ -282,7 +282,7 @@
  		</div>
  
 	
-	<jsp:include page="../Dashboard/nav.jsp"/>
+<jsp:include page="../Dashboard/settings_nav.jsp"/>
 	<sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
@@ -392,7 +392,7 @@
 										</div>
 																		
 									</div>
-										<a type="button" class="btn btn-primary" onclick="location.href='downloadExcelCustomer'"><i class="fa fa-file-excel-o fa-lg"></i></a>
+										<a type="button" class="btn btn-primary" onclick="location.href='downloadExcelCustomer';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                       	  <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
 	                                      <input type = "hidden" name = "cust" value = "{{ctrl.selected_customer}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -444,12 +444,7 @@
                                             <td data-ng-show = "setting_custemail">{{cust.customer_email}}</td>
                                        	    <td data-ng-show = "setting_custstatus" data-ng-class="{'makeGreen': cust.active=='Y', 'makeRed': cust.active=='N'}">{{cust.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
-                                       
-                          
-                                                               
-                                
-                                 
-                                    </tbody>
+                                       </tbody>
                                 </table>
                                 
                                 <div class="col-lg-6 icons-button">
@@ -486,10 +481,11 @@
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
   <!-- Custom Js -->
         <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
-    </script>
+		$('[data-toggle="popover"]').popover();
+		$('.regSettings').click(function(e) {
+			e.stopPropagation();
+		});
+	</script>
          <!-- Custom Js -->
 
 
