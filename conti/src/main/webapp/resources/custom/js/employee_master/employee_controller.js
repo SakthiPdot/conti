@@ -12,6 +12,7 @@
 contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$window','EmployeeService', 'BranchService', 'LocationService', 'ConfirmDialogService', function($http, $scope, $q, $timeout,  $window, EmployeeService, BranchService, LocationService, ConfirmDialogService){
 	
 
+	$("#screen_employee").addClass("active-menu");
 	
 	var self = this;
 	self.employees = [];

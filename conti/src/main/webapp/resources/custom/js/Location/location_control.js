@@ -11,6 +11,8 @@ angular.module('contiApp').controller('locationController'
 		,['$scope','LocationService','AddressService','ConfirmDialogService',
 			function($scope,LocationService,AddressService,ConfirmDialogService){
 			
+			$("#screen_location").addClass("active-menu");
+			
 			$scope.shownoofrec = 10;
 			var self=this;			
 			self.Locations=[];

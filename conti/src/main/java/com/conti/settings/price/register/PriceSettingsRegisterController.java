@@ -56,7 +56,7 @@ public class PriceSettingsRegisterController {
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
 
-	@RequestMapping(value =  "price settings_register", method = RequestMethod.GET)
+	@RequestMapping(value =  "price_settings_register", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
 		
 		HttpSession session = request.getSession();

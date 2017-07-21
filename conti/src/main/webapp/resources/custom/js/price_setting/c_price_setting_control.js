@@ -9,5 +9,8 @@
 
 angular.module('contiApp').controller('priceSettingController',['$scope','priceSettingService',function($scope,priceSettingService){
 	
+	console.log("inside price setting controller");
+	$("#screen_price_settings_register").addClass("active-menu");
+     
 	
 }]);
