@@ -27,8 +27,14 @@
 	
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
 	  <link href="resources/custom/css/custom.css" rel="stylesheet">
+	   <link href="resources/custom/css/demo.css" rel="stylesheet">
 	  
 	   <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+	   <style>
+	   .modal-body{
+	   height: 130px
+	   }
+	   </style>
 	
 </head>
 
@@ -54,12 +60,24 @@
                     </div>
               </div>
                 
+<!--                  <div class="demo-div "> -->
+<!--       <p>Default</p> -->
+
+<!--         <input type="text" class="input" id="J-demo-01"> -->
+
+       
+<!--     </div> -->
+                
                 
                 
               <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
               	  <div class="col-md-6 col-sm-6 col-xs-6 GenLeftRight">
 	              <div  class="subHead">
+	               <b>Branch Name : Coimbatore</b>            
+	              </div>
+	              
+	              <div  class="subHead">               
 	              <b>${title}</b>
 	              </div>
 	              </div>
@@ -105,9 +123,9 @@
                        		        <div class="form-group input-group">
 				                  
 				                  
-				                               <input type="text" class="form-control datepicker marginLeftSpace" data-ng-model="ctrl.employee.dob"
+				                               <input type="text" class="form-control datepicker marginLeftSpace " id="" data-ng-model="ctrl.employee.dob"
 				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" required/>
-	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
+	                                            <span class="input-group-addon" ><i class="fa fa-calendar" ></i>
 	                                            </span>
 	                                          
 	                               </div>
@@ -139,15 +157,15 @@
               <div class="row">
               	
               	<div class="col-md-12">
-              		<div class="col-md-12 GenLeftRight">
+              		<!-- <div class="col-md-12 GenLeftRight">
               			<div class="subhead">
               			<b>Coimbatore (Branch Name)</b>
               			</div>
-              		</div>
+              		</div> -->
               		
               		<div class="col-md-12 GenLeftRight">
               			<div class="subhead">
-              			Location Info
+              			Sender &amp; Consignee Info
               			</div>
               		</div>
               	</div>
@@ -256,6 +274,27 @@
                             		    <input type="text" class="form-control" >                             		    
                             		    
                             		</div>
+                            		
+                            		<div class="col-md-12 branchclass">
+                            			<span class="text-paddingwidth">GSTIN Number</span>
+                            		    <input type="text" class="form-control" >                             		    
+                            		    
+                            		</div>
+                            		
+                    		        <div class="col-md-12 col-sm-12 col-xs-12">
+                    		        	<div class="col-md-6">
+                    		        	
+                    		        	</div>	
+                    		        	
+                    		        	<div class="col-md-6">
+	                    		            <label class="checkbox-inline">
+		                                        <input type="checkbox">Save Address
+		                                    </label>
+                    		        	</div>	
+                    		        	                    		       
+                                    </div>
+                                    
+                                    
                             	
                         </div>
                       
@@ -360,6 +399,24 @@
                             		    <input type="text" class="form-control" >                             		    
                             		    
                             		</div>
+                            		
+                            		<div class="col-md-12 branchclass" style="padding-top:43px;">
+                            			                   		    
+                            		    
+                            		</div>
+                            		
+                    		        <div class="col-md-12 col-sm-12 col-xs-12">
+                    		        	<div class="col-md-6">
+                    		        	
+                    		        	</div>	
+                    		        	
+                    		        	<div class="col-md-6">
+	                    		            <label class="checkbox-inline">
+		                                        <input type="checkbox">Save Address
+		                                    </label>
+                    		        	</div>	
+                    		        	                    		       
+                                    </div>
                           	
                         </div>
                     
@@ -453,29 +510,54 @@
                                         <tr>
                                             <th><input type="checkbox"></th>
                                             <th>S.No</th>
-                                            <th>Product Type</th>
                                             <th>Product</th>
+                                            <th>Product Type</th>                                        
                                             <th colspan="3">Dimensions(cm)</th>
                                             <th>Weight(Kg)</th>
-                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Unit Price</th>
+                                            <th>Total Price</th>
                                         </tr>
+                                        
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td><input type="checkbox"></td>
                                             <td>1</td>
-                                            <td>Small Box</td>
                                             <td>Box</td>
+                                            <td>Small Box</td>
                                             <td>Length</td>
                                             <td>Width</td>
                                             <td>Height</td>
                                             <td>2</td>
+                                            <td>3</td>
                                             <td>25</td>
-                                    
+                                            <td>75</td>
+                                     
+                                        </tr>
+                                        <tr>
+                                              <td> <a href="" data-toggle="modal" data-target="#myModal" style="text-decoration: none !important;"> Add HSN Details</a></td>
+                                        		
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td><input type="checkbox"></td>
+                                            <td>2</td>
+                                            <td>Box</td>
+                                            <td>Small Box</td>
+                                            <td>Length</td>
+                                            <td>Width</td>
+                                            <td>Height</td>
+                                            <td>2</td>
+                                            <td>3</td>
+                                            <td>25</td>
+                                            <td>75</td>
+                                     
                                         </tr>
                                    </tbody>
                                 </table>
-                            </div>
+                            </div>                           
+                          
                             
                           </div>
                    
@@ -528,15 +610,16 @@
                             		    <input type="text" class="form-control" >                            		    
                             		    
                             		</div>
-                            	
-                            	
-                           
-                            		                           	
-                            	
-                            	
+                            		
+                            		<div class="col-md-12 branchclass">
+                            			<span class="text-paddingwidth">Reference Invoice No</span>
+                            		    <input type="text" class="form-control" >                            		    
+                            		    
+                            		</div>
+                            
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Description</span>
-                            		    <textarea class="form-control" rows="5"> </textarea>                           		    
+                            		    <textarea class="form-control" rows="3"> </textarea>                           		    
                             		    
                             		</div>
                          </div>
@@ -626,7 +709,43 @@
                        		</div>
                        </div>
              
-                
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">HSN Details</h4>
+                                        </div>
+                                        
+                                        <div class="modal-body">
+										 	<div class="col-lg-6">
+										 		<span> HSN Code</span>
+												<input type="text" class="form-control">
+										 	</div>
+										 	<div class="col-lg-6">
+										 		<span> Description</span>
+												<input type="text" class="form-control">
+										 	</div>
+										 	
+										 	<div class="col-lg-6">
+										 		
+										 	</div>
+										 	<div class="col-lg-6">
+										 		<button class="btn btn-primary pull-right"><i class="fa fa-minus-circle fa-lg"></i></button>
+										 		<button class="btn btn-primary pull-right"><i class="fa fa-plus-circle fa-lg"></i></button>
+										 		
+										 	</div>
+										</div>
+										
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"> <i class="fa fa-times"></i> Cancel</button>
+                                            <button type="button" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</button>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
               
        
         </div>
@@ -640,8 +759,8 @@
   
   
 	
-    
-
+    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script> 
+<script src=" resources/custom/js/date-time-picker.min.js" ></script>
     <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
 
@@ -649,8 +768,11 @@
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();
             });
+     
     </script>
-
+ <script>
+            $('.datepicker').dateTimePicker();
+        </script>
 </body>
 
 </html>

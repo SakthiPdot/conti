@@ -81,7 +81,6 @@ angular.module('contiApp').controller('locationController'
 								console.log("error while fetching Location in search"+errResponse);
 							});
 				}else{
-					console.log("less than 3");
 					self.FilteredLocations=_.filter(self.Locations,function(item){
 						return searchProduct(item,searchString);
 					});

@@ -188,18 +188,15 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 			                  data-ng-model="locctrl.Location.address.country">
 			                  
 			                  <span>Pincode<span style="color:red">&nbsp;*</span></span>
-			                  <input type="number" class="form-control"
+			                  <input type="text" class="form-control"
 			                   data-ng-required="true"
 			                    data-trigger="focus" data-toggle="popover"
 							 	data-placement="top" data-content="Please Enter Pincode"	
-							 	min="100000"
-								max="1000000 " 
-								onKeyPress="return CheckIsNumericAndHyphen(event,this.value) "           
+							   onKeyPress="return CheckIsNumericAndHyphen(event,this.value) "           
 			                  data-ng-model="locctrl.Location.pincode">
 			                  
 	                		</div>
 	                	</div>
-	                	
 	                	
 	                	               
 	                </div> 
@@ -268,7 +265,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
  		</div>
  		</form>
 	
-	<jsp:include page="../Dashboard/nav.jsp"/>
+		<jsp:include page="../Dashboard/settings_nav.jsp"/>
 
 <sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">	
     <div id="wrapper">        	  
@@ -331,7 +328,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                 
                               <div class="col-lg-6 icons-button">
                                    <div class="pull-right">                                   
-									<form name="selectedLocationform" method='POST' action="location_print">
+									<form name="selectedLocationform" method='POST'  action="location_print">
                                      <a type="button" class="btn btn-primary dropdown-toggle"
                                      data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
                                     
@@ -403,7 +400,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 																</div>   
 										</div>
                                     <!--=============== excel============== -->
-                                      <a type="button" onclick="location.href='downloadExcelLocation'" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                      <a type="button" onclick="location.href='downloadExcelLocation';valid = true;" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                      <!--=============== print============== -->
                                       <button type="submit" class="btn btn-primary"
                                       data-ng-disabled="locctrl.selectedLocation.length<1">
@@ -414,7 +411,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 																value="${_csrf.token}" />
                                       
                                       </form>
-                                  	<!--===============seatch tab============== -->
+                                  	<!--===============search tab============== -->
 									<div class="row paddingtop">
 										<div class="col-md-12">
 											<input type="text" class="form-control" name="search"
@@ -542,8 +539,6 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 			e.stopPropagation();
 		});
       </script>
-        
-     
     <script src="resources/custom/js/custom.js"></script>   
 	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Location/location_service.js"></script>

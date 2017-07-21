@@ -1,6 +1,9 @@
 package com.conti.settings.price;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -8,6 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -24,7 +30,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.conti.address.AddressModel;
 import com.conti.config.SessionListener;
+import com.conti.master.branch.BranchModel;
+import com.conti.master.location.Location;
+import com.conti.master.product.Product;
+import com.conti.master.service.ServiceMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -89,6 +100,48 @@ public class PriceSettingsController {
 
 	}
 
+	//=================GET PRICE SETTING MODEL=====================================
+	@RequestMapping(value="getPriceSettingModel",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PriceSettingDetail> getPriceSettingModel(){
+	
+		PriceSettingDetail priceSettingDetail =new PriceSettingDetail();
+		
+		PriceSetting priceSetting=new PriceSetting();
+		priceSetting.setProduct(new Product());
+		priceSetting.setService(new ServiceMaster());
+		priceSetting.setBranch(new BranchModel());
+		
+		priceSettingDetail.setPriceSetting(priceSetting);
+		priceSettingDetail.setBranch(new BranchModel());
+		
+		return new  ResponseEntity<PriceSettingDetail>(priceSettingDetail,HttpStatus.CREATED);
+	}
+	
+	//	public ResponseEntity<PriceSetting> getPriceSettingModel(){
+//		
+//		Location location=new Location();
+//		AddressModel address=new AddressModel();
+//		location.setAddress(address);
+//		
+//		PriceSetting priceSetting=new PriceSetting();
+//		
+//		Set<PriceSettingDetail> PriceSettingDetail=new HashSet<>();
+//		
+//		PriceSettingDetail priceSettingDetail =new PriceSettingDetail();
+//		priceSettingDetail.setBranch(new BranchModel());
+//		PriceSettingDetail priceSettingDetail1 =new PriceSettingDetail();
+//		priceSettingDetail1.setBranch(new BranchModel());
+//		
+//		PriceSettingDetail.add(priceSettingDetail);
+//		PriceSettingDetail.add(priceSettingDetail1);
+//		
+//		priceSetting.setPriceSettingDetail(PriceSettingDetail);
+//		priceSetting.setProduct(new Product());
+//		priceSetting.setService(new ServiceMaster());
+//		priceSetting.setBranch(new BranchModel());
+//		
+//		return new  ResponseEntity<PriceSetting>(priceSetting,HttpStatus.CREATED);
+//	}
 	
 
 }

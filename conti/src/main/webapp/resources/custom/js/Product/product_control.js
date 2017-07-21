@@ -55,6 +55,12 @@ angular.module('contiApp').controller('productController',
 
 	//===================================check for product name====================================
 	self.checkProductName=function checkProductName(name){
+		
+		console.log(self.product.product_name,self.UpdateNotCheckProductName);
+		if(self.product.product_id != null &&  self.product.product_name ==	self.UpdateNotCheckProductName){
+			$scope.nameWrong=false;
+			//Dont check name
+		}else{
 		ProductService.checkProductName(name)
 		.then(function (response){
 			if(response=="204"){
@@ -68,6 +74,7 @@ angular.module('contiApp').controller('productController',
 			self.product.product_name=null;
 			console.log("error checking name");
 		});
+		}
 	}
 	//===================================change no of page to view in register====================================
     self.shownoofRecord=function shownoofRecord() {    
@@ -374,44 +381,51 @@ angular.module('contiApp').controller('productController',
 	        self.product.max_length=null;
 		}
 		
-		if(self.product.product_id==null){
-            console.log('Saving Product', self.product);
+		if(!($("#selectedProductType_value").val()).length>0){
+				console.log("no");
+				$("#selectedProductType_value").focus();
+		} else{
+			
+			if(self.product.product_id==null ){
+	            console.log('Saving Product', self.product);
 
-    		ConfirmDialogService.confirmBox("Save",
-    				BootstrapDialog.TYPE_SUCCESS, "Save Product "+self.product.product_name+"  ..?", 'btn-success')
-    		.then(function(response){
-    			ProductService.saveProduct(self.product)
-    			.then(
-						function(response){
-							 fetchProducts();
-							self.message ="Product "+self.product.product_name+ "  Created..!";
-							newOrClose();
-							successAnimate('.success');	
-						},function(errResponse){
-							self.message = "Error While Creating Product ("+self.product.product_name+") ..!";
-							successAnimate('.failure');
-						});	
-    		});
-    		
-		}else{
-            console.log('updating Product', self.product.product_id);
-        	
-            ConfirmDialogService.confirmBox("Update",
-    				BootstrapDialog.TYPE_SUCCESS, "Update Product "+self.product.product_name+"  ..?", 'btn-success')
-    		.then(function(response){
-    			ProductService.updateProduct(self.product, self.product.product_id)
-    			.then(
-						function(response){
-							 fetchProducts();
-							self.message ="Product "+self.product.product_name+ " Updated..!";							
-							newOrClose();	
-							successAnimate('.success');	
-						},function(errResponse){
-							self.message = "Error While Updating Product ("+self.product.product_name+") ..!";
-							successAnimate('.failure');
-						});	
-    		});            
+	    		ConfirmDialogService.confirmBox("Save",
+	    				BootstrapDialog.TYPE_SUCCESS, "Save Product "+self.product.product_name+"  ..?", 'btn-success')
+	    		.then(function(response){
+	    			ProductService.saveProduct(self.product)
+	    			.then(
+							function(response){
+								 fetchProducts();
+								self.message ="Product "+self.product.product_name+ "  Created..!";
+								newOrClose();
+								successAnimate('.success');	
+							},function(errResponse){
+								self.message = "Error While Creating Product ("+self.product.product_name+") ..!";
+								successAnimate('.failure');
+							});	
+	    		});
+	    		
+			}else{
+	            console.log('updating Product', self.product.product_id);
+	        	
+	            ConfirmDialogService.confirmBox("Update",
+	    				BootstrapDialog.TYPE_SUCCESS, "Update Product "+self.product.product_name+"  ..?", 'btn-success')
+	    		.then(function(response){
+	    			ProductService.updateProduct(self.product, self.product.product_id)
+	    			.then(
+							function(response){
+								 fetchProducts();
+								self.message ="Product "+self.product.product_name+ " Updated..!";							
+								newOrClose();	
+								successAnimate('.success');	
+							},function(errResponse){
+								self.message = "Error While Updating Product ("+self.product.product_name+") ..!";
+								successAnimate('.failure');
+							});	
+	    		});            
+			}
 		}
+
 	}
 	//===========================CHECK SAVEANDCLOSE or SAVEANDNEW============
 	function newOrClose(){
@@ -425,9 +439,12 @@ angular.module('contiApp').controller('productController',
 	//===================================onchange of angucomplete====================================
 	  $scope.product_type=function(selected){
 	       	console.log(selected);
-	       self.product.product_Type=selected.originalObject.product_Type;
-	       }      
-	          
+	    	if(typeof selected.originalObject.product_Type != 'undefined'){
+	    		self.product.product_Type=selected.originalObject.product_Type;
+	    	}else{
+	    		self.product.product_Type=selected.originalObject;	
+	    	}
+	       } 
 	
 	//===================================fetch product====================================
 	 fetchProducts();
@@ -476,7 +493,12 @@ angular.module('contiApp').controller('productController',
 	
 	//===================================update product====================================
 	function updateProduct(product,index){		
-		self.product=product;		
+		self.product=product;
+		$scope.nameWrong=false;
+		console.log(self.product);
+
+		$("#selectedProductType_value").val(self.product.product_Type);
+		self.UpdateNotCheckProductName=self.product.product_name;
 		(self.product.product_name).length> 15?
 			self.heading="- "+(self.product.product_name).substr(0,14)+"..."
 			:self.heading="- "+self.product.product_name ;

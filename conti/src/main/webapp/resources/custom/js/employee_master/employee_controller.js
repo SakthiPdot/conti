@@ -84,8 +84,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	}
 	//-------------------------- Fetch All Employees begin ---------------------//
 	 
-	function close() {
-		self.confirm_title = 'Cancel';
+	function close(oper) {
+		self.confirm_title = oper;
 		self.confirm_type = BootstrapDialog.TYPE_WARNING;
 		self.confirm_msg = self.confirm_title+ ' without saving data?';
 		self.confirm_btnclass = 'btn-warning';
@@ -419,24 +419,14 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     //------------------------- Register select end ------------------//
     //------------------------- Register select all begin ------------------//   
     function empSelectall() {
-
-    		/*angular.forEach(self.Filteremployees, function(employee){
-        		employee.select = $scope.selectall;
-        	});*/
-    		try {
-    			
-    			for(var i = 0; i < $scope.pageSize; i++) {
-        			self.Filteremployees[i].select = $scope.selectall;
-        		}
-        		
-        		self.selected_employee=$scope.selectall?self.Filteremployees:[];
-
-        		
-    		} catch(e) {
-    			
-    		}
-    		
-        
+		self.selected_employee=[];
+		
+		for(var i = 0; i < $scope.pageSize; i++) {
+			self.Filteremployees[i].select = $scope.selectall;
+			if($scope.selectall){
+				self.selected_employee.push(self.Filteremployees[i]);
+			}
+		}	
     }
     //------------------------- Register select all end ------------------//       
     

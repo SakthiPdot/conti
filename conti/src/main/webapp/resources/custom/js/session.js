@@ -141,9 +141,10 @@
 	 		  valid = true;			
 	 		}); 
 	 	  
-	 	 $("form").submit(function (e) {
-	 		 valid = true;	
-	 	});
+	 	 $(document).on("submit", "form", function(event){
+	 		valid = true;
+	     });
+	 	 
 	 	 
 	 		  $(document.body).on("keydown", this,
 	 		     function (event) {

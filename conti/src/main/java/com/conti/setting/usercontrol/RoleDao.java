@@ -21,4 +21,5 @@ public interface RoleDao {
 	
 	public List<Role> geta(int id);
 
+
 }

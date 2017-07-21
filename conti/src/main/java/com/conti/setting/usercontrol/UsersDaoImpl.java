@@ -98,19 +98,7 @@ class UsersDaoImpl implements UsersDao {
 		/*------------------------------- Find user by username end ----------------------- */
 
 
-		/*@Override
-		@Transactional
-		public User getBranchId(int id) {
-			String hql = "FROM User WHERE obsolete = 'N' and branch_id = " + id+ "";
-			Query query = sessionFactory.getCurrentSession().createQuery(hql);
-			
-			@SuppressWarnings("unchecked")
-			List<User> userlist = (List<User>) query.list();
-			if(userlist !=null && !userlist.isEmpty()){
-				return userlist.get(0);
-			}
-			return null;
-		}
+		/*
 
 		@Override
 		@Transactional
@@ -131,6 +119,18 @@ class UsersDaoImpl implements UsersDao {
 			return listUser;
 		}	*/					
 
+		
+		@Override
+		@Transactional
+		public List<User> getUsersbyBranchId(int branch_id) {
+			@SuppressWarnings("unchecked")
+			List<User> listuser = (List<User>) sessionFactory.getCurrentSession()
+					.createQuery("from User WHERE obsolete = 'N' and branchModel.branch_id = '"+ branch_id+"'").list();
+			
+			return listuser;
+		}
+
+		
 		@Override
 		@Transactional
 		public User getBranchId(int id) {
@@ -150,7 +150,7 @@ class UsersDaoImpl implements UsersDao {
 		public List<User> getUser(int emp_id) {
 			@SuppressWarnings("unchecked")
 			List<User> listuser = (List<User>) sessionFactory.getCurrentSession()
-					.createQuery("from User WHERE obsolete = 'N' and active = 'Y' and emp_id = '"+ emp_id+"'").list();
+					.createQuery("from User WHERE obsolete = 'N' and emp_id = '"+ emp_id+"'").list();
 			
 			return listuser;
 		}
@@ -164,6 +164,19 @@ class UsersDaoImpl implements UsersDao {
 			return listUser;
 		}						
 
+		@Override
+		@Transactional
+		public User getUserbyEmp(int emp_id) {
+			String hql = "FROM User WHERE obsolete = 'N' and emp_id = " + emp_id+ "";
+			Query query = sessionFactory.getCurrentSession().createQuery(hql);
+			
+			@SuppressWarnings("unchecked")
+			List<User> userlist = (List<User>) query.list();
+			if(userlist !=null && !userlist.isEmpty()){
+				return userlist.get(0);
+			}
+			return null;
+		}
 		
 	
 }
