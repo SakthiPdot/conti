@@ -466,7 +466,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     									function(response) {
     										fetchAllEmployees();
     										self.selected_employee = [];
-    										self.message ="Selected record(s) has in activat status..!";
+    										self.message ="Selected record(s) has in active status..!";
     										successAnimate('.success');
     									}, function(errResponse) {
     										console.log(errResponse);    								

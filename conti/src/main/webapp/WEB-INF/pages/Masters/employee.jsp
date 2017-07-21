@@ -70,7 +70,7 @@
 <!-- ------------------------- Failure message end ------------------ -----  -->
  		
  		<div class="drawer hideme">
- 		  <form data-ng-submit="ctrl.submit()" name="empForm" class="form-horizontal">
+ 		  <form data-ng-submit="ctrl.submit()" name="empForm" class="form-horizontal formBottom">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
@@ -300,10 +300,10 @@
 							Cancel</button>
 						</div>
 						
-						<div class="col-lg-4" style="text-align:center; !important;">
+						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
 							
 							<a id="" class="btnPadding btn btn-warning"	 data-ng-click="ctrl.deleteEmployee()"  data-ng-show="ctrl.employee.emp_id!=null" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a>
-							<a id="" class="btnPadding btn btn-primary" data-ng-click = "ctrl.clear()" data-ng-show="!empForm.$pristine && (ctrl.employee.emp_id==null)">Clear</a>							
+							<a id="" class="btnPadding btn btn-primary" data-ng-click = "ctrl.clear()" data-ng-show="!empForm.$pristine && (ctrl.employee.emp_id==null)"><i class="fa fa-eraser" aria-hidden="true"></i> Clear</a>							
 						</div>
 						
 						<div class="col-lg-4 col-xs-4 footerRight" data-ng-show="!(ctrl.employee.emp_id== null)">
@@ -315,7 +315,7 @@
 							<br>
 						</div>
 						
-						<div class="col-lg-4 footerRight" data-ng-show = "ctrl.employee.emp_id==null">
+						<div class="col-lg-4 col-xs-4 footerRight" data-ng-show = "ctrl.employee.emp_id==null">
 
 							<div class="btn-group dropup" id="savebutton">
 						 	 <button type="submit" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
