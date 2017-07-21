@@ -265,7 +265,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
  		</div>
  		</form>
 	
-	<jsp:include page="../Dashboard/nav.jsp"/>
+		<jsp:include page="../Dashboard/settings_nav.jsp"/>
 
 <sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">	
     <div id="wrapper">        	  
@@ -539,8 +539,6 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 			e.stopPropagation();
 		});
       </script>
-        
-     
     <script src="resources/custom/js/custom.js"></script>   
 	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Location/location_service.js"></script>

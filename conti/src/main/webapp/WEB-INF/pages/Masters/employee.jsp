@@ -343,7 +343,7 @@
  		</div>
  
 	
-	<jsp:include page="../Dashboard/nav.jsp"/>
+		<jsp:include page="../Dashboard/settings_nav.jsp"/>
 	
 	
  		

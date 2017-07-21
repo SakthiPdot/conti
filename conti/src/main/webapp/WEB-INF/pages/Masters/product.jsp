@@ -292,7 +292,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
   
   
   	
-	<jsp:include page="../Dashboard/nav.jsp"/>
+		<jsp:include page="../Dashboard/settings_nav.jsp"/>
 
 
 <sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">

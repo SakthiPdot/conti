@@ -345,7 +345,7 @@
                     
                     
                     <li>
-                        <a href="settings"><i class="fa fa-wrench"></i> Settings</a>
+                        <a href="company_settings"><i class="fa fa-wrench"></i> Settings</a>
                         
                     </li>
                 </ul>

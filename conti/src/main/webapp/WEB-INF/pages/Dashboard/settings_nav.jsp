@@ -14,13 +14,14 @@
     
     <meta name="_csrf" content="${_csrf.token}" />
 	<meta name="_csrf_header" content="${_csrf.headerName}" />
-	
+
     <title>Conti</title>
     <!-- Bootstrap Styles-->
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
-		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	
+	 <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
 	 
     <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
@@ -30,7 +31,15 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
-	
+
+	<link href="resources/built-in/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css">
+
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	 <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+	 
+	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
+	 <link href="resources/custom/css/custom.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -345,11 +354,15 @@
     </div>
     <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
-   
-	 
+    
+  
+    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
+    <!-- Bootstrap Js -->
+    <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
+
     <!-- Metis Menu Js -->
     <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
-     <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
+    
     <!-- Morris Chart Js -->
     <script src="resources/built-in/assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="resources/built-in/assets/js/morris/morris.js"></script>
@@ -364,6 +377,7 @@
     <script src="resources/built-in/assets/js/custom-scripts.js"></script>
 	<script src="resources/custom/js/session.js"></script>
 
+	<script type="text/javascript" src="resources/built-in/js/bootstrap-dialog.min.js"></script>
 </body>
 
 </html>
