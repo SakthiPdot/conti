@@ -7,7 +7,10 @@ angular.module('contiApp')
  		.controller('companyController'
 		,['$scope','LocationService','CompanySettingService','AddressService','ConfirmDialogService'
 			,function($scope,LocationService,CompanySettingService,AddressService,ConfirmDialogService){
-			
+		
+		    $("#screen_company_settings").addClass("active-menu");
+		    
+		    
 			var self=this;
 		
 	self.addresses=[];
@@ -120,21 +123,21 @@ angular.module('contiApp')
 	
 
 	function submitButtonText(){
-	if(self.company.company_id==null){
-		$("#submitText").text("Save");
-	}else{
-		$("#submitText").text("Update");
-	}
+		if(self.company.company_id==null){
+			$("#submitText").text("Save");
+		}else{
+			$("#submitText").text("Update");
+		}
 	}	
 
 	
 	self.submit=function ($event){
 		
-		console.log(JSON.parse($('#locationId').val()));
-	
 			  if ($('#locationId').val() == '' || $('#locationId').val() == null) {
-				  console.log("inside if");
 				  $('#selectedAddress_value').focus();
+				  console.log("inside if");
+				  console.log($('#locationId').val());
+				  console.log(JSON.parse($('#locationId').val()));
 			  }else{
 				  
 					self.company.location=JSON.parse($('#locationId').val());

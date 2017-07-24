@@ -21,7 +21,10 @@
 // begin---------------------//
 
 
-
+function makeMenuActive(ScreenName){
+	console.log(ScreenName);
+	$("#"+ScreenName).addClass("active-menu");
+}
 function drawerOpen(drawerName){
 	
 	

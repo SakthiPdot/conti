@@ -9,7 +9,9 @@
 angular.module('contiApp').controller('productController',
 		['$scope','ProductService','ConfirmDialogService',function($scope,ProductService,ConfirmDialogService){
 		
-
+	
+	$("#screen_product").addClass("active-menu");
+	
 	$scope.shownoofrec = 10;
 	$scope.nameWrong=false;
 	

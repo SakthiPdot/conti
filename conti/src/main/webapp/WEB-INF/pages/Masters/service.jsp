@@ -69,7 +69,7 @@
  		
  		
  		<div class="drawer hideme">
- 		  <form data-ng-submit="ctrl.submit()" name="serviceForm" class="form-horizontal">
+ 		  <form data-ng-submit="ctrl.submit()" name="serviceForm" class="formBottom form-horizontal">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
@@ -123,7 +123,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4  footerLeft">
-							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close('Clear')" ><i class="fa fa-trash-o"></i> Clear</button>
+							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close('Cancel')" ><i class="fa fa-trash-o"></i> Cancel</button>
 						</div>
 						
 						 <div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
@@ -169,7 +169,7 @@
  		</div>
  
 	
-	<jsp:include page="../Dashboard/nav.jsp"/>
+		<jsp:include page="../Dashboard/settings_nav.jsp"/>
 	
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
@@ -251,7 +251,7 @@
 										
 									</div>	
 							
-                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelService'"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelService';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                       
                                       
 	                                      <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_service.length == 0"><i class="fa fa-print fa-lg"></i></button>

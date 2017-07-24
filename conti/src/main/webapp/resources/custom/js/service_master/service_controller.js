@@ -4,7 +4,7 @@
 
 contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','ConfirmDialogService' , function($scope, $timeout, ServiceService,ConfirmDialogService){
 	
-	
+	$("#screen_service").addClass("active-menu");
 	
 	
 	var self = this;

@@ -54,214 +54,210 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
  	
   <!-- form  Beginning  -->	
  		
- 		<form data-ng-submit="proctrl.submit()" name="productForm">
+ 
  		
   <!-- Master Drawer Beginning  -->
-  
-  
- 		<div class="drawer hideme ">
- 			<div class="row">
- 			<div class="col-lg-12 trowserHeader">
- 				 
-                   <div class="col-lg-10 col-md-10 headerLeft">
-                   		 <b class="model-title">Product {{proctrl.heading}}</b>
-                   </div>
-                   
-                    <div class="col-lg-2 col-md-2 headerRight">
-                   		<i class="fa fa-times fa-2x   pull-right iconLeft" 
-                   		 data-ng-click="proctrl.close('Close')"></i>
-                   </div>
-            
-            </div>
- 			</div>
-               
-                 
-                 
-             <div class="model-body">                 
-                <div class="row">
-		            <div class="col-lg-12 title_area">                
-		              
-			          	<div class="col-lg-12 new-masters" >
-			          		 <b  data-ng-show="(proctrl.product.product_id== null)"> New Product</b>	
-			          	</div>  
-			          	
-			        </div>                
-	            </div> 
-	                
-	            <div class="row">
-		            <div class="col-lg-12">
-			                
-			           <div class="col-lg-12 content-body">
-		                
-		                
-					
-		                 
-	                 	  <span>Product Name<span style="color:red">&nbsp;*</span></span>
-		                  <input type="text" class="form-control"
-		                  maxlength="50"
-		                  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
-		                    data-ng-required="true"
-		                    placeholder="Eg. Name"
-							data-ng-blur="proctrl.checkProductName(proctrl.product.product_name)"
-			                  data-trigger="focus" data-toggle="popover"
-							  data-placement="top" data-content="Please Enter Product Name"
-		                  data-ng-model="proctrl.product.product_name">
-		                  
-		                  <span class="makeRed" data-ng-show="nameWrong">Product Name Already Existing..!<br><br></span>
-		                  
-		                  <span>Product Code</span>
-		                  <input type="text" class="form-control"
-		                  maxlength="10"		                 
-		                  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
-			                  data-trigger="focus" data-toggle="pop	over"
-			                  placeholder="Eg. XYZ01"
-							  data-placement="top" data-content="Please Enter Product Code"
-		                  data-ng-model="proctrl.product.product_code">
-		                  
-		                   <span>Product Type<span style="color:red">&nbsp;*</span></span>	
-		                   
-		                   		 <div angucomplete-alt
-							 					 id="selectedProductType" 
-									              pause="0"										              
-									  			  data-trigger="focus" data-toggle="popover"
-							 					  data-placement="top" data-content="Please Enter Product Type"
-									              selected-object="product_type"
-									              local-data="proctrl.products"									              
-  												  override-suggestions="true"
-									              placeholder="Eg.Box"
-									              search-fields="product_Type"
-									              title-field="product_Type"
-												  match-class="highlight"
-												  initial-value="{{proctrl.product.product_Type}}"
-									              minlength="1"
-									              input-class="form-control form-control-small">
-									              </div>
-									              
-									         	                  
-		                  <input type="hidden" class="form-control"
-		                  maxlength="30" 
-		                  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
-			                  data-trigger="focus" data-toggle="popover"
-							  data-placement="top" data-content="Please Enter Product Type"
-		                  data-ng-model="proctrl.product.product_Type">
-		                  
-		                  <span>Maximum Weight<span style="color:red">&nbsp;*</span></span>
-		                  <div class="input-group">
-		                  <input type="text" class="form-control"		                  
-		                    data-ng-required="true"		                  
-		                    onKeyPress="return CheckIsNumericAnddot(event,this.value) "
-		                    maxlength="8"		                    
-						   placeholder="Eg.10.01"
-			                  data-trigger="focus" data-toggle="popover"
-							  data-placement="top" data-content="Please Enter Maximum Weight"
-		                    data-ng-model="proctrl.product.max_weight">
-							<span class="input-group-addon" id="basic-addon1"><label>kg</label></span>
+
+
+	<div class="drawer hideme ">
+		<form data-ng-submit="proctrl.submit()" class="formBottom"
+			name="productForm">
+			<div class="row">
+				<div class="col-lg-12 trowserHeader">
+
+					<div class="col-lg-10 col-md-10 headerLeft">
+						<b class="model-title">Product {{proctrl.heading}}</b>
+					</div>
+
+					<div class="col-lg-2 col-md-2 headerRight">
+						<i class="fa fa-times fa-2x   pull-right iconLeft"
+							data-ng-click="proctrl.close('Close')"></i>
+					</div>
+
+				</div>
+			</div>
+
+
+
+			<div class="model-body">
+				<div class="row">
+					<div class="col-lg-12 title_area">
+
+						<div class="col-lg-12 new-masters">
+							<b data-ng-show="(proctrl.product.product_id== null)"> New
+								Product</b>
 						</div>
-			               
-			          </div>  
-			        
-			        </div>
-			             
-			             
-			        <div class="col-lg-12">
-			                
-			            <div class="col-lg-12 content-body setup">
-		                 	 
-                            <b><span>Dimension Setup 
-                            <input type="radio" data-ng-model="proctrl.product.dimension_flag" 
-                            data-ng-init="proctrl.product.dimension_flag=true" name="optionsRadios" id="optionsRadios1" value="Y" checked>Yes
-                            <input type="radio" data-ng-model="proctrl.product.dimension_flag"  name="optionsRadios" id="optionsRadios1" value="N">No
-                             </span>
-                            </b>
-			               
-			            </div>  
-			        
-			        </div>
-			             
-			             
-			        <div class="col-lg-12" 
-			                  data-ng-hide="proctrl.product.dimension_flag=='N'">
-			                
-			            <div class="col-lg-12 content-body">
-		                 	 
-		                 	  <span>Maximum Height</span>	
-		                  <div class="input-group">
-			                  <input type="text" class="form-control"			                  
-		                    onKeyPress="return CheckIsNumericAnddot(event,this.value) "
-		                    maxlength="8"            
-		                    placeholder="Eg.10.01"     
-			                  data-trigger="focus" data-toggle="popover"
-							  data-placement="top" data-content="Please Enter Maximum Height"
-			                  data-ng-model="proctrl.product.max_height">			                  
-							<span class="input-group-addon" id="basic-addon1"><label>cm</label></span>
+
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12">
+
+						<div class="col-lg-12 content-body">
+
+
+
+
+							<span>Product Name<span style="color: red">&nbsp;*</span></span>
+							<input type="text" class="form-control" maxlength="50"
+								onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+								data-ng-required="true" placeholder="Eg. Name"
+								data-ng-blur="proctrl.checkProductName(proctrl.product.product_name)"
+								data-trigger="focus" data-toggle="popover" data-placement="top"
+								data-content="Please Enter Product Name"
+								data-ng-model="proctrl.product.product_name"> <span
+								class="makeRed" data-ng-show="nameWrong">Product Name
+								Already Existing..!<br>
+							<br>
+							</span> <span>Product Code</span> <input type="text"
+								class="form-control" maxlength="10"
+								onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+								data-trigger="focus" data-toggle="pop	over"
+								placeholder="Eg. XYZ01" data-placement="top"
+								data-content="Please Enter Product Code"
+								data-ng-model="proctrl.product.product_code"> <span>Product
+								Type<span style="color: red">&nbsp;*</span>
+							</span>
+
+							<div angucomplete-alt id="selectedProductType" pause="0"
+								data-trigger="focus" data-toggle="popover" data-placement="top"
+								data-content="Please Enter Product Type"
+								selected-object="product_type" local-data="proctrl.products"
+								override-suggestions="true" placeholder="Eg.Box"
+								search-fields="product_Type" title-field="product_Type"
+								match-class="highlight"
+								initial-value="{{proctrl.product.product_Type}}" minlength="1"
+								input-class="form-control form-control-small"></div>
+
+
+							<input type="hidden" class="form-control" maxlength="30"
+								onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+								data-trigger="focus" data-toggle="popover" data-placement="top"
+								data-content="Please Enter Product Type"
+								data-ng-model="proctrl.product.product_Type"> <span>Maximum
+								Weight<span style="color: red">&nbsp;*</span>
+							</span>
+							<div class="input-group">
+								<input type="text" class="form-control" data-ng-required="true"
+									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
+									maxlength="8" placeholder="Eg.10.01" data-trigger="focus"
+									data-toggle="popover" data-placement="top"
+									data-content="Please Enter Maximum Weight"
+									data-ng-model="proctrl.product.max_weight"> <span
+									class="input-group-addon" id="basic-addon1"><label>kg</label></span>
+							</div>
+
 						</div>
-			                  
-			                  <span>Maximum Width</span>
-		                  <div class="input-group">
-			                  <input type="text" class="form-control"				                  
-		                    onKeyPress="return CheckIsNumericAnddot(event,this.value) "
-		                    maxlength="8"
-		                    placeholder="Eg.10.01"		                
-			                  data-trigger="focus" data-toggle="popover"
-							  data-placement="top" data-content="Please Enter Maximum Width"		                  
-			                  data-ng-model="proctrl.product.max_width">			                  
-							<span class="input-group-addon" id="basic-addon1"><label>cm</label></span>
+
+					</div>
+
+
+					<div class="col-lg-12">
+
+						<div class="col-lg-12 content-body setup">
+
+							<b><span>Dimension Setup <input type="radio"
+									data-ng-model="proctrl.product.dimension_flag"
+									data-ng-init="proctrl.product.dimension_flag=true"
+									name="optionsRadios" id="optionsRadios1" value="Y" checked>Yes
+									<input type="radio"
+									data-ng-model="proctrl.product.dimension_flag"
+									name="optionsRadios" id="optionsRadios1" value="N">No
+							</span> </b>
+
 						</div>
-			                  
-						<span>Maximum Length</span>
-		                  <div class="input-group">
-			                  <input type="text" class="form-control"				                  
-		                    onKeyPress="return CheckIsNumericAnddot(event,this.value) "
-		                    maxlength="8"		
-		                    placeholder="Eg.10.01"                  
-			                  data-trigger="focus" data-toggle="popover"
-							  data-placement="top" data-content="Please Enter Maximum Length"
-			                   data-ng-model="proctrl.product.max_length">	                  
-							<span class="input-group-addon" id="basic-addon1"><label>cm</label></span>
-						</div>	
-						
-						             
-			                 	
-			           </div>  
-			       
-			       </div>
-			                             
-	            </div>   
-	                
-	        </div>
-                 
-                            
-                 <div class="modal-footer footerHeight" >
-				
+
+					</div>
+
+
+					<div class="col-lg-12"
+						data-ng-hide="proctrl.product.dimension_flag=='N'">
+
+						<div class="col-lg-12 content-body">
+
+							<span>Maximum Height</span>
+							<div class="input-group">
+								<input type="text" class="form-control"
+									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
+									maxlength="8" placeholder="Eg.10.01" data-trigger="focus"
+									data-toggle="popover" data-placement="top"
+									data-content="Please Enter Maximum Height"
+									data-ng-model="proctrl.product.max_height"> <span
+									class="input-group-addon" id="basic-addon1"><label>cm</label></span>
+							</div>
+
+							<span>Maximum Width</span>
+							<div class="input-group">
+								<input type="text" class="form-control"
+									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
+									maxlength="8" placeholder="Eg.10.01" data-trigger="focus"
+									data-toggle="popover" data-placement="top"
+									data-content="Please Enter Maximum Width"
+									data-ng-model="proctrl.product.max_width"> <span
+									class="input-group-addon" id="basic-addon1"><label>cm</label></span>
+							</div>
+
+							<span>Maximum Length</span>
+							<div class="input-group">
+								<input type="text" class="form-control"
+									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
+									maxlength="8" placeholder="Eg.10.01" data-trigger="focus"
+									data-toggle="popover" data-placement="top"
+									data-content="Please Enter Maximum Length"
+									data-ng-model="proctrl.product.max_length"> <span
+									class="input-group-addon" id="basic-addon1"><label>cm</label></span>
+							</div>
+
+
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+
+			<div class="modal-footer footerHeight">
+
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="proctrl.close('Cancel')"  data-ng-click="reset()" > <i class="fa fa-times" aria-hidden="true"></i>
-							Cancel</button>
-						</div>
-						
-						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
-							<a id="" class="btnPadding btn btn-warning"	 data-ng-click="proctrl.deleteProduct()"  data-ng-show="!(proctrl.product.product_id== null)" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
-							
-							<a id="" class="btnPadding btn btn-primary"  data-ng-click="proctrl.resetForm()"  data-ng-show="!productForm.$pristine && (proctrl.product.product_id== null)"><i class="fa fa-eraser" aria-hidden="true"></i>
-							Clear</a>							
+							<button type="button" class=" btn btn-danger  pull-left"
+								data-ng-click="proctrl.close('Cancel')" data-ng-click="reset()">
+								<i class="fa fa-times" aria-hidden="true"></i> Cancel
+							</button>
 						</div>
 
+						<div class="col-lg-4 col-xs-4"
+							style="text-align: center; !important;">
+							<a id="" class="btnPadding btn btn-warning"
+								data-ng-click="proctrl.deleteProduct()"
+								data-ng-show="!(proctrl.product.product_id== null)"><i
+								class="fa fa-trash" aria-hidden="true"></i> &nbsp;Delete</a> <a
+								id="" class="btnPadding btn btn-primary"
+								data-ng-click="proctrl.resetForm()"
+								data-ng-show="!productForm.$pristine && (proctrl.product.product_id== null)"><i
+								class="fa fa-eraser" aria-hidden="true"></i> Clear</a>
+						</div>
 
 
-						<div class="col-lg-4 col-xs-4 footerRight" data-ng-show="!(proctrl.product.product_id== null)">
-							<button class="btn btn-success " type="submit"
-								
-								id="saveclose" data-id="0" data-ng-click="save($event)"
-								type="submit">
-								<i class="fa fa-floppy-o "> </i> Update</button>
+
+						<div class="col-lg-4 col-xs-4 footerRight"
+							data-ng-show="!(proctrl.product.product_id== null)">
+							<button class="btn btn-success " type="submit" id="saveclose"
+								data-id="0" data-ng-click="save($event)" type="submit">
+								<i class="fa fa-floppy-o "> </i> Update
+							</button>
 							<br>
 						</div>
 
 
 
-						<div class="col-lg-4 col-xs-4 footerRight" 
-									data-ng-show="(proctrl.product.product_id== null)">
+						<div class="col-lg-4 col-xs-4 footerRight"
+							data-ng-show="(proctrl.product.product_id== null)">
 							<div class="btn-group dropup" id="savebutton">
 
 								<button type="button" class="btn btn-success dropdown-toggle"
@@ -284,15 +280,16 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 						</div>
 					</div>
 				</div>
-            </div>			
- 		</div> 
+			</div>
+		</form>
+	</div>
 	<!-- Master Drawer Completed -->
-	</form>
+	
   <!--=============================== form  Beginning============================  -->	
   
   
   	
-	<jsp:include page="../Dashboard/nav.jsp"/>
+		<jsp:include page="../Dashboard/settings_nav.jsp"/>
 
 
 <sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">

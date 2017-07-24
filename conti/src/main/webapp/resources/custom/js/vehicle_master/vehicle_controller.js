@@ -1,7 +1,8 @@
 
 contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService', 'BranchService', 'ConfirmDialogService', function($scope, $timeout, VehicleService, BranchService, ConfirmDialogService){
 	
-		
+	   $("#screen_vehicle").addClass("active-menu");	
+	   
 		var self = this;
 		self.vehicles = [];
 		self.Filtervehicles = [];
