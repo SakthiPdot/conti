@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
+	 <link href="resources/custom/css/demo.css" rel="stylesheet">
 	  <link href="resources/custom/css/custom.css" rel="stylesheet">
 </head>
 
@@ -102,7 +103,7 @@
                                           <div class="form-group input-group marginleftrightspace">
 				                  
 				                  
-				                               <input type="text" class="form-control"/>
+				                               <input type="text" class="form-control datepicker"/>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                            </span>
 	                                          
@@ -115,7 +116,7 @@
                 			      		  <div class="form-group input-group spacemarginleftright">
 				                  
 				                  
-				                               <input type="text" class="form-control"/>
+				                               <input type="text" class="form-control datepicker"/>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                            </span>
 	                                          
@@ -272,6 +273,10 @@
     </div>
     <!-- /. WRAPPER  -->
     
+    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script> 
+    <script src=" resources/custom/js/date-time-picker.min.js" ></script>
+    
+    <script> $('.datepicker').dateTimePicker();</script>
 
 </body>
 
