@@ -8,7 +8,9 @@
  * @Updated_date_time Jun 20, 2017 3:24:17 PM
  */
 contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService', 'BranchService', 'ConfirmDialogService', function($scope, UserService, EmployeeService, BranchService, ConfirmDialogService) {
-    var self = this;
+  
+	$("#screen_user").addClass("active-menu");
+	var self = this;
     self.user={user_id:null,username:''};
     self.user.role = {};
     self.users=[];

@@ -14,13 +14,14 @@
     
     <meta name="_csrf" content="${_csrf.token}" />
 	<meta name="_csrf_header" content="${_csrf.headerName}" />
-	
+
     <title>Conti</title>
     <!-- Bootstrap Styles-->
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
-		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	
+	 <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
 	 
     <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
@@ -30,7 +31,15 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
-	
+
+	<link href="resources/built-in/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css">
+
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	 <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+	 
+	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
+	 <link href="resources/custom/css/custom.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -282,47 +291,46 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a class="active-menu" href="/Conti/"><i class="fa fa-dashboard"></i>Go Back to Dashboard</a>
+                        <a  href="/Conti/"><i class="fa fa-dashboard"></i>Go Back to Dashboard</a>
                     </li>
                     
                     <li>
-                        <a href="company_settings"><i class="fa fa-university"></i> Company Settings</a>
+                        <a id="screen_company_settings" href="company_settings"><i class="fa fa-university"></i>Company Settings</a>
                     </li>
-                    
+                
                      <li>
-                        <a href="user"><i class="fa fa-user-circle"></i> User Master</a>
+                        <a href="user" id="screen_user"><i class="fa fa-user-circle"></i> User Master</a>
+                    </li>
+                  
+                    <li>
+                        <a href="product" id="screen_product"><i class="fa fa-desktop"></i> Product Master</a>
+                    </li>
+                   
+                    <li>
+                        <a href="location" id="screen_location"><i class="fa fa-map-marker"></i> Location Master</a>
+                    </li>
+                     
+                    <li>
+                        <a href="branch" id="screen_branch"><i class="fa fa-sitemap"></i> Branch Master</a>
+                    </li>
+                   
+                   
+                    <li>
+                        <a href="service" id="screen_service"><i class="fa fa-handshake-o"></i> Service Master</a>
                     </li>
                     
                     <li>
-                        <a href="product"><i class="fa fa-desktop"></i> Product Master</a>
+                        <a href="vehicle" id="screen_vehicle"><i class="fa fa-truck"></i> Vehicle Master</a>
                     </li>
-                    
+                  
                     <li>
-                        <a href="location"><i class="fa fa-map-marker"></i> Location Master</a>
+                        <a href="employee" id="screen_employee"><i class="fa fa-male"></i> Employee Master</a>
                     </li>
-                    
-                    <li>
-                        <a href="branch"><i class="fa fa-sitemap"></i> Branch Master</a>
-                    </li>
-                    
-                    <li>
-                        <a href="service"><i class="fa fa-handshake-o"></i> Service Master</a>
-                    </li>
-                    
-                    <li>
-                        <a href="vehicle"><i class="fa fa-truck"></i> Vehicle Master</a>
-                    </li>
-                    
-                    <li>
-                        <a href="employee"><i class="fa fa-male"></i> Employee Master</a>
-                    </li>
-					
 					 
 					<li>
-                        <a href="price settings_register"><i class="fa fa-inr"></i> Price Settings</a>
+                        <a href="price_settings_register" id="screen_price_settings_register"><i class="fa fa-inr"></i> Price Settings</a>
                     </li>
                     
-                  
                     
                     
                     
@@ -345,11 +353,14 @@
     </div>
     <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
-   
-	 
+    
+    <script src="resources/built-in/js/jquery-1.11.1.min.js"></script>
+    <!-- Bootstrap Js -->
+    <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
+
     <!-- Metis Menu Js -->
     <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
-     <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
+    
     <!-- Morris Chart Js -->
     <script src="resources/built-in/assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="resources/built-in/assets/js/morris/morris.js"></script>
@@ -364,6 +375,7 @@
     <script src="resources/built-in/assets/js/custom-scripts.js"></script>
 	<script src="resources/custom/js/session.js"></script>
 
+	<script type="text/javascript" src="resources/built-in/js/bootstrap-dialog.min.js"></script>
 </body>
 
 </html>

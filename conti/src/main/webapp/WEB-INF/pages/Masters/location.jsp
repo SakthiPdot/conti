@@ -54,15 +54,17 @@
 <body style="overflow-x:hidden;"
 data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
  
+ <div class="overlay hideme"></div>
  
 <div class="success hideme"><i class="fa fa-check-circle" aria-hidden="true"></i> {{locctrl.message}}</div>
 <div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{locctrl.message}}</div>
  
  
- 		<div class="overlay hideme"></div>
  		
- 		<form data-ng-submit="locctrl.submit()" name="locationForm">
+ 		
+ 		
  		<div class="drawer hideme ">
+ 		<form data-ng-submit="locctrl.submit()" class="formBottom" name="locationForm">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
@@ -262,10 +264,10 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
  			
  			
  			
+ 		</form>	
  		</div>
- 		</form>
 	
-	<jsp:include page="../Dashboard/nav.jsp"/>
+		<jsp:include page="../Dashboard/settings_nav.jsp"/>
 
 <sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">	
     <div id="wrapper">        	  
@@ -539,8 +541,6 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 			e.stopPropagation();
 		});
       </script>
-        
-     
     <script src="resources/custom/js/custom.js"></script>   
 	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Location/location_service.js"></script>

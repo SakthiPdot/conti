@@ -60,7 +60,7 @@
 <div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{comctrl.message}}</div>
 	
 
-	<jsp:include page="../Dashboard/nav.jsp" />
+	<jsp:include page="../Dashboard/settings_nav.jsp"/>
 
 	<div id="wrapper"  >
 			
@@ -223,7 +223,8 @@
 									              title-field="location_name,address.city,address.state,pincode"
 												  match-class="highlight"
 												  initial-value="{{comctrl.company.location.location_name}}"
-									              minlength="1"
+									              minlength="1"									              
+							  					  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 									              input-class="form-control form-control-small">
 									              </div>
 							
@@ -322,8 +323,8 @@
 		  			 	     data-trigger="focus" data-toggle="popover"
 	 					    data-placement="top" data-content="Please Enter Alternate Number"
 							data-ng-required="true"
-							maxlength="12
-							onKeyPress="return CheckIsNumeric(event)"
+							maxlength="12"
+							 onKeyPress="return CheckIsNumeric(event)"
 							data-ng-model="comctrl.company.company_alternateno"
 							placeholder="Enter Alternate Number"
 							class="form-control" id="altNo">
@@ -406,7 +407,7 @@
 										placeholder="Enter GST%"
 										class="form-control" id="gstPer"
 										onKeyPress="return CheckIsNumericAnddot(event,this.value)"
-										maxlength="5">
+										maxlength="10">
 								</div>
 							</div>
 							

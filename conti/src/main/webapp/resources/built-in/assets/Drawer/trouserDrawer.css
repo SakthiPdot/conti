@@ -115,7 +115,7 @@
 		
 	/* ----------------------- Overlay properties begin ---------------- */
 			.overlay {
-				position:absolute;
+			position:fixed;	
 				top:0;
 				left:0;
 				right:0;
@@ -135,7 +135,7 @@
 			width: 40%;
 			height: 100%;
 			border: 50px;
-			position:absolute;			
+			position:fixed;			
 			float: right;
 			margin-left: 60%;
  			/*margin-top: -3.3%; */
@@ -162,12 +162,14 @@
 		   z-index: 1;
 		} */
 		
-		.drawer .modal-footer {
-		    background-color: #dedede;
-		    bottom: 0 !important;
-		    position: absolute;
-		    width: 100%;
-		}
+		.drawer .modal-footer  {
+		background-color: #dedede;
+		bottom: 0 !important;
+		position: fixed;
+		width: 39%;
+		-webkit-transform: translateZ(0);
+		z-index: 1500;
+	}
 		
 	.masactive {
 		text-align: center;
