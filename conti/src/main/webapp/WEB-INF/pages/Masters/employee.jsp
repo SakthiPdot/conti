@@ -39,6 +39,7 @@
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
 	 
+	 <link href="resources/custom/css/demo.css" rel="stylesheet">
 
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
@@ -70,7 +71,8 @@
 <!-- ------------------------- Failure message end ------------------ -----  -->
  		
  		<div class="drawer hideme">
- 		  <form data-ng-submit="ctrl.submit()" name="empForm" class="form-horizontal formBottom">
+ 		  <form data-ng-submit="ctrl.submit()" 
+ 		  style="margin-bottom: 250px;" name="empForm" class="form-horizontal formBottom">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
@@ -258,10 +260,10 @@
                                             </span>
                                         </div> -->
 								                 
-				                   <div class="form-group input-group">
+				                   <div class=" input-group">
 				                  
 				                  
-				                               <input type="text" class="form-control datepicker" data-ng-model="ctrl.employee.dob"
+				                               <input type="text" class="form-control datepicker1" data-ng-model="ctrl.employee.dob"
 				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" required/>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                            </span>
@@ -272,14 +274,16 @@
 				              
 				               <div class="col-lg-6 content-body">    
 				                   <span>Date of Joining <span class="required">*</span></span>
-				                  <div class="form-group input-group">
-				                               <input type="text" class="form-control" data-ng-model="ctrl.employee.doj" 
+				                
+				           
+				                  <div class=" input-group">
+				                               <input type="text" class="form-control datepicker2" data-ng-model="ctrl.employee.doj" 
 				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of joining"
 				                               required>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                            </span>
 	                                            
-	                               </div>
+	                               </div> 
 				           	         
 				             </div>         	
 			             </div>  
@@ -588,6 +592,8 @@
 	<script src="resources/libs/jspdf.plugin.autotable.src.js"></script>		
 	<script src="resources/libs/examples.js"></script>   -->
 
+<script src="resources/built-in/assets/js/jquery-1.10.2.js"></script> 
+	<script src=" resources/custom/js/date-time-picker.min.js" ></script>
 
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/employee_master/employee_controller.js"></script>
@@ -604,7 +610,44 @@
 	$('.regSettings').click(function(e) {
 	    e.stopPropagation();
 	});
+
 </script>
+
+<script>
+     // $('.datepicker').dateTimePicker();
+</script>
+
+    <script type="text/javascript">
+
+    function getDate(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        } 
+
+        if(mm<10) {
+            mm = '0'+mm
+        } 
+
+        today =  yyyy+'-'+mm+ '-'+ dd;
+        return today;
+    }
+
+    
+    console.log(getDate());
+    
+            $('.datepicker1').dateTimePicker({
+                limitMax: getDate()
+            });
+            
+            $('.datepicker2').dateTimePicker({
+                limitMax: getDate()
+            });
+        </script>
 </body>
 
 </html>

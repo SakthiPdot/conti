@@ -354,8 +354,7 @@
     <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
     
-  
-    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
+    <script src="resources/built-in/js/jquery-1.11.1.min.js"></script>
     <!-- Bootstrap Js -->
     <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
 
