@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -43,6 +44,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
+import com.conti.master.customer.CustomerModel;
 import com.conti.master.employee.EmployeeMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
@@ -107,6 +109,17 @@ public class BranchRestController {
 		
 	}
 	
+	
+	//=================CHECK PRODUCT NAME=====================================
+		@RequestMapping(value="checkBranchName",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Void> checkBranchName(@RequestBody String name,HttpServletRequest request){		 
+			String status=branchDao.checkBranchName(name.trim());
+			if(status=="AVAILABLE"){
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);			
+			}else{
+				return	new ResponseEntity<Void>(HttpStatus.OK);
+			}			
+		}
 	
 	@RequestMapping(value =  "branch", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
@@ -203,22 +216,62 @@ public class BranchRestController {
 	}
 	
 	/* ------------------------- Update Branch begin ------------------------------------- */
+//	@RequestMapping( value = "/update_branch/{id}", method = RequestMethod.PUT)
+//	public ResponseEntity<BranchModel> updateBranch(@PathVariable ("id") int id, @RequestBody BranchModel branchModel,  HttpServletRequest request) 
+//	{
+//		BranchModel branchModeldb=branchDao.getBranchbyId(id);
+//		userInformation = new UserInformation(request);
+//		String username = userInformation.getUserName();
+//		int user_id = Integer.parseInt(userInformation.getUserId());
+//		try
+//		{
+//			if(branchModeldb==null)
+//			{
+//				loggerconf.saveLogger(username,request.getServletPath(),ConstantValues.SAVE_NOT_SUCCESS,null);
+//				return new ResponseEntity<BranchModel>(HttpStatus.NOT_FOUND);
+//			}
+//			else
+//			{
+//				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//				Date date = new Date();
+//				branchModeldb.setUpdated_by(user_id);
+//				branchModeldb.setUpdated_datetime(dateFormat.format(date).toString());
+//				
+//				branchDao.saveOrUpdate(branchModel);		
+//				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+//				return new ResponseEntity<BranchModel> (branchModel, HttpStatus.CREATED);
+//			}
+//		}
+//		catch (Exception exception)
+//		{
+//			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+//			return new ResponseEntity<BranchModel> (HttpStatus.UNPROCESSABLE_ENTITY);
+//		}
+//		
+//	}
+	/* ------------------------- Update Branches end ------------------------------------- */
+	
+	
+	/* ------------------------- Update Branch begin ------------------------------------- */
 	@RequestMapping( value = "/update_branch", method = RequestMethod.POST)
-	public ResponseEntity<BranchModel> updateBranch(@RequestBody BranchModel branchModel,  HttpServletRequest request) {
+	public ResponseEntity<BranchModel> updateBranch(@RequestBody BranchModel branchModel,  HttpServletRequest request) 
+	{
+		
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
 		int user_id = Integer.parseInt(userInformation.getUserId());
-				
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date date = new Date();
-		
-		try {
+		try
+		{
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date = new Date();
 			branchModel.setUpdated_by(user_id);
 			branchModel.setUpdated_datetime(dateFormat.format(date).toString());
+			
 			branchDao.saveOrUpdate(branchModel);		
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<BranchModel> (branchModel, HttpStatus.CREATED);
-		} 
+			
+		}
 		catch (Exception exception)
 		{
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
@@ -227,6 +280,7 @@ public class BranchRestController {
 		
 	}
 	/* ------------------------- Update Branches end ------------------------------------- */
+	
 	
 	/* ------------------------- Delete Branch begin ------------------------------------- */
 	@RequestMapping(value = "delete_branch/{id}", method = RequestMethod.DELETE)

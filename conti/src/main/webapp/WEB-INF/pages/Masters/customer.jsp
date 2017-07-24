@@ -282,7 +282,7 @@
  		</div>
  
 	
-<jsp:include page="../Dashboard/settings_nav.jsp"/>
+<jsp:include page="../Dashboard/nav.jsp"/>
 	<sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 

@@ -61,7 +61,7 @@
 <!-- ------------------------- Failure message end ------------------ -----  -->
 
  		<div class="drawer hideme">
- 		<form data-ng-submit="ctrl.submit()" name="branchForm" class="form-horizonral">
+ 		<form data-ng-submit="ctrl.submit()" name="branchForm" class="form-horizonral formBottom">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
@@ -94,12 +94,14 @@
 	                <div class="row">
 		                <div class="col-lg-12">
 			                <div class="col-lg-12 content-body">
-			                	<span>Branch Name</span>			                	
+			                	<span>Branch Name<span style="color:red">&nbsp;*</span></span>			                	
 			                	<input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
-			                	data-ng-model="ctrl.branch.branch_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Name">
+			                	data-ng-model="ctrl.branch.branch_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Name"
+			                	data-ng-blur="ctrl.checkBranchName(ctrl.branch.branch_name)" >
+			                	<span class="makeRed" data-ng-show="branchnamewrong">Branch name Already Existing..!<br><br></span>
 			                	
-			                	<span>Branch Code</span>			                	
-			                	<input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsAlphaNumeric(event)"
+			                	<span>Branch Code<span style="color:red">&nbsp;*</span></span>			                	
+			                	<input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsAlphaNumeric(event)" required
 			                	data-ng-model="ctrl.branch.branch_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch code">
 			                	
 			                		                	
@@ -156,18 +158,18 @@
 		                
 		                <div class="col-lg-12">
 			                <div class="col-lg-6 content-body">
-			                	<span>Contact  Person</span>			                	
+			                	<span>Contact  Person<span style="color:red">&nbsp;*</span></span>			                	
 			                	
 			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.branch.branch_contactperson" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact person"  />
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact person"  required/>
 			                	
 			              
 			               </div>	
 			               
 			               <div class="col-lg-6 content-body">
-			                	<span>Contact Number</span>			                	
+			                	<span>Contact Number<span style="color:red">&nbsp;*</span></span>			                	
 			                	<input type="text" class="form-control" maxlength = "10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_mobileno" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact Number"  />
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact Number"  required/>
 			              
 			               </div>		                                
 		                </div>
@@ -175,27 +177,27 @@
 		                
 		                <div class="col-lg-12">
 			                <div class="col-lg-12 content-body">
-			                	 <span>Contact Mail</span>			                	
-			                	<input type="text" class="form-control" maxlength = "30"  data-ng-model="ctrl.branch.branch_email" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Email id"  />
+			                	 <span>Contact Mail<span style="color:red">&nbsp;*</span></span>			                	
+			                	<input type="email" class="form-control" maxlength = "30"  data-ng-model="ctrl.branch.branch_email" 
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Email id" required />
 			               </div>		                                
 		                </div>
 		                
 		                
 		                <div class="col-lg-12">
 			                <div class="col-lg-6 content-body">
-			                	<span>LR Invoice No Prefix</span>			                	
+			                	<span>LR Invoice No Prefix<span style="color:red">&nbsp;*</span></span>			                	
 			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.lrno_prefix" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Invoice no prefix"  />
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Invoice no prefix" required />
 			                	
 			                	
 			              
 			               </div>	
 			               
 			               <div class="col-lg-6 content-body">
-			                	<span>Receipt Invoice No Prefix</span>			                	
+			                	<span>Receipt Invoice No Prefix<span style="color:red">&nbsp;*</span></span>			                	
 			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.receiptno_prefix" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Receipt number"  />
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Receipt number"  required/>
 			               </div>		                                
 		                </div>  
 		                               
@@ -483,6 +485,12 @@
 		</div>
 	</sec:authorize>
 
+	<script>
+		$('[data-toggle="popover"]').popover();
+		$('.regSettings').click(function(e) {
+			e.stopPropagation();
+		});
+	</script>
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/branch_master/branch_controller.js"></script>
   <script src="resources/custom/js/branch_master/branch_service.js"></script>

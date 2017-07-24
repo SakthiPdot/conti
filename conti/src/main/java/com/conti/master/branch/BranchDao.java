@@ -19,5 +19,6 @@ public interface BranchDao
 	public void saveOrUpdate(BranchModel branchModel);
 	public BranchModel getBranchbyId(int id);
 	public List<BranchModel> searchbyeyBranch(String search_key);
-	public List<BranchModel> getBrancheswithLimit(int branch_id, int from_limit, int to_limit, String order); 
+	public List<BranchModel> getBrancheswithLimit(int branch_id, int from_limit, int to_limit, String order);
+	public String checkBranchName(String SearchString);
 }

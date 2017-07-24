@@ -10,6 +10,7 @@
 
 contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$window','CustomerService', 'BranchService', 'LocationService', 'ConfirmDialogService', function($http, $scope, $q, $timeout,  $window, CustomerService, BranchService, LocationService, ConfirmDialogService)
 {
+	$("#screen_customer").addClass("active-menu");
 	var self=this;
 	self.customers=[];
 	self.Filtercustomer = [];
@@ -57,20 +58,40 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 
 	}
 	
-	function close() {
-		self.confirm_title = 'Cancel';
-		self.confirm_type = BootstrapDialog.TYPE_WARNING;
-		self.confirm_msg = self.confirm_title+ ' without saving data?';
-		self.confirm_btnclass = 'btn-warning';
-		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-			.then(
-					function (res) {
-		 	        	reset();
-		 	        	newOrClose();
-					}
-				);
-	}
+//	function close() {
+//		self.confirm_title = 'Cancel';
+//		self.confirm_type = BootstrapDialog.TYPE_WARNING;
+//		self.confirm_msg = self.confirm_title+ ' without saving data?';
+//		self.confirm_btnclass = 'btn-warning';
+//		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+//			.then(
+//					function (res) {
+//		 	        	reset();
+//		 	        	newOrClose();
+//					}
+//				);
+//	}
 
+	
+//---------------------Customer Master drawer close begin-----------
+	
+	
+	function close(title){
+		ConfirmDialogService.confirmBox(title,
+				BootstrapDialog.TYPE_WARNING, title+" Without Save ..? ", 'btn-warning')
+		.then(function(response){
+			 drawerClose('.drawer');
+				reset();
+		});
+	}
+		
+	
+	//----------Customer Master drawer field clear begin-----------
+	
+	
+	
+	
+	
 	function clear() {
 		self.confirm_title = 'Clear';
 		self.confirm_type = BootstrapDialog.TYPE_WARNING;

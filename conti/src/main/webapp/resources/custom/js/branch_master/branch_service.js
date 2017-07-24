@@ -20,10 +20,36 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 			makeinActive : makeinActive,
 			registerSearch : registerSearch,
 			pagination_byPage : pagination_byPage,
-			fetchBranchbyBranchid : fetchBranchbyBranchid
+			fetchBranchbyBranchid : fetchBranchbyBranchid,
+			checkBranchName:checkBranchName
 			};
 	
 	return factory;
+	
+	//----------------Check branch name already exist-------------
+	function checkBranchName(name)
+	{
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:'checkBranchName',
+			data:name,
+			headers:getCsrfHeader()
+		})
+		.then(function(response)
+		{
+			deferred.resolve(response.status);
+		},
+		function (errResponse)
+		{
+			deferred.reject(errResponse);
+		});
+		return deferred.promise;
+	}
+	
+	
+	//----------------Check branch name already exist process End-------------	
+	
 	//-------------------------- Fetch All Branches begin ---------------------//	
 	function fetchAllBranches() {
 		var deferred = $q.defer();
@@ -117,7 +143,7 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 		function updateBranch(branch) {
 	        var deferred = $q.defer();
 	        var headers = getCsrfHeader();
-	        console.log("update service call" +branch)
+	        console.log("update service call " +branch)
 	    	$http({
 	    		method : 'POST',
 	    		url : 'update_branch',
