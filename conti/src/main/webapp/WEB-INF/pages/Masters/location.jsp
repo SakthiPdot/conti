@@ -54,15 +54,17 @@
 <body style="overflow-x:hidden;"
 data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
  
+ <div class="overlay hideme"></div>
  
 <div class="success hideme"><i class="fa fa-check-circle" aria-hidden="true"></i> {{locctrl.message}}</div>
 <div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{locctrl.message}}</div>
  
  
- 		<div class="overlay hideme"></div>
  		
- 		<form data-ng-submit="locctrl.submit()" name="locationForm">
+ 		
+ 		
  		<div class="drawer hideme ">
+ 		<form data-ng-submit="locctrl.submit()" class="formBottom" name="locationForm">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
@@ -262,8 +264,8 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
  			
  			
  			
+ 		</form>	
  		</div>
- 		</form>
 	
 		<jsp:include page="../Dashboard/settings_nav.jsp"/>
 

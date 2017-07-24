@@ -69,7 +69,7 @@
  		
  		
  		<div class="drawer hideme">
- 		  <form data-ng-submit="ctrl.submit()" name="serviceForm" class="form-horizontal">
+ 		  <form data-ng-submit="ctrl.submit()" name="serviceForm" class="formBottom form-horizontal">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
