@@ -56,6 +56,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 				.then(
 						function (res) {
+						    self.save = "saveclose";
 							reset();
 							newOrClose();
 						}
@@ -72,6 +73,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 				.then(
 						function (res) {
+							self.save = "saveclose";
 							reset();
 							
 						}

@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
@@ -204,7 +205,7 @@
  
 	
 		<jsp:include page="../Dashboard/settings_nav.jsp"/>
-	
+	<sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
       
@@ -380,10 +381,37 @@
         <!-- /. PAGE WRAPPER  -->
 		
     </div>
+    </sec:authorize>
     <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
     <!-- jQuery Js -->
     
+    <sec:authorize access="hasRole('STAFF')">
+	    <div id="wrapper">        	  
+			<div id="page-wrapper"> 
+				<div class="header "> 
+		             <div class="page-header header-size">
+		                 	  <b>${title}</b>		                 	 
+		             </div>	   
+             	</div>	
+             	
+             	<div id="page-inner">  
+					<div class="row">
+                		<div class="col-md-12">
+                			 <div class="panel panel-default">
+		                        <div class="panel-heading">
+		                             Vehicle Register
+		                        </div>
+		                        <div class="panel-body">
+		                        	Sorry..! You have no authorized for view this master..!
+		                        </div>
+		                      </div>
+                		</div>
+                	</div>
+                </div>		
+			 </div>
+		</div>
+	</sec:authorize>
    
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/vehicle_master/vehicle_controller.js"></script>
