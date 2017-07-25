@@ -613,10 +613,6 @@
 
 </script>
 
-<script>
-     // $('.datepicker').dateTimePicker();
-</script>
-
     <script type="text/javascript">
 
     function getDate(){

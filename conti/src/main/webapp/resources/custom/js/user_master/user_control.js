@@ -14,6 +14,8 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
     self.user={user_id:null,username:''};
     self.user.role = {};
     self.users=[];
+    self.selected_user = [];
+    self.FilterUsers = [];
     self.save = "saveclose";
     
     self.message = null;
@@ -25,9 +27,6 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	self.reset = reset;
 	self.close = close;
 	self.clear = clear;
-	 /*    self.edit = edit;
-    self.remove = remove;
-    self.reset = reset;*/
 	
 	self.heading = "Master";
  
@@ -38,11 +37,15 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	self.findUserbyMbl = findUserbyMbl;
 	self.forgot_animateClose = forgot_animateClose;
 	self.checkUsername = checkUsername;
-	
+	self.deleteUser = deleteUser;
+	self.userSelect = userSelect;
 	self.makeActive = makeActive;
 	self.makeinActive = makeinActive;
 	self.print = print;
-	
+	self.shownoofRecord = shownoofRecord;
+	self.userSelectall = userSelectall;
+	self.registerSearch = registerSearch;
+	$scope.shownoofrec = 10;
     fetchAllRoles();
     
     fetchAllUsers();
@@ -58,7 +61,9 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    	self.heading = "Master";
 		   /*$scope.$broadcast('angucomplete-alt:clearInput');*/
 
-
+	    	animationOpenClick('.passward_validate','slideOutLeft');
+	    	$('.passward_validate').addClass('hidden');
+			
 	}
 	
 	function close(oper) {
@@ -95,8 +100,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
             .then(
             function(users) {
                 self.users = users;
-                
-                console.log(users);
+                pagination();
             },
             function(errResponse){
                 console.error('Error while fetching Users');
@@ -160,16 +164,38 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
     			);
     }
 
-
+    //----------------------  Delete user by user id begin ----------------------------- //
     
-    function deleteUser(id) {
-    	 UserService.deleteUser(id)
-         .then(
-         fetchAllUsers,
-         function(errResponse){
-             console.error('Error while deleting User');
-         }
-     );
+    function deleteUser() {
+    	
+    	self.confirm_title = 'Delete';
+		self.confirm_type = BootstrapDialog.TYPE_DANGER;
+		self.confirm_msg = self.confirm_title+ ' ' + self.user.username + ' user?';
+		self.confirm_btnclass = 'btn-danger';
+		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+			.then(
+					function (res) {
+												
+						UserService.deleteUser(self.user.user_id)
+						.then(
+								function (user) {
+									var index = self.users.indexOf(user);
+									self.users.splice(index,1);
+									self.message =user.username+ " username Deleted..!";
+									successAnimate('.success');
+									window.setTimeout( function(){	 	        		
+	    			 	        		newOrClose();
+	    							},5000);
+									
+								}, 
+								function (errResponse) {
+					                console.error('Error while Delete user' + errResponse );
+								}
+							);
+						
+					}
+				);
+		
     }
     
     //----------------------  Delete user by user id end ----------------------------- //
@@ -419,7 +445,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
     				
     				self.confirm_title = 'Active';
     				self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
-    				self.confirm_msg = self.confirm_title + 'selected record(s)?';
+    				self.confirm_msg = self.confirm_title + ' selected record(s)?';
     				self.confirm_btnclass = 'btn-success';
 					ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 						.then(
@@ -434,7 +460,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 													fetchAllUsers();
 													self.selected_user = [];
 													self.message = " Selected record(s) has in active status..!";
-													successAnimate('.failure');
+													successAnimate('.success');
 												}, function (errResponse) {
 													console.log(errResponse);
 												}
@@ -481,7 +507,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 								UserService.makeinActive(inactive_id)
 									.then(
 											function(response) {
-												fetchAllUser();
+												fetchAllUsers();
 												self.selected_user = [];
 												self.message = " Selected record(s) has in inactive status..!";
 												successAnimate('.success');
@@ -765,5 +791,166 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 		}
 		
 		//------------------------- Check username end -------------------------------------//
-    	
+		//-------------------------- Pagnation begin -----------------------//
+	    function pagination() {
+	        
+	    	$scope.pageSize = $scope.shownoofrec;
+			$scope.currentPage = 0;
+			$scope.totalPages = 0;
+			self.FilterUsers = self.users;
+			$scope.nextDisabled = false;
+			$scope.previouseDisabled = true;
+					
+			if(self.FilterUsers.length <= 10 ) {
+				$scope.nextDisabled = true;
+			}
+			
+			console.log(self.FilterUsers);
+	    }
+	    
+	    $scope.paginate = function(nextPrevMultiplier) {
+
+	    	$scope.currentPage += (nextPrevMultiplier * 1);
+	    	self.FilterUsers = self.users.slice($scope.currentPage*$scope.pageSize);
+	    	
+	    	
+	    	if(self.FilterUsers.length == 0) {
+	    		UserService.pagination_byPage($scope.currentPage)
+	    		.then(
+	    				function (filterUser) {
+	    					
+	    					if ( filterUser.length == 0 ) {
+	    						$scope.nextDisabled = true;
+	    					} else if ( filterUser.length < 10 ) {
+	    						self.FilterUsers = filterUser;
+	    						$scope.nextDisabled = true;
+	    					} else {
+	    						self.FilterUsers = filterUser;
+	    					}
+	    					
+	    				}, 
+	    				function (errResponse) {
+	    					console.log('Error while pagination');
+	    				}
+	    			);
+	    	} 
+	    	
+	    	if(self.FilterUsers.length < $scope.pageSize) {
+	    		$scope.nextDisabled = true;
+	    	}
+	    	
+	    	if($scope.currentPage == 0) {
+	    		$scope.previouseDisabled = true;
+	    	}
+	    	if(nextPrevMultiplier == -1) {    		
+	    		$scope.nextDisabled = false;
+	    	} else {
+	    		$scope.previouseDisabled = false;
+	    	}
+	    	
+	    }
+
+	    
+	    $scope.firstlastPaginate = function (page) {
+	    	 
+	    	UserService.pagination_byPage(page)
+			.then(
+					function (filterUser) {
+						self.FilterUsers = filterUser;
+					}, 
+					function (errResponse) {
+						console.log('Error while fetching users');
+					}
+				);
+	    	
+	    	if( page == 1 ) {
+	    		$scope.currentPage = 0;
+	    		$scope.previouseDisabled = true;
+	    		$scope.nextDisabled = false;
+	    	} else {
+	    		$scope.previouseDisabled = false;
+	    		$scope.nextDisabled = true;
+	    		
+	    	}
+	    }
+	  //-------------------------- Pagnation end -----------------------//
+	    
+	    //------------------------- Register select begin ------------------//
+	    function userSelect(user){
+	    	console.log(user);
+	    	
+	    	var index = self.selected_user.indexOf(user);
+	    	if (user.select){
+	    		self.selected_user.push(user);
+	    	} else {
+	    		$scope.selectall = false;
+	    		self.selected_user.splice(index, 1);
+	    	}
+	    	
+	    }
+	    //------------------------- Register select end ------------------//
+	    
+	    //------------------------- Register select all begin ------------------//   
+	    function userSelectall() {
+	 		self.selected_user=[];
+			for(var i = 0; i < $scope.pageSize; i++) {
+				self.FilterUsers[i].select = $scope.selectall;
+				if($scope.selectall){
+					self.selected_user.push(self.FilterUsers[i]);
+				}
+			}	
+	    }
+	    //------------------------- Register select all end ------------------// 
+		
+	    //-------------------------------- Show no of record begin ----------------------------------------//
+	    
+	    function shownoofRecord() {    
+	    	
+	    	$scope.pageSize = $scope.shownoofrec;
+	    		
+	    }
+	    //-------------------------------- Show no of record end ----------------------------------------//  
+	    
+	    //---------------------------- Register search begin ---------------------------------------//
+	    function registerSearch(searchkey) {
+	    	
+	    	console.log(searchkey);
+	    	if ( searchkey.length == 0 ) {
+	    		self.FilterUsers = self.users;
+	    	}else if( searchkey.length > 3 ) {
+	    		UserService.registerSearch(searchkey)
+		    		.then(
+							function (filterUser) {
+								self.FilterUsers = filterUser;
+							}, 
+							function (errResponse) {
+								console.log('Error while fetching Users');
+							}
+						);
+	    	} else {
+	    		
+	    		self.FilterUsers = _.filter(self.users,
+						 function(item){  
+							 return searchUtil(item,searchkey); 
+						 });
+					
+	    		}
+	    	
+	    }
+	    
+	    function searchUtil(item,toSearch)
+		{
+			var success = false;
+			
+			if ( (item.employeeMaster.emp_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (String(item.employeeMaster.emp_code).indexOf(toSearch) > -1) 
+					|| (String(item.username).indexOf(toSearch) > -1) || (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)  
+					|| (item.role.role_Name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ) {
+				success = true;
+			} else {
+				success = false;
+			}
+			
+			return success;
+		}
+	    //---------------------------- Register search end ---------------------------------------//
 }]);

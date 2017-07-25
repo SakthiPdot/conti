@@ -71,10 +71,10 @@ public class EmployeeRestController {
 	public ResponseEntity<List<EmployeeMaster>> fetchAllEmployees(HttpServletRequest request) {
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
-		String branch_id = userInformation.getUserBranchId();
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
 		try {
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			List<EmployeeMaster> employees = employeeDao.getAllEmployees(Integer.parseInt(branch_id));
+			List<EmployeeMaster> employees = employeeDao.getAllEmployees(branch_id);
 			if(employees.isEmpty()) {
 				return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
 			} else {

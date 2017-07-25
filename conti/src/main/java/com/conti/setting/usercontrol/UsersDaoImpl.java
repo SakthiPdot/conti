@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.conti.master.employee.EmployeeMaster;
+import com.conti.others.ConstantValues;
+
 
 /**
  * @Project_Name conti
@@ -24,6 +27,8 @@ class UsersDaoImpl implements UsersDao {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	ConstantValues constantVal = new ConstantValues();
 	
 	public UsersDaoImpl() {
 		
@@ -62,7 +67,7 @@ class UsersDaoImpl implements UsersDao {
 		@Override 
 		@Transactional
 		public User get(int id) {
-			String hql = "from User where obsolete ='N'  and id=" + id;
+			String hql = "from User where obsolete ='N' and id=" + id;
 			Query query = sessionFactory.getCurrentSession().createQuery(hql);
 			
 			@SuppressWarnings("unchecked")
@@ -97,28 +102,6 @@ class UsersDaoImpl implements UsersDao {
 		}
 		/*------------------------------- Find user by username end ----------------------- */
 
-
-		/*
-
-		@Override
-		@Transactional
-		public List<User> getUser(int emp_id) {
-			@SuppressWarnings("unchecked")
-			List<User> listuser = (List<User>) sessionFactory.getCurrentSession()
-					.createQuery("from User WHERE obsolete = 'N' and active = 'Y' and emp_id = '"+ emp_id+"'").list();
-			
-			return listuser;
-		}
-
-		@Override
-		@Transactional
-		public List<User> getAllUsers() {
-			@SuppressWarnings("unchecked")
-			List<User> listUser = (List<User>) sessionFactory.getCurrentSession()
-					.createQuery("from User where obsolete = 'N'").list();
-			return listUser;
-		}	*/					
-
 		
 		@Override
 		@Transactional
@@ -130,24 +113,10 @@ class UsersDaoImpl implements UsersDao {
 			return listuser;
 		}
 
-		
-		@Override
-		@Transactional
-		public User getBranchId(int id) {
-			String hql = "FROM User WHERE obsolete = 'N' and branch_id = " + id+ "";
-			Query query = sessionFactory.getCurrentSession().createQuery(hql);
-			
-			@SuppressWarnings("unchecked")
-			List<User> userlist = (List<User>) query.list();
-			if(userlist !=null && !userlist.isEmpty()){
-				return userlist.get(0);
-			}
-			return null;
-		}
 
 		@Override
 		@Transactional
-		public List<User> getUser(int emp_id) {
+		public List<User> getUserbyEmpid(int emp_id) {
 			@SuppressWarnings("unchecked")
 			List<User> listuser = (List<User>) sessionFactory.getCurrentSession()
 					.createQuery("from User WHERE obsolete = 'N' and emp_id = '"+ emp_id+"'").list();
@@ -178,6 +147,71 @@ class UsersDaoImpl implements UsersDao {
 			return null;
 		}
 		
+		
+		@Override
+		@Transactional
+		public List<User> getUserwithLimitbySA(int branch_id, int from_limit, int to_limit, String order) {
+			@SuppressWarnings("unchecked")
+			List<User> listUser = (List<User>) sessionFactory.getCurrentSession()
+					.createQuery("from User where obsolete ='N' AND branchModel.branch_id =" + branch_id + " "
+							+ "ORDER BY IFNULL(created_datetime, updated_datetime) "+order)
+					.setFirstResult(from_limit).setMaxResults(to_limit).list();
+			return listUser;
+		}
+		
+		
+		@Override
+		@Transactional
+		public List<User> getUserwithLimit(int branch_id, int from_limit, int to_limit, String order) {
+			@SuppressWarnings("unchecked")
+			List<User> listUser = (List<User>) sessionFactory.getCurrentSession()
+					.createQuery("from User where obsolete ='N' AND branchModel.branch_id =" + branch_id + " "
+							+ "AND role.role_Name <>"+ constantVal.ROLE_SADMIN +" "
+							+ "ORDER BY IFNULL(created_datetime, updated_datetime) "+order)
+					.setFirstResult(from_limit).setMaxResults(to_limit).list();
+			return listUser;
+		}
+		
+		
+		@Override
+		@Transactional
+		public List<User> searchbySAUser(String search_key) {
+			// TODO Auto-generated method stub
+			@SuppressWarnings("unchecked")
+			
+			List<User> listemp = (List<User>) sessionFactory.getCurrentSession()
+			.createQuery("from User WHERE obsolete ='N' and employeeMaster.emp_name LIKE '%" + search_key + "%'"
+					+ " OR employeeMaster.emp_code LIKE '%" + search_key + "%'"
+					+ " OR branchModel.branch_name LIKE '%" + search_key + "%'"
+					+ " OR username LIKE '%" + search_key + "%' OR role.role_Name LIKE '%" + search_key + "%'").list();
+			return listemp;
+			
+		}
+		
+		@Override
+		@Transactional
+		public List<User> searchbyUser(String search_key) {
+			// TODO Auto-generated method stub
+			@SuppressWarnings("unchecked")
+			
+			List<User> listemp = (List<User>) sessionFactory.getCurrentSession()
+			.createQuery("from User WHERE obsolete ='N' and employeeMaster.emp_name LIKE '%" + search_key + "%'"
+					+ " OR employeeMaster.emp_code LIKE '%" + search_key + "%'"
+					+ " OR branchModel.branch_name LIKE '%" + search_key + "%'"
+					+ " OR username LIKE '%" + search_key + "%' OR role.role_Name LIKE '%" + search_key + "%' AND role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'").list();
+			return listemp;
+			
+		}
+		
+		@Override
+		@Transactional
+		public List<User> getUsersbyBranchIdwihoutSA(int branch_id) {
+			@SuppressWarnings("unchecked")
+			List<User> listuser = (List<User>) sessionFactory.getCurrentSession()
+					.createQuery("from User WHERE obsolete = 'N' and branchModel.branch_id = '"+ branch_id+"' and role.role_Name <> '" + constantVal.ROLE_SADMIN + "'").list();
+			
+			return listuser;
+		}
 	
 }
 	

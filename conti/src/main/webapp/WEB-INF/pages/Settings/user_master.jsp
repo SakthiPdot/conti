@@ -147,7 +147,7 @@
 			                  <input type="hidden" id="emp_id" name="emp_id" value="{{emp_name.originalObject}}"/>
 			                  
 			                   <span>Role Name <span class="required">*</span></span>
-			                  <select class="form-control" data-ng-options="role.role_Id as role.role_Name for role in ctrl.roles" data-ng-model="ctrl.user.role_id" required>
+			                  <select class="form-control" data-ng-options="role.role_Id as role.role_Name for role in ctrl.roles" data-ng-change = "ctrl.getPassword(ctrl.user.userpassword)" data-ng-model="ctrl.user.role_id" required>
 			                  	<option value = "">--Select Role--</option>
 			                  </select>
 			                  
@@ -156,12 +156,12 @@
 			                  data-toggle="popover" data-placement="top" data-content="Please Enter Username" data-ng-blur="ctrl.checkUsername(ctrl.user.username)" required >
 			                  <div data-ng-show = "ctrl.errorUsername" class ="makeRed">This username is not available</div>
 			                    <span>Password <span class="required">*</span></span>
-			                  <input type="text" class="form-control" min= "8" data-ng-model="ctrl.user.userpassword" data-trigger="focus"
+			                  <input type="password" class="form-control" min= "8" data-ng-model="ctrl.user.userpassword" data-trigger="focus"
 			                  data-toggle="popover" data-placement="top" data-content="Please Enter Password" data-ng-keyup = "ctrl.getPassword(ctrl.user.userpassword)" required>
 			                  
 			                  
 			                    <span>Confirm Password <span class="required">*</span></span>
-			                   <input type="text" class="form-control" min= "8" data-ng-model="ctrl.user.confpassword" data-trigger="focus"
+			                   <input type="password" class="form-control" min= "8" data-ng-model="ctrl.user.confpassword" data-trigger="focus"
 			                  data-toggle="popover" data-placement="top" data-content="Please Enter ConfirmPassword" data-ng-keyup = "ctrl.checkPassword(ctrl.user.userpassword, ctrl.user.confpassword)" required>
 			                  
 		                  	<span data-ng-show = "!ctrl.checkPWD" class ="makeRed">Password doesn't match</span>
@@ -292,17 +292,47 @@
 								<!--<button type="button" class="btn btn-primary">Filter</button>-->
 							</div>
 							<!-- dropdown -->
-
+								 <div class = "row paddingtop">
+	                                    <div class = "col-md-12"> 
+	                                    <select name ="shownoofrec" data-ng-model="shownoofrec" data-ng-options = "noofrec for noofrec in [10, 15, 25, 50, 100]" class ="form-control" data-ng-click="ctrl.shownoofRecord()">
+	                                    	
+	                                    </select>
+	                                    </div>
+                             	</div>
 						</div> 
                                 </div>
                                 
                                 <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
-                                     <form name = "userPrint" method = "POST" action = "user_print">
+                                     <form name = "userPrint" method = "POST" action = "user_print" class="padding-button">
                                      <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
                                     <div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
                                   
+                                 		  <div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class = "{'fa-check' : setting_employeename == true, 'fa-times': setting_employeename == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_employeename=true" data-ng-model = "setting_employeename"/> Employee Name
+                                      			</label>
+                                      	</div>
 										
+										
+										
+										<div class="checkbox">
+                                     			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check' : setting_username == true, 'fa-times' : setting_username == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_username = true" data-ng-model = "setting_username"/> User Name
+                                      			</label>
+                                    		</div>
+                                    		
+                                    		<div class="checkbox">
+                                      			<label>
+                                      				<i class="fa" data-ng-class="{'fa-check' : setting_rolename == true, 'fa-times' : setting_rolename == false}"></i>
+                                      				<input type="checkbox" data-ng-init = "setting_rolename = true" data-ng-model = "setting_rolename"/> Role Name
+                                      			</label>
+                                      		</div>
+                                      		
+                                      		
+                                    		
 										<div class="checkbox">
                                       			<label>
                                       				<i class="fa" data-ng-class="{'fa-check': setting_branchname == true, 'fa-times': setting_branchname == false}"></i>
@@ -311,43 +341,28 @@
                                       	</div>
                                       	
                                       	
-                                      		 <div class="checkbox">
-                                      			<label>
-                                      				<i class="fa" data-ng-class = "{'fa-check' : setting_employeename == true, 'fa-times': setting_employeename == false}"></i>
-                                      				<input type="checkbox" data-ng-init = "setting_employeename=true" data-ng-model = "setting_employeename"/> Employee Name
-                                      			</label>
-                                      		</div>
                                       		
-                                      		<div class="checkbox">
-                                      			<label>
-                                      				<i class="fa" data-ng-class="{'fa-check' : setting_rolename == true, 'fa-times' : setting_rolename == false}"></i>
-                                      				<input type="checkbox" data-ng-init = "setting_rolename = true" data-ng-model = "setting_rolename"/> Role Name
-                                      			</label>
-                                      		</div>
                                       		
-                                      		<div class="checkbox">
-                                      			<label>
-                                      				<i class="fa" data-ng-class="{'fa-check' : setting_username == true, 'fa-times' : setting_username == false}"></i>
-                                      				<input type="checkbox" data-ng-init = "setting_username = true" data-ng-model = "setting_username"/> User Name
-                                      			</label>
-                                      		</div>
-                                      		
-                                      		<div class="checkbox">
-                                      			<label>
-                                      				<i class="fa" data-ng-class="{'fa-check': setting_userstatus == true, 'fa-times' : setting_userstatus == false}"></i>
-                                      				<input type="checkbox" data-ng-init = "setting_userstatus = true" data-ng-model = "setting_userstatus"/> Status
-                                      			</label>
-                                      		</div>
+                                   		<div class="checkbox">
+                                   			<label>
+                                   				<i class="fa" data-ng-class="{'fa-check': setting_userstatus == true, 'fa-times' : setting_userstatus == false}"></i>
+                                   				<input type="checkbox" data-ng-init = "setting_userstatus = true" data-ng-model = "setting_userstatus"/> Status
+                                   			</label>
+                                   		</div>
                                       		
                                       		                                      		
 									</div>
                                      
-                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelUser'"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelUser'; valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                       
-                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+                                      <button type="submit" class="btn btn-primary"  data-ng-disabled = "ctrl.selected_user.length == 0" ><i class="fa fa-print fa-lg"></i></button>
                                       <input type="hidden" name="user" value = "{{ctrl.selected_user}}"/>
                                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 	</form>
+                                	
+                                	 <div class = "row paddingtop">
+	                                    <div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Raj" data-ng-model = "ctrl.user_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.user_regSearch)"/></div>
+                                      </div>
                                 	</div>
                                 </div>
                               </div>
@@ -359,21 +374,23 @@
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.userSelectall()" data-ng-model = "selectall"></th>
                                             <th data-ng-show = "setting_employeename">Employee Name</th>
-                                            <th data-ng-show = "setting_branchname">Employee Code</th>
-                                            <th data-ng-show = "setting_rolename">User Name</th>
-                                            <th data-ng-show = "setting_username">Role</th>
+                                            <th data-ng-show = "">Employee Code</th>
+                                            <th data-ng-show = "setting_username">User Name</th>
+                                            <th data-ng-show = "setting_rolename">Role</th>
+                                            <th data-ng-show = "setting_branchname">Branch</th>
                                             <th data-ng-show = "setting_userstatus">Status</th>
                                                                                 
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr data-ng-repeat = "user in ctrl.users | limitTo:pageSize"
+                                        <tr data-ng-repeat = "user in ctrl.FilterUsers | limitTo:pageSize"
                                         data-ng-dblclick = "ctrl.updateUser(user)">
                                            	<td><input type="checkbox" data-ng-change = "ctrl.userSelect(user)" data-ng-model = "user.select"></td>
                                             <td data-ng-show = "setting_employeename">{{user.employeeMaster.emp_name}}</td>
-                                            <td data-ng-show = "setting_employeename">{{user.employeeMaster.emp_code}}</td>
-                                            <td data-ng-show = "setting_branchname">{{user.username}}</td>
+                                            <td data-ng-show = "">{{user.employeeMaster.emp_code}}</td>
+                                            <td data-ng-show = "setting_username">{{user.username}}</td>
                                             <td data-ng-show = "setting_rolename">{{user.role.role_Name}}</td>
+                                            <td data-ng-show = "setting_branchname">{{user.branchModel.branch_name}}</td>                                            
                                             <td data-ng-show = "setting_userstatus" data-ng-class = "{'makeGreen' : user.active == 'Y', 'makeRed' : user.active == 'N'}">{{user.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                           
                                         </tr>
@@ -381,6 +398,21 @@
                                                                                
                                    </tbody>
                                 </table>
+                                
+                                <div class="col-lg-6 icons-button">
+                                   <div class="pull-right">
+                                   		<!-- <ul>
+                                   			<li class="btn btn-primary" data-ng-click = "paginatebyno($index+1)" data-ng-repeat = "i in counter(noofpages) track by $index"> {{$index+1}}</li>
+                                   		</ul>  -->
+                                     	<!-- <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage"></pagination>  -->
+										 <button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                                     											
+										
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previouse</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "paginate(1)">Next</button>
+										
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
+                                	</div>
+                                </div>
                                 
                             </div>
                             
