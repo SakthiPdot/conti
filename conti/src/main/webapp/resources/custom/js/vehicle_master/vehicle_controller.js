@@ -59,6 +59,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 				.then(
 							function (res) {
+								self.save = "saveclose";
 								reset();
 								newOrClose();
 							}
@@ -76,6 +77,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type,self.confirm_msg, self.confirm_btnclass)
 					.then(
 								function (res) {
+									self.save = "saveclose";
 									reset();
 								}
 						 );

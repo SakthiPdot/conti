@@ -35,7 +35,9 @@
 	   height: 130px
 	   }
 	   </style>
-	
+		<style>
+			
+		</style>
 </head>
 
 
@@ -185,7 +187,7 @@
                             			<div class="col-md-6">
                             			</div>
                             			<div class=" col-md-6 branchclass">
-	                            			<span class="text-paddingwidth"> Mobile Number </span>
+	                            			<span class="searchcls"> Search </span>
 	                            		    <input type="text" class="form-control searchbar" placeholder="Mobile No">                            		    
                             		    </div>
                             		
@@ -311,7 +313,7 @@
                                         <div class="col-md-6">
                             			</div>
                             			<div class=" col-md-6 branchclass">
-	                            			<span class="text-paddingwidth"> Mobile Number </span>
+	                            			<span class="searchcls"> Search </span>
 	                            		    <input type="text" class="form-control searchbar" placeholder="Mobile No">                            		    
                             		    </div>
                           	
@@ -401,8 +403,9 @@
                             		    
                             		</div>
                             		
-                            		<div class="col-md-12 branchclass" style="padding-top:43px;">
-                            			                   		    
+                            		<div class="col-md-12 branchclass">
+                            			<span class="text-paddingwidth">GSTIN Number</span>
+                            		    <input type="text" class="form-control" >                             		    
                             		    
                             		</div>
                             		
@@ -537,8 +540,9 @@
                                      
                                         </tr>
                                         <tr>
+                                              <td></td>
                                               <td> <a href="" data-toggle="modal" data-target="#myModal" style="text-decoration: none !important;"> Add HSN Details</a></td>
-                                        		
+                                        	
                                         </tr>
                                         
                                         <tr>
@@ -620,7 +624,7 @@
                             
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Description</span>
-                            		    <textarea class="form-control" rows="3"> </textarea>                           		    
+                            		    <textarea class="form-control" rows="7"> </textarea>                           		    
                             		    
                             		</div>
                          </div>
@@ -648,17 +652,43 @@
                             		    <input type="text" class="form-control" >                            		    
                             		    
                             		</div>
+                            		
+                            		
                             	
-                            	
-                                                       	
-                            	
+                            		<div class="col-md-6 branchclass">
+                            			<span class="text-paddingwidth discountspace">Discount</span>
+                            		    <input type="text" class="form-control" >                            		    
+                            		 
+                            		</div> 
+                            		
+                            		<div class="col-md-6 branchclass">
+                            			<span class="text-paddingwidth">Total Value</span>
+                            		    <input type="text" class="form-control" disabled>                            		    
+                            		    
+                            		</div>                           		
+                            		
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Handling Charge</span>
                             		    <input type="text" class="form-control">                            		    
                             		    
                             		</div>
                             	
-                            	
+                            	    <div class="col-md-6 branchclass">
+                            			<span class="text-paddingwidth discountspace">CGST</span>
+                            		    <input type="text" class="form-control" disabled>                            		    
+                            		    
+                            		</div>
+                            		
+                            		<div class="col-md-3 branchclass">
+                            			<span class="text-paddingwidth">SGST</span>
+                            		    <input type="text" class="form-control" disabled>                            		    
+                            		    
+                            		</div>
+                            		<div class="col-md-3 branchclass">
+                            			<span class="text-paddingwidth">IGST</span>
+                            		    <input type="text" class="form-control" disabled>                            		    
+                            		    
+                            		</div>
                             	                        	
                             	
                             		<div class="col-md-12 branchclass">
@@ -761,7 +791,7 @@
   
 	
     <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script> 
-<script src=" resources/custom/js/date-time-picker.min.js" ></script>
+    <script src=" resources/custom/js/date-time-picker.min.js" ></script>
     <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
 
@@ -770,6 +800,9 @@
                 $('#dataTables-example').dataTable();
             });
      
+    </script>
+    <script>
+    $(".hide").hide();
     </script>
  <script>
             $('.datepicker').dateTimePicker();
