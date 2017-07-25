@@ -58,19 +58,19 @@
 								$('.successmsg').removeClass('hideme');
 								animationOpenClick('.successmsg', 'slideInDown');
 							
-							}, 1000);
+							}, 100);
 						
 							window.setTimeout( function(){
 							
 								animationOpenClick('.drawer', 'bounceOutRight');
 							
-							}, 3000);
+							}, 2000);
 						
 							window.setTimeout( function(){
 								$('.overlay').addClass('hideme');
 								$('.drawer').addClass('hideme');
 							
-							}, 4000);
+							}, 2000);
 						
 						
 						
@@ -85,7 +85,7 @@
 							
 								$('.successmsg').addClass('hideme');
 								history.back(0);
-							}, 4000); 
+							}, 3000); 
 							
 							
 						}else {
@@ -104,7 +104,7 @@
 						//wait for animation to finish before removing classes
 						window.setTimeout( function(){
 							element.removeClass('animated ' + animation);
-						}, 1000);         
+						}, 100);         
 			  
 					
 			}
@@ -154,7 +154,7 @@
 //							history.back(0);
 							location.reload(true);
 							
-							},1000);
+							},100);
 							
 							
 						}else {
@@ -173,7 +173,7 @@
 						//wait for animation to finish before removing classes
 						window.setTimeout( function(){
 							element.removeClass('animated ' + animation);
-						}, 1000);         
+						}, 100);         
 			  
 					
 			}
