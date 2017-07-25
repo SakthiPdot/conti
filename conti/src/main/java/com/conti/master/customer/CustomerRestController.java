@@ -17,6 +17,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,12 +28,16 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +50,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
+import com.conti.master.branch.BranchDao;
+import com.conti.master.branch.BranchModel;
 import com.conti.master.employee.EmployeeMaster;
+import com.conti.master.location.Location;
+import com.conti.master.location.LocationDao;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -66,6 +75,11 @@ public class CustomerRestController
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
 	
+	@Autowired
+	private LocationDao locationDao;
+	@Autowired
+	private BranchDao branchDao;
+	
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
 	SessionListener sessionListener = new SessionListener();
@@ -84,7 +98,8 @@ public class CustomerRestController
 			if(customers.isEmpty()) 
 			{
 				return new ResponseEntity<List<CustomerModel>> (HttpStatus.NO_CONTENT);
-			} else 
+			}
+			else 
 			{
 				return new ResponseEntity<List<CustomerModel>> (customers, HttpStatus.OK);	
 			}			
@@ -105,9 +120,12 @@ public class CustomerRestController
 			try {
 				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 				List<CustomerModel> customers = customerDao.getAllCustomers(Integer.parseInt(branch_id));
-				if(customers.isEmpty()) {
+				if(customers.isEmpty()) 
+				{
 					return new ResponseEntity<List<CustomerModel>> (HttpStatus.NO_CONTENT);
-				} else {
+				} 
+				else
+				{
 					List<CustomerModel> customerCategory = customers.stream().filter(distinctByKey(customer->customer.getCustomer_type())).collect(Collectors.toList());
 					return new ResponseEntity<List<CustomerModel>> (customerCategory, HttpStatus.OK);	
 				}			
@@ -166,19 +184,22 @@ public class CustomerRestController
 		
 		
 		/* ------------------------- Update Customer begin ------------------------------------- */
-		@RequestMapping(value = "update_customer/{id}", method = RequestMethod.PUT)
-		public ResponseEntity<CustomerModel> updateCustomer(@PathVariable ("id") int id, @RequestBody CustomerModel customerModel, HttpServletRequest request) {
-			CustomerModel customerModeldb = customerDao.getCustomerbyId(id);
+		@RequestMapping(value = "update_customer", method = RequestMethod.POST)
+		public ResponseEntity<CustomerModel> updateCustomer(@RequestBody CustomerModel customerModel, HttpServletRequest request) {
+			//CustomerModel customerModeldb = customerDao.getCustomerbyId(id);
 			userInformation = new UserInformation(request);
 			String username = userInformation.getUserName();
 			int user_id = Integer.parseInt(userInformation.getUserId());
-			try {
+			try 
+			{
 				
-				if(customerModeldb == null) {
-					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
-					return new ResponseEntity<CustomerModel>(HttpStatus.NOT_FOUND);
-				} else {
-					
+//				if(customerModeldb == null)
+//				{
+//					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+//					return new ResponseEntity<CustomerModel>(HttpStatus.NOT_FOUND);
+//				} 
+//				else 
+//				{
 					Date date = new Date();
 					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
 					
@@ -188,8 +209,10 @@ public class CustomerRestController
 					customerDao.saveOrUpdate(customerModel);
 					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 					return new ResponseEntity<CustomerModel> (customerModel,HttpStatus.OK);
-				}
-			} catch (Exception exception) {
+				//}
+			} 
+			catch (Exception exception)
+			{
 				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
 				return new ResponseEntity<CustomerModel> (HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -413,6 +436,39 @@ public class CustomerRestController
 		//======================================Pagination end==========================================
 		
 		
+		
+		
+		//===========================To get all location for Customer search ================================
+		
+		@RequestMapping(value="getLocations4Customer/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Map<String,List<Location>>> fetchAllLocations4Customer(HttpServletRequest request,
+				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+			
+			List<Location> locations = locationDao.searchbyeyLocationName(searchStr);
+
+			 Map result = new HashMap();
+			 result.put("Location", locations);
+			
+			System.err.println(searchStr+"464644");
+			return new ResponseEntity<Map<String,List<Location>>> (result,HttpStatus.OK);
+		}
+		
+		
+		
+		//===========================To get all Branch for Customer search ================================
+		
+		@RequestMapping(value="getBranch4Customer/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Map<String,List<BranchModel>>> fetchAllBranches4customer(HttpServletRequest request,
+				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+			
+			List<BranchModel> branches = branchDao.searchbyeyBranchName(searchStr);
+
+			 Map result = new HashMap();
+			 result.put("Branch", branches);
+			
+			System.err.println(searchStr+"464644");
+			return new ResponseEntity<Map<String,List<BranchModel>>> (result,HttpStatus.OK);
+		}
 		
 	}
 	

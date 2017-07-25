@@ -3,18 +3,23 @@ package com.conti.master.branch;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +51,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.conti.config.SessionListener;
 import com.conti.master.customer.CustomerModel;
 import com.conti.master.employee.EmployeeMaster;
+import com.conti.master.location.Location;
+import com.conti.master.location.LocationDao;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -76,6 +83,9 @@ public class BranchRestController {
 		
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
+	
+	@Autowired
+	private LocationDao locationDao;
 	
 	@Autowired
 	@Qualifier("sessionRegistry")
@@ -497,4 +507,19 @@ public class BranchRestController {
 		}
 		
 	//======================================Pagination end==========================================
+		
+		
+		@RequestMapping(value="getLocations4Branch/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Map<String,List<Location>>> fetchAllLocations4Branch(HttpServletRequest request,
+				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+			
+			List<Location> locations = locationDao.searchbyeyLocationName(searchStr);
+
+			 Map result = new HashMap();
+			 result.put("Location", locations);
+			
+			System.err.println(searchStr+"464644");
+			return new ResponseEntity<Map<String,List<Location>>> (result,HttpStatus.OK);
+		}
+		
 }

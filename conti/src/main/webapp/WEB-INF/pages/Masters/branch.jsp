@@ -117,19 +117,21 @@
 			                	<angucomplete-alt id="location_name" data-ng-model="ctrl.branch.location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
+									              remote-url="getLocations4Branch/"
+						             			  remote_url-data-field="Location"
 									              selected-object="location_name"
-									              local-data="ctrl.locations"
+									              
 									              search-fields="location_name,pincode"
 									              title-field="location_name,pincode"
 												  match-class="highlight"
-												  initial-value="{{ctrl.branch.location.location_name}}"
+												  
 									              minlength="1"
 	   											  data-trigger="focus" data-toggle="popover" 
 	   											  data-placement="top" data-content="Please Enter branch location"
-	   											  onKeyPress="return CheckIsCharacter(event)"
+	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 									              input-class="form-control form-control-small">
-              						</angucomplete-alt>
-              						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
+              					</angucomplete-alt>
+              					<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
 			               </div>		                                
 		                </div> 
 		                
@@ -143,15 +145,14 @@
 			                     <span>State </span>	         
 			                    <input type="text" id="state" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.state}}">
 			               
-			              </div> 
-			               <div class="col-lg-6 content-body">    
+			                </div> 
+			                <div class="col-lg-6 content-body">    
 			                     <span>Country </span>	         
 			                    <input type="text" id="country" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.country}}">
 			                    
 			                     <span>Pincode </span>	         
 			                    <input type="text" id="pincode" class="form-control disabled locations" tabindex="-1"  maxlength="6" onKeyPress="return CheckIsNumeric(event)" value="{{location_name.originalObject.pincode}}">
-			           
-			             </div> 	                                
+			           		</div> 	                                
 		                </div> 
 		                
 		                
@@ -162,8 +163,6 @@
 			                	
 			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.branch.branch_contactperson" 
 			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact person"  required/>
-			                	
-			              
 			               </div>	
 			               
 			               <div class="col-lg-6 content-body">

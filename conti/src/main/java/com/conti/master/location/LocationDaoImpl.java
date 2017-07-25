@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.conti.master.branch.BranchModel;
+
 /**
  * @Project_Name conti
  * @Package_Name com.conti.master.location  com.conti.master.location
@@ -112,8 +114,40 @@ public class LocationDaoImpl implements LocationDao {
 						+ "OR address.city LIKE '%"+searchString+ "%'"
 						+ "OR address.state LIKE '%"+searchString+ "%'"
 						+ "OR address.country LIKE '%"+searchString+ "%'"
+						+ "OR address.pincode LIKE '%"+searchString+ "%'"
 						).list();
 		
 	}
+	
+	
+	@Override
+	@Transactional
+	public List<Location> searchbyeyLocation(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<Location> listlocation = (List<Location>) sessionFactory.getCurrentSession()
+		.createQuery("from Location WHERE obsolete ='N' and location_name LIKE '%" + search_key + "%'"
+				+ " OR location_code LIKE '%" + search_key + "%'"
+				+ " OR branch_addressline1 LIKE '%" + search_key + "%'"
+				+ " OR branch_addressline2 LIKE '%" + search_key + "%' OR location.location_name LIKE '%" + search_key + "%'"
+				+ " OR location.address.city LIKE '%" + search_key + "%' OR location.address.district LIKE '%" + search_key + "%'"
+				+ " OR location.address.state LIKE '%"+ search_key + "%'OR location.address.pincode LIKE '%" + search_key + "%'").list();
+		return listlocation;
+		
+	}
+	
+	@Override
+	@Transactional
+	public List<Location> searchbyeyLocationName(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<Location> locationlist = (List<Location>) sessionFactory.getCurrentSession()
+		.createQuery("from Location WHERE obsolete ='N' and location_name LIKE '%" + search_key + "%'"+"OR pincode LIKE '%"+search_key + "%'").list();
+		return locationlist;
+		
+	}
+	
 
 }

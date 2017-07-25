@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,12 +17,16 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +38,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
+import com.conti.master.branch.BranchDao;
+import com.conti.master.branch.BranchModel;
+import com.conti.master.location.Location;
+import com.conti.master.location.LocationDao;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -61,6 +70,12 @@ public class EmployeeRestController {
 	private EmployeeDao employeeDao;
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
+	
+	@Autowired 
+	private LocationDao locationDao;
+	
+	@Autowired
+	private BranchDao branchDao;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
@@ -446,4 +461,38 @@ public class EmployeeRestController {
 	}
 	
 	//======================================Pagination end==========================================
+	
+	
+	
+	//===========================To get all location for search ================================
+	
+			@RequestMapping(value="getLocation4emp/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+			public ResponseEntity<Map<String,List<Location>>> fetchAllLocations4employee(HttpServletRequest request,
+					@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+				
+				List<Location> locations = locationDao.searchbyeyLocationName(searchStr);
+
+				 Map result = new HashMap();
+				 result.put("Location", locations);
+				
+				System.err.println(searchStr+"464644");
+				return new ResponseEntity<Map<String,List<Location>>> (result,HttpStatus.OK);
+			}
+	
+	
+			//===========================To get all Branch for Employee search ================================
+			
+			@RequestMapping(value="getBranch4Employee/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+			public ResponseEntity<Map<String,List<BranchModel>>> fetchAllBranches4Employee(HttpServletRequest request,
+					@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+				
+				List<BranchModel> branches = branchDao.searchbyeyBranchName(searchStr);
+
+				 Map result = new HashMap();
+				 result.put("Branch", branches);
+				
+				System.err.println(searchStr+"464644");
+				return new ResponseEntity<Map<String,List<BranchModel>>> (result,HttpStatus.OK);
+			}
+			
 }
