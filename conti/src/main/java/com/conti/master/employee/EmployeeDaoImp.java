@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.conti.master.branch.BranchModel;
+import com.conti.others.ConstantValues;
 
 /**
  * @Project_Name conti
@@ -24,6 +25,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
+	ConstantValues constantVal = new ConstantValues();
 	/* (non-Javadoc)
 	 * @see com.conti.master.employee.EmployeeDao#getEmployee()
 	 */
@@ -46,6 +48,18 @@ public class EmployeeDaoImp implements EmployeeDao {
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
 				.createQuery("from EmployeeMaster where obsolete ='N'AND branchModel.branch_id =" + branch_id + " "
+						//+ "user.role.role_Name <>" + constantVal.ROLE_SADMIN + " "
+						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
+				.setMaxResults(100).list();
+		return listEmployee;
+	}
+	
+	@Override
+	@Transactional
+	public List<EmployeeMaster> getAllEmployeesforSA() {
+		@SuppressWarnings("unchecked")
+		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from EmployeeMaster where obsolete ='N'AND "
 						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
 				.setMaxResults(100).list();
 		return listEmployee;

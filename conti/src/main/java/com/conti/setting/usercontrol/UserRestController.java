@@ -4,11 +4,14 @@
  */
 package com.conti.setting.usercontrol;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,6 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 
+import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonProcessingException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,6 +39,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponents;
@@ -45,6 +53,8 @@ import com.conti.others.DateTimeCalculation;
 import com.conti.others.Loggerconf;
 import com.conti.others.SendMailSMS;
 import com.conti.others.UserInformation;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 import com.conti.userlog.UserLogDao;
 import com.conti.userlog.UserLogModel;
 
@@ -72,6 +82,8 @@ public class UserRestController {
 	private UserLogDao userLogDao;
 	@Autowired
 	private DateTimeCalculation datetimeCalculation;
+	@Autowired
+	private CompanySettingDAO companySettingDAO;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
@@ -82,15 +94,15 @@ public class UserRestController {
 	@RequestMapping(value =  "user", method = RequestMethod.GET)
 	public ModelAndView userPage(HttpServletRequest request) throws Exception {
 		
-		HttpSession session = request.getSession();
-		
 		UserInformation userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();		
 		String userid = userinfo.getUserId();
+		String branch_id = userinfo.getUserBranchId();
 		ModelAndView model = new ModelAndView();
 		
 		try
 		{
+			
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			
 			model.addObject("title", "User Master");
@@ -114,37 +126,39 @@ public class UserRestController {
 		int userid = Integer.parseInt(userInformation.getUserId());
 		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
 		
-		/*try {*/
+		try {
+			
 			
 			User user = usersDao.get(userid);
-			if( user.getRole().getRole_Name() == constantVal.ROLE_SADMIN ) {
+			List<User> userList = new ArrayList<User>();
+			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
 				
-				List<User> users = usersDao.list();
-				if(users.isEmpty()) {
+				userList = usersDao.getAllUsers();
+				if(userList.isEmpty()) {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 					return new ResponseEntity<List<User>> (HttpStatus.NO_CONTENT);
 				} else {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-					return new ResponseEntity<List<User>> (users, HttpStatus.OK);	
+					return new ResponseEntity<List<User>> (userList, HttpStatus.OK);	
 				}	
 				
 			} else {
 				
-				List<User> usersbybranch_id = usersDao.getUsersbyBranchId(branch_id);
-				if(usersbybranch_id.isEmpty()) {
+				userList = usersDao.getUsersbyBranchIdwihoutSA(branch_id);
+				if(userList.isEmpty()) {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 					return new ResponseEntity<List<User>> (HttpStatus.NO_CONTENT);
 				} else {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-					return new ResponseEntity<List<User>> (usersbybranch_id, HttpStatus.OK);	
+					return new ResponseEntity<List<User>> (userList, HttpStatus.OK);	
 				}
 			}
 			
 					
-		/*} catch (Exception exception) {			
+		} catch (Exception exception) {			
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
 			return new ResponseEntity<List<User>> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}*/
+		}
 				
 	}
 	/* ------------------------- Retrieve all Users end-------------------------------- */
@@ -178,7 +192,7 @@ public class UserRestController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		
-		/*try {			*/
+		try {			
 		
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			String hashedPassword = passwordEncoder.encode(user.getUserpassword());
@@ -198,10 +212,10 @@ public class UserRestController {
 	        loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<Void> (headers, HttpStatus.CREATED);
 			
-		/*} catch (Exception exception) {
+		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
 			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}*/
+		}
 		
 	}
 	/* ------------------------- Create a User end -------------------------------------  */
@@ -215,7 +229,7 @@ public class UserRestController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		
-		/*try {			*/
+		try {			
 		
 			User user_pwdexists = usersDao.get(user.getUser_id());
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -234,10 +248,10 @@ public class UserRestController {
 	        loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<User> (user, HttpStatus.CREATED);
 			
-		/*} catch (Exception exception) {
+		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
-			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}*/
+			return new ResponseEntity<User> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 		
 	}
 	/* ------------------------- Update a User end -------------------------------------  */
@@ -266,7 +280,7 @@ public class UserRestController {
 	/* ------------------------- Update a User end -------------------------------------  */
 	
 	/* ------------------------- Delete a User begin ----------------------------------- */
-	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/delete_user/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<User> deleteUser(@PathVariable("id") int id, HttpServletRequest request) {
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
@@ -683,6 +697,269 @@ public class UserRestController {
 	/* ------------------------------ Check username end ----------------------------------------- */
 	
 
+	
+	//======================================Excel begin==========================================
+	@RequestMapping(value="downloadExcelUser",method=RequestMethod.GET)
+	public ModelAndView downloadExcelUser(){
+		String user_id = userInformation.getUserId();
+		String branch_id = userInformation.getUserBranchId();
+		
+		User user = usersDao.get(Integer.parseInt(user_id));
+		
+		List<User> userList = new ArrayList<User>();
+		
+		if ( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+			userList = usersDao.getAllUsers();
+		} else {
+			userList = usersDao.getUsersbyBranchId(Integer.parseInt(branch_id));
+		}
+		
+		
+		return new ModelAndView("userExcelView","userList",userList);
+	}
+
+	//======================================Excel end==========================================
+	
+	/* ------------------------- Make active in User begin ------------------------------------- */
+	@RequestMapping(value = "make_Useractive", method = RequestMethod.POST)
+	public ResponseEntity<Void> make_active(@RequestBody int[] id, HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		int user_id = Integer.parseInt(userInformation.getUserId());
+		
+		int active_flag = 0;
+		try {
+			for(int i=0; i<id.length; i++) {
+				User usersDB = usersDao.get(id[i]);
+				
+				if(usersDB == null) {
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+					active_flag = 1;
+					
+				} else {
+					
+					Date date = new Date();
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+					
+					usersDB.setActive("Y");
+					usersDB.setUpdated_by(user_id);
+					usersDB.setUpdated_datetime(dateFormat.format(date));
+									
+					usersDao.saveOrUpdate(usersDB);
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+					
+				}
+			}
+			
+			if( active_flag == 1) {
+				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			} else {
+				return new ResponseEntity<Void> (HttpStatus.OK);
+			}
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+			return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	/* ------------------------- Make active User end ------------------------------------- */
+	
+	
+	/* ------------------------- Make inactive in User begin ------------------------------------- */
+	@RequestMapping(value = "make_Userinactive", method = RequestMethod.POST)
+	public ResponseEntity<Void> make_Userinactive(@RequestBody int[] id, HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		int user_id = Integer.parseInt(userInformation.getUserId());
+		
+		int active_flag = 0;
+		try {
+			for(int i=0; i<id.length; i++) {
+				User usersDB = usersDao.get(id[i]);
+				
+				if(usersDB == null) {
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+					active_flag = 1;
+					
+				} else {
+					
+					Date date = new Date();
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+					
+					usersDB.setActive("N");
+					usersDB.setUpdated_by(user_id);
+					usersDB.setUpdated_datetime(dateFormat.format(date));
+									
+					usersDao.saveOrUpdate(usersDB);
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+					
+				}
+			}
+			
+			if( active_flag == 1) {
+				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			} else {
+				return new ResponseEntity<Void> (HttpStatus.OK);
+			}
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+			return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	/* ------------------------- Make inactive User end ------------------------------------- */
+	
+	
+	/* ------------------------- Print in User begin ------------------------------------- */	
+	@RequestMapping(value = "/user_print", method = RequestMethod.POST)
+	public ModelAndView farmPrint(@RequestParam("user") String user, HttpServletRequest request) throws JsonProcessingException, IOException{
+
+		JSONArray jsonArray = new JSONArray(user);
+		String[] userid = new String[jsonArray.length()];
+		for(int i=0; i <jsonArray.length();i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			userid[i] = Integer.toString(jsonObject.getInt("user_id"));			
+		}
+		List<User> listuser = new ArrayList<User> ();
+		for(int i=0; i<userid.length;i++) {
+			User userDB = usersDao.get(Integer.parseInt(userid[i]));
+			listuser.add(userDB);
+		}
+		
+
+		
+		Company company = companySettingDAO.getById(1);
+		ModelAndView model = new ModelAndView("print/user_print");
+
+		String base64DataString ="";
+		if(company!=null && company.getCompany_logo()!=null){
+			byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+			try {
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+			}		
+		}else{
+			base64DataString = ConstantValues.NO_IMAGE;	
+		}
+		
+		model.addObject("title", "User");
+		model.addObject("company", company);
+		model.addObject("listuser", listuser);
+		model.addObject("image",base64DataString);
+			
+		return model;
+	}
+	/* ------------------------- Print in User end ------------------------------------- */	
+	
+	//======================================Pagination begin==========================================
+	
+	@RequestMapping(value = "pagination_user", method=RequestMethod.POST)
+	public ResponseEntity<List<User>> pagination(@RequestBody int page, HttpServletRequest request) {
+		
+		String username = userInformation.getUserName();
+		int userid = Integer.parseInt(userInformation.getUserId());
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+	
+		try {
+			
+			int from_limit = 0, to_limit = 0;
+			String order = "DESC";
+			if(page == 1) { // First
+				from_limit = 0;
+				to_limit = page * 100;
+			} else if ( page == 0 ) { // Last
+				order = "ASC";
+				from_limit = page;
+				to_limit = 10;
+			} else {
+				from_limit = (page * 10) + 1;
+				to_limit =  (page + 1 ) * 100;
+			}
+			
+			
+			User user = usersDao.get(userid);
+			List<User> userList = new ArrayList<User>();
+			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+				
+				userList = usersDao.getUserwithLimitbySA(branch_id, from_limit, to_limit, order);
+				
+				
+				if(userList.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<User>> (HttpStatus.NO_CONTENT);
+				} else {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<User>> (userList, HttpStatus.OK);	
+				}	
+				
+			} else {
+				
+				userList = usersDao.getUserwithLimit(branch_id, from_limit, to_limit, order);
+				
+				if(userList.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<User>> (HttpStatus.NO_CONTENT);
+				} else {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<User>> (userList, HttpStatus.OK);	
+				}
+			}
+		
+			
+		} catch (Exception exception) {
+			
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<User>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+	}
+	
+	//======================================Pagination end==========================================
+	
+	
+	@RequestMapping(value = "register_Usersearch", method=RequestMethod.POST)
+	public ResponseEntity<List<User>> register_search(@RequestBody String searchkey, HttpServletRequest request) {
+		
+		String username = userInformation.getUserName();
+		int userid = Integer.parseInt(userInformation.getUserId());
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		
+		try {
+			
+			User user = usersDao.get(userid);
+			List<User> userList = new ArrayList<User>();
+			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+				
+				userList = usersDao.searchbySAUser(searchkey);
+				
+				
+				if(userList.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<User>> (HttpStatus.NO_CONTENT);
+				} else {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<User>> (userList, HttpStatus.OK);	
+				}	
+				
+			} else {
+				
+				userList = usersDao.searchbyUser(searchkey);
+				
+				if(userList.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<User>> (HttpStatus.NO_CONTENT);
+				} else {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<User>> (userList, HttpStatus.OK);	
+				}
+			}
+			
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<User>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+	
+	}
 }
 
 

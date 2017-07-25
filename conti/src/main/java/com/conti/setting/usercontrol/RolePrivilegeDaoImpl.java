@@ -62,7 +62,7 @@ class RolePrivilegeDaoImpl implements RolePrivilegeDao {
 	@Transactional
 	public void delete(int id) {
 		RolePrivilege RolePrivilege = new RolePrivilege();
-		RolePrivilege.setRolePrivilege_Id(id);
+		RolePrivilege.setRoleprivilege_Id(id);
 		String hql="update RolePrivilege  set obsolete='Y', active='N' where id=" + id;
 		sessionFactory.getCurrentSession().createQuery(hql).executeUpdate();
 			

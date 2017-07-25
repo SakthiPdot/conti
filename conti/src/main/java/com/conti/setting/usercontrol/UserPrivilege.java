@@ -1,8 +1,14 @@
 package com.conti.setting.usercontrol;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.conti.master.branch.BranchModel;
 
 
 /**
@@ -19,130 +25,8 @@ import javax.persistence.Table;
 @Table(name="a_userpriviledge")
 public class UserPrivilege {
 	
-	/*private int User_id,UserPrivilege_Id,branch_id,Role_Id;
-	private String Role_MenuName,Role_ScreenName,UserPrivilege_ADD,UserPrivilege_DELETE,
-	UserPrivilege_MODIFY,UserPrivilege_PRINT,UserPrivilege_VIEW,UserPrivilege_CreatedDate,
-	UserPrivilege_UpdatedDate,Obsolete,Active,role_name;
-	
-	@Column(name = "Role_Name")
-	public String getRole_name() {
-		return role_name;
-	}
-	public void setRole_name(String role_name) {
-		this.role_name = role_name;
-	}
-	@Column(name = "User_id")
-	public int getUser_id() {
-		return User_id;
-	}
-	public void setUser_id(int user_id) {
-		User_id = user_id;
-	}
-	
-			
-	@Column(name = "branch_id")	
-	public int getBranch_id() {
-		return branch_id;
-	}
-	public void setBranch_id(int branch_id) {
-		this.branch_id = branch_id;
-	}
-	@Id
-	@Column(name = "UserPrivilege_Id")
-	public int getUserPrivilege_Id() {
-		return UserPrivilege_Id;
-	}
-	public void setUserPrivilege_Id(int userPrivilege_Id) {
-		UserPrivilege_Id = userPrivilege_Id;
-	}
-	@Column(name = "Role_Id")
-	public int getRole_Id() {
-		return Role_Id;
-	}
-	public void setRole_Id(int role_Id) {
-		Role_Id = role_Id;
-	}
-	@Column(name = "Role_MenuName")
-	public String getRole_MenuName() {
-		return Role_MenuName;
-	}
-	public void setRole_MenuName(String role_MenuName) {
-		Role_MenuName = role_MenuName;
-	}
-	@Column(name = "Role_ScreenName")
-	public String getRole_ScreenName() {
-		return Role_ScreenName;
-	}
-	public void setRole_ScreenName(String role_ScreenName) {
-		Role_ScreenName = role_ScreenName;
-	}
-	@Column(name = "UserPrivilege_ADD")
-	public String getUserPrivilege_ADD() {
-		return UserPrivilege_ADD;
-	}
-	public void setUserPrivilege_ADD(String userPrivilege_ADD) {
-		UserPrivilege_ADD = userPrivilege_ADD;
-	}
-	@Column(name = "UserPrivilege_DELETE")
-	public String getUserPrivilege_DELETE() {
-		return UserPrivilege_DELETE;
-	}
-	public void setUserPrivilege_DELETE(String userPrivilege_DELETE) {
-		UserPrivilege_DELETE = userPrivilege_DELETE;
-	}
-	@Column(name = "UserPrivilege_MODIFY")
-	public String getUserPrivilege_MODIFY() {
-		return UserPrivilege_MODIFY;
-	}
-	public void setUserPrivilege_MODIFY(String userPrivilege_MODIFY) {
-		UserPrivilege_MODIFY = userPrivilege_MODIFY;
-	}
-	@Column(name = "UserPrivilege_PRINT")
-	public String getUserPrivilege_PRINT() {
-		return UserPrivilege_PRINT;
-	}
-	public void setUserPrivilege_PRINT(String userPrivilege_PRINT) {
-		UserPrivilege_PRINT = userPrivilege_PRINT;
-	}
-	@Column(name = "UserPrivilege_VIEW")
-	public String getUserPrivilege_VIEW() {
-		return UserPrivilege_VIEW;
-	}
-	public void setUserPrivilege_VIEW(String userPrivilege_VIEW) {
-		UserPrivilege_VIEW = userPrivilege_VIEW;
-	}
-	@Column(name = "UserPrivilege_CreatedDate")
-	public String getUserPrivilege_CreatedDate() {
-		return UserPrivilege_CreatedDate;
-	}
-	public void setUserPrivilege_CreatedDate(String userPrivilege_CreatedDate) {
-		UserPrivilege_CreatedDate = userPrivilege_CreatedDate;
-	}
-	@Column(name = "UserPrivilege_UpdatedDate")
-	public String getUserPrivilege_UpdatedDate() {
-		return UserPrivilege_UpdatedDate;
-	}
-	public void setUserPrivilege_UpdatedDate(String userPrivilege_UpdatedDate) {
-		UserPrivilege_UpdatedDate = userPrivilege_UpdatedDate;
-	}
-	@Column(name = "Obsolete")
-	public String getObsolete() {
-		return Obsolete;
-	}
-	public void setObsolete(String obsolete) {
-		Obsolete = obsolete;
-	}
-	@Column(name = "Active")
-	public String getActive() {
-		return Active;
-	}
-	public void setActive(String active) {
-		Active = active;
-	}*/
-	
-	
-	private int userprivilege_id, branch_id, user_id, role_id;
-	private String role_menuname, role_screenname, userprivilege_add, userprivilege_delete, userprivilege_modify, userprivilege_print, userprivilege_view, created_datetime, updated_datetime,obsolete, active, role_name;
+	private int userprivilege_id/*, branch_id, user_id, role_id*/;
+	private String role_menuname, role_screenname, userprivilege_add, userprivilege_delete, userprivilege_modify, userprivilege_print, userprivilege_view, created_datetime, updated_datetime,obsolete, active/*, role_name*/;
 	
 	@Id
 	@Column(name = "userprivilege_id")
@@ -152,32 +36,43 @@ public class UserPrivilege {
 	public void setUserprivilege_id(int userprivilege_id) {
 		this.userprivilege_id = userprivilege_id;
 	}
-	@Column(name = "branch_id")
-	public int getBranch_id() {
-		return branch_id;
+	
+	
+	public BranchModel branch;
+	@JoinColumn(name = "branch_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	public BranchModel getBranch() {
+		return branch;
 	}
-	public void setBranch_id(int branch_id) {
-		this.branch_id = branch_id;
-	}
-	@Column(name = "user_id")
-	public int getUser_id() {
-		return user_id;
-	}
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
+	public void setBranch(BranchModel branch) {
+		this.branch = branch;
 	}
 	
-	@Column(name = "role_id")
-	public int getRole_id() {
-		return role_id;
+	public User user;
+	@JoinColumn(name = "user_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	public User getUser() {
+		return user;
 	}
-	public void setRole_id(int role_id) {
-		this.role_id = role_id;
+	public void setUser(User user) {
+		this.user = user;
 	}
+	
+	public Role role;
+	@JoinColumn(name = "role_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
+	}
+	
 	@Column(name = "role_menuname")
 	public String getRole_menuname() {
 		return role_menuname;
 	}
+	
 	
 	public void setRole_menuname(String role_menuname) {
 		this.role_menuname = role_menuname;
@@ -254,14 +149,14 @@ public class UserPrivilege {
 		this.active = active;
 	}
 	
-	@Column(name = "role_name")
+	/*@Column(name = "role_name")
 	public String getRole_name() {
 		return role_name;
 	}
 	public void setRole_name(String role_name) {
 		this.role_name = role_name;
 	}
-	
+	*/
 	
 	
 	

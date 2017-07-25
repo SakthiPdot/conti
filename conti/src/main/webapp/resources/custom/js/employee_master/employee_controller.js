@@ -17,27 +17,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	var self = this;
 	self.employees = [];
 	self.Filteremployees = [];
-	self.employee = {
-				
-/*			   emp_id : null,
-			   branch_id : null,
-			   update_by : null,
-			   created_by : null,
-			   branch_id : null,
-			   emp_name : null,
-			   emp_code : null,
-			   empcategory : null,
-			   emp_phoneno : null,
-			   emp_address : null,
-			   location_id : null,
-			   emp_email : null,
-*/			   dob : '2017-06-26 17:34:54',
-			   doj : '2017-06-26 17:34:54',
-/*			   created_datetime : null,
-			   updated_datetime : null,
-			   obsolete : "N",
-			   active : "Y"
-*/			};
+	self.employee = {};
 	self.heading = "Master";
 	self.employeecategory = {};  
 	self.message = null;
@@ -389,7 +369,9 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 									self.employees.splice(employee,1);
 									self.message =employee.emp_name+ " employee Deleted..!";
 									successAnimate('.success');
-									newOrClose();
+									window.setTimeout( function(){	 	        		
+	    			 	        		newOrClose();
+	    							},5000);
 									
 								}, 
 								function (errResponse) {
@@ -541,19 +523,16 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     function pagination() {
         
     	$scope.pageSize = $scope.shownoofrec;
-    	console.log($scope.pageSize);
 		$scope.currentPage = 0;
 		$scope.totalPages = 0;
-		$scope.totalItems = Math.ceil(self.Filteremployees.length/$scope.pageSize);
 		self.Filteremployees = self.employees;
 		
 		$scope.nextDisabled = false;
 		$scope.previouseDisabled = true;
 		
-		
-		 
-		/*getNoofpages();		
-		$scope.counter = Array;*/
+		if( self.Filteremployees.length <= 10 ) {
+			$scope.nextDisabled = true;
+		} 
 				
     }
 

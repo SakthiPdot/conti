@@ -23,7 +23,10 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
         fetchAllRoles : fetchAllRoles,
         checkUsername : checkUsername,
         createUser : createUser,
-        updateUser : updateUser
+        updateUser : updateUser,
+        deleteUser : deleteUser,
+        pagination_byPage : pagination_byPage,
+        registerSearch : registerSearch
     };
  
     return factory;
@@ -121,18 +124,23 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
   //----------------------  Find user by user name begin ----------------------------- //    
  
   //----------------------  Delete user by user id begin ----------------------------- //  
+       
     function deleteUser(id) {
     	var deferred = $q.defer();
-    	$http.delete('users/'+id)
-    		.then(
-    				function(response){
-    					deferred.resolve(response.data);
-    				},
-    				function(errResponse) {
-    					deferred.reject(errResponse);
-    				}
-    		);
-    		return deferred.promise;
+    	$http({
+    		method : 'DELETE',
+    		url : 'delete_user/'+id,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
     }
     //----------------------  Delete user by user id end ----------------------------- //
     
@@ -195,7 +203,7 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
 				
 				$http({
 					method : 'POST',
-					url : 'makeuseractive',
+					url : 'make_Useractive',
 					data : id,
 					headers : getCsrfHeader()
 				})
@@ -222,7 +230,7 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
 				
 				$http({
 					method : 'POST',
-					url : 'makeuserinactive',
+					url : 'make_Userinactive',
 					data : id,
 					headers : getCsrfHeader()
 				})
@@ -348,4 +356,50 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
 		    		
 		    }
 		//--------------------------------- Update user end --------------------------------//
+		    
+		    
+		    // --------------------------- Pagination begin ------------------------------//
+		    function pagination_byPage(page) {
+		    	var deferred = $q.defer();
+		    	
+		    	$http({
+		    		method : 'POST',
+		    		url : 'pagination_user',
+		    		data : page,
+		    		headers : getCsrfHeader()
+		    	})
+		    	.then (
+		    		function (response) {
+		    			deferred.resolve(response.data);
+		    		},
+		    		function (errResponse) {
+		    			deferred.reject(errResponse);
+		    		}
+		    	);
+		    	return deferred.promise;
+		    }
+		    // --------------------------- Pagination end ------------------------------//  
+		    
+		    //--------------------------- Register search begin -----------------------------//
+		    function registerSearch(searchkey) {
+		    	var deferred = $q.defer();
+		    	
+		    	$http({
+		    		method : 'POST',
+		    		url : 'register_Usersearch',
+		    		data : searchkey,
+		    		headers : getCsrfHeader()
+		    	})
+		    	.then (
+		    		function (response) {
+		    			deferred.resolve(response.data);
+		    		},
+		    		function (errResponse) {
+		    			deferred.reject(errResponse);
+		    		}
+		    	);
+		    	return deferred.promise;
+		    }
+		    //--------------------------- Register search end -----------------------------//    
+
 }]);

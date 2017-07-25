@@ -65,7 +65,7 @@ public class MyUserDetailsService implements UserDetailsService
 		// Build user's authorities
 		for (UserPrivilege userRole : userRoles)
 		{
-			setAuths.add(new SimpleGrantedAuthority(userRole.getRole_name()));
+			setAuths.add(new SimpleGrantedAuthority(userRole.getRole().getRole_Name()));
 			
 		}
 		List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
