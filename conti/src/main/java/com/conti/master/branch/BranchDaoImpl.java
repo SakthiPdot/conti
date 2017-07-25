@@ -92,6 +92,17 @@ public class BranchDaoImpl implements BranchDao
 		return listbranch;
 		
 	}
+	@Override
+	@Transactional
+	public List<BranchModel> searchbyeyBranchName(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<BranchModel> listbranch = (List<BranchModel>) sessionFactory.getCurrentSession()
+		.createQuery("from BranchModel WHERE obsolete ='N' and branch_name LIKE '%" + search_key + "%'").list();
+		return listbranch;
+		
+	}
 	
 	@Override
 	@Transactional

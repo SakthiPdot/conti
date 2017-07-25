@@ -62,6 +62,17 @@ public class ServiceDaoImp implements ServiceDao {
 
 		@Override
 		@Transactional
+		public List<ServiceMaster> searchbyServiceName(String search_key) {
+			
+			@SuppressWarnings("unchecked")
+			List<ServiceMaster> listservice = (List<ServiceMaster>) sessionFactory.getCurrentSession()
+					.createQuery("from ServiceMaster WHERE obsolete = 'N' and service_name LIKE '%" + search_key + "%'").list();
+			return listservice;
+		}
+
+
+		@Override
+		@Transactional
 		public List<ServiceMaster> getServiceswithLimit(int from_limit, int to_limit, String order) {
 			
 			@SuppressWarnings("unchecked")

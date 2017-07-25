@@ -120,11 +120,20 @@ public class ProductDaoImpl implements ProductDAO {
 						+ "OR active LIKE '%"+searchString+ "%'"					
 						).list();
 
-		
-		
-		
 	}
 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Product> searchByProductName(String searchString) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from Product where  obsolete ='N' "
+						+ "and product_name LIKE '%"+searchString+"%'"					
+						).list();
+
+	}
+	
 	@Override
 	@Transactional
 	public String checkProductName(String name) {

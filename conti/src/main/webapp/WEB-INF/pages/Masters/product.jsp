@@ -236,7 +236,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 							<a id="" class="btnPadding btn btn-warning"
 								data-ng-click="proctrl.deleteProduct()"
 								data-ng-show="!(proctrl.product.product_id== null)"><i
-								class="fa fa-trash" aria-hidden="true"></i> &nbsp;Delete</a> <a
+								class="fa fa-ban" aria-hidden="true"></i> &nbsp;Delete</a> <a
 								id="" class="btnPadding btn btn-primary"
 								data-ng-click="proctrl.resetForm()"
 								data-ng-show="!productForm.$pristine && (proctrl.product.product_id== null)"><i

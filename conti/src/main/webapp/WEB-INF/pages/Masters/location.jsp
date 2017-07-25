@@ -217,14 +217,12 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 						</div>
 						
 						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
-							<a id="" class="btnPadding btn btn-warning"	 data-ng-click="locctrl.deleteLocation()"  data-ng-show="!(locctrl.Location.location_id== null)" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
+							<a id="" class="btnPadding btn btn-warning"	 data-ng-click="locctrl.deleteLocation()"  data-ng-show="!(locctrl.Location.location_id== null)" ><i class="fa fa-ban"  aria-hidden="true"></i> &nbsp;Delete</a> 
 							
 							<a id="" class="btnPadding btn btn-primary"  data-ng-click="locctrl.resetForm()"  data-ng-show="!locationForm.$pristine && (locctrl.Location.location_id== null)"><i class="fa fa-eraser" aria-hidden="true"></i>
 							Clear</a>							
 						</div>
-
-
-
+		
 						<div class="col-lg-4 col-xs-4 footerRight" data-ng-show="!(locctrl.Location.location_id== null)">
 							<button class="btn btn-success " type="submit"
 								
