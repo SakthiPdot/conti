@@ -20,7 +20,7 @@ public interface ProductDAO {
 	public List<Product> getProductWithLimit(int from,int to,String order);
 	
 	public List<Product> searchByProduct(String SearchString);
-	
+	public List<Product> searchByProductName(String SearchString);
 	public String checkProductName(String SearchString);
 	
 }

@@ -61,7 +61,7 @@
 <!-- ------------------------- Failure message end ------------------ -----  -->
 
  		<div class="drawer hideme">
- 		<form data-ng-submit="ctrl.submit()" name="branchForm" class="form-horizonral">
+ 		<form data-ng-submit="ctrl.submit()" name="branchForm" class="form-horizonral formBottom">
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
@@ -77,14 +77,14 @@
  			</div>
                
                  
-                 <input type="" data-ng-model="ctrl.branch.branch_id" />
+                 <input type="hidden" data-ng-model="ctrl.branch.branch_id" />
                  <div class="model-body">
                  
                    <div class="row">
 			                <div class="col-lg-12 title_area">	                
 			              
 				          	<div class="col-lg-12 new-masters" >
-				          		 <b> New Branch</b>	
+				          		 <b  data-ng-show="ctrl.branch.branch_id == null" > New Branch</b>	
 				          	</div> 
 				            
 				            </div>                
@@ -94,12 +94,14 @@
 	                <div class="row">
 		                <div class="col-lg-12">
 			                <div class="col-lg-12 content-body">
-			                	<span>Branch Name</span>			                	
+			                	<span>Branch Name<span style="color:red">&nbsp;*</span></span>			                	
 			                	<input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
-			                	data-ng-model="ctrl.branch.branch_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Name">
+			                	data-ng-model="ctrl.branch.branch_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Name"
+			                	data-ng-blur="ctrl.checkBranchName(ctrl.branch.branch_name)" >
+			                	<span class="makeRed" data-ng-show="branchnamewrong">Branch name Already Existing..!<br><br></span>
 			                	
-			                	<span>Branch Code</span>			                	
-			                	<input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsAlphaNumeric(event)"
+			                	<span>Branch Code<span style="color:red">&nbsp;*</span></span>			                	
+			                	<input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsAlphaNumeric(event)" required
 			                	data-ng-model="ctrl.branch.branch_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch code">
 			                	
 			                		                	
@@ -156,18 +158,18 @@
 		                
 		                <div class="col-lg-12">
 			                <div class="col-lg-6 content-body">
-			                	<span>Contact  Person</span>			                	
+			                	<span>Contact  Person<span style="color:red">&nbsp;*</span></span>			                	
 			                	
 			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.branch.branch_contactperson" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact person"  />
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact person"  required/>
 			                	
 			              
 			               </div>	
 			               
 			               <div class="col-lg-6 content-body">
-			                	<span>Contact Number</span>			                	
+			                	<span>Contact Number<span style="color:red">&nbsp;*</span></span>			                	
 			                	<input type="text" class="form-control" maxlength = "10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_mobileno" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact Number"  />
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact Number"  required/>
 			              
 			               </div>		                                
 		                </div>
@@ -175,27 +177,27 @@
 		                
 		                <div class="col-lg-12">
 			                <div class="col-lg-12 content-body">
-			                	 <span>Contact Mail</span>			                	
-			                	<input type="text" class="form-control" maxlength = "30"  data-ng-model="ctrl.branch.branch_email" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Email id"  />
+			                	 <span>Contact Mail<span style="color:red">&nbsp;*</span></span>			                	
+			                	<input type="email" class="form-control" maxlength = "30"  data-ng-model="ctrl.branch.branch_email" 
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Email id" required />
 			               </div>		                                
 		                </div>
 		                
 		                
 		                <div class="col-lg-12">
 			                <div class="col-lg-6 content-body">
-			                	<span>LR Invoice No Prefix</span>			                	
-			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.lrno_prefix" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Invoice no prefix"  />
+			                	<span>LR Invoice No Prefix<span style="color:red">&nbsp;*</span></span>			                	
+			                	<input type="text" class="form-control" maxlength = "4" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.lrno_prefix" 
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Invoice no prefix" required />
 			                	
 			                	
 			              
 			               </div>	
 			               
 			               <div class="col-lg-6 content-body">
-			                	<span>Receipt Invoice No Prefix</span>			                	
-			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.receiptno_prefix" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Receipt number"  />
+			                	<span>Receipt Invoice No Prefix<span style="color:red">&nbsp;*</span></span>			                	
+			                	<input type="text" class="form-control" maxlength = "4" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.receiptno_prefix" 
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Receipt number"  required/>
 			               </div>		                                
 		                </div>  
 		                               
@@ -212,12 +214,12 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" ><i class="fa fa-times" area-hidden="true"></i> Cancle</button>
+							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" ><i class="fa fa-times" area-hidden="true"></i> Cancel</button>
 						</div>
 						
 						<div class="col-lg-4" style="text-align:center; !important;">
 							<a id="" class="btnPadding btn btn-warning"	data-ng-click="ctrl.deleteBranch()" data-ng-show="ctrl.branch.branch_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
-							<a id="" class="btnPadding btn btn-primary" data-ng-click="ctrl.clear()" data-ng-show="!branchForm.$pristine&&(ctrl.branch.branch_id!=null)">Clear</a>							
+							<a id="" class="btnPadding btn btn-primary" data-ng-click="ctrl.clear()" data-ng-show="!branchForm.$pristine&&(ctrl.branch.branch_id==null)">Clear</a>							
 						</div>
 						
 						<div class="col-lg-4 footerRight" data-ng-show="!(ctrl.branch.branch_id==null)">
@@ -254,7 +256,7 @@
  </div>
  
 	
-	<jsp:include page="../Dashboard/nav.jsp"/>
+	<jsp:include page="../Dashboard/settings_nav.jsp"/>
 	<sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
@@ -283,7 +285,7 @@
                                      <div class="dataTables_length" id="dataTables-example_length">
 										<div class="dropdown">
 											<button class="btn btn-primary dropdown-toggle"
-												type="button" data-toggle="dropdown">
+												type="button" data-toggle="dropdown" >
 												Batch Action <span class="caret"></span>
 											</button>
 											<ul class="dropdown-menu">
@@ -372,10 +374,10 @@
 										
 									</div>	
 							
-                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelBranch'"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelBranch';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                       
                                       
-	                                      <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+	                                      <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_branch.length == 0" ><i class="fa fa-print fa-lg"></i></button>
 	                                      <input type = "hidden" name = "branch" value = "{{ctrl.selected_branch}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                       </form>
@@ -414,9 +416,9 @@
                                            
                                             <td data-ng-show="setting_branchname">{{branch.branch_name}}</td>
                                             <td data-ng-show="setting_branchcode">{{branch.branch_code}}</td>
-                                            <td data-ng-show="setting_branchaddress">{{branch.branch_address1}}, {{branch.branch_address2}}, 
+                                            <td data-ng-show="setting_branchaddress">{{branch.branch_addressline1}}, {{branch.branch_addressline2}}, 
                                             	{{branch.location.location_name}}, {{branch.location.address.city}}, 
-                                            	{{branch.location.address.district}}, {{branch.location.address.state}}, {{branch.location.address.pincode}}</td>
+                                            	{{branch.location.address.district}}, {{branch.location.address.state}}</td>
                                             <td data-ng-show="setting_branchcontactperson">{{branch.branch_contactperson}}</td>
                                             <td data-ng-show="setting_branchcontactnumber">{{branch.branch_mobileno}}</td>
                                             <td data-ng-show="setting_branchcontactemail">{{branch.branch_email}}</td>
@@ -483,6 +485,12 @@
 		</div>
 	</sec:authorize>
 
+	<script>
+		$('[data-toggle="popover"]').popover();
+		$('.regSettings').click(function(e) {
+			e.stopPropagation();
+		});
+	</script>
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/branch_master/branch_controller.js"></script>
   <script src="resources/custom/js/branch_master/branch_service.js"></script>

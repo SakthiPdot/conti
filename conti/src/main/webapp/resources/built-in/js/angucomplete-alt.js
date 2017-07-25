@@ -390,13 +390,23 @@
           }
         }
 
-        function httpSuccessCallbackGen(str) {
-          return function(responseData, status, headers, config) {
+        function httpSuccessCallbackGen(str,response) {
+            return function(responseData, status, headers, config) {
+                // normalize return obejct from promise
+                if (!status && !headers && !config && responseData.data) {
+                  responseData = responseData.data;
+                }
+                scope.searching = false;
+                processResults(
+                  extractValue(responseFormatter(responseData), scope.remoteUrlDataField),
+                  str);
+      };
+          /*return function(responseData, status, headers, config) {
             scope.searching = false;
             processResults(
-              extractValue(responseFormatter(responseData), scope.remoteUrlDataField),
+              extractValue(responseFormatter(response.data), scope.remoteUrlDataField),
               str);
-          };
+          };*/
         }
 
         function httpErrorCallback(errorRes, status, headers, config) {
@@ -429,8 +439,18 @@
           httpCanceller = $q.defer();
           params.timeout = httpCanceller.promise;
           $http.get(url, params)
-            .success(httpSuccessCallbackGen(str))
-            .error(httpErrorCallback);
+          .then(
+        		  function(response){
+        			    scope.searching = false;        			    
+        	            processResults(
+        	              extractValue(responseFormatter(response.data), scope.remoteUrlDataField),
+        	              str);
+        	            
+        		  },function(errResponse){
+        			  httpErrorCallback(errResponse);
+        		  });
+           /* .success(httpSuccessCallbackGen(str))
+            .error(httpErrorCallback);*/
         }
 
         function clearResults() {

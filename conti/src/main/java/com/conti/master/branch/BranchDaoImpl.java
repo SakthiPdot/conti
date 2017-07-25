@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.conti.master.employee.EmployeeMaster;
+import com.conti.master.product.Product;
 
 
 /**
@@ -95,6 +96,18 @@ public class BranchDaoImpl implements BranchDao
 	
 	@Override
 	@Transactional
+	public List<BranchModel> searchbyeyBranchName(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<BranchModel> listbranch = (List<BranchModel>) sessionFactory.getCurrentSession()
+		.createQuery("from BranchModel WHERE obsolete ='N' and branch_name LIKE '%" + search_key + "%'").list();
+		return listbranch;
+		
+	}
+	
+	@Override
+	@Transactional
 	public List<BranchModel> getBrancheswithLimit(int branch_id, int from_limit, int to_limit, String order) 
 	{
 		@SuppressWarnings("unchecked")
@@ -103,6 +116,21 @@ public class BranchDaoImpl implements BranchDao
 						+ "ORDER BY IFNULL(created_datetime, updated_datetime) "+order)
 				.setFirstResult(from_limit).setMaxResults(to_limit).list();
 		return listBranch;
+	}
+	
+	
+	@Override
+	@Transactional
+	public String checkBranchName(String name) {
+		@SuppressWarnings("unchecked")
+		List<Product> branchList=sessionFactory.getCurrentSession()
+				.createQuery("from BranchModel where obsolete ='N' AND branch_name IN ('"+name.toUpperCase()+"','"+name.toLowerCase()+"')").list();
+		
+		if(!branchList.isEmpty()&& branchList!=null){
+			return "AVAILABLE";
+		}
+		
+		return "NOTAVAILABLE";
 	}
 	
 }

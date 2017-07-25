@@ -430,7 +430,8 @@ angular.module('contiApp').controller('locationController'
 							console.log(self.Locations[self.selectedRow]+"123");
 							console.log(self.selectedRow+"123");
 							//delete self.Locations[self.selectedRow];
-							self.Locations.splice(self.selectedRow,1);
+							var index=self.Locations.indexOf(self.selectedRow);
+							self.Locations.splice(index,1);
 
 							console.log(self.Locations);
 						},function(errResponse){

@@ -30,8 +30,12 @@
 	</head>
 
 
-<body style="overflow-x:hidden;">
+<body style="overflow-x:hidden;"
+data-ng-app="contiApp"
+data-ng-controller="priceSettingController as psctrl">
 	<jsp:include page="../Dashboard/settings_nav.jsp"/>
+	
+ 	<form data-ng-submit="psctrl.submit()" class="formBottom" name="priceSettingForm">
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
       		  <div class="row">
@@ -52,23 +56,90 @@
 							<div class="panel-body">
 								<div class="col-lg-6 col-xs-12">
 
-									<span>From Branch</span> <select class="form-control">
-										<option>Coimbatore Branch</option>
-									</select> <span>Service</span> <select class="form-control">
-										<option>Counter</option>
-									</select> <span>Product</span> <select class="form-control">
-										<option>Small Box</option>
-									</select> <span>Product Type</span> <select class="form-control">
-										<option>Box</option>
-									</select>
+									<span>From Branch</span> 
+
+  									 <div angucomplete-alt id="selectedBranch"
+											placeholder="Ex : Coimbatore" pause="0"											
+											selected-object="branch_name"
+										    remote-url="getBranchByStr/"
+											remote-url-data-field="Branch"
+             								title-field="branch_name"
+											match-class="highlight"
+											minlength="1" 
+											input-class="form-control form-control-small"										
+										    ></div>
+										
+										<input type="hidden" id="fromBranch" data-ng-model="self.priceSetting.branch" />  			
+										    <!-- description-field="branch_code" -->
+									
+								    <span>Service</span> 
+									<div angucomplete-alt id="selectedService"
+											placeholder="Ex : Door Delivery" pause="0"											
+											selected-object="service_name"
+										    remote-url="getServiceByStr/"
+											remote-url-data-field="Service"
+             								title-field="service_name"
+											match-class="highlight"
+											minlength="1" 											
+											input-class="form-control form-control-small"										
+										    ></div>
+										
+									
+									<input type="hidden" id="service" data-ng-model="self.priceSetting.service" />     
+										    
+										    
+									 <span>Product</span> 
+									<div angucomplete-alt id="selectedProduct"
+											placeholder="Ex : Box (Large)" pause="0"											
+											selected-object="product_name"
+										    remote-url="getProductByStr/"
+											remote-url-data-field="Product"
+             								title-field="product_name"
+											match-class="highlight"
+											minlength="1" 
+											input-class="form-control form-control-small"										
+										    ></div>
+										
+										
+									<input type="hidden" id="product" data-ng-model="self.priceSetting.product" />  
+										
+									<span>Product Type</span> 
+									
+									
+									       	 <div angucomplete-alt
+							 					 id="selectedProductType" 
+									              placeholder="Ex : Coimbatore"
+									              pause="0"		 data-ng-required="true"
+		                  						 data-trigger="focus" data-toggle="popover"
+							 					  data-placement="top" data-content="Please Enter Product Type"	
+									              selected-object="city_name"
+									              local-data=""
+									              search-fields="city,state"
+									              title-field="city,state"
+												  match-class="highlight"
+												   onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
+												  initial-value="{{psctrl.Location.address.city}}"
+									              minlength="1"
+									              tabindex="-1"
+									              input-class="form-control form-control-small disabled">
+									              </div> 
+									              
 								</div>
 
 
 								<div class="col-lg-6 col-xs-12 default-price">
-									<input type="checkbox" value=""> &nbsp;&nbsp; <span>Default
-										Price</span> <input type="text" class="form-control"> <input
-										type="checkbox" value=""> &nbsp;&nbsp; <span>Default
-										Handling Charges</span> <input type="text" class="form-control">
+									<input type="checkbox" data-ng-click="defaultPrice(defaultPriceCheckBox)" data-ng-model="defaultPriceCheckBox" value=""> &nbsp;&nbsp; 
+									<span>Default Price</span>
+									 <input type="text" data-ng-disabled="!showTable" data-ng-model="psctrl.priceSetting.default_price" class="form-control"> 
+										
+										
+									<input type="checkbox" 
+									data-ng-click="defaultHCPrice(defaultHandlingChargeCheckBox)"
+									data-ng-model="defaultHandlingChargeCheckBox" value=""> &nbsp;&nbsp; 
+									<span>Default Handling Charges</span>
+									 <input type="text" data-ng-disabled="!defaultHandlingChargeCheckBox"  
+									 data-ng-model="psctrl.priceSetting.defaulthandling_charge" class="form-control">\
+									 
 								</div>
 
 							</div>
@@ -81,12 +152,13 @@
   <!--====================================================== Dynamic table=========================================-->
 
 			<div class="row">
-                <div class="col-lg-12">           	
+                <div class="col-lg-12 " >           	
                 	        <div class="col-lg-8 col-lg-offset-2">                	
                                <div class="panel panel-default">                                
                                 <div class="panel-body">
                                   <div class="table-responsive">
-                                     <table class="table table-striped table-bordered table-hover">
+                                  <fieldset data-ng-disabled="showTable">
+                                     <table  class="table table-striped table-bordered table-hover">
 	                                    <thead>
 	                                        <tr>
 	                                          
@@ -97,24 +169,43 @@
 	                                        </tr>
 	                                    </thead>
 		                                    <tbody>
-		                                        <tr>
+		                                        <tr data-ng-repeat="psdetails in psctrl.priceSetting.priceSettingDetail  track by $index" >
 		                                            <td>
-		                                            	<select class="form-control">
-								                			<option>Coimbatore Branch</option>
-								                		</select>
-								                    </td>
-		                                            <td class="col-sm-1"><input type="text" class="form-control"></td>
+		                                            <input type="hidden" class="form-control" id="toBatch" data-ng-model="psdetails.branch.branch_name">
+		                                            
+	                                            	 <div angucomplete-alt id="selectedBranchTo"
+														placeholder="Ex : Chennai" pause="0"											
+														selected-object="branch_name_To"
+													    remote-url="getBranchByStr/"
+														remote-url-data-field="Branch"
+			             								title-field="branch_name"
+														match-class="highlight"
+														minlength="1" 
+														input-class="form-control form-control-small"										
+												    ></div>
+												    
+		                                             </td>
+		                                            <td class="col-sm-1"><input type="text" class="form-control" data-ng-model="psdetails.ps_weightfrom"></td>
 		                                            <td class="col-sm-1" style="text-align:center;">To</td>
-		                                            <td class="col-sm-1"><input type="text" class="form-control"></td>
-		                                            <td><input type="text" class="form-control"></td>
-		                                            <td class="text-center"><button class="btn btn-primary"><i class="fa fa-pencil-square-o fa-lg"></i>  Edit</button> 
-		                                            <button class="btn btn-danger"><i class="fa fa-trash fa-lg"></i>  Delete</button></td>
+		                                            <td class="col-sm-1"><input type="text" class="form-control" data-ng-model="psdetails.ps_weightto"></td>
+		                                            <td><input type="text" class="form-control" data-ng-model="psdetails.ps_price"></td>
+		                                            <td class="text-center">
+                                                    <div class="col-lg-12">  
+	                                                    <div class="col-lg-6 col-md-6  text-center">
+	                                                   	 <button class="btn btn-primary"><i class="fa fa-pencil-square-o fa-lg"></i>  Edit</button>
+	                                                    </div>
+	                                                    <div class="col-lg-6 col-md-6 text-center">
+	                                                   	 <button class="btn btn-danger" data-ng-click="psctrl.removePriceDetails($index,psdetails)"><i class="fa fa-trash fa-lg" ></i>  Delete</button>
+	                                                    </div>
+		                                            </div>
+		                                            </td>
 		                                           
 		                                        </tr>
 		                                        
 		                                    </tbody>
                                    </table>
-                                   <button class="btn btn-primary"><i class="fa fa-plus fa-lg"></i></button> 
+                                  </fieldset> 
+                                   <button  type="button" class="btn btn-primary" data-ng-click="psctrl.addNew()"><i class="fa fa-plus fa-lg"></i></button> 
                             </div>
                         </div>
                     </div>
@@ -130,11 +221,11 @@
                 <div class="col-lg-12 col-md-12 col-xs-12">
                 
                 	<div class="col-lg-1 col-lg-offset-5 col-md-3  col-md-offset-3 col-xs-8">
-                		<button type="button" class="btn btn-danger"><i class="fa fa-times"></i>  Clear</button>
+                		<button type="button" class="btn btn-danger"><i class="fa fa-eraser"></i>  Clear</button>
                 	</div>
                 	
                 	<div class="col-lg-2 col-md-3 col-xs-4">
-                		<button type="button" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i>    Save</button>
+                		<button type="submit" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i>    Save</button>
                 	</div> 
                 	 
                 </div>
@@ -142,6 +233,7 @@
         </div>
         <!-- /. PAGE WRAPPER  -->
     </div>
+    </form>
     <!-- /. WRAPPER  -->
  <!--====================================================== SCRIPTS START=========================================-->
       <script>$('[data-toggle="popover"]').popover();

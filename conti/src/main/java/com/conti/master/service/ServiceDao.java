@@ -8,5 +8,6 @@ public interface ServiceDao {
 	public void saveOrUpdate(ServiceMaster service);
 	public ServiceMaster getServiceId(int id);
 	public List<ServiceMaster> searchbyService(String search_key);
+	public List<ServiceMaster> searchbyServiceName(String search_key);	
 	public List<ServiceMaster> getServiceswithLimit(int from_limit, int to_limit, String order);
 }

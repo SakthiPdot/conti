@@ -40,16 +40,16 @@
 	    		$(element).removeClass('hideme');
 	    		
 	    		animationOpenClick(element,'bounceInDown');
-	    	}, 1000);
+	    	}, 200);
 			
 			window.setTimeout( function(){
 				animationOpenClick(element,'bounceOutUp');
 				
-	    	}, 3000); 
+	    	}, 4000); 
 			window.setTimeout( function(){
 				$(element).addClass('hideme');	
 /*//				$('body').removeClass('scrollHidden');
-*/	    	}, 4000);
+*/	    	}, 5000);
 	    } 
 	//------------------------- Success animate end ---------------------------------- //	
 	    

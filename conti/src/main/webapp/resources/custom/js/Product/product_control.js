@@ -480,7 +480,8 @@ angular.module('contiApp').controller('productController',
 		ProductService.deleteProduct(self.product.product_id)
 		.then(
 				function(response){
-					self.products.splice(self.product,1);
+					var index=self.products.indexOf(self.product);
+					self.products.splice(index,1);
 					self.message ="Product "+self.product.product_name+ " deleted..!";
 					self.save="saveclose";								
 					newOrClose();	
