@@ -87,11 +87,6 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 		
 	
 	//----------Customer Master drawer field clear begin-----------
-	
-	
-	
-	
-	
 	function clear() {
 		self.confirm_title = 'Clear';
 		self.confirm_type = BootstrapDialog.TYPE_WARNING;
@@ -325,7 +320,8 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 						CustomerService.deleteCustomer(self.customer.customer_id)
 						.then(
 								function (customer) {
-									self.customers.splice(customer,1);
+									var index = self.customers.indexOf(customer);
+									self.customers.splice(index,1);
 									self.message =customer.customer_name+ " Customer Deleted..!";
 									successAnimate('.success');
 									newOrClose();
@@ -641,8 +637,9 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 				|| (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
-				|| (item.customer_email.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)) {
-			
+			//	|| (item.customer_email.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)) {
+				||((String(item.customer_mobileno)).indexOf(toSearch) > -1 )
+			){
 			success = true;
 		} else {
 			success = false;

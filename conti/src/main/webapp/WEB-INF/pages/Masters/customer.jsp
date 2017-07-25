@@ -75,7 +75,7 @@
                    </div>
                    
                    <div class="col-lg-6 headerRight">
-                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close()"></i>
+                   		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close('Close')"></i>
                    </div>
             
              </div>
@@ -89,7 +89,7 @@
 			                <div class="col-lg-12 title_area">	                
 			              
 				          	<div class="col-lg-12 new-masters" >
-				          		 <b data-ng-model="ctrl.customer.customer_id"> New Customer</b>	
+				          		 <b data-ng-="ctrl.customer.customer_id"> New Customer</b>	
 				          		 
 				          	</div> 
 				            
@@ -99,14 +99,17 @@
 	                <div class="row">
 		                <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
-		                 	   <span>Customer Name </span>	         
-			                   <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Name">
+		                 	   <span>Customer Name <span style="color:red">&nbsp;*</span></span>	         
+			                   <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_name" 
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Name" required>
 			                   
-			                   <span>Customer Code</span>
-			                   <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsAlphaNumeric(event,this.value)" data-ng-model="ctrl.customer.customer_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer code">
+			                   <span>Customer Code<span style="color:red">&nbsp;*</span></span>
+			                   <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsAlphaNumeric(event,this.value)" data-ng-model="ctrl.customer.customer_code" 
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer code" required>
 			                   
-			                    <span>Phone Number</span>
-			                   <input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.customer.customer_mobileno" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer phone number">
+			                    <span>Phone Number<span style="color:red">&nbsp;*</span></span>
+			                   <input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.customer.customer_mobileno" 
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer phone number" required>
 			                
 			           
 			             </div>         	
@@ -115,8 +118,9 @@
 			             
 			             <div class="col-lg-12">
 			                	<div class="col-lg-6 content-body">
-			                 	   <span>Customer Type </span>	         
-				                   <select class="form-control" name="customer_type" data-ng-init="select" data-ng-options="custtype for custtype in ['Credit','Debit','Regular']" data-ng-model="ctrl.customer.customer_type">
+			                 	   <span>Customer Type <span style="color:red">&nbsp;*</span></span>	         
+				                   <select class="form-control" name="customer_type" data-ng-init="select" data-ng-options="custtype for custtype in ['Credit','Debit','Regular']" 
+				                   data-ng-model="ctrl.customer.customer_type" required>
 				                   
 				                   		<option selected="selected"></option> 
 <!-- 				                   		<option>Credit</option>	 -->
@@ -151,8 +155,8 @@
 			             
 			             <div class="col-lg-12">
 			                	<div class="col-lg-6 content-body">
-			                 	   <span>Tax is Payable on Reverse Charge </span>	         
-				                   <select class="form-control" data-ng-model="ctrl.customer.taxin_payable" data-ng-options="payable for payable in ['Yes','No']">
+			                 	   <span>Tax is Payable on Reverse Charge<span style="color:red">&nbsp;*</span> </span>	         
+				                   <select class="form-control" data-ng-model="ctrl.customer.taxin_payable" data-ng-options="payable for payable in ['Yes','No']" required>
 <!-- 				                   		<option>Yes</option> -->
 <!-- 				                   		<option>No</option> -->
 				                   		
@@ -171,22 +175,22 @@
 		                <div class="col-lg-12 content-body">
 		                
 		                       <span>Company Name </span>	         
-			                   <input type="text" class="form-control" data-ng-model="ctrl.customer.company_name" maxlength="50" 
+			                   <input type="text" class="form-control" data-ng-model="ctrl.customer.company_name" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Company name" >
 			                   
-		                 	   <span>Address Line 1 </span>	         
-			                   <input type="text" class="form-control" data-ng-model="ctrl.customer.customer_addressline1"  maxlength="150" 
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line1	" >
+		                 	   <span>Address Line 1 <span style="color:red">&nbsp;*</span></span>	         
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event,this.value)" data-ng-model="ctrl.customer.customer_addressline1"  maxlength="150" 
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line1	" required>
 			                   
 			                   <span>Address Line 2</span>
-			                   <input type="text" class="form-control" data-ng-model="ctrl.customer.customer_addressline2"  maxlength="150" 
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event,this.value)" data-ng-model="ctrl.customer.customer_addressline2"  maxlength="150" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line2	" >
 			             </div>         	
 			             </div>
 			             
 			             <div class="col-lg-12">
 		                <div class="col-lg-6 content-body">
-		                     <span>Location</span>
+		                     <span>Location<span style="color:red">&nbsp;*</span></span>
 			                   		<angucomplete-alt id="location_name" data-ng-model="ctrl.customer.location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
@@ -200,7 +204,7 @@
 	   											  data-trigger="focus" data-toggle="popover" 
 	   											  data-placement="top" data-content="Please Enter Customer location"
 	   											  onKeyPress="return CheckIsCharacter(event)"
-									              input-class="form-control form-control-small">
+									              input-class="form-control form-control-small" required>
               						</angucomplete-alt>
               						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
 		                
@@ -235,11 +239,11 @@
 					<div class="row">
 						<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close()" > <i class="fa fa-times" aria-hidden="true"></i>
+							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" > <i class="fa fa-times" aria-hidden="true"></i>
 							Cancel</button>
 						</div>
 						
-						<div class="col-lg-4" style="text-align:center; !important;">
+						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
 							
 							<a id="" class="btnPadding btn btn-warning"	 data-ng-click="ctrl.deleteCustomer()"  data-ng-show="ctrl.customer.customer_id!=null" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a>
 							<a id="" class="btnPadding btn btn-primary" data-ng-click = "ctrl.clear()" data-ng-show="!empForm.$pristine && (ctrl.customer.customer_id==null)">Clear</a>							
@@ -309,12 +313,12 @@
                               <div class="col-lg-12">
                                <div class="col-xs-6">
                                      <div class="dataTables_length" id="dataTables-example_length">
-							<div class="dropdown">
+							<div class="dropdown" >
 								<button class="btn btn-primary dropdown-toggle"
-									type="button" data-toggle="dropdown">
+									type="button" data-toggle="dropdown" data-ng-disabled = "ctrl.selected_customer.length == 0" >
 									Batch Action <span class="caret"></span>
 								</button>
-								<ul class="dropdown-menu">
+								<ul class="dropdown-menu" >
 									<li><a data-ng-click = "ctrl.makeActive()">Active</a></li>
 									<li><a data-ng-click = "ctrl.makeinActive()">In Active</a></li>
 								</ul>
@@ -378,6 +382,13 @@
 										
 										<div class ="checkbox">
 											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_custphone == true, 'fa-times': setting_custphone == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_custphone=true" data-ng-model="setting_custphone" /> Phone number
+											</label>
+										</div>
+										
+										<div class ="checkbox">
+											<label>
 												<i class = "fa" data-ng-class="{'fa-check': setting_custemail == true, 'fa-times': setting_custemail == false}"></i>										
 												<input type="checkbox" data-ng-init = "setting_custemail=true" data-ng-model="setting_custemail" /> Email
 											</label>
@@ -393,7 +404,7 @@
 																		
 									</div>
 										<a type="button" class="btn btn-primary" onclick="location.href='downloadExcelCustomer';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
-                                      	  <button type="submit" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+                                      	  <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_customer.length == 0" ><i class="fa fa-print fa-lg"></i></button>
 	                                      <input type = "hidden" name = "cust" value = "{{ctrl.selected_customer}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										</form>
@@ -417,6 +428,7 @@
                                             <th data-ng-show = "setting_custbranch">Branch Name</th>
                                             <th data-ng-show = "setting_custcompany">Company Name</th>
                                             <th data-ng-show = "setting_custaddress">Address</th>
+                                            <th data-ng-show = "setting_custphone">Phone Number</th>
                                             <th data-ng-show = "setting_custemail">Email</th>
                                    			<th data-ng-show = "setting_custstatus">Status</th>
                                         </tr>
@@ -441,6 +453,7 @@
                                             {{cust.location.location_name}},{{cust.location.address.city}},{{cust.location.address.district}}
                                             {{cust.location.address.state}},{{cust.location.address.pincode}}</td>
                                             
+                                            <td data-ng-show = "setting_custphone">{{cust.customer_mobileno}}</td>
                                             <td data-ng-show = "setting_custemail">{{cust.customer_email}}</td>
                                        	    <td data-ng-show = "setting_custstatus" data-ng-class="{'makeGreen': cust.active=='Y', 'makeRed': cust.active=='N'}">{{cust.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
@@ -451,7 +464,7 @@
                                    <div class="pull-right">
                                    		
 										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                                     											
-										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previouse</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previous</button>
 										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "paginate(1)">Next</button>
 										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
                                 	</div>
