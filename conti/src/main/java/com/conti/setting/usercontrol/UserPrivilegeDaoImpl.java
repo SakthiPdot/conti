@@ -61,7 +61,7 @@ class UserPrivilegeDaoImpl implements UserPrivilegeDao {
 	//================================List By ID==============================
 		@Override 
 		@Transactional
-		public List<UserPrivilege> geta(int id) {
+		public List<UserPrivilege> getprivilegebyUserId(int id) {
 			String hql = "from UserPrivilege where user_id=" + id;
 			Query query = sessionFactory.getCurrentSession().createQuery(hql);
 			@SuppressWarnings("unchecked")

@@ -48,7 +48,7 @@ public class MyUserDetailsService implements UserDetailsService
 		//com.broman.model.m_user m_user = userDao.findByUserName(username);
 		com.conti.setting.usercontrol.User user1=usersDao.findByUserName(username);
 		int userid=user1.getUser_id();
-		List<GrantedAuthority> authorities = buildUserAuthority(userprivilegeDao.geta(userid));
+		List<GrantedAuthority> authorities = buildUserAuthority(userprivilegeDao.getprivilegebyUserId(userid));
 		return buildUserForAuthentication(user1, authorities);
 	}
 

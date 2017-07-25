@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -17,7 +18,7 @@ import com.conti.master.branch.BranchModel;
  * @File_name UserPrivilege.java
  * @author Sankar
  * @Created_date_time Jun 20, 2017 2:21:39 PM
- * @Updated_date_time Jun 20, 2017 2:21:39 PM
+ * @Updated_date_time Jul 25, 2017 9:32:39 AM
  */
 
 
@@ -25,7 +26,7 @@ import com.conti.master.branch.BranchModel;
 @Table(name="a_userpriviledge")
 public class UserPrivilege {
 	
-	private int userprivilege_id/*, branch_id, user_id, role_id*/;
+	private int userprivilege_id;
 	private String role_menuname, role_screenname, userprivilege_add, userprivilege_delete, userprivilege_modify, userprivilege_print, userprivilege_view, created_datetime, updated_datetime,obsolete, active/*, role_name*/;
 	
 	@Id
@@ -148,16 +149,6 @@ public class UserPrivilege {
 	public void setActive(String active) {
 		this.active = active;
 	}
-	
-	/*@Column(name = "role_name")
-	public String getRole_name() {
-		return role_name;
-	}
-	public void setRole_name(String role_name) {
-		this.role_name = role_name;
-	}
-	*/
-	
-	
+
 	
 }

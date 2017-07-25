@@ -18,7 +18,7 @@ public interface UserPrivilegeDao {
 	public UserPrivilege get(int id);
 	public void delete(int id);
 	public void deleteall(int id);
-	public List<UserPrivilege> geta(int id);
+	public List<UserPrivilege> getprivilegebyUserId(int id);
 
 }
 

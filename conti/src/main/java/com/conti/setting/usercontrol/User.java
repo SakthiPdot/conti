@@ -1,12 +1,16 @@
 package com.conti.setting.usercontrol;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -30,7 +34,7 @@ import com.conti.master.employee.EmployeeMaster;
 
 public class User /*implements Serializable*/{
 
-	private int company_id, user_id, /*branch_id,*//* role_id,*/ /*emp_id,*/ created_by, updated_by;
+	private int company_id, user_id, userprivilege_id, /*branch_id,*//* role_id,*/ /*emp_id,*/ created_by, updated_by;
 	private String username, userpassword; 
 	private String obsolete, active, created_datetime, updated_datetime;
 	
@@ -55,7 +59,7 @@ public class User /*implements Serializable*/{
 	 */
 	
 	public User () {}
-	public User(int company_id, int user_id, /*int role_id,*/ /*int emp_id,*/ int created_by, int updated_by, String username,
+	public User(int company_id, int user_id, /*int role_id,*/ /*int emp_id,*/ int userprivilege_id, int created_by, int updated_by, String username,
 			String userpassword, String obsolete, String active,
 			String created_datetime, String updated_datetime, EmployeeMaster employeeMaster) {
 		super();
@@ -64,6 +68,7 @@ public class User /*implements Serializable*/{
 		/*this.branch_id = branch_id;*/
 		/*this.role_id = role_id;*/
 		/*this.emp_id = emp_id;*/
+		this.userprivilege_id = userprivilege_id;
 		this.created_by = created_by;
 		this.updated_by = updated_by;
 		this.username = username;
@@ -131,20 +136,24 @@ public class User /*implements Serializable*/{
 		this.role = role;
 	}
 	
-	/*@Column(name = "branch_id")
-	public int getBranch_id() {
-		return branch_id;
+	@Column(name = "userprivilege_id")
+	public int getUserprivilege_id() {
+		return userprivilege_id;
 	}
-	public void setBranch_id(int branch_id) {
-		this.branch_id = branch_id;
-	}*/
-	/*@Column(name = "role_id")
-	public int getRole_id() {
-		return role_id;
+	public void setUserprivilege_id(int userprivilege_id) {
+		this.userprivilege_id = userprivilege_id;
 	}
-	public void setRole_id(int role_id) {
-		this.role_id = role_id;
+	
+	/*public Set<UserPrivilege> userPrivilege = new HashSet<>();
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,mappedBy="user")
+	public Set<UserPrivilege> getUserPrivilege() {
+		return userPrivilege;
+	}
+	public void setUserPrivilege(Set<UserPrivilege> userPrivilege) {
+		this.userPrivilege = userPrivilege;
 	}*/
+
+	
 	@Column(name = "username")
 	public String getUsername() {
 		return username;
