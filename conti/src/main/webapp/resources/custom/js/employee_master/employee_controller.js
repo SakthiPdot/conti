@@ -73,6 +73,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(
 					function (res) {
+						self.save = "saveclose";
 		 	        	reset();
 		 	        	newOrClose();
 					}
