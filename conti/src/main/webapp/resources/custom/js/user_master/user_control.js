@@ -67,6 +67,8 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	}
 	
 	function close(oper) {
+		
+		console.log(oper);
 		self.confirm_title = oper;
 		self.confirm_type = BootstrapDialog.TYPE_WARNING;
 		self.confirm_msg = self.confirm_title+ ' without saving data?';
@@ -74,8 +76,9 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(
 					function (res) {
-		 	        	reset();
+		 	        	self.save="saveclose"; 
 		 	        	newOrClose();
+		 	        	reset();
 					}
 				);
 	}
@@ -184,7 +187,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 									self.message =user.username+ " username Deleted..!";
 									successAnimate('.success');
 									window.setTimeout( function(){	 	        		
-	    			 	        		newOrClose();
+										newOrClose();
 	    							},5000);
 									
 								}, 
@@ -684,13 +687,12 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 		//------------------------- Create new User begin ------------------//
 	    function createUser(user){
 	    	
-	    	console.log(user);
 	    	UserService.createUser(user)
 	            .then(
 	            		function () {
 	                        fetchAllUsers();
-	                      
-	            			self.message = user.usernmae+" user created..!";
+	                        
+	            			self.message = user.username+" user created..!";
 	            			successAnimate('.success');            			
 	            		},
 	           
@@ -791,6 +793,27 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 		}
 		
 		//------------------------- Check username end -------------------------------------//
+		
+		//-------------------------- Record Count begin -----------------------//
+		
+		function findrecord_count() {
+			
+			UserService.findrecord_count()
+			.then(
+					function (record_count) {
+						console.log(record_count);
+						$scope.totalnof_records  = record_count;
+					}, 
+					function (errResponse) {
+						console.log('Error while fetching record count');
+					}
+				);
+			
+		}
+		
+		//-------------------------- Record Count end -----------------------//
+		
+		
 		//-------------------------- Pagnation begin -----------------------//
 	    function pagination() {
 	        
@@ -800,19 +823,24 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 			self.FilterUsers = self.users;
 			$scope.nextDisabled = false;
 			$scope.previouseDisabled = true;
-					
 			if(self.FilterUsers.length <= 10 ) {
 				$scope.nextDisabled = true;
 			}
 			
-			console.log(self.FilterUsers);
+			if( self.FilterUsers.length < 100 ) {
+				//$scope.totalnof_records  = self.FilterUsers.length;
+				findrecord_count();
+			} else {
+				findrecord_count();
+			}
+			
 	    }
 	    
+	    // --------------------------- Next page begin ------------------------  
 	    $scope.paginate = function(nextPrevMultiplier) {
 
 	    	$scope.currentPage += (nextPrevMultiplier * 1);
 	    	self.FilterUsers = self.users.slice($scope.currentPage*$scope.pageSize);
-	    	
 	    	
 	    	if(self.FilterUsers.length == 0) {
 	    		UserService.pagination_byPage($scope.currentPage)
@@ -836,6 +864,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    	} 
 	    	
 	    	if(self.FilterUsers.length < $scope.pageSize) {
+	    		
 	    		$scope.nextDisabled = true;
 	    	}
 	    	
@@ -849,35 +878,50 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    	}
 	    	
 	    }
-
+	    // --------------------------- Next page end ------------------------
 	    
+	  // --------------------------- First & Last page begin ------------------------  
 	    $scope.firstlastPaginate = function (page) {
-	    	 
-	    	UserService.pagination_byPage(page)
-			.then(
-					function (filterUser) {
-						self.FilterUsers = filterUser;
-					}, 
-					function (errResponse) {
-						console.log('Error while fetching users');
-					}
-				);
 	    	
-	    	if( page == 1 ) {
+	    	if( page == 1 ) { // first
+	    		
 	    		$scope.currentPage = 0;
 	    		$scope.previouseDisabled = true;
 	    		$scope.nextDisabled = false;
-	    	} else {
+	    		fetchAllUsers();
+	    		self.FilterUsers = self.users.slice($scope.currentPage*$scope.pageSize);
+	    	} else { // last
+	    		
+	    		$scope.currentPage = ( (Math.round(self.FilterUsers.length/$scope.pageSize)) - 1 );	    		
 	    		$scope.previouseDisabled = false;
 	    		$scope.nextDisabled = true;
 	    		
+	    		self.FilterUsers = self.users.slice($scope.currentPage*$scope.pageSize);
+		    			    	
+		    	if(self.FilterUsers.length == 0) {
+		    		
+		    		UserService.pagination_byPage(page)
+					.then(
+							function (filterUser) {
+								self.FilterUsers = filterUser;
+								
+							}, 
+							function (errResponse) {
+								console.log('Error while fetching users');
+							}
+						);
+		    	} 
+	    		
 	    	}
+	    
 	    }
+	    
+	    // --------------------------- First & Last page end ------------------------
+	    
 	  //-------------------------- Pagnation end -----------------------//
 	    
 	    //------------------------- Register select begin ------------------//
 	    function userSelect(user){
-	    	console.log(user);
 	    	
 	    	var index = self.selected_user.indexOf(user);
 	    	if (user.select){
@@ -907,7 +951,16 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    function shownoofRecord() {    
 	    	
 	    	$scope.pageSize = $scope.shownoofrec;
-	    		
+	    	
+	    	self.FilterUsers = self.users.slice($scope.currentPage*$scope.pageSize);
+	    	
+	    	console.log(self.FilterUsers.length);
+	    	
+	    	if( self.FilterUsers.length < $scope.pageSize ) {
+	    		$scope.previouseDisabled = true;
+	    		$scope.nextDisabled = true;
+	    	}
+	    	
 	    }
 	    //-------------------------------- Show no of record end ----------------------------------------//  
 	    

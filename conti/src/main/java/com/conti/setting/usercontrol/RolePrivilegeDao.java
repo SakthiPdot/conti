@@ -17,6 +17,8 @@ public interface RolePrivilegeDao {
 	public List<RolePrivilege> list();
 	public RolePrivilege get(int id);
 	public void delete(int id);
+	
+	public List<RolePrivilege> getRolePrivilegebyRoleId(int role_id);
 
 }
 

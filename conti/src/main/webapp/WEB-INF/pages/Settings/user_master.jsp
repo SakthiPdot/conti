@@ -399,8 +399,17 @@
                                    </tbody>
                                 </table>
                                 
+                                <div class ="col-lg-6">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
                                 <div class="col-lg-6 icons-button">
+                                
                                    <div class="pull-right">
+                                   		
                                    		<!-- <ul>
                                    			<li class="btn btn-primary" data-ng-click = "paginatebyno($index+1)" data-ng-repeat = "i in counter(noofpages) track by $index"> {{$index+1}}</li>
                                    		</ul>  -->

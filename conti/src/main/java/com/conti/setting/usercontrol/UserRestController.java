@@ -32,8 +32,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -84,7 +82,10 @@ public class UserRestController {
 	private DateTimeCalculation datetimeCalculation;
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
-	
+	@Autowired
+	private UserPrivilegeDao userPrivilegeDao;
+	@Autowired
+	private RolePrivilegeDao rolePrivilegeDao;
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
 	SessionListener sessionListener = new SessionListener();
@@ -204,7 +205,37 @@ public class UserRestController {
 			user.setUpdated_by(user_id);
 			user.setObsolete("N");
 			user.setActive("Y");
-			usersDao.saveOrUpdate(user);			
+			usersDao.saveOrUpdate(user);	
+			
+			User userfor_privilege = usersDao.findByUserName(user.getUsername());
+			
+			List<RolePrivilege> rolePrivilegeList = rolePrivilegeDao.getRolePrivilegebyRoleId(user.role.getRole_Id());
+			UserPrivilege userPrivilege = new UserPrivilege();
+			
+			
+			for( RolePrivilege rolePrivileges : rolePrivilegeList ) {
+				
+				userPrivilege.setBranch(userfor_privilege.branchModel);
+				userPrivilege.setUser(userfor_privilege);
+				userPrivilege.setRole(userfor_privilege.role);
+				userPrivilege.setActive("Y");
+				userPrivilege.setObsolete("N");
+				
+				userPrivilege.setRole_menuname(rolePrivileges.getRole_menuname());
+				userPrivilege.setRole_screenname(rolePrivileges.getRole_screenname());
+				userPrivilege.setUserprivilege_add(rolePrivileges.getRole_add());
+				userPrivilege.setUserprivilege_modify(rolePrivileges.getRole_modify());
+				userPrivilege.setUserprivilege_delete(rolePrivileges.getRole_delete());
+				userPrivilege.setUserprivilege_print(rolePrivileges.getRole_print());
+				userPrivilege.setUserprivilege_view(rolePrivileges.getRole_view());
+				userPrivilege.setCreated_datetime(dateFormat.format(date).toString());
+				userPrivilege.setUpdated_datetime(dateFormat.format(date).toString());
+				
+				userPrivilegeDao.saveOrUpdate(userPrivilege);
+				
+			}
+			
+			
 			HttpHeaders headers = new HttpHeaders();
 	        headers.setLocation(ucBuilder.path("/users/{id}").buildAndExpand(user.getUser_id()).toUri());
 	        
@@ -875,7 +906,6 @@ public class UserRestController {
 				to_limit =  (page + 1 ) * 100;
 			}
 			
-			
 			User user = usersDao.get(userid);
 			List<User> userList = new ArrayList<User>();
 			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
@@ -915,7 +945,7 @@ public class UserRestController {
 	
 	//======================================Pagination end==========================================
 	
-	
+	/* ------------------------- Register user search begin ------------------------------------- */	
 	@RequestMapping(value = "register_Usersearch", method=RequestMethod.POST)
 	public ResponseEntity<List<User>> register_search(@RequestBody String searchkey, HttpServletRequest request) {
 		
@@ -960,6 +990,36 @@ public class UserRestController {
 		
 	
 	}
+	/* ------------------------- Register user search end ------------------------------------- */
+	
+	/* ------------------------- Find record count begin ------------------------------------- */
+	
+	@RequestMapping(value = "/record_count/", method = RequestMethod.GET)
+	public ResponseEntity<String> recordCount(HttpServletRequest request) {
+		String username = userInformation.getUserName();
+		int userid = Integer.parseInt(userInformation.getUserId());
+		
+		try {
+			
+			User user = usersDao.get(userid);
+			List<User> userList = new ArrayList<User>();
+			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+				String rec_count = Integer.toString(usersDao.find_record_countforSA());
+				return new ResponseEntity<String> (rec_count, HttpStatus.OK);	
+			} else {
+				String rec_count = Integer.toString(usersDao.find_record_count());
+				return new ResponseEntity<String> (rec_count, HttpStatus.OK);	
+			}
+			
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+	}
+	
+	/* ------------------------- Find record count end ------------------------------------- */
+	
 }
 
 
