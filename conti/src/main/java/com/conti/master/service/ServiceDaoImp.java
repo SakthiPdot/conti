@@ -20,7 +20,7 @@ public class ServiceDaoImp implements ServiceDao {
 		public List<ServiceMaster> getAllServices() {
 			@SuppressWarnings("unchecked")
 			List<ServiceMaster> listService = (List<ServiceMaster>) sessionFactory.getCurrentSession()
-					.createQuery("from ServiceMaster where obsolete ='N'").list();
+					.createQuery("from ServiceMaster where obsolete ='N' ORDER BY  created_datetime DESC ").list();
 			return listService;
 			
 		}
