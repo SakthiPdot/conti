@@ -212,10 +212,12 @@ public class BranchRestController {
 			branchModel.setUpdated_datetime(dateFormat.format(date).toString());
 			branchDao.saveOrUpdate(branchModel);
 			HttpHeaders headers=new HttpHeaders();
+			System.out.println("********************************************************");
 			headers.setLocation(ucBuilder.path("/branches/{id}").buildAndExpand(branchModel.getBranch_id()).toUri());
+			System.out.println("********************************************************");
 			loggerconf.saveLogger(username,request.getServletPath(), ConstantValues.SAVE_SUCCESS,null);
 			
-			
+			System.out.println("********************************************************");
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		}
 		catch(Exception exception)

@@ -121,8 +121,8 @@
 						             			  remote_url-data-field="Location"
 									              selected-object="location_name"
 									              
-									              search-fields="location_name,pincode"
-									              title-field="location_name,pincode"
+									              search-fields="location_name"
+									              title-field="location_name"
 												  match-class="highlight"
 												  
 									              minlength="1"
@@ -167,7 +167,7 @@
 			               
 			               <div class="col-lg-6 content-body">
 			                	<span>Contact Number<span style="color:red">&nbsp;*</span></span>			                	
-			                	<input type="text" class="form-control" maxlength = "10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_mobileno" 
+			                	<input type="text" class="form-control" minlength="10" maxlength="10"  onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_mobileno" 
 			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact Number"  required/>
 			              
 			               </div>		                                
@@ -415,9 +415,15 @@
                                            
                                             <td data-ng-show="setting_branchname">{{branch.branch_name}}</td>
                                             <td data-ng-show="setting_branchcode">{{branch.branch_code}}</td>
-                                            <td data-ng-show="setting_branchaddress">{{branch.branch_addressline1}}, {{branch.branch_addressline2}}, 
-                                            	{{branch.location.location_name}}, {{branch.location.address.city}}, 
-                                            	{{branch.location.address.district}}, {{branch.location.address.state}}</td>
+                                            <td data-ng-show="setting_branchaddress">
+                                            	<div data-ng-if="branch.customer_addressline1!=null">{{branch.customer_addressline1}},</div>
+                                           		<div data-ng-if="branch.customer_addressline2!=null">{{branch.customer_addressline2}},</div>
+                                           		<div data-ng-if="branch.location.location_name!=null">{{branch.location.location_name}},</div>
+                                           		<div data-ng-if="branch.location.address.city!=null">{{branch.location.address.city}},</div>
+                                           		<div data-ng-if="branch.location.address.district!=null">{{branch.location.address.district}},</div>
+                                           		<div data-ng-if="branch.location.address.state!=null">{{branch.location.address.state}},</div>
+                                           		<div data-ng-if="branch.location.pincode!=null">{{branch.location.pincode}}.</div>
+                                            </td>
                                             <td data-ng-show="setting_branchcontactperson">{{branch.branch_contactperson}}</td>
                                             <td data-ng-show="setting_branchcontactnumber">{{branch.branch_mobileno}}</td>
                                             <td data-ng-show="setting_branchcontactemail">{{branch.branch_email}}</td>

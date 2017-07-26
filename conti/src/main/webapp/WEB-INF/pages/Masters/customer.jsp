@@ -119,9 +119,9 @@
 			             <div class="col-lg-12">
 			                	<div class="col-lg-6 content-body">
 			                 	   <span>Customer Type <span style="color:red">&nbsp;*</span></span>	         
-				                   <select class="form-control" name="customer_type" data-ng-init="select" data-ng-options="custtype for custtype in ['Credit','Debit','Regular']" 
+				                   <select class="form-control" name="customer_type" data-ng-init="select" data-ng-options="custtype for custtype in ['Cash','Credit']" 
 				                   data-ng-model="ctrl.customer.customer_type" required>
-				                    <option value="" 	>select</option>
+				                    <option value="" disabled	>select</option>
 <!-- 				                   		<option selected="selected"></option>  -->
 <!-- 				                   		<option>Credit</option>	 -->
 <!-- 				                   		<option>Credit</option> -->
@@ -158,6 +158,7 @@
 			                	<div class="col-lg-6 content-body">
 			                 	   <span>Tax is Payable on Reverse Charge<span style="color:red">&nbsp;*</span> </span>	         
 				                   <select class="form-control" data-ng-model="ctrl.customer.taxin_payable" data-ng-options="payable for payable in ['Yes','No']" required>
+				                   			<option value="" disabled	>select</option>
 <!-- 				                   		<option>Yes</option> -->
 <!-- 				                   		<option>No</option> -->
 				                   		
@@ -200,13 +201,13 @@
 									              selected-object="location_name"
 									              	
 									              search-fields="location_name,pincode"
-									              title-field="location_name,pincode"
+									              title-field="location_name"
 												  match-class="highlight"
 												   
 									              minlength="1"
 	   											  data-trigger="focus" data-toggle="popover" 
 	   											  data-placement="top" data-content="Please Enter Customer location"
-	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+	   											  
 									              input-class="form-control form-control-small" required>
               						</angucomplete-alt>
               						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
@@ -494,7 +495,7 @@
 	</div>	
     </div>
        </sec:authorize>
-    <script src="resources/custom/js/custom.js"></script>
+  <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/customer_master/customer_controller.js"></script>
   <script src="resources/custom/js/customer_master/customer_service.js"></script>
   <script src="resources/custom/js/branch_master/branch_service.js"></script>
