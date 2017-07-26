@@ -440,7 +440,7 @@ public class CustomerRestController
 		
 		//===========================To get all location for Customer search ================================
 		
-		@RequestMapping(value="getLocations4Customer/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+		@RequestMapping(value="getLocations4Search/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 		public ResponseEntity<Map<String,List<Location>>> fetchAllLocations4Customer(HttpServletRequest request,
 				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
 			
@@ -457,8 +457,8 @@ public class CustomerRestController
 		
 		//===========================To get all Branch for Customer search ================================
 		
-		@RequestMapping(value="getBranch4Customer/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-		public ResponseEntity<Map<String,List<BranchModel>>> fetchAllBranches4customer(HttpServletRequest request,
+		@RequestMapping(value="getBranch4Search/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Map<String,List<BranchModel>>> fetchAllBranches4Search(HttpServletRequest request,
 				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
 			
 			List<BranchModel> branches = branchDao.searchbyeyBranchName(searchStr);

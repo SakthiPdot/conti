@@ -475,6 +475,29 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     }
     //-------------------------- Make inActive end ----------------------//   
     
+    
+//-------------------------- Record Count begin -----------------------//
+	
+	function findrecord_count() {
+		
+		EmployeeService.findrecord_count()
+		.then(
+				function (record_count) {
+					console.log(record_count);
+					$scope.totalnof_records  = record_count;
+				}, 
+				function (errResponse) {
+					console.log('Error while fetching record count');
+				}
+			);
+		
+	}
+	
+	//-------------------------- Record Count end -----------------------//
+    
+    
+    
+    
     //-------------------------- Pagnation begin -----------------------//
     
     function pagination() {
@@ -488,6 +511,17 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 		
 		$scope.nextDisabled = false;
 		$scope.previouseDisabled = true;
+		
+		if( self.Filtercustomers.length <= 10 ) {
+			$scope.nextDisabled = true;
+		} 
+		
+		if( self.Filtercustomers.length < 100 ) {
+			$scope.totalnof_records  = self.Filtercustomers.length;
+			//findrecord_count();
+		} else {
+			findrecord_count();
+		}
 		
     }
     
@@ -541,25 +575,37 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     
     
     
-    $scope.firstlastPaginate = function (page) {
+    $scope.firstlastPaginate = function (page) 
+    {
    	 
-    	CustomerService.pagination_byPage(page)
-		.then(
-				function (filterCust) {
-					self.Filtercustomers = filterCust;
-				}, 
-				function (errResponse) {
-					console.log('Error while fetching Customers');
-				}
-			);
-    	
-    	if( page == 1 ) {
+    	if( page == 1 ) 
+    	{
     		$scope.currentPage = 0;
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = false;
-    	} else {
+    		self.Filtercustomers = self.customers.slice($scope.currentPage*$scope.pageSize);
+    		fetchAllUsers();
+    	} 
+    	else 
+    	{
+    		$scope.currentPage = ( (Math.round(self.Filtercustomers.length/$scope.pageSize)) - 1 );
     		$scope.previouseDisabled = false;
     		$scope.nextDisabled = true;
+    		
+    		self.Filtercustomers = self.customers.slice($scope.currentPage*$scope.pageSize);
+    		
+    		if(self.Filtercustomers.length == 0) 
+    		{
+    			CustomerService.pagination_byPage(page)
+        		.then(
+        				function (filterCust) {
+        					self.Filtercustomers = filterCust;
+        				}, 
+        				function (errResponse) {
+        					console.log('Error while fetching Customers');
+        				}
+        			);
+    		}
     		
     	}
     }

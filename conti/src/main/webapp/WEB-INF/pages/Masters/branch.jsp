@@ -117,7 +117,7 @@
 			                	<angucomplete-alt id="location_name" data-ng-model="ctrl.branch.location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
-									              remote-url="getLocations4Branch/"
+									              remote-url="getLocations4Search/"
 						             			  remote_url-data-field="Location"
 									              selected-object="location_name"
 									              
@@ -125,7 +125,7 @@
 									              title-field="location_name"
 												  match-class="highlight"
 												  
-									              minlength="1"
+									              minlength="3"
 	   											  data-trigger="focus" data-toggle="popover" 
 	   											  data-placement="top" data-content="Please Enter branch location"
 	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
@@ -434,6 +434,16 @@
                                      
                                     </tbody>
                                 </table>
+                                
+                                <div class ="col-lg-6">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
+                                
+                                
                                 
                                 <div class="col-lg-6 icons-button">
                                    <div class="pull-right">

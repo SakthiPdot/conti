@@ -511,17 +511,17 @@ public class BranchRestController {
 	//======================================Pagination end==========================================
 		
 		
-		@RequestMapping(value="getLocations4Branch/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-		public ResponseEntity<Map<String,List<Location>>> fetchAllLocations4Branch(HttpServletRequest request,
-				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
-			
-			List<Location> locations = locationDao.searchbyeyLocationName(searchStr);
-
-			 Map result = new HashMap();
-			 result.put("Location", locations);
-			
-			System.err.println(searchStr+"464644");
-			return new ResponseEntity<Map<String,List<Location>>> (result,HttpStatus.OK);
-		}
+//		@RequestMapping(value="getLocations4Branch/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+//		public ResponseEntity<Map<String,List<Location>>> fetchAllLocations4Branch(HttpServletRequest request,
+//				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+//			
+//			List<Location> locations = locationDao.searchbyeyLocationName(searchStr);
+//
+//			 Map result = new HashMap();
+//			 result.put("Location", locations);
+//			
+//			System.err.println(searchStr+"464644");
+//			return new ResponseEntity<Map<String,List<Location>>> (result,HttpStatus.OK);
+//		}
 		
 }
