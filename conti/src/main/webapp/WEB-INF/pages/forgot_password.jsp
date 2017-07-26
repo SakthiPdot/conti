@@ -29,7 +29,7 @@
   
 </head>
 
-<body data-ng-app = "contiApp" data-ng-controller = "UserController as ctrl">
+<body data-ng-app = "contiApp" data-ng-controller = "ForgotUserController as ctrl">
 <!-- ------------------------- Overlay for message begin ------------------ -----  -->
 	<div class="overlay hideme"></div>
 <!-- ------------------------- Overlay for message end ------------------ -----  -->	
@@ -64,19 +64,17 @@
 
 
  	<script type="text/javascript" src="resources/built-in/js/jquery-1.11.1.min.js"></script>
- 	
+ 	<script src="resources/custom/js/session.js"></script>
  	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
  	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
 	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
 	<script type="text/javascript" src="resources/custom/js/app.js"></script>
- 	<script type="text/javascript" src="resources/custom/js/user_master/user_control.js"></script>
+ 	<script type="text/javascript" src="resources/custom/js/user_master/forgotuser_control.js"></script>
  	<script type="text/javascript" src="resources/custom/js/user_master/user_service.js"></script>
  	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
- 	<script src="resources/custom/js/branch_master/branch_service.js"></script>  
-	<script src="resources/custom/js/employee_master/employee_service.js"></script>
-	<script src="resources/custom/js/confirmDialog.js"></script>   
+
     
 </body>
 
