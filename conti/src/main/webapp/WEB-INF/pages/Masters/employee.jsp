@@ -175,11 +175,11 @@
 			             <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
 		                 	   <span>Address Line 1 <span class="required">*</span></span>	         
-			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address1"
+			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address1" maxlength = "30"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee address" required>
 			                   
 			                   <span>Address Line 2</span>
-			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address2" 
+			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address2" maxlength = "30"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee address"
 			                    >
 			                   

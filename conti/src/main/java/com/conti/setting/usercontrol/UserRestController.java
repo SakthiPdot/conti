@@ -334,11 +334,14 @@ public class UserRestController {
 	
 	/* --------------------------- Retrieve a User by username begin ------------------------ */
 	@RequestMapping(value = "forgotPassword", method = RequestMethod.POST)
-	public ResponseEntity<User> getUserbyusername(@RequestBody String username, UriComponentsBuilder ucBuilder, UserLogModel userLogModel) throws NoSuchAlgorithmException, ParseException {
+	public ResponseEntity<User> getUserbyusername(@RequestBody String username, UserLogModel userLogModel)  {
 		
 			User currentUser = usersDao.findByUserName(username);
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = new Date();
+
+			try {
+				
 			
 			if(currentUser == null) {
 				return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
@@ -424,7 +427,9 @@ public class UserRestController {
 					return new ResponseEntity<User>(currentUser, HttpStatus.OK);
 				}			
 			}
-				
+		}	catch(Exception exception) {
+			return new ResponseEntity<User>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 	}
 	
 	/* --------------------------- Retrieve a User by username end ------------------------ */
@@ -997,10 +1002,9 @@ public class UserRestController {
 	@RequestMapping(value = "/record_count/", method = RequestMethod.GET)
 	public ResponseEntity<String> recordCount(HttpServletRequest request) {
 		String username = userInformation.getUserName();
-		int userid = Integer.parseInt(userInformation.getUserId());
 		
 		try {
-			
+			int userid = Integer.parseInt(userInformation.getUserId());	
 			User user = usersDao.get(userid);
 			List<User> userList = new ArrayList<User>();
 			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {

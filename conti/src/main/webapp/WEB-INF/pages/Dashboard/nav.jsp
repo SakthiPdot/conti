@@ -3,6 +3,7 @@
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
 %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page isELIgnored="false" %> 
 <%@page session="true"%>
 
@@ -254,7 +255,7 @@
               
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                       WELCOME <sec:authentication property="principal.username" /><i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="user_profile"><i class="fa fa-user fa-fw"></i> User Profile</a>

@@ -13,7 +13,7 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
     var factory = {
         fetchAllUsers: fetchAllUsers,
         findUser: findUser,
-        findUserbyName : findUser,
+        findUserbyName : findUserbyName,
         changePassword : changePassword,
         findUserbyMbl :findUserbyMbl,
         
@@ -101,16 +101,26 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
     		return deferred.promise;
     }*/
     
-   
-    function findUser(username) {
+    function getCsrfHeader() {
+		 
+		 var csrfToken = $("input[name='_csrf']").val();
+	
+		 var headers = {}; 
+		 headers["X-CSRF-TOKEN"] = csrfToken;
+		 headers["_csrf"] = csrfToken;
+		 
+		 return headers;
+	 };
+	 
+    function findUserbyName(username) {
+    	console.log(username);
     	var deferred = $q.defer();
-    	var headers = getCsrfHeader();
-    	
+    	   console.log(getCsrfHeader()); 	
     	$http({
     		method : 'POST',
     		url : 'forgotPassword',
     		data : username,
-    		headers : headers
+    		headers : getCsrfHeader()
     	})
     	.then(
     			function (response) {    

@@ -213,7 +213,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
             		},
            
             function(errResponse){
-                console.error('Error while creating employee' + employee.emp_name );
+    			self.message = "Error while creating employee "+employee.emp_name+"";
+    			successAnimate('.failure');                  
             }
         );
     } 
@@ -248,7 +249,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	        		},
 	       
 	        function(errResponse){
-	            console.error('Error while creating employee' + employee.emp_name );
+    			self.message = "Error while updating employee "+employee.emp_name+"";
+    			successAnimate('.failure'); 	            
 	        }
 	    );
     } 
@@ -376,8 +378,9 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	    							},5000);
 									
 								}, 
-								function (errResponse) {
-					                console.error('Error while Delete employee' + errResponse );
+								function (errResponse) {									
+									self.message = "Error while Deleting employee "+employee.emp_name+"";
+					    			successAnimate('.failure'); 
 								}
 							);
 						

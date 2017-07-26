@@ -125,6 +125,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
     
     //----------------------  Find user by user name begin ----------------------------- //    
     function findUsername() {
+    	    	
     	UserService.findUserbyName(self.user.username)
     		.then(
 	    			function (response) {
@@ -191,7 +192,8 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 									
 								}, 
 								function (errResponse) {
-					                console.error('Error while Delete user' + errResponse );
+					                self.message = "Error while deleting user "+user.username+" ";
+				        			successAnimate('.failure');        		
 								}
 							);
 						
@@ -682,7 +684,8 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	            		},
 	           
 	            function(errResponse){
-	                console.error('Error while creating user' + user.username );
+        			self.message = "Error while creating user "+user.username+" ";
+        			successAnimate('.failure');        		
 	            }
 	        );
 	    } 
@@ -733,7 +736,8 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 		        		},
 		       
 		        function(errResponse){
-		            console.error('Error while update user' + user.username );
+        			self.message = "Error while updating user "+user.username+" ";
+        			successAnimate('.failure');        		
 		        }
 		    );
 	    } 
