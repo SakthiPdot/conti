@@ -359,7 +359,7 @@
     
     <!-- Bootstrap Js -->
     <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
-
+	<script src=" resources/custom/js/date-time-picker.min.js" ></script>
     <!-- Metis Menu Js -->
     <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
     

@@ -41,7 +41,6 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	self.userSelect = userSelect;
 	self.makeActive = makeActive;
 	self.makeinActive = makeinActive;
-	self.print = print;
 	self.shownoofRecord = shownoofRecord;
 	self.userSelectall = userSelectall;
 	self.registerSearch = registerSearch;
@@ -411,21 +410,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
     	self.user.mobileno = '';
     }
     //----------------------  Delete user by user id begin ----------------------------- //
-    
-    
-    //======================== Print Function Begin =================//
-    		
-    	function print() {
-    		if(self.selected_user.length == 0){
-    			self.message = "Please select atleast one record..!";
-    			successAnimate('.failure');
-    		} else{
-    			$http.get('http://localhost:8080/Conti/listprint');
-    		}
-    	}
-    
-    //======================== Print Function End =================//
-    	
+	
     //======================== Make Active Begin =================//
     	
     	function makeActive(){
@@ -828,8 +813,8 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 			}
 			
 			if( self.FilterUsers.length < 100 ) {
-				//$scope.totalnof_records  = self.FilterUsers.length;
-				findrecord_count();
+				$scope.totalnof_records  = self.FilterUsers.length;
+				//findrecord_count();
 			} else {
 				findrecord_count();
 			}
@@ -954,7 +939,6 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    	
 	    	self.FilterUsers = self.users.slice($scope.currentPage*$scope.pageSize);
 	    	
-	    	console.log(self.FilterUsers.length);
 	    	
 	    	if( self.FilterUsers.length < $scope.pageSize ) {
 	    		$scope.previouseDisabled = true;

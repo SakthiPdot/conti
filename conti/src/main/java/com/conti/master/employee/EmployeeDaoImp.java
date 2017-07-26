@@ -47,8 +47,8 @@ public class EmployeeDaoImp implements EmployeeDao {
 	public List<EmployeeMaster> getAllEmployees(int branch_id) {
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
-				.createQuery("from EmployeeMaster where obsolete ='N'AND branchModel.branch_id =" + branch_id + " "
-						//+ "user.role.role_Name <>" + constantVal.ROLE_SADMIN + " "
+				.createQuery("from EmployeeMaster WHERE obsolete ='N' AND branchModel.branch_id =" + branch_id + " "
+						+ "AND user.role.role_Name <>'" + constantVal.ROLE_SADMIN + "' "
 						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
 				.setMaxResults(100).list();
 		return listEmployee;
@@ -59,7 +59,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 	public List<EmployeeMaster> getAllEmployeesforSA() {
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
-				.createQuery("from EmployeeMaster where obsolete ='N'AND "
+				.createQuery("from EmployeeMaster where obsolete ='N' "
 						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
 				.setMaxResults(100).list();
 		return listEmployee;
@@ -133,6 +133,25 @@ public class EmployeeDaoImp implements EmployeeDao {
 				+ " OR emp_address2 LIKE '%" + search_key + "%' OR location.location_name LIKE '%" + search_key + "%'"
 				+ " OR location.address.city LIKE '%" + search_key + "%' OR location.address.district LIKE '%" + search_key + "%'"
 				+ " OR location.address.state LIKE '%" + search_key + "%' OR emp_phoneno LIKE '%" + search_key + "%' OR emp_email LIKE '%" + search_key + "%' OR dob LIKE '%"+ search_key + "%'"
+				+ " OR doj LIKE '%" + search_key + "%' AND user.role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'").list();
+		return listemp;
+		
+	}
+	
+	
+	@Override
+	@Transactional
+	public List<EmployeeMaster> searchbyeyEmployeeforSA(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<EmployeeMaster> listemp = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
+		.createQuery("from EmployeeMaster WHERE obsolete ='N' and emp_name LIKE '%" + search_key + "%'"
+				+ " OR empcategory LIKE '%" + search_key + "%' OR emp_code LIKE '%" + search_key + "%'"
+				+ " OR branchModel.branch_name LIKE '%" + search_key + "%' OR emp_address1 LIKE '%" + search_key + "%'"
+				+ " OR emp_address2 LIKE '%" + search_key + "%' OR location.location_name LIKE '%" + search_key + "%'"
+				+ " OR location.address.city LIKE '%" + search_key + "%' OR location.address.district LIKE '%" + search_key + "%'"
+				+ " OR location.address.state LIKE '%" + search_key + "%' OR emp_phoneno LIKE '%" + search_key + "%' OR emp_email LIKE '%" + search_key + "%' OR dob LIKE '%"+ search_key + "%'"
 				+ " OR doj LIKE '%" + search_key + "%'").list();
 		return listemp;
 		
@@ -141,6 +160,18 @@ public class EmployeeDaoImp implements EmployeeDao {
 	@Override
 	@Transactional
 	public List<EmployeeMaster> getEmployeeswithLimit(int branch_id, int from_limit, int to_limit, String order) {
+		@SuppressWarnings("unchecked")
+		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from EmployeeMaster where obsolete ='N' AND branchModel.branch_id =" + branch_id + " "
+						+ "AND user.role.role_Name <>'" + constantVal.ROLE_SADMIN + "' "
+						+ "ORDER BY IFNULL(created_datetime, updated_datetime) "+order)
+				.setFirstResult(from_limit).setMaxResults(to_limit).list();
+		return listEmployee;
+	}
+	
+	@Override
+	@Transactional
+	public List<EmployeeMaster> getEmployeeswithLimitforSA(int branch_id, int from_limit, int to_limit, String order) {
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
 				.createQuery("from EmployeeMaster where obsolete ='N' AND branchModel.branch_id =" + branch_id + " "

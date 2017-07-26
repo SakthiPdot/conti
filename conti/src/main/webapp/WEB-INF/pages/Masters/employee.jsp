@@ -541,6 +541,14 @@
                                     </tbody>
                                 </table>
                                 
+                                 <div class ="col-lg-6">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
+                                
                                 <div class="col-lg-6 icons-button">
                                    <div class="pull-right">
                                    		<!-- <ul>
@@ -603,8 +611,8 @@
 	<script src="resources/libs/jspdf.plugin.autotable.src.js"></script>		
 	<script src="resources/libs/examples.js"></script>   -->
 
-<script src="resources/built-in/assets/js/jquery-1.10.2.js"></script> 
-	<script src=" resources/custom/js/date-time-picker.min.js" ></script>
+<!-- <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>  -->
+
 
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/employee_master/employee_controller.js"></script>
@@ -643,17 +651,13 @@
         today =  yyyy+'-'+mm+ '-'+ dd;
         return today;
     }
-
-    
-    console.log(getDate());
-    
-            $('.datepicker1').dateTimePicker({
-                limitMax: getDate()
-            });
-            
-            $('.datepicker2').dateTimePicker({
-                limitMax: getDate()
-            });
+	    $('.datepicker1').dateTimePicker({
+	        limitMax: getDate()
+	    });
+	    
+	    $('.datepicker2').dateTimePicker({
+	        limitMax: getDate()
+	    });
         </script>
 </body>
 
