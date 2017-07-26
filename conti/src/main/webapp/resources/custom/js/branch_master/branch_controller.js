@@ -192,6 +192,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	//----------------------Create new Branch begin---------------------
 	function createBranch(branch)
 	{
+		console.log("Controller create branch call ...")
 		BranchService.createBranch(branch)
 		.then(
 				function()
@@ -248,7 +249,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 
 		if(self.branch.branch_id==null)
 		{
-			console.log("branch save call"+self.branch.branch_id)
+			console.log("branch save call "+self.branch.branch_id)
 			self.confirm_title='Save';
 			self.confirm_type=BootstrapDialog.TYPE_SUCCESSSS;
 			self.confirm_msg=self.confirm_title +' '+self.branch.branch_name+' branch?';

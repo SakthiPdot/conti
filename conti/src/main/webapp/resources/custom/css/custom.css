@@ -284,4 +284,17 @@
    			 	box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
 		}
 		
+	.discountspace{
+		width: 290px;
+	}
 	
+	.searchcls{
+		    padding-top: 8px;
+            margin-right: 10px;
+	}
+	
+	     @media (max-width : 768px) {
+				.branchclass{
+					display:block;
+				}
+			}

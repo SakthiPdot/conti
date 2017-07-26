@@ -117,19 +117,21 @@
 			                	<angucomplete-alt id="location_name" data-ng-model="ctrl.branch.location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
+									              remote-url="getLocations4Branch/"
+						             			  remote_url-data-field="Location"
 									              selected-object="location_name"
-									              local-data="ctrl.locations"
-									              search-fields="location_name,pincode"
-									              title-field="location_name,pincode"
+									              
+									              search-fields="location_name"
+									              title-field="location_name"
 												  match-class="highlight"
-												  initial-value="{{ctrl.branch.location.location_name}}"
+												  
 									              minlength="1"
 	   											  data-trigger="focus" data-toggle="popover" 
 	   											  data-placement="top" data-content="Please Enter branch location"
-	   											  onKeyPress="return CheckIsCharacter(event)"
+	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 									              input-class="form-control form-control-small">
-              						</angucomplete-alt>
-              						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
+              					</angucomplete-alt>
+              					<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
 			               </div>		                                
 		                </div> 
 		                
@@ -143,15 +145,14 @@
 			                     <span>State </span>	         
 			                    <input type="text" id="state" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.state}}">
 			               
-			              </div> 
-			               <div class="col-lg-6 content-body">    
+			                </div> 
+			                <div class="col-lg-6 content-body">    
 			                     <span>Country </span>	         
 			                    <input type="text" id="country" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.country}}">
 			                    
 			                     <span>Pincode </span>	         
 			                    <input type="text" id="pincode" class="form-control disabled locations" tabindex="-1"  maxlength="6" onKeyPress="return CheckIsNumeric(event)" value="{{location_name.originalObject.pincode}}">
-			           
-			             </div> 	                                
+			           		</div> 	                                
 		                </div> 
 		                
 		                
@@ -162,13 +163,11 @@
 			                	
 			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.branch.branch_contactperson" 
 			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact person"  required/>
-			                	
-			              
 			               </div>	
 			               
 			               <div class="col-lg-6 content-body">
 			                	<span>Contact Number<span style="color:red">&nbsp;*</span></span>			                	
-			                	<input type="text" class="form-control" maxlength = "10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_mobileno" 
+			                	<input type="text" class="form-control" minlength="10" maxlength="10"  onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_mobileno" 
 			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact Number"  required/>
 			              
 			               </div>		                                
@@ -416,9 +415,15 @@
                                            
                                             <td data-ng-show="setting_branchname">{{branch.branch_name}}</td>
                                             <td data-ng-show="setting_branchcode">{{branch.branch_code}}</td>
-                                            <td data-ng-show="setting_branchaddress">{{branch.branch_addressline1}}, {{branch.branch_addressline2}}, 
-                                            	{{branch.location.location_name}}, {{branch.location.address.city}}, 
-                                            	{{branch.location.address.district}}, {{branch.location.address.state}}</td>
+                                            <td data-ng-show="setting_branchaddress">
+                                            	<div data-ng-if="branch.customer_addressline1!=null">{{branch.customer_addressline1}},</div>
+                                           		<div data-ng-if="branch.customer_addressline2!=null">{{branch.customer_addressline2}},</div>
+                                           		<div data-ng-if="branch.location.location_name!=null">{{branch.location.location_name}},</div>
+                                           		<div data-ng-if="branch.location.address.city!=null">{{branch.location.address.city}},</div>
+                                           		<div data-ng-if="branch.location.address.district!=null">{{branch.location.address.district}},</div>
+                                           		<div data-ng-if="branch.location.address.state!=null">{{branch.location.address.state}},</div>
+                                           		<div data-ng-if="branch.location.pincode!=null">{{branch.location.pincode}}.</div>
+                                            </td>
                                             <td data-ng-show="setting_branchcontactperson">{{branch.branch_contactperson}}</td>
                                             <td data-ng-show="setting_branchcontactnumber">{{branch.branch_mobileno}}</td>
                                             <td data-ng-show="setting_branchcontactemail">{{branch.branch_email}}</td>

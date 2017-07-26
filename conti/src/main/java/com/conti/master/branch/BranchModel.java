@@ -25,9 +25,9 @@ import com.conti.master.location.Location;
 @Table(name = "m_branch")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BranchModel {
-	int branch_id,  branch_mobileno, updated_by, created_by;
+	private int branch_id,   updated_by, created_by;
 	String branch_name, branch_code, branch_addressline1,branch_addressline2,branch_contactperson, branch_email, lrno_prefix, receiptno_prefix, created_datetime, updated_datetime, obsolete, active;
-	
+	private long branch_mobileno;
 	
 	
 	
@@ -70,7 +70,7 @@ public Location location;
 		this.location = location;
 	}	
 		
-		
+	
 		
 	
 	@Column(name = "updated_by")
@@ -80,6 +80,7 @@ public Location location;
 	public void setUpdated_by(int updated_by) {
 		this.updated_by = updated_by;
 	}
+	
 	@Column(name = "created_by")
 	public int getCreated_by() {
 		return created_by;
@@ -87,11 +88,12 @@ public Location location;
 	public void setCreated_by(int created_by) {
 		this.created_by = created_by;
 	}
+	
 	@Column(name = "branch_mobileno")
-	public int getBranch_mobileno() {
+	public long getBranch_mobileno() {
 		return branch_mobileno;
 	}
-	public void setBranch_mobileno(int branch_mobileno) {
+	public void setBranch_mobileno(long branch_mobileno) {
 		this.branch_mobileno = branch_mobileno;
 	}
 	
@@ -99,6 +101,7 @@ public Location location;
 	public String getBranch_name() {
 		return branch_name;
 	}
+	
 	public void setBranch_name(String branch_name) {
 		this.branch_name = branch_name;
 	}

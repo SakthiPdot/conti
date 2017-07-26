@@ -116,11 +116,13 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
     //------------------------------- Delete Customer end -----------------------------//
     
     //------------------------------- Delete Customer begin -----------------------------//
-    function updateCustomer(customer, id) {
+    function updateCustomer(customer) {
     	var deferred = $q.defer();
+    	console.log("Update customer service call");
     	$http({
-    		method : 'PUT',
-    		url : 'update_customer/'+id,
+    		method : 'POST',
+    		url : 'update_customer',
+    		data:customer,
     		headers : getCsrfHeader()
     	})
     	.then (

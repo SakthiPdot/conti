@@ -86,7 +86,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 	}
 		
 	
-	//----------Customer Master drawer field clear begin-----------
+	//----------------Customer Master drawer field clear begin------------------
 	function clear() {
 		self.confirm_title = 'Clear';
 		self.confirm_type = BootstrapDialog.TYPE_WARNING;
@@ -202,7 +202,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
             		},
            
             function(errResponse){
-                console.error('Error while creating Customer' + customer.customer_name );
+                console.error('Error while creating Customer ' + customer.customer_name );
             }
         );
     } 
@@ -210,20 +210,19 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     
     
   //------------------------- Update existing Customer begin ------------------//
-    function editCustomer(customer){
- 
-    	
-	    	CustomerService.createCustomer(customer)
+    function editCustomer(customer)
+    {
+    	CustomerService.updateCustomer(customer)
 	        .then(
 	        		function () {
 	                    fetchAllCustomers();
-	                  
-	        			self.message = customer.customer_name+" Customer updated..!";
-	        			successAnimate('.success');            			
+	                    self.message = customer.customer_name+" Customer updated..!";
+	        			successAnimate('.success');   
+	        			newOrClose();
 	        		},
 	       
 	        function(errResponse){
-	            console.error('Error while creating customer' + customer.customer_name );
+	            console.error('Error while creating customer ' + customer.customer_name );
 	        }
 	    );
     } 

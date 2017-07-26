@@ -113,7 +113,9 @@
 						              placeholder="Ex : Coimbatore"
 						              pause="100"
 						              selected-object="branch_name"
-						              local-data="ctrl.branches"
+						              remote-url="getBranch4Employee/"
+						              remote_url-data-field="Branch"
+						              
 						              search-fields="branch_name"
 						              title-field="branch_name"
 									  match-class="highlight"
@@ -203,7 +205,7 @@
                  	<div class="row">
                  		<div class="col-lg-12">
                  				<div class="col-lg-4 col-xs-4  footerLeft">
-                 					<button type ="button" class="btn btn-danger pull-left " data-ng-click="ctrl.close('Cancel')"><i class="fa fa-trash-o"></i> Cancel</button>
+                 					<button type ="button" class="btn btn-danger pull-left " data-ng-click="ctrl.close('Cancel')"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</button>
                  				</div>
                  				
                  					<div class="col-lg-4 col-xs-4 " style="text-align:center; !important;">
@@ -399,8 +401,17 @@
                                    </tbody>
                                 </table>
                                 
+                                <div class ="col-lg-6">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
                                 <div class="col-lg-6 icons-button">
+                                
                                    <div class="pull-right">
+                                   		
                                    		<!-- <ul>
                                    			<li class="btn btn-primary" data-ng-click = "paginatebyno($index+1)" data-ng-repeat = "i in counter(noofpages) track by $index"> {{$index+1}}</li>
                                    		</ul>  -->

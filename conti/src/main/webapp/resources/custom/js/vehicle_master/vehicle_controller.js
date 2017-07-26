@@ -59,6 +59,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 				.then(
 							function (res) {
+								self.save = "saveclose";
 								reset();
 								newOrClose();
 							}
@@ -76,6 +77,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type,self.confirm_msg, self.confirm_btnclass)
 					.then(
 								function (res) {
+									self.save = "saveclose";
 									reset();
 								}
 						 );
@@ -135,7 +137,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			            .then(
 			            		function () {
 			                        fetchAllVehicles();
-			                        self.message = vehicle.vehicle_regno+" vehicle created..!";
+			                        self.message = vehicle.vehicle_regno+" vehicle reg no created..!";
 			            			successAnimate('.success');            			
 			            		},
 			           
@@ -157,7 +159,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 						
 						self.confirm_title = 'Save';
 						self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
-						self.confirm_msg = self.confirm_title + ' ' + self.vehicle.vehicle_regno + ' vehicle?';
+						self.confirm_msg = self.confirm_title + ' ' + self.vehicle.vehicle_regno + ' vehicle reg no?';
 						self.confirm_btnclass = 'btn-success';
 						
 						ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)

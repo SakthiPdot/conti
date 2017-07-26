@@ -13,7 +13,7 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
     var factory = {
         fetchAllUsers: fetchAllUsers,
         findUser: findUser,
-        findUserbyName : findUser,
+        findUserbyName : findUserbyName,
         changePassword : changePassword,
         findUserbyMbl :findUserbyMbl,
         
@@ -26,7 +26,8 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
         updateUser : updateUser,
         deleteUser : deleteUser,
         pagination_byPage : pagination_byPage,
-        registerSearch : registerSearch
+        registerSearch : registerSearch,
+        findrecord_count : findrecord_count
     };
  
     return factory;
@@ -100,16 +101,26 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
     		return deferred.promise;
     }*/
     
-   
-    function findUser(username) {
+    function getCsrfHeader() {
+		 
+		 var csrfToken = $("input[name='_csrf']").val();
+	
+		 var headers = {}; 
+		 headers["X-CSRF-TOKEN"] = csrfToken;
+		 headers["_csrf"] = csrfToken;
+		 
+		 return headers;
+	 };
+	 
+    function findUserbyName(username) {
+    	console.log(username);
     	var deferred = $q.defer();
-    	var headers = getCsrfHeader();
-    	
+    	   console.log(getCsrfHeader()); 	
     	$http({
     		method : 'POST',
     		url : 'forgotPassword',
     		data : username,
-    		headers : headers
+    		headers : getCsrfHeader()
     	})
     	.then(
     			function (response) {    
@@ -400,6 +411,24 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
 		    	);
 		    	return deferred.promise;
 		    }
-		    //--------------------------- Register search end -----------------------------//    
+		    //--------------------------- Register search end -----------------------------//   
+		    
+		    //----------------------  Recourd count users begin ----------------------------- //
+		    function findrecord_count() {
+		    	
+		        var deferred = $q.defer();
+		        $http.get('record_count/')
+		            .then(
+		            function (response) {
+		                deferred.resolve(response.data);
+		            },
+		            function(errResponse){
+		                console.error('Error while fetching Users record count');
+		                deferred.reject(errResponse);
+		            }
+		        );
+		        return deferred.promise;
+		    }
+		    //----------------------  Record Count users end ----------------------------- //
 
 }]);

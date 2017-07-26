@@ -8,7 +8,7 @@
  * @Updated_date_time Jun 26, 2017 12:59:17 PM
  */
 contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
-	var REST_SERVICE_URI = 'http://localhost:8080/Conti/employees/';
+	//var REST_SERVICE_URI = 'http://localhost:8080/Conti/employees/';
 	
 	var factory = {
 			fetchAllEmployees : fetchAllEmployees,

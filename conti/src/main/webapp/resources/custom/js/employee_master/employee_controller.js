@@ -73,6 +73,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(
 					function (res) {
+						self.save = "saveclose";
 		 	        	reset();
 		 	        	newOrClose();
 					}
@@ -148,8 +149,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	function fetchEmpCat() {
 		EmployeeService.fetchEmpCat()
 			.then(
-					function (d) {
-						self.employeecategory = d;			
+					function (category) {
+						self.employeecategory = category;			
 					}, 
 					function (errResponse) {
 						console.log('Error while fetching employees');
@@ -212,7 +213,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
             		},
            
             function(errResponse){
-                console.error('Error while creating employee' + employee.emp_name );
+    			self.message = "Error while creating employee "+employee.emp_name+"";
+    			successAnimate('.failure');                  
             }
         );
     } 
@@ -247,7 +249,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	        		},
 	       
 	        function(errResponse){
-	            console.error('Error while creating employee' + employee.emp_name );
+    			self.message = "Error while updating employee "+employee.emp_name+"";
+    			successAnimate('.failure'); 	            
 	        }
 	    );
     } 
@@ -285,8 +288,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     							self.employee.branchModel = JSON.parse($("#branch_id").val());
     			 	    		self.employee.empcategory = $("#empcategory_value").val();  
     			 	    		self.employee.location = JSON.parse($("#location_id").val());  
-    			 	    		
-    			 	    		console.log(self.employee);
+    			 	    		self.employee.dob = $(".datepicker1").val();
+    			 	    		self.employee.doj = $(".datepicker2").val();
     			 	    		createEmployee(self.employee);  
     			 	        	reset();
     			 	        	window.setTimeout( function(){	 	        		
@@ -311,8 +314,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     							self.employee.branchModel = JSON.parse($("#branch_id").val());
     			 	    		self.employee.empcategory = $("#empcategory_value").val();  
     			 	    		self.employee.location = JSON.parse($("#location_id").val());  	
-
-    			 	    		console.log(self.employee);
+    			 	    		self.employee.dob = $(".datepicker1").val();
+    			 	    		self.employee.doj = $(".datepicker2").val();
     			 	    		
     			 	    		editEmployee(self.employee);  
     			 	        	reset();
@@ -341,7 +344,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     	$('#country').val(self.employee.location.address.country);
     	$('#state').val(self.employee.location.address.state);
     	$('#pincode').val(self.employee.location.pincode);
-    	
+    	$(".datepicker1").val(self.employee.dob);
+ 		$(".datepicker2").val(self.employee.doj);
     	$('#empcategory_value').val(self.employee.empcategory);
     	
     	 $('#branch_name_value').val(self.employee.branchModel.branch_name);
@@ -374,8 +378,9 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	    							},5000);
 									
 								}, 
-								function (errResponse) {
-					                console.error('Error while Delete employee' + errResponse );
+								function (errResponse) {									
+									self.message = "Error while Deleting employee "+employee.emp_name+"";
+					    			successAnimate('.failure'); 
 								}
 							);
 						
@@ -518,6 +523,26 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     }
     //-------------------------- Make inActive end ----------------------//   
     
+    
+	//-------------------------- Record Count begin -----------------------//
+	
+	function findrecord_count() {
+		
+		EmployeeService.findrecord_count()
+		.then(
+				function (record_count) {
+					console.log(record_count);
+					$scope.totalnof_records  = record_count;
+				}, 
+				function (errResponse) {
+					console.log('Error while fetching record count');
+				}
+			);
+		
+	}
+	
+	//-------------------------- Record Count end -----------------------//
+	
     //-------------------------- Pagnation begin -----------------------//
     
     function pagination() {
@@ -533,6 +558,13 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 		if( self.Filteremployees.length <= 10 ) {
 			$scope.nextDisabled = true;
 		} 
+		
+		if( self.Filteremployees.length < 100 ) {
+			$scope.totalnof_records  = self.Filteremployees.length;
+			//findrecord_count();
+		} else {
+			findrecord_count();
+		}
 				
     }
 
@@ -577,8 +609,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     	if(self.Filteremployees.length < $scope.pageSize) {
     		$scope.nextDisabled = true;
     	}
-    	
-    	console.log(nextPrevMultiplier);
+
     	if($scope.currentPage == 0) {
     		$scope.previouseDisabled = true;
     	}
@@ -590,35 +621,46 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     	
     }
 
-  /*  $scope.paginatebyno = function (pageno) {
-    	$scope.currentPage += (pageno * 1);
-    	self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
-    }*/
+
     //-------------------------- Pagnation end -----------------------//	
     
   //---------------------------- Pagination begin ---------------------------------------//
     
     $scope.firstlastPaginate = function (page) {
-    	 
-    	EmployeeService.pagination_byPage(page)
-		.then(
-				function (filterEmp) {
-					self.Filteremployees = filterEmp;
-				}, 
-				function (errResponse) {
-					console.log('Error while fetching employees');
-				}
-			);
     	
-    	if( page == 1 ) {
+    	if( page == 1 ) { // first
     		$scope.currentPage = 0;
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = false;
-    	} else {
+    		self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
+    		fetchAllUsers();
+    	} else { // last
+    		
+    		$scope.currentPage = ( (Math.round(self.Filteremployees.length/$scope.pageSize)) - 1 );
     		$scope.previouseDisabled = false;
     		$scope.nextDisabled = true;
     		
+    		self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
+    		
+    		if(self.Filteremployees.length == 0) {
+    			EmployeeService.pagination_byPage(page)
+        		.then(
+        				function (filterEmp) {
+        					self.Filteremployees = filterEmp;
+        				}, 
+        				function (errResponse) {
+        					console.log('Error while fetching employees');
+        				}
+        			);
+    		}
+    		
+    		
+    		
     	}
+    	
+    	
+    	
+    	
     }
     
 
@@ -627,23 +669,18 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     //-------------------------------- Show no of record begin ----------------------------------------//
     
     function shownoofRecord() {    
+    	
     	$scope.pageSize = $scope.shownoofrec;
+    	
+    	self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
+    	
+    	
+    	if( self.Filteremployees.length < $scope.pageSize ) {
+    		$scope.previouseDisabled = true;
+    		$scope.nextDisabled = true;
+    	}
     }
     //-------------------------------- Show no of record end ----------------------------------------//  
-    
-    
-    //-------------------------------------- Print begin -----------------------------//
-/*    function print() {
-    	if(self.selected_employee.length == 0 ) {
-	   		self.message ="Please select atleast one record..!";
-			successAnimate('.failure');
-    	} else {
-    			
-    		$http.get('http://localhost:8080/Conti/listprint');
-    	}
-    }*/
-    
-    //-------------------------------------- Print end -----------------------------//
     
     //---------------------------- Register search begin ---------------------------------------//
     function registerSearch(searchkey) {

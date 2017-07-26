@@ -39,7 +39,7 @@ class RolePrivilegeDaoImpl implements RolePrivilegeDao {
 	public List<RolePrivilege> list() {
 		@SuppressWarnings("unchecked")
 		List<RolePrivilege> listRolePrivilege = (List<RolePrivilege>) sessionFactory.getCurrentSession()
-				.createQuery("from RolePrivilege where obsolete ='N' and active ='Y'").list();
+				.createQuery("from RolePrivilege where obsolete ='N'").list();
 		return listRolePrivilege;
 	}
 	
@@ -57,6 +57,14 @@ class RolePrivilegeDaoImpl implements RolePrivilegeDao {
 		return null;
 	}
 	
+	@Override
+	@Transactional
+	public List<RolePrivilege> getRolePrivilegebyRoleId(int role_id) {
+		@SuppressWarnings("unchecked")
+		List<RolePrivilege> listRolePrivilege = (List<RolePrivilege>) sessionFactory.getCurrentSession()
+				.createQuery("from RolePrivilege where obsolete ='N' AND role_id = " + role_id).list();
+		return listRolePrivilege;
+	}
 	//================================Delete By ID============================
 	@Override
 	@Transactional

@@ -32,6 +32,9 @@ public interface UsersDao {
 	public List<User> searchbySAUser(String search_key);
 	
 	public List<User> searchbyUser(String search_key);
+	
+	public int find_record_countforSA();
+	public int find_record_count();
 
 }
 

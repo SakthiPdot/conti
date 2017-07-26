@@ -127,7 +127,9 @@
 									              placeholder="Ex : Driver"
 									              pause="100"
 									              selected-object="employeecategory"
-									              local-data="ctrl.employeecategory"
+									              remote-url="empCategory/"
+						            			  remote_url-data-field="EmployeeMaster"
+									              
 									              search-fields="empcategory"
 									              title-field="empcategory"
 									              minlength="0"
@@ -153,7 +155,9 @@
 						              placeholder="Ex : Coimbatore"
 						              pause="100"
 						              selected-object="branch_name"
-						              local-data="ctrl.branches"
+						              remote-url="getBranch4Employee/"
+						              remote_url-data-field="Branch"
+						              
 						              search-fields="branch_name"
 						              title-field="branch_name"
 									  match-class="highlight"
@@ -173,11 +177,11 @@
 			             <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
 		                 	   <span>Address Line 1 <span class="required">*</span></span>	         
-			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address1"
+			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address1" maxlength = "50"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee address" required>
 			                   
 			                   <span>Address Line 2</span>
-			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address2" 
+			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address2" maxlength = "50"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee address"
 			                    >
 			                   
@@ -193,16 +197,19 @@
 			           			 <angucomplete-alt id="location_name" data-ng-model="ctrl.employee.location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
+									              remote-url="getLocation4emp/"
+						             			  remote_url-data-field="Location"
+						             			  
 									              selected-object="location_name"
-									              local-data="ctrl.locations"
+									              	
 									              search-fields="location_name,pincode"
 									              title-field="location_name,pincode"
 												  match-class="highlight"
-												  initial-value="{{ctrl.employee.location.location_name}}"
+												 
 									              minlength="1"
-	   											 data-trigger="focus" data-toggle="popover" 
-	   											 data-placement="top" data-content="Please Enter Employee location"
-	   											 onKeyPress="return CheckIsCharacter(event)"
+	   											  data-trigger="focus" data-toggle="popover" 
+	   											  data-placement="top" data-content="Please Enter Employee location"
+	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
 									              input-class="form-control form-control-small">
               						</angucomplete-alt>
               						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
@@ -300,7 +307,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" > <i class="fa fa-times" aria-hidden="true"></i>
+							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" > <i class="fa fa-ban" aria-hidden="true"></i>
 							Cancel</button>
 						</div>
 						
@@ -516,9 +523,15 @@
                                             <td data-ng-show = "setting_empcode">{{emp.emp_code}}</td>
                                             <td data-ng-show = "setting_empcategory">{{emp.empcategory}}</td>
                                             <td data-ng-show = "setting_empbranch">{{emp.branchModel.branch_name}}</td>
-                                            <td data-ng-show = "setting_empaddress">{{emp.emp_address1}}, {{emp.emp_address2}}, 
-                                            	{{emp.location.location_name}}, {{emp.location.address.city}}, 
-                                            	{{emp.location.address.district}}, {{emp.location.address.state}}, {{emp.location.address.pincode}}</td>
+                                            <td data-ng-show = "setting_empaddress">
+                                            	<div ng-if="emp.emp_address1!=null">{{emp.emp_address1}},</div>
+                                           		<div ng-if="emp.emp_address2!=null">{{emp.emp_address2}},</div>
+                                            	<div ng-if="emp.location.location_name!=null">{{emp.location.location_name}},</div>
+                                           		<div ng-if="emp.location.address.city!=null">{{emp.location.address.city}},</div>
+                                           		<div ng-if="emp.location.address.district!=null">{{emp.location.address.district}},</div>
+                                           		<div ng-if="emp.location.address.state!=null">{{emp.location.address.state}},</div>
+                                           		<div ng-if="emp.location.pincode!=null">{{emp.location.pincode}}.</div>
+                                           	</td>
                                             <td data-ng-show = "setting_empmobileno">{{emp.emp_phoneno}}</td>
                                             <td data-ng-show = "setting_empemail">{{emp.emp_email}}</td>
                                             <td data-ng-show = "setting_empdob">{{emp.dob}}</td>
@@ -529,6 +542,14 @@
                                  
                                     </tbody>
                                 </table>
+                                
+                                 <div class ="col-lg-6">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
                                 
                                 <div class="col-lg-6 icons-button">
                                    <div class="pull-right">
@@ -592,8 +613,8 @@
 	<script src="resources/libs/jspdf.plugin.autotable.src.js"></script>		
 	<script src="resources/libs/examples.js"></script>   -->
 
-<script src="resources/built-in/assets/js/jquery-1.10.2.js"></script> 
-	<script src=" resources/custom/js/date-time-picker.min.js" ></script>
+<!-- <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>  -->
+
 
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/employee_master/employee_controller.js"></script>
@@ -632,17 +653,13 @@
         today =  yyyy+'-'+mm+ '-'+ dd;
         return today;
     }
-
-    
-    console.log(getDate());
-    
-            $('.datepicker1').dateTimePicker({
-                limitMax: getDate()
-            });
-            
-            $('.datepicker2').dateTimePicker({
-                limitMax: getDate()
-            });
+	    $('.datepicker1').dateTimePicker({
+	        limitMax: getDate()
+	    });
+	    
+	    $('.datepicker2').dateTimePicker({
+	        limitMax: getDate()
+	    });
         </script>
 </body>
 

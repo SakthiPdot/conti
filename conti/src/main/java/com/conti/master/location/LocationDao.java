@@ -2,6 +2,8 @@ package com.conti.master.location;
 
 import java.util.List;
 
+import com.conti.master.branch.BranchModel;
+
 /**
  * @Project_Name conti
  * @Package_Name com.conti.master.location  com.conti.master.location
@@ -17,6 +19,8 @@ public interface LocationDao {
 	public Location getLocationById(int locationId);
 	public void deleteLocationById(int locationId);
 	public String checkLocationName(String name);
+	public List<Location> searchbyeyLocation(String search_key);
+	public List<Location> searchbyeyLocationName(String search_key);
 	
 	public List<Location> getLocationWithLimit(int from,int to,String order);
 	public List<Location> searchByLocation(String SearchString);

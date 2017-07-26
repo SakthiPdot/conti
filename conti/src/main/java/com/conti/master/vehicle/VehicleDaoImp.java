@@ -7,11 +7,15 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.conti.others.ConstantValues;
 @Repository
 public class VehicleDaoImp implements VehicleDao  {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	ConstantValues constantVal = new ConstantValues();
 
 	@Transactional
 	@Override
@@ -26,9 +30,9 @@ public class VehicleDaoImp implements VehicleDao  {
 	@Override
 	@Transactional
 	public List<VehicleMaster> getAllVehicles() {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked"})
 		List<VehicleMaster> listVehicle = (List<VehicleMaster>) sessionFactory.getCurrentSession()
-				.createQuery("from VehicleMaster where obsolete = 'N' ").list();
+				.createQuery("from VehicleMaster where obsolete = 'N' ORDER BY  created_datetime DESC ").list();
 				return listVehicle;
 	}
 

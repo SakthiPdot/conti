@@ -119,10 +119,10 @@
 			             <div class="col-lg-12">
 			                	<div class="col-lg-6 content-body">
 			                 	   <span>Customer Type <span style="color:red">&nbsp;*</span></span>	         
-				                   <select class="form-control" name="customer_type" data-ng-init="select" data-ng-options="custtype for custtype in ['Credit','Debit','Regular']" 
+				                   <select class="form-control" name="customer_type" data-ng-init="select" data-ng-options="custtype for custtype in ['Cash','Credit']" 
 				                   data-ng-model="ctrl.customer.customer_type" required>
-				                   
-				                   		<option selected="selected"></option> 
+				                    <option value="" disabled	>select</option>
+<!-- 				                   		<option selected="selected"></option>  -->
 <!-- 				                   		<option>Credit</option>	 -->
 <!-- 				                   		<option>Credit</option> -->
 				                   </select>
@@ -131,14 +131,15 @@
 				               	<div class="col-lg-6 content-body">    
 				                   <span>Branch Name</span>
 				                  <angucomplete-alt id="branch_name" data-ng-model="ctrl.customer.branch_name"
-						              placeholder="Ex : Coimbatore"
-						              pause="100"
+						              placeholder="Ex : Coimbatore" pause="0"
 						              selected-object="branch_name"
-						              local-data="ctrl.branches"
+						              remote-url="getBranch4Customer/"
+						              remote_url-data-field="Branch"
+						            
 						              search-fields="branch_name"
 						              title-field="branch_name"
 									  match-class="highlight"
-									  initial-value="{{ctrl.customer.branchModel.branch_name}}"
+									  
 						              minlength="1"
 						              field-required="true"	
 						              data-trigger="focus" data-toggle="popover" 
@@ -157,6 +158,7 @@
 			                	<div class="col-lg-6 content-body">
 			                 	   <span>Tax is Payable on Reverse Charge<span style="color:red">&nbsp;*</span> </span>	         
 				                   <select class="form-control" data-ng-model="ctrl.customer.taxin_payable" data-ng-options="payable for payable in ['Yes','No']" required>
+				                   			<option value="" disabled	>select</option>
 <!-- 				                   		<option>Yes</option> -->
 <!-- 				                   		<option>No</option> -->
 				                   		
@@ -166,7 +168,7 @@
 				               	<div class="col-lg-6 content-body">    
 				                   <span>GSTIN number</span>
 				                   <input type="text" class="form-control" data-ng-model="ctrl.customer.gstin_number" maxlength="20" 
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter GSTIN number" >
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter GSTIN number" ng-required="ctrl.customer.company_name" >
 				           
 				             	</div>         	
 			             </div>  
@@ -176,14 +178,14 @@
 		                
 		                       <span>Company Name </span>	         
 			                   <input type="text" class="form-control" data-ng-model="ctrl.customer.company_name" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Company name" >
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Company name" ng-required="ctrl.customer.gstin_number">
 			                   
 		                 	   <span>Address Line 1 <span style="color:red">&nbsp;*</span></span>	         
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event,this.value)" data-ng-model="ctrl.customer.customer_addressline1"  maxlength="150" 
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline1"  maxlength="150" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line1	" required>
 			                   
 			                   <span>Address Line 2</span>
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event,this.value)" data-ng-model="ctrl.customer.customer_addressline2"  maxlength="150" 
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline2"  maxlength="150" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line2	" >
 			             </div>         	
 			             </div>
@@ -194,16 +196,18 @@
 			                   		<angucomplete-alt id="location_name" data-ng-model="ctrl.customer.location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
+									              remote-url="getLocations4Customer/"
+						             			  remote_url-data-field="Location"
 									              selected-object="location_name"
-									              local-data="ctrl.locations"
+									              	
 									              search-fields="location_name,pincode"
-									              title-field="location_name,pincode"
+									              title-field="location_name"
 												  match-class="highlight"
-												  initial-value="{{ctrl.customer.location.location_name}}"
+												   
 									              minlength="1"
 	   											  data-trigger="focus" data-toggle="popover" 
 	   											  data-placement="top" data-content="Please Enter Customer location"
-	   											  onKeyPress="return CheckIsCharacter(event)"
+	   											  
 									              input-class="form-control form-control-small" required>
               						</angucomplete-alt>
               						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
@@ -315,7 +319,7 @@
                                      <div class="dataTables_length" id="dataTables-example_length">
 							<div class="dropdown" >
 								<button class="btn btn-primary dropdown-toggle"
-									type="button" data-toggle="dropdown" data-ng-disabled = "ctrl.selected_customer.length == 0" >
+									type="button" data-toggle="dropdown" >
 									Batch Action <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu" >
@@ -449,9 +453,15 @@
                                             <td data-ng-show = "setting_custcompany">{{cust.company_name}}</td>
                                             
                                        
-                                            <td data-ng-show = "setting_custaddress">{{cust.customer_addressline1}},{{cust.customer_addressline2}},
-                                            {{cust.location.location_name}},{{cust.location.address.city}},{{cust.location.address.district}}
-                                            {{cust.location.address.state}},{{cust.location.address.pincode}}</td>
+                                            <td data-ng-show = "setting_custaddress">
+                                           		<div data-ng-if="cust.customer_addressline1!=null">{{cust.customer_addressline1}},</div>
+                                           		<div data-ng-if="cust.customer_addressline2!=null">{{cust.customer_addressline2}},</div>
+                                           		<div data-ng-if="cust.location.location_name!=null">{{cust.location.location_name}},</div>
+                                           		<div data-ng-if="cust.location.address.city!=null">{{cust.location.address.city}},</div>
+                                           		<div data-ng-if="cust.location.address.district!=null">{{cust.location.address.district}},</div>
+                                           		<div data-ng-if="cust.location.address.state!=null">{{cust.location.address.state}},</div>
+                                           		<div data-ng-if="cust.location.pincode!=null">{{cust.location.pincode}}.</div>
+                                            </td>
                                             
                                             <td data-ng-show = "setting_custphone">{{cust.customer_mobileno}}</td>
                                             <td data-ng-show = "setting_custemail">{{cust.customer_email}}</td>
@@ -485,7 +495,7 @@
 	</div>	
     </div>
        </sec:authorize>
-    <script src="resources/custom/js/custom.js"></script>
+  <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/customer_master/customer_controller.js"></script>
   <script src="resources/custom/js/customer_master/customer_service.js"></script>
   <script src="resources/custom/js/branch_master/branch_service.js"></script>

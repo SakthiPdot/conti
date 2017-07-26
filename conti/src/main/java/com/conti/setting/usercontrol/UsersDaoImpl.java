@@ -212,6 +212,19 @@ class UsersDaoImpl implements UsersDao {
 			
 			return listuser;
 		}
+		
+		@Override
+		@Transactional
+		public int find_record_countforSA() {
+			int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from User WHERE obsolete = 'N'").uniqueResult()).intValue();
+			return rec_count;
+		}
 	
+		@Override
+		@Transactional
+		public int find_record_count() {
+			int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from User WHERE obsolete = 'N' AND role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'").uniqueResult()).intValue();
+			return rec_count;
+		}
 }
 	

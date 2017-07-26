@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
@@ -123,7 +124,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4  footerLeft">
-							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close('Cancel')" ><i class="fa fa-trash-o"></i> Cancel</button>
+							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close('Cancel')" ><i class="fa fa-ban"></i> Cancel</button>
 						</div>
 						
 						 <div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
@@ -171,6 +172,7 @@
 	
 		<jsp:include page="../Dashboard/settings_nav.jsp"/>
 	
+    <sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
        
@@ -318,7 +320,36 @@
         <!-- /. PAGE WRAPPER  -->
 		
     </div>
+    </sec:authorize>
     <!-- /. WRAPPER  -->
+    
+    
+   <sec:authorize access="hasRole('STAFF')">
+	    <div id="wrapper">        	  
+			<div id="page-wrapper"> 
+				<div class="header "> 
+		             <div class="page-header header-size">
+		                 	  <b>${title}</b>		                 	 
+		             </div>	   
+             	</div>	
+             	
+             	<div id="page-inner">  
+					<div class="row">
+                		<div class="col-md-12">
+                			 <div class="panel panel-default">
+		                        <div class="panel-heading">
+		                             Service Register
+		                        </div>
+		                        <div class="panel-body">
+		                        	Sorry..! You have no authorized for view this master..!
+		                        </div>
+		                      </div>
+                		</div>
+                	</div>
+                </div>		
+			 </div>
+		</div>
+	</sec:authorize>
  
   
     
