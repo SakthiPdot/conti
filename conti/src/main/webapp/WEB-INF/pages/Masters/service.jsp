@@ -124,7 +124,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4  footerLeft">
-							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close('Cancel')" ><i class="fa fa-trash-o"></i> Cancel</button>
+							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close('Cancel')" ><i class="fa fa-ban"></i> Cancel</button>
 						</div>
 						
 						 <div class="col-lg-4 col-xs-4" style="text-align:center; !important;">

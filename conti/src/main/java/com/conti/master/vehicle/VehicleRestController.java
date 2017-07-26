@@ -28,7 +28,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
-import com.conti.master.employee.EmployeeMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -263,6 +262,7 @@ public class VehicleRestController {
 		
 		@RequestMapping(value = "downloadExcelVehicle",method= RequestMethod.GET)
 		public ModelAndView downloadExcelVehicle() {
+			
 			List<VehicleMaster> vehicleList = vehicleDao.getAllVehicles();
 			return new ModelAndView("vehicleExcelView", "vehicleList", vehicleList);
 			
