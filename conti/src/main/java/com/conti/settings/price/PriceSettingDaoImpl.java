@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.conti.master.location.Location;
@@ -15,6 +16,7 @@ import com.conti.master.location.Location;
  * @author Monu.C
  * @Created_date_time Jul 20, 2017 11:16:22 AM
  */
+@Repository
 public class PriceSettingDaoImpl implements PriceSettingDao {
 
 

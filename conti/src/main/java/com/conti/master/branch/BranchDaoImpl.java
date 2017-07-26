@@ -124,7 +124,7 @@ public class BranchDaoImpl implements BranchDao
 	public String checkBranchName(String name) {
 		@SuppressWarnings("unchecked")
 		List<Product> branchList=sessionFactory.getCurrentSession()
-				.createQuery("from BranchModel where obsolete ='N' AND branch_name IN ('"+name.toUpperCase()+"','"+name.toLowerCase()+"')").list();
+				.createQuery("from BranchModel where obsolete ='N'  and active ='Y' AND branch_name IN ('"+name.toUpperCase()+"','"+name.toLowerCase()+"')").list();
 		
 		if(!branchList.isEmpty()&& branchList!=null){
 			return "AVAILABLE";

@@ -282,7 +282,7 @@ public class LocationController {
 		}		
 	}
 	
-	
+	//=================DELETE LOCATION ID =====================================
 	@RequestMapping(value="/locationDelete/{id}",method=RequestMethod.DELETE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> deleteLocation(@PathVariable("id") long id,

@@ -34,8 +34,15 @@
 data-ng-app="contiApp"
 data-ng-controller="priceSettingController as psctrl">
 	<jsp:include page="../Dashboard/settings_nav.jsp"/>
-	
+
+<div class="success hideme"><i class="fa fa-check-circle" aria-hidden="true"></i> {{psctrl.message}}</div>
+<div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{psctrl.message}}</div>
+ 
+ 
  	<form data-ng-submit="psctrl.submit()" class="formBottom" name="priceSettingForm">
+ 	
+ 	<input type="text" id="saveOrNew" value="${saveOrNew}"/>
+ 	
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
       		  <div class="row">
@@ -48,6 +55,10 @@ data-ng-controller="priceSettingController as psctrl">
                     </div>
                 </div>
 
+
+
+
+
 			<div class="row customer-field">
 				<div class="col-lg-12">
 					<div class="col-lg-8 col-lg-offset-2">
@@ -55,8 +66,10 @@ data-ng-controller="priceSettingController as psctrl">
 						<div class="panel panel-default">
 							<div class="panel-body">
 								<div class="col-lg-6 col-xs-12">
-
-									<span>From Branch</span> 
+									
+									
+									
+									<span>From Branch<span style="color:red">&nbsp;*</span></span> 
 
   									 <div angucomplete-alt id="selectedBranch"
 											placeholder="Ex : Coimbatore" pause="0"											
@@ -65,14 +78,18 @@ data-ng-controller="priceSettingController as psctrl">
 											remote-url-data-field="Branch"
              								title-field="branch_name"
 											match-class="highlight"
-											minlength="1" 
-											input-class="form-control form-control-small"										
+											minlength="1"											
+											input-class="form-control form-control-small"	
+											onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+								            data-trigger="focus" data-toggle="popover"
+								             initial-value="{{psctrl.priceSetting.branch.branch_name}}"
+										    data-placement="top" data-content="Please Enter Branch Name"									               
 										    ></div>
 										
-										<input type="hidden" id="fromBranch" data-ng-model="self.priceSetting.branch" />  			
+										<input type=hidden id="fromBranch" data-ng-model="psctrl.priceSetting.branch" />  			
 										    <!-- description-field="branch_code" -->
 									
-								    <span>Service</span> 
+								    <span>Service<span style="color:red">&nbsp;*</span></span> 
 									<div angucomplete-alt id="selectedService"
 											placeholder="Ex : Door Delivery" pause="0"											
 											selected-object="service_name"
@@ -80,37 +97,51 @@ data-ng-controller="priceSettingController as psctrl">
 											remote-url-data-field="Service"
              								title-field="service_name"
 											match-class="highlight"
-											minlength="1" 											
-											input-class="form-control form-control-small"										
+											minlength="1"										
+											input-class="form-control form-control-small"
+											onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+											initial-value="{{psctrl.priceSetting.service.service_name}}"
+								            data-trigger="focus" data-toggle="popover"
+										    data-placement="top" data-content="Please Enter Service Name"									
 										    ></div>
 										
 									
-									<input type="hidden" id="service" data-ng-model="self.priceSetting.service" />     
+									<input type="hidden" id="service" data-ng-model="psctrl.priceSetting.service" />     
+									
+									    <button  class="btn btn-primary" data-ng-hidden="true" type="button" data-ng-click="updateClick(81)">click</button>
 										    
-										    
-									 <span>Product</span> 
+									 <span>Product<span style="color:red">&nbsp;*</span></span> 
 									<div angucomplete-alt id="selectedProduct"
-											placeholder="Ex : Box (Large)" pause="0"											
+											maxlength="5"
+											placeholder="Ex : Box (Large)" 
+											pause="0"											
 											selected-object="product_name"
 										    remote-url="getProductByStr/"
 											remote-url-data-field="Product"
              								title-field="product_name"
 											match-class="highlight"
 											minlength="1" 
-											input-class="form-control form-control-small"										
+											input-class="form-control form-control-small"	
+											onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"									
+								            data-trigger="focus" data-toggle="popover"
+								            initial-value="{{psctrl.priceSetting.product.product_name}}"
+										    data-placement="top" data-content="Please Enter Product Name"									
 										    ></div>
 										
 										
-									<input type="hidden" id="product" data-ng-model="self.priceSetting.product" />  
+									<input type="hidden" id="product" data-ng-model="psctrl.priceSetting.product" />  
 										
 									<span>Product Type</span> 
 									
+									<input type="text"  class="form-control disabled"  
+									placeholder="Ex : Box "										
+									 tabindex="-1" id="product_type" data-ng-model="psctrl.priceSetting.product.product_Type" />
 									
-									       	 <div angucomplete-alt
+									  <!--      <div angucomplete-alt
 							 					 id="selectedProductType" 
 									              placeholder="Ex : Coimbatore"
 									              pause="0"		 data-ng-required="true"
-		                  						 data-trigger="focus" data-toggle="popover"
+		                  						  data-trigger="focus" data-toggle="popover"
 							 					  data-placement="top" data-content="Please Enter Product Type"	
 									              selected-object="city_name"
 									              local-data=""
@@ -121,8 +152,9 @@ data-ng-controller="priceSettingController as psctrl">
 												  initial-value="{{psctrl.Location.address.city}}"
 									              minlength="1"
 									              tabindex="-1"
+									              maxlength="50"
 									              input-class="form-control form-control-small disabled">
-									              </div> 
+									              </div>  -->
 									              
 								</div>
 
@@ -148,7 +180,7 @@ data-ng-controller="priceSettingController as psctrl">
 				</div>
 			</div>
 
-
+ 
   <!--====================================================== Dynamic table=========================================-->
 
 			<div class="row">
@@ -171,24 +203,37 @@ data-ng-controller="priceSettingController as psctrl">
 		                                    <tbody>
 		                                        <tr data-ng-repeat="psdetails in psctrl.priceSetting.priceSettingDetail  track by $index" >
 		                                            <td>
-		                                            <input type="hidden" class="form-control" id="toBatch" data-ng-model="psdetails.branch.branch_name">
-		                                            
-	                                            	 <div angucomplete-alt id="selectedBranchTo"
+		                                           <!--  <input type="hidden" class="form-control" id="toBatch" data-ng-model="psctrl.priceSetting.priceSettingDetail.branch"> -->
+		                                            <!-- <input type="hidden" class="form-control" 
+		                                            data-ng-model="psdetails.priceSetting"
+		                                            data-ng-init="psdetails.priceSetting=psctrl.priceSetting">
+		                                           -->   
+	                                            	 <div angucomplete-alt id="selectedBranchTo"	                                            	 
 														placeholder="Ex : Chennai" pause="0"											
-														selected-object="branch_name_To"
+														selected-object="psdetails.branch"
 													    remote-url="getBranchByStr/"
-														remote-url-data-field="Branch"
+														remote-url-data-field="Branch"  
 			             								title-field="branch_name"
 														match-class="highlight"
 														minlength="1" 
-														input-class="form-control form-control-small"										
+														initial-value="{{psdetails.branch.branch_name}}"
+														input-class="form-control form-control-small"														
+								            			data-trigger="focus" data-toggle="popover"
+										    			data-placement="top" data-content="Please Enter Branch Name"											
 												    ></div>
 												    
 		                                             </td>
-		                                            <td class="col-sm-1"><input type="text" class="form-control" data-ng-model="psdetails.ps_weightfrom"></td>
+		                                            <td class="col-sm-1">
+		                                            
+		                                            <input type="text" onKeyPress="return CheckIsNumericAnddot(event,this.value)" class="form-control" data-ng-model="psdetails.ps_weightfrom">
+		                                            </td>
 		                                            <td class="col-sm-1" style="text-align:center;">To</td>
-		                                            <td class="col-sm-1"><input type="text" class="form-control" data-ng-model="psdetails.ps_weightto"></td>
-		                                            <td><input type="text" class="form-control" data-ng-model="psdetails.ps_price"></td>
+		                                            <td class="col-sm-1">
+		                                            <input type="text" class="form-control" onKeyPress="return CheckIsNumericAnddot(event,this.value)" data-ng-model="psdetails.ps_weightto">
+		                                            </td>
+		                                            <td>
+		                                            <input type="text" class="form-control" onKeyPress="return CheckIsNumericAnddot(event,this.value)" data-ng-model="psdetails.ps_price">
+		                                            </td>
 		                                            <td class="text-center">
                                                     <div class="col-lg-12">  
 	                                                    <div class="col-lg-6 col-md-6  text-center">
