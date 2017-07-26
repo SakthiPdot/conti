@@ -1,7 +1,9 @@
 package com.conti.settings.price;
 
-
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,9 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,7 +67,10 @@ public class PriceSettingsController {
 	private BranchDao branchDao;
 	@Autowired
 	private ServiceDao serviceDao;
-	
+	@Autowired
+	private PriceSettingDao psDao;
+	@Autowired
+	private PriceSettingDetailDao psdDao;
 	
 	@Autowired
 	@Qualifier("sessionRegistry")
@@ -75,6 +79,7 @@ public class PriceSettingsController {
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
 
+	
 	@RequestMapping(value =  "price_settings", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
 		
@@ -99,13 +104,12 @@ public class PriceSettingsController {
 			model.addObject("title", "Price Settings");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Settings/price settings");
-
+			model.addObject("saveOrNew", "NEW");
 			
 		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);
 		}
 		return model;
-
 	}
 
 	//=================GET PRICE SETTING MODEL=====================================
@@ -151,6 +155,7 @@ public class PriceSettingsController {
 		return new  ResponseEntity<PriceSetting>(priceSetting,HttpStatus.CREATED);
 	}
 	
+	//=================GET BRANCH USING STRING =====================================
 	@RequestMapping(value="getBranchByStr/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String,List<BranchModel>>> fetchAllBranches(HttpServletRequest request,
 			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
@@ -164,7 +169,7 @@ public class PriceSettingsController {
 		return new ResponseEntity<Map<String,List<BranchModel>>> (result,HttpStatus.OK);
 	}
 	
-	
+	//=================GET SERVICE USING STRING =====================================
 	@RequestMapping(value="getServiceByStr/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String,List<ServiceMaster>>> getServiceByStr(HttpServletRequest request,
 			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
@@ -178,7 +183,8 @@ public class PriceSettingsController {
 		return new ResponseEntity<Map<String,List<ServiceMaster>>> (result,HttpStatus.OK);
 	}
 	
-	
+
+	//=================GET PRODUCT USING STRING =====================================
 	@RequestMapping(value="getProductByStr/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String,List<Product>>> getProductByStr(HttpServletRequest request,
 			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
@@ -191,5 +197,66 @@ public class PriceSettingsController {
 		System.err.println(searchStr+"464644");
 		return new ResponseEntity<Map<String,List<Product>>> (result,HttpStatus.OK);
 	}
-
+	
+	//=================SAVE =====================================	
+	@RequestMapping(value="priceSettingSave",method=RequestMethod.POST,
+	produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> priceSettingSave (@RequestBody PriceSetting priceSetting,HttpServletRequest request ){
+			System.out.println("++ inside product setting save");
+			
+			//intialize	
+			String userid=request.getSession().getAttribute("userid").toString();	
+			Date date = new Date();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+			
+			//set variable
+			priceSetting.setCreated_by(Integer.parseInt(userid));
+			priceSetting.setUpdated_by(Integer.parseInt(userid));
+			priceSetting.setCreated_datetime(dateFormat.format(date));
+			priceSetting.setObsolete("N");
+			priceSetting.setActive("Y");
+	
+			//set price setting for detailed table
+			Set<PriceSettingDetail> priceSettingDetailList=priceSetting.getPriceSettingDetail();			
+			for(PriceSettingDetail psDetail:priceSettingDetailList){
+				psDetail.setPriceSetting(priceSetting);
+			}
+			
+			//save location
+			try {
+				psDao.saveOrUpdate(priceSetting);
+				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+				return new ResponseEntity<Void>(HttpStatus.CREATED);
+			} catch (Exception e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+				e.printStackTrace();
+				return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+	}
+	
+	//=================fetch price settign with id =====================================
+	
+	@RequestMapping(value="/PriceSettingWithID/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PriceSetting> PriceSettingWithID(@PathVariable("id") long id){
+	
+		
+		System.out.println("++ price setting "+id);
+		PriceSetting priceSetting=psDao.getPriceSettingById((int)id);
+		if(priceSetting==null){
+			return new ResponseEntity<PriceSetting>(HttpStatus.NOT_FOUND);
+		}
+		
+		
+		Set<PriceSettingDetail> priceDetailList=new HashSet<PriceSettingDetail>(psdDao.getPriceSettingDetailBypsId(priceSetting.getPricesetting_id()));
+		
+		if(priceDetailList!=null && !priceDetailList.isEmpty())
+			priceSetting.setPriceSettingDetail( priceDetailList);
+		
+		
+		return new ResponseEntity<PriceSetting>(priceSetting,HttpStatus.OK);
+		
+	}
+	
+	//=================UPDATE =====================================
+	//priceSettingUpdate
 }
