@@ -25,4 +25,7 @@ public interface EmployeeDao {
 	public List<EmployeeMaster> searchbyeyEmployeeforSA(String searchkey);
 	public List<EmployeeMaster> getEmployeeswithLimit(int branch_id, int from_limit, int to_limit, String order);
 	public List<EmployeeMaster> getEmployeeswithLimitforSA(int branch_id, int from_limit, int to_limit, String order);
+	
+	public List<EmployeeMaster> searchbyeyEmpCategory(String searchkey);
+	public List<EmployeeMaster> searchbyeyEmpCategoryforSA(String searchkey);
 }

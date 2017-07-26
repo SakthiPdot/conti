@@ -127,7 +127,9 @@
 									              placeholder="Ex : Driver"
 									              pause="100"
 									              selected-object="employeecategory"
-									              local-data="ctrl.employeecategory"
+									              remote-url="empCategory/"
+						            			  remote_url-data-field="EmployeeMaster"
+									              
 									              search-fields="empcategory"
 									              title-field="empcategory"
 									              minlength="0"
@@ -175,11 +177,11 @@
 			             <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
 		                 	   <span>Address Line 1 <span class="required">*</span></span>	         
-			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address1" maxlength = "30"
+			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address1" maxlength = "50"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee address" required>
 			                   
 			                   <span>Address Line 2</span>
-			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address2" maxlength = "30"
+			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address2" maxlength = "50"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee address"
 			                    >
 			                   
@@ -305,7 +307,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" > <i class="fa fa-times" aria-hidden="true"></i>
+							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" > <i class="fa fa-ban" aria-hidden="true"></i>
 							Cancel</button>
 						</div>
 						

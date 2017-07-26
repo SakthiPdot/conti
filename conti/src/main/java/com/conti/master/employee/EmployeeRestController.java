@@ -594,4 +594,42 @@ public class EmployeeRestController {
 				return new ResponseEntity<Map<String,List<BranchModel>>> (result,HttpStatus.OK);
 			}
 			
+			
+//===========================To get all Branch for Employee search ================================
+			
+			@RequestMapping(value="empCategory/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+			public ResponseEntity<Map<String,List<EmployeeMaster>>> fetchAllEmpcategory(HttpServletRequest request,
+					@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+				
+				userInformation = new UserInformation(request);
+				String username = userInformation.getUserName();
+				int userid = Integer.parseInt(userInformation.getUserId());
+				int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+				
+				
+				try {
+					
+					User user = usersDao.get(userid);
+					 Map result = new HashMap();
+
+					List<EmployeeMaster> empCategory = new ArrayList<EmployeeMaster>();
+					if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+						empCategory = employeeDao.searchbyeyEmpCategoryforSA(searchStr);
+						
+						result.put("EmployeeMaster", empCategory);
+						loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+						return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);
+					} else {
+						empCategory = employeeDao.searchbyeyEmpCategory(searchStr);
+						result.put("EmployeeMaster", empCategory);
+						loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+						return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);
+					}
+				} catch (Exception exception) {
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+					return new ResponseEntity<Map<String,List<EmployeeMaster>>> (HttpStatus.UNPROCESSABLE_ENTITY);
+				}
+				
+			}
+			
 }

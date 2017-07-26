@@ -149,8 +149,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	function fetchEmpCat() {
 		EmployeeService.fetchEmpCat()
 			.then(
-					function (d) {
-						self.employeecategory = d;			
+					function (category) {
+						self.employeecategory = category;			
 					}, 
 					function (errResponse) {
 						console.log('Error while fetching employees');

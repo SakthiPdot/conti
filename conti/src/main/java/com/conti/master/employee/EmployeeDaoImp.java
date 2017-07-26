@@ -141,6 +141,35 @@ public class EmployeeDaoImp implements EmployeeDao {
 	
 	@Override
 	@Transactional
+	public List<EmployeeMaster> searchbyeyEmpCategory(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<EmployeeMaster> listemp = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
+		.createQuery("from EmployeeMaster WHERE obsolete ='N'"
+				+ " AND empcategory LIKE '%" + search_key + "%'"				
+				+ " AND user.role.role_Name <> '"+ constantVal.ROLE_SADMIN +"' GROUP BY empcategory").list();
+		return listemp;
+		
+	}
+	
+	@Override
+	@Transactional
+	public List<EmployeeMaster> searchbyeyEmpCategoryforSA(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<EmployeeMaster> listemp = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
+		.createQuery("from EmployeeMaster WHERE obsolete ='N'"
+				+ " AND empcategory LIKE '%" + search_key + "%' GROUP BY empcategory").list();
+		return listemp;
+		
+	}
+	
+	
+	
+	@Override
+	@Transactional
 	public List<EmployeeMaster> searchbyeyEmployeeforSA(String search_key) {
 		// TODO Auto-generated method stub
 		@SuppressWarnings("unchecked")
