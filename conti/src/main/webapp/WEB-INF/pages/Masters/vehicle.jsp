@@ -138,7 +138,26 @@
 			                  <span> Vehicle Type<span class="required"> *</span></span>
 			              <!--    <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Type" -->
 			                    <!-- required /> -->
-			                    <angucomplete-alt id="vehicle_type" data-ng-model="ctrl.vehicle.vehicle_type"
+			                    <angucomplete-alt id="vehicle_type" data-ng-model ="ctrl.vehicle.vehicle_type"
+						              
+						              pause="100"
+						              selected-object="vehicle_type"
+						              remote-url = "vehicleType/"
+			                          remote_url-data-field = "VehicleType"
+						              search-fields="vehicle_type"
+						              title-field="vehicle_type"
+									  match-class="highlight"
+									  initial-value="{{ctrl.vehicle.vehicle_type}}"
+						              minlength="1"
+						              field-required="true"
+						              data-trigger="focus" data-toggle="popover" 
+						              data-placement="top" data-content="Please Enter Vehicle Type"
+						              onKeyPress="return CheckIsCharacter(event)"
+						              input-class="form-control form-control-small">
+              				</angucomplete-alt>
+			                    
+			                    
+			                   <!--  <angucomplete-alt id="vehicle_type" 
 			                   	 pause="100"
 			                    selected-object = "vehicle_type"
 			                    remote-url = "vehicleType/"
@@ -148,9 +167,9 @@
 			                    match-class="highlight"
 			                    minlength="1"
 			                    field-required="true"
-			                    initial-value = "{{ctrl.vehicle.vehicle_type}}"
+			                    initial-value = ""
 			                    input-class="form-control form-control-small ">
-			                    </angucomplete-alt>
+			                    </angucomplete-alt> -->
 			               
 			             </div>  
 			             

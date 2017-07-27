@@ -6,6 +6,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	
 	$("#screen_service").addClass("active-menu");
 	
+	$scope.nameWrong=false;
 	
 	var self = this;
 	self.services = [];	
@@ -39,9 +40,10 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	
 	
 	$scope.shownoofrec = 10;
-	$scope.nameWrong=false;
+	
 	
 	fetchAllServices();
+	/*checkServiceName();*/
 
 	function reset(){
 		self.service = {};	
@@ -49,13 +51,14 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	
 	//============ Check Service Name Function Begin =================//
 		
-			function checkServiceName(name) {
-				console.log(self.service.service_name, self.UpdateNotCheckServiceName);
+	self.checkServiceName = function checkServiceName(name) {
 				
+				console.log("SSSSSSSSS"+self.service.service_name,self.UpdateNotCheckServiceName);
 				if(self.service.service_id != null && self.service.service_name == self.UpdateNotCheckServiceName) {
+					
 					$scope.nameWrong=false;
 				} else {
-					ServiceService.ckeckServiceName(name)
+					ServiceService.checkServiceName(name)
 						.then(function (response) {
 							if(response=="204"){
 								$scope.nameWrong = true;
@@ -223,6 +226,8 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	//=========== Update Service Begin ===============//
 			function updateService(service) {
 				self.service = service;
+				$scope.nameWrong=false;
+				self.UpdateNotCheckServiceName = self.service.service_name;
 				
 				self.heading = self.service.service_name;
 				drawerOpen('.drawer');
@@ -442,6 +447,23 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			//============ Register Search End ==================//
 						
 						
+			//============= Record Count Begin =================//
+						
+						function findrecord_count() {
+							ServiceService.findrecord_count()
+								.then(
+											function(record_count) {
+												$scope.totalnoof_records = record_count;
+											},
+											function (errResponse) {
+												console.log('Error while fetching record count');
+											}
+								      );
+						}
+						
+			//============= Record Count End ===================//
+						
+			
 			//============= Pagination Function Begin ==========//
 						
 						function pagination() {
@@ -476,7 +498,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 							console.log($scope.currentPage);
 							self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
 							
-							console.log("TTTTTTTT"+self.Filterservices.length);
+							
 							
 							if(self.Filterservices.length == 0) {
 								ServiceService.pagination_byPage($scope.currentPage)
@@ -521,24 +543,35 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 						
 						
 						$scope.firstlastPaginate = function (page) {
-							ServiceService.pagination_byPage(page)
-								.then(
-										function (filterService) {
-											self.Filterservices = filterService;
-										},
-										function (errResponse) {
-											console.log("Error while fetching services");
-										}
-								      );
 							
 							if(page == 1) {
 								$scope.currentPage = 0;
 								$scope.previousDisabled = true;
 								$scope.nextDisabled = false;
+								self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
 							} else {
+								$scope.currentPage = ((Math.ceil(self.Filterservices.length/$scope.pageSize)) - 1 );
+								console.log($scope.currentPage);
 								$scope.previousDisabled = false;
 								$scope.nextDisabled = true;
+								
+								self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
+								
+								if(self.Filterservices.length == 0 ) {
+										
+									ServiceService.pagination_byPage(page)
+									.then(
+											function (filterService) {
+												self.Filterservices = filterService;
+											},
+											function (errResponse) {
+												console.log("Error while fetching services");
+											}
+									      );
+								}
 							}
+							
+							
 						}
 						
 			//============= Pagination Function End =============//

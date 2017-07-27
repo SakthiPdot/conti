@@ -91,7 +91,7 @@ public class ServiceDaoImp implements ServiceDao {
 					.createQuery("from ServiceMaster where obsolete = 'N' AND service_name IN ('" + name.toUpperCase()+ "', '" + name.toLowerCase()+"')").list();
 			
 			
-			if(!ServiceList.isEmpty() && ServiceList!=null) {
+			if(!ServiceList.isEmpty()&& ServiceList!=null) {
 				return "AVAILABLE";
 			}
 			return "NOTAVAILABLE";

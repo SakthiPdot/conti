@@ -45,6 +45,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		function reset () {
 			self.vehicle = {};
 			$('#branch_name_value').val('');
+			$('#vehicle_type_value').val('');
 			self.heading = "Master";
 		}
 	//=================== Reset Function End ==================//
@@ -150,12 +151,18 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 	//================= Create/Save Vehicle Function End ==============//	
 			 
 			function submit() {
-				
+				console.log("DSSAAAAAAAAAAAAAAAAAAAAAAAAAAAASSSSSSSS");
 				if( $("#branch_id").val() == "" || $("#branch_id").val() == null){
 						$("#branch_name_value").focus();
+				
+				} else if ($("#vehicle_type_value").val() == "" || $("#vehicle_type_value").val() == null) {
+							$("#vehicle_type_value").focus();
+						
 				} else {
 					
 					if( self.vehicle.vehicle_id == null) {
+						
+						console.log("DSSSSSSSSSS");
 						
 						self.confirm_title = 'Save';
 						self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
@@ -165,7 +172,10 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 						ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 							.then(
 									function (res) {
+										
 										self.vehicle.branchModel = JSON.parse($("#branch_id").val());
+										console.log("AAAA"+self.vehicle.branchModel);
+										self.vehicle.vehicle_type = $("#vehicle_type_value").val();
 										console.log(self.vehicle);
 										createVehicle(self.vehicle);										
 										reset();
@@ -186,6 +196,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		    				.then(
 		    						function (res) {
 		    							self.vehicle.branchModel = JSON.parse($("#branch_id").val());
+		    							self.vehicle.vehicle_type = $("#vehicle_type_value").val();
 		    							editVehicle(self.vehicle);
 		    						/*	reset();*/
 		    							window.setTimeout(function(){
@@ -516,7 +527,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				console.log($scope.currentPage);
 				self.Filtervehicles = self.vehicles.slice($scope.currentPage*$scope.pageSize);
 				
-				console.log("TTTTTTTT"+self.Filtervehicles.length);
+				
 				
 				if(self.Filtervehicles.length == 0) {
 					VehicleService.pagination_byPage($scope.currentPage)

@@ -371,7 +371,7 @@ public class VehicleRestController {
 				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException  {
 				
 					
-			List <VehicleMaster> vehicletype = vehicleDao.searchforVehicleType(searchStr);
+			   List <VehicleMaster> vehicletype = vehicleDao.searchforVehicleType(searchStr);
 			
 			    Map result = new HashMap();		
 				result.put("VehicleType", vehicletype);

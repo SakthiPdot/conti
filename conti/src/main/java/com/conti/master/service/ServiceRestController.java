@@ -54,7 +54,6 @@ public class ServiceRestController {
 	@RequestMapping(value = "checkServiceName", method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> checkServiceName(@RequestBody String name,HttpServletRequest request) {
 		String status = serviceDao.checkServiceName(name.trim());
-		System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
 		if(status == "AVAILABLE") {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		} else {
