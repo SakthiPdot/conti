@@ -13,10 +13,10 @@
     <!-- Bootstrap Styles-->
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
-    <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
+  <!--    <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" /> -->
 	
 	 <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
-	 
+	 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <!-- Custom Styles-->
@@ -86,17 +86,7 @@
               
               <div class="row">
               
-                <div class="col-md-12">
-              		<div class="col-md-4">
-              		</div>
-              		<div class="col-md-4">
-              		</div>
-              		<div class="col-md-4 branchclass">              			 
-                			 <span class="text-paddingwidth">LR No</span>	                	                                       
-                             <input type="text" class="form-control" placeholder="New Hide/ Existing Dispaly" disabled>
-                        
-              		</div>
-              	</div>
+                
               	
               	<div class="col-md-12">
               		<div class="col-md-4">
@@ -150,11 +140,7 @@
               <div class="row">
               	
               	<div class="col-md-12">
-              		<!-- <div class="col-md-12 GenLeftRight">
-              			<div class="subhead">
-              			<b>Coimbatore (Branch Name)</b>
-              			</div>
-              		</div> -->
+              		
               		
               		<div class="col-md-12 GenLeftRight">
               			<div class="subhead">
@@ -182,6 +168,17 @@
                             		    </div>
                             		
                             
+                            		<div class="col-md-12 branchclass">
+                            			<span class="text-paddingwidth">From Branch</span>
+                            		    <select  class="form-control" >  
+                            		    	<option>-- Select --</option>
+                            		    	<option>Chennai</option>
+                            		    	<option>Bangalore</option>
+                            		    	<option>Coimbatore</option>
+                            		    </select>                          		    
+                            		    
+                            		</div>
+                            		
                             		<div class=" col-md-12 branchclass">
                             			<span class="text-paddingwidth"> Name </span>
                             		    <input type="text" class="form-control">                            		    
@@ -193,19 +190,6 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Mobile Number</span>
                             		    <input type="text" class="form-control" >                            		    
-                            		    
-                            		</div>
-                            	
-                            	
-                           
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Branch Name</span>
-                            		    <select  class="form-control" >  
-                            		    	<option>-- Select --</option>
-                            		    	<option>Chennai</option>
-                            		    	<option>Bangalore</option>
-                            		    	<option>Coimbatore</option>
-                            		    </select>                          		    
                             		    
                             		</div>
                             	
@@ -274,7 +258,7 @@
                             		    
                             		</div>
                             		
-                    		        <div class="col-md-12 col-sm-12 col-xs-12">
+                    		       <div class="col-md-12 col-sm-12 col-xs-12">
                     		        	<div class="col-md-6">
                     		        	
                     		        	</div>	
@@ -286,7 +270,6 @@
                     		        	</div>	
                     		        	                    		       
                                     </div>
-                                    
                                     
                             	
                         </div>
@@ -307,6 +290,17 @@
 	                            		    <input type="text" class="form-control searchbar" placeholder="Mobile No">                            		    
                             		    </div>
                           	
+                          		   <div class="col-md-12 branchclass">
+                            			<span class="text-paddingwidth">To Branch</span>
+                            		    <select  class="form-control" >  
+                            		    	<option>-- Select --</option>
+                            		    	<option>Chennai</option>
+                            		    	<option>Bangalore</option>
+                            		    	<option>Coimbatore</option>
+                            		    </select>                          		    
+                            		    
+                            		</div>
+                          	
                           	       <div class=" col-md-12 branchclass">
                             			<span class="text-paddingwidth"> Name </span>
                             		    <input type="text" class="form-control">                            		    
@@ -318,19 +312,6 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Mobile Number</span>
                             		    <input type="text" class="form-control" >                            		    
-                            		    
-                            		</div>
-                            	
-                            	
-                           
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Branch Name</span>
-                            		    <select  class="form-control" >  
-                            		    	<option>-- Select --</option>
-                            		    	<option>Chennai</option>
-                            		    	<option>Bangalore</option>
-                            		    	<option>Coimbatore</option>
-                            		    </select>                          		    
                             		    
                             		</div>
                             	
@@ -399,7 +380,7 @@
                             		    
                             		</div>
                             		
-                    		        <div class="col-md-12 col-sm-12 col-xs-12">
+                    		         <div class="col-md-12 col-sm-12 col-xs-12">
                     		        	<div class="col-md-6">
                     		        	
                     		        	</div>	
@@ -410,7 +391,7 @@
 		                                    </label>
                     		        	</div>	
                     		        	                    		       
-                                    </div>
+                                    </div> 
                           	
                         </div>
                     
@@ -552,6 +533,14 @@
                                    </tbody>
                                 </table>
                             </div>                           
+                          
+                          <div class="col-lg-12">
+                          
+                                    <button class="btn btn-primary "><i class="fa fa-plus-circle"></i></button>
+							 		<button class="btn btn-primary "><i class="fa fa-minus-circle"></i></button>
+							 		
+										 		
+						 </div>
                           
                             
                           </div>
