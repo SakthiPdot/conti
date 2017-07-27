@@ -84,8 +84,16 @@ public class ServiceDaoImp implements ServiceDao {
 
 
 		@Override
-		public String checkServiceName(String SearchString) {
-			// TODO Auto-generated method stub
-			return null;
+		@Transactional
+		public String checkServiceName(String name) {
+			@SuppressWarnings("unchecked")
+			List<ServiceMaster> ServiceList = sessionFactory.getCurrentSession()
+					.createQuery("from ServiceMaster where obsolete = 'N' AND service_name IN ('" + name.toUpperCase()+ "', '" + name.toLowerCase()+"')").list();
+			
+			
+			if(!ServiceList.isEmpty() && ServiceList!=null) {
+				return "AVAILABLE";
+			}
+			return "NOTAVAILABLE";
 		}
 }

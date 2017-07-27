@@ -43,9 +43,7 @@
       		  <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default panelMarginBottom">                            
-						<div class="panel-heading">
-							
-						</div>
+						
 						<div class="panel-body customer-font">
 						<b>Shipment</b>
 						</div>
@@ -273,7 +271,7 @@
     </div>
     <!-- /. WRAPPER  -->
     
-    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script> 
+   <!--  <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>  -->
     <script src=" resources/custom/js/date-time-picker.min.js" ></script>
     
     <script> $('.datepicker').dateTimePicker();</script>
