@@ -104,7 +104,7 @@
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Name" required>
 			                   
 			                   <span>Customer Code<span style="color:red">&nbsp;*</span></span>
-			                   <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsAlphaNumeric(event,this.value)" data-ng-model="ctrl.customer.customer_code" 
+			                   <input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsAlphaNumeric(event,this.value)" data-ng-model="ctrl.customer.customer_code" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer code" required>
 			                   
 			                    <span>Phone Number<span style="color:red">&nbsp;*</span></span>
@@ -186,11 +186,11 @@
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Company name" ng-required="ctrl.customer.gstin_number">
 			                   
 		                 	   <span>Address Line 1 <span style="color:red">&nbsp;*</span></span>	         
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline1"  maxlength="150" 
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline1"  maxlength="100" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line1	" required>
 			                   
 			                   <span>Address Line 2</span>
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline2"  maxlength="150" 
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline2"  maxlength="100" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line2	" >
 			             </div>         	
 			             </div>
@@ -231,7 +231,7 @@
 			                     <span>Pincode </span>	         
 			                    <input type="text" id="pincode" class="form-control disabled locations" tabindex="-1" maxlength="6" onKeyPress="return CheckIsNumeric(event)" value="{{location_name.originalObject.pincode}}">
 			                     <span>Email</span>
-			                   <input type="email" class="form-control" data-ng-model="ctrl.customer.customer_email" 
+			                   <input type="email" class="form-control" data-ng-model="ctrl.customer.customer_email" maxlength="30"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer email id"  />
 			                 
 			           

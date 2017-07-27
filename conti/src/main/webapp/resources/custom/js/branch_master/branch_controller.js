@@ -610,7 +610,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     		fetchAllBranches();
     	} else { // last
     		
-    		$scope.currentPage = ( (Math.round(self.Filterbranches.length/$scope.pageSize)) - 1 );
+    		$scope.currentPage = ((Math.round(self.Filterbranches.length/$scope.pageSize)) - 1 );
     		$scope.previouseDisabled = false;
     		$scope.nextDisabled = true;
     		
@@ -623,7 +623,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
         					self.Filterbranches = filterBranch;
         				}, 
         				function (errResponse) {
-        					console.log('Error while fetching employees');
+        					console.log('Error while fetching Branch');
         				}
         			);
     		}

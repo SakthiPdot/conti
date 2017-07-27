@@ -156,7 +156,7 @@ public class CustomerRestController
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = new Date();
 			
-//			try {
+		try {
 				customerModel.setObsolete("N");
 				customerModel.setActive("Y");
 				customerModel.setCreated_by(user_id);
@@ -174,10 +174,10 @@ public class CustomerRestController
 		        System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
 				return new ResponseEntity<Void> (headers, HttpStatus.CREATED);
 				
-//			} catch (Exception exception) {
-//				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
-//				return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
-//			}
+			} catch (Exception exception) {
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+				return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 			
 		}
 		/* ------------------------- Create a Customer end -------------------------------------  */
