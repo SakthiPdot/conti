@@ -632,4 +632,31 @@ public class EmployeeRestController {
 				
 			}
 			
+			/* ------------------------- Find record count begin ------------------------------------- */
+			
+			@RequestMapping(value = "/employee_record_count/", method = RequestMethod.GET)
+			public ResponseEntity<String> recordCount(HttpServletRequest request) {
+				String username = userInformation.getUserName();
+				
+				try {
+					int userid = Integer.parseInt(userInformation.getUserId());	
+					User user = usersDao.get(userid);
+					List<User> userList = new ArrayList<User>();
+					if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+						String rec_count = Integer.toString(employeeDao.find_record_countforSA());
+						return new ResponseEntity<String> (rec_count, HttpStatus.OK);	
+					} else {
+						String rec_count = Integer.toString(employeeDao.find_record_count());
+						return new ResponseEntity<String> (rec_count, HttpStatus.OK);	
+					}
+					
+				} catch (Exception exception) {
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+					return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+				}
+				
+			}
+			
+			/* ------------------------- Find record count end ------------------------------------- */
+			
 }

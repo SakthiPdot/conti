@@ -104,11 +104,11 @@
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Name" required>
 			                   
 			                   <span>Customer Code<span style="color:red">&nbsp;*</span></span>
-			                   <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsAlphaNumeric(event,this.value)" data-ng-model="ctrl.customer.customer_code" 
+			                   <input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsAlphaNumeric(event,this.value)" data-ng-model="ctrl.customer.customer_code" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer code" required>
 			                   
 			                    <span>Phone Number<span style="color:red">&nbsp;*</span></span>
-			                   <input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.customer.customer_mobileno" 
+			                   <input type="text" class="form-control" maxlength="10" minlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.customer.customer_mobileno" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer phone number" required>
 			                
 			           
@@ -121,7 +121,7 @@
 			                 	   <span>Customer Type <span style="color:red">&nbsp;*</span></span>	         
 				                   <select class="form-control" name="customer_type" data-ng-init="select" data-ng-options="custtype for custtype in ['Cash','Credit']" 
 				                   data-ng-model="ctrl.customer.customer_type" required>
-				                    <option value="" disabled	>select</option>
+				                    <option value="">--Please select--</option>
 <!-- 				                   		<option selected="selected"></option>  -->
 <!-- 				                   		<option>Credit</option>	 -->
 <!-- 				                   		<option>Credit</option> -->
@@ -131,23 +131,28 @@
 				               	<div class="col-lg-6 content-body">    
 				                   <span>Branch Name</span>
 				                  <angucomplete-alt id="branch_name" data-ng-model="ctrl.customer.branch_name"
-						              placeholder="Ex : Coimbatore" pause="0"
+						              placeholder="Ex : Coimbatore"
+						              pause="100"
 						              selected-object="branch_name"
-						              remote-url="getBranch4Customer/"
+						              remote-url="getBranch4Employee/"
 						              remote_url-data-field="Branch"
-						            
+						              
 						              search-fields="branch_name"
 						              title-field="branch_name"
 									  match-class="highlight"
-									  
+									  initial-value="{{ctrl.customer.branchModel.branch_name}}"
 						              minlength="1"
-						              field-required="true"	
+						              field-required="true"
 						              data-trigger="focus" data-toggle="popover" 
 						              data-placement="top" data-content="Please Enter Customer branch name"
 						              onKeyPress="return CheckIsCharacter(event)"
 						              input-class="form-control form-control-small">
               				</angucomplete-alt>
 
+
+
+  
+              				
 			           		<input type="hidden" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject}}" />
 				                
 				           
@@ -158,7 +163,7 @@
 			                	<div class="col-lg-6 content-body">
 			                 	   <span>Tax is Payable on Reverse Charge<span style="color:red">&nbsp;*</span> </span>	         
 				                   <select class="form-control" data-ng-model="ctrl.customer.taxin_payable" data-ng-options="payable for payable in ['Yes','No']" required>
-				                   			<option value="" disabled	>select</option>
+				                   			<option value="" >--Please select--</option>
 <!-- 				                   		<option>Yes</option> -->
 <!-- 				                   		<option>No</option> -->
 				                   		
@@ -181,11 +186,11 @@
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Company name" ng-required="ctrl.customer.gstin_number">
 			                   
 		                 	   <span>Address Line 1 <span style="color:red">&nbsp;*</span></span>	         
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline1"  maxlength="150" 
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline1"  maxlength="100" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line1	" required>
 			                   
 			                   <span>Address Line 2</span>
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline2"  maxlength="150" 
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline2"  maxlength="100" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line2	" >
 			             </div>         	
 			             </div>
@@ -196,15 +201,15 @@
 			                   		<angucomplete-alt id="location_name" data-ng-model="ctrl.customer.location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
-									              remote-url="getLocations4Customer/"
+									              remote-url="getLocations4Search/"
 						             			  remote_url-data-field="Location"
 									              selected-object="location_name"
 									              	
-									              search-fields="location_name,pincode"
+									              search-fields="location_name"
 									              title-field="location_name"
 												  match-class="highlight"
 												   
-									              minlength="1"
+									              minlength="3"
 	   											  data-trigger="focus" data-toggle="popover" 
 	   											  data-placement="top" data-content="Please Enter Customer location"
 	   											  
@@ -226,7 +231,7 @@
 			                     <span>Pincode </span>	         
 			                    <input type="text" id="pincode" class="form-control disabled locations" tabindex="-1" maxlength="6" onKeyPress="return CheckIsNumeric(event)" value="{{location_name.originalObject.pincode}}">
 			                     <span>Email</span>
-			                   <input type="email" class="form-control" data-ng-model="ctrl.customer.customer_email" 
+			                   <input type="email" class="form-control" data-ng-model="ctrl.customer.customer_email" maxlength="30"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer email id"  />
 			                 
 			           
@@ -469,6 +474,17 @@
                                        </tr>
                                        </tbody>
                                 </table>
+                                
+                                
+                                <div class ="col-lg-6">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
+                                
+                                
                                 
                                 <div class="col-lg-6 icons-button">
                                    <div class="pull-right">

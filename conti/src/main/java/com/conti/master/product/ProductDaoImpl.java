@@ -128,7 +128,7 @@ public class ProductDaoImpl implements ProductDAO {
 	@Transactional
 	public List<Product> searchByProductName(String searchString) {
 		return sessionFactory.getCurrentSession()
-				.createQuery("from Product where  obsolete ='N' "
+				.createQuery("from Product where  obsolete ='N'  and active ='Y' "
 						+ "and product_name LIKE '%"+searchString+"%'"					
 						).list();
 

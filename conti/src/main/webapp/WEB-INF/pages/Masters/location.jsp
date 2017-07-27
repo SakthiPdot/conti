@@ -436,7 +436,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                         	data-ng-model="locctrl.selectAllLocation"
                                         	data-ng-click="locctrl.selectAll()"></th>
                                            <!--  <th data-ng-show="">S.No</th> -->
-                                           <td >{{location_id}}</td>
+                                           <!-- <td >{{location_id}}</td> -->
                                             <th data-ng-show="setting_locName">Location Name</th>
                                             <th data-ng-show="setting_locCode">Location Code</th>
                                             <th data-ng-show="setting_abbr">Abbreviation</th>
@@ -456,7 +456,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                             data-ng-model="x.select"
                                             data-ng-click="locctrl.selectLocation(x);"></td>
                                             <!-- <td data-ng-show="">{{$index+1}}</td> -->
-                                             <td >{{x.location_id}}</td>
+                                             <!-- <td >{{x.location_id}}</td> -->
                                             <td data-ng-show="setting_locName">{{x.location_name}}</td>
                                             <td data-ng-show="setting_locCode">{{x.location_code}}</td>
                                             <td data-ng-show="setting_abbr">{{x.abbreviation}}</td>

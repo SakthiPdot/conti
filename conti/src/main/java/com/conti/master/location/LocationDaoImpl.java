@@ -144,7 +144,7 @@ public class LocationDaoImpl implements LocationDao {
 		@SuppressWarnings("unchecked")
 		
 		List<Location> locationlist = (List<Location>) sessionFactory.getCurrentSession()
-		.createQuery("from Location WHERE obsolete ='N' and location_name LIKE '%" + search_key + "%'"+"OR pincode LIKE '%"+search_key + "%'").list();
+		.createQuery("from Location WHERE obsolete ='N'and active='Y' and location_name LIKE '%" + search_key + "%'"+"OR pincode LIKE '%"+search_key + "%'").list();
 		return locationlist;
 		
 	}

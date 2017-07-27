@@ -14,7 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.conti.address.AddressModel;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import com.conti.master.branch.BranchModel;
 import com.conti.master.product.Product;
 import com.conti.master.service.ServiceMaster;
@@ -51,7 +52,11 @@ public class PriceSetting {
 	
 	
 	/*@JoinColumn(name="pricesetting_id", referencedColumnName = "pricesetting_id")*/
-	@OneToMany(cascade=CascadeType.ALL,mappedBy="priceSetting")
+	//@JsonIgnore
+	/*@OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER,mappedBy="priceSetting") */ 
+	@JoinColumn(name="pricesetting_id", referencedColumnName = "pricesetting_id",insertable=false, updatable=false)
+	@OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+	@JsonManagedReference
 	public Set<PriceSettingDetail> getPriceSettingDetail() {
 		return this.PriceSettingDetail;
 	}
@@ -176,8 +181,6 @@ public class PriceSetting {
 	public void setActive(String active) {
 		this.active = active;
 	}
-	
-	
 	
 	
 }

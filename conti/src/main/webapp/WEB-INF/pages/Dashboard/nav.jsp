@@ -344,11 +344,12 @@
                         <a href="report"><i class="fa fa-flag"></i> Reports </a>
                     </li>
                     
-                    
-                    <li>
-                        <a href="company_settings"><i class="fa fa-wrench"></i> Settings</a>
-                        
-                    </li>
+                     <sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">
+	                    <li>
+	                        <a href="company_settings"><i class="fa fa-wrench"></i> Settings</a>
+	                        
+	                    </li>
+                    </sec:authorize>
                 </ul>
 
             </div>

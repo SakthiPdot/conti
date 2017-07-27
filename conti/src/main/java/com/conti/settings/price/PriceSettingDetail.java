@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+
 import com.conti.master.branch.BranchModel;
 
 /**
@@ -35,12 +37,14 @@ public class PriceSettingDetail {
 	private float ps_weightto;
 	private float ps_price;
 	
+	
+	
 	private PriceSetting priceSetting;
+
 	
-	
-	
-	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="pricesetting_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="pricesetting_id", referencedColumnName = "pricesetting_id")
+	@JsonBackReference
 	public PriceSetting getPriceSetting() {
 		return this.priceSetting;
 	}
@@ -55,7 +59,7 @@ public class PriceSettingDetail {
 
 
 	@JoinColumn(name="tobranch_id", referencedColumnName = "branch_id")
-	@OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
 	public BranchModel getBranch() {
 		return this.branch;
 	}
@@ -66,7 +70,7 @@ public class PriceSettingDetail {
 
 	@Id
 	@GeneratedValue
-	@Column(name="a_pricesettingdetail")
+	@Column(name="pricesettingdetail_id")
 	public int getPricesettingdetail_id() {
 		return this.pricesettingdetail_id;
 	}
