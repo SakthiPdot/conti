@@ -120,7 +120,7 @@
 						              title-field="branch_name"
 									  match-class="highlight"
 									  initial-value="{{ctrl.user.branchModel.branch_name}}"
-						              minlength="1"
+						              minlength="3"
 						              field-required="true"
 						              data-trigger="focus" data-toggle="popover" 
 						              data-placement="top" data-content="Please enter branch name"
