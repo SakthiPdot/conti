@@ -480,7 +480,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 	
 	function findrecord_count() {
 		
-		EmployeeService.findrecord_count()
+		CustomerService.findrecord_count()
 		.then(
 				function (record_count) {
 					console.log(record_count);
@@ -512,7 +512,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 		$scope.nextDisabled = false;
 		$scope.previouseDisabled = true;
 		
-		if( self.Filtercustomers.length <= 10 ) {
+		if( self.Filtercustomers.length <= $scope.pageSize  ) {
 			$scope.nextDisabled = true;
 		} 
 		
@@ -572,9 +572,9 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     }
     
     
+  //-------------------------- Pagnation end -----------------------//	
     
-    
-    
+  //---------------------------- Pagination begin ---------------------------------------//
     $scope.firstlastPaginate = function (page) 
     {
    	 
@@ -584,11 +584,12 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = false;
     		self.Filtercustomers = self.customers.slice($scope.currentPage*$scope.pageSize);
-    		fetchAllUsers();
+    		fetchAllCustomers();
     	} 
     	else 
     	{
-    		$scope.currentPage = ( (Math.round(self.Filtercustomers.length/$scope.pageSize)) - 1 );
+    		$scope.currentPage = ( (Math.ceil(self.Filtercustomers.length/$scope.pageSize)) - 1 );
+    		console.log("Count: "+$scope.currentPage );
     		$scope.previouseDisabled = false;
     		$scope.nextDisabled = true;
     		
@@ -615,8 +616,21 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     
 //-------------------------------- Show no of record begin ----------------------------------------//
     
-    function shownoofRecord() {    
+    function shownoofRecord() 
+    {    
     	$scope.pageSize = $scope.shownoofrec;
+    	self.Filtercustomers=self.customers.slice($scope.currentPage*$scope.pageSize);
+    	if(self.Filtercustomers.length <= $scope.pageSize)
+    	{
+    		$scope.previouseDisabled=true;
+    		$scope.nextDisabled=true;
+    	}
+    	else
+    	{
+    		//$scope.previouseDisabled=false;
+    		$scope.nextDisabled=false;
+    	}
+    		
     }
     //-------------------------------- Show no of record end ----------------------------------------//  
     

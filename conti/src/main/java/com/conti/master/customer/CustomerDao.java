@@ -23,5 +23,7 @@ public interface CustomerDao
 	public CustomerModel getCustomerbyId(int id);
 	public List<CustomerModel> searchbyeyCustomer(String searchkey);
 	public List<CustomerModel> getCustomerswithLimit(int branch_id, int from_limit, int to_limit, String order);
+	public int find_record_countforSA();
+	public int find_record_count();
 	
 }

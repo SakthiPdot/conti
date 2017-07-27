@@ -22,4 +22,7 @@ public interface BranchDao
 	public List<BranchModel> searchbyeyBranchName(String search_key);
 	public List<BranchModel> getBrancheswithLimit(int branch_id, int from_limit, int to_limit, String order);
 	public String checkBranchName(String SearchString);
+	public int find_record_countforSA();
+	public int find_record_count();
+	public List<BranchModel> getBranchesbyid(int id);
 }

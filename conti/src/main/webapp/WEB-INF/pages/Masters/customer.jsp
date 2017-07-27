@@ -100,7 +100,7 @@
 		                <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
 		                 	   <span>Customer Name <span style="color:red">&nbsp;*</span></span>	         
-			                   <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_name" 
+			                   <input type="text" class="form-control" maxlength="30" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_name" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Name" required>
 			                   
 			                   <span>Customer Code<span style="color:red">&nbsp;*</span></span>
@@ -108,7 +108,7 @@
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer code" required>
 			                   
 			                    <span>Phone Number<span style="color:red">&nbsp;*</span></span>
-			                   <input type="text" class="form-control" maxlength="10" minlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.customer.customer_mobileno" 
+			                   <input type="text" class="form-control" maxlength="10" data-ng-minlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.customer.customer_mobileno" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer phone number" required>
 			                
 			           
@@ -127,7 +127,8 @@
 <!-- 				                   		<option>Credit</option> -->
 				                   </select>
 				               
-				              	</div> 
+				              	</div>
+				              	 
 				               	<div class="col-lg-6 content-body">    
 				                   <span>Branch Name</span>
 				                  <angucomplete-alt id="branch_name" data-ng-model="ctrl.customer.branch_name"
@@ -148,11 +149,7 @@
 						              onKeyPress="return CheckIsCharacter(event)"
 						              input-class="form-control form-control-small">
               				</angucomplete-alt>
-
-
-
-  
-              				
+			           		
 			           		<input type="hidden" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject}}" />
 				                
 				           
@@ -162,7 +159,7 @@
 			             <div class="col-lg-12">
 			                	<div class="col-lg-6 content-body">
 			                 	   <span>Tax is Payable on Reverse Charge<span style="color:red">&nbsp;*</span> </span>	         
-				                   <select class="form-control" data-ng-model="ctrl.customer.taxin_payable" data-ng-options="payable for payable in ['Yes','No']" required>
+				                   <select class="form-control" data-ng-model="ctrl.customer.taxin_payable" data-ng-options="payable for payable in ['Yes','No']" data-ng-required>
 				                   			<option value="" >--Please select--</option>
 <!-- 				                   		<option>Yes</option> -->
 <!-- 				                   		<option>No</option> -->
@@ -173,7 +170,7 @@
 				               	<div class="col-lg-6 content-body">    
 				                   <span>GSTIN number</span>
 				                   <input type="text" class="form-control" data-ng-model="ctrl.customer.gstin_number" maxlength="20" 
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter GSTIN number" ng-required="ctrl.customer.company_name" >
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter GSTIN number" data-ng-required="ctrl.customer.company_name" >
 				           
 				             	</div>         	
 			             </div>  
@@ -183,7 +180,7 @@
 		                
 		                       <span>Company Name </span>	         
 			                   <input type="text" class="form-control" data-ng-model="ctrl.customer.company_name" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Company name" ng-required="ctrl.customer.gstin_number">
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Company name" data-ng-required="ctrl.customer.gstin_number">
 			                   
 		                 	   <span>Address Line 1 <span style="color:red">&nbsp;*</span></span>	         
 			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline1"  maxlength="100" 

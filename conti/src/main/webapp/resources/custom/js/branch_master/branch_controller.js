@@ -610,13 +610,14 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     		fetchAllBranches();
     	} else { // last
     		
-    		$scope.currentPage = ((Math.round(self.Filterbranches.length/$scope.pageSize)) - 1 );
+    		$scope.currentPage = ((Math.ceil(self.Filterbranches.length/$scope.pageSize)) - 1 );
     		$scope.previouseDisabled = false;
     		$scope.nextDisabled = true;
     		
     		self.Filterbranches = self.branches.slice($scope.currentPage*$scope.pageSize);
     		console.log(self.Filterbranches.length);
-    		if(self.Filterbranches.length == 0) {
+    		if(self.Filterbranches.length == 0) 
+    		{
     			BranchService.pagination_byPage(page)
         		.then(
         				function (filterBranch) {
@@ -638,15 +639,28 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     
  //-------------------------------- Show no of record begin ----------------------------------------//
     
-    function shownoofRecord() {    
+    function shownoofRecord() 
+    {    
     	$scope.pageSize = $scope.shownoofrec;
+    	self.Filterbranches = self.branches.slice($scope.currentPage*$scope.pageSize);
+    	if( self.Filterbranches.length <= $scope.pageSize ) 
+    	{
+    		$scope.previouseDisabled = true;
+    		$scope.nextDisabled = true;
+    	}
+    	else
+    	{
+    		//$scope.previouseDisabled=false;
+    		$scope.nextDisabled=false;
+    	}
     }
     //-------------------------------- Show no of record end ----------------------------------------//  
     
    
     
     //---------------------------- Register search begin ---------------------------------------//
-    function registerSearch(searchkey) {
+    function registerSearch(searchkey) 
+    {
     	if ( searchkey.length == 0 ) {
     		self.Filterbranches = self.branches;
     	}else if( searchkey.length > 3 ) {

@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.conti.master.customer.CustomerModel;
 import com.conti.master.employee.EmployeeMaster;
+import com.conti.others.ConstantValues;
 import com.conti.master.customer.CustomerDao;
 
 @Repository
@@ -29,7 +30,7 @@ public class CustomerDaoImpl implements CustomerDao
 	
 	@Autowired
 	private SessionFactory sessionFactory;
-
+	ConstantValues constantVal = new ConstantValues();
 	
 	@Override
 	@Transactional
@@ -132,5 +133,25 @@ public class CustomerDaoImpl implements CustomerDao
 				.setFirstResult(from_limit).setMaxResults(to_limit).list();
 		return listCustomer;
 	}
+	
+	/*------------------------------- Get Customer records count -----------------------*/
+	@Override
+	@Transactional
+	public int find_record_countforSA() 
+	{
+		int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from EmployeeMaster WHERE obsolete = 'N'").uniqueResult()).intValue();
+		return rec_count;
+	}
+
+	@Override
+	@Transactional
+	public int find_record_count() 
+	{
+	
+		int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from EmployeeMaster WHERE obsolete = 'N' AND user.role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'").uniqueResult()).intValue();
+		return rec_count;
+	}
+	
+	/*------------------------------- Get Customer records count end-----------------------*/
 }
 

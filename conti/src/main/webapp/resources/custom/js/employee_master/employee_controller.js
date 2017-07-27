@@ -562,8 +562,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 		} 
 		
 		if( self.Filteremployees.length < 100 ) {
-			//$scope.totalnof_records  = self.Filteremployees.length;
-			findrecord_count();
+			$scope.totalnof_records  = self.Filteremployees.length;
+			//findrecord_count();
 		} else {
 			findrecord_count();
 		}
@@ -674,16 +674,20 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
    
     //-------------------------------- Show no of record begin ----------------------------------------//
     
-    function shownoofRecord() {    
+    function shownoofRecord() 
+    {    
     	
     	$scope.pageSize = $scope.shownoofrec;
-    	
     	self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
-    	
-    	
-    	if( self.Filteremployees.length < $scope.pageSize ) {
+    	if( self.Filteremployees.length <= $scope.pageSize )
+    	{
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = true;
+    	}
+    	else
+    	{
+    		//$scope.previouseDisabled=false;
+    		$scope.nextDisabled=false;
     	}
     }
     //-------------------------------- Show no of record end ----------------------------------------//  

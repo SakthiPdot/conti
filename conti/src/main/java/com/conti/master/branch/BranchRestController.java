@@ -102,11 +102,11 @@ public class BranchRestController {
 	public ResponseEntity<List<BranchModel>> fetchAllBranches(HttpServletRequest request) {
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
-		//String branch_id = userInformation.getUserBranchId();
+		String branch_id = userInformation.getUserBranchId();
 		try {
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			//List<BranchModel> branches = branchDao.getBranchesbyid(Integer.parseInt(branch_id));
 			List<BranchModel> branches = branchDao.getBranches();
-			
 			if(branches.isEmpty()) {
 				return new ResponseEntity<List<BranchModel>> (HttpStatus.NO_CONTENT);
 			} else {
@@ -507,6 +507,39 @@ public class BranchRestController {
 			List<BranchModel> branchList = branchDao.getBrancheswithLimit(Integer.parseInt(branch_id), from_limit, to_limit, order);
 			return new ResponseEntity<List<BranchModel>> (branchList, HttpStatus.OK);
 		}
+		
+		
+		
+		
+		
+		/* ------------------------- Find record count begin ------------------------------------- */
+		
+		@RequestMapping(value = "/branch_record_count/", method = RequestMethod.GET)
+		public ResponseEntity<String> branchrecordCount(HttpServletRequest request) 
+		{
+			String username = userInformation.getUserName();
+			
+			try {
+				int userid = Integer.parseInt(userInformation.getUserId());	
+				User user = usersDao.get(userid);
+				List<User> userList = new ArrayList<User>();
+				if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+					String rec_count = Integer.toString(branchDao.find_record_countforSA());
+					return new ResponseEntity<String> (rec_count, HttpStatus.OK);	
+				} else {
+					String rec_count = Integer.toString(branchDao.find_record_count());
+					return new ResponseEntity<String> (rec_count, HttpStatus.OK);	
+				}
+				
+			} catch (Exception exception) {
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+				return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+			
+		}
+		
+		/* ------------------------- Find record count end ------------------------------------- */
+		
 		
 	//======================================Pagination end==========================================
 		

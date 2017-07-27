@@ -21,7 +21,8 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 			registerSearch : registerSearch,
 			pagination_byPage : pagination_byPage,
 			fetchBranchbyBranchid : fetchBranchbyBranchid,
-			checkBranchName:checkBranchName
+			checkBranchName:checkBranchName,
+			findrecord_count : findrecord_count
 			};
 	
 	return factory;
@@ -259,5 +260,23 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 	    }
 	    // --------------------------- Pagination end ------------------------------//    
 	      
+	    
+	    //----------------------  Recourd count users begin ----------------------------- //
+	    function findrecord_count() {
+	    	
+	        var deferred = $q.defer();
+	        $http.get('branch_record_count/')
+	            .then(
+	            function (response) {
+	                deferred.resolve(response.data);
+	            },
+	            function(errResponse){
+	                console.error('Error while fetching Users record count');
+	                deferred.reject(errResponse);
+	            }
+	        );
+	        return deferred.promise;
+	    }
+	    //----------------------  Record Count users end ----------------------------- //  
 
 }]);
