@@ -156,7 +156,7 @@ public class CustomerRestController
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = new Date();
 			
-//			try {
+		try {
 				customerModel.setObsolete("N");
 				customerModel.setActive("Y");
 				customerModel.setCreated_by(user_id);
@@ -174,10 +174,10 @@ public class CustomerRestController
 		        System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
 				return new ResponseEntity<Void> (headers, HttpStatus.CREATED);
 				
-//			} catch (Exception exception) {
-//				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
-//				return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
-//			}
+			} catch (Exception exception) {
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+				return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 			
 		}
 		/* ------------------------- Create a Customer end -------------------------------------  */
@@ -440,7 +440,7 @@ public class CustomerRestController
 		
 		//===========================To get all location for Customer search ================================
 		
-		@RequestMapping(value="getLocations4Customer/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+		@RequestMapping(value="getLocations4Search/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 		public ResponseEntity<Map<String,List<Location>>> fetchAllLocations4Customer(HttpServletRequest request,
 				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
 			
@@ -457,8 +457,8 @@ public class CustomerRestController
 		
 		//===========================To get all Branch for Customer search ================================
 		
-		@RequestMapping(value="getBranch4Customer/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-		public ResponseEntity<Map<String,List<BranchModel>>> fetchAllBranches4customer(HttpServletRequest request,
+		@RequestMapping(value="getBranch4Search/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Map<String,List<BranchModel>>> fetchAllBranches4Search(HttpServletRequest request,
 				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
 			
 			List<BranchModel> branches = branchDao.searchbyeyBranchName(searchStr);
