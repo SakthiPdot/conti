@@ -73,9 +73,11 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(
 					function (res) {
+						fetchAllEmployees();
 						self.save = "saveclose";
 		 	        	reset();
 		 	        	newOrClose();
+		 	        	
 					}
 				);
 	}
@@ -560,8 +562,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 		} 
 		
 		if( self.Filteremployees.length < 100 ) {
-			$scope.totalnof_records  = self.Filteremployees.length;
-			//findrecord_count();
+			//$scope.totalnof_records  = self.Filteremployees.length;
+			findrecord_count();
 		} else {
 			findrecord_count();
 		}
@@ -582,8 +584,6 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 
     	$scope.currentPage += (nextPrevMultiplier * 1);
     	self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
-    	
-    	console.log(self.Filteremployees.length);
     	
     	if(self.Filteremployees.length == 0) {
     		EmployeeService.pagination_byPage($scope.currentPage)
@@ -633,10 +633,16 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = false;
     		self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
-    		fetchAllUsers();
+    		fetchAllEmployees();
     	} else { // last
     		
-    		$scope.currentPage = ( (Math.round(self.Filteremployees.length/$scope.pageSize)) - 1 );
+    		/*if(self.Filteremployees.length < $scope.pageSize) {
+        		$scope.currentPage = ( (Math.ceil(self.Filteremployees.length/$scope.pageSize)) );    			
+    		} else {
+    			$scope.currentPage = ( (Math.ceil(self.Filteremployees.length/$scope.pageSize)) - 1 );
+    		}*/
+    		$scope.currentPage = ( (Math.ceil(self.Filteremployees.length/$scope.pageSize)) - 1 );
+    		
     		$scope.previouseDisabled = false;
     		$scope.nextDisabled = true;
     		
