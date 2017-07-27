@@ -39,12 +39,41 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	
 	
 	$scope.shownoofrec = 10;
+	$scope.nameWrong=false;
 	
 	fetchAllServices();
 
 	function reset(){
 		self.service = {};	
 	}
+	
+	//============ Check Service Name Function Begin =================//
+		
+			function checkServiceName(name) {
+				console.log(self.service.service_name, self.UpdateNotCheckServiceName);
+				
+				if(self.service.service_id != null && self.service.service_name == self.UpdateNotCheckServiceName) {
+					$scope.nameWrong=false;
+				} else {
+					ServiceService.ckeckServiceName(name)
+						.then(function (response) {
+							if(response=="204"){
+								$scope.nameWrong = true;
+								self.service.service_name = null;
+							} else {
+								$scope.nameWrong = false;
+							}
+						}, function(errResponse){
+							$scope.nameWrong = false;
+							self.service.service_name = null;
+							console.log("error checking name");
+						});
+				}
+			}
+		
+	
+	//============ Check Service Name Function End ===================//
+	
 	
 	//============= Close Function Begins ======================//
 		
@@ -357,6 +386,12 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			
 						function shownoofRecord(){
 							$scope.pageSize = $scope.shownoofrec;
+							self.Filterservices = self.Filterservices.slice($scope.currentPage*$scope.pageSize);
+							
+							if(self.Filterservices.length < $scope.pageSize) {
+								$scope.previousDisabled = true;
+								$scope.nextDisabled = true;
+							}
 						}
 						
 			//================ Show no of Record Begin ============//
@@ -419,6 +454,16 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 							
 							$scope.nextDisabled = false;
 							$scope.previousDisabled = true;
+							
+							if(self.Filterservices.length <=10 ) {
+								$scope.nextDisabled = true;
+							}
+							
+							if(self.Filterservices.length < 100) {
+								$scope.totalnoof_records = self.Filterservices.length;
+							} else {
+								findrecord_count();
+							}
 						}
 						
 						

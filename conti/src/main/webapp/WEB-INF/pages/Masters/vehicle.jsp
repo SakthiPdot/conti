@@ -133,11 +133,24 @@
 			           		<input type="hidden" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject}}" />
 			                  
 			                  <span>Vehicle Model No<span class="required"> *</span></span>
-			                 <input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.vehicle.vehicle_modelno" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Model No" required />
+			                 <input type="text" class="form-control" maxlength="30" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.vehicle.vehicle_modelno" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Model No" required />
 			                  
 			                  <span> Vehicle Type<span class="required"> *</span></span>
-			                 <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.vehicle.vehicle_type" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Type"
-			                    required />
+			              <!--    <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Type" -->
+			                    <!-- required /> -->
+			                    <angucomplete-alt id="vehicle_type" data-ng-model="ctrl.vehicle.vehicle_type"
+			                   	 pause="100"
+			                    selected-object = "vehicle_type"
+			                    remote-url = "vehicleType/"
+			                    remote_url-data-field = "VehicleType"
+			                    search-fields = "vehicle_type"
+			                    title-fields = "vehicle_type"
+			                    match-class="highlight"
+			                    minlength="1"
+			                    field-required="true"
+			                    initial-value = "{{ctrl.vehicle.vehicle_type}}"
+			                    input-class="form-control form-control-small ">
+			                    </angucomplete-alt>
 			               
 			             </div>  
 			             
@@ -360,15 +373,22 @@
                                 </table>
                             </div>
                             
+                            <div class ="col-lg-6">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnoof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnoof_records }}
+                               			 of {{totalnoof_records}} entries
+                               		</div>
+                             </div>
                             
-                             <div class="col-lg-12 icons-button">
+                             <div class="col-lg-6 icons-button">
                                 	<div class="pull-right">
                                 		<button class="btn btn-primary" type="button" data-ng-disabled = "previousDisabled" data-ng-click = "firstlastPaginate(1)">First</button>
                                 		<button class="btn btn-primary" type="button" data-ng-disabled = "previousDisabled" data-ng-click = "paginate(-1)">Previous</button>
                                 		<button class="btn btn-primary" type="button" data-ng-disabled = "nextDisabled" data-ng-click = "paginate(1)">Next</button>
                                 		<button class="btn btn-primary" type="button" data-ng-disabled = "nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
                                 	</div>
-                                </div>
+                               </div>
                             
                         </div>
                     </div>

@@ -80,6 +80,27 @@ public class VehicleDaoImp implements VehicleDao  {
 				.setFirstResult(from_limit).setMaxResults(to_limit).list();
 		return listVehicle;
 	}
+
+	@Override
+	@Transactional
+	public List<VehicleMaster> searchbyVehicleType(String search_key) {
+		
+		@SuppressWarnings("unchecked")
+		List<VehicleMaster> listtype = (List<VehicleMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster WHERE obsolete = 'N' "
+						+ " AND vehicle_type LIKE '%" + search_key+ "%' GROUP BY vehicle_type").list();
+		return listtype;
+	}
+
+	@Override
+	@Transactional
+	public List<VehicleMaster> searchforVehicleType(String search_key) {
+		@SuppressWarnings("unchecked" )
+		List<VehicleMaster> listtype = (List<VehicleMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster WHERE obsolete = 'N' "
+						+ "AND vehicle_type LIKE '%" + search_key + "%' GROUP BY vehicle_type").list();
+		return listtype;
+	}
 	
 	
 

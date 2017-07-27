@@ -1,22 +1,29 @@
 package com.conti.master.vehicle;
 
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,14 +35,18 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
+import com.conti.master.employee.EmployeeMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
+import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 @RestController
 public class VehicleRestController {
 	
+	@Autowired
+	private UsersDao usersDao;
 	@Autowired
 	private VehicleDao vehicleDao;
 	@Autowired
@@ -354,5 +365,21 @@ public class VehicleRestController {
 		}
 		
 		//=================== Pagination Function End ================//
-	
+		
+		@RequestMapping(value = "vehicleType/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Map<String,List<VehicleMaster>>> fetchAllVehicletype(HttpServletRequest request,
+				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException  {
+				
+					
+			List <VehicleMaster> vehicletype = vehicleDao.searchforVehicleType(searchStr);
+			
+			    Map result = new HashMap();		
+				result.put("VehicleType", vehicletype);
+				
+				
+				System.err.println("@@$$WWWW$"+ searchStr);
+				return new ResponseEntity<Map<String,List<VehicleMaster>>> (result,HttpStatus.OK);
+				
+			
+		}
 }

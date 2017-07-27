@@ -104,13 +104,18 @@
 			                
 			               <div class="col-lg-12 content-body">
 		                 	 
-		                 	  <span>Service Name</span>
-			                  <input type="text" class="form-control" maxlength="50" onKeypress = "return CheckIsCharacterWithspace(event,this.value)" 
-			                  data-ng-model = "ctrl.service.service_name" data-trigger = "focus" data-toggle ="popover" data-placement="top" data-content ="Please Enter Service Name" required/>
+		                 	  <span>Service Name<span class="required"> *</span></span>
+			                  <input type="text" class="form-control" maxlength="50"
+			                   onKeypress = "return CheckIsCharacterWithspace(event,this.value)" 
+			                   data-ng-blur = "ctrl.checkServiceName(ctrl.service.service_name)"
+			                   data-ng-model = "ctrl.service.service_name" 
+			                   data-trigger = "focus" data-toggle ="popover" data-placement="top"
+			                   data-content ="Please Enter Service Name" required/>
+			                   <span class="makeRed" data-ng-show = "nameWrong">Service Name Already Existing..!</span>
 			                  
 			                   <span>Service Code</span>
 			                  <input type="text" class="form-control" maxlength="6" onKeyPress = "return CheckIsAlphaNumeric(event)" data-ng-model = "ctrl.service.service_code" data-trigger = "focus"
-			                  data-toggle="popover" data-placement="top" data-content = "Please Enter Service Code" required>
+			                  data-toggle="popover" data-placement="top" data-content = "Please Enter Service Code">
 			               
 			                </div>  
 			             
@@ -297,9 +302,15 @@
                                
                                 
                             </div>
-                            
+                            	<div class ="col-lg-6">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnoof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnoof_records }}
+                               			 of {{totalnoof_records}} entries
+                               		</div>
+                                </div>
                              
-                                <div class="col-lg-12 icons-button">
+                                <div class="col-lg-6 icons-button">
                                 	<div class="pull-right">
                                 		<button class="btn btn-primary" type="button" data-ng-disabled = "previousDisabled" data-ng-click = "firstlastPaginate(1)">First</button>
                                 		<button class="btn btn-primary" type="button" data-ng-disabled = "previousDisabled" data-ng-click = "paginate(-1)">Previous</button>

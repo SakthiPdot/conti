@@ -180,7 +180,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 						
 						self.confirm_title = 'Update';
 						self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
-						self.confirm_msg = self.confirm_title + ' ' + self.vehicle.vehicle_regno+ ' vehicle?';
+						self.confirm_msg = self.confirm_title + ' ' + self.vehicle.vehicle_regno+ ' vehicle reg no?';
 						self.confirm_btnclass = 'btn-success';
 		    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 		    				.then(
@@ -209,7 +209,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				.then(
 						function () {
 							fetchAllVehicles();
-							self.message = vehicle.vehicle_regno + " vehicle updated..!";
+							self.message = vehicle.vehicle_regno + " vehicle reg no updated..!";
 							successAnimate('.success');
 						},
 						
@@ -240,7 +240,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				
 				self.confirm_title = 'Delete';
 				self.confirm_type = BootstrapDialog.TYPE_DANGER;
-				self.confirm_msg = self.confirm_title+ ' ' + self.vehicle.vehicle_regno + ' service?';
+				self.confirm_msg = self.confirm_title+ ' ' + self.vehicle.vehicle_regno + ' vehicle reg no?';
 				self.confirm_btnclass = 'btn-danger';
 				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 				.then(
@@ -248,7 +248,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 							VehicleService.deleteVehicle(self.vehicle.vehicle_id)
 							.then(
 									function (vehicle) {
-										self.message = vehicle.vehicle_regno+ " vehicle Deleted..!";
+										self.message = vehicle.vehicle_regno+ " vehicle reg no Deleted..!";
 										successAnimate('.success');
 										newOrClose();
 										var index=self.vehicle.indexOf(vehicle);
@@ -414,6 +414,13 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 	//=============== Show no of Record Begin =============//
 			function shownoofRecord() {
 				$scope.pageSize = $scope.shownoofrec;
+				
+				self.Filtervehicles = self.vehicles.slice($scope.currentPage*$scope.pageSize);
+				
+				if(self.Filtervehicles.length < $scope.pageSize) {
+					$scope.nextDisabled = true;
+					$scope.previousDisabled = true;
+				}
 			}
 			
 	//============== Show no of Record End ================//
@@ -460,6 +467,24 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			
 	//=============== Register Search End ================//
 			
+	//============== Record Count Begin ====================//
+	
+			function findrecord_count() {
+				VehicleService.findrecord_count()
+					.then(
+								function (record_count) {
+								
+									$scope.totalnoof_records = record_count;
+								},
+								function (errResponse) {
+									console.log('Error while fetching record count');
+								}
+					      );
+			}
+			
+	//============== Record Count End ======================//
+			
+			
 	//============== Pagination Function Begin ===========//
 	
 			function pagination() {
@@ -471,6 +496,17 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				
 				$scope.nextDisabled = false;
 				$scope.previousDisabled = true;
+				
+				if(self.Filtervehicles.length <= 10 ) {
+					$scope.nextDisabled = true;
+				}
+				
+				if(self.Filtervehicles.length < 100) {
+					$scope.totalnoof_records = self.Filtervehicles.length;
+					console.log($scope.totalnoof_records);
+				} else {
+					findrecord_count();
+				}
 			}
 			
 			
@@ -524,26 +560,40 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			
 			
 			
-			$scope.firstlastPaginate = function (page) {
-				VehicleService.pagination_byPage(page)
-					.then(
-							function (filterVehicle) {
-								self.Filtervehicles = filterVehicle;
-							},
-							function (errResponse) {
-								console.log("Error while fetching services");
-							}
-					      );
+$scope.firstlastPaginate = function (page) {
+				
 				
 				if(page == 1) {
 					$scope.currentPage = 0;
 					$scope.previousDisabled = true;
 					$scope.nextDisabled = false;
+					self.Filtervehicles = self.vehicles.slice($scope.currentPage*$scope.pageSize);
+					fetchAllVehicles();
 				} else {
+					$scope.currentPage = ( (Math.ceil(self.Filtervehicles.length/$scope.pageSize)) - 1 );
+					console.log($scope.currentPage);
 					$scope.previousDisabled = false;
 					$scope.nextDisabled = true;
+					
+					self.Filtervehicles = self.vehicles.slice($scope.currentPage*$scope.pageSize);
+					
+					if(self.Filtervehicles.length == 0) {
+						VehicleService.pagination_byPage(page)
+						.then(
+								function (filterVehicle) {
+									self.Filtervehicles = filterVehicle;
+								},
+								function (errResponse) {
+									console.log("Error while fetching services");
+								}
+						      );
+					}
 				}
+				
+				
+			
 			}
+			
 			
 			
     //============== Pagination Function End =============//
