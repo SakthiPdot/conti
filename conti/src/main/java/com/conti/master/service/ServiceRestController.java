@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,6 +48,20 @@ public class ServiceRestController {
 	ConstantValues constantVal = new ConstantValues();
 	SessionListener sessionListener = new SessionListener();
 	UserInformation userInformation;
+	
+	
+	
+	@RequestMapping(value = "checkServiceName", method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> checkServiceName(@RequestBody String name,HttpServletRequest request) {
+		String status = serviceDao.checkServiceName(name.trim());
+		if(status == "AVAILABLE") {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
+		
+		
+	}
 	
 	
 	@RequestMapping( value ="/services/", method = RequestMethod.GET)

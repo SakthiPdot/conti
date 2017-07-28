@@ -298,17 +298,17 @@
 					 
 					
                     <li>
-                        <a href="customer"><i class="fa fa-user"></i> Customer</a>
+                        <a href="customer" id="screen_customer"><i class="fa fa-user"></i> Customer</a>
                     </li>
 					<li>
                         <a href="#"><i class="fa fa-truck"></i> Shipment Management<span class="fa arrow"></span></a>
 						
 						<ul class="nav nav-third-level">
                                     <li>
-                                        <a href="add_shipment">Add Shipment</a>
+                                        <a href="add_shipment" id="screen_addshipment">Add Shipment</a>
                                     </li>
                                     <li>
-                                        <a href="view_shipment">View  Shipment</a>
+                                        <a href="view_shipment" id="screen_viewshipment">View  Shipment</a>
                                     </li>
                                     
 
@@ -318,7 +318,7 @@
                         <a href="#"><i class="fa fa-qrcode"></i> Manifest Management<span class="fa arrow"></span></a>
 							<ul class="nav nav-third-level">
 								<li>
-									<a href="add_manifest">Add Manifest</a>
+									<a href="add_manifest" >Add Manifest</a>
 								</li>
 								<li>
 									<a href="view_manifest">View Manifest</a>
@@ -344,11 +344,12 @@
                         <a href="report"><i class="fa fa-flag"></i> Reports </a>
                     </li>
                     
-                    
-                    <li>
-                        <a href="company_settings"><i class="fa fa-wrench"></i> Settings</a>
-                        
-                    </li>
+                     <sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">
+	                    <li>
+	                        <a href="company_settings"><i class="fa fa-wrench"></i> Settings</a>
+	                        
+	                    </li>
+                    </sec:authorize>
                 </ul>
 
             </div>
@@ -371,7 +372,7 @@
     <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
     <!-- Bootstrap Js -->
     <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
-
+	<script src=" resources/custom/js/date-time-picker.min.js" ></script>
     <!-- Metis Menu Js -->
     <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
     

@@ -20,7 +20,8 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
 			makeActive : makeActive,
 			makeinActive : makeinActive,
 			registerSearch : registerSearch,
-			pagination_byPage : pagination_byPage
+			pagination_byPage : pagination_byPage,
+			findrecord_count : findrecord_count
 			/*print : print*/
 	};
 	
@@ -230,6 +231,22 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
     }
     // --------------------------- Pagination end ------------------------------//    
       
-
+  //----------------------  Recourd count users begin ----------------------------- //
+    function findrecord_count() {
+    	
+        var deferred = $q.defer();
+        $http.get('customer_record_count/')
+            .then(
+            function (response) {
+                deferred.resolve(response.data);
+            },
+            function(errResponse){
+                console.error('Error while fetching Users record count');
+                deferred.reject(errResponse);
+            }
+        );
+        return deferred.promise;
+    }
+    //----------------------  Record Count users end ----------------------------- //
 	
 }]);

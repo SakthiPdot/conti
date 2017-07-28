@@ -95,7 +95,7 @@
 		                <div class="col-lg-12">
 			                <div class="col-lg-12 content-body">
 			                	<span>Branch Name<span style="color:red">&nbsp;*</span></span>			                	
-			                	<input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
+			                	<input type="text" class="form-control" maxlength="30" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
 			                	data-ng-model="ctrl.branch.branch_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Name"
 			                	data-ng-blur="ctrl.checkBranchName(ctrl.branch.branch_name)" >
 			                	<span class="makeRed" data-ng-show="branchnamewrong">Branch name Already Existing..!<br><br></span>
@@ -110,14 +110,14 @@
 			                	data-ng-model="ctrl.branch.branch_addressline1" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 1">
 			                	
 			                	<span>Address Line 2</span>			                	
-			                	<input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
+			                	<input type="text" class="form-control" maxlength="100" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
 			                	data-ng-model="ctrl.branch.branch_addressline2" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 2">
 			                	
 			                	<span>Location</span>			                	
 			                	<angucomplete-alt id="location_name" data-ng-model="ctrl.branch.location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
-									              remote-url="getLocations4Branch/"
+									              remote-url="getLocations4Search/"
 						             			  remote_url-data-field="Location"
 									              selected-object="location_name"
 									              
@@ -125,7 +125,7 @@
 									              title-field="location_name"
 												  match-class="highlight"
 												  
-									              minlength="1"
+									              minlength="3"
 	   											  data-trigger="focus" data-toggle="popover" 
 	   											  data-placement="top" data-content="Please Enter branch location"
 	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
@@ -212,16 +212,16 @@
 				
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="col-lg-4 footerLeft">
+						<div class="col-lg-4 col-xs-4 footerLeft">
 							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" ><i class="fa fa-times" area-hidden="true"></i> Cancel</button>
 						</div>
 						
-						<div class="col-lg-4" style="text-align:center; !important;">
+						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
 							<a id="" class="btnPadding btn btn-warning"	data-ng-click="ctrl.deleteBranch()" data-ng-show="ctrl.branch.branch_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
 							<a id="" class="btnPadding btn btn-primary" data-ng-click="ctrl.clear()" data-ng-show="!branchForm.$pristine&&(ctrl.branch.branch_id==null)">Clear</a>							
 						</div>
 						
-						<div class="col-lg-4 footerRight" data-ng-show="!(ctrl.branch.branch_id==null)">
+						<div class="col-lg-4 col-xs-4 footerRight" data-ng-show="!(ctrl.branch.branch_id==null)">
 
 						 <button type="submit" class="btn btn-success" id="saveclose" data-id="0" data-ng-click="save($event)"><i class="fa fa-floppy-o "></i> Update</button>					
 						
@@ -434,6 +434,16 @@
                                      
                                     </tbody>
                                 </table>
+                                
+                                <div class ="col-lg-6">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
+                                
+                                
                                 
                                 <div class="col-lg-6 icons-button">
                                    <div class="pull-right">

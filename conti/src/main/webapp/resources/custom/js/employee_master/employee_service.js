@@ -20,7 +20,8 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 			makeinActive : makeinActive,
 			registerSearch : registerSearch,
 			pagination_byPage : pagination_byPage,
-			fetchEmployeebyBranchid : fetchEmployeebyBranchid
+			fetchEmployeebyBranchid : fetchEmployeebyBranchid,
+			findrecord_count : findrecord_count
 			/*print : print*/
 	};
 	
@@ -282,5 +283,23 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
     	return deferred.promise;
     }
     // --------------------------- Pagination end ------------------------------//    
+    
+    //----------------------  Recourd count users begin ----------------------------- //
+    function findrecord_count() {
+    	
+        var deferred = $q.defer();
+        $http.get('employee_record_count/')
+            .then(
+            function (response) {
+                deferred.resolve(response.data);
+            },
+            function(errResponse){
+                console.error('Error while fetching Users record count');
+                deferred.reject(errResponse);
+            }
+        );
+        return deferred.promise;
+    }
+    //----------------------  Record Count users end ----------------------------- //
     
 }]);

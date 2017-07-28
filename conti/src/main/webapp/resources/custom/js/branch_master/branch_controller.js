@@ -496,10 +496,33 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     	
     }
     //-------------------------- Make inActive end ----------------------//   
+    
+    
+//-------------------------- Record Count begin -----------------------//
+	
+	function findrecord_count() {
+		
+		BranchService.findrecord_count()
+		.then(
+				function (record_count) {
+					console.log(record_count);
+					$scope.totalnof_records  = record_count;
+				}, 
+				function (errResponse) {
+					console.log('Error while fetching record count');
+				}
+			);
+		
+	}
+	
+	//-------------------------- Record Count end -----------------------//  
+    
+    
    
  //-------------------------- Pagnation begin -----------------------//
     
-    function pagination() {
+    function pagination() 
+    {
         
     	$scope.pageSize = $scope.shownoofrec;
     	console.log($scope.pageSize);
@@ -510,8 +533,21 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 		
 		$scope.nextDisabled = false;
 		$scope.previouseDisabled = true;
+		if( self.Filterbranches.length <= 10 ) {
+			$scope.nextDisabled = true;
+		} 
+		
+		if( self.Filterbranches.length < 100 ) {
+			$scope.totalnof_records  = self.Filterbranches.length;
+			//findrecord_count();
+		} else {
+			findrecord_count();
+		}
 					
     }
+    
+    
+    
     
     $scope.paginate = function(nextPrevMultiplier) {
 
@@ -563,28 +599,37 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     
  //---------------------------- Pagination begin ---------------------------------------//
     
-    $scope.firstlastPaginate = function (page) {
+    $scope.firstlastPaginate = function (page) 
+    {
     	 
-    	BranchService.pagination_byPage(page)
-		.then(
-				function (filterBranch) {
-					
-					console.log(filterBranch);
-					
-					self.Filterbranches = filterBranch;
-				}, 
-				function (errResponse) {
-					console.log('Error while fetching branches');
-				}
-			);
-    	
-    	if( page == 1 ) {
+    	if( page == 1 ) { // first
     		$scope.currentPage = 0;
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = false;
-    	} else {
+    		self.Filterbranches = self.branches.slice($scope.currentPage*$scope.pageSize);
+    		fetchAllBranches();
+    	} else { // last
+    		
+    		$scope.currentPage = ((Math.ceil(self.Filterbranches.length/$scope.pageSize)) - 1 );
     		$scope.previouseDisabled = false;
     		$scope.nextDisabled = true;
+    		
+    		self.Filterbranches = self.branches.slice($scope.currentPage*$scope.pageSize);
+    		console.log(self.Filterbranches.length);
+    		if(self.Filterbranches.length == 0) 
+    		{
+    			BranchService.pagination_byPage(page)
+        		.then(
+        				function (filterBranch) {
+        					self.Filterbranches = filterBranch;
+        				}, 
+        				function (errResponse) {
+        					console.log('Error while fetching Branch');
+        				}
+        			);
+    		}
+    		
+    		
     		
     	}
     }
@@ -594,15 +639,28 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     
  //-------------------------------- Show no of record begin ----------------------------------------//
     
-    function shownoofRecord() {    
+    function shownoofRecord() 
+    {    
     	$scope.pageSize = $scope.shownoofrec;
+    	self.Filterbranches = self.branches.slice($scope.currentPage*$scope.pageSize);
+    	if( self.Filterbranches.length <= $scope.pageSize ) 
+    	{
+    		$scope.previouseDisabled = true;
+    		$scope.nextDisabled = true;
+    	}
+    	else
+    	{
+    		//$scope.previouseDisabled=false;
+    		$scope.nextDisabled=false;
+    	}
     }
     //-------------------------------- Show no of record end ----------------------------------------//  
     
    
     
     //---------------------------- Register search begin ---------------------------------------//
-    function registerSearch(searchkey) {
+    function registerSearch(searchkey) 
+    {
     	if ( searchkey.length == 0 ) {
     		self.Filterbranches = self.branches;
     	}else if( searchkey.length > 3 ) {

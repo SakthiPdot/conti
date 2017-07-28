@@ -59,6 +59,7 @@ import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.RoleDao;
+import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
@@ -156,7 +157,7 @@ public class CustomerRestController
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = new Date();
 			
-//			try {
+		try {
 				customerModel.setObsolete("N");
 				customerModel.setActive("Y");
 				customerModel.setCreated_by(user_id);
@@ -174,10 +175,10 @@ public class CustomerRestController
 		        System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
 				return new ResponseEntity<Void> (headers, HttpStatus.CREATED);
 				
-//			} catch (Exception exception) {
-//				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
-//				return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
-//			}
+			} catch (Exception exception) {
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+				return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 			
 		}
 		/* ------------------------- Create a Customer end -------------------------------------  */
@@ -440,7 +441,7 @@ public class CustomerRestController
 		
 		//===========================To get all location for Customer search ================================
 		
-		@RequestMapping(value="getLocations4Customer/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+		@RequestMapping(value="getLocations4Search/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 		public ResponseEntity<Map<String,List<Location>>> fetchAllLocations4Customer(HttpServletRequest request,
 				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
 			
@@ -457,9 +458,10 @@ public class CustomerRestController
 		
 		//===========================To get all Branch for Customer search ================================
 		
-		@RequestMapping(value="getBranch4Customer/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-		public ResponseEntity<Map<String,List<BranchModel>>> fetchAllBranches4customer(HttpServletRequest request,
-				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+		@RequestMapping(value="getBranch4Search/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Map<String,List<BranchModel>>> fetchAllBranches4Search(HttpServletRequest request,
+				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException 
+		{
 			
 			List<BranchModel> branches = branchDao.searchbyeyBranchName(searchStr);
 
@@ -469,6 +471,41 @@ public class CustomerRestController
 			System.err.println(searchStr+"464644");
 			return new ResponseEntity<Map<String,List<BranchModel>>> (result,HttpStatus.OK);
 		}
+		
+		
+		/* ------------------------- Find record count begin ------------------------------------- */
+		
+		@RequestMapping(value = "/customer_record_count/", method = RequestMethod.GET)
+		public ResponseEntity<String> customerrecordCount(HttpServletRequest request) {
+			String username = userInformation.getUserName();
+			
+			try 
+			{
+				int userid = Integer.parseInt(userInformation.getUserId());	
+				User user = usersDao.get(userid);
+				List<User> userList = new ArrayList<User>();
+				if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) 
+				{
+					String rec_count = Integer.toString(customerDao.find_record_countforSA());
+					return new ResponseEntity<String> (rec_count, HttpStatus.OK);	
+				} 
+				else 
+				{
+					String rec_count = Integer.toString(customerDao.find_record_count());
+					return new ResponseEntity<String> (rec_count, HttpStatus.OK);	
+				}
+				
+			} 
+			catch (Exception exception) 
+			{
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+				return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+			
+		}
+		
+		/* ------------------------- Find record count end ------------------------------------- */
+		
 		
 	}
 	

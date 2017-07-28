@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.conti.master.employee.EmployeeMaster;
 import com.conti.master.product.Product;
+import com.conti.others.ConstantValues;
 
 
 /**
@@ -28,6 +29,8 @@ public class BranchDaoImpl implements BranchDao
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	ConstantValues constantVal = new ConstantValues();
+	
 	@Override
 	@Transactional
 	public List<BranchModel> getAllBranches() 
@@ -44,7 +47,7 @@ public class BranchDaoImpl implements BranchDao
 	{
 		sessionFactory.getCurrentSession().saveOrUpdate(branchModel);
 	}
-/*------------------------------- Get employee by id begin -----------------------*/
+/*------------------------------- Get branch by id begin -----------------------*/
 	
 	@Override
 	@Transactional
@@ -59,7 +62,7 @@ public class BranchDaoImpl implements BranchDao
 		return null;
 	}
 	
-	/*------------------------------- Get employee by id begin -----------------------*/
+	/*------------------------------- Get branch by id begin -----------------------*/
 	
 	
 	
@@ -69,6 +72,17 @@ public class BranchDaoImpl implements BranchDao
 		@SuppressWarnings("unchecked")
 		List<BranchModel> listBranch = (List<BranchModel>) sessionFactory.getCurrentSession()
 				.createQuery("from BranchModel where obsolete ='N' "
+						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
+				.list();
+		return listBranch;
+	}
+	
+	@Override
+	@Transactional
+	public List<BranchModel> getBranchesbyid(int id) {
+		@SuppressWarnings("unchecked")
+		List<BranchModel> listBranch = (List<BranchModel>) sessionFactory.getCurrentSession()
+				.createQuery("from BranchModel where obsolete ='N' and branch_id ="+ id+""
 						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
 				.list();
 		return listBranch;
@@ -101,7 +115,7 @@ public class BranchDaoImpl implements BranchDao
 		@SuppressWarnings("unchecked")
 		
 		List<BranchModel> listbranch = (List<BranchModel>) sessionFactory.getCurrentSession()
-		.createQuery("from BranchModel WHERE obsolete ='N' and branch_name LIKE '%" + search_key + "%'").list();
+		.createQuery("from BranchModel WHERE obsolete ='N' and active ='Y' and branch_name LIKE '%" + search_key + "%'").list();
 		return listbranch;
 		
 	}
@@ -131,6 +145,21 @@ public class BranchDaoImpl implements BranchDao
 		}
 		
 		return "NOTAVAILABLE";
+	}
+	
+	
+	@Override
+	@Transactional
+	public int find_record_countforSA() {
+		int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from EmployeeMaster WHERE obsolete = 'N'").uniqueResult()).intValue();
+		return rec_count;
+	}
+
+	@Override
+	@Transactional
+	public int find_record_count() {
+		int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from EmployeeMaster WHERE obsolete = 'N' AND user.role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'").uniqueResult()).intValue();
+		return rec_count;
 	}
 	
 }

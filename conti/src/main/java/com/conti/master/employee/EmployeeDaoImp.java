@@ -208,4 +208,18 @@ public class EmployeeDaoImp implements EmployeeDao {
 				.setFirstResult(from_limit).setMaxResults(to_limit).list();
 		return listEmployee;
 	}
+	
+	@Override
+	@Transactional
+	public int find_record_countforSA() {
+		int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from EmployeeMaster WHERE obsolete = 'N'").uniqueResult()).intValue();
+		return rec_count;
+	}
+
+	@Override
+	@Transactional
+	public int find_record_count() {
+		int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from EmployeeMaster WHERE obsolete = 'N' AND user.role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'").uniqueResult()).intValue();
+		return rec_count;
+	}
 }

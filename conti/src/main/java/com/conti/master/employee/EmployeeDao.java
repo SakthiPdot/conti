@@ -28,4 +28,6 @@ public interface EmployeeDao {
 	
 	public List<EmployeeMaster> searchbyeyEmpCategory(String searchkey);
 	public List<EmployeeMaster> searchbyeyEmpCategoryforSA(String searchkey);
+	public int find_record_countforSA();
+	public int find_record_count();
 }

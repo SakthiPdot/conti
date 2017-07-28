@@ -293,6 +293,37 @@
             margin-right: 10px;
 	}
 	
+	.discountval{
+	
+	   padding-left: 95px;
+	    margin-right: 50px; 
+	    margin-bottom:5px;
+	}
+	
+	.discountamount {
+		padding-left: 50px;
+		 margin-right: 100px;
+		  margin-bottom:5px;
+	}
+	    
+	    
+	.gstval{
+		padding-left: 125px; 
+		margin-right: 50px;
+		    margin-bottom: 10px;
+	}
+	
+	.sgstval{
+		padding-left: 25px;
+		 margin-right: 25px;
+		 margin-bottom: 10px;
+	}
+	 .igstval {
+	 	padding-left: 15px; 
+	 	margin-right: 25px;
+	 	margin-bottom: 10px;
+	 }  
+	    
 	     @media (max-width : 768px) {
 				.branchclass{
 					display:block;

@@ -7,20 +7,23 @@
   @Created_date_time July 24, 2017 3:31:53 PM
  * @Updated_date_time July 24, 2017 3:31:53 PM
  */
-contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','$window','ManifestService','ConfirmDialogService',function($scope,$http,$q,$timeout,$window,$ManifestService,ConfirmDialogService)
+contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','ManifestService','BranchService','ConfirmDialogService',function($scope,$http,$q,$timeout,ManifestService,BranchService,ConfirmDialogService)
 	{
-		var self=thid;
+		var self=this;
 		self.manifests=[];
-		self.Filtermanifest=[];
+		self.Filtermanifests=[];
+		self.branches=[];
 		self.manifest={};
 		self.heading="Master";
 		self.message=null;
-		self.submit=submit;
+//		self.submit=submit;
 		self.save='saveclose'
 		self.close=close;
-		self.clear=clear;
-		fetchAllManifest();
+		//self.clear=clear;
 		
+		
+		fetchAllManifest();
+		fetchAllBranches();
 		function reset()
 		{
 			self.manifest={};
@@ -44,6 +47,41 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','$win
 		//---------------------Customer Master drawer close end-----------
 		
 		
+		//-------------------------- Fetch All Branch begin ---------------------//	
 		
+		function fetchAllBranches() {
+			console.log("get all branches")
+			BranchService.fetchAllBranches()
+				.then(
+						function (branches) {
+							self.branches = branches;
+							console.log("get all branches "+self.branches)
+						}, 
+						function (errResponse) {
+							console.log('Error while fetching branches');
+						}
+					);
+		}
+		
+		//-------------------------- Fetch All Branch end ---------------------//	
+		
+		//-------------------------- Fetch All Manifest records Start ---------------------//
+		function fetchAllManifest() 
+		{
+			ManifestService.fetchAllManifest()
+				.then(
+						function (manifest) 
+						{
+							self.manifests = manifest;
+							self.Filtermanifests=self.manifests;
+							//pagination();
+						}, 
+						function (errResponse) {
+							console.log('Error while fetching manifest');
+						}
+					);
+		}
+		//-------------------------- Fetch All Manifest records end  ---------------------//
+
 	}
 	]);

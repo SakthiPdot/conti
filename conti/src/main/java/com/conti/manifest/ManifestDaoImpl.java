@@ -43,13 +43,13 @@ public class ManifestDaoImpl implements ManifestDao
 	
 	@Override
 	@Transactional
-	public List<ManifestModel> getAllManifest(int branch_id) 
+	public List<ManifestModel> getAllManifest(int manifest_origin) 
 	{
 		// TODO Auto-generated method stub
 		
 		@SuppressWarnings("unchecked")
 		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
-				.createQuery("from ManifestModel WHERE obsolete ='N' and branch_id = " + branch_id ).list();
+				.createQuery("from ManifestModel WHERE obsolete ='N' and manifest_origin ='"+manifest_origin+"'").list();
 		return listmanifest;
 		
 	}

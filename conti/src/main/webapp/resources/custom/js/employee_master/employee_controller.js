@@ -73,9 +73,11 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(
 					function (res) {
+						fetchAllEmployees();
 						self.save = "saveclose";
 		 	        	reset();
 		 	        	newOrClose();
+		 	        	
 					}
 				);
 	}
@@ -583,8 +585,6 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     	$scope.currentPage += (nextPrevMultiplier * 1);
     	self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
     	
-    	console.log(self.Filteremployees.length);
-    	
     	if(self.Filteremployees.length == 0) {
     		EmployeeService.pagination_byPage($scope.currentPage)
     		.then(
@@ -633,10 +633,16 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = false;
     		self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
-    		fetchAllUsers();
+    		fetchAllEmployees();
     	} else { // last
     		
-    		$scope.currentPage = ( (Math.round(self.Filteremployees.length/$scope.pageSize)) - 1 );
+    		/*if(self.Filteremployees.length < $scope.pageSize) {
+        		$scope.currentPage = ( (Math.ceil(self.Filteremployees.length/$scope.pageSize)) );    			
+    		} else {
+    			$scope.currentPage = ( (Math.ceil(self.Filteremployees.length/$scope.pageSize)) - 1 );
+    		}*/
+    		$scope.currentPage = ( (Math.ceil(self.Filteremployees.length/$scope.pageSize)) - 1 );
+    		
     		$scope.previouseDisabled = false;
     		$scope.nextDisabled = true;
     		
@@ -668,16 +674,20 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
    
     //-------------------------------- Show no of record begin ----------------------------------------//
     
-    function shownoofRecord() {    
+    function shownoofRecord() 
+    {    
     	
     	$scope.pageSize = $scope.shownoofrec;
-    	
     	self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
-    	
-    	
-    	if( self.Filteremployees.length < $scope.pageSize ) {
+    	if( self.Filteremployees.length <= $scope.pageSize )
+    	{
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = true;
+    	}
+    	else
+    	{
+    		//$scope.previouseDisabled=false;
+    		$scope.nextDisabled=false;
     	}
     }
     //-------------------------------- Show no of record end ----------------------------------------//  

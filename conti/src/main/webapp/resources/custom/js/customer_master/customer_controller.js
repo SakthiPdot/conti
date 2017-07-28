@@ -475,6 +475,29 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     }
     //-------------------------- Make inActive end ----------------------//   
     
+    
+//-------------------------- Record Count begin -----------------------//
+	
+	function findrecord_count() {
+		
+		CustomerService.findrecord_count()
+		.then(
+				function (record_count) {
+					console.log(record_count);
+					$scope.totalnof_records  = record_count;
+				}, 
+				function (errResponse) {
+					console.log('Error while fetching record count');
+				}
+			);
+		
+	}
+	
+	//-------------------------- Record Count end -----------------------//
+    
+    
+    
+    
     //-------------------------- Pagnation begin -----------------------//
     
     function pagination() {
@@ -488,6 +511,17 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 		
 		$scope.nextDisabled = false;
 		$scope.previouseDisabled = true;
+		
+		if( self.Filtercustomers.length <= $scope.pageSize  ) {
+			$scope.nextDisabled = true;
+		} 
+		
+		if( self.Filtercustomers.length < 100 ) {
+			$scope.totalnof_records  = self.Filtercustomers.length;
+			//findrecord_count();
+		} else {
+			findrecord_count();
+		}
 		
     }
     
@@ -538,28 +572,41 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     }
     
     
+  //-------------------------- Pagnation end -----------------------//	
     
-    
-    
-    $scope.firstlastPaginate = function (page) {
+  //---------------------------- Pagination begin ---------------------------------------//
+    $scope.firstlastPaginate = function (page) 
+    {
    	 
-    	CustomerService.pagination_byPage(page)
-		.then(
-				function (filterCust) {
-					self.Filtercustomers = filterCust;
-				}, 
-				function (errResponse) {
-					console.log('Error while fetching Customers');
-				}
-			);
-    	
-    	if( page == 1 ) {
+    	if( page == 1 ) 
+    	{
     		$scope.currentPage = 0;
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = false;
-    	} else {
+    		self.Filtercustomers = self.customers.slice($scope.currentPage*$scope.pageSize);
+    		fetchAllCustomers();
+    	} 
+    	else 
+    	{
+    		$scope.currentPage = ( (Math.ceil(self.Filtercustomers.length/$scope.pageSize)) - 1 );
+    		console.log("Count: "+$scope.currentPage );
     		$scope.previouseDisabled = false;
     		$scope.nextDisabled = true;
+    		
+    		self.Filtercustomers = self.customers.slice($scope.currentPage*$scope.pageSize);
+    		
+    		if(self.Filtercustomers.length == 0) 
+    		{
+    			CustomerService.pagination_byPage(page)
+        		.then(
+        				function (filterCust) {
+        					self.Filtercustomers = filterCust;
+        				}, 
+        				function (errResponse) {
+        					console.log('Error while fetching Customers');
+        				}
+        			);
+    		}
     		
     	}
     }
@@ -569,8 +616,21 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     
 //-------------------------------- Show no of record begin ----------------------------------------//
     
-    function shownoofRecord() {    
+    function shownoofRecord() 
+    {    
     	$scope.pageSize = $scope.shownoofrec;
+    	self.Filtercustomers=self.customers.slice($scope.currentPage*$scope.pageSize);
+    	if(self.Filtercustomers.length <= $scope.pageSize)
+    	{
+    		$scope.previouseDisabled=true;
+    		$scope.nextDisabled=true;
+    	}
+    	else
+    	{
+    		//$scope.previouseDisabled=false;
+    		$scope.nextDisabled=false;
+    	}
+    		
     }
     //-------------------------------- Show no of record end ----------------------------------------//  
     

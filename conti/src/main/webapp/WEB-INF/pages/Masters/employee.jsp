@@ -129,10 +129,10 @@
 									              selected-object="employeecategory"
 									              remote-url="empCategory/"
 						            			  remote_url-data-field="EmployeeMaster"
-									              
+									              match-class="highlight"
 									              search-fields="empcategory"
 									              title-field="empcategory"
-									              minlength="0"
+									              minlength="3"
 									              field-required="true"
 												  data-trigger="focus" data-toggle="popover" 
 												  data-placement="top" data-content="Please Enter Employee category"
@@ -162,7 +162,7 @@
 						              title-field="branch_name"
 									  match-class="highlight"
 									  initial-value="{{ctrl.employee.branchModel.branch_name}}"
-						              minlength="1"
+						              minlength="3"
 						              field-required="true"
 						              data-trigger="focus" data-toggle="popover" 
 						              data-placement="top" data-content="Please Enter Employee branch name"
@@ -206,7 +206,7 @@
 									              title-field="location_name,pincode"
 												  match-class="highlight"
 												 
-									              minlength="1"
+									              minlength="3"
 	   											  data-trigger="focus" data-toggle="popover" 
 	   											  data-placement="top" data-content="Please Enter Employee location"
 	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
@@ -597,7 +597,7 @@
 		                             Employees Register
 		                        </div>
 		                        <div class="panel-body">
-		                        	Sorry..! You have no authorized for view this master..!
+		                        	Sorry..! You are not authorized to view this master..!
 		                        </div>
 		                      </div>
                 		</div>

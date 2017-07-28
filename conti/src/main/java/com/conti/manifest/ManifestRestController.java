@@ -122,7 +122,7 @@ public class ManifestRestController
 	}
 		
 		
-		@RequestMapping( value = "/manifest", method = RequestMethod.GET)
+		@RequestMapping( value = "/manifest/", method = RequestMethod.GET)
 		public ResponseEntity<List<ManifestModel>> fetchAllManifest(HttpServletRequest request) 
 		{
 			userInformation = new UserInformation(request);
@@ -132,10 +132,12 @@ public class ManifestRestController
 			{
 				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 				List<ManifestModel> manifestModel = manifestDao.getAllManifest(Integer.parseInt(branch_id));
+				System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
 				if(manifestModel.isEmpty()) 
 				{
 					return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
-				} else 
+				}
+				else 
 				{
 					return new ResponseEntity<List<ManifestModel>> (manifestModel, HttpStatus.OK);	
 				}			

@@ -12,4 +12,8 @@ public interface VehicleDao {
 	
 	public List<VehicleMaster> searchbyVehicle(String search_key);
 	public List<VehicleMaster> getVehicleswithLimit(int branch_id, int from_limit, int to_limit, String order);
+
+	public List<VehicleMaster> searchbyVehicleType(String search_key);
+	public List<VehicleMaster> searchforVehicleType(String search_key);
+	
 }

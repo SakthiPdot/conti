@@ -13,10 +13,10 @@
     <!-- Bootstrap Styles-->
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
-    <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
+  <!--    <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" /> -->
 	
 	 <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
-	 
+	 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <!-- Custom Styles-->
@@ -53,24 +53,14 @@
       		  <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default panelMarginBottom">                            
-						<div class="panel-heading">							
-						</div>
+						
 						<div class="panel-body customer-font">
 						<b>Shipment</b>
 						</div>
                         </div>
                     </div>
               </div>
-                
-<!--                  <div class="demo-div "> -->
-<!--       <p>Default</p> -->
 
-<!--         <input type="text" class="input" id="J-demo-01"> -->
-
-       
-<!--     </div> -->
-                
-                
                 
               <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
@@ -96,17 +86,7 @@
               
               <div class="row">
               
-                <div class="col-md-12">
-              		<div class="col-md-4">
-              		</div>
-              		<div class="col-md-4">
-              		</div>
-              		<div class="col-md-4 branchclass">              			 
-                			 <span class="text-paddingwidth">LR No</span>	                	                                       
-                             <input type="text" class="form-control" placeholder="New Hide/ Existing Dispaly" disabled>
-                        
-              		</div>
-              	</div>
+                
               	
               	<div class="col-md-12">
               		<div class="col-md-4">
@@ -118,7 +98,7 @@
               			Shipment Date
               		</div>
               		
-              		<div class="col-md-3 branchclass">              			 
+              		<div class="col-md-3 branchclass">            			 
                 		                                        
                      
                       
@@ -160,11 +140,7 @@
               <div class="row">
               	
               	<div class="col-md-12">
-              		<!-- <div class="col-md-12 GenLeftRight">
-              			<div class="subhead">
-              			<b>Coimbatore (Branch Name)</b>
-              			</div>
-              		</div> -->
+              		
               		
               		<div class="col-md-12 GenLeftRight">
               			<div class="subhead">
@@ -192,6 +168,17 @@
                             		    </div>
                             		
                             
+                            		<div class="col-md-12 branchclass">
+                            			<span class="text-paddingwidth">From Branch</span>
+                            		    <select  class="form-control" >  
+                            		    	<option>-- Select --</option>
+                            		    	<option>Chennai</option>
+                            		    	<option>Bangalore</option>
+                            		    	<option>Coimbatore</option>
+                            		    </select>                          		    
+                            		    
+                            		</div>
+                            		
                             		<div class=" col-md-12 branchclass">
                             			<span class="text-paddingwidth"> Name </span>
                             		    <input type="text" class="form-control">                            		    
@@ -203,19 +190,6 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Mobile Number</span>
                             		    <input type="text" class="form-control" >                            		    
-                            		    
-                            		</div>
-                            	
-                            	
-                           
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Branch Name</span>
-                            		    <select  class="form-control" >  
-                            		    	<option>-- Select --</option>
-                            		    	<option>Chennai</option>
-                            		    	<option>Bangalore</option>
-                            		    	<option>Coimbatore</option>
-                            		    </select>                          		    
                             		    
                             		</div>
                             	
@@ -284,7 +258,7 @@
                             		    
                             		</div>
                             		
-                    		        <div class="col-md-12 col-sm-12 col-xs-12">
+                    		       <div class="col-md-12 col-sm-12 col-xs-12">
                     		        	<div class="col-md-6">
                     		        	
                     		        	</div>	
@@ -296,7 +270,6 @@
                     		        	</div>	
                     		        	                    		       
                                     </div>
-                                    
                                     
                             	
                         </div>
@@ -317,6 +290,17 @@
 	                            		    <input type="text" class="form-control searchbar" placeholder="Mobile No">                            		    
                             		    </div>
                           	
+                          		   <div class="col-md-12 branchclass">
+                            			<span class="text-paddingwidth">To Branch</span>
+                            		    <select  class="form-control" >  
+                            		    	<option>-- Select --</option>
+                            		    	<option>Chennai</option>
+                            		    	<option>Bangalore</option>
+                            		    	<option>Coimbatore</option>
+                            		    </select>                          		    
+                            		    
+                            		</div>
+                          	
                           	       <div class=" col-md-12 branchclass">
                             			<span class="text-paddingwidth"> Name </span>
                             		    <input type="text" class="form-control">                            		    
@@ -328,19 +312,6 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Mobile Number</span>
                             		    <input type="text" class="form-control" >                            		    
-                            		    
-                            		</div>
-                            	
-                            	
-                           
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Branch Name</span>
-                            		    <select  class="form-control" >  
-                            		    	<option>-- Select --</option>
-                            		    	<option>Chennai</option>
-                            		    	<option>Bangalore</option>
-                            		    	<option>Coimbatore</option>
-                            		    </select>                          		    
                             		    
                             		</div>
                             	
@@ -409,7 +380,7 @@
                             		    
                             		</div>
                             		
-                    		        <div class="col-md-12 col-sm-12 col-xs-12">
+                    		         <div class="col-md-12 col-sm-12 col-xs-12">
                     		        	<div class="col-md-6">
                     		        	
                     		        	</div>	
@@ -420,7 +391,7 @@
 		                                    </label>
                     		        	</div>	
                     		        	                    		       
-                                    </div>
+                                    </div> 
                           	
                         </div>
                     
@@ -563,6 +534,14 @@
                                 </table>
                             </div>                           
                           
+                          <div class="col-lg-12">
+                          
+                                    <button class="btn btn-primary "><i class="fa fa-plus-circle"></i></button>
+							 		<button class="btn btn-primary "><i class="fa fa-minus-circle"></i></button>
+							 		
+										 		
+						 </div>
+                          
                             
                           </div>
                    
@@ -624,7 +603,7 @@
                             
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Description</span>
-                            		    <textarea class="form-control" rows="7"> </textarea>                           		    
+                            		    <textarea class="form-control" rows="8"> </textarea>                           		    
                             		    
                             		</div>
                          </div>
@@ -656,14 +635,29 @@
                             		
                             	
                             		<div class="col-md-6 branchclass">
-                            			<span class="text-paddingwidth discountspace">Discount</span>
-                            		    <input type="text" class="form-control" >                            		    
-                            		 
-                            		</div> 
+                            		
+                            			<span class="text-paddingwidth discountspace ">Discount</span>
+                            		      
+                            		       <div class="form-group input-group discountval">
+					                              <input type="text" class="form-control  marginLeftSpace " 
+					                                 data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" required/>
+		                                            <span class="input-group-addon">%</span>
+		                                          
+		                                          
+		                                   </div>                            		    
+                            		
+                            	   </div> 
                             		
                             		<div class="col-md-6 branchclass">
-                            			<span class="text-paddingwidth">Total Value</span>
-                            		    <input type="text" class="form-control" disabled>                            		    
+                            			<span class="text-paddingwidth">Discount.Amount</span>
+                            		   
+                            		   <div class="form-group input-group discountamount">
+				                            
+				                            <input type="text" class="form-control " data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" disabled required/>
+	                                            <span class="input-group-addon" ><i class="fa fa-inr"></i></span>
+	                                          
+	                                          
+	                                    </div>                        		    
                             		    
                             		</div>                           		
                             		
@@ -674,19 +668,37 @@
                             		</div>
                             	
                             	    <div class="col-md-6 branchclass">
-                            			<span class="text-paddingwidth discountspace">CGST</span>
-                            		    <input type="text" class="form-control" disabled>                            		    
+                            			<span class="text-paddingwidth discountspace">CGST</span>                            		
+                            		    
+                            		       <div class="form-group input-group gstval">
+				                                <input type="text" class="form-control" 
+				                                     data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" disabled required/>
+	                                            <span class="input-group-addon" ><i class="fa fa-inr"></i></span>
+	                                      </div>                         		    
                             		    
                             		</div>
                             		
+                            		
                             		<div class="col-md-3 branchclass">
                             			<span class="text-paddingwidth">SGST</span>
-                            		    <input type="text" class="form-control" disabled>                            		    
-                            		    
+                            		                         		    
+	                            		    <div class="form-group input-group sgstval">
+					                            <input type="text" class="form-control" 
+					                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" disabled required/>
+		                                            <span class="input-group-addon" ><i class="fa fa-inr"></i></span>
+		                                    </div>  
                             		</div>
+                            		
                             		<div class="col-md-3 branchclass">
-                            			<span class="text-paddingwidth">IGST</span>
-                            		    <input type="text" class="form-control" disabled>                            		    
+                            			<span class="text-paddingwidth ">IGST</span>
+                            	
+                            		       <div class="form-group input-group igstval">
+				                             
+				                              <input type="text" class="form-control" 
+				                                data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" disabled required/>
+	                                            <span class="input-group-addon" ><i class="fa fa-inr"></i></span>
+	                                    
+	                                     </div>                         		    
                             		    
                             		</div>
                             	                        	
@@ -725,7 +737,7 @@
                        <div class="col-lg-12">
                        
                        <div class="col-lg-6">
-                       	<button type="button" class="btn btn-danger pull-right"><i class="fa fa-times"></i>  Clear</button>
+                       	<button type="button" class="btn btn-danger pull-right"><i class="fa fa-ban"></i>  Clear</button>
                        </div>
                        
                        <div class="col-lg-6">
@@ -790,7 +802,7 @@
   
   
 	
-    <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script> 
+  <!--   <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>  -->
     <script src=" resources/custom/js/date-time-picker.min.js" ></script>
     <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>

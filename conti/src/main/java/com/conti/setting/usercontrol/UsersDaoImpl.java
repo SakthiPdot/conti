@@ -129,7 +129,9 @@ class UsersDaoImpl implements UsersDao {
 		public List<User> getAllUsers() {
 			@SuppressWarnings("unchecked")
 			List<User> listUser = (List<User>) sessionFactory.getCurrentSession()
-					.createQuery("from User where obsolete = 'N'").list();
+					.createQuery("from User where obsolete = 'N' "
+					+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
+					.list();
 			return listUser;
 		}						
 

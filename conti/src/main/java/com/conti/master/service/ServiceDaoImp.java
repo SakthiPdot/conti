@@ -81,4 +81,19 @@ public class ServiceDaoImp implements ServiceDao {
 					.setFirstResult(from_limit).setMaxResults(to_limit).list();
 			return listServ;
 		}
+
+
+		@Override
+		@Transactional
+		public String checkServiceName(String name) {
+			@SuppressWarnings("unchecked")
+			List<ServiceMaster> ServiceList = sessionFactory.getCurrentSession()
+					.createQuery("from ServiceMaster where obsolete = 'N' AND service_name IN ('" + name.toUpperCase()+ "', '" + name.toLowerCase()+"')").list();
+			
+			
+			if(!ServiceList.isEmpty()&& ServiceList!=null) {
+				return "AVAILABLE";
+			}
+			return "NOTAVAILABLE";
+		}
 }
