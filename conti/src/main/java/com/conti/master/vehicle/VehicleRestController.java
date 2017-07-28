@@ -58,6 +58,20 @@ public class VehicleRestController {
 	UserInformation userInformation;
 	
 	
+	@RequestMapping(value = "checkVehicleRegNo",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> checkVehicleRegNo(@RequestBody String regno,HttpServletRequest request) {
+		String status = vehicleDao.checkVehicleRegno(regno.trim());
+		
+		if(status == "AVAILABLE") {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
+		
+		
+	}
+	
+	
 	@RequestMapping( value = "/vehicles/", method = RequestMethod.GET)
 	public ResponseEntity<List<VehicleMaster>> fetchAllVehicles(HttpServletRequest request) {
 		userInformation = new UserInformation(request);

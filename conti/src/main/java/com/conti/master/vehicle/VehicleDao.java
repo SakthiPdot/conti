@@ -16,4 +16,5 @@ public interface VehicleDao {
 	public List<VehicleMaster> searchbyVehicleType(String search_key);
 	public List<VehicleMaster> searchforVehicleType(String search_key);
 	
+	public String checkVehicleRegno(String SearchString);
 }

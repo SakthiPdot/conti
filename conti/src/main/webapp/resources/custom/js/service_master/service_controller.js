@@ -6,7 +6,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	
 	$("#screen_service").addClass("active-menu");
 	
-	$scope.nameWrong=false;
+	$scope.nameWrong =false;
 	
 	var self = this;
 	self.services = [];	
@@ -53,7 +53,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 		
 	self.checkServiceName = function checkServiceName(name) {
 				
-				console.log("SSSSSSSSS"+self.service.service_name,self.UpdateNotCheckServiceName);
+			
 				if(self.service.service_id != null && self.service.service_name == self.UpdateNotCheckServiceName) {
 					
 					$scope.nameWrong=false;
@@ -61,6 +61,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 					ServiceService.checkServiceName(name)
 						.then(function (response) {
 							if(response=="204"){
+								
 								$scope.nameWrong = true;
 								self.service.service_name = null;
 							} else {
