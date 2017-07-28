@@ -153,5 +153,22 @@ public class CustomerDaoImpl implements CustomerDao
 	}
 	
 	/*------------------------------- Get Customer records count end-----------------------*/
+	
+	
+/*------------------------------- Get Customer by id begin -----------------------*/	
+	
+	@Override
+	@Transactional
+	public List<CustomerModel> searchbyMobileno(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<CustomerModel> listcust = (List<CustomerModel>) sessionFactory.getCurrentSession()
+		.createQuery("from CustomerModel WHERE obsolete ='N' and customer_mobileno  LIKE '%" + search_key + "%'").list();
+		return listcust;
+		
+	}
+	
+	/*------------------------------- Get Customer  by id End -----------------------*/
 }
 
