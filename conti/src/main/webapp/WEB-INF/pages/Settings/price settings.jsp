@@ -78,7 +78,8 @@ data-ng-controller="priceSettingController as psctrl">
 											remote-url-data-field="Branch"
              								title-field="branch_name"
 											match-class="highlight"
-											minlength="1"											
+											minlength="1"												
+										    maxlength="30"										
 											input-class="form-control form-control-small"	
 											onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"								         
 								             initial-value="{{psctrl.priceSetting.branch.branch_name}}"
@@ -97,7 +98,8 @@ data-ng-controller="priceSettingController as psctrl">
 											remote-url-data-field="Service"
              								title-field="service_name"
 											match-class="highlight"
-											minlength="1"										
+											minlength="1"																						
+										    maxlength="30"									
 											input-class="form-control form-control-small"
 											onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 											initial-value="{{psctrl.priceSetting.service.service_name}}"
@@ -120,7 +122,8 @@ data-ng-controller="priceSettingController as psctrl">
 											remote-url-data-field="Product"
              								title-field="product_name"
 											match-class="highlight"
-											minlength="1" 
+											minlength="1" 																						
+										    maxlength="50"	
 											input-class="form-control form-control-small"	
 											onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"									
 								            data-trigger="focus" data-toggle="popover"
@@ -166,7 +169,8 @@ data-ng-controller="priceSettingController as psctrl">
 									 <input type="text" data-ng-disabled="!showTable" 
 									 onKeyPress="return CheckIsNumericAnddot(event,this.value)"
 								     data-trigger="focus" data-toggle="popover"
-								     id="defaultPrice"
+								     id="defaultPrice"								     
+									 maxlength="10"
 							    	 data-placement="top" data-content="Please Enter Default Price"	
 									 data-ng-model="psctrl.priceSetting.default_price" class="form-control"> 
 										
@@ -176,7 +180,8 @@ data-ng-controller="priceSettingController as psctrl">
 									data-ng-model="defaultHandlingChargeCheckBox" > &nbsp;&nbsp; 														
 									<span>Default Handling Charges</span>
 									 <input type="text" data-ng-disabled="!defaultHandlingChargeCheckBox"  
-									 onKeyPress="return CheckIsNumericAnddot(event,this.value)"
+									 onKeyPress="return CheckIsNumericAnddot(event,this.value)"									     
+								     maxlength="10"
 								     data-trigger="focus" data-toggle="popover"
 							    	 data-placement="top" data-content="Please Enter Handling Charge"	
 									 data-ng-model="psctrl.priceSetting.defaulthandling_charge" class="form-control">
@@ -218,6 +223,9 @@ data-ng-controller="priceSettingController as psctrl">
 		                                            data-ng-init="psdetails.priceSetting=psctrl.priceSetting">
 		                                           --> 
 		                                           <fieldset data-ng-disabled="!psdetails.edit "> 
+		                                           
+		                      
+										    
 	                                            	 <div angucomplete-alt 	  
 	                                            	 id="{{ 'branch' + $index }}"                                          	 
 														placeholder="Ex : Chennai" pause="0"
@@ -229,8 +237,10 @@ data-ng-controller="priceSettingController as psctrl">
 														match-class="highlight"
 														minlength="1"												
 														initial-value="{{psdetails.branch.branch_name}}" 
-														input-class="form-control form-control-small"														
-								            			data-trigger="focus" data-toggle="popover"
+														input-class="form-control form-control-small"
+														maxlength="30"
+														onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"														
+								            			data-trigger="focus" data-toggle="popover"															
 										    			data-placement="top" data-content="Please Enter Branch Name"											
 												    ></div>
 												    
@@ -244,7 +254,10 @@ data-ng-controller="priceSettingController as psctrl">
 		                                            <input type="text" 
 		                                            data-ng-disabled="!psdetails.edit "
 		                                            onKeyPress="return CheckIsNumericAnddot(event,this.value)" 
-		                                            class="form-control" data-ng-model="psdetails.ps_weightfrom">
+		                                            class="form-control" data-ng-model="psdetails.ps_weightfrom"		                                            													
+								            		data-trigger="focus" data-toggle="popover"
+								            		maxlength="8"															
+										    		data-placement="top" data-content="Please Enter Weight(From) Name">
 		                                            </td>
 		                                            
 		                                            
@@ -257,15 +270,22 @@ data-ng-controller="priceSettingController as psctrl">
 		                                            <input type="text" class="form-control" 
 		                                            data-ng-disabled="!psdetails.edit "
 		                                            onKeyPress="return CheckIsNumericAnddot(event,this.value)" 
-		                                            data-ng-model="psdetails.ps_weightto">
+		                                            data-ng-model="psdetails.ps_weightto"	                                            													
+								            		data-trigger="focus" data-toggle="popover"
+								            		maxlength="8"															
+										    		data-placement="top" data-content="Please Enter Weight(To) Name">
 		                                            </td>
 		                                            
 		                                            
 		                                            
 		                                            <td>
 		                                            <input type="text" class="form-control"
-		                                            data-ng-disabled="!psdetails.edit "
-		                                             onKeyPress="return CheckIsNumericAnddot(event,this.value)" data-ng-model="psdetails.ps_price">
+		                                            data-ng-disabled="!psdetails.edit "		                                                                      													
+								            		data-trigger="focus" data-toggle="popover"															
+										    		data-placement="top" data-content="Please Enter Price"
+		                                             onKeyPress="return CheckIsNumericAnddot(event,this.value)" 
+		                                             maxlength="10"
+		                                             data-ng-model="psdetails.ps_price">
 		                                            </td>
 		                                            
 		                                            
@@ -299,15 +319,16 @@ data-ng-controller="priceSettingController as psctrl">
                 <div class="row">
                 <div class="col-lg-6 col-md-6 col-xs-12 col-lg-offset-3 col-md-offset-3 text-center">
                 
-                	<div class="col-lg-3  col-md-6   col-xs-6 col-lg-offset-3 col-md-offset-2"  >
+              		<!-- <div class="col-lg-3  col-md-6   col-xs-6 col-lg-offset-3 col-md-offset-2"  > -->
                 		<button type="button" class="btn btn-danger text-center " data-ng-click="psctrl.formReset()" data-ng-show="!priceSettingForm.$pristine && (psctrl.priceSetting.pricesetting_id== null)"  ><i class="fa fa-eraser"></i>  Clear</button>
                 		<button type="button" class="btn btn-danger text-center " data-ng-click="psctrl.deletePriceSetting()" data-ng-show="psctrl.priceSetting.pricesetting_id!= null"><i class="fa fa-trash "></i>  Delete</button>
-                	</div>
-                	
-                	<div class="col-lg-3  col-md-4   col-xs-6 text-center ">
+                	<!-- </div> -->
+                	 
+                	<span >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 
+                	<!-- <div class="col-lg-3  col-md-4   col-xs-6 text-center "> -->
                 		<button type="submit" class="btn btn-success text-center"><i class="fa fa-floppy-o" aria-hidden="true"></i>
                 		<span id="saveButton"> Save</span></button>
-                	</div> 
+               		 <!--</div> --> 
                 	 
                 </div>
                 </div>
