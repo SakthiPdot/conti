@@ -12,7 +12,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ManifestModel 
 {
-	private int manifest_id,shipment_id,updated_by,created_by;
+	private int manifest_id,shipment_id,updated_by,created_by,manifest_origin,manifest_destination;
 	private String manifest_number,vehicle_number,driver_name,manifest_status,obsolate;
 	private String created_datetime,updated_datetime;
 	
@@ -26,6 +26,21 @@ public class ManifestModel
 		this.manifest_id = manifest_id;
 	}
 	
+	@Column(name = "MANIFEST_ORIGIN")
+	public int getManifest_origin() {
+		return manifest_origin;
+	}
+	public void setManifest_origin(int manifest_origin) {
+		this.manifest_origin = manifest_origin;
+	}
+	
+	@Column(name = "MANIFEST_DESTINATION")
+	public int getManifest_destination() {
+		return manifest_destination;
+	}
+	public void setManifest_destination(int manifest_destination) {
+		this.manifest_destination = manifest_destination;
+	}
 	@Column(name = "SHIPMENT_ID")
 	public int getShipment_id() {
 		return shipment_id;

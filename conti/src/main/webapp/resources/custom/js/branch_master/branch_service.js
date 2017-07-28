@@ -277,6 +277,10 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 	        );
 	        return deferred.promise;
 	    }
-	    //----------------------  Record Count users end ----------------------------- //  
+	    //----------------------  Record Count users end ----------------------------- //
+	    
+	    
+	   
+	    
 
 }]);

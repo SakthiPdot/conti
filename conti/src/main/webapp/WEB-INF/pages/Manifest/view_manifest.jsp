@@ -27,11 +27,37 @@
 	
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
 	  <link href="resources/custom/css/custom.css" rel="stylesheet">
+	  
+	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
+	 
+	 <link href="resources/custom/css/demo.css" rel="stylesheet">
+<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="resources/custom/js/app.js"></script>
 </head>
 
 
-<body style="overflow-x:hidden;">
+<body style="overflow-x:hidden;" data-ng-app="contiApp" data-ng-controller="ManifestController as ctrl">
  
+<!-- ------------------------- Overlay for message begin ------------------ -----  -->
+	<div class="overlay hideme"></div>
+<!-- ------------------------- Overlay for message end ------------------ -----  -->	
+<!-- ------------------------- Success message begin ------------------ -----  -->
+	<div class="success hideme">
+		<i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
+	</div>
+<!-- ------------------------- Success message end ------------------ -----  -->
+<!-- ------------------------- Failure message begin ------------------ -----  -->	
+	<div class="failure hideme">
+		<i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<!-- <span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span> -->
+	</div>
+<!-- ------------------------- Failure message end ------------------ -----  -->
+ 		
 	
 	<jsp:include page="../Dashboard/nav.jsp"/>
 	
@@ -98,21 +124,18 @@
                 			     <div class="col-lg-12 noPaddingLeft"> 
                 			      <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">From</span>
-                			      		<select class="form-control">
-                			      			<option>--Select--</option>
-                			      			<option>Coimbatore</option>
-                			      			<option>Chennai</option>
-                			      			<option>Bangalore</option>
+                			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches" data-ng-model="ctrl.manifest.frombranch">
+                			      		
+                			      			<option value="">--Select--</option>
+                			      			
                 			      		</select>
                 			      </div>
                 			      
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">To</span>
-                			      		<select class="form-control">
-                			      			<option>--Select--</option>
-                			      			<option>Coimbatore</option>
-                			      			<option>Chennai</option>
-                			      			<option>Bangalore</option>
+                			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches" data-ng-model="ctrl.manifest.tobranch">
+                			      			<option value=''>--Select--</option>
+                			      			
                 			      		</select>
                 			      </div>
                 			      </div>
@@ -122,25 +145,31 @@
                 			      
                 			      <div class="col-lg-12 noPaddingLeft"> 
                 			        <div class="sec-padding">Specific Period</div>
+                			         
                 			         <div class="col-lg-3 branchclass">
 	                			      		 <span class="paddingtop">From  </span>   	                                       
 	                                          <div class="form-group input-group marginleftrightspace">
-					                                <input type="text" class="form-control"/>
+					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.manifest.fromdate"
+					                           			  data-trigger= "focus"data-toggle="popover" data-placement="top"
+					                            		 data-content="Please select from date"/>
+					                            
 		                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 		                                            </span>
 		                                          
 		                                     </div>
 	                                  </div>
                 			      
-                			       <div class="col-lg-3 branchclass">
+                			         <div class="col-lg-3 branchclass">
                 			      		<span class="paddingtop">To</span>
-                			      		  <div class="form-group input-group spacemarginleftright">
-				                                <input type="text" class="form-control"/>
+                			      		  <div class="form-group input-group marginleftrightspace">
+				                                <input type="text" class="form-control datepicker2" data-ng-model="ctrl.manifest.todate"
+													  data-trigger= "focus"data-toggle="popover" data-placement="top"
+					                            		data-content="Please select to date"/>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                            </span>
 	                                          
 	                                     </div>
-                			      </div>
+                			         </div>
                 			      
                 			      <div class="col-lg-2">
                 			      </div>
@@ -221,26 +250,26 @@
                             
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
-                                        <tr>
-                                            <th><input type="checkbox"></th>
-                                            <th>S.No</th>
-                                            <th>Manifest</th>
-                                            <th>Origin</th>
-                                            <th>Destination</th>
-                                            <th>Manifest Status</th>
+                                        <tr data-ng-repeat = "manifest in ctrl.Filtermanifests | limitTo:pageSize"
+                                        	>
+                                            <th><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" data-ng-model="selectall"></th>
+                                            <th data-ng-show="setting_manifestnumber">Manifest Number</th>
+                                            <th data-ng-show="setting_manifestorigin">Origin</th>
+                                            <th data-ng-show="setting_manifestdestination">Destination</th>
+                                            <th data-ng-show="setting_manifeststatus">Manifest Status</th>
                                          
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>1</td>
-                                            <td>MANF9346</td>
-                                            <td>Coimbatore</td>
-                                            <td>Chennai</td>
-                                            <td>Status</td>
-                                            
-                                       </tr>
+                                        <tr data-ng-repeat = "manifest in ctrl.Filtermanifest | limitTo:pageSize"
+                                        	>
+                                            <th><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" data-ng-model="selectall"></th>
+                                            <th data-ng-show="setting_manifestnumber">{{manifest.manifest_number}}</th>
+                                            <th data-ng-show="setting_manifestorigin">{{manifest.manifest_origin}}</th>
+                                            <th data-ng-show="setting_manifestdestination">{{manifest.manifest_destination}}</th>
+                                            <th data-ng-show="setting_manifeststatus">{{manifest.manifest_status}}</th>
+                                         
+                                        </tr>
                                       </tbody>
                                 </table>
                             </div>
@@ -259,19 +288,49 @@
     </div>
     <!-- /. WRAPPER  -->
 
-
   
-     <!-- DATA TABLE SCRIPTS -->
-    <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
-     <script src="resources/custom/js/custom.js"></script>
-  	<script src="resources/custom/js/session.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
-    </script>
-         <!-- Custom Js -->
+    <script src="resources/custom/js/custom.js"></script>
+    <script src="resources/custom/js/manifest/manifest_controller.js"></script>
+    <script src="resources/custom/js/manifest/manifest_service.js"></script>
+    <script src="resources/custom/js/branch_master/branch_service.js"></script>
+
+  <script src="resources/custom/js/confirmDialog.js"></script>   
+  <script type="text/javascript" src="resources/custom/js/validation.js"></script>
+    <script>
+		$('[data-toggle="popover"]').popover();
+		$('.regSettings').click(function(e) {
+		    e.stopPropagation();
+		});
+
+   </script>
+
+    <script type="text/javascript">
+
+    function getDate(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        } 
+
+        if(mm<10) {
+            mm = '0'+mm
+        } 
+
+        today =  yyyy+'-'+mm+ '-'+ dd;
+        return today;
+    }
+	    $('.datepicker1').dateTimePicker({
+	        limitMax: getDate()
+	    });
+	    
+	    $('.datepicker2').dateTimePicker({
+	        limitMax: getDate()
+	    });
+        </script>
 
 </body>
 

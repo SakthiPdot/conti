@@ -14,7 +14,7 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 			fetchAllManifest:fetchAllManifest
 	};
 	
-	
+	return factory;
 	//-------------------------- Fetch All Manifest begin ---------------------//	
 	function fetchAllManifest() {
 		var deferred = $q.defer();
