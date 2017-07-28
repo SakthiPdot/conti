@@ -241,7 +241,7 @@ data-ng-controller="priceSettingRegisterController as psrctrl">
                                 </table>
                                 
                                 <!--====================pagination tab============================ -->
-                                		<div class="col-lg-6 col-lg-offset-3 " align="center">
+                                		
                                 		          
                                 <div class ="col-lg-6">
                                 	<div class="pull-left">
@@ -260,7 +260,6 @@ data-ng-controller="priceSettingRegisterController as psrctrl">
 										</div>
 										
 								</div>
-                            </div>
                         </div>
                     </div>
                 </div>
