@@ -28,6 +28,13 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 	
 	@Override
 	@Transactional
+	public int priceSettingCount() {
+		int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from PriceSetting WHERE obsolete = 'N'").uniqueResult()).intValue();
+		return rec_count;
+	}
+	
+	@Override
+	@Transactional
 	public void saveOrUpdate(PriceSetting priceSetting) {
 		sessionFactory.getCurrentSession().saveOrUpdate(priceSetting);
 	}
@@ -60,7 +67,7 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 	public PriceSetting getPriceSettingById(int priceSettingId) {
 		
 		List<PriceSetting> priceSettingList=sessionFactory.getCurrentSession()
-				.createQuery("from PriceSetting where pricesetting_id="+priceSettingId).list();
+				.createQuery("from PriceSetting where obsolete ='N' AND pricesetting_id="+priceSettingId).list();
 		
 		if(priceSettingList!=null && !priceSettingList.isEmpty()){
 			return priceSettingList.get(0);
@@ -75,7 +82,7 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 		priceSetting.setPricesetting_id(priceSettingId);
 		
 		sessionFactory.getCurrentSession().
-		createQuery("update PriceSetting  set obsolete='Y', active='N' where pricesetting_id="+priceSettingId )
+		createQuery("update PriceSetting  set obsolete='Y', active='N' AND where pricesetting_id="+priceSettingId )
 		.executeUpdate();
 	}
 
@@ -94,9 +101,16 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
-	public List<PriceSetting> searchByLocation(String searchString) {
+	public List<PriceSetting> searchByPriceSetting(String searchString) {
 		return sessionFactory.getCurrentSession()
-				.createQuery("from PriceSetting where obsolete ='N'").list();
+				.createQuery("from PriceSetting where obsolete ='N'"
+						+ "and branch.branch_name  LIKE '%"+searchString + "%'"
+						+ "OR service.service_name LIKE '%"+searchString+ "%'"
+						+ "OR product.product_name LIKE '%"+searchString+ "%'"
+						+ "OR product.product_Type LIKE '%"+searchString+ "%'"
+						+ "OR default_price LIKE '%"+searchString+ "%'"
+						+ "OR defaulthandling_charge LIKE '%"+searchString+ "%'"
+						).list();
 	}
 
 

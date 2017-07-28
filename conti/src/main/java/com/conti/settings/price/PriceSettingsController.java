@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -79,9 +80,10 @@ public class PriceSettingsController {
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
 
-	
 	@RequestMapping(value =  "price_settings", method = RequestMethod.GET)
-	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
+	public ModelAndView adminPage(HttpServletRequest request,@RequestParam(value="id", defaultValue = "0")int id) throws Exception {
+		
+		System.out.println("++ price setting "+id);
 		
 		HttpSession session = request.getSession();
 		
@@ -104,7 +106,19 @@ public class PriceSettingsController {
 			model.addObject("title", "Price Settings");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Settings/price settings");
-			model.addObject("saveOrNew", "NEW");
+			
+		
+			if(id==0){
+				model.addObject("saveOrNew", "NEW") ;
+			}else{
+				PriceSetting priceSetting=psDao.getPriceSettingById((int)id);
+				if(priceSetting!=null){
+					model.addObject("saveOrNew",id);
+				}else{
+					model.addObject("saveOrNew", "NEW") ;
+				}
+			}
+			
 			
 		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);
@@ -234,7 +248,69 @@ public class PriceSettingsController {
 			}
 	}
 	
-	//=================fetch price settign with id =====================================
+	//=================Update=====================================
+	@RequestMapping(value="priceSettingUpdate/{id}",method=RequestMethod.PUT,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+			public ResponseEntity<Void> priceSettingUpdate (@RequestBody PriceSetting priceSetting,
+					@PathVariable("id") long id,HttpServletRequest request ){
+				System.out.println("++ price setting "+id);
+				PriceSetting priceSettingFromDB=psDao.getPriceSettingById((int)id);
+				if(priceSettingFromDB==null){
+					return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+				}
+				
+				//intialize		
+				Date date = new Date();
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+				
+				//set variable
+				priceSetting.setUpdated_by(Integer.parseInt(request.getSession().getAttribute("userid").toString()));
+				priceSetting.setUpdated_datetime(dateFormat.format(date));
+		
+				try {
+					psDao.saveOrUpdate(priceSetting);
+					return new ResponseEntity<Void>(HttpStatus.OK);	
+				} catch (Exception e) {
+					loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+					e.printStackTrace();
+					return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+	}
+		
+	//=================DELETE price setting by ID =====================================
+	@RequestMapping(value="/priceSettingDelete/{id}",method=RequestMethod.DELETE,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> priceSettingDelete(@PathVariable("id") long id,
+			HttpServletRequest request){
+		
+		System.out.println("++ price setting "+id);
+		PriceSetting priceSetting=psDao.getPriceSettingById((int)id);
+		if(priceSetting==null){
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		}
+		
+		//intialize		
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+		
+		//set variable
+		priceSetting.setUpdated_by(Integer.parseInt(request.getSession().getAttribute("userid").toString()));
+		priceSetting.setUpdated_datetime(dateFormat.format(date));
+		priceSetting.setObsolete("Y");
+		priceSetting.setActive("N");
+		
+		try {
+			psDao.saveOrUpdate(priceSetting);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		
+	}
+	//=================fetch price setting with id =====================================
 	
 	@RequestMapping(value="/PriceSettingWithID/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PriceSetting> PriceSettingWithID(@PathVariable("id") long id){
@@ -252,11 +328,12 @@ public class PriceSettingsController {
 		if(priceDetailList!=null && !priceDetailList.isEmpty())
 			priceSetting.setPriceSettingDetail( priceDetailList);
 		
-		
+			
 		return new ResponseEntity<PriceSetting>(priceSetting,HttpStatus.OK);
 		
 	}
 	
 	//=================UPDATE =====================================
 	//priceSettingUpdate
+	
 }

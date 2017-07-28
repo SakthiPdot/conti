@@ -17,7 +17,8 @@ public interface  PriceSettingDao {
 	public PriceSetting getPriceSettingById(int priceSettingId);
 	public void deletePriceSettingById(int priceSettingId);
 	public List<PriceSetting> getPriceSettingWithLimit(int from ,int to ,String order);
-	public List<PriceSetting> searchByLocation(String searchString);
+	public List<PriceSetting> searchByPriceSetting(String searchString);
+	public int priceSettingCount();
 	
 }
      

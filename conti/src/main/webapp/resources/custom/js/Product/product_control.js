@@ -202,12 +202,15 @@ angular.module('contiApp').controller('productController',
 
 		
 		self.selectedProducts=[];
+		var size;
 		
-		if(!self.selectAllProduct){
-			self.selectedProducts=[];
+		if($scope.pageSize>self.FilteredProducts.length){
+			size=self.FilteredProducts.length;
+		}else{
+			size=$scope.pageSize;
 		}
 		
-		for(var i=0;i<$scope.pageSize;i++){
+		for(var i=0;i<size;i++){
 			self.FilteredProducts[i].select = self.selectAllProduct;
 			if(self.selectAllProduct){
 				self.selectedProducts.push(self.FilteredProducts[i]);
@@ -272,6 +275,7 @@ angular.module('contiApp').controller('productController',
 		
 		if(self.selectedProducts.length==0){
 			 selectOneRecord();
+			 hitController=false;
 		}else{
 			var loop=true;				
 				for(var i=0;i<self.selectedProducts.length;i++){
@@ -319,6 +323,7 @@ angular.module('contiApp').controller('productController',
 		
 		if(self.selectedProducts.length==0){
 			 selectOneRecord();
+			  hitController=false;
 		}else{
 			
 			var loop=true;

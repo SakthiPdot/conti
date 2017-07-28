@@ -101,7 +101,7 @@ public class LocationController {
 
 	}
 
-	
+	//=================PRINT=====================================
 	@RequestMapping(value="location_print",method=RequestMethod.POST)
 	public ModelAndView location_print(HttpServletRequest request,
 			@RequestParam("SelectedLocation") String SelectedLocation) throws IOException{
@@ -181,7 +181,7 @@ public class LocationController {
 		
 	}
 	
-	//======================================search product by 4 strings==========================================
+	//======================================search location by 4 strings==========================================
 		@RequestMapping(value = "searchLocation4String", method=RequestMethod.POST)
 		public ResponseEntity<List<Location>> searchProuct4String(@RequestBody String SearchString, HttpServletRequest request) {				
 				List<Location> locationList=locationDao.searchByLocation(SearchString) ;		
@@ -197,7 +197,7 @@ public class LocationController {
 	@RequestMapping (value="locationStaus/{status}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void>  LocationStatus(@RequestBody int[] idArray,@PathVariable("status") String status,HttpServletRequest request){
 		
-		System.out.println(status+"464644");		
+		System.out.println(status+"******status******");		
 		//intialize		
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
@@ -288,7 +288,7 @@ public class LocationController {
 	public ResponseEntity<Void> deleteLocation(@PathVariable("id") long id,
 			HttpServletRequest request){
 		
-		System.out.println("++ updating user "+id);
+		System.out.println("++ delete user "+id);
 		Location locationFromDb=locationDao.getLocationById((int)id);
 		
 		if(locationFromDb==null){

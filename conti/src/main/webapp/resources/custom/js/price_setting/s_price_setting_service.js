@@ -11,11 +11,30 @@ angular.module('contiApp').factory('priceSettingService',['$http','$q',function(
 	var factory={
 			savePS:savePS,
 			updatePS:updatePS,
-			fetchPSbyId:fetchPSbyId
+			fetchPSbyId:fetchPSbyId,
+			deletePriceSetting:deletePriceSetting
 	};
 		
 	return factory;
 	
+	
+	//=============================DELETE PRICE SETTING====================================
+	function deletePriceSetting(id){
+		var deferred=$q.defer();
+		$http({
+			method:'DELETE',
+			url:'priceSettingDelete/'+id,
+			headers:getCsrfHeader()			
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("delete failed");
+					deferred.reject(errResponse);
+				}
+				);
+		return deferred.promise;		
+	}
 	
 	//======================================fetch price setting (ID)======================================
 	function fetchPSbyId(id){
@@ -56,7 +75,7 @@ angular.module('contiApp').factory('priceSettingService',['$http','$q',function(
 		$http({
 			method:'PUT',
 			url:'priceSettingUpdate/'+id,
-			data:priceSettings,
+			data:priceSetting,
 			headers:getCsrfHeader()
 		})
 		.then(

@@ -823,6 +823,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 				findrecord_count();
 			}
 			
+			console.log(self.FilterUsers.length);
 	    }
 	    
 	    // --------------------------- Next page begin ------------------------  
@@ -877,11 +878,18 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    		$scope.currentPage = 0;
 	    		$scope.previouseDisabled = true;
 	    		$scope.nextDisabled = false;
-	    		fetchAllUsers();
+	    		
 	    		self.FilterUsers = self.users.slice($scope.currentPage*$scope.pageSize);
+	    		fetchAllUsers();
 	    	} else { // last
 	    		
-	    		$scope.currentPage = ( (Math.round(self.FilterUsers.length/$scope.pageSize)) - 1 );	    		
+	    		/*if(self.FilterUsers.length < 20) {
+	    			$scope.currentPage = ( (Math.round(self.FilterUsers.length/$scope.pageSize)) );	
+	    		} else {
+	    			$scope.currentPage = ( (Math.round(self.FilterUsers.length/$scope.pageSize)) - 1 );	
+	    		}*/
+	    		
+	    		$scope.currentPage = ( (Math.round(self.FilterUsers.length/$scope.pageSize)) - 1 );	
 	    		$scope.previouseDisabled = false;
 	    		$scope.nextDisabled = true;
 	    		
