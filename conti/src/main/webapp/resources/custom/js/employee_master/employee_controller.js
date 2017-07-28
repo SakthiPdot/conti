@@ -176,7 +176,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 		if(self.save== "saveclose" ){
 			 drawerClose('.drawer') ;
 		}
-		reset();
+		
 	}
 	
 	//-------------------------- Selected branch details end ---------------------//	
@@ -263,7 +263,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     	
 
     	
-    	if ( $("#branch_id").val() == "" || $("#branch_id").val() == null ){
+    	if ( $("#branch_id").val() == "" || $("#branch_id").val() == null || $("#branch_name_value").val() == "" || $("#branch_name_value").val() == null ){
     		
     		$("#branch_name_value").focus();
     		
@@ -271,12 +271,21 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     		
     		$("#empcategory_value").focus(); 
     		
-    	} else if ( $("#location_id").val() == "" || $("#location_id").val() == null ){
+    	} else if ( $("#location_id").val() == "" || $("#location_id").val() == null || $("#location_name_value").val() == "" || $("#location_name_value").val() == null ){
     		
-    		$("#branch_name_value").focus(); 
+    		$("#location_name_value").focus(); 
+    		
+    	} else if ( $(".datepicker1").val() == "" || $(".datepicker1").val() == null ){
+    		
+    		$(".datepicker1").focus(); 
     		
     		
-    	} else {
+    	} else if ( $(".datepicker2").val() == "" || $(".datepicker2").val() == null ){
+    		
+    		$(".datepicker2").focus(); 
+    		
+    		
+    	}else {
     		
     		if( self.employee.emp_id == null ) {
     			
@@ -320,10 +329,9 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     			 	    		self.employee.doj = $(".datepicker2").val();
     			 	    		
     			 	    		editEmployee(self.employee);  
-    			 	        	reset();
-    			 	        	window.setTimeout( function(){	 	        		
-    			 	        		newOrClose();
-    							},5000);
+    			 	    		reset();
+    			 	        	newOrClose();
+    			 	        	
     						}
     					);
     		}
@@ -581,7 +589,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     }*/
     
     $scope.paginate = function(nextPrevMultiplier) {
-
+    	$scope.selectall = false;
     	$scope.currentPage += (nextPrevMultiplier * 1);
     	self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
     	
@@ -627,7 +635,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
   //---------------------------- Pagination begin ---------------------------------------//
     
     $scope.firstlastPaginate = function (page) {
-    	
+    	$scope.selectall = false;
     	if( page == 1 ) { // first
     		$scope.currentPage = 0;
     		$scope.previouseDisabled = true;
