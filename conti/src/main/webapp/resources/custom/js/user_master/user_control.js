@@ -889,7 +889,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    			$scope.currentPage = ( (Math.round(self.FilterUsers.length/$scope.pageSize)) - 1 );	
 	    		}*/
 	    		
-	    		$scope.currentPage = ( (Math.round(self.FilterUsers.length/$scope.pageSize)) - 1 );	
+	    		$scope.currentPage = ( (Math.ceil(self.FilterUsers.length/$scope.pageSize)) - 1 );	
 	    		$scope.previouseDisabled = false;
 	    		$scope.nextDisabled = true;
 	    		
