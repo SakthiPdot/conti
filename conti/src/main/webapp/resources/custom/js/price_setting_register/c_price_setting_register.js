@@ -80,8 +80,7 @@ angular.module('contiApp').controller('priceSettingRegisterController',
 		    		$scope.nextDisabled = false;
 			    	self.filteredPriceSetting=self.priceSettingBackUp.slice($scope.currentPage*$scope.pageSize);
 		    	} else {
-		    		$scope.currentPage = ( (Math.ceil(self.filteredPriceSetting.length/$scope.pageSize)) - 1 );
-		    		
+		    		$scope.currentPage = ( (Math.ceil(self.filteredPriceSetting.length/$scope.pageSize)) - 1);		    		
 		    		console.log($scope.currentPage);
 		    		$scope.previouseDisabled = false;
 		    		$scope.nextDisabled = true;
