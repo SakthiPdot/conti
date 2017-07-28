@@ -507,6 +507,20 @@ public class CustomerRestController
 		/* ------------------------- Find record count end ------------------------------------- */
 		
 		
+	//===========================To get all Customer search by mobileno ================================
+		
+		@RequestMapping(value="fetchAllCustomer4Search/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Map<String,List<CustomerModel>>> fetchAllCustomer4Search(HttpServletRequest request,
+				@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException 
+		{
+			
+			List<CustomerModel> customers = customerDao.searchbyMobileno(searchStr);
+
+			 Map result = new HashMap();
+			 result.put("Customers", customers);
+			
+			return new ResponseEntity<Map<String,List<CustomerModel>>> (result,HttpStatus.OK);
+		}
 	}
 	
 	

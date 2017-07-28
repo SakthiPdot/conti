@@ -84,7 +84,7 @@ public class EmployeeController {
 
 			
 		} catch (Exception exception) {
-			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.LOGGER_STATUS_E, exception);
 		}
 		return model;
 

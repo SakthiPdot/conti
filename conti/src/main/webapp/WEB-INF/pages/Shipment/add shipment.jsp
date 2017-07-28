@@ -4,19 +4,31 @@
     uri="http://java.sun.com/jsp/jstl/core" 
 %>
 <%@ page isELIgnored="false" %> 
+<!DOCTYPE html>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib
+    prefix="c"
+    uri="http://java.sun.com/jsp/jstl/core" 
+%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
+<%@ page isELIgnored="false" %> 
 <%@page session="true"%>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
-    <!-- Bootstrap Styles-->
+       <!-- Bootstrap Styles-->
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
-  <!--    <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" /> -->
+    <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
 	
 	 <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
-	 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	 
     <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <!-- Custom Styles-->
@@ -25,23 +37,26 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	 <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+	 
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
-	  <link href="resources/custom/css/custom.css" rel="stylesheet">
-	   <link href="resources/custom/css/demo.css" rel="stylesheet">
-	  
-	   <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
-	   <style>
-	   .modal-body{
-	   height: 130px
-	   }
-	   </style>
-		<style>
-			
-		</style>
+	 <link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
+	 <link href="resources/custom/css/custom.css" rel="stylesheet">
+	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
+	 
+	 <link href="resources/custom/css/demo.css" rel="stylesheet">
+
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="resources/custom/js/app.js"></script>
 </head>
 
 
-<body style="overflow-x:hidden;">
+<body style="overflow-x:hidden;" data-ng-app = "contiApp" data-ng-controller = "ShipmentController as ctrl">
  
 	 <jsp:include page="../Dashboard/nav.jsp"/>
 	
@@ -66,7 +81,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
               	  <div class="col-md-6 col-sm-6 col-xs-6 GenLeftRight">
 	              <div  class="subHead">
-	               <b>Branch Name : Coimbatore</b>            
+	               <b>Branch Name : ${branch.branch_name}</b>            
 	              </div>
 	              
 	              <div  class="subHead">               
@@ -78,7 +93,7 @@
 	              </div>
 	              
 	              <div class="col-md-3 col-sm-4 col-xs-6">	              
-	              <b>Last LR No : LRNO 19417</b>	              
+	               <c:if test="${ lrno > 0 }"> <b>Last LR No : lrno   </b></c:if>     
 	              </div>
 	              
               </div>
@@ -105,8 +120,8 @@
                        		        <div class="form-group input-group">
 				                  
 				                  
-				                               <input type="text" class="form-control datepicker marginLeftSpace " id="" data-ng-model="ctrl.employee.dob"
-				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" required/>
+				                               <input type="text" class="form-control datepicker marginLeftSpace" data-ng-model="ctrl.shipment.shipment_date"
+				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-ng-disabled = "true" required/>
 	                                            <span class="input-group-addon" ><i class="fa fa-calendar" ></i>
 	                                            </span>
 	                                          
@@ -125,10 +140,10 @@
               		</div>
               		<div class="col-md-4 branchclass">              			 
                 			 <span class="text-paddingwidth">Payment Mode</span>	                	                                       
-                             <select class="form-control">
-                             	<option>--Select--</option>
-                             	<option>Cash</option>
-                             	<option>Credit</option>
+                             <select class="form-control" data-ng-options = "paymode for paymode in ['Cash','Credit']" data-ng-model = "ctrl.shipment.pay_mode" data-ng-change = "ctrl.changePaymentmode(ctrl.shipment.pay_mode)" 
+                             data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please select payment mode" required>
+                             	<option value="" disabled>--Select--</option>
+                             	
                              </select>
                         
               		</div>
@@ -164,61 +179,115 @@
                             			</div>
                             			<div class=" col-md-6 branchclass">
 	                            			<span class="searchcls"> Search </span>
-	                            		    <input type="text" class="form-control searchbar" placeholder="Mobile No">                            		    
+	                            		    <!-- <input type="text" class="form-control searchbar" onKeyPress="return CheckIsNumeric(event)" maxlength = "10"
+	                            		     data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter customer mobile number" placeholder="Mobile No"> -->
+	                            		     
+	                            		     <angucomplete-alt id="sender_search_mbl"
+									              placeholder="Ex : 9876543210"
+									              pause="100"
+									              selected-object="sender_search_mbl"
+									              remote-url="fetchAllCustomer4Search/"
+						            			  remote_url-data-field="Customers"
+									              match-class="highlight"
+									              search-fields="customer_mobileno"
+									              title-field="customer_mobileno"
+									              minlength="5"
+									              field-required="true"
+												  data-trigger="focus" data-toggle="popover" 
+												  data-placement="top" data-content="Please enter customer mobileno"
+												  onKeyPress="return CheckIsNumeric(event)"
+									              input-class="form-control form-control-small searchbar" style="width:100%">
+              							</angucomplete-alt>
+	                            		     
+	                            		     
                             		    </div>
                             		
                             
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">From Branch</span>
-                            		    <select  class="form-control" >  
-                            		    	<option>-- Select --</option>
-                            		    	<option>Chennai</option>
-                            		    	<option>Bangalore</option>
-                            		    	<option>Coimbatore</option>
-                            		    </select>                          		    
-                            		    
+                            		    <input type="text" class="form-control disabled" tabindex = "-1" id = "sender_branch_name" value = "${branch.branch_name}"/>                        		    
+                            		    <input type="hidden" class="form-control" id = "sender_branch_id" value = "${branch.branch_id}"/>
                             		</div>
                             		
                             		<div class=" col-md-12 branchclass">
-                            			<span class="text-paddingwidth"> Name </span>
-                            		    <input type="text" class="form-control">                            		    
+                            			<span class="text-paddingwidth"> Name <span class="required">*</span></span>
+                            		    <input type="text" class="form-control" maxlength="50"
+                            		    	data-ng-model = "ctrl.shipment.sender_customer.customer_name"
+                            		    	onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter customer name"
+											onKeyPress="return CheckIsNumeric(event)"	
+											placeholder = "Ex: Sachin"
+                            		    required />                            		    
                             		</div>
                             		
                            
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Mobile Number</span>
-                            		    <input type="text" class="form-control" >                            		    
+                            			<span class="text-paddingwidth">Mobile Number <span class="required">*</span></span>
+                            		    <input type="text" class="form-control" maxlength="10"
+                            		    	data-ng-model = "ctrl.shipment.sender_customer.customer_mobileno"
+                            		    	onKeyPress="return CheckIsNumeric(event)"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter customer mobileno"
+											onKeyPress="return CheckIsNumeric(event)"
+											placeholder = "Ex: 9876543210"
+                            		    required />  
                             		    
                             		</div>
                             	
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Address</span>
-                            		    <input type="text" class="form-control">                            		    
+                            			<span class="text-paddingwidth">Address line1 <span class="required">*</span></span>
+                            		   <input type="text" class="form-control" maxlength="50"
+                            		    	data-ng-model = "ctrl.shipment.sender_customer.customer_addressline1"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter customer address"
+											placeholder = "Ex: #111, Kamaraj street"
+                            		    required />                             		    
                             		    
                             		</div>
                             	
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Location</span>
-                            		    <select class="form-control" >
-                            		    	<option> -- Select --</option>
-                            		    	<option>Peelamedu</option>
-                            		    	<option>Ukkadam</option>
-                            		    	<option>TownHall</option> 
-                            		    </select>                           		    
+                            			<span class="text-paddingwidth">Address line2 </span>
+                            		   <input type="text" class="form-control" maxlength="50"
+                            		    	data-ng-model = "ctrl.shipment.sender_customer.customer_addressline2"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter customer address"
+											placeholder = "Ex: NGO Colony, Landmark: post office opp."
+                            		    required />                             		    
                             		    
+                            		</div>
+                            		
+                            		<div class="col-md-12 branchclass">
+                            			<span class="text-paddingwidth">Location <span class="required">*</span></span>
+                            		   <angucomplete-alt id="sender_location_name"
+									              placeholder="Ex : Coimbatore"
+									              pause="0"
+									              remote-url="getLocation4emp/"
+						             			  remote_url-data-field="Location"
+						             			  selected-object="sender_location_name"
+									              search-fields="location_name,pincode"
+									              title-field="location_name,pincode"
+												  match-class="highlight"
+												  minlength="3"
+	   											  data-trigger="focus" data-toggle="popover" 
+	   											  data-placement="top" data-content="Please enter & select location"
+	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
+									              input-class="form-control" style="width:100%">
+              							</angucomplete-alt>                          		    
+                            		     
                             		</div>
                             	
                             	
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">City</span> 
-                            		    <input type="text" class="form-control">                            		    
+                            			<input type="text" class="form-control disabled" tabindex = "-1" id = "sender_city"/>
                             		    
                             		</div>
                             	
@@ -226,7 +295,7 @@
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">State</span> 
-                            		    <input type="text" class="form-control" >                            		    
+                            		    <input type="text" class="form-control disabled" tabindex = "-1" id = "sender_state"/>
                             		    
                             		</div>
                             	
@@ -234,7 +303,7 @@
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Country</span>
-                            		    <input type="text" class="form-control" >                            		    
+                            		    <input type="text" class="form-control disabled" tabindex = "-1" id = "sender_country"/>
                             		    
                             		</div>
                             	
@@ -242,23 +311,35 @@
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Pincode</span>
-                            		    <input type="text" class="form-control" >                             		    
+                            		    <input type="text" class="form-control disabled" tabindex = "-1" id = "sender_pincode"/>
                             		    
                             		</div>
                             		
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Email</span>
-                            		    <input type="text" class="form-control" >                             		    
+                            		    <input type="text" class="form-control" maxlength="30"
+                            		    	data-ng-model = "ctrl.shipment.sender_customer.customer_email"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter customer email address"
+											placeholder = "Ex: sachin@gmail.com"
+                            		    required /> 
                             		    
                             		</div>
                             		
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">GSTIN Number</span>
-                            		    <input type="text" class="form-control" >                             		    
+                            		    <input type="text" class="form-control" maxlength="15"
+                            		    	data-ng-model = "ctrl.shipment.sender_customer.gstin_number"
+                            		    	onKeyPress="return CheckIsNumeric(event)"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter customer GSTIN no."
+											onKeyPress="return CheckIsAlphaNumeric(event)"
+											placeholder = "Ex: 11ABCDE1234F2Z5"
+                            		    required />                               		    
                             		    
                             		</div>
                             		
-                    		       <div class="col-md-12 col-sm-12 col-xs-12">
+                    		      <!--  <div class="col-md-12 col-sm-12 col-xs-12">
                     		        	<div class="col-md-6">
                     		        	
                     		        	</div>	
@@ -269,7 +350,7 @@
 		                                    </label>
                     		        	</div>	
                     		        	                    		       
-                                    </div>
+                                    </div> -->
                                     
                             	
                         </div>
@@ -287,52 +368,113 @@
                             			</div>
                             			<div class=" col-md-6 branchclass">
 	                            			<span class="searchcls"> Search </span>
-	                            		    <input type="text" class="form-control searchbar" placeholder="Mobile No">                            		    
+	                            		    <angucomplete-alt id="consignee_search_mbl"
+									              placeholder="Ex : 9876543210"
+									              pause="0"
+									              selected-object="consignee_search_mbl"
+									              remote-url="fetchAllCustomer4Search/"
+						            			  remote_url-data-field="Customers"
+									              match-class="highlight"
+									              search-fields="customer_mobileno"
+									              title-field="customer_mobileno"
+									              minlength="5"
+									              field-required="true"
+												  data-trigger="focus" data-toggle="popover" 
+												  data-placement="top" data-content="Please enter customer mobileno"
+												  onKeyPress="return CheckIsNumeric(event)"
+									              input-class="form-control form-control-small searchbar" style="width:100%">
+              								</angucomplete-alt>
                             		    </div>
                           	
                           		   <div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">To Branch</span>
-                            		    <select  class="form-control" >  
-                            		    	<option>-- Select --</option>
-                            		    	<option>Chennai</option>
-                            		    	<option>Bangalore</option>
-                            		    	<option>Coimbatore</option>
-                            		    </select>                          		    
+                            			<span class="text-paddingwidth">To Branch <span class="required">*</span></span>
+                            		    <angucomplete-alt id="consignee_branch_name" 
+								              placeholder="Ex : Coimbatore"
+								              pause="0"
+								              selected-object="consignee_branch_name"
+								              remote-url="getBranch4Employee/"
+								              remote_url-data-field="Branch"
+								              search-fields="branch_name"
+								              title-field="branch_name"
+											  match-class="highlight"
+								              minlength="3"
+								              data-trigger="focus" data-toggle="popover" 
+								              data-placement="top" data-content="Please enter & select branch name"
+								              onKeyPress="return CheckIsCharacter(event)"
+								              input-class="form-control form-control-small" style = "width: 100%">
+		              					</angucomplete-alt>                          		    
                             		    
                             		</div>
                           	
-                          	       <div class=" col-md-12 branchclass">
-                            			<span class="text-paddingwidth"> Name </span>
-                            		    <input type="text" class="form-control">                            		    
+                          	      <div class=" col-md-12 branchclass">
+                            			<span class="text-paddingwidth"> Name <span class="required">*</span></span>
+                            		    <input type="text" class="form-control" maxlength="50"
+                            		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_name"
+                            		    	onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter customer name"
+											onKeyPress="return CheckIsNumeric(event)"	
+											placeholder = "Ex: Dravid"
+                            		    required />                            		    
                             		</div>
                             		
                            
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Mobile Number</span>
-                            		    <input type="text" class="form-control" >                            		    
+                            			<span class="text-paddingwidth">Mobile Number <span class="required">*</span></span>
+                            		    <input type="text" class="form-control" maxlength="10"
+                            		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_mobileno"
+                            		    	onKeyPress="return CheckIsNumeric(event)"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter customer mobileno"
+											onKeyPress="return CheckIsNumeric(event)"
+											placeholder = "Ex: 9876543210"
+                            		    required />  
                             		    
                             		</div>
                             	
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Address</span>
-                            		    <input type="text" class="form-control">                            		    
+                            			<span class="text-paddingwidth">Address line1 <span class="required">*</span></span>
+                            		   <input type="text" class="form-control" maxlength="50"
+                            		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_addressline1"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter customer address"
+											placeholder = "Ex: #111, Kamaraj street"
+                            		    required />                             		    
                             		    
                             		</div>
                             	
-                            	
+	                            	<div class="col-md-12 branchclass">
+	                            			<span class="text-paddingwidth">Address line2 </span>
+	                            		   <input type="text" class="form-control" maxlength="50"
+	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_addressline2"
+	                            		    	data-trigger="focus" data-toggle="popover" 
+												data-placement="top" data-content="Please enter customer address"
+												placeholder = "Ex: NGO Colony, Landmark: post office opp."
+	                            		    required />                             		    
+	                            		    
+	                            		</div>
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Location</span>
-                            		    <select class="form-control" >
-                            		    	<option> -- Select --</option>
-                            		    	<option>Peelamedu</option>
-                            		    	<option>Ukkadam</option>
-                            		    	<option>TownHall</option> 
-                            		    </select>                           		    
+                            			<span class="text-paddingwidth">Location <span class="required">*</span></span>
+                            		    <angucomplete-alt id="consignee_location_name"
+									              placeholder="Ex : Coimbatore"
+									              pause="0"
+									              remote-url="getLocation4emp/"
+						             			  remote_url-data-field="Location"
+						             			  selected-object="consignee_location_name"
+									              search-fields="location_name,pincode"
+									              title-field="location_name,pincode"
+												  match-class="highlight"
+												  minlength="3"
+	   											  data-trigger="focus" data-toggle="popover" 
+	   											  data-placement="top" data-content="Please enter & select location"
+	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
+									              input-class="form-control" style="width:100%">
+              							</angucomplete-alt>                       		    
                             		    
                             		</div>
                             	
@@ -340,7 +482,7 @@
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">City</span> 
-                            		    <input type="text" class="form-control">                            		    
+                            			<input type="text" class="form-control disabled" tabindex = "-1" id = "consignee_city"/>
                             		    
                             		</div>
                             	
@@ -348,7 +490,7 @@
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">State</span> 
-                            		    <input type="text" class="form-control" >                            		    
+                            		    <input type="text" class="form-control disabled" tabindex = "-1" id = "consignee_state"/>
                             		    
                             		</div>
                             	
@@ -356,7 +498,7 @@
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Country</span>
-                            		    <input type="text" class="form-control" >                            		    
+                            		    <input type="text" class="form-control disabled" tabindex = "-1" id = "consignee_country"/>
                             		    
                             		</div>
                             	
@@ -364,23 +506,35 @@
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Pincode</span>
-                            		    <input type="text" class="form-control" >                             		    
+                            		    <input type="text" class="form-control disabled" tabindex = "-1" id = "consignee_pincode"/>
                             		    
                             		</div>
                             		
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Email</span>
-                            		    <input type="text" class="form-control" >                             		    
+                            		    <input type="text" class="form-control" maxlength="30"
+                            		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_email"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter customer email address"
+											placeholder = "Ex: dravid@gmail.com"
+                            		    required />                            		    
                             		    
                             		</div>
                             		
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">GSTIN Number</span>
-                            		    <input type="text" class="form-control" >                             		    
+                            		     <input type="text" class="form-control" maxlength="15"
+                            		    	data-ng-model = "ctrl.shipment.consignee_customer.gstin_number"
+                            		    	onKeyPress="return CheckIsNumeric(event)"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter customer GSTIN no."
+											onKeyPress="return CheckIsAlphaNumeric(event)"
+											placeholder = "Ex: 11ABCDE1234F2Z5"
+                            		    required />                              		    
                             		    
                             		</div>
                             		
-                    		         <div class="col-md-12 col-sm-12 col-xs-12">
+                    		         <!-- <div class="col-md-12 col-sm-12 col-xs-12">
                     		        	<div class="col-md-6">
                     		        	
                     		        	</div>	
@@ -391,7 +545,7 @@
 		                                    </label>
                     		        	</div>	
                     		        	                    		       
-                                    </div> 
+                                    </div>  -->
                           	
                         </div>
                     
@@ -413,13 +567,13 @@
                     		<div class="col-md-4">
                     			<span class="spanclass"><b>Bill To</b></span>
                     			<label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" checked><b>Sender</b>
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" data-ng-model = "ctrl.shipment.bill_to" value="Sender" data-ng-disabled= "ctrl.shipment.pay_mode=='Credit'" data-ng-required = "!ctrl.shipment.bill_to"><b>Sender</b>
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2"><b>Consignee</b>
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" data-ng-model = "ctrl.shipment.bill_to" value="Consignee" data-ng-disabled= "ctrl.shipment.pay_mode=='Credit'" data-ng-required = "!ctrl.shipment.bill_to" ><b>Consignee</b>
                                             </label>  
-                    		     </div>
-                    		
+                    		 </div>
+
                     		<div class="col-md-3">
                     		</div>
                             	
@@ -449,11 +603,10 @@
                         
                                     <div class="col-md-12">
                                     	<div class=" col-md-6 branchclass">
-	                            			<span class="text-paddingwidth"> Status </span>
-	                            		    <select class="form-control"> 
-	                            		    	<option>-- Select --</option>
-	                            		    	<option>Booked</option>
-	                            		    </select>                           		    
+	                            			<span class="text-paddingwidth"> Status <span class="required">*</span></span>
+	                            		   <select class="form-control" data-ng-options = "status for status in ['Booked']" data-ng-model = "ctrl.shipment.status"
+				                             data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please select status" required>
+				                           </select>                          		    
                             		    </div>
 	                            		<div class="col-md-6">
 	                            		</div>
@@ -461,11 +614,18 @@
                                     
                             		
                                     <div class="col-md-12">
-                                    	<div class="col-md-6 branchclass">
-	                            			<span class="text-paddingwidth">No.of Parcel</span>
-	                            		    <input type="text" class="form-control" >                            		    
+                                    	<div class=" col-md-6 branchclass">
+                            		    <span class="text-paddingwidth">No.of Parcel <span class="required">*</span></span>
+	                            		    <input type="text" class="form-control" maxlength="4"
+	                            		    	data-ng-model = "ctrl.shipment.numberof_parcel"
+	                            		    	onKeyPress="return CheckIsNumeric(event)"
+	                            		    	data-trigger="focus" data-toggle="popover" 
+												data-placement="top" data-content="Please enter number of parcel"
+												onKeyPress="return CheckIsNumeric(event)"
+												placeholder = "Ex: 100"
+	                            		    required />  
                             		    </div>
-	                            		<div class="col-md-6">
+	                            		<div classTo Branch="col-md-6">
 	                            		</div>
                                     </div>
                                     
@@ -496,48 +656,32 @@
                                         
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>1</td>
-                                            <td>Box</td>
-                                            <td>Small Box</td>
-                                            <td>Length</td>
-                                            <td>Width</td>
-                                            <td>Height</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>25</td>
-                                            <td>75</td>
+                                        <tr data-ng-repeat = "product in ctrl.products track by $index">
+                                            <td><input type="checkbox" data-ng-model = "product.selected" ></td>
+                                            <td>{{$index + 1}} <input type = "text" data-ng-model = "product.product_id" /> </td>
+                                            <td> <input type = "text" data-ng-model = "product.product_name" /> </td>
+                                            <td> <input type = "text" data-ng-model = "product.product_type" /> </td>
+                                            <td> <input type = "text" data-ng-model = "product.product_height" /> </td>
+                                            <td> <input type = "text" data-ng-model = "product.product_width" /> </td>
+                                            <td> <input type = "text" data-ng-model = "product.product_length" /> </td>
+                                            <td> <input type = "text" data-ng-model = "product.product_weight" /></td>
+                                            <td> <input type = "text" data-ng-model = "product.product_quantity" /> </td>
+                                            <td> <input type = "text" data-ng-model = "product.product_unitprice" /> </td>
+                                            <td> <input type = "text" data-ng-model = "product.product_totalprice" /> </td>
                                      
                                         </tr>
                                         <tr>
-                                              <td></td>
-                                              <td> <a href="" data-toggle="modal" data-target="#myModal" style="text-decoration: none !important;"> Add HSN Details</a></td>
-                                        	
+                                            <td colspan = "11"> <a href="" data-toggle="modal" data-target="#myModal" style="text-decoration: none !important;"> Add HSN Details</a></td>                                        	
                                         </tr>
                                         
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>2</td>
-                                            <td>Box</td>
-                                            <td>Small Box</td>
-                                            <td>Length</td>
-                                            <td>Width</td>
-                                            <td>Height</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>25</td>
-                                            <td>75</td>
-                                     
-                                        </tr>
                                    </tbody>
                                 </table>
                             </div>                           
                           
                           <div class="col-lg-12">
                           
-                                    <button class="btn btn-primary "><i class="fa fa-plus-circle"></i></button>
-							 		<button class="btn btn-primary "><i class="fa fa-minus-circle"></i></button>
+                                    <button class="btn btn-primary " data-ng-click = "ctrl.addProduct()"><i class="fa fa-plus-circle"></i></button>
+							 		<button class="btn btn-primary " data-ng-click = "ctrl.removeProduct()"><i class="fa fa-minus-circle"></i></button>
 							 		
 										 		
 						 </div>
@@ -761,7 +905,7 @@
                                             <h4 class="modal-title" id="myModalLabel">HSN Details</h4>
                                         </div>
                                         
-                                        <div class="modal-body">
+                                        <div class="modal-body hsn-modal">
 										 	<div class="col-lg-6">
 										 		<span> HSN Code</span>
 												<input type="text" class="form-control">
@@ -799,26 +943,16 @@
     
     <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
-  
-  
-	
-  <!--   <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>  -->
-    <script src=" resources/custom/js/date-time-picker.min.js" ></script>
-    <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
+  <script src="resources/custom/js/shipment/shipment_controller.js"></script>
+  <script src="resources/custom/js/shipment/shipment_service.js"></script>
+  <script src="resources/custom/js/branch_master/branch_service.js"></script>
+  <script src="resources/custom/js/custom.js"></script>
+  <script src="resources/custom/js/confirmDialog.js"></script>   
+  <script type="text/javascript" src="resources/custom/js/validation.js"></script>
 
-     <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
-     
-    </script>
-    <script>
-    $(".hide").hide();
-    </script>
- <script>
-            $('.datepicker').dateTimePicker();
-        </script>
+<script>
+	$('[data-toggle="popover"]').popover();
+</script>
 </body>
 
 </html>
