@@ -97,6 +97,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 				.then(
 							function (res) {
+								fetchAllVehicles();
 								self.save = "saveclose";
 								reset();
 								newOrClose();
@@ -279,6 +280,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				self.heading = self.vehicle.vehicle_regno;
 				$('#branch_id').val(JSON.stringify(self.vehicle.branchModel));
 				$('#branch_name_value').val(self.vehicle.branchModel.branch_name);
+				$('#vehicle_type_value').val(self.vehicle.vehicle_type);
 				drawerOpen('.drawer');
 			}
 			
