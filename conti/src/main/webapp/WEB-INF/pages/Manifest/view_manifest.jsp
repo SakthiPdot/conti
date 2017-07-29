@@ -125,9 +125,7 @@
                 			      <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">From</span>
                 			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches" data-ng-model="ctrl.manifest.frombranch">
-                			      		
                 			      			<option value="">--Select--</option>
-                			      			
                 			      		</select>
                 			      </div>
                 			      
@@ -174,7 +172,7 @@
                 			      <div class="col-lg-2">
                 			      </div>
                 			      <div class="col-lg-4 branchclass">
-                			      		 <button class="btn btn-primary"> View Manifest</button>
+                			      		 <button class="btn btn-primary" data-ng-click="ctrl.manifestFilter()"> View Manifest</button>
                                   </div>
                 			        
                 			        
@@ -238,9 +236,65 @@
                               
                                 <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
-                                     <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
-                                      <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button>
-                                      <button type="button" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
+                                   
+                                   <form name="manifestPrint" method="POST" action="manifest_print" class="padding-button">
+                                     <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
+                                     	<div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
+                                     	
+										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_manifestnumber == true, 'fa-times': setting_manifestnumber == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_manifestnumber=true" data-ng-model="setting_manifestnumber" /> Manifest Number
+											</label>
+										</div>
+										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_manifestorigin == true, 'fa-times': setting_manifestorigin == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_manifestorigin=true" data-ng-model="setting_manifestorigin" /> Origin
+											</label>
+										</div>
+										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_manifestdestination == true, 'fa-times': setting_manifestdestination == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_manifestdestination=true" data-ng-model="setting_manifestdestination" /> Destination
+											</label>
+										</div>
+										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_manifestvehicle == true, 'fa-times': setting_manifestvehicle == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_manifestvehicle=true" data-ng-model="setting_manifestvehicle" /> Vehicle Number
+											</label>
+										</div>
+										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_manifestdriver == true, 'fa-times': setting_manifestdriver == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_manifestdriver=true" data-ng-model="setting_manifestdriver" /> Driver Name
+											</label>
+										</div>
+										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_manifeststatus == true, 'fa-times': setting_manifeststatus == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_manifeststatus=true" data-ng-model="setting_manifeststatus" /> Manifest Status
+											</label>
+										</div>
+										
+											
+																		
+									</div>
+										<a type="button" class="btn btn-primary" onclick="location.href='downloadExcelManifest';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                                      	  <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_manifest.length == 0" ><i class="fa fa-print fa-lg"></i></button>
+	                                      <input type = "hidden" name = "cust" value = "{{ctrl.selected_manifest}}" />
+	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										</form>
+<!--                                      <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button> -->
+<!--                                       <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button> -->
+<!--                                       <button type="button" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button> -->
                                 	</div>
                                 </div>
                               </div>
@@ -250,29 +304,41 @@
                             
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
-                                        <tr data-ng-repeat = "manifest in ctrl.Filtermanifests | limitTo:pageSize"
+                                        <tr 
                                         	>
                                             <th><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" data-ng-model="selectall"></th>
                                             <th data-ng-show="setting_manifestnumber">Manifest Number</th>
                                             <th data-ng-show="setting_manifestorigin">Origin</th>
                                             <th data-ng-show="setting_manifestdestination">Destination</th>
+                                            <th data-ng-show="setting_manifestvehicle">Manifest Status</th>
+                                            <th data-ng-show="setting_manifestdriver">Manifest Status</th>
                                             <th data-ng-show="setting_manifeststatus">Manifest Status</th>
                                          
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr data-ng-repeat = "manifest in ctrl.Filtermanifest | limitTo:pageSize"
-                                        	>
-                                            <th><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" data-ng-model="selectall"></th>
-                                            <th data-ng-show="setting_manifestnumber">{{manifest.manifest_number}}</th>
-                                            <th data-ng-show="setting_manifestorigin">{{manifest.manifest_origin}}</th>
-                                            <th data-ng-show="setting_manifestdestination">{{manifest.manifest_destination}}</th>
-                                            <th data-ng-show="setting_manifeststatus">{{manifest.manifest_status}}</th>
+                                        <tr data-ng-repeat = "manifest in ctrl.Filtermanifests ">
+                                        	
+                                            <td><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" data-ng-model="selectall"></td>
+                                            <td data-ng-show="setting_manifestnumber">{{manifest.manifest_number}}</td>
+                                            <td data-ng-show="setting_manifestorigin">{{manifest.branchModel1.branch_name}}</td>
+                                            <td data-ng-show="setting_manifestdestination">{{manifest.branchModel2.branch_name}}</td>
+                                            <td data-ng-show="setting_manifestvehicle">{{manifest.vehicle_number}}</td>
+                                            <td data-ng-show="setting_manifestdriver">{{manifest.driver_name}}</td>
+                                            <td data-ng-show="setting_manifeststatus">{{manifest.manifest_status}}</td>
                                          
                                         </tr>
                                       </tbody>
                                 </table>
                             </div>
+                            
+                            	<div class ="col-lg-6">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
                             
                         </div>
                     </div>

@@ -1,10 +1,17 @@
 package com.conti.manifest;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonProcessingException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +19,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,6 +32,8 @@ import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.UsersDao;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 
 /**
  * @Project_Name conti
@@ -42,6 +53,9 @@ public class ManifestRestController
 	
 	@Autowired
 	private ManifestDao manifestDao;
+	
+	@Autowired
+	private CompanySettingDAO companySettingDAO;
 		
 	@Autowired
 	@Qualifier("sessionRegistry")
@@ -132,7 +146,7 @@ public class ManifestRestController
 			{
 				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 				List<ManifestModel> manifestModel = manifestDao.getAllManifest(Integer.parseInt(branch_id));
-				System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
+				
 				if(manifestModel.isEmpty()) 
 				{
 					return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
@@ -147,9 +161,70 @@ public class ManifestRestController
 				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
 				return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
 			}
+				
+				
+			
 		}
 
-	
+		
+		//======================================Excel begin==========================================
+		@RequestMapping(value="downloadExcelManifest",method=RequestMethod.GET)
+		public ModelAndView downloadExcelManifest()
+		{
+			String branch_id = userInformation.getUserBranchId();
+			List<ManifestModel> manifestList=manifestDao.getAllManifests(Integer.parseInt(branch_id));
+			return new ModelAndView("manifestExcelView","manifestList",manifestList);
+		}
+		
+//		@RequestMapping(value = "register_search_customer", method=RequestMethod.POST)
+//		public ResponseEntity<List<CustomerModel>> register_search_customer(@RequestBody String searchkey, HttpServletRequest request) 
+//		{
+//			
+//			List<CustomerModel> customerList = customerDao.searchbyeyCustomer(searchkey);
+//			return new ResponseEntity<List<CustomerModel>> (customerList, HttpStatus.OK);
+//		}
+		//======================================Excel end==========================================
+		
+		/* ------------------------- Print in Customer begin ------------------------------------- */	
+		@RequestMapping(value = "/Manifest_print", method = RequestMethod.POST)
+		public ModelAndView farmPrint(@RequestParam("cust") String manifest, HttpServletRequest request) throws JsonProcessingException, IOException{
+
+			JSONArray jsonArray = new JSONArray(manifest);
+			String[] manifestid = new String[jsonArray.length()];
+			for(int i=0; i <jsonArray.length();i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				manifestid[i] = Integer.toString(jsonObject.getInt("manifest_id"));			
+			}
+			
+			List<ManifestModel> listManifest = new ArrayList<ManifestModel> ();
+			for(int i=0; i<manifestid.length;i++) {
+				ManifestModel manifestModel = manifestDao.getManifestbyId(Integer.parseInt(manifestid[i]));
+				listManifest.add(manifestModel);
+			}
+			Company company = companySettingDAO.getById(1);
+			ModelAndView model = new ModelAndView("print/manifest_print");
+
+			String base64DataString ="";
+			if(company!=null && company.getCompany_logo()!=null){
+				byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+				try {
+					 base64DataString = new String(encodeBase64 , "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+				}		
+			}else{
+				base64DataString = ConstantValues.NO_IMAGE;	
+			}
+			
+			model.addObject("title", "Customer");
+			model.addObject("company", company);
+			model.addObject("listCust", listManifest);
+			model.addObject("image",base64DataString);
+				
+			return model;
+		}
+		/* ------------------------- Print in Employee end ------------------------------------- */	
+
 	
 	
 	

@@ -97,7 +97,7 @@
 			                	<span>Branch Name<span style="color:red">&nbsp;*</span></span>			                	
 			                	<input type="text" class="form-control" maxlength="30" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
 			                	data-ng-model="ctrl.branch.branch_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Name"
-			                	data-ng-blur="ctrl.checkBranchName(ctrl.branch.branch_name)" >
+			                	data-ng-blur="ctrl.checkBranchName(ctrl.branch.branch_name)" required>
 			                	<span class="makeRed" data-ng-show="branchnamewrong">Branch name Already Existing..!<br><br></span>
 			                	
 			                	<span>Branch Code<span style="color:red">&nbsp;*</span></span>			                	
@@ -185,25 +185,30 @@
 		                
 		                <div class="col-lg-12">
 			                <div class="col-lg-6 content-body">
-			                	<span>LR Invoice No Prefix<span style="color:red">&nbsp;*</span></span>			                	
-			                	<input type="text" class="form-control" maxlength = "4" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.lrno_prefix" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Invoice no prefix" required />
-			                	
+			                	<span>LR Invoice No Prefix<span style="color:red">&nbsp;*</span></span>		
+			                	<div class="input-group">
+			                	<span class="input-group-addon"><span>L</span>	</span>		                	
+				                	<input type="text" class="form-control" maxlength = "4" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.lrno_prefix" 
+				                 	 data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Invoice no prefix" required />
+			                	</div>
 			                	
 			              
 			               </div>	
 			               
-			               <div class="col-lg-6 content-body">
-			                	<span>Receipt Invoice No Prefix<span style="color:red">&nbsp;*</span></span>			                	
-			                	<input type="text" class="form-control" maxlength = "4" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.receiptno_prefix" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Receipt number"  required/>
+			               <div class="col-lg-6 content-body  ">
+			                	<span>Receipt Invoice No Prefix<span style="color:red">&nbsp;*</span></span>
+			                	<div class="input-group">
+				                	<span class="input-group-addon"><span>R</span>	</span>		                	
+				                	<input type="text" class=" form-control" maxlength = "4" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.receiptno_prefix" 
+				                  	data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Receipt number"  required/>
+			                  	</div>
 			               </div>		                                
 		                </div>  
 		                               
 	                </div> 
 	                
 	           
-	                
+	                       
 	                
 	                            
 	             </div>
@@ -416,8 +421,8 @@
                                             <td data-ng-show="setting_branchname">{{branch.branch_name}}</td>
                                             <td data-ng-show="setting_branchcode">{{branch.branch_code}}</td>
                                             <td data-ng-show="setting_branchaddress">
-                                            	<div data-ng-if="branch.customer_addressline1!=null">{{branch.customer_addressline1}},</div>
-                                           		<div data-ng-if="branch.customer_addressline2!=null">{{branch.customer_addressline2}},</div>
+                                            	<div data-ng-if="branch.branch_addressline1!=null">{{branch.branch_addressline1}},</div>
+                                           		<div data-ng-if="branch.branch_addressline2!=null">{{branch.branch_addressline2}},</div>
                                            		<div data-ng-if="branch.location.location_name!=null">{{branch.location.location_name}},</div>
                                            		<div data-ng-if="branch.location.address.city!=null">{{branch.location.address.city}},</div>
                                            		<div data-ng-if="branch.location.address.district!=null">{{branch.location.address.district}},</div>

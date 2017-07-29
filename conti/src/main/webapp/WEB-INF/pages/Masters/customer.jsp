@@ -87,7 +87,7 @@
                  
                     <div class="row">
 			                <div class="col-lg-12 title_area">	                
-			              
+			              vl
 				          	<div class="col-lg-12 new-masters" >
 				          		 <b data-ng-="ctrl.customer.customer_id"> New Customer</b>	
 				          		 
@@ -183,11 +183,11 @@
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Company name" data-ng-required="ctrl.customer.gstin_number">
 			                   
 		                 	   <span>Address Line 1 <span style="color:red">&nbsp;*</span></span>	         
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline1"  maxlength="100" 
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline1"  maxlength="100" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line1	" required>
 			                   
 			                   <span>Address Line 2</span>
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline2"  maxlength="100" 
+			                   <input type="text" class="form-control" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline2"  maxlength="100" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line2	" >
 			             </div>         	
 			             </div>

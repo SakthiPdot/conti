@@ -10,9 +10,13 @@ package com.conti.manifest;
  */
 
 import com.conti.manifest.*;
+import com.conti.master.customer.CustomerModel;
+
 import java.util.List;
 public interface ManifestDao 
 {
 	public List<ManifestModel>getManifest(int branch_id);
 	public List<ManifestModel>getAllManifest(int branch_id);
+	public List<ManifestModel>getAllManifests(int branch_id);
+	public ManifestModel getManifestbyId(int id);
 }

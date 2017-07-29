@@ -112,7 +112,7 @@ $(document).ready(function() {
   function CheckIsCharacterWithspace(objEvt,str) {
 	  
       var charCode = (objEvt.which) ? objEvt.which : event.keyCode
-      if ((charCode < 33) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)|| (charCode=46)) {      
+      if ((charCode < 33) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)) {      
 
     	  if (str && charCode == 32) {
     		 if(str.endsWith(" ")){

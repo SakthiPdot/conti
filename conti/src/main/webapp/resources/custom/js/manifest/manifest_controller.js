@@ -16,10 +16,11 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.manifest={};
 		self.heading="Master";
 		self.message=null;
-//		self.submit=submit;
+		self.print = print;
+		//self.submit=submit;
 		self.save='saveclose'
 		self.close=close;
-		//self.clear=clear;
+		self.manifestFilter=manifestFilter;
 		
 		
 		fetchAllManifest();
@@ -82,6 +83,40 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 					);
 		}
 		//-------------------------- Fetch All Manifest records end  ---------------------//
+		
+		//-------------------------------------- Print begin -----------------------------//
+	    function print() {
+	    	if(self.selected_manifest.length == 0 ) {
+		   		self.message ="Please select atleast one record..!";
+				successAnimate('.failure');
+	    	} else {
+	    			
+	    		console.log(self.selected_manifest);
+	    		$http.get('http://localhost:8080/Conti/listprint');
+	    	}
+	    }
+	    
+	    //-------------------------------------- Print end -----------------------------//
+	    
+	  //------------------------- View Manifest Filter function start ------------------//   
+	    function manifestFilter() 
+	    {
+	    	ManifestService.ManifestFilter()
+	    	.then(
+	    			function(manifest)
+	    			{
+	    				self.Filtermanifests=manifest;
+	    			},
+	    			function(errResponse)
+	    			{
+	    				console.log('Error while filtering manifest records');
+	    			}
+	    		);
+	    	
+	        
+	    }
+	    //------------------------- View Manifest Filter function start ------------------//       
+	    
 
 	}
 	]);

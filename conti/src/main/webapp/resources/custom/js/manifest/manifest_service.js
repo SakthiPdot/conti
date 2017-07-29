@@ -12,6 +12,7 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 {
 	var factory={
 			fetchAllManifest:fetchAllManifest
+			//manifestFilter:manifestFilter
 	};
 	
 	return factory;
@@ -32,4 +33,24 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 		return deferred.promise;
 	}
 	//-------------------------- Fetch All Manifest end ---------------------//
+	
+	//-------------------------- Filter All Manifest based filter condition begin ---------------------//	
+//	function fetchAllManifest() {
+//		var deferred = $q.defer();
+//		$http.get('manifest_filter/')
+//			.then(
+//					function (response) {
+//						deferred.resolve(response.data);
+//						console.log(response.data);
+//					},
+//					function (errResponse) {
+//						console.log("Error while fetching Manifetst");
+//						deferred.reject(errResponse);
+//					}
+//				);
+//		return deferred.promise;
+//	}
+	//--------------------------  Filter All Manifest based filter condition end ---------------------//
+	
+	
 }]);
