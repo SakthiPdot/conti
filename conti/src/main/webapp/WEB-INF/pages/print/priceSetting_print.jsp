@@ -18,9 +18,10 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Location print</title>
+<title>Price Setting Print</title>
 </head>
 <body>
+
 
 <!--====================================================== Page=========================================-->
 			<div class="pure-g" style="height: 100%;">
@@ -35,9 +36,10 @@
 			        <iframe id="output"></iframe>
 			    </div>
 			</div>     	 
-<!--====================================================== page end=========================================-->		     	 
+<!--====================================================== page end=========================================-->		
 
-<h1>Location Master</h1>
+
+<h1>Price Setting Master</h1>
 <h5>(Print Preview)</h5>
 
 	<div class="col-lg-12">
@@ -65,8 +67,8 @@
 
 
 
-		
-			    <div id="companyname">${company.company_name}</div>
+
+				<div id="companyname">${company.company_name}</div>
 				<div id="area">${company.company_address1} ${company.company_address2}</div>
 				<div id="street">${company.location.location_name}</div>
 				<div id="city">${company.location.address.city}</div>
@@ -74,38 +76,36 @@
 				<div id="title">${title}</div>
 				<div id="logo">${image}</div>
 			
-			
 
-
-	<!--====================================================== Location table START=========================================-->
+	<!--====================================================== Product table START=========================================-->
         			<table id="basic-table">
 	               		<thead>	    
 	        				 <tr>
 	                            <th>S.No</th>
-	                            <th>Location Name</th>
-	                            <th>Location Code</th>	                                 
-	                            <th>Abbreviation</th>
-	                            <th>City</th>
-	                            <th>State</th>	 
-	                            <th>Pincode</th>
+	                            <th>From Branch</th>
+	                            <th>Service</th>	                                 
+	                            <th>Product</th>
+	                            <th>Product Type</th>
+	                            <th>Default Price</th>	 
+	                            <th>Default Handling Charges</th>
 	                        </tr>	                        
 	                    </thead>
 	                    <tbody>	                    
-	                    <c:forEach var="location" items="${locationList}" varStatus="loop">	                    
+	                    <c:forEach var="priceSetting" items="${priceSettingList}" varStatus="loop">	                    
 	                        <tr>
                               	<td><c:out value="${loop.count}" />
-                                <td>${location.location_name}</td>                   
-                               <td>${location.location_code}</td> 
-                               <td>${location.abbreviation}</td> 
-                               <td>${location.address.city}</td>                   
-                               <td>${location.address.state }</td>                                 
-                               <td>${location.pincode}</td>                      
+                                <td>${priceSetting.branch.branch_name}</td>                   
+                               <td>${priceSetting.service.service_name}</td> 
+                               <td>${priceSetting.product.product_name}</td> 
+                               <td>${priceSetting.product.product_Type}</td>                   
+                               <td>${priceSetting.default_price }</td>                                 
+                               <td>${priceSetting.defaulthandling_charge}</td>                      
                             </tr>                           
 	                      </c:forEach> 	                      
 	                    </tbody>
 	                </table>
 	                
-<!--====================================================== Location table END=========================================-->
+<!--====================================================== Product table END=========================================-->
 
 
 <!--====================================================== SCRIPTS START=========================================-->
@@ -135,12 +135,12 @@
         var doc = examples[funcStr]();
 
         doc.setProperties({
-            title: 'Conti: Location',
+            title: 'Conti: Price Setting',
             subject: 'Conti Master (' + funcStr + ')'
         });
 
         if (shouldDownload) {
-            doc.save('conti_Location.pdf');
+            doc.save('conti_price_setting.pdf');
         } else {
             document.getElementById("output").src = doc.output('datauristring');
         }

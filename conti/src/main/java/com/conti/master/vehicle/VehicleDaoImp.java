@@ -101,6 +101,19 @@ public class VehicleDaoImp implements VehicleDao  {
 						+ "AND vehicle_type LIKE '%" + search_key + "%' GROUP BY vehicle_type").list();
 		return listtype;
 	}
+
+	@Override
+	@Transactional
+	public String checkVehicleRegno(String regno) {
+		@SuppressWarnings("unchecked")
+		List<VehicleMaster> VehicleList = sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster where obsolete = 'N' AND vehicle_regno IN('" + regno.toUpperCase()+ "','" + regno.toLowerCase()+ "')").list();
+		if(!VehicleList.isEmpty()&& VehicleList!=null) {
+			return "AVAILABLE";
+		}
+		
+		return "NOTAVAILABLE";
+	}
 	
 	
 

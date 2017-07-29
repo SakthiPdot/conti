@@ -247,7 +247,7 @@
 			               <div class="col-lg-6 content-body">    
 			                   <span>Email <span class="required">*</span></span>
 			                   <input type="email" class="form-control" data-ng-model="ctrl.employee.emp_email" 
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee email id" required />
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" maxlength = "30" data-content="Please Enter Employee email id" required />
 			                 
 			                
 			           

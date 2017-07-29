@@ -93,8 +93,7 @@ angular.module('contiApp').controller('locationController'
 				var success=false;
 				
 				try{
-					if(
-							
+					if(							
 							item.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
 							item.location_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
 							item.abbreviation.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ||
@@ -132,12 +131,16 @@ angular.module('contiApp').controller('locationController'
 			function selectAll(){
 				
 				self.selectedLocation=[];
+				var size;
 				
-				if(!self.selectAllLocation){
-					self.selectedLocation=[];	
+				if($scope.pageSize>self.FilteredLocations.length){
+					size=self.filteredPriceSetting.length;
+				}else{
+					size=$scope.pageSize;
 				}
-			
-					for(var i=0;i<$scope.pageSize;i++){
+				
+				
+					for(var i=0;i<size;i++){
 						self.FilteredLocations[i].select=self.selectAllLocation;
 						if(self.selectAllLocation){
 							self.selectedLocation.push(self.FilteredLocations[i]);
@@ -185,6 +188,7 @@ angular.module('contiApp').controller('locationController'
 				
 				if(self.selectedLocation.length==0){
 					selectOneRecord();
+				    hitController=false;
 				}else{
 					var loop=true;	
 					for(var i=0;i<self.selectedLocation.length;i++){
@@ -227,6 +231,7 @@ angular.module('contiApp').controller('locationController'
 				
 				if(self.selectedLocation.length==0){
 					selectOneRecord();
+				    hitController=false;
 				}else{
 					var loop=true;	
 					for(var i=0;i<self.selectedLocation.length;i++){
@@ -432,7 +437,6 @@ angular.module('contiApp').controller('locationController'
 							//delete self.Locations[self.selectedRow];
 							var index=self.Locations.indexOf(self.selectedRow);
 							self.Locations.splice(index,1);
-
 							console.log(self.Locations);
 						},function(errResponse){
 							self.message = "Error While Deleting Location ("+locationName+") ..!";
@@ -471,8 +475,6 @@ angular.module('contiApp').controller('locationController'
 		    	
 		    	
 		    	if(self.FilteredLocations.length == 0) {
-		           	console.log("empty");
-		           	console.log($scope.currentPage);
 		           	LocationService.paginateFirstOrLast($scope.currentPage)		           	
 					.then(function (response) {
 						console.log(response);

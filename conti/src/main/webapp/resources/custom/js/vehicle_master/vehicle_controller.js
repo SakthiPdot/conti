@@ -2,6 +2,8 @@
 contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService', 'BranchService', 'ConfirmDialogService', function($scope, $timeout, VehicleService, BranchService, ConfirmDialogService){
 	
 	   $("#screen_vehicle").addClass("active-menu");	
+	   	
+	   $scope.nameWrong = false;
 	   
 		var self = this;
 		self.vehicles = [];
@@ -40,6 +42,41 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		fetchAllVehicles();
 		fetchAllBranches();
 		
+		
+	//============== Check Vehicle RegNo Function Begin ==============//
+		
+		self.checkVehicleRegno = function checkVehicleRegno(regno) {
+			
+			
+			
+			if(self.vehicle.vehicle_id != null && self.vehicle.vehicle_regno == self.UpdateNotCheckVehicleRegno) {
+			
+				$scope.nameWrong = false ;
+				
+			} else {
+				
+				VehicleService.checkVehicleRegno(regno)
+					.then(function (response) {
+						
+						if(response=="204") {
+							$scope.nameWrong = true;
+							
+							self.vehicle.vehicle_regno = null;
+						} else {
+							$scope.nameWrong = false;
+							
+						}
+						}, function(errResponse) {
+							$scope.nameWrong = false;
+							self.vehicle.vehicle_regno = null;
+							console.log("error checking name");
+						
+					});
+			}
+			
+		}
+		
+	//============== Check Vehicle RegNo Function End 
 		
 	//=================== Reset Function Begin =================//	
 		function reset () {
@@ -151,7 +188,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 	//================= Create/Save Vehicle Function End ==============//	
 			 
 			function submit() {
-				console.log("DSSAAAAAAAAAAAAAAAAAAAAAAAAAAAASSSSSSSS");
+				
 				if( $("#branch_id").val() == "" || $("#branch_id").val() == null){
 						$("#branch_name_value").focus();
 				
@@ -162,7 +199,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 					
 					if( self.vehicle.vehicle_id == null) {
 						
-						console.log("DSSSSSSSSSS");
+				
 						
 						self.confirm_title = 'Save';
 						self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
@@ -174,7 +211,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 									function (res) {
 										
 										self.vehicle.branchModel = JSON.parse($("#branch_id").val());
-										console.log("AAAA"+self.vehicle.branchModel);
+										
 										self.vehicle.vehicle_type = $("#vehicle_type_value").val();
 										console.log(self.vehicle);
 										createVehicle(self.vehicle);										
@@ -236,7 +273,9 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 	//=============== Update Vehicle Function Begin ============================//
 			
 			function updateVehicle(vehicle) {
-				self.vehicle = vehicle;				
+				self.vehicle = vehicle;	
+				$scope.nameWrong = false;
+				self.UpdateNotCheckVehicleRegNo = self.vehicle.vehicle_regno;
 				self.heading = self.vehicle.vehicle_regno;
 				$('#branch_id').val(JSON.stringify(self.vehicle.branchModel));
 				$('#branch_name_value').val(self.vehicle.branchModel.branch_name);

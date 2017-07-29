@@ -58,10 +58,6 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
  
 <div class="success hideme"><i class="fa fa-check-circle" aria-hidden="true"></i> {{locctrl.message}}</div>
 <div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{locctrl.message}}</div>
- 
- 
- 		
- 		
  		
  		<div class="drawer hideme ">
  		<form data-ng-submit="locctrl.submit()" class="formBottom" name="locationForm">
@@ -212,12 +208,12 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="locctrl.close('Cancel')"  > <i class="fa fa-times" aria-hidden="true"></i>
+							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="locctrl.close('Cancel')"  > <i class="fa fa-ban" aria-hidden="true"></i>
 							Cancel</button>
 						</div>
 						
 						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
-							<a id="" class="btnPadding btn btn-warning"	 data-ng-click="locctrl.deleteLocation()"  data-ng-show="!(locctrl.Location.location_id== null)" ><i class="fa fa-ban"  aria-hidden="true"></i> &nbsp;Delete</a> 
+							<a id="" class="btnPadding btn btn-warning"	 data-ng-click="locctrl.deleteLocation()"  data-ng-show="!(locctrl.Location.location_id== null)" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
 							
 							<a id="" class="btnPadding btn btn-primary"  data-ng-click="locctrl.resetForm()"  data-ng-show="!locationForm.$pristine && (locctrl.Location.location_id== null)"><i class="fa fa-eraser" aria-hidden="true"></i>
 							Clear</a>							
@@ -256,6 +252,9 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 								</div>
 							</div>
 						</div>
+						
+						
+						
 					</div>
 				</div>
             </div>

@@ -55,7 +55,7 @@ public class PriceSetting {
 	//@JsonIgnore
 	/*@OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER,mappedBy="priceSetting") */ 
 	@JoinColumn(name="pricesetting_id", referencedColumnName = "pricesetting_id",insertable=false, updatable=false)
-	@OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch = FetchType.EAGER)
 	@JsonManagedReference
 	public Set<PriceSettingDetail> getPriceSettingDetail() {
 		return this.PriceSettingDetail;
