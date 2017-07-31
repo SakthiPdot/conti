@@ -122,15 +122,17 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 
 							<div angucomplete-alt id="selectedProductType" pause="0"
 								data-trigger="focus" data-toggle="popover" data-placement="top"
-								data-content="Please Enter Product Type"
-								selected-object="product_type" local-data="proctrl.products"
+								data-content="Please Enter Product Type"								
+							    remote-url="getProductTypeByStr/"
+								remote-url-data-field="Product"											
+								selected-object="product_type" 
 								override-suggestions="true" placeholder="Eg.Box"
 								search-fields="product_Type" title-field="product_Type"
 								match-class="highlight"
 								initial-value="{{proctrl.product.product_Type}}" minlength="1"
 								input-class="form-control form-control-small"></div>
 
-
+				
 							<input type="hidden" class="form-control" maxlength="30"
 								onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 								data-trigger="focus" data-toggle="popover" data-placement="top"

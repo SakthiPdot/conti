@@ -7,14 +7,19 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.conti.address.AddressDao;
 import com.conti.address.AddressModel;
 import com.conti.config.SessionListener;
 import com.conti.master.product.Product;
@@ -57,6 +63,9 @@ public class LocationController {
 
 	@Autowired
 	private UsersDao usersDao;
+	
+	@Autowired
+	private AddressDao addressDao;
 	
 	@Autowired 
 	private LocationDao locationDao; 
@@ -280,6 +289,20 @@ public class LocationController {
 			e.printStackTrace();
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
+	}
+	
+	//=================GET ADDRESS USING TYPE BY STRING =====================================
+	@RequestMapping(value="getAddressTypeByStr/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String,List<AddressModel>>> getAddressTypeByStr(HttpServletRequest request,
+			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+		
+		List<AddressModel> address = addressDao.searchByAddressName(searchStr);
+
+		 Map result = new HashMap();
+		 result.put("Address", address);
+		
+		System.err.println(searchStr+"464644");
+		return new ResponseEntity<Map<String,List<AddressModel>>> (result,HttpStatus.OK);
 	}
 	
 	//=================DELETE LOCATION ID =====================================

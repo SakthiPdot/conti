@@ -134,6 +134,20 @@ public class ProductDaoImpl implements ProductDAO {
 
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Product> searchByProductTypeUnique(String searchString) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from Product  where product_Type is not null"
+						+ " and product_Type LIKE '%"+searchString+"%'"
+						+ " group by product_Type"											
+						).list();
+
+	}
+	
+	
 	@Override
 	@Transactional
 	public String checkProductName(String name) {

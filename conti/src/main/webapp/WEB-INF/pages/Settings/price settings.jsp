@@ -114,7 +114,6 @@ data-ng-controller="priceSettingController as psctrl">
 										    
 									 <span>Product<span style="color:red">&nbsp;*</span></span> 
 									<div angucomplete-alt id="selectedProduct"
-											maxlength="5"
 											placeholder="Ex : Box (Large)" 
 											pause="0"											
 											selected-object="product_name"
@@ -140,24 +139,7 @@ data-ng-controller="priceSettingController as psctrl">
 									placeholder="Ex : Box "										
 									 tabindex="-1" id="product_type" data-ng-model="psctrl.priceSetting.product.product_Type" />
 									
-									  <!--      <div angucomplete-alt
-							 					 id="selectedProductType" 
-									              placeholder="Ex : Coimbatore"
-									              pause="0"		 data-ng-required="true"
-		                  						  data-trigger="focus" data-toggle="popover"
-							 					  data-placement="top" data-content="Please Enter Product Type"	
-									              selected-object="city_name"
-									              local-data=""
-									              search-fields="city,state"
-									              title-field="city,state"
-												  match-class="highlight"
-												   onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
-												  initial-value="{{psctrl.Location.address.city}}"
-									              minlength="1"
-									              tabindex="-1"
-									              maxlength="50"
-									              input-class="form-control form-control-small disabled">
-									              </div>  -->
+								
 									              
 								</div>
 

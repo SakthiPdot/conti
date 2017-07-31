@@ -6,10 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -205,6 +203,20 @@ public class PriceSettingsController {
 			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
 		
 		List<Product> product = productDao.searchByProductName(searchStr);
+
+		 Map result = new HashMap();
+		 result.put("Product", product);
+		
+		System.err.println(searchStr+"464644");
+		return new ResponseEntity<Map<String,List<Product>>> (result,HttpStatus.OK);
+	}
+	
+	//=================GET PRODUCT USING TYPE BY STRING =====================================
+	@RequestMapping(value="getProductTypeByStr/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String,List<Product>>> getProductTypeByStr(HttpServletRequest request,
+			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+		
+		List<Product> product = productDao.searchByProductTypeUnique(searchStr);
 
 		 Map result = new HashMap();
 		 result.put("Product", product);

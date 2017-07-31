@@ -441,8 +441,7 @@ angular.module('contiApp').controller('locationController'
 						},function(errResponse){
 							self.message = "Error While Deleting Location ("+locationName+") ..!";
 							successAnimate('.failure');
-						});	
-				
+						});					
 				});
 			}
 			
