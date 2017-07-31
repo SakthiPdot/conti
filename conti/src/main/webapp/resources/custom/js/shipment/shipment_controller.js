@@ -120,20 +120,27 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//---------------------------------- Declare Product Detailed begin
 	
-	self.products = [];
+	//------------------------------------------------------------- ADD SHIPMENT DETAILED TABLE BEGIN----------------------------------------
+	self.shipment.products  = [];
 	
 	//--------------------------------------------- add Product begin
+	self.disable_add_product = true;
+	self.disable_save = true;
 	self.addProduct = function (product) {
-		self.products.push({
-			'product_id' : 0,
+		self.shipment.products.push({
+			/*'product_id' : 0,
+			'product_name' : null,
 			'product_type' : null,
-			'product_length' : 0,
-			'product_length' : 0,
-			'product_weight' : 0,
+			'max_height' : 0,
+			'max_width' : 0,
+			'max_length' : 0,
+			'max_weight' : 0,
 			'product_quantity' : 0,
 			'product_unitprice' : 0,
-			'product_totalprice' : 0
+			'product_totalprice' : 0*/
+
 		});
+		
 	}
 
 	self.addProduct();
@@ -143,15 +150,70 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	self.removeProduct = function () {
         var selectedProductList=[];
         $scope.selectedAll = false;
-        angular.forEach(self.products, function(selected){
+        angular.forEach(self.shipment.products, function(selected){
             if(!selected.selected){
             	selectedProductList.push(selected);
             }
         }); 
-        self.products = selectedProductList;
+        self.shipment.products = selectedProductList;
 	}
 	//--------------------------------------------- remove Product end
 	
-	//---------------------------------- Declare Product Detailed end
+	//----------------------------------------------------------------------- Declare Product Detailed end
 	
+	//--------------------------------------------- Compare quantity and no of parcel beging
+	self.checkQuantity = function () {
+		self.disable_add_product = false;
+		var quantity = 0;
+		var selected_quantity = 0;
+		for(var i = 0; i < self.shipment.products.length; i++) {
+			
+			selected_quantity = self.shipment.products[i].product_quantity;
+			
+			if(self.shipment.products[i].product_quantity == null || isNaN(self.shipment.products[i].product_quantity) ) {
+				selected_quantity = 0;
+			} 
+						
+			quantity = parseInt(selected_quantity) + parseInt(quantity);	
+			
+			if( quantity == self.shipment.numberof_parcel ) {
+				self.disable_add_product = true;
+				self.disable_save = false;
+			} else if( quantity > self.shipment.numberof_parcel ) {
+				self.disable_save = true;
+				self.confirm_title = 'Change No.of Parcel';
+				self.confirm_type = BootstrapDialog.TYPE_WARNING;
+				self.confirm_msg = self.confirm_title+ '?';
+				self.confirm_btnclass = 'btn-warning';
+				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+					.then(
+							function (res) {
+								self.shipment.numberof_parcel = quantity;
+								self.disable_add_product = true;
+								self.disable_save = false;
+							}, function (reject) {
+								self.shipment.products[i].product_quantity = null;
+							}
+						);
+				break;
+			} else {
+				self.disable_save = true;
+			}//  end else 
+			
+		} // end loop
+		
+		
+
+	}
+	//--------------------------------------------- Compare quantity and no of parcel end	
+
+	//------------------------------------------------------------- ADD SHIPMENT DETAILED TABLE END----------------------------------------
+	
+	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT BEGIN------------------------------------
+	
+	self.submit = function () {
+		console.log(self.shipment);
+	}
+	
+	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT END------------------------------------	
 }]);
