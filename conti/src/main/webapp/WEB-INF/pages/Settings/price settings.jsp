@@ -196,7 +196,7 @@ data-ng-controller="priceSettingController as psctrl">
 
  
   <!--====================================================== Dynamic table=========================================-->
-
+ 	
           <fieldset data-ng-disabled="showTable">
 			<div class="row">
                 <div class="col-lg-12 " >           	
@@ -295,7 +295,7 @@ data-ng-controller="priceSettingController as psctrl">
 	                                                   	 <button type="button" class="btn btn-primary"  data-ng-click="psdetails.edit =!psdetails.edit "><i class="fa fa-pencil-square-o fa-lg"></i>  Edit</button>
 	                                                    </div>
 	                                                    <div class="col-lg-6 col-md-6 text-center">
-	                                                   	 <button type="button" class="btn btn-danger" data-ng-click="psctrl.removePriceDetails($index,psdetails)"><i class="fa fa-trash fa-lg" ></i>  Delete</button>
+	                                                   	 <button type="button" class="btn btn-danger" data-ng-click="psctrl.removePriceDetails($index,psdetails.pricesettingdetail_id)"><i class="fa fa-trash fa-lg" ></i>  Delete</button>
 	                                                    </div>
 		                                            </div>
 		                                            </td>

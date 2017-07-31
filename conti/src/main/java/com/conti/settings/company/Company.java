@@ -28,23 +28,12 @@ public class Company {
 	
 	private int company_id,expct_deliverydate,company_apptimeout,created_by,updated_by;
 	private String company_name,company_address1,company_address2,
-	TIN_number,GST_number,company_email;
+	TIN_number,GST_number,company_email,Financial_year_from,Financial_year_to;
 	private  byte[] company_logo;
 	private String created_datetime,updated_datetime,HSN_code;
 	private float SGST,CGST,IGST;
 	private long company_landlineno,company_alternateno;
 	
-
-	
-	
-
-	
-
-
-
-
-
-
 	public Company() {
 	}
 
@@ -124,7 +113,16 @@ public class Company {
 	public long getCompany_alternateno() {
 		return this.company_alternateno;
 	}
-
+	
+	@Column(name="Financial_year_from")
+	public String getFinancial_year_from() {
+		return this.Financial_year_from;
+	}
+	
+	@Column(name="Financial_year_to")
+	public String getFinancial_year_to() {
+		return this.Financial_year_to;
+	}
 
 
 	@Column(name="company_name")
@@ -254,6 +252,14 @@ public class Company {
 		this.HSN_code = hSN_code;
 	}
 
+
+	public void setFinancial_year_from(String financial_year_from) {
+		this.Financial_year_from = financial_year_from;
+	}
+
+	public void setFinancial_year_to(String financial_year_to) {
+		this.Financial_year_to = financial_year_to;
+	}
 
 
 	

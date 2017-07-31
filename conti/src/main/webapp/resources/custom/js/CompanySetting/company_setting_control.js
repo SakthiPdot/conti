@@ -50,6 +50,8 @@ angular.module('contiApp')
 			    "updated_datetime": null,
 			    "tin_number": null,
 			    "gst_number": null,
+			    "financial_year_from":null,
+			    "financial_year_to":null,
 			    "sgst": null,
 			    "cgst": null,
 			    "igst":null,
@@ -133,15 +135,25 @@ angular.module('contiApp')
 	
 	self.submit=function ($event){
 		
+		
+
+		console.log(self.company);
 			  if ($('#locationId').val() == '' || $('#locationId').val() == null) {
 				  $('#selectedAddress_value').focus();
 				  console.log("inside if");
 				  console.log($('#locationId').val());
 				  console.log(JSON.parse($('#locationId').val()));
-			  }else{
-				  
+			  }else if ( $(".datepicker1").val() == "" || $(".datepicker1").val() == null ){		    		
+		    		$(".datepicker1").focus(); 		    		
+		    	} else if ( $(".datepicker2").val() == "" || $(".datepicker2").val() == null ){		    		
+		    		$(".datepicker2").focus(); 		    		
+		    	} 
+				  else{
+			 
 					self.company.location=JSON.parse($('#locationId').val());
-					
+			 		self.company.financial_year_from=$(".datepicker1").val();
+			 		self.company.financial_year_to= $(".datepicker2").val();
+			 		
 					if(self.company.company_id==null){
 						console.log("Company New Record");
 

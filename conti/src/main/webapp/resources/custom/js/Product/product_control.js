@@ -368,8 +368,9 @@ angular.module('contiApp').controller('productController',
 	function close(title){
 		ConfirmDialogService.confirmBox(title,
 				BootstrapDialog.TYPE_WARNING, title+" Without Save ..? ", 'btn-warning')
-		.then(function(response){
+		.then(function(response){	
 			 drawerClose('.drawer');
+			 fetchProducts();
 		});
 	}
 		

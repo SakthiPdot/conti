@@ -219,10 +219,10 @@ data-ng-controller="priceSettingRegisterController as psrctrl">
                                     
                                     
                                     <tbody>
-                                        <tr
+                                     <tr
                                         data-ng-dblclick="psrctrl.editPS(x.pricesetting_id)"
                                         data-ng-repeat='x in psrctrl.filteredPriceSetting | limitTo:pageSize  track by x.pricesetting_id'>
-                                            <td><input type="checkbox"
+                                         <td><input type="checkbox"
                                             data-ng-model="x.select"
                                             data-ng-click="psrctrl.selectPriceSetting(x)"></td> 
                                             <td data-ng-show="setting_FromBranch">{{x.branch.branch_name}}</td>

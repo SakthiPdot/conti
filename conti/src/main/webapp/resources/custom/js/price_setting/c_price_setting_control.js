@@ -31,7 +31,8 @@ angular.module('contiApp').controller('priceSettingController',
 		$('#selectedBranch_value').val(null);
 		$('#selectedService_value').val(null);
 		$('#selectedProduct_value').val(null);
-		
+
+		$('#branch0_value').val(null);
 		self.priceSetting.priceSettingDetail=[];
 		self.priceSetting.priceSettingDetail.push({
 		    "pricesettingdetail_id": null,
@@ -238,9 +239,23 @@ angular.module('contiApp').controller('priceSettingController',
 	}
 
 	//===================================remove price setting detail====================================
-	function removePriceDetails(index,priceSettingDetail){
-		console.log(index,priceSettingDetail);
-		self.priceSetting.priceSettingDetail.splice(index,1);
+	function removePriceDetails(index,id){
+		
+		if(self.priceSetting.priceSettingDetail.length>1){
+			console.log(index,id);	
+			self.priceSetting.priceSettingDetail.splice(index,1);
+			console.log(self.priceSetting.priceSettingDetail[index]);
+			
+			for(var i=0;i<self.priceSetting.priceSettingDetail.length;i++){
+				var detailIndex=self.priceSetting.priceSettingDetail.indexOf(self.priceSetting.priceSettingDetail[i]);
+				$("#branch"+detailIndex+"_value").val(self.priceSetting.priceSettingDetail[detailIndex].branch.branch_name);
+			}
+		
+		}else{
+
+	   		self.message ="Cannot delete this Row..!";
+			successAnimate('.failure');
+		}
 	}
 	
 	//======================================submit======================================

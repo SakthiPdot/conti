@@ -131,6 +131,7 @@ angular.module('contiApp').controller('locationController'
 			function selectAll(){
 				
 				self.selectedLocation=[];
+				
 				var size;
 				
 				if($scope.pageSize>self.FilteredLocations.length){
@@ -274,7 +275,8 @@ angular.module('contiApp').controller('locationController'
 						BootstrapDialog.TYPE_WARNING, title+" Without Save ..? ", 'btn-warning')
 				.then(function(response){
 					 drawerClose('.drawer') ;
-					 reset();
+					 fetchAllLocation();
+					 reset();					 
 				});
 			}
 			//===================================reset====================================
@@ -388,8 +390,6 @@ angular.module('contiApp').controller('locationController'
 										self.message = "Error While Updating Location ("+locationName+") ..!";
 										successAnimate('.failure');
 									});	
-					    			
-					    			
 					    		});	
 						}
 				  }

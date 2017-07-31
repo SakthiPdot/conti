@@ -58,6 +58,7 @@ public class CompanyController {
 	//=================Company setting page=====================================
 	@RequestMapping(value =  "company_settings", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request)  {
+
 		String username =request.getUserPrincipal().getName();				
 		ModelAndView model = new ModelAndView();		
 		try{
@@ -129,6 +130,8 @@ public class CompanyController {
 	@RequestMapping(value="/company/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	
 	public ResponseEntity<Company> getCompanyDetail(HttpServletRequest request,@PathVariable("id") long id){
+
+		System.out.println(request.getContextPath()+"============================ ");
 		
 		 System.out.println("Fetching User with id " + id);
 		Company company=companyDao.getById((int) id);

@@ -119,6 +119,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 							  onKeyPress="return CheckIsCharacterWithspace(event,this.value) "
 							  data-placement="top" data-content="Please Enter Abbreviation"
 			                  data-ng-model="locctrl.Location.abbreviation"
+			                    maxlength="50"
 			                   class="form-control">  
 			                   
 			                    
@@ -189,6 +190,8 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 			                  <input type="text" class="form-control"
 			                   data-ng-required="true"
 			                    data-trigger="focus" data-toggle="popover"
+			                    maxlength="8"
+			                    minlength="6"
 							 	data-placement="top" data-content="Please Enter Pincode"	
 							   onKeyPress="return CheckIsNumericAndHyphen(event,this.value) "           
 			                  data-ng-model="locctrl.Location.pincode">
