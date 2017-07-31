@@ -74,7 +74,7 @@ public class ManifestDaoImpl implements ManifestDao
 	@Override
 	@Transactional
 	public ManifestModel getManifestbyId(int id) {
-		String hql = "FROM Manifest WHERE obsolete ='N' and manifest_id ="+ id + "";
+		String hql = "FROM ManifestModel WHERE obsolete ='N' and manifest_id ="+ id + "";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
 		List<ManifestModel> manifestlist = (List<ManifestModel>) query.list();
@@ -86,6 +86,13 @@ public class ManifestDaoImpl implements ManifestDao
 	
 	/*------------------------------- Get Manifest by id begin -----------------------*/	
 	
+	//---------------Manifest Filter by Filter Condition Start---------------------------
 	
+//	@Override
+//	@Transactional
+//	public List<ManifestModel>getManifestByCondition(int frombranch,int tobranch,String fromdate,String todate)
+//	{
+//		//String hql="FROM ManifestModel WHERE obsolete ='N' "
+//	}
 	
 }

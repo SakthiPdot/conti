@@ -99,9 +99,9 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    //-------------------------------------- Print end -----------------------------//
 	    
 	  //------------------------- View Manifest Filter function start ------------------//   
-	    function manifestFilter() 
+	    function manifestFilter(manifest) 
 	    {
-	    	ManifestService.ManifestFilter()
+	    	ManifestService.ManifestFilter(manifest)
 	    	.then(
 	    			function(manifest)
 	    			{

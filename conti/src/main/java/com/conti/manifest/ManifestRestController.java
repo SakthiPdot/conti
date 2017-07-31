@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParser.Feature;
 import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -225,8 +228,46 @@ public class ManifestRestController
 		}
 		/* ------------------------- Print in Employee end ------------------------------------- */	
 
-	
-	
+	//--------------------Manifest Filter by condition start------------------------------
+		
+		@RequestMapping( value = "manifest_filter", method = RequestMethod.POST)
+		public ResponseEntity<List<ManifestModel>> manifestFilterbycondition(String manifest,HttpServletRequest request) throws JsonProcessingException, IOException 
+		{
+//			JSONArray jsonArray=new JSONArray(manifest);
+//			String[] filterdetail=new String[jsonArray.length()];
+			
+			 ObjectMapper mapper = new ObjectMapper();
+			 mapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
+			 JsonNode rootNode =mapper.readTree(manifest);
+			 JsonNode nameNode = rootNode.path("fromdate");
+			 System.out.println("the from date value is:  "+nameNode);
+			
+			
+//			try 
+//			{
+//				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+//				List<ManifestModel> manifestModel1 = manifestDao.getManifestByCondition(Integer.parseInt(frombranch_id),tobranchid,fromdate,todate);
+//				
+//				if(manifestModel.isEmpty()) 
+//				{
+//					return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
+//				}
+//				else 
+//				{
+//					return new ResponseEntity<List<ManifestModel>> (manifestModel, HttpStatus.OK);	
+//				}			
+//			} 
+//			catch (Exception exception) 
+//			{			
+//				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+				return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+//			}
+//				
+				
+			
+		}
+
+		//--------------------Manifest Filter by condition End------------------------------
 	
 	
 }

@@ -124,14 +124,16 @@
                 			     <div class="col-lg-12 noPaddingLeft"> 
                 			      <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">From</span>
-                			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches" data-ng-model="ctrl.manifest.frombranch">
+                			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches"
+                			      		 data-ng-model="ctrl.frombranch">
                 			      			<option value="">--Select--</option>
                 			      		</select>
                 			      </div>
                 			      
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">To</span>
-                			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches" data-ng-model="ctrl.manifest.tobranch">
+                			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches" 
+                			      		data-ng-model="ctrl.tobranch">
                 			      			<option value=''>--Select--</option>
                 			      			
                 			      		</select>
@@ -147,7 +149,7 @@
                 			         <div class="col-lg-3 branchclass">
 	                			      		 <span class="paddingtop">From  </span>   	                                       
 	                                          <div class="form-group input-group marginleftrightspace">
-					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.manifest.fromdate"
+					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.fromdate"
 					                           			  data-trigger= "focus"data-toggle="popover" data-placement="top"
 					                            		 data-content="Please select from date"/>
 					                            
@@ -160,7 +162,7 @@
                 			         <div class="col-lg-3 branchclass">
                 			      		<span class="paddingtop">To</span>
                 			      		  <div class="form-group input-group marginleftrightspace">
-				                                <input type="text" class="form-control datepicker2" data-ng-model="ctrl.manifest.todate"
+				                                <input type="text" class="form-control datepicker2" data-ng-model="ctrl.todate"
 													  data-trigger= "focus"data-toggle="popover" data-placement="top"
 					                            		data-content="Please select to date"/>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
@@ -310,8 +312,8 @@
                                             <th data-ng-show="setting_manifestnumber">Manifest Number</th>
                                             <th data-ng-show="setting_manifestorigin">Origin</th>
                                             <th data-ng-show="setting_manifestdestination">Destination</th>
-                                            <th data-ng-show="setting_manifestvehicle">Manifest Status</th>
-                                            <th data-ng-show="setting_manifestdriver">Manifest Status</th>
+                                            <th data-ng-show="setting_manifestvehicle">Vehicle Number</th>
+                                            <th data-ng-show="setting_manifestdriver">Driver Name</th>
                                             <th data-ng-show="setting_manifeststatus">Manifest Status</th>
                                          
                                         </tr>
