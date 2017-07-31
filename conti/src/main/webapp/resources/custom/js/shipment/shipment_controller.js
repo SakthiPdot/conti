@@ -13,7 +13,13 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	$("#screen_addshipment").addClass("active-menu");
 	var self = this;
-	self.shipment = {};
+	self.shipment = {
+	
+			"products" : [{
+				"product" : null
+			}] 
+	};
+	
 	self.shipment.sender_customer = {};
 	self.shipment.consignee_customer = {};
 	self.shipment.shipment_date = $filter("date")(Date.now(), 'yyyy-MM-dd HH:mm:ss');
@@ -146,6 +152,16 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	self.addProduct();
 	//--------------------------------------------- add Product end
 	
+	//---------------------------------------------- Select All begin
+/*	self.product_selectAll = function() {
+		for(var i=0; i<self.shipment.products.length; i++) {
+			self.shipment.products[i].selected = self.selectAll_product;
+		}
+		
+	}*/
+	//---------------------------------------------- Select All end
+	
+	
 	//--------------------------------------------- remove Product beging
 	self.removeProduct = function () {
         var selectedProductList=[];
@@ -156,6 +172,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
             }
         }); 
         self.shipment.products = selectedProductList;
+        self.checkQuantity(); // Call CheckQuantity method for check whethere noofparcel == qunatity
 	}
 	//--------------------------------------------- remove Product end
 	
@@ -207,6 +224,26 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	}
 	//--------------------------------------------- Compare quantity and no of parcel end	
 
+	//---------------------------------------------- Product blur begin
+	$scope.product_name=function (selected){
+		
+		//-- assign object
+		self.shipment.products[this.$parent.$index].product = selected.originalObject;
+		
+		//-- assign to dynamic table in product
+		self.shipment.products[this.$parent.$index].product_type = selected.originalObject.product_Type;
+		self.shipment.products[this.$parent.$index].max_height = selected.originalObject.max_height;
+		self.shipment.products[this.$parent.$index].max_width = selected.originalObject.max_width;
+		self.shipment.products[this.$parent.$index].max_length = selected.originalObject.max_length;
+		self.shipment.products[this.$parent.$index].max_weight = selected.originalObject.max_weight;
+		
+	
+		//----- fetch price from price settings
+	
+	}
+	
+	
+	//---------------------------------------------- Product blur end
 	//------------------------------------------------------------- ADD SHIPMENT DETAILED TABLE END----------------------------------------
 	
 	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT BEGIN------------------------------------
