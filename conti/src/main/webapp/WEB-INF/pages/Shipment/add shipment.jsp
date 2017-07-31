@@ -644,7 +644,8 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th class = "text-center"><input type="checkbox"></th>
+                                            <!-- <th class = "text-center"><input type="checkbox" data-ng-model = "ctrl.selectAll_product" data-ng-click = "ctrl.product_selectAll()"></th> -->
+                                            <th class = "text-center"></th>
                                             <th class = "text-center">S.No</th>
                                             <th class = "text-center">Product</th>
                                             <th class = "text-center">Product Type</th>                                        
@@ -658,7 +659,7 @@
                                     </thead>
                                     <tbody>
                                         <tr data-ng-repeat = "product in ctrl.shipment.products track by $index">
-                                            <td><input type="checkbox" class="form-control" data-ng-model = "product.selected" ></td>
+                                            <td><input type="checkbox" class="form-control" data-ng-model = "product.selected"  ></td>
                                             <td>{{$index + 1}}
 	                                            <input type = "hidden" class="form-control" data-ng-model = "product.product_id" data-ng-value = "product_name.originalObject.product_id" /> 
                                             </td>
@@ -679,25 +680,26 @@
 															onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"									
     														data-trigger="focus" data-toggle="popover" 
 			   											    data-placement="top" data-content="Please enter & select prduct"
-						
+															
 														    ></div>
                                             	<a href="" data-toggle="modal" data-target="#myModal" style="text-decoration: none !important;"> Add HSN Details</a>
                                             </td>
                                             <td> 
-                                            	<input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.product_type" data-ng-value = "product_name.originalObject.product_Type"/> 
+                                            	<input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.product_type"/> 
                                             </td>
-                                            <td> <input type = "text" placeholder="Product height"  class="form-control" data-ng-model = "product.max_height" data-ng-value = "product_name.originalObject.max_height"/> </td>
-                                            <td> <input type = "text" placeholder="Product width" class="form-control" data-ng-model = "product.max_width" data-ng-value = "product_name.originalObject.max_width"/> </td>
-                                            <td> <input type = "text" placeholder="Product length" class="form-control" data-ng-model = "product.max_length" data-ng-value = "product_name.originalObject.max_length"/> </td>
-                                            <td> <input type = "text" placeholder="Product weight" class="form-control" data-ng-model = "product.max_weight" data-ng-value = "product_name.originalObject.max_weight" required/> </td>
+                                            <td> <input type = "text" placeholder="Product height"  class="form-control" data-ng-model = "product.max_height" /> </td>
+                                            <td> <input type = "text" placeholder="Product width" class="form-control" data-ng-model = "product.max_width" /> </td>
+                                            <td> <input type = "text" placeholder="Product length" class="form-control" data-ng-model = "product.max_length" /> </td>
+                                            <td> <input type = "text" placeholder="Product weight" class="form-control" data-ng-model = "product.max_weight" required/> </td>
                                             <td> <input type = "text" placeholder="Product quantity" class="form-control" data-ng-model = "product.product_quantity" data-ng-keyup = "ctrl.checkQuantity()" required/> </td>
                                             <td> <input type = "text" placeholder="unit price" class="form-control" data-ng-model = "product.product_unitprice" required/> </td>
                                             <td> <input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.product_totalprice" /> </td>
                                      
                                         </tr>
-                                                                               
+                                            
                                    </tbody>
                                 </table>
+                                
                             </div>                           
                           
                           <div class="col-lg-12">
