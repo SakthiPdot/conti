@@ -3,6 +3,7 @@ package com.conti.settings.price;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -151,7 +152,7 @@ public class PriceSettingsController {
 		
 		PriceSetting priceSetting=new PriceSetting();
 		
-		Set<PriceSettingDetail> PriceSettingDetail=new HashSet<>();
+		List<PriceSettingDetail> PriceSettingDetail=new ArrayList<>();
 		
 		PriceSettingDetail priceSettingDetail =new PriceSettingDetail();
 		priceSettingDetail.setBranch(new BranchModel());
@@ -231,7 +232,7 @@ public class PriceSettingsController {
 			priceSetting.setActive("Y");
 	
 			//set price setting for detailed table
-			Set<PriceSettingDetail> priceSettingDetailList=priceSetting.getPriceSettingDetail();			
+			List<PriceSettingDetail> priceSettingDetailList=priceSetting.getPriceSettingDetail();			
 			for(PriceSettingDetail psDetail:priceSettingDetailList){
 				psDetail.setPriceSetting(priceSetting);
 			}
@@ -323,7 +324,7 @@ public class PriceSettingsController {
 		}
 		
 		
-		Set<PriceSettingDetail> priceDetailList=new HashSet<PriceSettingDetail>(psdDao.getPriceSettingDetailBypsId(priceSetting.getPricesetting_id()));
+		List<PriceSettingDetail> priceDetailList=new ArrayList<PriceSettingDetail>(psdDao.getPriceSettingDetailBypsId(priceSetting.getPricesetting_id()));
 		
 		if(priceDetailList!=null && !priceDetailList.isEmpty())
 			priceSetting.setPriceSettingDetail( priceDetailList);
