@@ -237,7 +237,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     			
     			self.confirm_title = 'Save';
     			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
-    			self.confirm_msg = self.confirm_title+ ' ' + self.customer.customer_name + ' customer?';
+    			self.confirm_msg = self.confirm_title+ ' ' + self.customer.customer_name + ' Customer?';
     			self.confirm_btnclass = 'btn-success';
     			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
     				.then(
@@ -350,29 +350,30 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     		self.selected_customer.splice(index, 1);
     	}
     }
-    //------------------------- Register select end ------------------//
+    //------------------------- Register select end ----------------------//
+    
     //------------------------- Register select all begin ------------------//   
-    function customerSelectall() {
-
-    	try {
-			
-			for(var i = 0; i < $scope.pageSize; i++) {
-    			self.Filtercustomers[i].select = $scope.selectall;
-    		}
-			if($scope.selectall){
-    		self.selected_customer=$scope.selectall?self.Filtercustomers:[];
+    function customerSelectall()
+    {
+    	for(var i = 0; i < $scope.pageSize; i++) 
+		{
+			self.Filtercustomers[i].select = $scope.selectall;
+			if($scope.selectall)
+			{
+				self.selected_customer.push(self.Filtercustomers[i])
+				//self.selected_customer=$scope.selectall?self.Filtercustomers:[];
 			}
-    		
-		} catch(e) {
-			
+		
 		}
         
     }
     //------------------------- Register select all end ------------------//       
     
     //-------------------------- Make Active begin ----------------------//
-    function makeActive(){
-   	if(self.selected_customer.length == 0 ) {
+    function makeActive()
+    {
+    	if(self.selected_customer.length == 0 ) 
+    	{
 	   		self.message ="Please select atleast one record..!";
 			successAnimate('.failure');
     	} else {
@@ -401,25 +402,23 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     		    				active_id[i] = self.selected_customer[i].customer_id;    				
     		    			}
     		    			CustomerService.makeActive(active_id)
-    							.then(
-    									function(response) {
-    										fetchAllCustomers();
-    										self.selected_customer = [];
-    										self.message ="Selected record(s) has in activat status..!";
-    										successAnimate('.success');
-    									}, function(errResponse) {
-    										console.log(errResponse);    								
-    									}
-    								);
+							.then(function(response) 
+								{
+									fetchAllCustomers();
+									self.selected_customer = [];
+									self.message ="Selected record(s) has in activat status..!";
+									successAnimate('.success');
+								}, 
+								function(errResponse)
+								{
+									console.log(errResponse);    								
+								}
+							);
     					}
     				);
-    			
     		}
-
-
     	}
-    	
-    }
+     }
     //-------------------------- Make Active end ----------------------//    
     
     
@@ -454,8 +453,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     			    				inactive_id[i] = self.selected_customer[i].customer_id;        				
     			    			}
     			    			CustomerService.makeinActive(inactive_id)
-    								.then(
-    										function(response) {
+    								.then(function(response) {
     											fetchAllCustomers();
     											self.selected_customer = [];
     											self.message ="Selected record(s) has in inactive status..!";
@@ -466,17 +464,13 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     									);
     						}
     					);
-    			
     		}
-
-
     	}
-    	
     }
     //-------------------------- Make inActive end ----------------------//   
     
     
-//-------------------------- Record Count begin -----------------------//
+   //-------------------------- Record Count begin -----------------------//
 	
 	function findrecord_count() {
 		
@@ -496,9 +490,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 	//-------------------------- Record Count end -----------------------//
     
     
-    
-    
-    //-------------------------- Pagnation begin -----------------------//
+    //-------------------------- Pagination begin -----------------------//
     
     function pagination() {
         
@@ -512,7 +504,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 		$scope.nextDisabled = false;
 		$scope.previouseDisabled = true;
 		
-		if( self.Filtercustomers.length <= $scope.pageSize  ) {
+		if( self.Filtercustomers.length <=10) {
 			$scope.nextDisabled = true;
 		} 
 		
@@ -525,9 +517,13 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 		
     }
     
+  //-------------------------- Pagination End ---------------------------//  
     
-    $scope.paginate = function(nextPrevMultiplier) {
-
+ //-------------------------- Paginate Start ---------------------------//  
+    
+    $scope.paginate = function(nextPrevMultiplier) 
+    {
+    	$scope.selectall=false;
     	$scope.currentPage += (nextPrevMultiplier * 1);
     	self.Filtercustomers = self.customers.slice($scope.currentPage*$scope.pageSize);
     	
@@ -536,23 +532,25 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     	if(self.Filtercustomers.length == 0) {
     		CustomerService.pagination_byPage($scope.currentPage)
     		.then(
-    				function (filterCust) {
-    					
+    				function (filterCust) 
+    				{
     					if ( filterCust.length == 0 ) {
     						$scope.nextDisabled = true;
     					} else if ( filterCust.length < 10 ) {
     						self.Filtercustomers = filterCust;
     						$scope.nextDisabled = true;
-    					} else {
+    					}
+    					else 
+    					{
     						self.Filtercustomers = filterCust;
     					}
-    					
     				}, 
-    				function (errResponse) {
+    				function (errResponse) 
+    				{
     					console.log('Error while pagination');
     				}
     			);
-    	} 
+    	} 	
     	
     	if(self.Filtercustomers.length < $scope.pageSize) {
     		console.log(self.Filtercustomers.length);
@@ -571,13 +569,12 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     	
     }
     
-    
-  //-------------------------- Pagnation end -----------------------//	
+ //-------------------------- Pagnation end -----------------------//	
     
   //---------------------------- Pagination begin ---------------------------------------//
     $scope.firstlastPaginate = function (page) 
     {
-   	 
+    	$scope.selectall = false;
     	if( page == 1 ) 
     	{
     		$scope.currentPage = 0;

@@ -106,7 +106,7 @@
 			               <div class="col-lg-12 content-body">
 		                 	 
 		                 	  <span>Vehicle Reg No<span class="required"> *</span></span>
-			                  <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
+			                  <input type="text" class="form-control" maxlength="30" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 			                  data-ng-blur = "ctrl.checkVehicleRegno(ctrl.vehicle.vehicle_regno)"
 			                   data-ng-model= "ctrl.vehicle.vehicle_regno"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" 

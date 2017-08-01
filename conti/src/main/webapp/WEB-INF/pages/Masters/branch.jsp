@@ -218,7 +218,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" ><i class="fa fa-times" area-hidden="true"></i> Cancel</button>
+							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" ><i class="fa fa-ban" area-hidden="true"></i> Cancel</button>
 						</div>
 						
 						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
@@ -227,9 +227,7 @@
 						</div>
 						
 						<div class="col-lg-4 col-xs-4 footerRight" data-ng-show="!(ctrl.branch.branch_id==null)">
-
-						 <button type="submit" class="btn btn-success" id="saveclose" data-id="0" data-ng-click="save($event)"><i class="fa fa-floppy-o "></i> Update</button>					
-						
+							<button type="submit" class="btn btn-success" id="saveclose" data-id="0" data-ng-click="save($event)"><i class="fa fa-floppy-o "></i> Update</button>					
 						</div>
 						
 						<div class="col-lg-4 footerRight" data-ng-show="ctrl.branch.branch_id==null">
@@ -387,7 +385,8 @@
                                       </form>
                                       
                                       <div class = "row paddingtop">
-	                                    	<div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Driver" data-ng-model = "ctrl.branch_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.branch_regSearch)"/></div>
+	                                    	<div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Driver" 
+	                                    	data-ng-model = "ctrl.branch_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.branch_regSearch)"/></div>
                                       </div>
                                       
                                 	</div>

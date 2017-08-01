@@ -9,19 +9,24 @@
  */
 
 
-contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout', 'ShipmentService', 'BranchService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,  ShipmentService, BranchService, ConfirmDialogService){
+contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout', 'ShipmentService', 'priceSettingService', 'BranchService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,  ShipmentService, priceSettingService, BranchService, ConfirmDialogService){
 	
 	$("#screen_addshipment").addClass("active-menu");
 	var self = this;
 	self.shipment = {
-	
+			
+			"sender_customer" : {},
+			"consignee_customer" : {},
+			"sender_branch" : {},
+			"consignee_branch" : {},
+			"service" : {},
 			"products" : [{
 				"product" : null
 			}] 
 	};
 	
-	self.shipment.sender_customer = {};
-	self.shipment.consignee_customer = {};
+/*	self.shipment.sender_customer = {};
+	self.shipment.consignee_customer = {};*/
 	self.shipment.shipment_date = $filter("date")(Date.now(), 'yyyy-MM-dd HH:mm:ss');
 	self.shipment.status = "Booked";
 	
@@ -115,9 +120,15 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------ Consignee branch begin
     $scope.consignee_branch_name = function (consignee_branch_name) {
  	    
-    	self.shipment.consignee_customer.branch_name = consignee_branch_name.originalObject.branch_name;
-    	self.shipment.consignee_customer.branch_id = consignee_branch_name.originalObject.branch_id;
-    	self.shipment.consignee_customer.branchModel = consignee_branch_name.originalObject;
+/*    	self.shipment.consignee_branch.branch_name = consignee_branch_name.originalObject.branch_name;
+    	self.shipment.consignee_branch.branch_id = consignee_branch_name.originalObject.branch_id;*/
+    	self.shipment.consignee_branch = consignee_branch_name.originalObject;
+    	
+    	self.shipment.sender_branch.branch_id = $('#sender_branch_id').val();
+    	self.shipment.sender_branch.branch_name = $('#sender_branch_name').val();
+    	
+    	console.log(self.shipment.consignee_branch);
+    	console.log(self.shipment.sender_branch);
     	
 	};	
 	//------------------------ Consignee branch end
@@ -172,14 +183,22 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
             }
         }); 
         self.shipment.products = selectedProductList;
-        self.checkQuantity(); // Call CheckQuantity method for check whethere noofparcel == qunatity
+        self.checkQuantity(-1); // Call CheckQuantity method for check whethere noofparcel == qunatity
 	}
 	//--------------------------------------------- remove Product end
 	
 	//----------------------------------------------------------------------- Declare Product Detailed end
 	
+	
+	//---------------------------------------------- Search service begin
+	$scope.service_name=function (selected){
+		self.shipment.service = selected.originalObject;
+	}
+	//---------------------------------------------- Search service end
+	
+	
 	//--------------------------------------------- Compare quantity and no of parcel beging
-	self.checkQuantity = function () {
+	self.checkQuantity = function (index) {
 		self.disable_add_product = false;
 		var quantity = 0;
 		var selected_quantity = 0;
@@ -219,31 +238,78 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			
 		} // end loop
 		
-		
+		if(index != -1) {
+			self.calc_totalprice(index);		//calculate totalprice in a row			
+		}
+
 
 	}
 	//--------------------------------------------- Compare quantity and no of parcel end	
 
-	//---------------------------------------------- Product blur begin
+	//---------------------------------------------- Search Product name begin
 	$scope.product_name=function (selected){
 		
+		var index = this.$parent.$index;
+		
 		//-- assign object
-		self.shipment.products[this.$parent.$index].product = selected.originalObject;
+		self.shipment.products[index].product = selected.originalObject;
 		
 		//-- assign to dynamic table in product
-		self.shipment.products[this.$parent.$index].product_type = selected.originalObject.product_Type;
-		self.shipment.products[this.$parent.$index].max_height = selected.originalObject.max_height;
-		self.shipment.products[this.$parent.$index].max_width = selected.originalObject.max_width;
-		self.shipment.products[this.$parent.$index].max_length = selected.originalObject.max_length;
-		self.shipment.products[this.$parent.$index].max_weight = selected.originalObject.max_weight;
+		self.shipment.products[index].product_id = selected.originalObject.product_id;
+		self.shipment.products[index].product_type = selected.originalObject.product_Type;
+		self.shipment.products[index].max_height = selected.originalObject.max_height;
+		self.shipment.products[index].max_width = selected.originalObject.max_width;
+		self.shipment.products[index].max_length = selected.originalObject.max_length;
+		self.shipment.products[index].max_weight = selected.originalObject.max_weight;
 		
-	
-		//----- fetch price from price settings
-	
+		
+		
+		fetch_price(index);		//----- fetch price from price settings
+		
 	}
 	
 	
-	//---------------------------------------------- Product blur end
+	//---------------------------------------------- Search Product name end
+	
+	//---------------- Fetch product price from price setting begin
+	
+	function fetch_price(index) {
+		self.shipment.forpricesetting = {
+				"from_branch_id" : self.shipment.sender_branch.branch_id,
+				"to_branch_id" : self.shipment.consignee_branch.branch_id,
+				"product_id" : 	self.shipment.products[index].product_id,
+				"service_id" : self.shipment.service.service_id,
+				"max_weight" : self.shipment.products[index].max_weight
+		};
+		
+
+		priceSettingService.fetch_priceforShipment(self.shipment.forpricesetting)
+			.then(
+					function(price) {
+						self.shipment.products[index].product_unitprice = price;					
+					}, function(errResponse) {
+						console.log(errResponse);
+					}
+				);
+	}
+	
+	//---------------- Fetch product price from price setting end
+	
+	//----------------------------- Price by product weight begin
+	self.priceby_weight = function (index) {
+		fetch_price(index);
+	}
+	//----------------------------- Price by product weight end
+	
+	//------------------------------ Calculate total price in a row begin
+	
+	self.calc_totalprice = function (index) {
+		self.shipment.products[index].product_totalprice = 
+			parseInt(self.shipment.products[index].product_quantity) * parseInt(self.shipment.products[index].product_unitprice);	
+	}
+	
+	//------------------------------ Calculate total price in a row end
+	
 	//------------------------------------------------------------- ADD SHIPMENT DETAILED TABLE END----------------------------------------
 	
 	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT BEGIN------------------------------------
