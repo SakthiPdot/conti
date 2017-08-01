@@ -492,7 +492,7 @@
 											data-content="Please Enter Form Date"
 											data-ng-model="comctrl.company.financial_year_from"											
 											placeholder="Enter From Date"
-											onKeyPress="return CheckIsNumericAndHyphen(event)" maxlength="5"
+											onKeyPress="return CheckIsNumericAndHyphen(event)" maxlength="1"
 											class="form-control datepicker1" >
 		                                    <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                         </span>
@@ -508,6 +508,7 @@
 											data-content="Please Enter To Date"
 											data-ng-model="comctrl.company.financial_year_to"
 											placeholder="Enter To Date" 
+											maxlength="1"
 											onKeyPress="return CheckIsNumericAndHyphen(event,this.value)" 										
 											class="form-control datepicker2"> 
 											<span class="input-group-addon"><i class="fa fa-calendar"></i>
@@ -518,6 +519,8 @@
 
 
 						</div>
+
+
 
 
 
@@ -544,7 +547,7 @@
 					<div class="col-lg-6">
 						<label for="timeout">Application Timeout<span style="color:red">&nbsp;*</span></label>
 						<div class="input-group">
-							<input type="number"
+							<input type="text"
 								data-ng-required="true"
     		  			        data-trigger="focus" data-toggle="popover"
 	 					        data-placement="top" data-content="Please Enter Timeout(mins)"
@@ -552,7 +555,7 @@
 								placeholder="Enter Application Timeout"
 							    class="form-control" id="timeout"
 							 	onKeyPress="return CheckIsNumericAnddot(event,this.value)"
-								maxlength="5"> 
+								maxlength="9"> 
 							<span class="input-group-addon" id="basic-addon1"><label>mins</label></span>
 						</div>
 					</div>
@@ -627,12 +630,20 @@
         today =  yyyy+'-'+mm+ '-'+ dd;
         return today;
     }
+    
+    
 	    $('.datepicker1').dateTimePicker({
-	        limitMax: getDate()
+	    	   mode: 'dateTime',
+	           format: 'yyyy/MM/dd HH:mm:ss'
 	    });
-	    
+
+        </script>
+        
+        
+	    <script type="text/javascript">
 	    $('.datepicker2').dateTimePicker({
-	        limitMax: getDate()
+	    	   mode: 'dateTime',
+	           format: 'yyyy/MM/dd HH:mm:ss'
 	    });
         </script>
    <!--====================================================== SCRIPTS END =========================================-->
