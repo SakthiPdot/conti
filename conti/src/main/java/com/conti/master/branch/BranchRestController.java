@@ -199,11 +199,15 @@ public class BranchRestController {
 		userInformation=new UserInformation(request);
 		String username=userInformation.getUserName();
 		int user_id=Integer.parseInt(userInformation.getUserId());
-		
+		String lr_prefix,receipt_prefix;
 		DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date=new Date();
 		try
 		{
+			lr_prefix="L"+branchModel.getLrno_prefix();
+			receipt_prefix="R"+branchModel.getReceiptno_prefix();
+			branchModel.setLrno_prefix(lr_prefix);
+			branchModel.setReceiptno_prefix(receipt_prefix);
 			branchModel.setObsolete("N");
 			branchModel.setActive("Y");
 			branchModel.setCreated_by(user_id);
@@ -276,9 +280,13 @@ public class BranchRestController {
 		{
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = new Date();
+			String lr_prefix,receipt_prefix;
 			branchModel.setUpdated_by(user_id);
 			branchModel.setUpdated_datetime(dateFormat.format(date).toString());
-			
+			lr_prefix="L"+branchModel.getLrno_prefix();
+			receipt_prefix="R"+branchModel.getReceiptno_prefix();
+			branchModel.setLrno_prefix(lr_prefix);
+			branchModel.setReceiptno_prefix(receipt_prefix);
 			branchDao.saveOrUpdate(branchModel);		
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<BranchModel> (branchModel, HttpStatus.CREATED);

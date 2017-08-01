@@ -274,13 +274,13 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 			self.confirm_title='Update';
 			self.confirm_type=BootstrapDialog.TYPE_SUCCESS;
 			self.confirm_msg=self.confirm_title +' '+self.branch.branch_name +' branch?';
-			self.confirm_btnclass = 'btn-warning';
+			self.confirm_btnclass = 'btn-success';
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(function(res)
 			{
 				//self.branch.branch_id=$("#branch_id").val();
 				self.branch.location=JSON.parse($("#location_id").val());
-				console.log(self.branch);
+				
 				editBranch(self.branch);
 				reset();
 				window.setTimeout(function()
@@ -294,17 +294,22 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	//}
 	
 	//------------------------- update branch begin ---------------------//
-    function updateBranch(branch) {
+    function updateBranch(branch) 
+    {
     	self.branch = branch;
     	$scope.branchnamewrong=false;
     	self.UpdateNotCheckBranchName=self.branch.branch_name;
     	self.heading = self.branch.branch_name;
+    	
+    	self.branch.lrno_prefix=self.branch.lrno_prefix.slice(1);//To Remove first Digit for update
+    	self.branch.receiptno_prefix=self.branch.receiptno_prefix.slice(1);//To Remove first Digit for update
     	$('#branch_id').val(JSON.stringify(self.branch.branchModel));
     	$('#location_id').val(JSON.stringify(self.branch.location));
     	$('#city').val(self.branch.location.address.city);
     	$('#country').val(self.branch.location.address.country);
     	$('#state').val(self.branch.location.address.state);
     	$('#pincode').val(self.branch.location.pincode);
+    
     	
     	$('#location_name_value').val(self.branch.location.location_name);
     	drawerOpen('.drawer');
@@ -355,7 +360,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     	if (branch.select){
     		self.selected_branch.push(branch);
     	} else {
-    		$scope.selectall = false;
+    		$scope.selectallbranches = false;
     		self.selected_branch.splice(index, 1);
     	}
     	
@@ -367,25 +372,16 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     {
     	console.log($scope.pageSize,"call selectall")
     	self.selected_branch=[];
-    	
-    	try {
-			
-			for(var i = 0; i < $scope.pageSize; i++) {
-    			self.Filterbranches[i].select = $scope.selectallbranches;
-    			if($scope.selectallbranches)
-    			{
-    				self.selected_branch.push(self.Filterbranches[i]);
-    			}
-    		}
-			
-    		
-		} catch(e) 
+    	for(var i = 0; i < $scope.pageSize; i++) 
 		{
-			
+			self.Filterbranches[i].select = $scope.selectallbranches;
+			if($scope.selectallbranches)
+			{
+				self.selected_branch.push(self.Filterbranches[i]);
+				//self.selected_branch=$scope.selectallbranches?self.Filterbranches:[];
+			}
 		}
-    		
-		
-    }
+	}
     //------------------------- Register select all end ------------------//
     
     
@@ -549,8 +545,9 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     
     
     
-    $scope.paginate = function(nextPrevMultiplier) {
-
+    $scope.paginate = function(nextPrevMultiplier) 
+    {
+    	$scope.selectallbranches=false;
     	$scope.currentPage += (nextPrevMultiplier * 1);
     	self.Filterbranches = self.branches.slice($scope.currentPage*$scope.pageSize);
     	
@@ -601,7 +598,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     
     $scope.firstlastPaginate = function (page) 
     {
-    	 
+    	 $scope.selectallbranches=false;
     	if( page == 1 ) { // first
     		$scope.currentPage = 0;
     		$scope.previouseDisabled = true;
