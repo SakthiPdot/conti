@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.conti.master.location.Location;
+import com.conti.setting.usercontrol.User;
 
 /**
  * @Project_Name conti
@@ -114,5 +114,24 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 	}
 
 
+	//---------------------------------------- FETCH PRICE BY from branch & product & service for add shipment by sankar
+	@Override
+	@Transactional
+	public PriceSetting fetchprice(int from_branch, int product, int service) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		List<PriceSetting> list_pricesetting = (List<PriceSetting>) sessionFactory.getCurrentSession()
+				.createQuery("FROM PriceSetting WHERE obsolete = 'N' AND branch.branch_id = " + from_branch
+						+ " AND product.product_id =" + product + " AND service.service_id ="+service).list();
+		
+		if(list_pricesetting != null && !list_pricesetting.isEmpty()) {
+			return list_pricesetting.get(0);
+		} 
+		return null;			
+		
+	}
+
+
+	
 
 }

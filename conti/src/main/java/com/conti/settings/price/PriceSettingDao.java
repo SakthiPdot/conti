@@ -20,5 +20,8 @@ public interface  PriceSettingDao {
 	public List<PriceSetting> searchByPriceSetting(String searchString);
 	public int priceSettingCount();
 	
+	//---------------------------------------- FETCH PRICE BY from branch & product & service for add shipment by sankar
+	public PriceSetting fetchprice(int from_branch, int product, int service);
+	
 }
      

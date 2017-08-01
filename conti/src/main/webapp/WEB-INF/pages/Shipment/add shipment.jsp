@@ -330,7 +330,6 @@
                             			<span class="text-paddingwidth">GSTIN Number</span>
                             		    <input type="text" class="form-control" maxlength="15"
                             		    	data-ng-model = "ctrl.shipment.sender_customer.gstin_number"
-                            		    	onKeyPress="return CheckIsNumeric(event)"
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer GSTIN no."
 											onKeyPress="return CheckIsAlphaNumeric(event)"
@@ -525,7 +524,6 @@
                             			<span class="text-paddingwidth">GSTIN Number</span>
                             		     <input type="text" class="form-control" maxlength="15"
                             		    	data-ng-model = "ctrl.shipment.consignee_customer.gstin_number"
-                            		    	onKeyPress="return CheckIsNumeric(event)"
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer GSTIN no."
 											onKeyPress="return CheckIsAlphaNumeric(event)"
@@ -602,14 +600,35 @@
                         <div class="panel-body">
                         
                                     <div class="col-md-12">
-                                    	<div class=" col-md-6 branchclass">
+                                    	
+	                            		<div class="col-md-6 branchclass">
+	                            			<span class="text-paddingwidth"> Service <span class="required">*</span></span>
+	                            		    
+	                            		    <div angucomplete-alt id="service_name" 
+															maxlength="5"
+															placeholder="Ex : Counter" 
+															pause="0"											
+															selected-object="service_name"
+														    remote-url="getservice4Shipment/"
+															remote-url-data-field="Service"
+				             								title-field="service_name"
+															match-class="highlight"
+															minlength="1" 																						
+														    maxlength="50"	
+															input-class="form-control form-control-small"	
+															onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"									
+    														data-trigger="focus" data-toggle="popover" 
+			   											    data-placement="top" data-content="Please enter & select service"
+															style="width:100%"
+														    ></div>
+	                            		    
+	                            		</div>
+	                            		<div class=" col-md-6 branchclass">
 	                            			<span class="text-paddingwidth"> Status <span class="required">*</span></span>
 	                            		   <select class="form-control" data-ng-options = "status for status in ['Booked']" data-ng-model = "ctrl.shipment.status"
 				                             data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please select status" required>
 				                           </select>                          		    
                             		    </div>
-	                            		<div class="col-md-6">
-	                            		</div>
                                     </div>
                                     
                             		
@@ -623,7 +642,7 @@
 												data-placement="top" data-content="Please enter number of parcel"
 												onKeyPress="return CheckIsNumeric(event)"
 												placeholder = "Ex: 100"
-												data-ng-keyup = "ctrl.checkQuantity()"
+												data-ng-keyup = "ctrl.checkQuantity(-1)"
 	                            		    required />  
                             		    </div>
 	                            		<div classTo Branch="col-md-6">
@@ -690,9 +709,9 @@
                                             <td> <input type = "text" placeholder="Product height"  class="form-control" data-ng-model = "product.max_height" /> </td>
                                             <td> <input type = "text" placeholder="Product width" class="form-control" data-ng-model = "product.max_width" /> </td>
                                             <td> <input type = "text" placeholder="Product length" class="form-control" data-ng-model = "product.max_length" /> </td>
-                                            <td> <input type = "text" placeholder="Product weight" class="form-control" data-ng-model = "product.max_weight" required/> </td>
-                                            <td> <input type = "text" placeholder="Product quantity" class="form-control" data-ng-model = "product.product_quantity" data-ng-keyup = "ctrl.checkQuantity()" required/> </td>
-                                            <td> <input type = "text" placeholder="unit price" class="form-control" data-ng-model = "product.product_unitprice" required/> </td>
+                                            <td> <input type = "text" placeholder="Product weight" class="form-control" data-ng-model = "product.max_weight" data-ng-keyup = "ctrl.priceby_weight($index)" required/> </td>
+                                            <td> <input type = "text" placeholder="Product quantity" class="form-control" data-ng-model = "product.product_quantity" data-ng-keyup = "ctrl.checkQuantity($index)" required/> </td>
+                                            <td> <input type = "text" placeholder="unit price" class="form-control" data-ng-model = "product.product_unitprice" data-ng-keyup = "ctrl.calc_totalprice($index)" required/> </td>
                                             <td> <input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.product_totalprice" /> </td>
                                      
                                         </tr>
@@ -749,23 +768,37 @@
                         <div class="panel-body">
                             		
                             			
-                            		<div class=" col-md-12 branchclass">
+                            		<!-- <div class=" col-md-12 branchclass">
                             			<span class="text-paddingwidth"> Service </span>
                             		    <input type="text" class="form-control">                            		    
-                            		</div>
-                            		
+                            		</div> -->
                            
-                            	
-                            	
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Shipment Value</span>
-                            		    <input type="text" class="form-control" >                            		    
-                            		    
-                            		</div>
                             		
+                            		<div class="col-md-12 branchclass">
+                            			<span class="text-paddingwidth">Shipment Value <span class="required">*</span></span>
+                            			
+                            			<div class = "form-group input-group">
+	                            		    <input type="number" class="form-control" min = "1" max="999999.99"
+	                            		    	data-ng-model = "ctrl.shipment.shipment_value"
+	                            		    	data-trigger="focus" data-toggle="popover" 
+												data-placement="top" data-content="Please enter value of shipment"
+												placeholder = "Ex: 9876543210"
+												ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+	                            		    required />  
+	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
+                            		    </div>
+                            		  
+                            		</div>
+                            		                            		
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Reference Invoice No</span>
-                            		    <input type="text" class="form-control" >                            		    
+                            		    <input type="text" class="form-control" maxlength="15"
+                            		    	data-ng-model = "ctrl.shipment.reference_invoiceno"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter reference invoice no."
+											onKeyPress="return CheckIsAlphaNumeric(event)"
+											placeholder = "Ex: 11ABCDE1234F2Z5"
+                            		    required />                               		    
                             		    
                             		</div>
                             
@@ -971,6 +1004,7 @@
   <script src="resources/custom/js/shipment/shipment_controller.js"></script>
   <script src="resources/custom/js/shipment/shipment_service.js"></script>
   <script src="resources/custom/js/branch_master/branch_service.js"></script>
+  <script src="resources/custom/js/price_setting/s_price_setting_service.js"></script>
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/confirmDialog.js"></script>   
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
