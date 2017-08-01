@@ -706,12 +706,43 @@
                                             <td> 
                                             	<input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.product_type"/> 
                                             </td>
-                                            <td> <input type = "text" placeholder="Product height"  class="form-control" data-ng-model = "product.max_height" /> </td>
-                                            <td> <input type = "text" placeholder="Product width" class="form-control" data-ng-model = "product.max_width" /> </td>
-                                            <td> <input type = "text" placeholder="Product length" class="form-control" data-ng-model = "product.max_length" /> </td>
-                                            <td> <input type = "text" placeholder="Product weight" class="form-control" data-ng-model = "product.max_weight" data-ng-keyup = "ctrl.priceby_weight($index)" required/> </td>
-                                            <td> <input type = "text" placeholder="Product quantity" class="form-control" data-ng-model = "product.product_quantity" data-ng-keyup = "ctrl.checkQuantity($index)" required/> </td>
-                                            <td> <input type = "text" placeholder="unit price" class="form-control" data-ng-model = "product.product_unitprice" data-ng-keyup = "ctrl.calc_totalprice($index)" required/> </td>
+                                            <td> <input type = "number" placeholder="Product height"  class="form-control" 
+
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product height"
+													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+													data-ng-model = "product.max_height" /> 
+											</td>
+                                            <td> <input type = "number" placeholder="Product width" class="form-control" 
+
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product width"
+													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+                                            		data-ng-model = "product.max_width" /> </td>
+                                            <td> <input type = "number" placeholder="Product length" class="form-control" 
+
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product length"
+													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+                                            		data-ng-model = "product.max_length" /> </td>
+                                            <td> <input type = "number" placeholder="Product weight" class="form-control" 
+
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product weight"
+													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+                                            		data-ng-model = "product.max_weight" data-ng-keyup = "ctrl.priceby_weight($index)" required/> </td>
+                                            <td> <input type = "number" placeholder="Product weight" class="form-control" 
+                                          			
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product quantity"
+													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+                                            		data-ng-model = "product.product_quantity" data-ng-keyup = "ctrl.checkQuantity($index)" required/> </td>
+                                            <td> <input type = "number" placeholder="unit price" class="form-control" 
+                                            
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product price"
+													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+                                            		data-ng-model = "product.product_unitprice" data-ng-keyup = "ctrl.calc_totalprice($index)" required/> </td>
                                             <td> <input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.product_totalprice" /> </td>
                                      
                                         </tr>
@@ -782,8 +813,8 @@
 	                            		    	data-ng-model = "ctrl.shipment.shipment_value"
 	                            		    	data-trigger="focus" data-toggle="popover" 
 												data-placement="top" data-content="Please enter value of shipment"
-												placeholder = "Ex: 9876543210"
-												ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+												placeholder = "Ex: 100.50"
+												data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
 	                            		    required />  
 	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
                             		    </div>
@@ -804,7 +835,10 @@
                             
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Description</span>
-                            		    <textarea class="form-control" rows="8"> </textarea>                           		    
+                            		    <textarea class="form-control" data-ng-model = "ctrl.shipment.description"
+                            		    maxlength = "100"
+                            		    onkeypress="return CheckIsCharacterWithspace(event,this.value)"
+                            		    	 rows="8"> </textarea>                           		    
                             		    
                             		</div>
                          </div>
@@ -821,85 +855,108 @@
                           	
                           	       <div class=" col-md-12 branchclass">
                             			<span class="text-paddingwidth"> Chargeable Weight </span>
-                            		    <input type="text" class="form-control">                            		    
+                            		    <div class = "form-group input-group">
+	                            		    <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.chargeable_weight" tabindex="-1"
+	                            		    required />  
+	                            		     <span class="input-group-addon">kg.</span>
+                            		    </div>                           		    
                             		</div>
                             		
                            
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Delivery Charge</span>
-                            		    <input type="text" class="form-control" >                            		    
-                            		    
+                            			<span class="text-paddingwidth">Delivery Charge <span class="required">*</span></span>
+                            			
+                            			 <div class = "form-group input-group">
+	                            		    <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.delivery_charges" tabindex="-1"
+	                            		    required />  
+	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
+                            		    </div>   
+                            		  
                             		</div>
-                            		
                             		
                             	
                             		<div class="col-md-6 branchclass">
                             		
-                            			<span class="text-paddingwidth discountspace ">Discount</span>
-                            		      
-                            		       <div class="form-group input-group discountval">
-					                              <input type="text" class="form-control  marginLeftSpace " 
-					                                 data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" required/>
-		                                            <span class="input-group-addon">%</span>
-		                                          
-		                                          
-		                                   </div>                            		    
+                            			<span class="text-paddingwidth discountspace ">Discount %</span>
+                            		       <div class = "form-group input-group">
+	                            		    <input type="number" class="form-control" min = "0" max = "100.00"
+	                            		    	data-ng-model = "ctrl.shipment.discount_percentage"
+	                            		    	data-trigger="focus" data-toggle="popover" 
+												data-placement="top" data-content="Please enter discount %"
+												placeholder = "Ex: 10.22%"
+												data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+												data-ng-keyup = "ctrl.calc_discount()"
+	                            		     />  
+	                            		     <span class="input-group-addon"> % </span>
+                            		    </div>                              		    
                             		
                             	   </div> 
                             		
                             		<div class="col-md-6 branchclass">
-                            			<span class="text-paddingwidth">Discount.Amount</span>
-                            		   
-                            		   <div class="form-group input-group discountamount">
-				                            
-				                            <input type="text" class="form-control " data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" disabled required/>
-	                                            <span class="input-group-addon" ><i class="fa fa-inr"></i></span>
-	                                          
-	                                          
-	                                    </div>                        		    
+                            			<span class="text-paddingwidth">Discount <i class="fa fa-inr" aria-hidden="true"></i></span>
+                            		    
+	                                    <div class = "form-group input-group">
+	                            		    <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.discount_amount" tabindex="-1"
+	                            		    required />  
+	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
+                            		    </div>                          		    
                             		    
                             		</div>                           		
                             		
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Handling Charge</span>
-                            		    <input type="text" class="form-control">                            		    
-                            		    
-                            		</div>
-                            	
-                            	    <div class="col-md-6 branchclass">
-                            			<span class="text-paddingwidth discountspace">CGST</span>                            		
-                            		    
-                            		       <div class="form-group input-group gstval">
-				                                <input type="text" class="form-control" 
-				                                     data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" disabled required/>
-	                                            <span class="input-group-addon" ><i class="fa fa-inr"></i></span>
-	                                      </div>                         		    
-                            		    
+                            		    <div class = "form-group input-group">
+	                            		    <input type="number" class="form-control" min = "0" max = "999999.99"
+	                            		    	data-ng-model = "ctrl.shipment.handling_charge"
+	                            		    	data-trigger="focus" data-toggle="popover" 
+												data-placement="top" data-content="Please enter handling charges"
+												placeholder = "Ex: 10.22"
+												data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+	                            		    required />  
+	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
+                            		    </div> 
                             		</div>
                             		
+                            		<div class="col-md-4 branchclass">
                             		
-                            		<div class="col-md-3 branchclass">
+                            			<span class="text-paddingwidth discountspace">CGST</span>
+                            		       <div class = "form-group input-group">
+	                            		    <input type="text" class="form-control disabled" min = "0" max = "100.00"
+	                            		    	data-ng-model = "ctrl.shipment.cgst_amount"	                            		    	
+												tabindex="-1"											
+	                            		     />  
+	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
+                            		    </div>                              		    
+                            		
+                            	   </div> 
+                            		
+                            		<div class="col-md-4 branchclass">
                             			<span class="text-paddingwidth">SGST</span>
                             		                         		    
-	                            		    <div class="form-group input-group sgstval">
-					                            <input type="text" class="form-control" 
-					                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" disabled required/>
-		                                            <span class="input-group-addon" ><i class="fa fa-inr"></i></span>
-		                                    </div>  
+	                            		  <div class = "form-group input-group">
+	                            		    <input type="text" class="form-control disabled" min = "0" max = "100.00"
+	                            		    	data-ng-model = "ctrl.shipment.sgst_amount"	                            		    	
+												tabindex="-1"											
+	                            		     />  
+	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
+                            		    </div>
                             		</div>
                             		
-                            		<div class="col-md-3 branchclass">
+                            		<div class="col-md-4 branchclass">
                             			<span class="text-paddingwidth ">IGST</span>
                             	
-                            		       <div class="form-group input-group igstval">
-				                             
-				                              <input type="text" class="form-control" 
-				                                data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" disabled required/>
-	                                            <span class="input-group-addon" ><i class="fa fa-inr"></i></span>
-	                                    
-	                                     </div>                         		    
+                            		       <div class = "form-group input-group">
+	                            		    <input type="text" class="form-control disabled" min = "0" max = "100.00"
+	                            		    	data-ng-model = "ctrl.shipment.igst_amount"	                            		    	
+												tabindex="-1"											
+	                            		     />  
+	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
+                            		    </div>                      		    
                             		    
                             		</div>
                             	                        	

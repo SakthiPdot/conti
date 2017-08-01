@@ -285,12 +285,16 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 
 		priceSettingService.fetch_priceforShipment(self.shipment.forpricesetting)
 			.then(
-					function(price) {
-						self.shipment.products[index].product_unitprice = price;					
+					function(res) {
+						self.shipment.handling_charge = res.handling_charges;
+						self.shipment.products[index].product_unitprice = res.price;
+						
+						self.checkQuantity(index);
 					}, function(errResponse) {
 						console.log(errResponse);
 					}
 				);
+		
 	}
 	
 	//---------------- Fetch product price from price setting end
@@ -305,10 +309,43 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	self.calc_totalprice = function (index) {
 		self.shipment.products[index].product_totalprice = 
-			parseInt(self.shipment.products[index].product_quantity) * parseInt(self.shipment.products[index].product_unitprice);	
+			parseInt(self.shipment.products[index].product_quantity) * parseFloat(self.shipment.products[index].product_unitprice);	
+		
+		//calculate chargeable weight & Delivery charges
+		var chargeabled_weight = 0, delivery_charges = 0;
+		for(var i = 0; i < self.shipment.products.length; i++) {
+			delivery_charges = delivery_charges + self.shipment.products[i].product_totalprice; 
+			chargeabled_weight = chargeabled_weight + self.shipment.products[i].max_weight; 
+		}
+		
+		
+		self.shipment.delivery_charges = delivery_charges.toFixed(2);		
+		self.shipment.chargeable_weight = chargeabled_weight.toFixed(2);	
+		
+		self.calc_discount(); // call discount
 	}
 	
 	//------------------------------ Calculate total price in a row end
+	
+	//------------------------------ Calculate discout percentage & amount begin
+	
+	self.calc_discount = function() {
+		var discount_percent = parseFloat(self.shipment.discount_percentage) / parseInt(100);
+		self.shipment.discount_amount = ( parseFloat(self.shipment.delivery_charges) *  (parseFloat(discount_percent)) ).toFixed(2);
+		
+		if(isNaN(self.shipment.discount_amount)) {
+			self.shipment.discount_amount = null;
+		}
+		if(isNaN(self.shipment.delivery_charges)) {
+			self.shipment.delivery_charges = null;
+		}
+		if(isNaN(self.shipment.chargeable_weight)) {
+			self.shipment.chargeable_weight = null;
+		}
+	}
+	
+	//------------------------------ Calculate discout percentage & amount end
+	
 	
 	//------------------------------------------------------------- ADD SHIPMENT DETAILED TABLE END----------------------------------------
 	
