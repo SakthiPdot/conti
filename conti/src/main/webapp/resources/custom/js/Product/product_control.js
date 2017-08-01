@@ -78,18 +78,15 @@ angular.module('contiApp').controller('productController',
 		});
 		}
 	}
-	//===================================change no of page to view in register====================================
-    self.shownoofRecord=function shownoofRecord() {    
-    	$scope.pageSize = $scope.shownoofrec;
-    }
-    
+
     
    //===================================next and previous page====================================  
     $scope.paginate=function(nextPrevMultiplier){
     	self.selectAllProduct=false;
-    	$scope.currentPage += (nextPrevMultiplier * 1);
-    	console.log(self.products.length);
+    	$scope.currentPage += (nextPrevMultiplier * 1);    	
     	self.FilteredProducts = self.products.slice($scope.currentPage*$scope.pageSize);
+    	
+    	console.log(self.products.length);
     	console.log(self.FilteredProducts.length);
     	
     	
@@ -116,9 +113,9 @@ angular.module('contiApp').controller('productController',
     	}
     	
     	
-       	if(self.FilteredProducts.length < $scope.pageSize) {
+     /*  	if(self.FilteredProducts.length < $scope.pageSize) {
     		$scope.nextDisabled = true;
-    	}
+    	}*/
     	
     	if($scope.currentPage == 0) {
     		$scope.previouseDisabled = true;
@@ -131,25 +128,28 @@ angular.module('contiApp').controller('productController',
     }
 	//===================================first last login page====================================
 	$scope.firstlastPaginate = function (page) {
-		self.selectAllProduct=false;
-		ProductService.paginateFirstOrLast(page)
-		.then(
-				function(response){
-					self.FilteredProducts=response;
-					console.log(response);
-				},function(errRespone){
-					console.log("error while fetching products in search"+errResponse);
-				});
-		
-		
+		self.selectAllProduct=false;		
 		if( page == 1 ) {
     		$scope.currentPage = 0;
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = false;
+        	self.FilteredProducts=self.products.slice($scope.currentPage*$scope.pageSize);
     	} else {
+    		$scope.currentPage = ((Math.ceil(self.FilteredProducts.length/$scope.pageSize)) - 1);
     		$scope.previouseDisabled = false;
     		$scope.nextDisabled = true;
+    		self.FilteredProducts=self.products.slice($scope.currentPage*$scope.pageSize);
     		
+    		if(self.FilteredProducts.length==0){
+    			ProductService.paginateFirstOrLast(page)
+    			.then(
+    					function(response){
+    						self.FilteredProducts=response;
+    						console.log(response);
+    					},function(errRespone){
+    						console.log("error while fetching products in search"+errResponse);
+    					});    				
+    		}
     	}
 	}
 		
@@ -459,8 +459,6 @@ angular.module('contiApp').controller('productController',
 	 
 	 
 	function fetchProducts(){
-	
-			
 			ProductService.fetchAllProduct()
 			.then(function(Response){
 				self.products=Response;
@@ -470,9 +468,6 @@ angular.module('contiApp').controller('productController',
 			},function(errResponse){			
 				console.log("error Fetching product");
 			});	
-			
-		
-		
 	}
 	//===================================delete Product====================================
 	function deleteProduct(){
@@ -531,7 +526,18 @@ angular.module('contiApp').controller('productController',
 		$("#selectedProductType_value").val("");
 		$scope.productForm.$setPristine();
 	}
-
+	//===================================change no of page to view in register====================================
+    self.shownoofRecord=function shownoofRecord() {    
+    	$scope.pageSize = $scope.shownoofrec;
+    	
+    	self.FilteredProducts=self.products.slice($scope.currentPage*$scope.pageSize);
+    	
+    	if( self.FilteredProducts.length < $scope.pageSize ) {
+    		$scope.previouseDisabled = true;
+    		$scope.nextDisabled = true;
+    	}
+    }
+    
 	//===================================pagination====================================
     function pagination() {
 
@@ -544,8 +550,29 @@ angular.module('contiApp').controller('productController',
 		$scope.previouseDisabled = true;	
 		$scope.nextDisabled = false;
 	
-	
+		if( self.FilteredProducts.length <=10){
+			$scope.nextDisabled = true;			
+		}
 		
+		if( self.FilteredProducts.length <100){
+			$scope.totalnof_records  = self.FilteredProducts.length;		
+		}else{
+			findrecord_count();
+		}		
     }
+    
+	  //===================================pagination====================================
+	function findrecord_count() {				
+		ProductService.findrecord_count()
+		.then(
+				function (record_count) {
+					console.log(record_count);
+					$scope.totalnof_records  = record_count;
+				}, 
+				function (errResponse) {
+					console.log('Error while fetching record count');
+				});
+	}
+	
 	
 }]);

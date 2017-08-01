@@ -35,6 +35,14 @@ public class ProductDaoImpl implements ProductDAO {
 
 	@Override
 	@Transactional
+	public int productCount() {
+		int rec_count = ((Long)sessionFactory.getCurrentSession()
+				.createQuery("select count(*) from Product WHERE obsolete = 'N'").uniqueResult()).intValue();
+		return rec_count;
+	}
+	
+	@Override
+	@Transactional
 	public void saveOrUpdate(Product product) {
 		sessionFactory.getCurrentSession().saveOrUpdate(product);
 	}

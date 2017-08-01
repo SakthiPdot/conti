@@ -23,5 +23,5 @@ public interface ProductDAO {
 	public List<Product> searchByProductName(String SearchString);
 	public List<Product> searchByProductTypeUnique(String SearchString);
 	public String checkProductName(String SearchString);
-	
+	public int productCount();
 }

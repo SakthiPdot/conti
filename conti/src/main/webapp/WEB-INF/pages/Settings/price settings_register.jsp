@@ -243,14 +243,14 @@ data-ng-controller="priceSettingRegisterController as psrctrl">
                                 <!--====================pagination tab============================ -->
                                 		
                                 		          
-                                <div class ="col-lg-6">
+                                <div class ="col-lg-6 col-md-6 col-xs-12">
                                 	<div class="pull-left">
                                			 Showing {{(currentPage*pageSize)+1}} to 
                                			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
                                			 of {{totalnof_records}} entries
                                		</div>
                                 </div>
-                                <div class="col-lg-6 icons-button">
+                                <div class="col-lg-6 col-md-6 col-xs-12 icons-button">
                                 
                                    <div class="pull-right">
 										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                      											

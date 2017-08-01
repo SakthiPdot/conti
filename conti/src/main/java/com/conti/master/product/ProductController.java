@@ -60,6 +60,16 @@ public class ProductController {
 	UserInformation userInformation;
 	
 	
+	//======================================get Record Count==========================================
+	@RequestMapping(value = "/ProductRecordCount/", method = RequestMethod.GET)
+	public ResponseEntity<String> priceSettingRecordCount(HttpServletRequest request) {
+		try {	
+			return new ResponseEntity<String> (String.valueOf(productDao.productCount()), HttpStatus.OK);			
+		} catch (Exception exception) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
 	//======================================Excel==========================================
 	@RequestMapping(value="downloadExcelProduct",method=RequestMethod.GET)
 	public ModelAndView downloadExcelProduct(){
@@ -84,7 +94,7 @@ public class ProductController {
 			to_limit = 10;
 		} else {
 			from_limit = (page * 10) + 1;
-			to_limit =  (page + 1 ) * 10;
+			to_limit =  (page + 10 ) * 10;
 		}
 		
 		List<Product> productList=productDao.getProductWithLimit(from_limit, to_limit, order); 

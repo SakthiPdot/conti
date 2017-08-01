@@ -23,5 +23,6 @@ public interface LocationDao {
 	public List<Location> searchbyeyLocationName(String search_key);	
 	public List<Location> getLocationWithLimit(int from,int to,String order);
 	public List<Location> searchByLocation(String SearchString);
+	public int locationSettingCount();
 }
  

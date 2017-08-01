@@ -109,6 +109,17 @@ public class LocationController {
 		return model;
 
 	}
+	
+	//======================================get Record Count==========================================
+	@RequestMapping(value = "/locationRecordCount/", method = RequestMethod.GET)
+	public ResponseEntity<String> locationRecordCount(HttpServletRequest request) {
+		try {	
+			return new ResponseEntity<String> (String.valueOf(locationDao.locationSettingCount()), HttpStatus.OK);			
+		} catch (Exception exception) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
 
 	//=================PRINT=====================================
 	@RequestMapping(value="location_print",method=RequestMethod.POST)
@@ -180,7 +191,7 @@ public class LocationController {
 			to_limit = 10;
 		} else {
 			from_limit = (page * 10) + 1;
-			to_limit =  (page + 1 ) * 10;
+			to_limit =  (page + 10 ) * 10;
 		}
 		
 		System.err.println(String.valueOf(from_limit)+String.valueOf(to_limit)+"++++++++++++++++++++++++++++++++++++++++");

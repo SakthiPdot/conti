@@ -103,7 +103,7 @@ public class PriceSettingsRegisterController {
 			to_limit = 10;
 		} else {
 			from_limit = (page * 10) + 1;
-			to_limit =  (page + 1 ) * 10;
+			to_limit =  (page + 10 ) * 10;
 		}	
 		List<PriceSetting> priceSettinglist=psDao.getPriceSettingWithLimit(from_limit, to_limit, order); 
 		return new ResponseEntity<List<PriceSetting>>(priceSettinglist,HttpStatus.OK);
