@@ -66,7 +66,7 @@ public class ServiceDaoImp implements ServiceDao {
 			
 			@SuppressWarnings("unchecked")
 			List<ServiceMaster> listservice = (List<ServiceMaster>) sessionFactory.getCurrentSession()
-					.createQuery("from ServiceMaster WHERE obsolete = 'N'  and active ='Y' and service_name LIKE '%" + search_key + "%'").list();
+					.createQuery("from ServiceMaster WHERE obsolete = 'N' and service_name LIKE '%" + search_key + "%'").list();
 			return listservice;
 		}
 
@@ -95,5 +95,12 @@ public class ServiceDaoImp implements ServiceDao {
 				return "AVAILABLE";
 			}
 			return "NOTAVAILABLE";
+		}
+
+
+		@Override
+		public List<ServiceMaster> allSorting(String sorting) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 }

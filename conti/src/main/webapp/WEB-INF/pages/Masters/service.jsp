@@ -41,7 +41,7 @@
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
-    
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.min.css">
 </head>
 
 
@@ -276,18 +276,20 @@
                             </div>
                             
                             <div class="table-responsive">
+                            
                               <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.servSelectall()" data-ng-model = "selectall"></th>
                                          <!--    <th>S.No</th> -->
-                                            <th data-ng-show = "setting_servicename">Service Name</th>
-                                            <th data-ng-show = "setting_servicecode">Service Code</th>
+                                            <th data-ng-show = "setting_servicename"><a href="" class="underline" data-ng-click="ctrl.sortname('service_name')">Service Name</a></th>
+                                              
+                                            <th data-ng-show = "setting_servicecode"><a href="" class="underline" data-ng-click="ctrl.sortname('service_code')">Service Code</a></th>
                                             <th data-ng-show = "setting_servicestatus">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr data-ng-repeat = "service in ctrl.Filterservices | limitTo:pageSize "
+                                        <tr data-ng-repeat = "service in ctrl.Filterservices  |  limitTo:pageSize    "
                                         data-ng-dblclick = "ctrl.updateService(service)">
                                             <td><input type="checkbox" data-ng-change="ctrl.servSelect(service)" data-ng-model = "service.select"/></td>
                                         <!--     <td>{{$index+1}}</td> -->
@@ -297,6 +299,8 @@
                                        </tr>
                                     </tbody>
                                 </table>                               
+                               
+                            
                                
                                 
                             </div>
@@ -367,6 +371,7 @@
      <script src="resources/custom/js/service_master/service_service.js"></script>
     <script src="resources/custom/js/confirmDialog.js"></script>   
     <script type="text/javascript" src="resources/custom/js/validation.js"></script>
+     <script type="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.min.js"></script> 
 
     
 
@@ -377,6 +382,7 @@
 		    e.stopPropagation();
 		});
 	</script>
+
 
 </body>
 

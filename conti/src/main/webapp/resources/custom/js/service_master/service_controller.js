@@ -38,9 +38,12 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	self.confirm_msg = self.confirm_title + '' + self.service.service_name + 'service?'; 
 	self.confirm_btnclass = 'btn-success';
 	
+	self.sortname = sortname;
 	
 	$scope.shownoofrec = 10;
-	
+
+	$scope.orderByField = '';
+	$scope.reverseSort = false;
 	
 	fetchAllServices();
 	/*checkServiceName();*/
@@ -48,6 +51,9 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	function reset(){
 		self.service = {};	
 	}
+	
+	
+
 	
 	//============ Check Service Name Function Begin =================//
 		
@@ -77,6 +83,25 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 		
 	
 	//============ Check Service Name Function End ===================//
+	
+	
+	
+	//===================================//
+	
+	function sortname (sorting) {		
+		console.log(sorting);		
+		ServiceService.allSorting(sorting)
+			.then(
+					function (res) {
+						console.log(res);
+						self.Filterservices = res;						
+					},
+					function (errResponse) {
+						console.log('Error while fetching services')
+					}
+			     ) ;	
+	}
+	//=================================//
 	
 	
 	//============= Close Function Begins ======================//
