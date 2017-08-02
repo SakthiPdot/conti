@@ -302,13 +302,15 @@ public class ProductController {
 			
 		
 		try
-		{
+		{ 
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			
 			model.addObject("title", "Product Master");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Masters/product");
+			model.addObject("homePage",request.getContextPath());
 
+			System.err.println(request.getContextPath());
 			
 		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);

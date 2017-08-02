@@ -101,7 +101,7 @@ public class LocationController {
 			model.addObject("title", "Location Master");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Masters/location");
-
+			model.addObject("homePage",request.getContextPath());
 			
 		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);

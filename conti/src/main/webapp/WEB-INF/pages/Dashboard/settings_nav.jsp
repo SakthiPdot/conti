@@ -294,7 +294,7 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a  href="/Conti/"><i class="fa fa-dashboard"></i>Go Back to Dashboard</a>
+                        <a  href="${homePage}"><i class="fa fa-dashboard"></i>Go Back to Dashboard</a>
                     </li>
                     
                     <li>

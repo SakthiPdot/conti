@@ -65,7 +65,8 @@ public class CompanyController {
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);			
 			model.addObject("title", "Company Settings");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
-			model.setViewName("Settings/company_settings");			
+			model.setViewName("Settings/company_settings");		
+			model.addObject("homePage",request.getContextPath());
 		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  "Admin/ ", ConstantValues.LOGGER_STATUS_E, exception);
 		}		
