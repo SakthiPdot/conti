@@ -253,17 +253,29 @@ public class PriceSettingsRegisterController {
 		
 		PriceSetting priceSetting = psDao.fetchprice(from_branch, product, service);
 		
+		JSONObject json1 = new JSONObject();
+		
 		if(priceSetting != null) {
+			
+			json1.put("handling_charges", priceSetting.getDefaulthandling_charge());
+			
 			if(priceSetting.getDefault_price() != 0 ) {
-				return new ResponseEntity<String>(Float.toString(priceSetting.getDefault_price()) , HttpStatus.OK);
+				json1.put("price", priceSetting.getDefault_price());
+				
+				return new ResponseEntity<String>(json1.toString() , HttpStatus.OK);
 			} else {
+				
 				PriceSettingDetail priceSettingDetail = psdDAo.fetchprice(priceSetting.getPricesetting_id(), to_branch, max_weight);
+				
 				if( priceSettingDetail != null ) {
-					return new ResponseEntity<String>(Float.toString(priceSettingDetail.getPs_price()) , HttpStatus.OK);
+					json1.put("price", priceSettingDetail.getPs_price());
+					return new ResponseEntity<String>(json1.toString() , HttpStatus.OK);
 				} else {
-					return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+					json1.put("price", "");
+					return new ResponseEntity<String>(json1.toString(), HttpStatus.OK);
 				}
 			}
+			
 		} else {
 			return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 		}
