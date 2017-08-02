@@ -34,7 +34,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
-import com.conti.master.branch.BranchModel;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -69,6 +68,17 @@ public class ServiceRestController {
 		
 	}
 	
+	
+	@RequestMapping(value = "allsorting", method=RequestMethod.POST)
+	public ResponseEntity<List<ServiceMaster>> allSorting(@RequestBody String sorting, HttpServletRequest request) {
+		
+		List<ServiceMaster> sortList = serviceDao.allSorting(sorting);
+		
+		System.out.println("+++++++++++++++++++"+sorting);
+		
+		return new ResponseEntity<List<ServiceMaster>>(sortList,HttpStatus.OK);
+		
+	}
 	
 	@RequestMapping( value ="/services/", method = RequestMethod.GET)
 	public ResponseEntity<List<ServiceMaster>> fetchAllServices(HttpServletRequest request) {

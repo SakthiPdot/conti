@@ -99,8 +99,15 @@ public class ServiceDaoImp implements ServiceDao {
 
 
 		@Override
-		public List<ServiceMaster> allSorting(String sorting) {
-			// TODO Auto-generated method stub
-			return null;
+		@Transactional
+		public List<ServiceMaster> allSorting( String sorting) {
+			
+			
+			@SuppressWarnings("unchecked")
+			List<ServiceMaster> SortList = (List<ServiceMaster>) sessionFactory.getCurrentSession()
+					.createQuery("from ServiceMaster where obsolete = 'N' ORDER BY "+ sorting +" ASC").list();
+			
+			return SortList;
+		
 		}
 }
