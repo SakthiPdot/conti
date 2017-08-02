@@ -56,7 +56,7 @@
       	      <input class="form-control" data-ng-model = "ctrl.user.username" placeholder="Username" id="username" name="username" type="text" autofocus required />      		  
      	      <button type="submit">Get password</button>
      		  <p class="message"> << <a href="login">Go back</a></p>
-     		  <input type="text" name="${_csrf.parameterName}" value="${_csrf.token}" />
+     		  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	    </form>
 	    
 	  </div>
