@@ -14,6 +14,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.Filtermanifests=[];
 		self.branches=[];
 		self.manifest={};
+		self.manifest1={};
 		self.heading="Master";
 		self.message=null;
 		self.print = print;
@@ -21,7 +22,11 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.save='saveclose'
 		self.close=close;
 		self.manifestFilter=manifestFilter;
-		
+		self.inwardManifest=inwardManifest;
+		self.outwardManifest=outwardManifest;
+		self.manifestSearch=manifestSearch;
+		self.FilterManifestdetailed=FilterManifestDetailed;
+		self.manifestDetailed=manifestDetailed;
 		
 		fetchAllManifest();
 		fetchAllBranches();
@@ -99,24 +104,117 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    //-------------------------------------- Print end -----------------------------//
 	    
 	  //------------------------- View Manifest Filter function start ------------------//   
-	    function manifestFilter() 
+	    function manifestFilter(manifest) 
 	    {
-	    	ManifestService.ManifestFilter()
+	    	manifest.fromdate = $('.datepicker1').val();
+	    	manifest.todate = $('.datepicker2').val();
+	    	manifest.frombranch=manifest.frombranch.branch_id;
+	    	manifest.tobranch=manifest.tobranch.branch_id;
+	    	console.log(manifest);
+	    	ManifestService.manifestFilter(manifest)
 	    	.then(
 	    			function(manifest)
 	    			{
+	    				console.log(manifest);
+	    				self.Filtermanifests=manifest;
+	    			},
+	    			function(errResponse)
+	    			{ 
+	    				console.log('Error while filtering manifest records');
+	    			}
+	    		);
+	    }
+	    //------------------------- View Manifest Filter function start ------------------//       
+	    
+	    
+	    //-----------------------To get inward manifest list function Start--------------------------
+	    
+	    function inwardManifest()
+	    {
+	    	ManifestService.inwardManifest()
+	    	.then(
+	    			function(manifest)
+	    			{
+	    				console.log(manifest);
 	    				self.Filtermanifests=manifest;
 	    			},
 	    			function(errResponse)
 	    			{
-	    				console.log('Error while filtering manifest records');
+	    				console.log('Error while getting inward manifest list');
 	    			}
 	    		);
-	    	
-	        
 	    }
-	    //------------------------- View Manifest Filter function start ------------------//       
+	  //-----------------------To get inward manifest list function End--------------------------
 	    
+	  
+	  //-----------------------To get Outward manifest list function Start--------------------------
+	    
+	    function outwardManifest()
+	    {
+	    	ManifestService.outwardManifest()
+	    	.then(
+	    			function(manifest)
+	    			{
+	    				console.log(manifest);
+	    				self.Filtermanifests=manifest;
+	    			},
+	    			function(errResponse)
+	    			{
+	    				console.log('Error while getting outward manifest list');
+	    			}
+	    		);
+	    }
+	  //-----------------------To get Outward manifest list function End--------------------------
+	    
+	    
+	 //------------------------------Register Manifest Search start-------------------------------------------
+	    
+	  function manifestSearch(searchkey)
+	  {
+		  if(searchkey.length==0)
+		  {
+		  	  self.Filtermanifests=self.manifests;
+		  }
+		  else if(searchkey.length>3)
+		  {
+		  	ManifestService.manifestSearch(searchkey)
+		  	.then(
+		  			function(filtermanifest)
+		  			{
+		  				self.Filtermanifests=filtermanifest;
+		  				console.log(filtermanifest);
+		  			},
+		  			function(errResponse)
+		  			{
+		  				console.log('Error while Searching Manifest number')
+		  			}
+		  		);
+		  }
+		  
+	  }
+	  
+	//-------------------------------------Register Manifest Search End-------------------------------------------
 
+	  
+	//--------------------------------------Open Manifest Detailed view Start----------------------------
+	  
+	  function manifestDetailed(manifest_id)
+	  {
+		  console.log('Contoller: Manifest detailed call')
+		  ManifestService.manifestDetailed(manifest_id)
+		  .then(
+				  function(manifestdetailed)
+				  {
+					  self.FilterManifestdetailed=manifestdetailed;
+					  console.log(self.FilterManifestdetailed)
+				  },
+				  function(errResponse)
+				  {
+					  console.log('Error while Manifest detailed get')
+				  }
+				  
+			  );
+	  }
+	  
 	}
 	]);

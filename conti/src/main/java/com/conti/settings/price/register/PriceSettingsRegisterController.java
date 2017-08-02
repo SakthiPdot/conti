@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
-import com.conti.master.location.Location;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -42,6 +41,8 @@ import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 import com.conti.settings.price.PriceSetting;
 import com.conti.settings.price.PriceSettingDao;
+import com.conti.settings.price.PriceSettingDetail;
+import com.conti.settings.price.PriceSettingDetailDao;
 
 /**
  * @Project_Name conti
@@ -66,7 +67,8 @@ public class PriceSettingsRegisterController {
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
 		
-	
+	@Autowired
+	private PriceSettingDetailDao psdDAo;
 	@Autowired
 	@Qualifier("sessionRegistry")
 	private SessionRegistry sessionRegistry;
@@ -103,7 +105,7 @@ public class PriceSettingsRegisterController {
 			to_limit = 10;
 		} else {
 			from_limit = (page * 10) + 1;
-			to_limit =  (page + 1 ) * 10;
+			to_limit =  (page + 10 ) * 10;
 		}	
 		List<PriceSetting> priceSettinglist=psDao.getPriceSettingWithLimit(from_limit, to_limit, order); 
 		return new ResponseEntity<List<PriceSetting>>(priceSettinglist,HttpStatus.OK);
@@ -228,6 +230,7 @@ public class PriceSettingsRegisterController {
 			model.addObject("title", "Price Settings Register");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Settings/price settings_register");
+			model.addObject("homePage",request.getContextPath());
 
 			
 		} catch (Exception exception) {
@@ -237,5 +240,48 @@ public class PriceSettingsRegisterController {
 
 	}
 
-
+	
+	//--------------------------------- Fetch price by from branch OR to branch and service and product writen by sankar
+	@RequestMapping(value = "fetch_priceforShipment", method = RequestMethod.POST)
+	public ResponseEntity<String> fetch_priceforShipment (@RequestBody String product_info, HttpServletRequest request) {
+		
+		JSONObject json = new JSONObject(product_info);
+		int from_branch = json.getInt("from_branch_id");
+		int to_branch = json.getInt("to_branch_id");
+		int product = json.getInt("product_id");
+		int service = json.getInt("service_id");
+		int max_weight = json.getInt("max_weight");
+		
+		PriceSetting priceSetting = psDao.fetchprice(from_branch, product, service);
+		
+		JSONObject json1 = new JSONObject();
+		
+		if(priceSetting != null) {
+			
+			json1.put("handling_charges", priceSetting.getDefaulthandling_charge());
+			
+			if(priceSetting.getDefault_price() != 0 ) {
+				json1.put("price", priceSetting.getDefault_price());
+				
+				return new ResponseEntity<String>(json1.toString() , HttpStatus.OK);
+			} else {
+				
+				PriceSettingDetail priceSettingDetail = psdDAo.fetchprice(priceSetting.getPricesetting_id(), to_branch, max_weight);
+				
+				if( priceSettingDetail != null ) {
+					json1.put("price", priceSettingDetail.getPs_price());
+					return new ResponseEntity<String>(json1.toString() , HttpStatus.OK);
+				} else {
+					json1.put("price", "");
+					return new ResponseEntity<String>(json1.toString(), HttpStatus.OK);
+				}
+			}
+			
+		} else {
+			return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+		}
+		
+	}
+	
+	
 }

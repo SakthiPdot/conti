@@ -57,7 +57,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/Conti/"><strong>Conti</strong></a>
+                <a class="navbar-brand" href="${homePage}"><strong>Conti</strong></a>
 				
 		
             </div>
@@ -294,7 +294,7 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a  href="/Conti/"><i class="fa fa-dashboard"></i>Go Back to Dashboard</a>
+                        <a  href="${homePage}"><i class="fa fa-dashboard"></i>Go Back to Dashboard</a>
                     </li>
                     
                     <li>

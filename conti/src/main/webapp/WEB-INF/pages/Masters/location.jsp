@@ -119,6 +119,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 							  onKeyPress="return CheckIsCharacterWithspace(event,this.value) "
 							  data-placement="top" data-content="Please Enter Abbreviation"
 			                  data-ng-model="locctrl.Location.abbreviation"
+			                    maxlength="50"
 			                   class="form-control">  
 			                   
 			                    
@@ -140,10 +141,11 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 									              pause="0"		 data-ng-required="true"
 		                  						 data-trigger="focus" data-toggle="popover"
 							 					  data-placement="top" data-content="Please Enter city"	
-									              selected-object="city_name"
-									              local-data="locctrl.addresses"
-									              search-fields="city,state"
-									              title-field="city,state"
+									              selected-object="city_name"								              
+										    	  remote-url="getAddressTypeByStr/"
+												  remote-url-data-field="Address"
+									              title-field="city"
+									              description-field="state"
 												  match-class="highlight"
 												   onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
 												  initial-value="{{locctrl.Location.address.city}}"
@@ -189,6 +191,8 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 			                  <input type="text" class="form-control"
 			                   data-ng-required="true"
 			                    data-trigger="focus" data-toggle="popover"
+			                    maxlength="8"
+			                    minlength="6"
 							 	data-placement="top" data-content="Please Enter Pincode"	
 							   onKeyPress="return CheckIsNumericAndHyphen(event,this.value) "           
 			                  data-ng-model="locctrl.Location.pincode">
@@ -473,15 +477,26 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                 </table>
                                 
                                 
-                                  		<!--====================pagination tab============================ -->
-                                		<div class="col-lg-6 col-lg-offset-3 " align="center">
+                      <!--====================pagination tab============================ -->                               		
+                                		          
+                                <div class ="col-lg-6 col-md-6 col-xs-12">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
+                                <div class="col-lg-6  col-md-6 col-xs-12 icons-button">
+                                
+                                   <div class="pull-right">
 										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                      											
 										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previous</button>
 										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "paginate(1)">Next</button>
 										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
-										</div>	
-									   <!--double space -->									
-										<div class="col-lg-6"><br><br></div>
+										</div>
+										
+								</div>
+									   
                             </div>
                             
                         </div>

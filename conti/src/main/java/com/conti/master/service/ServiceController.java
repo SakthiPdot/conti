@@ -80,6 +80,7 @@ public class ServiceController {
 			model.addObject("title", "Service Master");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Masters/service");
+			model.addObject("homePage",request.getContextPath());
 
 			
 		} catch (Exception exception) {

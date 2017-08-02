@@ -74,7 +74,7 @@ public class ManifestDaoImpl implements ManifestDao
 	@Override
 	@Transactional
 	public ManifestModel getManifestbyId(int id) {
-		String hql = "FROM Manifest WHERE obsolete ='N' and manifest_id ="+ id + "";
+		String hql = "FROM ManifestModel WHERE obsolete ='N' and manifest_id ="+ id + "";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
 		List<ManifestModel> manifestlist = (List<ManifestModel>) query.list();
@@ -86,6 +86,67 @@ public class ManifestDaoImpl implements ManifestDao
 	
 	/*------------------------------- Get Manifest by id begin -----------------------*/	
 	
+	//---------------Manifest Filter by Filter Condition Start---------------------------
+	
+	@Override
+	@Transactional
+	public List<ManifestModel>getManifestByCondition(int frombranch,int tobranch,String fromdate,String todate)
+	{
+		@SuppressWarnings("unchecked")
+		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
+				.createQuery("FROM ManifestModel WHERE obsolete ='N' and manifest_origin="+frombranch 
+				+" AND manifest_origin ="+tobranch
+				+" AND created_datetime BETWEEN '"+fromdate+" 00:00:00'"
+				+" AND '"+todate+" 23:59:59'").list();
+		return listmanifest;
+	}
 	
 	
+	//======================================Get inward manifest list Start======================================
+	@Override
+	@Transactional
+	public List<ManifestModel> getInwardManifest(int branch_id) 
+	{
+		// TODO Auto-generated method stub
+		
+		@SuppressWarnings("unchecked")
+		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
+				.createQuery("from ManifestModel WHERE obsolete ='N' and manifest_destination = " + branch_id ).list();
+		return listmanifest;
+		
+	}
+	
+	//======================================Get inward manifest list End=========================================
+	
+	
+	
+	//======================================Get inward manifest list Start======================================
+		@Override
+		@Transactional
+		public List<ManifestModel> getOutwardManifest(int branch_id) 
+		{
+			// TODO Auto-generated method stub
+			
+			@SuppressWarnings("unchecked")
+			List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
+					.createQuery("from ManifestModel WHERE obsolete ='N' and manifest_origin = " + branch_id ).list();
+			return listmanifest;
+			
+		}
+		
+	//======================================Get inward manifest list End=========================================
+		
+	//======================================Get Manifest Search by==========================
+		
+		@Override
+		@Transactional
+		public List<ManifestModel>manifestSearch(String searchkey)
+		{
+			@SuppressWarnings("unchecked")
+			
+			List<ManifestModel> listManifest=(List<ManifestModel>)sessionFactory.getCurrentSession()
+			.createQuery("from ManifestModel where obsolete='N' and manifest_number LIKE '%"+searchkey+"%'").list();
+			return listManifest;
+		}
+		
 }

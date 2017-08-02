@@ -18,11 +18,27 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 			changeActive:changeActive,
 			checkLocationName:checkLocationName,
 			searchLocation:searchLocation,
-			paginateFirstOrLast:paginateFirstOrLast
+			paginateFirstOrLast:paginateFirstOrLast,
+			findrecord_count:findrecord_count
 		}
 	
 	return factory;
-	
+	//=============================find record count====================================
+	   function findrecord_count() {
+	    	
+	        var deferred = $q.defer();
+	        $http.get('locationRecordCount/')
+	            .then(
+	            function (response) {
+	                deferred.resolve(response.data);
+	            },
+	            function(errResponse){
+	                console.error('Error while fetching Users record count');
+	                deferred.reject(errResponse);
+	            }
+	        );
+	        return deferred.promise;
+	    }
 	//=============================paginate first or last====================================
     function paginateFirstOrLast(page) {
 	var deferred = $q.defer();

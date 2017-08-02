@@ -261,7 +261,12 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     //------------------------- Submit for new employee / update employee begin ---------------------//
     function submit() {
     	
-
+    	if(self.employee.emp_code == null) {
+    		self.employee.emp_code = "";
+    	}
+    	if(self.employee.emp_address2 == null) {
+    		self.employee.emp_address2 = "";
+    	}
     	
     	if ( $("#branch_id").val() == "" || $("#branch_id").val() == null || $("#branch_name_value").val() == "" || $("#branch_name_value").val() == null ){
     		
@@ -731,7 +736,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 		
 		if ( (item.emp_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.emp_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.empcategory.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
-		//		|| (item.emp_address1.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.emp_address2.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.emp_address1.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.emp_address2.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
 				|| ((String(item.emp_phoneno)).indexOf(toSearch) > -1 ) ||  (item.emp_email.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || ((String(item.dob)).indexOf(toSearch) > -1 ) 

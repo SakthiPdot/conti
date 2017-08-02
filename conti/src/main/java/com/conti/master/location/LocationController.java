@@ -7,14 +7,19 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.conti.address.AddressDao;
 import com.conti.address.AddressModel;
 import com.conti.config.SessionListener;
 import com.conti.master.product.Product;
@@ -57,6 +63,9 @@ public class LocationController {
 
 	@Autowired
 	private UsersDao usersDao;
+	
+	@Autowired
+	private AddressDao addressDao;
 	
 	@Autowired 
 	private LocationDao locationDao; 
@@ -92,13 +101,24 @@ public class LocationController {
 			model.addObject("title", "Location Master");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Masters/location");
-
+			model.addObject("homePage",request.getContextPath());
 			
 		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);
 		}
 		return model;
 
+	}
+	
+	//======================================get Record Count==========================================
+	@RequestMapping(value = "/locationRecordCount/", method = RequestMethod.GET)
+	public ResponseEntity<String> locationRecordCount(HttpServletRequest request) {
+		try {	
+			return new ResponseEntity<String> (String.valueOf(locationDao.locationSettingCount()), HttpStatus.OK);			
+		} catch (Exception exception) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 	}
 
 	//=================PRINT=====================================
@@ -171,7 +191,7 @@ public class LocationController {
 			to_limit = 10;
 		} else {
 			from_limit = (page * 10) + 1;
-			to_limit =  (page + 1 ) * 10;
+			to_limit =  (page + 10 ) * 10;
 		}
 		
 		System.err.println(String.valueOf(from_limit)+String.valueOf(to_limit)+"++++++++++++++++++++++++++++++++++++++++");
@@ -280,6 +300,20 @@ public class LocationController {
 			e.printStackTrace();
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
+	}
+	
+	//=================GET ADDRESS USING TYPE BY STRING =====================================
+	@RequestMapping(value="getAddressTypeByStr/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String,List<AddressModel>>> getAddressTypeByStr(HttpServletRequest request,
+			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+		
+		List<AddressModel> address = addressDao.searchByAddressName(searchStr);
+
+		 Map result = new HashMap();
+		 result.put("Address", address);
+		
+		System.err.println(searchStr+"464644");
+		return new ResponseEntity<Map<String,List<AddressModel>>> (result,HttpStatus.OK);
 	}
 	
 	//=================DELETE LOCATION ID =====================================

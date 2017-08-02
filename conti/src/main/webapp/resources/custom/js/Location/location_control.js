@@ -131,6 +131,7 @@ angular.module('contiApp').controller('locationController'
 			function selectAll(){
 				
 				self.selectedLocation=[];
+				
 				var size;
 				
 				if($scope.pageSize>self.FilteredLocations.length){
@@ -274,7 +275,8 @@ angular.module('contiApp').controller('locationController'
 						BootstrapDialog.TYPE_WARNING, title+" Without Save ..? ", 'btn-warning')
 				.then(function(response){
 					 drawerClose('.drawer') ;
-					 reset();
+					 fetchAllLocation();
+					 reset();					 
 				});
 			}
 			//===================================reset====================================
@@ -388,8 +390,6 @@ angular.module('contiApp').controller('locationController'
 										self.message = "Error While Updating Location ("+locationName+") ..!";
 										successAnimate('.failure');
 									});	
-					    			
-					    			
 					    		});	
 						}
 				  }
@@ -441,8 +441,7 @@ angular.module('contiApp').controller('locationController'
 						},function(errResponse){
 							self.message = "Error While Deleting Location ("+locationName+") ..!";
 							successAnimate('.failure');
-						});	
-				
+						});					
 				});
 			}
 			
@@ -454,9 +453,9 @@ angular.module('contiApp').controller('locationController'
 			function fetchAllLocation(){
 				LocationService.fetchAllLocation()
 				.then(function(response){
-					 pagination();
 					self.Locations=response;
 					self.FilteredLocations=response;
+					 pagination();
 					console.log(self.Locations);
 				},
 				function(errResponse){
@@ -468,8 +467,12 @@ angular.module('contiApp').controller('locationController'
 		    	
 		    	self.selectAllLocation=false;
 		    	$scope.currentPage += (nextPrevMultiplier * 1);
-		    	console.log(self.Locations.length);
 		    	self.FilteredLocations = self.Locations.slice($scope.currentPage*$scope.pageSize);
+
+
+				console.log($scope.currentPage,"current");
+				console.log($scope.pageSize,"pagesize");
+		    	console.log(self.Locations.length);
 		    	console.log(self.FilteredLocations.length);
 		    	
 		    	
@@ -478,6 +481,7 @@ angular.module('contiApp').controller('locationController'
 		           	LocationService.paginateFirstOrLast($scope.currentPage)		           	
 					.then(function (response) {
 						console.log(response);
+						
 						
 						if ( response.length == 0 ) {
 							$scope.nextDisabled = true;
@@ -496,13 +500,14 @@ angular.module('contiApp').controller('locationController'
 		    	}
 		    	
 		    	
-		       	if(self.FilteredLocations.length < $scope.pageSize) {
+		     /*  	if(self.FilteredLocations.length < $scope.pageSize) {
 		    		$scope.nextDisabled = true;
-		    	}
+		    	}*/
 		    	
 		    	if($scope.currentPage == 0) {
 		    		$scope.previouseDisabled = true;
 		    	}
+		    	
 		    	if(nextPrevMultiplier == -1) {    		
 		    		$scope.nextDisabled = false;
 		    	} else {
@@ -513,24 +518,30 @@ angular.module('contiApp').controller('locationController'
 			$scope.firstlastPaginate = function (page) {
 				
 				self.selectAllLocation=false;
-				LocationService.paginateFirstOrLast(page)
-				.then(
-						function(response){
-							self.FilteredLocations=response;
-							console.log(response);
-						},function(errRespone){
-							console.log("error while fetching Location in search"+errResponse);
-						});
-				
 				
 				if( page == 1 ) {
 		    		$scope.currentPage = 0;
 		    		$scope.previouseDisabled = true;
 		    		$scope.nextDisabled = false;
+		    		self.FilteredLocations = self.Locations.slice($scope.currentPage*$scope.pageSize);
 		    	} else {
+		    		$scope.currentPage = ((Math.ceil(self.FilteredLocations.length/$scope.pageSize)) - 1);
 		    		$scope.previouseDisabled = false;
 		    		$scope.nextDisabled = true;
+		    		self.FilteredLocations = self.Locations.slice($scope.currentPage*$scope.pageSize);
 		    		
+		    		if(self.FilteredLocations==0){
+
+						LocationService.paginateFirstOrLast(page)
+						.then(
+								function(response){
+									self.FilteredLocations=response;
+									console.log(response);
+								},function(errRespone){
+									console.log("error while fetching Location in search"+errResponse);
+								});
+						
+		    		}
 		    	}
 			}
 				
@@ -568,6 +579,13 @@ angular.module('contiApp').controller('locationController'
 			//===================================change no of page to view in register====================================
 		    self.shownoofRecord=function shownoofRecord() {    
 		    	$scope.pageSize = $scope.shownoofrec;
+		    	
+		    	self.FilteredLocations = self.Locations.slice($scope.currentPage*$scope.pageSize);
+		    	
+		    	if( self.FilteredLocations.length < $scope.pageSize ) {
+		    		$scope.previouseDisabled = true;
+		    		$scope.nextDisabled = true;
+		    	}
 		    }
 		    
 		    
@@ -578,6 +596,30 @@ angular.module('contiApp').controller('locationController'
 				$scope.totalPages = 0;	
 				$scope.previouseDisabled = true;	
 				$scope.nextDisabled = false;	
+				
+				if( self.FilteredLocations.length <=10){
+					$scope.nextDisabled = true;
+				}
+				
+				if( self.FilteredLocations.length <100){
+					$scope.totalnof_records  = self.FilteredLocations.length;
+				}else{
+					findrecord_count();
+				}
+				
 		    }
+		    //===================================Total Record Count====================================
+			function findrecord_count() {				
+				LocationService.findrecord_count()
+				.then(
+						function (record_count) {
+							console.log(record_count);
+							$scope.totalnof_records  = record_count;
+						}, 
+						function (errResponse) {
+							console.log('Error while fetching record count');
+						});
+			}
+			
 			
 }]);

@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParser.Feature;
 import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -135,8 +138,9 @@ public class ManifestRestController
 		return model;
 	}
 		
-		
-		@RequestMapping( value = "/manifest/", method = RequestMethod.GET)
+  //--------------------- TO get all manifest  list function start -------------------	
+	
+	@RequestMapping( value = "/manifest/", method = RequestMethod.GET)
 		public ResponseEntity<List<ManifestModel>> fetchAllManifest(HttpServletRequest request) 
 		{
 			userInformation = new UserInformation(request);
@@ -165,8 +169,75 @@ public class ManifestRestController
 				
 			
 		}
-
-		
+	//--------------------- TO get all manifest  list function End ------------------------
+	
+	//------------------------------To get Manifest detailed data--------------------------------------
+	
+//		@RequestMapping(value='manifest_detailed',method=RequestMethod.GET)
+//		public ResponseEntity<List<ManifestDetailedModel>>
+	//------------------------------To get Manifest detailed data--------------------------------------
+	
+	//----------------------To get all inward manifest list function start--------------------
+	
+	@RequestMapping(value="/inward_manifest", method=RequestMethod.GET)
+	public ResponseEntity<List<ManifestModel>>inwardManifest(HttpServletRequest request)
+	{
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		String branch_id = userInformation.getUserBranchId();
+		try
+		{
+			loggerconf.saveLogger(username,request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			List<ManifestModel> manifestModel=manifestDao.getInwardManifest(Integer.parseInt( branch_id));
+			if(manifestModel.isEmpty()) 
+			{
+				return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
+			}
+			else 
+			{
+				return new ResponseEntity<List<ManifestModel>> (manifestModel, HttpStatus.OK);	
+			}	
+		}
+		catch(Exception exception)
+		{
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
+	//----------------------To get all inward manifest list function End--------------------	
+	
+	//----------------------To get all inward manifest list function start--------------------
+	
+		@RequestMapping(value="/outward_manifest", method=RequestMethod.GET)
+		public ResponseEntity<List<ManifestModel>>outwardManifest(HttpServletRequest request)
+		{
+			userInformation = new UserInformation(request);
+			String username = userInformation.getUserName();
+			String branch_id = userInformation.getUserBranchId();
+			try
+			{
+				loggerconf.saveLogger(username,request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				List<ManifestModel> manifestModel=manifestDao.getOutwardManifest(Integer.parseInt( branch_id));
+				if(manifestModel.isEmpty()) 
+				{
+					return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
+				}
+				else 
+				{
+					return new ResponseEntity<List<ManifestModel>> (manifestModel, HttpStatus.OK);	
+				}	
+			}
+			catch(Exception exception)
+			{
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+				return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+		}
+		//----------------------To get all inward manifest list function End--------------------	
+	
+	
+	
+	
 		//======================================Excel begin==========================================
 		@RequestMapping(value="downloadExcelManifest",method=RequestMethod.GET)
 		public ModelAndView downloadExcelManifest()
@@ -225,8 +296,61 @@ public class ManifestRestController
 		}
 		/* ------------------------- Print in Employee end ------------------------------------- */	
 
+	//--------------------Manifest Filter by condition start------------------------------
+		
+		@RequestMapping( value = "manifest_filter", method = RequestMethod.POST)
+		public ResponseEntity<List<ManifestModel>> manifestFilterbycondition(@RequestBody String manifest,HttpServletRequest request) throws JsonProcessingException, IOException 
+		{
+			HttpSession session = request.getSession();
+			UserInformation userinfo = new UserInformation(request);
+			String username = userinfo.getUserName();
+			String userid = userinfo.getUserId();
+			
+			 ObjectMapper mapper = new ObjectMapper();
+			 mapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
+			 JsonNode rootNode =mapper.readTree(manifest);
+			 JsonNode frombranch = rootNode.path("frombranch");
+			 JsonNode tobranch = rootNode.path("tobranch");
+			 JsonNode fromdat = rootNode.path("fromdate");
+			 JsonNode todat = rootNode.path("todate");
+			 int frombranchid=frombranch.asInt();
+			 int tobranchid=tobranch.asInt();
+			 String fromdate=fromdat.asText();
+			 String todate=todat.asText();
+			 		
+			try 
+			{
+				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				List<ManifestModel> manifestModel = manifestDao.getManifestByCondition(frombranchid,tobranchid,fromdate,todate);
+				if(manifestModel.isEmpty()) 
+				{
+					return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
+				}
+				else 
+				{
+					return new ResponseEntity<List<ManifestModel>> (manifestModel, HttpStatus.OK);	
+					 
+				}		
+			} 
+			catch (Exception exception) 
+			{			
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+				return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+				
+				
+			
+		}
+
+		//--------------------Manifest Filter by condition End------------------------------
 	
-	
-	
-	
+	//----------------------Manifest number search function start---------------------------------
+
+		@RequestMapping(value="manifest_search", method=RequestMethod.POST)
+		public ResponseEntity<List<ManifestModel>>manifestSearch(@RequestBody String searchkey,HttpServletRequest request)
+		{
+			List<ManifestModel> manifestModel=manifestDao.manifestSearch(searchkey);
+			return new ResponseEntity<List<ManifestModel>> (manifestModel,HttpStatus.OK);
+		}
+	//----------------------Manifest number search function End---------------------------------
 }

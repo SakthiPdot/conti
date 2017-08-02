@@ -19,4 +19,8 @@ public interface ManifestDao
 	public List<ManifestModel>getAllManifest(int branch_id);
 	public List<ManifestModel>getAllManifests(int branch_id);
 	public ManifestModel getManifestbyId(int id);
+	public List<ManifestModel>getManifestByCondition(int frombranch,int tobranch,String fromdate,String todate);
+	public List<ManifestModel>getInwardManifest(int id);
+	public List<ManifestModel>getOutwardManifest(int id);
+	public List<ManifestModel>manifestSearch(String searchkey);
 }

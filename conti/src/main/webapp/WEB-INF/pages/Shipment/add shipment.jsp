@@ -63,8 +63,8 @@
 	
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
-            
-      	    		
+           
+      	    <form name = "shipment" data-ng-submit = "ctrl.submit()" >		
       		  <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default panelMarginBottom">                            
@@ -76,7 +76,7 @@
                     </div>
               </div>
 
-                
+           
               <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
               	  <div class="col-md-6 col-sm-6 col-xs-6 GenLeftRight">
@@ -330,7 +330,6 @@
                             			<span class="text-paddingwidth">GSTIN Number</span>
                             		    <input type="text" class="form-control" maxlength="15"
                             		    	data-ng-model = "ctrl.shipment.sender_customer.gstin_number"
-                            		    	onKeyPress="return CheckIsNumeric(event)"
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer GSTIN no."
 											onKeyPress="return CheckIsAlphaNumeric(event)"
@@ -525,7 +524,6 @@
                             			<span class="text-paddingwidth">GSTIN Number</span>
                             		     <input type="text" class="form-control" maxlength="15"
                             		    	data-ng-model = "ctrl.shipment.consignee_customer.gstin_number"
-                            		    	onKeyPress="return CheckIsNumeric(event)"
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer GSTIN no."
 											onKeyPress="return CheckIsAlphaNumeric(event)"
@@ -602,14 +600,35 @@
                         <div class="panel-body">
                         
                                     <div class="col-md-12">
-                                    	<div class=" col-md-6 branchclass">
+                                    	
+	                            		<div class="col-md-6 branchclass">
+	                            			<span class="text-paddingwidth"> Service <span class="required">*</span></span>
+	                            		    
+	                            		    <div angucomplete-alt id="service_name" 
+															maxlength="5"
+															placeholder="Ex : Counter" 
+															pause="0"											
+															selected-object="service_name"
+														    remote-url="getservice4Shipment/"
+															remote-url-data-field="Service"
+				             								title-field="service_name"
+															match-class="highlight"
+															minlength="1" 																						
+														    maxlength="50"	
+															input-class="form-control form-control-small"	
+															onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"									
+    														data-trigger="focus" data-toggle="popover" 
+			   											    data-placement="top" data-content="Please enter & select service"
+															style="width:100%"
+														    ></div>
+	                            		    
+	                            		</div>
+	                            		<div class=" col-md-6 branchclass">
 	                            			<span class="text-paddingwidth"> Status <span class="required">*</span></span>
 	                            		   <select class="form-control" data-ng-options = "status for status in ['Booked']" data-ng-model = "ctrl.shipment.status"
 				                             data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please select status" required>
 				                           </select>                          		    
                             		    </div>
-	                            		<div class="col-md-6">
-	                            		</div>
                                     </div>
                                     
                             		
@@ -623,6 +642,7 @@
 												data-placement="top" data-content="Please enter number of parcel"
 												onKeyPress="return CheckIsNumeric(event)"
 												placeholder = "Ex: 100"
+												data-ng-keyup = "ctrl.checkQuantity(-1)"
 	                            		    required />  
                             		    </div>
 	                            		<div classTo Branch="col-md-6">
@@ -643,45 +663,99 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox"></th>
-                                            <th>S.No</th>
-                                            <th>Product</th>
-                                            <th>Product Type</th>                                        
-                                            <th colspan="3">Dimensions(cm)</th>
-                                            <th>Weight(Kg)</th>
-                                            <th>Quantity</th>
-                                            <th>Unit Price</th>
-                                            <th>Total Price</th>
+                                            <!-- <th class = "text-center"><input type="checkbox" data-ng-model = "ctrl.selectAll_product" data-ng-click = "ctrl.product_selectAll()"></th> -->
+                                            <th class = "text-center"></th>
+                                            <th class = "text-center">S.No</th>
+                                            <th class = "text-center">Product</th>
+                                            <th class = "text-center">Product Type</th>                                        
+                                            <th colspan="3" class = "text-center">Dimensions(cm)</th>
+                                            <th class = "text-center">Weight(Kg)</th>
+                                            <th class = "text-center">Quantity</th>
+                                            <th class = "text-center">Unit Price</th>
+                                            <th class = "text-center">Total Price</th>
                                         </tr>
                                         
                                     </thead>
                                     <tbody>
-                                        <tr data-ng-repeat = "product in ctrl.products track by $index">
-                                            <td><input type="checkbox" data-ng-model = "product.selected" ></td>
-                                            <td>{{$index + 1}} <input type = "text" data-ng-model = "product.product_id" /> </td>
-                                            <td> <input type = "text" data-ng-model = "product.product_name" /> </td>
-                                            <td> <input type = "text" data-ng-model = "product.product_type" /> </td>
-                                            <td> <input type = "text" data-ng-model = "product.product_height" /> </td>
-                                            <td> <input type = "text" data-ng-model = "product.product_width" /> </td>
-                                            <td> <input type = "text" data-ng-model = "product.product_length" /> </td>
-                                            <td> <input type = "text" data-ng-model = "product.product_weight" /></td>
-                                            <td> <input type = "text" data-ng-model = "product.product_quantity" /> </td>
-                                            <td> <input type = "text" data-ng-model = "product.product_unitprice" /> </td>
-                                            <td> <input type = "text" data-ng-model = "product.product_totalprice" /> </td>
+                                        <tr data-ng-repeat = "product in ctrl.shipment.products track by $index">
+                                            <td><input type="checkbox" class="form-control" data-ng-model = "product.selected"  ></td>
+                                            <td>{{$index + 1}}
+	                                            <input type = "hidden" class="form-control" data-ng-model = "product.product_id" data-ng-value = "product_name.originalObject.product_id" /> 
+                                            </td>
+                                            <td> 
+                                            	
+                                            	<div angucomplete-alt id="product.product_name" data-ng-model = "product.product_name"
+															maxlength="5"
+															placeholder="Ex : Box (Large)" 
+															pause="0"											
+															selected-object="product_name"
+														    remote-url="getProductByStr/"
+															remote-url-data-field="Product"
+				             								title-field="product_name"
+															match-class="highlight"
+															minlength="1" 																						
+														    maxlength="50"	
+															input-class="form-control form-control-small"	
+															onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"									
+    														data-trigger="focus" data-toggle="popover" 
+			   											    data-placement="top" data-content="Please enter & select prduct"
+															
+														    ></div>
+                                            	<a href="" data-toggle="modal" data-target="#myModal" style="text-decoration: none !important;"> Add HSN Details</a>
+                                            </td>
+                                            <td> 
+                                            	<input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.product_type"/> 
+                                            </td>
+                                            <td> <input type = "number" placeholder="Product height"  class="form-control" 
+
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product height"
+													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+													data-ng-model = "product.max_height" /> 
+											</td>
+                                            <td> <input type = "number" placeholder="Product width" class="form-control" 
+
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product width"
+													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+                                            		data-ng-model = "product.max_width" /> </td>
+                                            <td> <input type = "number" placeholder="Product length" class="form-control" 
+
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product length"
+													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+                                            		data-ng-model = "product.max_length" /> </td>
+                                            <td> <input type = "number" placeholder="Product weight" class="form-control" 
+
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product weight"
+													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+                                            		data-ng-model = "product.max_weight" data-ng-keyup = "ctrl.priceby_weight($index)" required/> </td>
+                                            <td> <input type = "number" placeholder="Product weight" class="form-control" 
+                                          			
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product quantity"
+													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+                                            		data-ng-model = "product.product_quantity" data-ng-keyup = "ctrl.checkQuantity($index)" required/> </td>
+                                            <td> <input type = "number" placeholder="unit price" class="form-control" 
+                                            
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product price"
+													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+                                            		data-ng-model = "product.product_unitprice" data-ng-keyup = "ctrl.calc_totalprice($index)" required/> </td>
+                                            <td> <input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.product_totalprice" /> </td>
                                      
                                         </tr>
-                                        <tr>
-                                            <td colspan = "11"> <a href="" data-toggle="modal" data-target="#myModal" style="text-decoration: none !important;"> Add HSN Details</a></td>                                        	
-                                        </tr>
-                                        
+                                            
                                    </tbody>
                                 </table>
+                                
                             </div>                           
                           
                           <div class="col-lg-12">
                           
-                                    <button class="btn btn-primary " data-ng-click = "ctrl.addProduct()"><i class="fa fa-plus-circle"></i></button>
-							 		<button class="btn btn-primary " data-ng-click = "ctrl.removeProduct()"><i class="fa fa-minus-circle"></i></button>
+                                    <a class="btn btn-primary " data-ng-click = "ctrl.addProduct()" data-ng-disabled = "ctrl.disable_add_product"><i class="fa fa-plus-circle"></i></a>
+							 		<a class="btn btn-primary " data-ng-click = "ctrl.removeProduct()"><i class="fa fa-minus-circle"></i></a>
 							 		
 										 		
 						 </div>
@@ -725,29 +799,46 @@
                         <div class="panel-body">
                             		
                             			
-                            		<div class=" col-md-12 branchclass">
+                            		<!-- <div class=" col-md-12 branchclass">
                             			<span class="text-paddingwidth"> Service </span>
                             		    <input type="text" class="form-control">                            		    
-                            		</div>
-                            		
+                            		</div> -->
                            
-                            	
-                            	
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Shipment Value</span>
-                            		    <input type="text" class="form-control" >                            		    
-                            		    
-                            		</div>
                             		
+                            		<div class="col-md-12 branchclass">
+                            			<span class="text-paddingwidth">Shipment Value <span class="required">*</span></span>
+                            			
+                            			<div class = "form-group input-group">
+	                            		    <input type="number" class="form-control" min = "1" max="999999.99"
+	                            		    	data-ng-model = "ctrl.shipment.shipment_value"
+	                            		    	data-trigger="focus" data-toggle="popover" 
+												data-placement="top" data-content="Please enter value of shipment"
+												placeholder = "Ex: 100.50"
+												data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+	                            		    required />  
+	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
+                            		    </div>
+                            		  
+                            		</div>
+                            		                            		
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Reference Invoice No</span>
-                            		    <input type="text" class="form-control" >                            		    
+                            		    <input type="text" class="form-control" maxlength="15"
+                            		    	data-ng-model = "ctrl.shipment.reference_invoiceno"
+                            		    	data-trigger="focus" data-toggle="popover" 
+											data-placement="top" data-content="Please enter reference invoice no."
+											onKeyPress="return CheckIsAlphaNumeric(event)"
+											placeholder = "Ex: 11ABCDE1234F2Z5"
+                            		    required />                               		    
                             		    
                             		</div>
                             
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Description</span>
-                            		    <textarea class="form-control" rows="8"> </textarea>                           		    
+                            		    <textarea class="form-control" data-ng-model = "ctrl.shipment.description"
+                            		    maxlength = "100"
+                            		    onkeypress="return CheckIsCharacterWithspace(event,this.value)"
+                            		    	 rows="8"> </textarea>                           		    
                             		    
                             		</div>
                          </div>
@@ -764,92 +855,119 @@
                           	
                           	       <div class=" col-md-12 branchclass">
                             			<span class="text-paddingwidth"> Chargeable Weight </span>
-                            		    <input type="text" class="form-control">                            		    
+                            		    <div class = "form-group input-group">
+	                            		    <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.chargeable_weight" tabindex="-1"
+	                            		    required />  
+	                            		     <span class="input-group-addon">kg.</span>
+                            		    </div>                           		    
                             		</div>
                             		
                            
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Delivery Charge</span>
-                            		    <input type="text" class="form-control" >                            		    
-                            		    
+                            			<span class="text-paddingwidth">Delivery Charge </span>
+                            			
+                            			 <div class = "form-group input-group">
+	                            		    <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.delivery_charges" tabindex="-1"
+	                            		    required />  
+	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
+                            		    </div>   
+                            		  
                             		</div>
-                            		
                             		
                             	
                             		<div class="col-md-6 branchclass">
                             		
-                            			<span class="text-paddingwidth discountspace ">Discount</span>
-                            		      
-                            		       <div class="form-group input-group discountval">
-					                              <input type="text" class="form-control  marginLeftSpace " 
-					                                 data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" required/>
-		                                            <span class="input-group-addon">%</span>
-		                                          
-		                                          
-		                                   </div>                            		    
+                            			<span class="text-paddingwidth discountspace ">Discount percentage</span>
+                            		       <div class = "form-group input-group">
+	                            		    <input type="number" class="form-control" min = "0" max = "100.00"
+	                            		    	data-ng-model = "ctrl.shipment.discount_percentage"
+	                            		    	data-trigger="focus" data-toggle="popover" 
+												data-placement="top" data-content="Please enter discount %"
+												placeholder = "Ex: 10.22%"
+												data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+												data-ng-keyup = "ctrl.calc_discount()"
+	                            		     />  
+	                            		     <span class="input-group-addon"> % </span>
+                            		    </div>                              		    
                             		
                             	   </div> 
                             		
                             		<div class="col-md-6 branchclass">
-                            			<span class="text-paddingwidth">Discount.Amount</span>
-                            		   
-                            		   <div class="form-group input-group discountamount">
-				                            
-				                            <input type="text" class="form-control " data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" disabled required/>
-	                                            <span class="input-group-addon" ><i class="fa fa-inr"></i></span>
-	                                          
-	                                          
-	                                    </div>                        		    
+                            			<span class="text-paddingwidth">Discount amount</span>
+                            		    
+	                                    <div class = "form-group input-group">
+	                            		    <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.discount_amount" tabindex="-1"
+	                            		    required />  
+	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
+                            		    </div>                          		    
                             		    
                             		</div>                           		
                             		
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Handling Charge</span>
-                            		    <input type="text" class="form-control">                            		    
-                            		    
-                            		</div>
-                            	
-                            	    <div class="col-md-6 branchclass">
-                            			<span class="text-paddingwidth discountspace">CGST</span>                            		
-                            		    
-                            		       <div class="form-group input-group gstval">
-				                                <input type="text" class="form-control" 
-				                                     data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" disabled required/>
-	                                            <span class="input-group-addon" ><i class="fa fa-inr"></i></span>
-	                                      </div>                         		    
-                            		    
+                            			<span class="text-paddingwidth">Handling Charge <span class="required">*</span></span>
+                            		    <div class = "form-group input-group">
+	                            		    <input type="number" class="form-control" min = "0" max = "999999.99"
+	                            		    	data-ng-model = "ctrl.shipment.handling_charge"
+	                            		    	data-trigger="focus" data-toggle="popover" 
+												data-placement="top" data-content="Please enter handling charges"
+												placeholder = "Ex: 10.22"
+												data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+												data-ng-keyup = "ctrl.calc_discount()"
+	                            		    required />  
+	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
+                            		    </div> 
                             		</div>
                             		
+                            		<div class="col-md-4 branchclass">
                             		
-                            		<div class="col-md-3 branchclass">
+                            			<span class="text-paddingwidth discountspace">CGST</span>
+                            		       <div class = "form-group input-group">
+	                            		    <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.cgst"	                            		    	
+												tabindex="-1"											
+	                            		     />  
+	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
+                            		    </div>                              		    
+                            		
+                            	   </div> 
+                            		
+                            		<div class="col-md-4 branchclass">
                             			<span class="text-paddingwidth">SGST</span>
                             		                         		    
-	                            		    <div class="form-group input-group sgstval">
-					                            <input type="text" class="form-control" 
-					                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" disabled required/>
-		                                            <span class="input-group-addon" ><i class="fa fa-inr"></i></span>
-		                                    </div>  
+	                            		  <div class = "form-group input-group">
+	                            		    <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.sgst"	                            		    	
+												tabindex="-1"											
+	                            		     />  
+	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
+                            		    </div>
                             		</div>
                             		
-                            		<div class="col-md-3 branchclass">
+                            		<div class="col-md-4 branchclass">
                             			<span class="text-paddingwidth ">IGST</span>
                             	
-                            		       <div class="form-group input-group igstval">
-				                             
-				                              <input type="text" class="form-control" 
-				                                data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" disabled required/>
-	                                            <span class="input-group-addon" ><i class="fa fa-inr"></i></span>
-	                                    
-	                                     </div>                         		    
+                            		       <div class = "form-group input-group">
+	                            		    <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.igst"	                            		    	
+												tabindex="-1"											
+	                            		     />  
+	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
+                            		    </div>                      		    
                             		    
                             		</div>
                             	                        	
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Tax</span> 
-                            		    <input type="text" class="form-control">                            		    
+                            		     <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.tax"	                            		    	
+												tabindex="-1"											
+	                            		     />                             		    
                             		    
                             		</div>
                             	
@@ -857,7 +975,10 @@
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Total Charges</span> 
-                            		    <input type="text" class="form-control" >                            		    
+                            		     <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.total_charges"	                            		    	
+												tabindex="-1"											
+	                            		     />                            		    
                             		    
                             		</div>
                             	
@@ -885,7 +1006,7 @@
                        </div>
                        
                        <div class="col-lg-6">
-                       	<button type="button" class="btn btn-success"><i class="fa fa-floppy-o"></i>  Save</button>
+                       	<button type="submit" class="btn btn-success" data-ng-disabled = "ctrl.disable_save"><i class="fa fa-floppy-o"></i>  Save</button>
                        </div>
                        </div>
                        </div>
@@ -926,17 +1047,18 @@
 										</div>
 										
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"> <i class="fa fa-times"></i> Cancel</button>
-                                            <button type="button" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</button>
+                                            <a type="button" class="btn btn-danger pull-left" data-dismiss="modal"> <i class="fa fa-times"></i> Cancel</a>
+                                            <a type="button" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</a>
                                         </div>
                                         
                                     </div>
                                 </div>
                             </div>
               
+       		 </form>
+        </div>
+        </div>
        
-        </div>
-        </div>
         <!-- /. PAGE WRAPPER  -->
 		
 		
@@ -946,6 +1068,8 @@
   <script src="resources/custom/js/shipment/shipment_controller.js"></script>
   <script src="resources/custom/js/shipment/shipment_service.js"></script>
   <script src="resources/custom/js/branch_master/branch_service.js"></script>
+  <script src="resources/custom/js/price_setting/s_price_setting_service.js"></script>
+  <script src="resources/custom/js/CompanySetting/company_setting_service.js"></script>
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/confirmDialog.js"></script>   
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>

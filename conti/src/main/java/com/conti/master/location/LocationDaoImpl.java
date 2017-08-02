@@ -32,6 +32,14 @@ public class LocationDaoImpl implements LocationDao {
 	
 	@Override
 	@Transactional
+	public int locationSettingCount() {
+		int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from Location WHERE obsolete = 'N'").uniqueResult()).intValue();
+		return rec_count;
+	}
+	
+	
+	@Override
+	@Transactional
 	public void saveOrUpdate(Location location) {
 		sessionFactory.getCurrentSession().saveOrUpdate(location);		
 	}

@@ -1,7 +1,7 @@
 package com.conti.settings.price;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,20 +48,20 @@ public class PriceSetting {
 	private String active;
 	
 	
-	private Set<PriceSettingDetail> PriceSettingDetail=new HashSet<>();
+	private List<PriceSettingDetail> PriceSettingDetail=new ArrayList<>();
 	
 	
 	/*@JoinColumn(name="pricesetting_id", referencedColumnName = "pricesetting_id")*/
 	//@JsonIgnore
 	/*@OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER,mappedBy="priceSetting") */ 
-	@JoinColumn(name="pricesetting_id", referencedColumnName = "pricesetting_id",insertable=false, updatable=false)
+	@JoinColumn(name="pricesetting_id", referencedColumnName = "pricesetting_id")
 	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch = FetchType.EAGER)
 	@JsonManagedReference
-	public Set<PriceSettingDetail> getPriceSettingDetail() {
+	public List<PriceSettingDetail> getPriceSettingDetail() {
 		return this.PriceSettingDetail;
 	}
 
-	public void setPriceSettingDetail(Set<PriceSettingDetail> priceSettingDetail) {
+	public void setPriceSettingDetail(List<PriceSettingDetail> priceSettingDetail) {
 		this.PriceSettingDetail = priceSettingDetail;
 	}
 	

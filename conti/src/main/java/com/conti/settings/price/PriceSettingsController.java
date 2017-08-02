@@ -3,12 +3,11 @@ package com.conti.settings.price;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -106,7 +105,7 @@ public class PriceSettingsController {
 			model.addObject("title", "Price Settings");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Settings/price settings");
-			
+			model.addObject("homePage",request.getContextPath());
 		
 			if(id==0){
 				model.addObject("saveOrNew", "NEW") ;
@@ -151,7 +150,7 @@ public class PriceSettingsController {
 		
 		PriceSetting priceSetting=new PriceSetting();
 		
-		Set<PriceSettingDetail> PriceSettingDetail=new HashSet<>();
+		List<PriceSettingDetail> PriceSettingDetail=new ArrayList<>();
 		
 		PriceSettingDetail priceSettingDetail =new PriceSettingDetail();
 		priceSettingDetail.setBranch(new BranchModel());
@@ -212,6 +211,20 @@ public class PriceSettingsController {
 		return new ResponseEntity<Map<String,List<Product>>> (result,HttpStatus.OK);
 	}
 	
+	//=================GET PRODUCT USING TYPE BY STRING =====================================
+	@RequestMapping(value="getProductTypeByStr/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String,List<Product>>> getProductTypeByStr(HttpServletRequest request,
+			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+		
+		List<Product> product = productDao.searchByProductTypeUnique(searchStr);
+
+		 Map result = new HashMap();
+		 result.put("Product", product);
+		
+		System.err.println(searchStr+"464644");
+		return new ResponseEntity<Map<String,List<Product>>> (result,HttpStatus.OK);
+	}
+	
 	//=================SAVE =====================================	
 	@RequestMapping(value="priceSettingSave",method=RequestMethod.POST,
 	produces=MediaType.APPLICATION_JSON_VALUE)
@@ -231,7 +244,7 @@ public class PriceSettingsController {
 			priceSetting.setActive("Y");
 	
 			//set price setting for detailed table
-			Set<PriceSettingDetail> priceSettingDetailList=priceSetting.getPriceSettingDetail();			
+			List<PriceSettingDetail> priceSettingDetailList=priceSetting.getPriceSettingDetail();			
 			for(PriceSettingDetail psDetail:priceSettingDetailList){
 				psDetail.setPriceSetting(priceSetting);
 			}
@@ -323,7 +336,7 @@ public class PriceSettingsController {
 		}
 		
 		
-		Set<PriceSettingDetail> priceDetailList=new HashSet<PriceSettingDetail>(psdDao.getPriceSettingDetailBypsId(priceSetting.getPricesetting_id()));
+		List<PriceSettingDetail> priceDetailList=new ArrayList<PriceSettingDetail>(psdDao.getPriceSettingDetailBypsId(priceSetting.getPricesetting_id()));
 		
 		if(priceDetailList!=null && !priceDetailList.isEmpty())
 			priceSetting.setPriceSettingDetail( priceDetailList);

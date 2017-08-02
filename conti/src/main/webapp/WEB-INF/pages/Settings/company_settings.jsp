@@ -218,12 +218,16 @@
 									  			  data-trigger="focus" data-toggle="popover"
 							 					  data-placement="top" data-content="Please Enter Location"
 									              selected-object="location_name"
-									              local-data="comctrl.Locations"
-									              search-fields="location_name,address.city,address.state,pincode"
-									              title-field="location_name,address.city,address.state,pincode"
+												  
+												  remote-url="getLocations4Search/"
+												  remote-url-data-field="Location"
+												  
+									              search-fields="location_name,pincode"
+									              title-field="location_name"
+									              description-field="pincode"
 												  match-class="highlight"
 												  initial-value="{{comctrl.company.location.location_name}}"
-									              minlength="1"									              
+									              minlength="3"									              
 							  					  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 									              input-class="form-control form-control-small">
 									              </div>
@@ -389,14 +393,14 @@
 			<div class="marginLeftRight">
 
 					<div class="row">
-						<div class="col-lg-6">
+						<div class="col-lg-12">
 							<div class="subHeading">
 								<span>Tax Setting</span>
 							</div>
 							
 							
 						<div class="row">
-							<div class="col-lg-6">
+							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="gstPer">HSN Code<span style="color:red">&nbsp;*</span></label> 
 									<input type="text"							 
@@ -411,7 +415,7 @@
 								</div>
 							</div>
 							
-							<div class="col-lg-6">
+							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="gstPer">SGST%<span style="color:red">&nbsp;*</span></label> 
 									<div class="input-group">
@@ -428,13 +432,10 @@
 						</div>
 								</div>
 							</div>
-					</div>
-					
-					
-			<div class="row">
+		
 
 	
-					<div class="col-lg-6">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="gstPer">CGST%<span style="color:red">&nbsp;*</span></label> 
 							<div class="input-group">
@@ -452,7 +453,7 @@
 						</div>
 					</div>
 					
-					<div class="col-lg-6">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="gstPer">IGST%<span style="color:red">&nbsp;*</span></label> 
 						<div class="input-group">
@@ -475,6 +476,54 @@
 				
 			
 					</div>
+
+						<div class="col-lg-6">
+							<div class="subHeading">
+								<span>Financial Year</span>
+							</div>
+
+							<div class="row">
+								<div class="col-lg-6">
+										<label for="text">From<span
+											style="color: red">&nbsp;*</span></label> 
+									<div class=" input-group"><input type="text"
+											data-ng-required="true" data-trigger="focus"
+											data-toggle="popover" data-placement="top"
+											data-content="Please Enter Form Date"
+											data-ng-model="comctrl.company.financial_year_from"											
+											placeholder="Enter From Date"
+											onKeyPress="return CheckIsNumericAndHyphen(event)" maxlength="1"
+											class="form-control datepicker1" >
+		                                    <span class="input-group-addon"><i class="fa fa-calendar"></i>
+	                                         </span>
+									</div>
+								</div>
+								<div class="col-lg-6">								
+									<label for="timeout">To<span
+										style="color: red">&nbsp;*</span></label>
+								<div class=" input-group">
+										<input type="text" data-ng-required="true"
+											data-trigger="focus" data-toggle="popover"
+											data-placement="top"
+											data-content="Please Enter To Date"
+											data-ng-model="comctrl.company.financial_year_to"
+											placeholder="Enter To Date" 
+											maxlength="1"
+											onKeyPress="return CheckIsNumericAndHyphen(event,this.value)" 										
+											class="form-control datepicker2"> 
+											<span class="input-group-addon"><i class="fa fa-calendar"></i>
+											</span>
+								</div>
+								</div>
+							</div>
+
+
+						</div>
+
+
+
+
+
 						<div class="col-lg-6">
 							<div class="subHeading">
 								<span>Other Setting</span>
@@ -498,7 +547,7 @@
 					<div class="col-lg-6">
 						<label for="timeout">Application Timeout<span style="color:red">&nbsp;*</span></label>
 						<div class="input-group">
-							<input type="number"
+							<input type="text"
 								data-ng-required="true"
     		  			        data-trigger="focus" data-toggle="popover"
 	 					        data-placement="top" data-content="Please Enter Timeout(mins)"
@@ -506,7 +555,7 @@
 								placeholder="Enter Application Timeout"
 							    class="form-control" id="timeout"
 							 	onKeyPress="return CheckIsNumericAnddot(event,this.value)"
-								maxlength="5"> 
+								maxlength="9"> 
 							<span class="input-group-addon" id="basic-addon1"><label>mins</label></span>
 						</div>
 					</div>
@@ -524,7 +573,7 @@
 					<div class="col-lg-12">
 						<div class="form-group text-center">
 	     		 		 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						<button type="submit" data-ng-disabled="companyForm.$pristine==true"  class="btn btn-success "><label><i class="fa fa-floppy-o"  aria-hidden="true"></i>
+						<button type="submit"  class="btn btn-success "><label><i class="fa fa-floppy-o"  aria-hidden="true"></i>
 						<span id="submitText">Save</span></label></button>
 						</div>
 					</div>
@@ -561,6 +610,42 @@
 	<script type="text/javascript" src="resources/custom/js/Address/address_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/CompanySetting/company_setting_control.js"></script>
    <script src="resources/custom/js/confirmDialog.js"></script>
+   
+    <script type="text/javascript">
+
+    function getDate(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear()+2;
+
+        if(dd<10) {
+            dd = '0'+dd
+        } 
+
+        if(mm<10) {
+            mm = '0'+mm
+        } 
+
+        today =  yyyy+'-'+mm+ '-'+ dd;
+        return today;
+    }
+    
+    
+	    $('.datepicker1').dateTimePicker({
+	    	   mode: 'dateTime',
+	           format: 'yyyy/MM/dd HH:mm:ss'
+	    });
+
+        </script>
+        
+        
+	    <script type="text/javascript">
+	    $('.datepicker2').dateTimePicker({
+	    	   mode: 'dateTime',
+	           format: 'yyyy/MM/dd HH:mm:ss'
+	    });
+        </script>
    <!--====================================================== SCRIPTS END =========================================-->
 </body>
 </html>

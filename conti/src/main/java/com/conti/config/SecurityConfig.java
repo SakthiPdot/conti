@@ -72,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 							.antMatchers("/service/**").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')")
 							.antMatchers("/vehicle/**").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')")
 							.antMatchers("/price_settings_register/**").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')")
+							.antMatchers("/price_settings/**").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')or hasRole('STAFF')")
 							.and()				
 							.formLogin().loginPage("/login").failureUrl("/login?error").successHandler(customAuthenticatonSuccessHandler)			
 							.usernameParameter("username")

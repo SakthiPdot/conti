@@ -153,6 +153,7 @@ public class CustomerRestController
 			userInformation = new UserInformation(request);
 			String username = userInformation.getUserName();
 			int user_id = Integer.parseInt(userInformation.getUserId());
+			
 					
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = new Date();

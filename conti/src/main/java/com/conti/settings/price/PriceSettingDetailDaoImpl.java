@@ -33,6 +33,25 @@ public class PriceSettingDetailDaoImpl implements PriceSettingDetailDao {
 				.createQuery("from PriceSettingDetail where pricesetting_id="+priceSettingId).list();
 		
 	}
+
+	
+	//---------------------------------------- FETCH PRICE BY  to pricesetting & branch & productweight for add shipment by sankar
+	
+	@Transactional
+	@Override
+	public PriceSettingDetail fetchprice(int priceSettingId, int to_branch, int product_weight) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		List<PriceSettingDetail> list_pricesettingdet = (List<PriceSettingDetail>) sessionFactory.getCurrentSession()
+				.createQuery("FROM PriceSettingDetail WHERE priceSetting.pricesetting_id = " + priceSettingId
+						+ " AND branch.branch_id =" + to_branch + " AND ps_weightfrom <= "
+						+ product_weight + " AND ps_weightto >=" + product_weight).list();
+		
+		if(list_pricesettingdet != null && !list_pricesettingdet.isEmpty()) {
+			return list_pricesettingdet.get(0);
+		} 
+		return null;
+	}
 	
 	
 	

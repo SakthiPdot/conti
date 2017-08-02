@@ -58,13 +58,15 @@ public class CompanyController {
 	//=================Company setting page=====================================
 	@RequestMapping(value =  "company_settings", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request)  {
+
 		String username =request.getUserPrincipal().getName();				
 		ModelAndView model = new ModelAndView();		
 		try{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);			
 			model.addObject("title", "Company Settings");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
-			model.setViewName("Settings/company_settings");			
+			model.setViewName("Settings/company_settings");		
+			model.addObject("homePage",request.getContextPath());
 		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  "Admin/ ", ConstantValues.LOGGER_STATUS_E, exception);
 		}		
@@ -129,6 +131,8 @@ public class CompanyController {
 	@RequestMapping(value="/company/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	
 	public ResponseEntity<Company> getCompanyDetail(HttpServletRequest request,@PathVariable("id") long id){
+
+		System.out.println(request.getContextPath()+"============================ ");
 		
 		 System.out.println("Fetching User with id " + id);
 		Company company=companyDao.getById((int) id);

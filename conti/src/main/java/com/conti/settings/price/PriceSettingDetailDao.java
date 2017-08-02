@@ -12,4 +12,7 @@ import java.util.List;
 public interface PriceSettingDetailDao {
 
 	public List<PriceSettingDetail> getPriceSettingDetailBypsId(int priceSettingId);
+	
+	//---------------------------------------- FETCH PRICE BY  to pricesetting & branch & productweight for add shipment by sankar
+		public PriceSettingDetail fetchprice(int priceSettingId, int to_branch, int product_weight);
 }

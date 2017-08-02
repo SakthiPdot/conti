@@ -12,7 +12,8 @@ angular.module('contiApp').factory('priceSettingService',['$http','$q',function(
 			savePS:savePS,
 			updatePS:updatePS,
 			fetchPSbyId:fetchPSbyId,
-			deletePriceSetting:deletePriceSetting
+			deletePriceSetting:deletePriceSetting,
+			fetch_priceforShipment : fetch_priceforShipment
 	};
 		
 	return factory;
@@ -89,4 +90,24 @@ angular.module('contiApp').factory('priceSettingService',['$http','$q',function(
 		return deferred.promise;
 	}
 	
+	
+	//----------------------------------- fetch price by from / to branch and product and service
+	function fetch_priceforShipment(product_info) {
+		console.log(product_info);
+		 var deferred = $q.defer();
+		  $http({
+				method:'POST',
+				url:'fetch_priceforShipment',
+				data:product_info,
+				headers:getCsrfHeader()
+			}).then(
+	            function (response) {
+	                deferred.resolve(response.data);
+	            },
+	            function(errResponse){
+	                deferred.reject(errResponse);
+	            }
+	        );
+	        return deferred.promise;
+	}
 }]);

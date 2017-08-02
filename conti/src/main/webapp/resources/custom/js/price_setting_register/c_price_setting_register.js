@@ -27,7 +27,7 @@ angular.module('contiApp').controller('priceSettingRegisterController',
 			self.selectedPriceSetting=[];
 			self.priceSettingBackUp=[];
 			
-			  //===================================next and previous page====================================  
+			//===================================next and previous page====================================  
 		    $scope.paginate=function(nextPrevMultiplier){
 		    	self.selectAllPriceSetting=false;	
 		    	$scope.currentPage += (nextPrevMultiplier * 1);		    	
@@ -52,9 +52,9 @@ angular.module('contiApp').controller('priceSettingRegisterController',
 				);
 		    	}
 		    	
-		    	if(self.filteredPriceSetting.length < $scope.pageSize) {
+		    	/*if(self.filteredPriceSetting.length < $scope.pageSize) {
 		    		$scope.nextDisabled = true;
-		    	}
+		    	}*/
 		    	
 		    	if($scope.currentPage == 0) {
 		    		$scope.previouseDisabled = true;
@@ -80,7 +80,7 @@ angular.module('contiApp').controller('priceSettingRegisterController',
 		    		$scope.nextDisabled = false;
 			    	self.filteredPriceSetting=self.priceSettingBackUp.slice($scope.currentPage*$scope.pageSize);
 		    	} else {
-		    		$scope.currentPage = ( (Math.ceil(self.filteredPriceSetting.length/$scope.pageSize)) - 1);		    		
+		    		$scope.currentPage = ((Math.ceil(self.filteredPriceSetting.length/$scope.pageSize)) - 1);		    		
 		    		console.log($scope.currentPage);
 		    		$scope.previouseDisabled = false;
 		    		$scope.nextDisabled = true;
@@ -336,7 +336,7 @@ angular.module('contiApp').controller('priceSettingRegisterController',
 				}
 		    }
 			
-		  //===================================pagination====================================
+		  //===================================Total Record Count====================================
 			function findrecord_count() {				
 				priceSettingRegisterService.findrecord_count()
 				.then(

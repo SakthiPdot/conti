@@ -87,7 +87,7 @@
                  
                     <div class="row">
 			                <div class="col-lg-12 title_area">	                
-			              vl
+			             
 				          	<div class="col-lg-12 new-masters" >
 				          		 <b data-ng-="ctrl.customer.customer_id"> New Customer</b>	
 				          		 
@@ -183,11 +183,11 @@
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Company name" data-ng-required="ctrl.customer.gstin_number">
 			                   
 		                 	   <span>Address Line 1 <span style="color:red">&nbsp;*</span></span>	         
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline1"  maxlength="100" 
+			                   <input type="text" class="form-control"  data-ng-model="ctrl.customer.customer_addressline1"  maxlength="100" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line1	" required>
 			                   
 			                   <span>Address Line 2</span>
-			                   <input type="text" class="form-control" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.customer.customer_addressline2"  maxlength="100" 
+			                   <input type="text" class="form-control"  data-ng-model="ctrl.customer.customer_addressline2"  maxlength="100" 
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address Line2	" >
 			             </div>         	
 			             </div>
@@ -245,7 +245,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" > <i class="fa fa-times" aria-hidden="true"></i>
+							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" > <i class="fa fa-ban" aria-hidden="true"></i>
 							Cancel</button>
 						</div>
 						
@@ -415,7 +415,7 @@
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										</form>
 									<div class = "row paddingtop">
-	                                    <div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Driver" data-ng-model = "ctrl.cust_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.cust_regSearch)"/></div>
+	                                    <div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Customer name" data-ng-model = "ctrl.cust_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.cust_regSearch)"/></div>
                                       </div>
                                 </div>
                               </div>

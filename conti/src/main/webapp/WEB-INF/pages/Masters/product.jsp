@@ -27,12 +27,12 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
     
-	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
-	 <link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
-	  <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 
+	<link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
+	<link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
+	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 
 	  
-		 <link href="resources/custom/css/custom.css" rel="stylesheet">
-	 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<link href="resources/custom/css/custom.css" rel="stylesheet">
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
@@ -48,17 +48,9 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 <div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{proctrl.message}}</div>
  
  		<div class="overlay hideme"></div>
- 	 	
-
- 
- 	
   <!-- form  Beginning  -->	
  		
- 
- 		
   <!-- Master Drawer Beginning  -->
-
-
 	<div class="drawer hideme ">
 		<form data-ng-submit="proctrl.submit()" class="formBottom"
 			name="productForm">
@@ -122,15 +114,17 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 
 							<div angucomplete-alt id="selectedProductType" pause="0"
 								data-trigger="focus" data-toggle="popover" data-placement="top"
-								data-content="Please Enter Product Type"
-								selected-object="product_type" local-data="proctrl.products"
+								data-content="Please Enter Product Type"								
+							    remote-url="getProductTypeByStr/"
+								remote-url-data-field="Product"											
+								selected-object="product_type" 
 								override-suggestions="true" placeholder="Eg.Box"
 								search-fields="product_Type" title-field="product_Type"
 								match-class="highlight"
 								initial-value="{{proctrl.product.product_Type}}" minlength="1"
 								input-class="form-control form-control-small"></div>
 
-
+				
 							<input type="hidden" class="form-control" maxlength="30"
 								onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 								data-trigger="focus" data-toggle="popover" data-placement="top"
@@ -513,21 +507,30 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 											</tbody>
 										</table>
 
-										<div class="col-lg-6 col-lg-offset-3 " align="center">
-								<!-- 			<pagination total-items="totalItems" ng-model="currentPage"	max-size="maxSize" class="pagination-sm"
-												boundary-links="true" rotate="false" num-pages="numPages"
-												items-per-page="itemsPerPage"></pagination> -->
-												
-										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                                     											
-										
+								   <!--====================pagination tab============================ -->
+                                		
+                                		          
+                                <div class ="col-lg-6 col-md-6 col-xs-12">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-xs-12 icons-button">
+                                
+                                   <div class="pull-right">
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                      											
 										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previous</button>
 										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "paginate(1)">Next</button>
-										
 										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
 										</div>
 										
-										<div class="col-lg-6"><br><br></div>
+								</div>
+										
+										
 									</div>
+									
 								</div>
 							</div>
 							<!--End Advanced Tables -->

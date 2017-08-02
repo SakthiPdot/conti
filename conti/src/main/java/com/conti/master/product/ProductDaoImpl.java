@@ -35,6 +35,14 @@ public class ProductDaoImpl implements ProductDAO {
 
 	@Override
 	@Transactional
+	public int productCount() {
+		int rec_count = ((Long)sessionFactory.getCurrentSession()
+				.createQuery("select count(*) from Product WHERE obsolete = 'N'").uniqueResult()).intValue();
+		return rec_count;
+	}
+	
+	@Override
+	@Transactional
 	public void saveOrUpdate(Product product) {
 		sessionFactory.getCurrentSession().saveOrUpdate(product);
 	}
@@ -133,6 +141,20 @@ public class ProductDaoImpl implements ProductDAO {
 						).list();
 
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Product> searchByProductTypeUnique(String searchString) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from Product  where product_Type is not null"
+						+ " and product_Type LIKE '%"+searchString+"%'"
+						+ " group by product_Type"											
+						).list();
+
+	}
+	
 	
 	@Override
 	@Transactional

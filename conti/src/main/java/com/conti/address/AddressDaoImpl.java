@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.conti.master.product.Product;
+
 @Repository
 public class AddressDaoImpl implements AddressDao{
 
@@ -32,6 +34,17 @@ public class AddressDaoImpl implements AddressDao{
 		
 		return addressModel;
 		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<AddressModel> searchByAddressName(String searchString) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from AddressModel where  obsolete ='N'  and active ='Y' "
+						+ "and city LIKE '%"+searchString+"%'"					
+						).list();
+
 	}
 	
 }

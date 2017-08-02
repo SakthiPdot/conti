@@ -17,10 +17,29 @@ angular.module('contiApp').factory('ProductService',['$http','$q',function($http
 			changeActive:changeActive,
 			searchProduct:searchProduct,
 			paginateFirstOrLast:paginateFirstOrLast,
-			checkProductName:checkProductName
+			checkProductName:checkProductName,
+			findrecord_count:findrecord_count
 	};
 	
 	return factory;
+	//=============================find record count====================================
+	   function findrecord_count() {
+	    	
+	        var deferred = $q.defer();
+	        $http.get('ProductRecordCount/')
+	            .then(
+	            function (response) {
+	                deferred.resolve(response.data);
+	            },
+	            function(errResponse){
+	                console.error('Error while fetching Users record count');
+	                deferred.reject(errResponse);
+	            }
+	        );
+	        return deferred.promise;
+	    }
+	   
+	   
 	//=============================paginate first or last====================================
 	function checkProductName(name){
 		var deferred = $q.defer();
