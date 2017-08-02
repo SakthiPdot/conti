@@ -230,6 +230,7 @@ public class PriceSettingsRegisterController {
 			model.addObject("title", "Price Settings Register");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Settings/price settings_register");
+			model.addObject("homePage",request.getContextPath());
 
 			
 		} catch (Exception exception) {
