@@ -9,7 +9,7 @@
  */
 
 
-contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout', 'ShipmentService', 'priceSettingService', 'BranchService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,  ShipmentService, priceSettingService, BranchService, ConfirmDialogService){
+contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout', 'ShipmentService', 'priceSettingService', 'BranchService', 'CompanySettingService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,  ShipmentService, priceSettingService, BranchService, CompanySettingService, ConfirmDialogService){
 	
 	$("#screen_addshipment").addClass("active-menu");
 	var self = this;
@@ -285,12 +285,16 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 
 		priceSettingService.fetch_priceforShipment(self.shipment.forpricesetting)
 			.then(
-					function(price) {
-						self.shipment.products[index].product_unitprice = price;					
+					function(res) {
+						self.shipment.handling_charge = res.handling_charges;
+						self.shipment.products[index].product_unitprice = parseFloat(res.price);
+						
+						self.checkQuantity(index);
 					}, function(errResponse) {
 						console.log(errResponse);
 					}
 				);
+		
 	}
 	
 	//---------------- Fetch product price from price setting end
@@ -305,11 +309,70 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	self.calc_totalprice = function (index) {
 		self.shipment.products[index].product_totalprice = 
-			parseInt(self.shipment.products[index].product_quantity) * parseInt(self.shipment.products[index].product_unitprice);	
+			parseInt(self.shipment.products[index].product_quantity) * parseFloat(self.shipment.products[index].product_unitprice);	
+		
+		//calculate chargeable weight & Delivery charges
+		var chargeabled_weight = 0, delivery_charges = 0;
+		for(var i = 0; i < self.shipment.products.length; i++) {
+			delivery_charges = delivery_charges + self.shipment.products[i].product_totalprice; 
+			chargeabled_weight = chargeabled_weight + self.shipment.products[i].max_weight; 
+		}
+		
+		
+		self.shipment.delivery_charges = delivery_charges.toFixed(2);		
+		self.shipment.chargeable_weight = chargeabled_weight.toFixed(2);	
+		
+		self.calc_discount(); // call discount
 	}
 	
 	//------------------------------ Calculate total price in a row end
 	
+	//------------------------------ Calculate discout percentage & amount begin
+	
+	self.calc_discount = function() {
+		var discount_percent = parseFloat(self.shipment.discount_percentage) / parseInt(100);
+		self.shipment.discount_amount = ( parseFloat(self.shipment.delivery_charges) *  (parseFloat(discount_percent)) ).toFixed(2);
+		
+		if(isNaN(self.shipment.discount_amount)) {
+			self.shipment.discount_amount = null;
+		}
+		if(isNaN(self.shipment.delivery_charges)) {
+			self.shipment.delivery_charges = null;
+		}
+		if(isNaN(self.shipment.chargeable_weight)) {
+			self.shipment.chargeable_weight = null;
+		}
+		
+		if( self.shipment.discount_amount != null ) { // if discount is applicable
+			self.shipment.total_amount = (parseFloat(self.shipment.delivery_charges) - parseFloat(self.shipment.discount_amount)) 
+											+ parseFloat(self.shipment.handling_charge);			
+		} else {// if discount is not applicable
+			self.shipment.total_amount = parseFloat(self.shipment.delivery_charges) + parseFloat(self.shipment.handling_charge);			
+		}
+		
+		
+		fetch_gsts(); // calculate gsts (CGST / SGST / IGST)
+	}
+	
+	//------------------------------ Calculate discout percentage & amount end
+	
+	//------------------------------ Fetch CGST SGST & IGST from Company setting
+	function fetch_gsts() {
+				
+		CompanySettingService.fetchCompanySetting(1)
+			.then(
+					function (res) {
+						self.shipment.cgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.cgst) / 100) ).toFixed(2);
+						self.shipment.sgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.sgst) / 100) ).toFixed(2);
+						self.shipment.igst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.igst) / 100) ).toFixed(2);
+						
+						self.shipment.tax = ( parseFloat(self.shipment.cgst) + parseFloat(self.shipment.sgst) + parseFloat(self.shipment.igst) ).toFixed(2);
+						self.shipment.total_charges = ( parseFloat(self.shipment.tax) + parseFloat(self.shipment.tax) ).toFixed(2);
+					}, function (errRes) {
+						console.log(errRes);
+					} 
+				);
+	}
 	//------------------------------------------------------------- ADD SHIPMENT DETAILED TABLE END----------------------------------------
 	
 	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT BEGIN------------------------------------
