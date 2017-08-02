@@ -57,7 +57,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/Conti/"><strong>Conti</strong></a>
+                <a class="navbar-brand" href="${homePage}"><strong>Conti</strong></a>
 				
 		
             </div>
