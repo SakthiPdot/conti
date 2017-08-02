@@ -9,7 +9,7 @@
  */
 
 
-contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout', 'ShipmentService', 'priceSettingService', 'BranchService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,  ShipmentService, priceSettingService, BranchService, ConfirmDialogService){
+contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout', 'ShipmentService', 'priceSettingService', 'BranchService', 'CompanySettingService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,  ShipmentService, priceSettingService, BranchService, CompanySettingService, ConfirmDialogService){
 	
 	$("#screen_addshipment").addClass("active-menu");
 	var self = this;
@@ -287,7 +287,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			.then(
 					function(res) {
 						self.shipment.handling_charge = res.handling_charges;
-						self.shipment.products[index].product_unitprice = res.price;
+						self.shipment.products[index].product_unitprice = parseFloat(res.price);
 						
 						self.checkQuantity(index);
 					}, function(errResponse) {
@@ -342,11 +342,37 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		if(isNaN(self.shipment.chargeable_weight)) {
 			self.shipment.chargeable_weight = null;
 		}
+		
+		if( self.shipment.discount_amount != null ) { // if discount is applicable
+			self.shipment.total_amount = (parseFloat(self.shipment.delivery_charges) - parseFloat(self.shipment.discount_amount)) 
+											+ parseFloat(self.shipment.handling_charge);			
+		} else {// if discount is not applicable
+			self.shipment.total_amount = parseFloat(self.shipment.delivery_charges) + parseFloat(self.shipment.handling_charge);			
+		}
+		
+		
+		fetch_gsts(); // calculate gsts (CGST / SGST / IGST)
 	}
 	
 	//------------------------------ Calculate discout percentage & amount end
 	
-	
+	//------------------------------ Fetch CGST SGST & IGST from Company setting
+	function fetch_gsts() {
+				
+		CompanySettingService.fetchCompanySetting(1)
+			.then(
+					function (res) {
+						self.shipment.cgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.cgst) / 100) ).toFixed(2);
+						self.shipment.sgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.sgst) / 100) ).toFixed(2);
+						self.shipment.igst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.igst) / 100) ).toFixed(2);
+						
+						self.shipment.tax = ( parseFloat(self.shipment.cgst) + parseFloat(self.shipment.sgst) + parseFloat(self.shipment.igst) ).toFixed(2);
+						self.shipment.total_charges = ( parseFloat(self.shipment.tax) + parseFloat(self.shipment.tax) ).toFixed(2);
+					}, function (errRes) {
+						console.log(errRes);
+					} 
+				);
+	}
 	//------------------------------------------------------------- ADD SHIPMENT DETAILED TABLE END----------------------------------------
 	
 	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT BEGIN------------------------------------

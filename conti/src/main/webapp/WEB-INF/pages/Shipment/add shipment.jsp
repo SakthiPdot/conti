@@ -867,7 +867,7 @@
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Delivery Charge <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Delivery Charge </span>
                             			
                             			 <div class = "form-group input-group">
 	                            		    <input type="text" class="form-control disabled" 
@@ -881,7 +881,7 @@
                             	
                             		<div class="col-md-6 branchclass">
                             		
-                            			<span class="text-paddingwidth discountspace ">Discount %</span>
+                            			<span class="text-paddingwidth discountspace ">Discount percentage</span>
                             		       <div class = "form-group input-group">
 	                            		    <input type="number" class="form-control" min = "0" max = "100.00"
 	                            		    	data-ng-model = "ctrl.shipment.discount_percentage"
@@ -897,7 +897,7 @@
                             	   </div> 
                             		
                             		<div class="col-md-6 branchclass">
-                            			<span class="text-paddingwidth">Discount <i class="fa fa-inr" aria-hidden="true"></i></span>
+                            			<span class="text-paddingwidth">Discount amount</span>
                             		    
 	                                    <div class = "form-group input-group">
 	                            		    <input type="text" class="form-control disabled" 
@@ -909,7 +909,7 @@
                             		</div>                           		
                             		
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Handling Charge</span>
+                            			<span class="text-paddingwidth">Handling Charge <span class="required">*</span></span>
                             		    <div class = "form-group input-group">
 	                            		    <input type="number" class="form-control" min = "0" max = "999999.99"
 	                            		    	data-ng-model = "ctrl.shipment.handling_charge"
@@ -917,6 +917,7 @@
 												data-placement="top" data-content="Please enter handling charges"
 												placeholder = "Ex: 10.22"
 												data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+												data-ng-keyup = "ctrl.calc_discount()"
 	                            		    required />  
 	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
                             		    </div> 
@@ -926,8 +927,8 @@
                             		
                             			<span class="text-paddingwidth discountspace">CGST</span>
                             		       <div class = "form-group input-group">
-	                            		    <input type="text" class="form-control disabled" min = "0" max = "100.00"
-	                            		    	data-ng-model = "ctrl.shipment.cgst_amount"	                            		    	
+	                            		    <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.cgst"	                            		    	
 												tabindex="-1"											
 	                            		     />  
 	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
@@ -939,8 +940,8 @@
                             			<span class="text-paddingwidth">SGST</span>
                             		                         		    
 	                            		  <div class = "form-group input-group">
-	                            		    <input type="text" class="form-control disabled" min = "0" max = "100.00"
-	                            		    	data-ng-model = "ctrl.shipment.sgst_amount"	                            		    	
+	                            		    <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.sgst"	                            		    	
 												tabindex="-1"											
 	                            		     />  
 	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
@@ -951,8 +952,8 @@
                             			<span class="text-paddingwidth ">IGST</span>
                             	
                             		       <div class = "form-group input-group">
-	                            		    <input type="text" class="form-control disabled" min = "0" max = "100.00"
-	                            		    	data-ng-model = "ctrl.shipment.igst_amount"	                            		    	
+	                            		    <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.igst"	                            		    	
 												tabindex="-1"											
 	                            		     />  
 	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
@@ -963,7 +964,10 @@
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Tax</span> 
-                            		    <input type="text" class="form-control">                            		    
+                            		     <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.tax"	                            		    	
+												tabindex="-1"											
+	                            		     />                             		    
                             		    
                             		</div>
                             	
@@ -971,7 +975,10 @@
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Total Charges</span> 
-                            		    <input type="text" class="form-control" >                            		    
+                            		     <input type="text" class="form-control disabled" 
+	                            		    	data-ng-model = "ctrl.shipment.total_charges"	                            		    	
+												tabindex="-1"											
+	                            		     />                            		    
                             		    
                             		</div>
                             	
@@ -1062,6 +1069,7 @@
   <script src="resources/custom/js/shipment/shipment_service.js"></script>
   <script src="resources/custom/js/branch_master/branch_service.js"></script>
   <script src="resources/custom/js/price_setting/s_price_setting_service.js"></script>
+  <script src="resources/custom/js/CompanySetting/company_setting_service.js"></script>
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/confirmDialog.js"></script>   
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
