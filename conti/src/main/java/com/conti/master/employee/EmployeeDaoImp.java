@@ -49,7 +49,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
 				.createQuery("from EmployeeMaster WHERE obsolete ='N' AND branchModel.branch_id =" + branch_id + " "
-						/*+ "AND user.role.role_Name NOT LIKE '%" + constantVal.ROLE_SADMIN + "%' "*/
+						+ "AND user.role.role_Name NOT LIKE '%" + constantVal.ROLE_SADMIN + "%' "
 						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
 				.setMaxResults(100).list();
 		return listEmployee;
@@ -62,7 +62,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
 				.createQuery("from EmployeeMaster WHERE obsolete ='N' AND branchModel.branch_id =" + branch_id + " "
-						/*+ "AND user.role.role_Name <>'" + constantVal.ROLE_SADMIN + "' "*/
+						+ "AND user.role.role_Name <>'" + constantVal.ROLE_SADMIN + "' "
 						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
 				.setMaxResults(100).list();
 		return listEmployee;

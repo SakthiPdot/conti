@@ -66,7 +66,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 					}
 				);
 	}
-	//----------------Branch Master drawer close begin---------------------
+	//-----------------------------------------------------------------------
 	
 	
 	//-------------------------Branch Name checking----------------------
@@ -109,7 +109,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	
 	
 	
-  //------------------------Branch Name checking End----------------------
+  //----------------------------------------------------------------------------------------------
 	
 	//---------------------Branch Master drawer close begin-----------
 	
@@ -178,13 +178,20 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	//------------------------ Location block changes begin ----------------------//
     $scope.location_name = function (loc_selected) 
     {
-    	
-    	$('#location_id').val(JSON.stringify(loc_selected.originalObject));
-    	$('#city').val(loc_selected.originalObject.address.city);
-    	$('#country').val(loc_selected.originalObject.address.country);
-    	$('#state').val(loc_selected.originalObject.address.state);
-    	$('#pincode').val(loc_selected.originalObject.pincode);
-	    	    
+    	if(typeof loc_selected!="undefined"){
+    		$('#location_id').val(JSON.stringify(loc_selected.originalObject));
+        	$('#city').val(loc_selected.originalObject.address.city);
+        	$('#country').val(loc_selected.originalObject.address.country);
+        	$('#state').val(loc_selected.originalObject.address.state);
+        	$('#pincode').val(loc_selected.originalObject.pincode)
+		}else{
+			$('#location_id').val(null);
+	    	$('#city').val(null);
+	    	$('#country').val(null);
+	    	$('#state').val(null);
+	    	$('#pincode').val(null);
+		}
+
 	};	
 	//------------------------ Location block changes end ----------------------//
 	
