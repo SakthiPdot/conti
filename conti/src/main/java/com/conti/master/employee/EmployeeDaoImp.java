@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.conti.master.branch.BranchModel;
 import com.conti.others.ConstantValues;
+import com.conti.setting.usercontrol.User;
 
 /**
  * @Project_Name conti
@@ -44,11 +44,12 @@ public class EmployeeDaoImp implements EmployeeDao {
 	
 	@Override
 	@Transactional
-	public List<EmployeeMaster> getAllEmployees(int branch_id) {
+	public List<EmployeeMaster> getAllEmployees(int branch_id) 
+	{
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
 				.createQuery("from EmployeeMaster WHERE obsolete ='N' AND branchModel.branch_id =" + branch_id + " "
-						+ "AND user.role.role_Name <>'" + constantVal.ROLE_SADMIN + "' "
+						/*+ "AND user.role.role_Name NOT LIKE '%" + constantVal.ROLE_SADMIN + "%' "*/
 						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
 				.setMaxResults(100).list();
 		return listEmployee;
@@ -56,7 +57,21 @@ public class EmployeeDaoImp implements EmployeeDao {
 	
 	@Override
 	@Transactional
-	public List<EmployeeMaster> getAllEmployeesforSA() {
+	public List<EmployeeMaster> getAllEmployeesExcel(int branch_id) 
+	{
+		@SuppressWarnings("unchecked")
+		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from EmployeeMaster WHERE obsolete ='N' AND branchModel.branch_id =" + branch_id + " "
+						/*+ "AND user.role.role_Name <>'" + constantVal.ROLE_SADMIN + "' "*/
+						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
+				.setMaxResults(100).list();
+		return listEmployee;
+	}
+	
+	@Override
+	@Transactional
+	public List<EmployeeMaster> getAllEmployeesforSA() 
+	{
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
 				.createQuery("from EmployeeMaster where obsolete ='N' "
@@ -67,7 +82,8 @@ public class EmployeeDaoImp implements EmployeeDao {
 	
 	@Override
 	@Transactional
-	public List<EmployeeMaster> getEmployeesbyBranchId(int branch_id) {
+	public List<EmployeeMaster> getEmployeesbyBranchId(int branch_id) 
+	{
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
 				.createQuery("from EmployeeMaster where obsolete ='N'AND branchModel.branch_id =" + branch_id + " "
@@ -222,4 +238,27 @@ public class EmployeeDaoImp implements EmployeeDao {
 		int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from EmployeeMaster WHERE obsolete = 'N' AND user.role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'").uniqueResult()).intValue();
 		return rec_count;
 	}
+	
+	/*------------------------------- Get Customer by id begin -----------------------*/	
+	
+	@Override
+	@Transactional
+	public List<EmployeeMaster> searchbyEmployee(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<EmployeeMaster> listcust = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
+		.createQuery("from EmployeeMaster WHERE obsolete ='N' and emp_name  LIKE '%" + search_key + "%'").list();
+		if(listcust!=null)
+		{
+			System.out.print("PPPPPPPPPPPPPPPPPPPPPPPP OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"+listcust);
+		}
+		
+			return listcust;
+		
+	}
+	
+	/*------------------------------- Get Customer  by id End -----------------------*/
+	
+	
 }

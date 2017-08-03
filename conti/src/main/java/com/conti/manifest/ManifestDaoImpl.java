@@ -102,7 +102,7 @@ public class ManifestDaoImpl implements ManifestDao
 	}
 	
 	
-	//======================================Get inward manifest list Start======================================
+	//---------------------------------Get inward manifest list Start----------------------------------
 	@Override
 	@Transactional
 	public List<ManifestModel> getInwardManifest(int branch_id) 
@@ -116,11 +116,11 @@ public class ManifestDaoImpl implements ManifestDao
 		
 	}
 	
-	//======================================Get inward manifest list End=========================================
+	//------------------------------Get inward manifest list End--------------------------------------
 	
 	
 	
-	//======================================Get inward manifest list Start======================================
+	//-----------------------------------Get inward manifest list Start------------------------------------------
 		@Override
 		@Transactional
 		public List<ManifestModel> getOutwardManifest(int branch_id) 
@@ -134,9 +134,9 @@ public class ManifestDaoImpl implements ManifestDao
 			
 		}
 		
-	//======================================Get inward manifest list End=========================================
+	//-------------------------------Get inward manifest list End-----------------------------------------------
 		
-	//======================================Get Manifest Search by==========================
+	//-------------------------------------Get Manifest Search by Start----------------------------------------------
 		
 		@Override
 		@Transactional
@@ -148,5 +148,40 @@ public class ManifestDaoImpl implements ManifestDao
 			.createQuery("from ManifestModel where obsolete='N' and manifest_number LIKE '%"+searchkey+"%'").list();
 			return listManifest;
 		}
+		
+	//-------------------------------------Get Manifest Search by End----------------------------------------------	
+		
+		
+		
+		
+		
+		//+++++++++++++++++++++++++++ MANIFEST DETAILED IMPLEMENTATION START ++++++++++++++++++++++++++++++
+		
+	//-------------------Get all Manifest detailed list-----------------------------------------
+		@Override
+		@Transactional
+		public List<ManifestDetailedModel> getAllManifestDetailes(int manifest_id) 
+		{
+			// TODO Auto-generated method stub
+			
+			@SuppressWarnings("unchecked")
+			List<ManifestDetailedModel> listmanifestdetailed = (List<ManifestDetailedModel>) sessionFactory.getCurrentSession()
+					.createQuery("from ManifestDetailedModel WHERE manifest_id ="+manifest_id).list();
+			return listmanifestdetailed;
+			
+		}
+		
+	//------------------------------------------------------------------------------------------
+		
+		
+		
+		//+++++++++++++++++++++++++++ MANIFEST DETAILED IMPLEMENTATION END +++++++++++++++++++++++++++++++
+		
+		
+		
+		
+		
+		
+		
 		
 }

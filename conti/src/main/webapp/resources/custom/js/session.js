@@ -19,9 +19,9 @@
 		 
 		 return headers;
 	 }; 	
-	 //------------------------- CSRF end ---------------------------------- //
+//------------------------- CSRF end ---------------------------------- //
 
-	//------------------------- animate dynamic element begin ---------------------------------- //
+//------------------------- animate dynamic element begin ---------------------------------- //
 	    function animationOpenClick(element, animation){
 	    	element = $(element);				
 	    	element.addClass('animated ' + animation);        

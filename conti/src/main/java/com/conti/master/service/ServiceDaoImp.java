@@ -96,4 +96,18 @@ public class ServiceDaoImp implements ServiceDao {
 			}
 			return "NOTAVAILABLE";
 		}
+
+
+		@Override
+		@Transactional
+		public List<ServiceMaster> allSorting( String sorting) {
+			
+			
+			@SuppressWarnings("unchecked")
+			List<ServiceMaster> SortList = (List<ServiceMaster>) sessionFactory.getCurrentSession()
+					.createQuery("from ServiceMaster where obsolete = 'N' ORDER BY "+ sorting +" ASC").list();
+			
+			return SortList;
+		
+		}
 }

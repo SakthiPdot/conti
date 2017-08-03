@@ -696,6 +696,10 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    	self.user = user;
 	    	self.usernameupdateCheck = user.username;
 	    	self.heading = self.user.username;
+	    	(self.user.username).length> 15?
+					self.heading="- "+(self.user.username).substr(0,14)+"..."
+					:self.heading="- "+self.user.username;
+	    	
 	    	$('#branch_id').val(JSON.stringify(self.user.branchModel));
 	    	$('#branch_name_value').val(self.user.branchModel.branch_name);
 	    	$('#employee_name_value').val(self.user.employeeMaster.emp_name);
@@ -732,7 +736,8 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 		        			console.log(user);
 		                    /*fetchAllUsers();*/
 		                    self.message = user.username+" user updated..!";
-		        			successAnimate('.success');            			
+		        			successAnimate('.success');  
+		        			newOrClose();
 		        		},
 		       
 		        function(errResponse){

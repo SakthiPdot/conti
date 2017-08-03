@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,6 +57,7 @@ public class ManifestRestController
 	
 	@Autowired
 	private ManifestDao manifestDao;
+	
 	
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
@@ -171,11 +173,6 @@ public class ManifestRestController
 		}
 	//--------------------- TO get all manifest  list function End ------------------------
 	
-	//------------------------------To get Manifest detailed data--------------------------------------
-	
-//		@RequestMapping(value='manifest_detailed',method=RequestMethod.GET)
-//		public ResponseEntity<List<ManifestDetailedModel>>
-	//------------------------------To get Manifest detailed data--------------------------------------
 	
 	//----------------------To get all inward manifest list function start--------------------
 	
@@ -353,4 +350,71 @@ public class ManifestRestController
 			return new ResponseEntity<List<ManifestModel>> (manifestModel,HttpStatus.OK);
 		}
 	//----------------------Manifest number search function End---------------------------------
+		
+		
+	//==========================================Manifest Detailed Controller==============================================================
+		
+	//------------------------------To get Manifest detailed data--------------------------------------
+	
+		@RequestMapping(value="manifest_detailed", method=RequestMethod.POST)
+		public ResponseEntity<List<ManifestDetailedModel>>fetchAllDetailedManifest(@RequestBody int id,HttpServletRequest request)
+		{
+			userInformation = new UserInformation(request);
+			String username = userInformation.getUserName();
+			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"+id);
+			//String branch_id = userInformation.getUserBranchId();
+//			try
+//			{
+				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				List<ManifestDetailedModel> manifestDetailedModel = manifestDao.getAllManifestDetailes(id);
+				
+				if(manifestDetailedModel.isEmpty()) 
+				{
+					return new ResponseEntity<List<ManifestDetailedModel>> (HttpStatus.NO_CONTENT);
+				}
+				else 
+				{
+					return new ResponseEntity<List<ManifestDetailedModel>> (manifestDetailedModel, HttpStatus.OK);	
+				}			
+//			} 
+//			catch (Exception exception) 
+//			{			
+//				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+//				return new ResponseEntity<List<ManifestDetailedModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+//			}
+		}
+	//---------------------------------------------------------------------------------------------------
+		
+	//-----------------------------to display Detailed Manifest Screen---------------------------------------
+		
+		@RequestMapping(value =  "detailed_manifest", method = RequestMethod.GET)
+		public ModelAndView detailed_manifest(@RequestParam(value="id", required = false) int id,HttpServletRequest request) throws Exception 
+		{
+			HttpSession session = request.getSession();
+			UserInformation userinfo = new UserInformation(request);
+			String username = userinfo.getUserName();
+			String userid = userinfo.getUserId();
+			
+			session.setAttribute("username", username);
+			session.setAttribute("userid", userid);
+			int manifest_id=id;
+			ModelAndView model = new ModelAndView();
+			try
+			{
+				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				model.addObject("title", "View Manifest");
+				model.addObject("m_id",manifest_id);
+				model.addObject("message", "This page is for ROLE_ADMIN only!");
+				model.setViewName("Manifest/view_detailed_manifest");
+			} 
+			catch (Exception exception) 
+			{
+				loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);
+			}
+			return model;
+		}
+	//--------------------------------------------------------------------------------------------------------------
+		
+		
+	//=====================================================================================================================================
 }

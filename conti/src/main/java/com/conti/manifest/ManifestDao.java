@@ -10,17 +10,28 @@ package com.conti.manifest;
  */
 
 import com.conti.manifest.*;
-import com.conti.master.customer.CustomerModel;
+
 
 import java.util.List;
 public interface ManifestDao 
 {
-	public List<ManifestModel>getManifest(int branch_id);
-	public List<ManifestModel>getAllManifest(int branch_id);
-	public List<ManifestModel>getAllManifests(int branch_id);
-	public ManifestModel getManifestbyId(int id);
-	public List<ManifestModel>getManifestByCondition(int frombranch,int tobranch,String fromdate,String todate);
-	public List<ManifestModel>getInwardManifest(int id);
-	public List<ManifestModel>getOutwardManifest(int id);
-	public List<ManifestModel>manifestSearch(String searchkey);
+	//====================Manifest  DAO declaration Start===================
+	
+		public List<ManifestModel>getManifest(int branch_id);
+		public List<ManifestModel>getAllManifest(int branch_id);
+		public List<ManifestModel>getAllManifests(int branch_id);
+		public ManifestModel getManifestbyId(int id);
+		public List<ManifestModel>getManifestByCondition(int frombranch,int tobranch,String fromdate,String todate);
+		public List<ManifestModel>getInwardManifest(int id);
+		public List<ManifestModel>getOutwardManifest(int id);
+		public List<ManifestModel>manifestSearch(String searchkey);
+	
+	//====================Manifest  DAO declaration End===================
+	
+	
+	//====================Manifest Detailed DAO declaration Start===================
+		
+		public List<ManifestDetailedModel>getAllManifestDetailes(int branch_id);
+		
+	//====================Manifest Detailed DAO declaration End===================
 }

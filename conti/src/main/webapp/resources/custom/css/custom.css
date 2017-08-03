@@ -326,6 +326,9 @@
 	 .hsn-modal{
 	   height: 130px
 	   }
+	    .underline{
+	    text-decoration: none !important;
+	    }
 	    
 	     @media (max-width : 768px) {
 				.branchclass{

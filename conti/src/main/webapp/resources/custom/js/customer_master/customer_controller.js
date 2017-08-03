@@ -283,11 +283,13 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
    
     
   //------------------------- update customer begin ---------------------//
-    function updateCustomer(customer) {
+    function updateCustomer(customer) 
+    {
     	self.customer = customer;
-  
-    	self.heading = self.customer.customer_name;
-    	$('#branch_id').val(JSON.stringify(self.customer.branchModel));
+    	(self.customer.customer_name).length> 15?
+				self.heading="- "+(self.customer.customer_name).substr(0,14)+"..."
+				:self.heading="- "+self.customer.customer_name;
+		$('#branch_id').val(JSON.stringify(self.customer.branchModel));
     	$('#location_id').val(JSON.stringify(self.customer.location));
     	$('#city').val(self.customer.location.address.city);
     	$('#country').val(self.customer.location.address.country);
