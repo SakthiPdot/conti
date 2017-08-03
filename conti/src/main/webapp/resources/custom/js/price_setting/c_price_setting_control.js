@@ -239,6 +239,9 @@ angular.module('contiApp').controller('priceSettingController',
 			$scope.defaultPriceCheckBox=false;
 			self.priceSetting.default_price=null;
 			$scope.showTable=false;
+			if(self.priceSetting.priceSettingDetail.length<1){
+				addNew();
+			}
 	}
 /*	$scope.toBranch = function(selected){
 		console.log(selected);
