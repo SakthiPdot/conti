@@ -21,9 +21,21 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			"consignee_branch" : {},
 			"service" : {},
 			"products" : [{
-				"product" : null
-			}] 
+				"product" : {
+					"hsns" : [{
+						"hsn" : {'hsn_id':5}
+					}]
+				},
+				
+			}],
+			/*"hsns" : [{
+				"hsn" : null
+			}]*/
+			
 	};
+	
+
+	/*self.shipment.hsns = {};*/
 	
 /*	self.shipment.sender_customer = {};
 	self.shipment.consignee_customer = {};*/
@@ -374,6 +386,62 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 				);
 	}
 	//------------------------------------------------------------- ADD SHIPMENT DETAILED TABLE END----------------------------------------
+	
+	//------------------------------------------------------------------------------HSN FUNCTIONS BEGIN
+	
+	//------------------------------------------------------------- ADD HSN BEGIN
+	
+	self.addHSN = function (index, hsn) {
+		console.log(self.shipment);
+		
+		self.shipment.products[0].hsns.push({});
+	}
+	
+	
+	//------------------------------------------------------------- ADD HSN END
+	
+	//--------------------------------------------- remove Product beging
+	self.removeHSN = function () {
+        var selectedHSNList=[];
+        $scope.HSNselectedAll = false;
+        angular.forEach(self.shipment.hsns, function(selected){
+            if(!selected.selected){
+            	selectedHSNList.push(selected);
+            }
+        }); 
+        self.shipment.hsns = selectedHSNList;
+        
+	}
+	//--------------------------------------------- remove Product end	
+	
+	
+	//---------------------------------------------- HSN CODE SEARCH begin
+	$scope.hsn_code=function (selected){
+		
+		var index = this.$parent.$index;
+		
+		console.log(index);
+		
+		//-- assign object
+		self.shipment.hsns[index].hsn = selected.originalObject;
+		self.shipment.hsns[index].hsn_id = selected.originalObject.hsn_id;
+		$('#hsn_description'+index+'_value').val(selected.originalObject.hsn_description);
+	}
+	//---------------------------------------------- HSN CODE SEARCH end
+	
+	//---------------------------------------------- HSN DESCRIPTION SEARCH begin
+	$scope.hsn_description=function (selected){
+		
+		var index = this.$parent.$index;
+		
+		//-- assign object
+		self.shipment.hsns[index].hsn = selected.originalObject;
+		self.shipment.hsns[index].hsn_id = selected.originalObject.hsn_id;
+		$('#hsn_code'+index+'_value').val(selected.originalObject.hsn_code);
+	}
+	//---------------------------------------------- HSN DESCRIPTION SEARCH end
+	
+	//------------------------------------------------------------------------------HSN FUNCTIONS END	
 	
 	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT BEGIN------------------------------------
 	

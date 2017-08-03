@@ -701,7 +701,96 @@
 			   											    data-placement="top" data-content="Please enter & select prduct"
 															
 														    ></div>
-                                            	<a href="" data-toggle="modal" data-target="#myModal" style="text-decoration: none !important;"> Add HSN Details</a>
+                                            	<a href="" data-toggle="modal" data-target="#HSNmodal{{$index}}" style="text-decoration: none !important;"> Add HSN Details</a>
+                                            	<!-- HSN MODAL BEGIN -->
+				                                            	<div class="modal fade" id="HSNmodal{{$index}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									                                <div class="modal-dialog">
+									                                    <div class="modal-content">
+									                                    
+									                                        <div class="modal-header">
+									                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									                                            <h4 class="modal-title" id="myModalLabel">HSN Details</h4>
+									                                        </div>
+									                                        
+									                                        <div class="modal-body hsn-modal">
+									                                        	<div class = "col-lg-12">
+										                                        	<table  class="table table-striped table-bordered table-hover" id="dataTables-example">
+										                                        		<thead>
+											                                        	<tr> 
+											                                        		<th> </th>
+											                                        		<th> S.NO </th>
+											                                        		<th> HSN Code </th>
+											                                        		<th> Description </th>
+											                                        	</tr>
+											                                        	</thead>
+											                                        	
+											                                        	<tbody>
+											                                        		<tr data-ng-repeat = "hsn in product.hsns track by $index">
+											                                        			<td> <input type ="checkbox" data-ng-model = "hsn.selected" /> </td>
+											                                        			<td> {{$index + 1}} <input type="hidden" class="form-control" data-ng-model = "hsn.hsn_id" /> </td>
+											                                        			<td> 
+											                                        				
+											                                        				<div angucomplete-alt id="{{'hsn_code' + $index}}" data-ng-model = "hsn.hsn_code"
+																										maxlength="5"
+																										placeholder="Ex : 336001" 
+																										pause="0"											
+																										selected-object="hsn_code"
+																									    remote-url="getHSNCode4Search/"
+																										remote-url-data-field="hsn_code"
+															             								title-field="hsn_code"
+																										match-class="highlight"
+																										minlength="1" 																						
+																									    maxlength="50"	
+																										input-class="form-control form-control-small"	
+																										></div>
+											                                        				
+											                                        			</td>
+											                                        			<td> 
+											                                        				<div angucomplete-alt id="{{'hsn_description' + $index}}" data-ng-model = "hsn.hsn_description"
+																										maxlength="5"
+																										placeholder="Ex : bags" 
+																										pause="0"											
+																										selected-object="hsn_description"
+																									    remote-url="getHSNDesc4Search/"
+																										remote-url-data-field="hsn_description"
+															             								title-field="hsn_description"
+																										match-class="highlight"
+																										minlength="1" 																						
+																									    maxlength="50"	
+																										input-class="form-control form-control-small"	
+																										></div>
+											                                        					
+											                                        			</td>
+											                                        		</tr>
+											                                        	</tbody>
+										                                        	</table>
+																			 	</div>
+																			 	<div class="col-lg-12">
+																				 	<div class="col-lg-6">
+																				 		
+																				 	</div>
+																				 	<div class="col-lg-6">
+																					 	<a class="btn btn-primary pull-right"  data-ng-click = "ctrl.removeHSN()"><i class="fa fa-minus-circle fa-lg"></i></a>
+																				 		<a class="btn btn-primary pull-right" data-ng-click = "ctrl.addHSN($index)"><i class="fa fa-plus-circle fa-lg"></i></a>
+																				 	</div>
+																			 	</div>
+																			 	
+																			 	<div class = "col-lg-12">
+																			 			<a type="button" class="btn btn-danger pull-left" data-dismiss="modal"> <i class="fa fa-times"></i> Cancel</a>
+																				 		<a type="button" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</a>
+										                                            
+																			 	</div>
+																			</div>
+																			
+									                                        <div class="modal-footer">
+									                                           
+									                                        </div>
+									                                        
+									                                    </div>
+									                                </div>
+									                            </div>
+									                            
+									                    <!-- HSN MODAL END -->             
                                             </td>
                                             <td> 
                                             	<input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.product_type"/> 
@@ -1017,43 +1106,7 @@
                        		</div>
                        </div>
              
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                    
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                            <h4 class="modal-title" id="myModalLabel">HSN Details</h4>
-                                        </div>
-                                        
-                                        <div class="modal-body hsn-modal">
-										 	<div class="col-lg-6">
-										 		<span> HSN Code</span>
-												<input type="text" class="form-control">
-										 	</div>
-										 	<div class="col-lg-6">
-										 		<span> Description</span>
-												<input type="text" class="form-control">
-										 	</div>
-										 	
-										 	<div class="col-lg-6">
-										 		
-										 	</div>
-										 	<div class="col-lg-6">
-										 		<button class="btn btn-primary pull-right"><i class="fa fa-minus-circle fa-lg"></i></button>
-										 		<button class="btn btn-primary pull-right"><i class="fa fa-plus-circle fa-lg"></i></button>
-										 		
-										 	</div>
-										</div>
-										
-                                        <div class="modal-footer">
-                                            <a type="button" class="btn btn-danger pull-left" data-dismiss="modal"> <i class="fa fa-times"></i> Cancel</a>
-                                            <a type="button" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</a>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
+                
               
        		 </form>
         </div>
