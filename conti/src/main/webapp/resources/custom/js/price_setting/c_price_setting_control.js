@@ -447,8 +447,7 @@ angular.module('contiApp').controller('priceSettingController',
 		self.priceSetting.product.product_id!=null && self.priceSetting.product.product_id !=0){
 			
 
-			$scope.showEdit=true;
-			$scope.disableBSP=true;
+			
 			$('#saveButton').text(" Update")
 			console.log($('#saveOrNew').val());
 			
@@ -459,6 +458,8 @@ angular.module('contiApp').controller('priceSettingController',
 			priceSettingService.fetchPSbyBSPId(id)
 			.then(function(response){
 				self.priceSetting=response;
+				$scope.showEdit=true;
+				$scope.disableBSP=true;
 				$scope.edit=true;
 				if(self.priceSetting.default_price.toString().length>0 && self.priceSetting.default_price != 0){
 					console.log(self.priceSetting.default_price);
