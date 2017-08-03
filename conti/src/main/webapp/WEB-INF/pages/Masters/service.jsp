@@ -72,11 +72,11 @@
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
-                   <div class="col-lg-8 col-md-8 col-sm-10 headerLeft">
+                   <div class="col-lg-10 col-md-8 col-sm-10 headerLeft">
                    		 <b class="model-title">Service {{ctrl.heading}}</b>
                    </div>
                    
-                   <div class="col-lg-4 col-md-4 col-sm-2 headerRight">
+                   <div class="col-lg-2 col-md-4 col-sm-2 headerRight">
                    		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close('Close')"></i>
                    </div>
             
@@ -127,11 +127,11 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4  footerLeft">
-							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close('Cancel')" ><i class="fa fa-ban"></i> Cancel</button>
+							<button type="button" class=" btn btn-warning pull-left" data-ng-click = "ctrl.close('Cancel')" ><i class="fa fa-ban"></i> Cancel</button>
 						</div>
 						
 						 <div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
-							<a id="" class="btnPadding btn btn-warning" data-ng-click = "ctrl.deleteService()" data-ng-show="ctrl.service.service_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i>  Delete</a> 
+							<a id="" class="btnPadding btn btn-danger" data-ng-click = "ctrl.deleteService()" data-ng-show="ctrl.service.service_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i>  Delete</a> 
 							
 							<a id="" class="btnPadding btn btn-primary" data-ng-click="ctrl.clear()" data-ng-show="!serviceForm.$pristine && (ctrl.service.service_id==null)"><i class="fa fa-eraser"></i> Clear</a>							
 						</div> 

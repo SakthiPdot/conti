@@ -251,7 +251,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 		{
 			console.log("branch save call "+self.branch.branch_id)
 			self.confirm_title='Save';
-			self.confirm_type=BootstrapDialog.TYPE_SUCCESSSS;
+			self.confirm_type=BootstrapDialog.TYPE_SUCCESS;
 			self.confirm_msg=self.confirm_title +' '+self.branch.branch_name+' branch?';
 			self.confirm_btnclass = 'btn-success';
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
@@ -299,7 +299,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     	self.branch = branch;
     	$scope.branchnamewrong=false;
     	self.UpdateNotCheckBranchName=self.branch.branch_name;
-    	self.heading = self.branch.branch_name;
+    	//self.heading = self.branch.branch_name;
     	
     	self.branch.lrno_prefix=self.branch.lrno_prefix.slice(1);//To Remove first Digit for update
     	self.branch.receiptno_prefix=self.branch.receiptno_prefix.slice(1);//To Remove first Digit for update
@@ -310,6 +310,9 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     	$('#state').val(self.branch.location.address.state);
     	$('#pincode').val(self.branch.location.pincode);
     
+    	(self.branch.branch_name).length> 15?
+				self.heading="- "+(self.branch.branch_name).substr(0,14)+"..."
+				:self.heading="- "+self.branch.branch_name ;
     	
     	$('#location_name_value').val(self.branch.location.location_name);
     	drawerOpen('.drawer');

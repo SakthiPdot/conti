@@ -240,6 +240,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 							
 							self.message = service.service_name + " service updated...!";
 							successAnimate('.success');
+							newOrClose();
 						},
 						
 						function(errResponse){
@@ -257,6 +258,11 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 				self.UpdateNotCheckServiceName = self.service.service_name;
 				
 				self.heading = self.service.service_name;
+				
+				
+		    	(self.service.service_name).length> 15?
+						self.heading="- "+(self.service.service_name).substr(0,14)+"..."
+						:self.heading="- "+self.service.service_name;
 				drawerOpen('.drawer');
 				
 			}

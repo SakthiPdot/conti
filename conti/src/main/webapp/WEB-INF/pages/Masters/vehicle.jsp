@@ -75,11 +75,11 @@
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
-                   <div class="col-lg-8 col-md-8 col-sm-10 headerLeft">                   		 
+                   <div class="col-lg-10 col-md-8 col-sm-10 headerLeft">                   		 
                    <b class="model-title">Vehicle {{ctrl.heading}}</b>
                    </div>
                    
-                   <div class="col-lg-4 col-md-4 col-sm-2 headerRight">
+                   <div class="col-lg-2 col-md-4 col-sm-2 headerRight">
                    		<i class="fa fa-times fa-2x drawerClose  pull-right iconLeft" data-ng-click = "ctrl.close('Close')"></i>
                    </div>
             
@@ -137,7 +137,8 @@
 			           		<input type="hidden" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject}}" />
 			                  
 			                  <span>Vehicle Model No<span class="required"> *</span></span>
-			                 <input type="text" class="form-control" maxlength="30" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.vehicle.vehicle_modelno" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Model No" required />
+			                 <input type="text" class="form-control" maxlength="30" data-ng-model="ctrl.vehicle.vehicle_modelno" data-trigger="focus" 
+			                 onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Model No" required />
 			                  
 			                  <span> Vehicle Type<span class="required"> *</span></span>
 			              <!--    <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Type" -->
@@ -188,11 +189,11 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger pull-left" data-ng-click="ctrl.close('Cancel')"><i class="fa fa-ban"></i> Cancel</button>
+							<button type="button" class=" btn btn-warning pull-left" data-ng-click="ctrl.close('Cancel')"><i class="fa fa-ban"></i> Cancel</button>
 						</div>
 						
 						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
-						   <a id="" class="btnPadding btn btn-warning" data-ng-click="ctrl.deleteVehicle()" data-ng-show="ctrl.vehicle.vehicle_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i>  Delete</a>
+						   <a id="" class="btnPadding btn btn-danger" data-ng-click="ctrl.deleteVehicle()" data-ng-show="ctrl.vehicle.vehicle_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i>  Delete</a>
 							
 							<a id="" class="btnPadding btn btn-primary" data-ng-click = "ctrl.clear()" data-ng-show="!vehicleForm.$pristine && (ctrl.vehicle.vehicle_id==null)"><i class="fa fa-eraser"></i> Clear</a>							
 						</div>

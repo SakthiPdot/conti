@@ -77,11 +77,11 @@
  			<div class="row">
  			<div class="col-lg-12 trowserHeader"  >
  			
-                   <div class="col-lg-8 col-md-8 col-sm-10  headerLeft">
+                   <div class="col-lg-10 col-md-8 col-sm-10  headerLeft">
                    		 <b class="model-title">User {{ctrl.heading}} </b>
                    </div>
                    
-                    <div class="col-lg-4 col-md-4 col-sm-2 headerRight">
+                    <div class="col-lg-2 col-md-4 col-sm-2 headerRight">
                    		<i class="fa fa-times fa-2x drawerClose  pull-right iconLeft" data-ng-click = "ctrl.close('Close')"></i>
                    </div>
             
@@ -133,9 +133,11 @@
 			                  <angucomplete-alt id="employee_name" data-ng-model = "ctrl.user.emp_name"
 			                  placeholder = "Ex: Sankar" pause="100"
 			                  selected-object="emp_name"
-			                  local-data="ctrl.employeesforname"
+			                  remote-url="getEmployee4Search/"
+						      remote_url-data-field="Employee"
+			                 
 			                  search-fields="emp_name"
-			                  title-field = "emp_name,emp_code"
+			                  title-field = "emp_name"
 			                  match-class="highlight"
 			                  initial-value = "{{ctrl.user.employeeMaster.emp_name}}"
 			                  minlength="1"

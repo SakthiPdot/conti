@@ -16,7 +16,9 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +26,11 @@ import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -109,6 +114,7 @@ public class UserRestController {
 			model.addObject("title", "User Master");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Settings/user_master");
+			model.addObject("homePage",request.getContextPath());
 
 			
 		} catch (Exception exception) {
@@ -1023,6 +1029,21 @@ public class UserRestController {
 	}
 	
 	/* ------------------------- Find record count end ------------------------------------- */
+	
+	//===========================To get all Employee name for Searching================================
+	
+	@RequestMapping(value="getEmployee4Search/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String,List<EmployeeMaster>>> getEmployee4Search(HttpServletRequest request,
+			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException 
+	{
+		
+		List<EmployeeMaster> employees = employeeDao.searchbyEmployee(searchStr);
+
+		 Map result = new HashMap();	
+		 result.put("Employees",employees);
+		System.out.print("PPPPPPPPPPPPPPPPPPPPPPPP "+result);
+		return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);
+	}
 	
 }
 

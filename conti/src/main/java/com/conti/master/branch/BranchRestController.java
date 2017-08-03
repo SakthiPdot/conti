@@ -155,6 +155,7 @@ public class BranchRestController {
 			model.addObject("title", "Branch Master");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Masters/branch");
+			model.addObject("homePage",request.getContextPath());
 
 			
 		} catch (Exception exception) {
@@ -483,8 +484,8 @@ public class BranchRestController {
 		}	
 		
 		@RequestMapping(value = "register_search_branch", method=RequestMethod.POST)
-		public ResponseEntity<List<BranchModel>> register_search_branch(@RequestBody String searchkey, HttpServletRequest request) {
-			
+		public ResponseEntity<List<BranchModel>> register_search_branch(@RequestBody String searchkey, HttpServletRequest request) 
+		{
 			List<BranchModel> branchList = branchDao.searchbyeyBranch(searchkey);
 			return new ResponseEntity<List<BranchModel>> (branchList, HttpStatus.OK);
 		}
@@ -515,11 +516,7 @@ public class BranchRestController {
 			List<BranchModel> branchList = branchDao.getBrancheswithLimit(Integer.parseInt(branch_id), from_limit, to_limit, order);
 			return new ResponseEntity<List<BranchModel>> (branchList, HttpStatus.OK);
 		}
-		
-		
-		
-		
-		
+
 		/* ------------------------- Find record count begin ------------------------------------- */
 		
 		@RequestMapping(value = "/branch_record_count/", method = RequestMethod.GET)

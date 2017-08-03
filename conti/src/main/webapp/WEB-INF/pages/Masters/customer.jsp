@@ -70,11 +70,11 @@
  			<div class="row">
  			<div class="col-lg-12 trowserHeader" >
  				 
-                   <div class="col-lg-6 headerLeft">
+                   <div class="col-lg-10 headerLeft">
                    		 <b class="model-title">Customer {{ctrl.heading}}</b>
                    </div>
                    
-                   <div class="col-lg-6 headerRight">
+                   <div class="col-lg-2 headerRight">
                    		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close('Close')"></i>
                    </div>
             
@@ -202,7 +202,8 @@
 						             			  remote_url-data-field="Location"
 									              selected-object="location_name"
 									              	
-									              search-fields="location_name"
+									              search-fields="location_name,pincode"
+									              description-field="pincode"
 									              title-field="location_name"
 												  match-class="highlight"
 												   
@@ -245,13 +246,13 @@
 					<div class="row">
 						<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" > <i class="fa fa-ban" aria-hidden="true"></i>
+							<button type="button" class=" btn btn-warning  pull-left" data-ng-click="ctrl.close('Cancel')" > <i class="fa fa-ban" aria-hidden="true"></i>
 							Cancel</button>
 						</div>
 						
 						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
 							
-							<a id="" class="btnPadding btn btn-warning"	 data-ng-click="ctrl.deleteCustomer()"  data-ng-show="ctrl.customer.customer_id!=null" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a>
+							<a id="" class="btnPadding btn btn-danger"	 data-ng-click="ctrl.deleteCustomer()"  data-ng-show="ctrl.customer.customer_id!=null" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a>
 							<a id="" class="btnPadding btn btn-primary" data-ng-click = "ctrl.clear()" data-ng-show="!empForm.$pristine && (ctrl.customer.customer_id==null)">Clear</a>							
 						</div>
 						
@@ -440,10 +441,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>	
-<!--                                         <tr -->
-<!--                                         data-ng-repeat="cust in ctrl.customers.slice(((currentPage-1)*itemsPerPage),((currentPage)*itemsPerPage)) | orderBy:'customer_name'" -->
-<!--                                         data-ng-dblclick="ctrl.updateCustomer(cust)"> -->
-
+                                        
 											<tr data-ng-repeat="cust in ctrl.Filtercustomers | limitTo:pageSize"
 												data-ng-dblclick="ctrl.updateCustomer(cust)">
                                             <td><input type="checkbox" data-ng-change="ctrl.customerSelect(cust)" data-ng-model = "cust.select" /></td>
@@ -456,13 +454,13 @@
                                             
                                        
                                             <td data-ng-show = "setting_custaddress">
-                                           		<div data-ng-if="cust.customer_addressline1!=null">{{cust.customer_addressline1}},</div>
-                                           		<div data-ng-if="cust.customer_addressline2!=null">{{cust.customer_addressline2}},</div>
-                                           		<div data-ng-if="cust.location.location_name!=null">{{cust.location.location_name}},</div>
-                                           		<div data-ng-if="cust.location.address.city!=null">{{cust.location.address.city}},</div>
-                                           		<div data-ng-if="cust.location.address.district!=null">{{cust.location.address.district}},</div>
-                                           		<div data-ng-if="cust.location.address.state!=null">{{cust.location.address.state}},</div>
-                                           		<div data-ng-if="cust.location.pincode!=null">{{cust.location.pincode}}.</div>
+                                           		<div data-ng-if="!cust.customer_addressline1==''">{{cust.customer_addressline1}},</div>
+                                           		<div data-ng-if="!cust.customer_addressline2==''">{{cust.customer_addressline2}},</div>
+                                           		<div data-ng-if="cust.location.location_name!=''">{{cust.location.location_name}},</div>
+                                           		<div data-ng-if="cust.location.address.city!=''">{{cust.location.address.city}},</div>
+                                           		<div data-ng-if="cust.location.address.district!=''">{{cust.location.address.district}},</div>
+                                           		<div data-ng-if="cust.location.address.state!=''">{{cust.location.address.state}},</div>
+                                           		<div data-ng-if="cust.location.pincode!=''">{{cust.location.pincode}}.</div>
                                             </td>
                                             
                                             <td data-ng-show = "setting_custphone">{{cust.customer_mobileno}}</td>

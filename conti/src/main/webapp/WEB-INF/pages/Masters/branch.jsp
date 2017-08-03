@@ -65,11 +65,11 @@
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
-                   <div class="col-lg-6 headerLeft">
+                   <div class="col-lg-10 headerLeft">
                    		 <b class="model-title">Branch {{ctrl.heading}}</b>
                    </div>
                    
-                   <div class="col-lg-6 headerRight">
+                   <div class="col-lg-2 headerRight">
                    		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click="ctrl.close('Close')"></i>
                    </div>
             
@@ -106,11 +106,11 @@
 			                	
 			                		                	
 			                	<span>Address Line 1</span>			                	
-			                	<input type="text" class="form-control" maxlength="100" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" 
+			                	<input type="text" class="form-control" maxlength="100" 
 			                	data-ng-model="ctrl.branch.branch_addressline1" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 1">
 			                	
 			                	<span>Address Line 2</span>			                	
-			                	<input type="text" class="form-control" maxlength="100" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
+			                	<input type="text" class="form-control" maxlength="100" 
 			                	data-ng-model="ctrl.branch.branch_addressline2" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 2">
 			                	
 			                	<span>Location</span>			                	
@@ -121,14 +121,15 @@
 						             			  remote_url-data-field="Location"
 									              selected-object="location_name"
 									              
-									              search-fields="location_name"
+									              search-fields="location_name,pincode"
+									              description-field="pincode"
 									              title-field="location_name"
 												  match-class="highlight"
 												  
 									              minlength="3"
 	   											  data-trigger="focus" data-toggle="popover" 
 	   											  data-placement="top" data-content="Please Enter branch location"
-	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+	   											  
 									              input-class="form-control form-control-small">
               					</angucomplete-alt>
               					<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
@@ -167,7 +168,7 @@
 			               
 			               <div class="col-lg-6 content-body">
 			                	<span>Contact Number<span style="color:red">&nbsp;*</span></span>			                	
-			                	<input type="text" class="form-control" minlength="10" maxlength="10"  onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_mobileno" 
+			                	<input type="text" class="form-control" minlength="14" maxlength="15"  onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_mobileno" 
 			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact Number"  required/>
 			              
 			               </div>		                                
@@ -218,11 +219,11 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" ><i class="fa fa-ban" area-hidden="true"></i> Cancel</button>
+							<button type="button" class=" btn btn-warning  pull-left" data-ng-click="ctrl.close('Cancel')" ><i class="fa fa-ban" area-hidden="true"></i> Cancel</button>
 						</div>
 						
 						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
-							<a id="" class="btnPadding btn btn-warning"	data-ng-click="ctrl.deleteBranch()" data-ng-show="ctrl.branch.branch_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
+							<a id="" class="btnPadding btn btn-danger"	data-ng-click="ctrl.deleteBranch()" data-ng-show="ctrl.branch.branch_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
 							<a id="" class="btnPadding btn btn-primary" data-ng-click="ctrl.clear()" data-ng-show="!branchForm.$pristine&&(ctrl.branch.branch_id==null)">Clear</a>							
 						</div>
 						
@@ -420,13 +421,13 @@
                                             <td data-ng-show="setting_branchname">{{branch.branch_name}}</td>
                                             <td data-ng-show="setting_branchcode">{{branch.branch_code}}</td>
                                             <td data-ng-show="setting_branchaddress">
-                                            	<div data-ng-if="branch.branch_addressline1!=null">{{branch.branch_addressline1}},</div>
-                                           		<div data-ng-if="branch.branch_addressline2!=null">{{branch.branch_addressline2}},</div>
-                                           		<div data-ng-if="branch.location.location_name!=null">{{branch.location.location_name}},</div>
-                                           		<div data-ng-if="branch.location.address.city!=null">{{branch.location.address.city}},</div>
-                                           		<div data-ng-if="branch.location.address.district!=null">{{branch.location.address.district}},</div>
-                                           		<div data-ng-if="branch.location.address.state!=null">{{branch.location.address.state}},</div>
-                                           		<div data-ng-if="branch.location.pincode!=null">{{branch.location.pincode}}.</div>
+                                            	<div data-ng-if="!branch.branch_addressline1==''">{{branch.branch_addressline1}},</div>
+                                           		<div data-ng-if="!branch.branch_addressline2==''">{{branch.branch_addressline2}},</div>
+                                           		<div data-ng-if="!branch.location.location_name==''">{{branch.location.location_name}},</div>
+                                           		<div data-ng-if="!branch.location.address.city==''">{{branch.location.address.city}},</div>
+                                           		<div data-ng-if="!branch.location.address.district==''">{{branch.location.address.district}},</div>
+                                           		<div data-ng-if="!branch.location.address.state==''">{{branch.location.address.state}},</div>
+                                           		<div data-ng-if="!branch.location.pincode==''">{{branch.location.pincode}}.</div>
                                             </td>
                                             <td data-ng-show="setting_branchcontactperson">{{branch.branch_contactperson}}</td>
                                             <td data-ng-show="setting_branchcontactnumber">{{branch.branch_mobileno}}</td>

@@ -2,6 +2,8 @@ package com.conti.master.employee;
 
 import java.util.List;
 
+import com.conti.setting.usercontrol.User;
+
 
 
 /**
@@ -16,6 +18,7 @@ public interface EmployeeDao {
 	
 	public List<EmployeeMaster> getEmployee(int branch_id, String empcategory);
 	public List<EmployeeMaster> getAllEmployees(int branch_id);
+	public List<EmployeeMaster> getAllEmployeesExcel(int branch_id);
 	public List<EmployeeMaster> getAllEmployeesforSA();
 	public List<EmployeeMaster> getEmployeesbyBranchId(int branch_id);
 	public void saveOrUpdate(EmployeeMaster employee);
@@ -30,4 +33,6 @@ public interface EmployeeDao {
 	public List<EmployeeMaster> searchbyeyEmpCategoryforSA(String searchkey);
 	public int find_record_countforSA();
 	public int find_record_count();
+	public List<EmployeeMaster> searchbyEmployee(String searchkey);
+	
 }

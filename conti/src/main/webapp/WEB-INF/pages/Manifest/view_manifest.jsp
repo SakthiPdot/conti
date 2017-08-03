@@ -89,31 +89,31 @@
 	          </div>
               </div>
               
-              <div class="row">
-                	<div class="col-lg-12">
-                		<div class="col-lg-12 ">                		
-                		<div class="panel panel-default">
-                			<div class="panel-body">
-                			     <div class="col-lg-12  branch-heading">                 			       	
-                			      	<input type="checkbox" data-ng-model="SearchBy" data-ng-changed="ctrl.fetchAllBranches()"> Search By<br>       	                                       
-								 </div>
+<!--               <div class="row"> -->
+<!--                 	<div class="col-lg-12"> -->
+<!--                 		<div class="col-lg-12 ">                		 -->
+<!--                 		<div class="panel panel-default"> -->
+<!--                 			<div class="panel-body"> -->
+<!--                 			     <div class="col-lg-12  branch-heading">                 			       	 -->
+<!--                 			      	<input type="checkbox" data-ng-model="SearchBy" data-ng-changed="ctrl.fetchAllBranches()"> Search By<br>       	                                        -->
+<!-- 								 </div> -->
                 			     
-                			     <div class="col-lg-12 noPaddingLeft" data-ng-show="SearchBy">                 			       	
-        			      		    <label class="radio-inline">
-                                        <input type="radio" name="optionsRadiosInline" 
-                                        data-ng-click="ctrl.inwardManifest()" ><b>Inward(Received Manifest)</b>
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="optionsRadiosInline"  data-ng-checked="SearchBy" data-ng-true-value="ctrl.outwardManifest()"
-                                        data-ng-click="ctrl.outwardManifest()"><b>Outward(Sent Manifest)</b>
-                                    </label>        	                                       
-								</div>
+<!--                 			     <div class="col-lg-12 noPaddingLeft" data-ng-show="SearchBy">                 			       	 -->
+<!--         			      		    <label class="radio-inline"> -->
+<!--                                         <input type="radio" name="optionsRadiosInline"  -->
+<!--                                         data-ng-click="ctrl.inwardManifest()" ><b>Inward(Received Manifest)</b> -->
+<!--                                     </label> -->
+<!--                                     <label class="radio-inline"> -->
+<!--                                         <input type="radio" name="optionsRadiosInline"  data-ng-checked="SearchBy" data-ng-true-value="ctrl.outwardManifest()" -->
+<!--                                         data-ng-click="ctrl.outwardManifest()"><b>Outward(Sent Manifest)</b> -->
+<!--                                     </label>        	                                        -->
+<!-- 								</div> -->
                 			    
-                		   </div>
-                		</div>
-                	</div>
-                </div>
-                </div>
+<!--                 		   </div> -->
+<!--                 		</div> -->
+<!--                 	</div> -->
+<!--                 </div> -->
+<!--                 </div> -->
               
               <div class="row">
                 <div class="col-lg-12">
@@ -299,11 +299,10 @@
                             </div>
                           
                             
-                            
+                             
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
-                                        <tr 
-                                        	>
+                                        <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" data-ng-model="selectall"></th>
                                             <th data-ng-show="setting_manifestnumber">Manifest Number</th>
                                             <th data-ng-show="setting_manifestorigin">Origin</th>
@@ -315,9 +314,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr data-ng-repeat = "manifest in ctrl.Filtermanifests| limitTo:padeSize"
-                                        data-ng-dblclick="ctrl.detailedManifest(manifest.manifest_id)">
-                                        	
+                                    
+                                        <tr data-ng-repeat = "manifest in ctrl.Filtermanifests| limitTo:padeSize" 
+											data-id = {{manifest.manifest_id}} ondblClick = "test(this)">
+                                       
+                                        <!-- data-ng-dblclick="ctrl.manifestDetailed(manifest.manifest_id)" > -->
+                                        		
                                             <td><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" data-ng-model="selectall"></td>
                                             <td data-ng-show="setting_manifestnumber">{{manifest.manifest_number}}</td>
                                             <td data-ng-show="setting_manifestorigin">{{manifest.branchModel1.branch_name}}</td>
@@ -329,6 +331,7 @@
                                         </tr>
                                       </tbody>
                                 </table>
+                                 
                             </div>
                             
                             	<div class ="col-lg-6">

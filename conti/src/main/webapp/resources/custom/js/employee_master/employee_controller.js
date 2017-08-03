@@ -89,21 +89,19 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 		self.confirm_btnclass = 'btn-warning';
 		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(
-					function (res) {
+					function (res)
+					{
 		 	        	reset();
-		 	        	
-					}
+		 	        }
 				);
 	}
 	
 	function fetchAllEmployees() {
 		EmployeeService.fetchAllEmployees()
 			.then(
-					function (employee) {
+					function (employee) 
+					{
 						self.employees = employee;
-						/*fetchAllBranches();
-						fetchAllLocations();	*/	
-						/*self.Filteremployees = self.employees;*/
 						pagination();
 					}, 
 					function (errResponse) {
@@ -111,7 +109,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 					}
 				);
 	}
-	//-------------------------- Fetch All Employees end ---------------------//
+	//-------------------------- ----------------------------------------------------------//
 
 	//-------------------------- Fetch All Branch begin ---------------------//	
 	
@@ -351,8 +349,10 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
   //------------------------- update employee begin ---------------------//
     function updateEmployee(employee) {
     	self.employee = employee;
-  
-    	self.heading = self.employee.emp_name;
+    	(self.employee.emp_name).length> 15?
+				self.heading="- "+(self.employee.emp_name).substr(0,14)+"..."
+				:self.heading="- "+self.employee.emp_name ;
+    	//self.heading = self.employee.emp_name;
     	$('#branch_id').val(JSON.stringify(self.employee.branchModel));
     	$('#location_id').val(JSON.stringify(self.employee.location));
     	$('#city').val(self.employee.location.address.city);

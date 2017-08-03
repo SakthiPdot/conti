@@ -15,7 +15,8 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 			manifestFilter:manifestFilter,
 			inwardManifest:inwardManifest,
 			outwardManifest:outwardManifest,
-			manifestSearch:manifestSearch
+			manifestSearch:manifestSearch,
+			manifestDetailed:manifestDetailed
 	};
 	
 	return factory;
@@ -133,15 +134,22 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 		return deferred.promise;
 	}
 	
-	//--------------------------------Manifest number Search function End-------------------------------
+	//-----------------------------------------------------------------------------------------------
 	
 	
-	//--------------------------------Get Manifest detailed data begin--------------------------------
+	//--------------------------Get Manifest detailed data begin---------------------------
 	
 		function manifestDetailed(manifestid)
 		{
+			console.log('Manifest id is :'+manifestid)
 			var deferred=$q.defer();
-			$http.get('manifest_detailed')
+			$http({
+				method:'POST',
+				url:'manifest_detailed',
+				data:manifestid,
+				headers:getCsrfHeader()
+			})
+			
 			.then(
 					function(response)
 					{
@@ -155,6 +163,5 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 				);
 			return deferred.promise;
 		}
-	
-	//--------------------------------Get Manifest detailed data Start--------------------------------
+	//------------------------------------------------------------------------------------
 }]);
