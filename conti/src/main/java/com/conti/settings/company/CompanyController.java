@@ -91,17 +91,16 @@ public class CompanyController {
 		String userid = request.getSession().getAttribute("userid").toString();		
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
-				
-				
+		
+		//always update
+		companyFromJson.setUpdated_datetime(dateFormat.format(date));
+		companyFromJson.setUpdated_by(Integer.parseInt(userid));		
+		
 		//check create or update
 		if(companyFromJson.getCompany_id()==0){
 			companyFromJson.setCompany_id(1);	
 			companyFromJson.setCreated_by(Integer.parseInt(userid));
 			companyFromJson.setCreated_datetime(dateFormat.format(date));
-			companyFromJson.setUpdated_by(Integer.parseInt(userid));
-		}else{
-			companyFromJson.setUpdated_by(Integer.parseInt(userid));
-			companyFromJson.setUpdated_datetime(dateFormat.format(date));
 		}	
 		
 		

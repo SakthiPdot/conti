@@ -15,6 +15,7 @@ public interface  PriceSettingDao {
 	public List<PriceSetting> getPriceSetting();
 	public List<PriceSetting> getPriceSettingBy100();
 	public PriceSetting getPriceSettingById(int priceSettingId);
+	public PriceSetting getPriceSettingByBSPID(int branchid,int serviceid,int productid);	
 	public void deletePriceSettingById(int priceSettingId);
 	public List<PriceSetting> getPriceSettingWithLimit(int from ,int to ,String order);
 	public List<PriceSetting> searchByPriceSetting(String searchString);

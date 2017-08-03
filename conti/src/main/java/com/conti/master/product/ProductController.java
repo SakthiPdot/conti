@@ -169,6 +169,7 @@ public class ProductController {
 		product.setCreated_by(Integer.parseInt(userid));
 		product.setUpdated_by(Integer.parseInt(userid));
 		product.setCreated_datetime(dateFormat.format(date));
+		product.setUpdated_datetime(dateFormat.format(date));
 		product.setObsolete("N");
 		product.setActive("Y");
 		

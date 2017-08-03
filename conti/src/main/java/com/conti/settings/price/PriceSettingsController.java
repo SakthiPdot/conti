@@ -82,7 +82,7 @@ public class PriceSettingsController {
 	@RequestMapping(value =  "price_settings", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request,@RequestParam(value="id", defaultValue = "0")int id) throws Exception {
 		
-		System.out.println("++ price setting "+id);
+		System.out.println("++ price setting "+id);		
 		
 		HttpSession session = request.getSession();
 		
@@ -240,16 +240,29 @@ public class PriceSettingsController {
 			priceSetting.setCreated_by(Integer.parseInt(userid));
 			priceSetting.setUpdated_by(Integer.parseInt(userid));
 			priceSetting.setCreated_datetime(dateFormat.format(date));
+			priceSetting.setUpdated_datetime(dateFormat.format(date));
 			priceSetting.setObsolete("N");
 			priceSetting.setActive("Y");
-	
+			boolean haveDetail=false;
 			//set price setting for detailed table
 			List<PriceSettingDetail> priceSettingDetailList=priceSetting.getPriceSettingDetail();			
 			for(PriceSettingDetail psDetail:priceSettingDetailList){
-				psDetail.setPriceSetting(priceSetting);
+				if(psDetail.getBranch()!=null){
+					if(psDetail.getBranch().getBranch_id()!=0){
+						System.err.println(psDetail.getBranch().getBranch_id()+"branch id");
+						psDetail.setPriceSetting(priceSetting);	
+						haveDetail=true;
+					}
+				}	
+			}
+
+			//if all to branch is null set price setting detail to null
+			if(!haveDetail){
+				System.err.println("setnull");
+				priceSetting.setPriceSettingDetail(null);	
 			}
 			
-			//save location
+			//save priceSetting
 			try {
 				psDao.saveOrUpdate(priceSetting);
 				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
@@ -345,7 +358,26 @@ public class PriceSettingsController {
 		return new ResponseEntity<PriceSetting>(priceSetting,HttpStatus.OK);
 		
 	}
+	//=================fetch price setting with id =====================================
 	
+
+		@RequestMapping (value="PriceSettingWithBSPID",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<PriceSetting>  PriceSettingWithBSPID(@RequestBody int[] id,HttpServletRequest request){
+		
+		System.out.println("++ price setting product"+String.valueOf(id[2]));
+		System.out.println("++ price setting service"+String.valueOf(id[1]));
+		System.out.println("++ price setting branch"+String.valueOf(id[0]));
+		
+		PriceSetting priceSetting=psDao.getPriceSettingByBSPID(id[0],id[1],id[2]);
+		if(priceSetting==null){
+			return new ResponseEntity<PriceSetting>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}else{
+			return new ResponseEntity<PriceSetting>(priceSetting,HttpStatus.OK);
+		}
+		
+			
+		
+	}
 	//=================UPDATE =====================================
 	//priceSettingUpdate
 	

@@ -74,6 +74,23 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 		}
 		return null;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public PriceSetting getPriceSettingByBSPID(int branchid,int serviceid,int productid) {
+		
+		List<PriceSetting> priceSettingList=sessionFactory.getCurrentSession()
+				.createQuery("from PriceSetting where obsolete ='N' AND product_id = '"+productid+"' AND service_id = '"+serviceid+"' AND  frombranch_id = '"+branchid +"'").list();
+		
+		if(priceSettingList!=null && !priceSettingList.isEmpty()){
+			return priceSettingList.get(0);
+		}
+		return null;
+	}
+	
+
+	
 
 	@Override
 	@Transactional

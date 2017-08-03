@@ -1,4 +1,4 @@
-/**
+	/**
  * @Project_Name conti
  * @Package_Name resources/custom/js
  * @File_name c_price_setting_control.js
@@ -6,7 +6,18 @@
  * @Created_date_time Jul 20, 2017 4:20:17 PM
  * @Updated_date_time Jul 20, 2017 4:20:17 PM
  */
-
+//======================================functiont to do after save======================================
+	function afterSave(x){
+		console.log(x);
+		if(x=="close"){
+			location.href='price_settings_register';
+			valid = true;			  
+		}else{
+			angular.element(document.getElementById('priceSettingFormId')).scope().formReset();
+		}			
+	}
+	
+	
 angular.module('contiApp').controller('priceSettingController',
 		['$scope','$timeout','priceSettingService','ConfirmDialogService',
 			function($scope,$timeout,priceSettingService,ConfirmDialogService){
@@ -24,7 +35,9 @@ angular.module('contiApp').controller('priceSettingController',
 	self.deletePriceSetting=deletePriceSetting;
 	self.formReset=formReset;
 	
-	
+	$scope.formReset=function(){
+		formReset();
+	}
 	function formReset(){
 		console.log("Form reset done");
 		
@@ -70,6 +83,8 @@ angular.module('contiApp').controller('priceSettingController',
 			        }]
 		
 			}
+
+		dontSetDefaultValue();
 	}
 	
 	
@@ -95,7 +110,8 @@ angular.module('contiApp').controller('priceSettingController',
 	
 	
 	if($('#saveOrNew').val()!="NEW"){
-		$scope.showEdit=true;		
+		$scope.showEdit=true;	
+		$scope.disableBSP=true;
 		$('#saveButton').text(" Update")
 		console.log($('#saveOrNew').val());		
 		priceSettingService.fetchPSbyId($('#saveOrNew').val())
@@ -223,6 +239,9 @@ angular.module('contiApp').controller('priceSettingController',
 			$scope.defaultPriceCheckBox=false;
 			self.priceSetting.default_price=null;
 			$scope.showTable=false;
+			if(self.priceSetting.priceSettingDetail.length<1){
+				addNew();
+			}
 	}
 /*	$scope.toBranch = function(selected){
 		console.log(selected);
@@ -256,6 +275,12 @@ angular.module('contiApp').controller('priceSettingController',
 	   		self.message ="Cannot delete this Row..!";
 			successAnimate('.failure');
 		}
+	}
+	
+	
+	//======================================set value on click======================================
+	$scope.setAtts=function(x){
+		$scope.saveAttr=x;
 	}
 	
 	//======================================submit======================================
@@ -318,15 +343,14 @@ angular.module('contiApp').controller('priceSettingController',
 				ConfirmDialogService.confirmBox("Save",
 	    				BootstrapDialog.TYPE_SUCCESS, "save price setting for Product ("+self.priceSetting.product.product_name+")  ..?", 'btn-success')
 	    		.then(function(response){
-	    			
-	    			
-	    		
-	    			
 	    			priceSettingService.savePS(self.priceSetting)
 	    			.then(function(){
 						self.message = " Price Setting For Product("+self.priceSetting.product.product_name +") created..!";
 	    				successAnimate('.success');	
-	    				formReset();
+	    				$timeout(function(){
+	    					afterSave($scope.saveAttr);
+	    				},4000);
+	    				
 	    			},function(errResponse){
 	    				console.log(errResponse);
 						self.message ="Error While Creating Price Setting For Product("+self.priceSetting.product.product_name +")..!";
@@ -350,8 +374,10 @@ angular.module('contiApp').controller('priceSettingController',
 		    			priceSettingService.updatePS(self.priceSetting,self.priceSetting.pricesetting_id)
 		    			.then(function(){	
 							self.message = " Price Setting For Product("+self.priceSetting.product.product_name +") Updated..!";
-		    				successAnimate('.success');	
-		    				formReset();
+		    				successAnimate('.success');
+		    				$timeout(function(){
+		    					afterSave($scope.saveAttr);
+		    				},4000);
 		    			},function(errResponse){
 							self.message = "Error While Updating Price Setting For Product("+self.priceSetting.product.product_name +")..!";
 		    				successAnimate('.failure');
@@ -369,6 +395,8 @@ angular.module('contiApp').controller('priceSettingController',
 		}else{
 			self.priceSetting.branch=null;
 		}
+
+		 checkAvailabilityForBranchServiceProduct();
 	}
 	
 	$scope.toBranch=function (selected){
@@ -377,6 +405,7 @@ angular.module('contiApp').controller('priceSettingController',
 		}else{
 			self.priceSetting.branch=null;
 		}
+		
 	}
 	
 	$scope.toBranchDetail=function (selected){
@@ -393,6 +422,8 @@ angular.module('contiApp').controller('priceSettingController',
 		}else{
 			self.priceSetting.service=null;
 		}
+
+		 checkAvailabilityForBranchServiceProduct();
 	}
 	
 	$scope.product_name=function (selected){
@@ -405,6 +436,43 @@ angular.module('contiApp').controller('priceSettingController',
 			self.priceSetting.product.product_Type=null;
 			$("#selectedProductType_value").val("");
 		}
+
+	 checkAvailabilityForBranchServiceProduct();
 	}
+	
+	function checkAvailabilityForBranchServiceProduct(){
+		var id=[];
+		console.log(self.priceSetting.branch.branch_id);
+		console.log(self.priceSetting.service.service_id);
+		console.log(self.priceSetting.product.product_id);
+		if(self.priceSetting.branch.branch_id !=null && self.priceSetting.branch.branch_id !=0 &&
+		self.priceSetting.service.service_id!=null && self.priceSetting.service.service_id !=0 &&
+		self.priceSetting.product.product_id!=null && self.priceSetting.product.product_id !=0){
+			
+
+			
+			$('#saveButton').text(" Update")
+			console.log($('#saveOrNew').val());
+			
+			id[0] =self.priceSetting.branch.branch_id;
+			id[1] =self.priceSetting.service.service_id;
+			id[2] =self.priceSetting.product.product_id;
+			
+			priceSettingService.fetchPSbyBSPId(id)
+			.then(function(response){
+				self.priceSetting=response;
+				$scope.showEdit=true;
+				$scope.disableBSP=true;
+				$scope.edit=true;
+				if(self.priceSetting.default_price.toString().length>0 && self.priceSetting.default_price != 0){
+					console.log(self.priceSetting.default_price);
+		 			$scope.showTable=true,$scope.defaultPriceCheckBox=true;
+				}
+			},function(errResponse){
+				console.log(errResponse);
+			})
+		}
+	}
+	
 	
 }]);
