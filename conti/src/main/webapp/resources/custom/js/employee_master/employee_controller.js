@@ -278,17 +278,17 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     		
     		$("#location_name_value").focus(); 
     		
-    	} else if ( $(".datepicker1").val() == "" || $(".datepicker1").val() == null ){
+    	} /*else if ( $(".datepicker1").val() == "" || $(".datepicker1").val() == null ){
     		
     		$(".datepicker1").focus(); 
     		
     		
     	} else if ( $(".datepicker2").val() == "" || $(".datepicker2").val() == null ){
-    		
+    
     		$(".datepicker2").focus(); 
     		
     		
-    	}else {
+    	}*/else {
     		
     		if( self.employee.emp_id == null ) {
     			

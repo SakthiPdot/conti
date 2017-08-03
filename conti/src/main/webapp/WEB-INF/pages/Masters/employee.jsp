@@ -107,7 +107,7 @@
 			                    required />
 			                   
 			                   <span>Employee Code</span>
-			                   <input type="text" class="form-control" maxlength="5" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee code" />
+			                   <input type="text" class="form-control" maxlength="6" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee code" />
 			                
 			           
 			             </div>         	
@@ -270,7 +270,7 @@
 				              </div> 
 				              
 				               <div class="col-lg-6 content-body">    
-				                   <span>Date of Joining </span>
+				                   <span>Date of Joining </span>	
 				                
 				           
 				                  <div class=" input-group">

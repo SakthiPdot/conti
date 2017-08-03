@@ -1036,12 +1036,9 @@ public class UserRestController {
 	public ResponseEntity<Map<String,List<EmployeeMaster>>> getEmployee4Search(HttpServletRequest request,
 			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException 
 	{
-		
 		List<EmployeeMaster> employees = employeeDao.searchbyEmployee(searchStr);
-
-		 Map result = new HashMap();	
-		 result.put("Employees",employees);
-		System.out.print("PPPPPPPPPPPPPPPPPPPPPPPP "+result);
+		Map result = new HashMap();	
+		result.put("Employees",employees);
 		return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);
 	}
 	

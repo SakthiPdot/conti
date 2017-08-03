@@ -114,7 +114,7 @@
 			                	data-ng-model="ctrl.branch.branch_addressline2" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 2">
 			                	
 			                	<span>Location</span>			                	
-			                	<angucomplete-alt id="location_name" data-ng-model="ctrl.branch.location_name"
+			                	<angucomplete-alt id="location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
 									              remote-url="getLocations4Search/"
@@ -156,8 +156,6 @@
 			           		</div> 	                                
 		                </div> 
 		                
-		                
-		                
 		                <div class="col-lg-12">
 			                <div class="col-lg-6 content-body">
 			                	<span>Contact  Person<span style="color:red">&nbsp;*</span></span>			                	
@@ -168,8 +166,8 @@
 			               
 			               <div class="col-lg-6 content-body">
 			                	<span>Contact Number<span style="color:red">&nbsp;*</span></span>			                	
-			                	<input type="text" class="form-control" minlength="14" maxlength="15"  onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_mobileno" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact Number"  required/>
+			                	<input type="text" class="form-control"  maxlength="15"  onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_mobileno" 
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact Number"  required/>
 			              
 			               </div>		                                
 		                </div>
@@ -425,7 +423,7 @@
                                            		<div data-ng-if="!branch.branch_addressline2==''">{{branch.branch_addressline2}},</div>
                                            		<div data-ng-if="!branch.location.location_name==''">{{branch.location.location_name}},</div>
                                            		<div data-ng-if="!branch.location.address.city==''">{{branch.location.address.city}},</div>
-                                           		<div data-ng-if="!branch.location.address.district==''">{{branch.location.address.district}},</div>
+<!--                                            		<div data-ng-if="!branch.location.address.district==''">{{branch.location.address.district}},</div> -->
                                            		<div data-ng-if="!branch.location.address.state==''">{{branch.location.address.state}},</div>
                                            		<div data-ng-if="!branch.location.pincode==''">{{branch.location.pincode}}.</div>
                                             </td>

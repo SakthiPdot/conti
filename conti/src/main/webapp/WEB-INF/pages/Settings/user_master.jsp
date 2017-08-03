@@ -134,7 +134,7 @@
 			                  placeholder = "Ex: Sankar" pause="100"
 			                  selected-object="emp_name"
 			                  remote-url="getEmployee4Search/"
-						      remote_url-data-field="Employee"
+						      remote_url-data-field="Employees"
 			                 
 			                  search-fields="emp_name"
 			                  title-field = "emp_name"
