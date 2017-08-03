@@ -39,9 +39,9 @@ class RoleDaoImpl implements RoleDao {
 	@Transactional
 	public List<Role> list() {
 		@SuppressWarnings("unchecked")
-		List<Role> listFeed = (List<Role>) sessionFactory.getCurrentSession()
+		List<Role> listrole = (List<Role>) sessionFactory.getCurrentSession()
 				.createQuery("from Role where obsolete ='N'").list();
-		return listFeed;
+		return listrole;
 	}
 	
   //================================List By ID==============================

@@ -102,6 +102,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 					function (employee) 
 					{
 						self.employees = employee;
+						
+						console.log(self.employees);
 						pagination();
 					}, 
 					function (errResponse) {

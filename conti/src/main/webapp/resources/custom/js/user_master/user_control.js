@@ -57,6 +57,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 		   $('#employee_name_value').val('');
 		   $('#branch_name_value').val('');
 		  
+		   fetchAllUsers();
 	    	self.heading = "Master";
 		   /*$scope.$broadcast('angucomplete-alt:clearInput');*/
 
@@ -783,7 +784,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 				
 			}
 			
-			
+			getPassword(self.user.userpassword);
 		}
 		
 		//------------------------- Check username end -------------------------------------//

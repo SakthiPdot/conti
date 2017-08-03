@@ -61,6 +61,8 @@ import com.conti.settings.company.CompanySettingDAO;
 import com.conti.userlog.UserLogDao;
 import com.conti.userlog.UserLogModel;
 
+import javassist.bytecode.Descriptor.Iterator;
+
 /**
  * @Project_Name conti
  * @Package_Name com.conti.setting.usercontrol
@@ -698,10 +700,13 @@ public class UserRestController {
 			if(roles.isEmpty()) {
 				return new ResponseEntity<List<Role>> (HttpStatus.NO_CONTENT);
 			} else {
+				
 				if( request.isUserInRole(constantVal.ROLE_ADMIN) ) {
 					for ( Role role : roles ) {
-						if( role.getRole_Name().equals(constantVal.ROLE_ADMIN) ) {
+						
+						if( role.getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
 							roles.remove(role);
+							break;
 						}	
 					}
 				}

@@ -702,7 +702,11 @@
 															
 														    ></div>
                                             	<a href="" data-toggle="modal" data-target="#HSNmodal{{$index}}" style="text-decoration: none !important;"> Add HSN Details</a>
+                                            	
+                                            	
+                                            	
                                             	<!-- HSN MODAL BEGIN -->
+                                            	
 				                                            	<div class="modal fade" id="HSNmodal{{$index}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 									                                <div class="modal-dialog">
 									                                    <div class="modal-content">

@@ -7,12 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,7 +40,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.conti.config.SessionListener;
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
-import com.conti.master.customer.CustomerModel;
 import com.conti.master.location.Location;
 import com.conti.master.location.LocationDao;
 import com.conti.others.ConstantValues;
@@ -94,35 +93,32 @@ public class EmployeeRestController {
 			User user = usersDao.get(userid);
 			
 			List<EmployeeMaster> employees = new ArrayList<EmployeeMaster>();
-			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
-				employees = employeeDao.getAllEmployeesforSA();
-				if(employees.isEmpty()) {
-					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-					return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
-				} else {
-					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-					
-					
-					return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
-				}
-				
+			employees = employeeDao.getAllEmployeesforSA();
+			if(employees.isEmpty()) {
+				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
 			} else {
-				employees = employeeDao.getAllEmployees(branch_id);
-				if(employees.isEmpty()) {
+				if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-					
-					System.out.println("########################################################################");
-					
-					return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
+					return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
 				} else {
-					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 					
-					System.out.println(employees.get(1).getUser().getUsername());
-					System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+					Iterator emp_it = employees.iterator();
+					
+					while(emp_it.hasNext()) {
+						EmployeeMaster employee = (EmployeeMaster) emp_it.next();
+						if(employee.getUser() != null) {
+							if( employee.getUser().role.getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+								emp_it.remove();
+							}	
+						}
+						
+					}
+										
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 					return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
 				}
 			}
-			
 						
 		} catch (Exception exception) 
 		{			
@@ -495,14 +491,22 @@ public class EmployeeRestController {
 				}
 				
 			} else {
-				employees = employeeDao.searchbyeyEmployee(searchkey);
-				if(employees.isEmpty()) {
-					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-					return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
-				} else {
-					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-					return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
+				
+				Iterator emp_it = employees.iterator();
+				
+				while(emp_it.hasNext()) {
+					EmployeeMaster employee = (EmployeeMaster) emp_it.next();
+					if(employee.getUser() != null) {
+						if( employee.getUser().role.getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+							emp_it.remove();
+						}	
+					}
+					
 				}
+				
+				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
+				
 			}
 			
 			
@@ -552,14 +556,29 @@ public class EmployeeRestController {
 				}
 				
 			} else {
-				employees = employeeDao.getEmployeeswithLimit(branch_id, from_limit, to_limit, order);
+				
+				
+				Iterator emp_it = employees.iterator();
+				
+				while(emp_it.hasNext()) {
+					EmployeeMaster employee = (EmployeeMaster) emp_it.next();
+					if(employee.getUser() != null) {
+						if( employee.getUser().role.getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+							emp_it.remove();
+						}	
+					}
+					
+				}
+				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
+			/*	employees = employeeDao.getEmployeeswithLimit(branch_id, from_limit, to_limit, order);
 				if(employees.isEmpty()) {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 					return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
 				} else {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 					return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
-				}
+				}*/
 			}
 			
 			
@@ -631,10 +650,23 @@ public class EmployeeRestController {
 						loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 						return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);
 					} else {
-						empCategory = employeeDao.searchbyeyEmpCategory(searchStr);
+						
+						Iterator emp_it = empCategory.iterator();
+						
+						while(emp_it.hasNext()) {
+							EmployeeMaster employee = (EmployeeMaster) emp_it.next();
+							if(employee.getUser() != null) {
+								if( employee.getUser().role.getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+									emp_it.remove();
+								}	
+							}
+							
+						}
 						result.put("EmployeeMaster", empCategory);
 						loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 						return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);
+						
+						
 					}
 				} catch (Exception exception) {
 					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);

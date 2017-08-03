@@ -20,21 +20,13 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			"sender_branch" : {},
 			"consignee_branch" : {},
 			"service" : {},
-			"products" : [{
-				"product" : {
-					"hsns" : [{
-						"hsn" : {'hsn_id':5}
-					}]
-				},
-				
-			}],
-			/*"hsns" : [{
-				"hsn" : null
-			}]*/
+			"products" : []
 			
 	};
 	
-
+	self.shipment.products.push(product);
+	
+	
 	/*self.shipment.hsns = {};*/
 	
 /*	self.shipment.sender_customer = {};
@@ -392,9 +384,9 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------------------------------------------- ADD HSN BEGIN
 	
 	self.addHSN = function (index, hsn) {
-		console.log(self.shipment);
+		console.log(index);
 		
-		self.shipment.products[0].hsns.push({});
+		self.shipment.products[index].hsns.push({});
 	}
 	
 	
