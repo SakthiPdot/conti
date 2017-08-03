@@ -285,6 +285,7 @@ public class LocationController {
 		location.setCreated_by(Integer.parseInt(userid));
 		location.setUpdated_by(Integer.parseInt(userid));
 		location.setCreated_datetime(dateFormat.format(date));
+		location.setUpdated_datetime(dateFormat.format(date));
 		location.setObsolete("N");
 		location.setActive("Y");
 		

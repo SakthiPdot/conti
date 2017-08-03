@@ -13,7 +13,8 @@ angular.module('contiApp').factory('priceSettingService',['$http','$q',function(
 			updatePS:updatePS,
 			fetchPSbyId:fetchPSbyId,
 			deletePriceSetting:deletePriceSetting,
-			fetch_priceforShipment : fetch_priceforShipment
+			fetch_priceforShipment : fetch_priceforShipment,
+			fetchPSbyBSPId:fetchPSbyBSPId
 	};
 		
 	return factory;
@@ -48,8 +49,26 @@ angular.module('contiApp').factory('priceSettingService',['$http','$q',function(
 			});	
 		return deferred.promise;
 	}
-	
-	
+	//======================================fetch price setting branch ,service,product(ID)======================================
+	function fetchPSbyBSPId(id){	
+		console.log(id);
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:"PriceSettingWithBSPID/",
+			data:id,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("fetching BSP failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
+
 	//======================================save price setting======================================
 	function savePS(priceSetting){
 		  var deferred = $q.defer();

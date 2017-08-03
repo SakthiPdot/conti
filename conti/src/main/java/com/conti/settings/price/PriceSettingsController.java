@@ -240,6 +240,7 @@ public class PriceSettingsController {
 			priceSetting.setCreated_by(Integer.parseInt(userid));
 			priceSetting.setUpdated_by(Integer.parseInt(userid));
 			priceSetting.setCreated_datetime(dateFormat.format(date));
+			priceSetting.setUpdated_datetime(dateFormat.format(date));
 			priceSetting.setObsolete("N");
 			priceSetting.setActive("Y");
 	
@@ -345,7 +346,26 @@ public class PriceSettingsController {
 		return new ResponseEntity<PriceSetting>(priceSetting,HttpStatus.OK);
 		
 	}
+	//=================fetch price setting with id =====================================
 	
+
+		@RequestMapping (value="PriceSettingWithBSPID",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<PriceSetting>  PriceSettingWithBSPID(@RequestBody int[] id,HttpServletRequest request){
+		
+		System.out.println("++ price setting product"+String.valueOf(id[2]));
+		System.out.println("++ price setting service"+String.valueOf(id[1]));
+		System.out.println("++ price setting branch"+String.valueOf(id[0]));
+		
+		PriceSetting priceSetting=psDao.getPriceSettingByBSPID(id[0],id[1],id[2]);
+		if(priceSetting==null){
+			return new ResponseEntity<PriceSetting>(HttpStatus.NOT_FOUND);
+		}else{
+			return new ResponseEntity<PriceSetting>(priceSetting,HttpStatus.OK);
+		}
+		
+			
+		
+	}
 	//=================UPDATE =====================================
 	//priceSettingUpdate
 	
