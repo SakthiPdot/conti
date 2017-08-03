@@ -7,11 +7,20 @@
   @Created_date_time July 24, 2017 3:31:53 PM
  * @Updated_date_time July 24, 2017 3:31:53 PM
  */
+function test(ele){
+	var id  = $(ele).data("id");
+	valid = true;
+	window.location.href = "detailed_manifest?id="+id;
+}
+
+
+
 contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','ManifestService','BranchService','ConfirmDialogService',function($scope,$http,$q,$timeout,ManifestService,BranchService,ConfirmDialogService)
 	{
 		var self=this;
 		self.manifests=[];
-		self.Filtermanifests=[];
+		self.Filtermanifests=[];//Store all manifest detailed
+		self.FilterManifestdetailed=[];//for store detailed manifest based on manifest id
 		self.branches=[];
 		self.manifest={};
 		self.manifest1={};
@@ -25,11 +34,15 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.inwardManifest=inwardManifest;
 		self.outwardManifest=outwardManifest;
 		self.manifestSearch=manifestSearch;
-		self.FilterManifestdetailed=FilterManifestDetailed;
+		
 		self.manifestDetailed=manifestDetailed;
 		
+		var manifest_id=$("#manifest_id").val();
+		console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" +manifest_id);
+		manifestDetailed(manifest_id);
 		fetchAllManifest();
 		fetchAllBranches();
+		
 		function reset()
 		{
 			self.manifest={};
@@ -192,15 +205,14 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		  }
 		  
 	  }
-	  
-	//-------------------------------------Register Manifest Search End-------------------------------------------
+	//---------------------------------------------------------------------------------------------------
 
 	  
 	//--------------------------------------Open Manifest Detailed view Start----------------------------
 	  
 	  function manifestDetailed(manifest_id)
 	  {
-		  console.log('Contoller: Manifest detailed call')
+		  console.log('Contoller: Manifest detailed call !')
 		  ManifestService.manifestDetailed(manifest_id)
 		  .then(
 				  function(manifestdetailed)
@@ -212,9 +224,9 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 				  {
 					  console.log('Error while Manifest detailed get')
 				  }
-				  
-			  );
+			 );
+//		  window.location.href='detailed_manifest'
 	  }
-	  
+	 //--------------------------------------------------------------------------------------------------
 	}
 	]);

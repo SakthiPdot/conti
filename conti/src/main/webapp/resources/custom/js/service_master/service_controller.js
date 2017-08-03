@@ -38,9 +38,12 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	self.confirm_msg = self.confirm_title + '' + self.service.service_name + 'service?'; 
 	self.confirm_btnclass = 'btn-success';
 	
+	self.sortname = sortname;
 	
 	$scope.shownoofrec = 10;
-	
+
+	$scope.orderByField = '';
+	$scope.reverseSort = false;
 	
 	fetchAllServices();
 	/*checkServiceName();*/
@@ -48,6 +51,9 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	function reset(){
 		self.service = {};	
 	}
+	
+	
+
 	
 	//============ Check Service Name Function Begin =================//
 		
@@ -77,6 +83,25 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 		
 	
 	//============ Check Service Name Function End ===================//
+	
+	
+	
+	//===================================//
+	
+	function sortname (sorting) {		
+		console.log(sorting);		
+		ServiceService.allSorting(sorting)
+			.then(
+					function (res) {
+						console.log(res);
+						self.Filterservices = res;						
+					},
+					function (errResponse) {
+						console.log('Error while fetching services')
+					}
+			     ) ;	
+	}
+	//=================================//
 	
 	
 	//============= Close Function Begins ======================//
@@ -215,6 +240,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 							
 							self.message = service.service_name + " service updated...!";
 							successAnimate('.success');
+							newOrClose();
 						},
 						
 						function(errResponse){
@@ -232,6 +258,11 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 				self.UpdateNotCheckServiceName = self.service.service_name;
 				
 				self.heading = self.service.service_name;
+				
+				
+		    	(self.service.service_name).length> 15?
+						self.heading="- "+(self.service.service_name).substr(0,14)+"..."
+						:self.heading="- "+self.service.service_name;
 				drawerOpen('.drawer');
 				
 			}

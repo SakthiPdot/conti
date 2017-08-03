@@ -14,13 +14,36 @@ contiApp.factory('ServiceService',['$http','$q', function ($http,$q){
 				makeinActive : makeinActive,
 				registerSearch : registerSearch,
 				pagination_byPage : pagination_byPage,
-				checkServiceName: checkServiceName
-				
+				checkServiceName: checkServiceName,
+				allSorting : allSorting
 				
 		};
 		
 		return factory;
 		
+			function allSorting (sorting) {
+				var deferred = $q.defer();
+			
+				$http({
+					method : 'POST',
+					url : 'allsorting',
+					data : sorting,
+					headers : getCsrfHeader()
+				})
+					
+				.then (
+							function (response) {
+								
+								deferred.resolve(response.data);
+								
+							},
+							function(errResponse) {
+								console.log(errResponse);
+								deferred.reject(errResponse);
+							}
+				      );
+				return deferred.promise;
+			}
 		
 		//============ Check Service Name Begin===========//
 				

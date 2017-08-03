@@ -84,6 +84,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			$('#branch_name_value').val('');
 			$('#vehicle_type_value').val('');
 			self.heading = "Master";
+			fetchAllVehicles();
 		}
 	//=================== Reset Function End ==================//
 	
@@ -260,6 +261,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 							fetchAllVehicles();
 							self.message = vehicle.vehicle_regno + " vehicle reg no updated..!";
 							successAnimate('.success');
+							newOrClose();
 						},
 						
 						
@@ -281,6 +283,11 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				$('#branch_id').val(JSON.stringify(self.vehicle.branchModel));
 				$('#branch_name_value').val(self.vehicle.branchModel.branch_name);
 				$('#vehicle_type_value').val(self.vehicle.vehicle_type);
+				
+					(self.vehicle.vehicle_regno).length> 15?
+						self.heading="- "+(self.vehicle.vehicle_regno).substr(0,14)+"..."
+						:self.heading="- "+self.vehicle.vehicle_regno;
+				
 				drawerOpen('.drawer');
 			}
 			

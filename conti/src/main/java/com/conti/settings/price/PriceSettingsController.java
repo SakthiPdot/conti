@@ -105,7 +105,7 @@ public class PriceSettingsController {
 			model.addObject("title", "Price Settings");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Settings/price settings");
-			
+			model.addObject("homePage",request.getContextPath());
 		
 			if(id==0){
 				model.addObject("saveOrNew", "NEW") ;

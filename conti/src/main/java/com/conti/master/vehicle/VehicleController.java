@@ -80,6 +80,7 @@ public class VehicleController {
 			model.addObject("title", "Vehicle Master");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Masters/vehicle");
+			model.addObject("homePage",request.getContextPath());
 
 			
 		} catch (Exception exception) {

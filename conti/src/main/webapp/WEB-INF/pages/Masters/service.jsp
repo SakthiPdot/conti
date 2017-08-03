@@ -41,7 +41,7 @@
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
-    
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.min.css">
 </head>
 
 
@@ -72,11 +72,11 @@
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
-                   <div class="col-lg-8 col-md-8 col-sm-10 headerLeft">
+                   <div class="col-lg-10 col-md-8 col-sm-10 headerLeft">
                    		 <b class="model-title">Service {{ctrl.heading}}</b>
                    </div>
                    
-                   <div class="col-lg-4 col-md-4 col-sm-2 headerRight">
+                   <div class="col-lg-2 col-md-4 col-sm-2 headerRight">
                    		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close('Close')"></i>
                    </div>
             
@@ -127,11 +127,11 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4  footerLeft">
-							<button type="button" class=" btn btn-danger pull-left" data-ng-click = "ctrl.close('Cancel')" ><i class="fa fa-ban"></i> Cancel</button>
+							<button type="button" class=" btn btn-warning pull-left" data-ng-click = "ctrl.close('Cancel')" ><i class="fa fa-ban"></i> Cancel</button>
 						</div>
 						
 						 <div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
-							<a id="" class="btnPadding btn btn-warning" data-ng-click = "ctrl.deleteService()" data-ng-show="ctrl.service.service_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i>  Delete</a> 
+							<a id="" class="btnPadding btn btn-danger" data-ng-click = "ctrl.deleteService()" data-ng-show="ctrl.service.service_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i>  Delete</a> 
 							
 							<a id="" class="btnPadding btn btn-primary" data-ng-click="ctrl.clear()" data-ng-show="!serviceForm.$pristine && (ctrl.service.service_id==null)"><i class="fa fa-eraser"></i> Clear</a>							
 						</div> 
@@ -276,18 +276,20 @@
                             </div>
                             
                             <div class="table-responsive">
+                            
                               <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.servSelectall()" data-ng-model = "selectall"></th>
                                          <!--    <th>S.No</th> -->
-                                            <th data-ng-show = "setting_servicename">Service Name</th>
-                                            <th data-ng-show = "setting_servicecode">Service Code</th>
+                                            <th data-ng-show = "setting_servicename"><a href="" class="underline" data-ng-click="ctrl.sortname('service_name')">Service Name</a></th>
+                                              
+                                            <th data-ng-show = "setting_servicecode"><a href="" class="underline" data-ng-click="ctrl.sortname('service_code')">Service Code</a></th>
                                             <th data-ng-show = "setting_servicestatus">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr data-ng-repeat = "service in ctrl.Filterservices | limitTo:pageSize "
+                                        <tr data-ng-repeat = "service in ctrl.Filterservices  |  limitTo:pageSize    "
                                         data-ng-dblclick = "ctrl.updateService(service)">
                                             <td><input type="checkbox" data-ng-change="ctrl.servSelect(service)" data-ng-model = "service.select"/></td>
                                         <!--     <td>{{$index+1}}</td> -->
@@ -297,6 +299,8 @@
                                        </tr>
                                     </tbody>
                                 </table>                               
+                               
+                            
                                
                                 
                             </div>
@@ -367,6 +371,7 @@
      <script src="resources/custom/js/service_master/service_service.js"></script>
     <script src="resources/custom/js/confirmDialog.js"></script>   
     <script type="text/javascript" src="resources/custom/js/validation.js"></script>
+     <script type="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.min.js"></script> 
 
     
 
@@ -377,6 +382,7 @@
 		    e.stopPropagation();
 		});
 	</script>
+
 
 </body>
 

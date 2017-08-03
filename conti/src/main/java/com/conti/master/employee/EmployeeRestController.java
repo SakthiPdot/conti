@@ -40,6 +40,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.conti.config.SessionListener;
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
+import com.conti.master.customer.CustomerModel;
 import com.conti.master.location.Location;
 import com.conti.master.location.LocationDao;
 import com.conti.others.ConstantValues;
@@ -91,6 +92,7 @@ public class EmployeeRestController {
 		try {
 			
 			User user = usersDao.get(userid);
+			
 			List<EmployeeMaster> employees = new ArrayList<EmployeeMaster>();
 			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
 				employees = employeeDao.getAllEmployeesforSA();
@@ -99,6 +101,8 @@ public class EmployeeRestController {
 					return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
 				} else {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					
+					
 					return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
 				}
 				
@@ -106,15 +110,22 @@ public class EmployeeRestController {
 				employees = employeeDao.getAllEmployees(branch_id);
 				if(employees.isEmpty()) {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					
+					System.out.println("########################################################################");
+					
 					return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
 				} else {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					
+					System.out.println(employees.get(1).getUser().getUsername());
+					System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 					return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
 				}
 			}
 			
 						
-		} catch (Exception exception) {			
+		} catch (Exception exception) 
+		{			
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
 			return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}
@@ -458,7 +469,7 @@ public class EmployeeRestController {
 	@RequestMapping(value="downloadExcelEmployee",method=RequestMethod.GET)
 	public ModelAndView downloadExcelEmployee(){
 		String branch_id = userInformation.getUserBranchId();
-		List<EmployeeMaster> employeeList=employeeDao.getAllEmployees(Integer.parseInt(branch_id));
+		List<EmployeeMaster> employeeList=employeeDao.getAllEmployeesExcel(Integer.parseInt(branch_id));
 		return new ModelAndView("employeeExcelView","employeeList",employeeList);
 	}
 	
@@ -658,5 +669,7 @@ public class EmployeeRestController {
 			}
 			
 			/* ------------------------- Find record count end ------------------------------------- */
+			
+			
 			
 }

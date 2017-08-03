@@ -42,12 +42,7 @@
 	 <link href="resources/custom/css/custom.css" rel="stylesheet">
 
 </head>
-
 <body>
-
-		
-		
-		
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
             <div class="navbar-header">
@@ -57,11 +52,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/Conti/"><strong>Conti</strong></a>
+                <a class="navbar-brand" href="${homePage}"><strong>Conti</strong></a>
+<<<<<<< HEAD
+=======
 				
 		
+>>>>>>> branch 'master' of https://github.com/Pointdot2017/conti.git
             </div>
-
            <ul class="nav navbar-top-links navbar-right">
               <!--  <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
@@ -294,7 +291,7 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a  href="/Conti/"><i class="fa fa-dashboard"></i>Go Back to Dashboard</a>
+                        <a  href="${homePage}"><i class="fa fa-dashboard"></i>Go Back to Dashboard</a>
                     </li>
                     
                     <li>

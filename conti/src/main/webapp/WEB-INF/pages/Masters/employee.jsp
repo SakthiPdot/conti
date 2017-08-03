@@ -76,11 +76,11 @@
  			<div class="row">
  			<div class="col-lg-12 trowserHeader">
  				 
-                   <div class="col-lg-6 headerLeft">
+                   <div class="col-lg-10 headerLeft">
                    		 <b class="model-title">Employee {{ctrl.heading}} </b> 
                    </div>
                    
-                   <div class="col-lg-6 headerRight">
+                   <div class="col-lg-2 headerRight">
                    		<!-- <i class="fa fa-times fa-2x drawerClose pull-right iconLeft" onClick="drawerClose('.drawer')" data-ng-click = "ctrl.reset()"></i> -->
                    		<i class="fa fa-times fa-2x drawerClose pull-right iconLeft" data-ng-click = "ctrl.close('Close')"></i>
                    </div>
@@ -137,9 +137,9 @@
 												  data-trigger="focus" data-toggle="popover" 
 												  data-placement="top" data-content="Please Enter Employee category"
 												  initial-value="{{ctrl.employee.empcategory}}"
-												  onKeyPress="return CheckIsCharacter(event)"
+												  
 									              input-class="form-control form-control-small">
-              						</angucomplete-alt>
+              					</angucomplete-alt>
 			              </div> 
 
 			               <div class="col-lg-6 content-body" >    
@@ -203,7 +203,8 @@
 									              selected-object="location_name"
 									              	
 									              search-fields="location_name,pincode"
-									              title-field="location_name,pincode"
+									              description-field="pincode"
+									              title-field="location_name"
 												  match-class="highlight"
 												 
 									              minlength="3"
@@ -245,9 +246,9 @@
 			               
 			              </div> 
 			               <div class="col-lg-6 content-body">    
-			                   <span>Email <span class="required">*</span></span>
+			                   <span>Email </span>
 			                   <input type="email" class="form-control" data-ng-model="ctrl.employee.emp_email" 
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" maxlength = "30" data-content="Please Enter Employee email id" required />
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" maxlength = "30" data-content="Please Enter Employee email id" />
 			                 
 			                
 			           
@@ -257,36 +258,25 @@
 			             
 			             <div class="col-lg-12">
 			                <div class="col-lg-6 content-body">
-			                 	   <span>Date of Birth <span class="required">*</span></span> 
-								      `
-								<!--  <div class="form-group input-group">
-                                            <input type="text" class="form-control">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button"><i class="fa fa-search"></i>
-                                                </button>
+			                 	   <span>Date of Birth </span> 
+								   <div class=" input-group">
+				                  	  <input type="text" class="form-control datepicker1" data-ng-model="ctrl.employee.dob"
+			                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" />
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
                                             </span>
-                                        </div> -->
-								                 
-				                   <div class=" input-group">
-				                  
-				                  
-				                               <input type="text" class="form-control datepicker1" data-ng-model="ctrl.employee.dob"
-				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of birth" required/>
-	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
-	                                            </span>
 	                                          
 	                               </div> 
 				               
 				              </div> 
 				              
 				               <div class="col-lg-6 content-body">    
-				                   <span>Date of Joining <span class="required">*</span></span>
+				                   <span>Date of Joining </span>
 				                
 				           
 				                  <div class=" input-group">
 				                               <input type="text" class="form-control datepicker2" data-ng-model="ctrl.employee.doj" 
-				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of joining"
-				                               required>
+				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee date of joining">
+				                             
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                            </span>
 	                                            
@@ -307,13 +297,13 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left" data-ng-click="ctrl.close('Cancel')" > <i class="fa fa-ban" aria-hidden="true"></i>
+							<button type="button" class=" btn btn-warning  pull-left" data-ng-click="ctrl.close('Cancel')" > <i class="fa fa-ban" aria-hidden="true"></i>
 							Cancel</button>
 						</div>
 						
 						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
 							
-							<a id="" class="btnPadding btn btn-warning"	 data-ng-click="ctrl.deleteEmployee()"  data-ng-show="ctrl.employee.emp_id!=null" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a>
+							<a id="" class="btnPadding btn btn-danger"	 data-ng-click="ctrl.deleteEmployee()"  data-ng-show="ctrl.employee.emp_id!=null" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a>
 							<a id="" class="btnPadding btn btn-primary" data-ng-click = "ctrl.clear()" data-ng-show="!empForm.$pristine && (ctrl.employee.emp_id==null)"><i class="fa fa-eraser" aria-hidden="true"></i> Clear</a>							
 						</div>
 						
@@ -524,13 +514,13 @@
                                             <td data-ng-show = "setting_empcategory">{{emp.empcategory}}</td>
                                             <td data-ng-show = "setting_empbranch">{{emp.branchModel.branch_name}}</td>
                                             <td data-ng-show = "setting_empaddress">
-                                            	<div ng-if="emp.emp_address1!=null">{{emp.emp_address1}},</div>
-                                           		<div ng-if="emp.emp_address2!=null">{{emp.emp_address2}},</div>
-                                            	<div ng-if="emp.location.location_name!=null">{{emp.location.location_name}},</div>
-                                           		<div ng-if="emp.location.address.city!=null">{{emp.location.address.city}},</div>
-                                           		<div ng-if="emp.location.address.district!=null">{{emp.location.address.district}},</div>
-                                           		<div ng-if="emp.location.address.state!=null">{{emp.location.address.state}},</div>
-                                           		<div ng-if="emp.location.pincode!=null">{{emp.location.pincode}}.</div>
+                                            	<div data-ng-if="!emp.emp_address1==''">{{emp.emp_address1}},</div>
+                                           		<div data-ng-if="!emp.emp_address2==''">{{emp.emp_address2}},</div>
+                                            	<div data-ng-if="!emp.location.location_name!==''">{{emp.location.location_name}},</div>
+                                           		<div data-ng-if="!emp.location.address.city!==''">{{emp.location.address.city}},</div>
+                                           		<div data-ng-if="!emp.location.address.district!==''">{{emp.location.address.district}},</div>
+                                           		<div data-ng-if="!emp.location.address.state!==''">{{emp.location.address.state}},</div>
+                                           		<div data-ng-if="!emp.location.pincode!==''">{{emp.location.pincode}}.</div>
                                            	</td>
                                             <td data-ng-show = "setting_empmobileno">{{emp.emp_phoneno}}</td>
                                             <td data-ng-show = "setting_empemail">{{emp.emp_email}}</td>

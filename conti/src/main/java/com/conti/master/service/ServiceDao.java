@@ -12,4 +12,6 @@ public interface ServiceDao {
 	public List<ServiceMaster> getServiceswithLimit(int from_limit, int to_limit, String order);
 	
 	public String checkServiceName(String SearchString);
+	
+	public List<ServiceMaster> allSorting(String sorting);
 }

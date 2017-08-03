@@ -25,7 +25,6 @@ public interface CustomerDao
 	public List<CustomerModel> getCustomerswithLimit(int branch_id, int from_limit, int to_limit, String order);
 	public int find_record_countforSA();
 	public int find_record_count();
-	
 	public List<CustomerModel> searchbyMobileno(String searchkey);
 	
 }

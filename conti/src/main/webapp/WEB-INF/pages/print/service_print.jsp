@@ -71,7 +71,7 @@
 			
 			    Company master<div id="companyname">${company.company_name}</div>
 				<div id="area">${company.company_address1}, ${company.company_address2}</div>
-				<div id="street">street</div>
+				<div id="street">${company.location.location_name}</div>
 				<div id="city">${company.location.address.city}</div>
 				<div id="phoneno">${company.company_landlineno}</div>
 				<div id="title">${title}</div>

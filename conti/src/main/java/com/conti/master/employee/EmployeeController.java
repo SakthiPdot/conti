@@ -81,6 +81,7 @@ public class EmployeeController {
 			model.addObject("title", "Employee Master");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Masters/employee");
+			model.addObject("homePage",request.getContextPath());
 
 			
 		} catch (Exception exception) {
