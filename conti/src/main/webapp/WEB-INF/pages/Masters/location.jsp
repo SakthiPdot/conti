@@ -22,7 +22,7 @@
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
 	
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	
 	 
     <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
@@ -331,7 +331,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                 
                               <div class="col-lg-6 icons-button">
                                    <div class="pull-right">                                   
-									<form name="selectedLocationform" method='POST'  action="location_print">
+									<form name="selectedLocationform" method='POST'  action="location_print" class="padding-button">
                                      <a type="button" class="btn btn-primary dropdown-toggle"
                                      data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
                                     

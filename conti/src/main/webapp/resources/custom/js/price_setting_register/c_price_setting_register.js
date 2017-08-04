@@ -7,6 +7,11 @@
  * @Updated_date_time Jul 28, 2017 9:20:17 PM
  */
 
+	function editPS(id){
+				window.location.href="price_settings?id="+id;
+				valid = true;	
+			}
+			
 angular.module('contiApp').controller('priceSettingRegisterController',
 		['$scope','$timeout','priceSettingRegisterService','ConfirmDialogService',
 			function($scope,$timeout,priceSettingRegisterService,ConfirmDialogService){
@@ -27,6 +32,16 @@ angular.module('contiApp').controller('priceSettingRegisterController',
 			self.selectedPriceSetting=[];
 			self.priceSettingBackUp=[];
 			
+			
+
+			//===================================edit price setting====================================
+			$scope.editPS=function(x){
+				 editPS(x)
+			}
+			
+		/*	function editPS(id){
+				window.location.href="price_settings?id="+id;
+			}*/
 			//===================================next and previous page====================================  
 		    $scope.paginate=function(nextPrevMultiplier){
 		    	self.selectAllPriceSetting=false;	
@@ -299,11 +314,6 @@ angular.module('contiApp').controller('priceSettingRegisterController',
 		    		}
 				
 			}
-			//===================================edit price setting====================================
-			function editPS(id){
-				window.location.href="price_settings?id="+id;
-			}
-			
 			//===================================change no of page to view in register====================================
 		    self.shownoofRecord=function shownoofRecord() {    
 		    	$scope.pageSize = $scope.shownoofrec;

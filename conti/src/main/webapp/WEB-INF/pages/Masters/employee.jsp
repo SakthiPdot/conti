@@ -31,7 +31,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	
 	 <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 	 
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
@@ -518,7 +518,7 @@
                                            		<div data-ng-if="!emp.emp_address2==''">{{emp.emp_address2}},</div>
                                             	<div data-ng-if="!emp.location.location_name!==''">{{emp.location.location_name}},</div>
                                            		<div data-ng-if="!emp.location.address.city!==''">{{emp.location.address.city}},</div>
-                                           		<div data-ng-if="!emp.location.address.district!==''">{{emp.location.address.district}},</div>
+                                           		<!-- <div data-ng-if="!emp.location.address.district!==''">{{emp.location.address.district}},</div> -->
                                            		<div data-ng-if="!emp.location.address.state!==''">{{emp.location.address.state}},</div>
                                            		<div data-ng-if="!emp.location.pincode!==''">{{emp.location.pincode}}.</div>
                                            	</td>

@@ -99,7 +99,7 @@
 				<div id="street">${company.location.location_name}</div>
 				<div id="city">${company.location.address.city}</div>
 				<div id="phoneno">${company.company_landlineno}</div>
-				<div id="title">${title}</div>
+				<div id="title">${title} Master</div>
 				<div id="logo">${image}</div>
 			
 			

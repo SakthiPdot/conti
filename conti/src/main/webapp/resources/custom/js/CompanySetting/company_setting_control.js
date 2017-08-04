@@ -107,10 +107,10 @@ angular.module('contiApp')
 					$('#loccity').val(self.company.location.address.city);
 					$('#state').val(self.company.location.address.state);
 					$('#country').val(self.company.location.address.country);
-					$('#pincode').val(self.company.location.pincode);					
-					submitButtonText();
-					
-					
+					$('#pincode').val(self.company.location.pincode);	
+					self.company.financial_year_from=self.company.financial_year_from.slice(0, -2);
+					self.company.financial_year_to=self.company.financial_year_to.slice(0, -2);
+					submitButtonText();	
 				}else{
 					console.log("no content for id");
 					submitButtonText();

@@ -55,6 +55,16 @@ public class LocationDaoImpl implements LocationDao {
 				.setMaxResults(100)
 				.list();
 	}
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Location> fetchAllLocation() {
+		
+		return sessionFactory.getCurrentSession()
+				.createQuery("from Location where  obsolete ='N' "
+						+ "order by IFNULL(updated_datetime,created_datetime)  DESC ")
+				.list();
+	}
 
 	
 	@Override

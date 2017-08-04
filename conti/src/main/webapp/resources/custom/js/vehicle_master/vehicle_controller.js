@@ -328,21 +328,17 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			
 			function vehicSelect(vehicle) {
 				var index = self.selected_vehicle.indexOf(vehicle);
-				(vehicle.select)? self.selected_vehicle.push(vehicle) : self.selected_vehicle.splice(index, 1);
+				/*(vehicle.select)? self.selected_vehicle.push(vehicle) : self.selected_vehicle.splice(index, 1);*/
 				
+				if (vehicle.select) {
+					self.selected_vehicle.push(vehicle);
+				} else {
+					$scope.selectall = false ;
+					self.selected_vehicle.splice(index,1);
+				}
 			}
 			
-		    function empSelectall() {
-				self.selected_employee=[];
-				
-				for(var i = 0; i < $scope.pageSize; i++) {
-					self.Filteremployees[i].select = $scope.selectall;
-					if($scope.selectall){
-						self.selected_employee.push(self.Filteremployees[i]);
-					}
-				}	
-		    }
-		    
+		      
 			
 			function vehicSelectall(){
 				self.selected_vehicle=[];
@@ -570,7 +566,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			
 			
 			$scope.paginate = function(nextPrevMultiplier) {
-				
+				$scope.selectall = false;
 				$scope.currentPage += (nextPrevMultiplier * 1);
 				console.log($scope.currentPage);
 				self.Filtervehicles = self.vehicles.slice($scope.currentPage*$scope.pageSize);
@@ -621,7 +617,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			
 $scope.firstlastPaginate = function (page) {
 				
-				
+				$scope.selectall = false ;
 				if(page == 1) {
 					$scope.currentPage = 0;
 					$scope.previousDisabled = true;
