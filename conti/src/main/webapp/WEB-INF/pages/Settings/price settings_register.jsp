@@ -265,7 +265,7 @@ data-ng-controller="priceSettingRegisterController as psrctrl">
                 </div>
             </div>
       </div>
-             
+          </div>     
         </div>
         <!-- /. PAGE WRAPPER  -->
     </div>
