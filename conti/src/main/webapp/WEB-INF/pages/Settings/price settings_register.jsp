@@ -41,14 +41,14 @@ data-ng-controller="priceSettingRegisterController as psrctrl">
  
 	<jsp:include page="../Dashboard/settings_nav.jsp"/>
 	
-    <div id="wrapper">        	  
+    <div id="wrapper">        	  	
 		<div id="page-wrapper">	 
       
       	    		
       		  <div class="header "> 
 	             <div class="page-header header-size">
 	                 	  <b>${title}</b>	                 	  
-	                 	 <a href="price_settings"><button class="btn btn-primary drawerOpen pull-right"> Add New Price Settings</button></a> 
+	                 	 <!-- <a href="price_settings"> --><button data-ng-click="editPS(0);" class="btn btn-primary drawerOpen pull-right"> Add New Price Settings</button><!-- </a> --> 
 	             </div>  
               </div>
       		
@@ -219,9 +219,9 @@ data-ng-controller="priceSettingRegisterController as psrctrl">
                                     
                                     
                                     <tbody>
-                                     <tr
-                                        data-ng-dblclick="psrctrl.editPS(x.pricesetting_id)"
-                                        data-ng-repeat='x in psrctrl.filteredPriceSetting | limitTo:pageSize  track by x.pricesetting_id'>
+                                     <tr                                     
+                                        data-ng-repeat='x in psrctrl.filteredPriceSetting | limitTo:pageSize  track by x.pricesetting_id'
+										data-ng-dblclick="editPS(x.pricesetting_id);">
                                          <td><input type="checkbox"
                                             data-ng-model="x.select"
                                             data-ng-click="psrctrl.selectPriceSetting(x)"></td> 

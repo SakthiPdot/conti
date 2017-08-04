@@ -110,7 +110,7 @@ angular.module('contiApp')
 					$('#pincode').val(self.company.location.pincode);	
 					self.company.financial_year_from=self.company.financial_year_from.slice(0, -2);
 					self.company.financial_year_to=self.company.financial_year_to.slice(0, -2);
-					submitButtonText();
+					submitButtonText();	
 				}else{
 					console.log("no content for id");
 					submitButtonText();
