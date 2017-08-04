@@ -65,6 +65,7 @@
 		<div id="page-wrapper">	 
            
       	    <form name = "shipment" data-ng-submit = "ctrl.submit()" >		
+      	    	<input type = "hidden" data-ng-model = "ctrl.shipment.shipment_id" />
       		  <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default panelMarginBottom">                            
@@ -729,12 +730,12 @@
 											                                        	</thead>
 											                                        	
 											                                        	<tbody>
-											                                        		<tr data-ng-repeat = "hsn in product.hsns track by $index">
+											                                        		<tr data-ng-repeat = "hsn in product.product.hsns track by $index">
 											                                        			<td> <input type ="checkbox" data-ng-model = "hsn.selected" /> </td>
-											                                        			<td> {{$index + 1}} <input type="hidden" class="form-control" data-ng-model = "hsn.hsn_id" /> </td>
+											                                        			<td> {{$index + 1}} <!-- <input type="text" class="form-control" data-ng-model = "hsn.hsn_id" />  --></td>
 											                                        			<td> 
 											                                        				
-											                                        				<div angucomplete-alt id="{{'hsn_code' + $index}}" data-ng-model = "hsn.hsn_code"
+											                                        				<div angucomplete-alt id="{{'product' + $parent.$index +'_hsn_code' + $index}}" data-ng-model = "hsn.hsn_code"
 																										maxlength="5"
 																										placeholder="Ex : 336001" 
 																										pause="0"											
@@ -750,7 +751,7 @@
 											                                        				
 											                                        			</td>
 											                                        			<td> 
-											                                        				<div angucomplete-alt id="{{'hsn_description' + $index}}" data-ng-model = "hsn.hsn_description"
+											                                        				<div angucomplete-alt id="{{'product'+ $parent.$index +'_hsn_description' + $index}}" data-ng-model = "hsn.hsn_description"
 																										maxlength="5"
 																										placeholder="Ex : bags" 
 																										pause="0"											
@@ -774,7 +775,7 @@
 																				 		
 																				 	</div>
 																				 	<div class="col-lg-6">
-																					 	<a class="btn btn-primary pull-right"  data-ng-click = "ctrl.removeHSN()"><i class="fa fa-minus-circle fa-lg"></i></a>
+																					 	<a class="btn btn-primary pull-right"  data-ng-click = "ctrl.removeHSN($index)"><i class="fa fa-minus-circle fa-lg"></i></a>
 																				 		<a class="btn btn-primary pull-right" data-ng-click = "ctrl.addHSN($index)"><i class="fa fa-plus-circle fa-lg"></i></a>
 																				 	</div>
 																			 	</div>
