@@ -331,7 +331,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                 
                               <div class="col-lg-6 icons-button">
                                    <div class="pull-right">                                   
-									<form name="selectedLocationform" method='POST'  action="location_print">
+									<form name="selectedLocationform" method='POST'  action="location_print" class="padding-button">
                                      <a type="button" class="btn btn-primary dropdown-toggle"
                                      data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
                                     
