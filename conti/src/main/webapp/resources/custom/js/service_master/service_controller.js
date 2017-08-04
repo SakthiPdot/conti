@@ -301,8 +301,14 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			//============= Delete Function Begin ===========//	
 					function servSelect(service) {
 						var index = self.selected_service.indexOf(service);
-						(service.select)? self.selected_service.push(service) : self.selected_service.splice(index, 1);
-	
+						/*(service.select)? self.selected_service.push(service) : self.selected_service.splice(index, 1);*/
+						
+						if(service.select) {
+							self.selected_service.push(service);
+						} else {
+							$scope.selectall = false ;
+							self.selected_service.splice(index,1);
+						}
 					} 
 					
 					
@@ -526,7 +532,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 						
 						
 						$scope.paginate = function(nextPrevMultiplier) {
-							
+							$scope.selectall = false;
 							$scope.currentPage += (nextPrevMultiplier * 1);
 							console.log($scope.currentPage);
 							self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
@@ -576,12 +582,13 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 						
 						
 						$scope.firstlastPaginate = function (page) {
-							
+							$scope.selectall = false;
 							if(page == 1) {
 								$scope.currentPage = 0;
 								$scope.previousDisabled = true;
 								$scope.nextDisabled = false;
 								self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
+								fetchAllServices();
 							} else {
 								$scope.currentPage = ((Math.ceil(self.Filterservices.length/$scope.pageSize)) - 1 );
 								console.log($scope.currentPage);
