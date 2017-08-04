@@ -518,7 +518,7 @@
                                            		<div data-ng-if="!emp.emp_address2==''">{{emp.emp_address2}},</div>
                                             	<div data-ng-if="!emp.location.location_name!==''">{{emp.location.location_name}},</div>
                                            		<div data-ng-if="!emp.location.address.city!==''">{{emp.location.address.city}},</div>
-                                           		<div data-ng-if="!emp.location.address.district!==''">{{emp.location.address.district}},</div>
+                                           		<!-- <div data-ng-if="!emp.location.address.district!==''">{{emp.location.address.district}},</div> -->
                                            		<div data-ng-if="!emp.location.address.state!==''">{{emp.location.address.state}},</div>
                                            		<div data-ng-if="!emp.location.pincode!==''">{{emp.location.pincode}}.</div>
                                            	</td>
