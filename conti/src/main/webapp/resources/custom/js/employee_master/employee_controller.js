@@ -57,7 +57,10 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 		   $('#branch_name_value').val('');
 		   $('#location_name_value').val('');
 		   $('.locations').val('');
-
+		   $(".datepicker1").val('');
+		   $(".datepicker2").val('');
+		   
+		   fetchAllEmployees();
 	    	self.heading = "Master";
 		   /*$scope.$broadcast('angucomplete-alt:clearInput');*/
 
@@ -303,9 +306,20 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     						function (res) {
     							self.employee.branchModel = JSON.parse($("#branch_id").val());
     			 	    		self.employee.empcategory = $("#empcategory_value").val();  
-    			 	    		self.employee.location = JSON.parse($("#location_id").val());  
-    			 	    		self.employee.dob = $(".datepicker1").val();
-    			 	    		self.employee.doj = $(".datepicker2").val();
+    			 	    		self.employee.location = JSON.parse($("#location_id").val()); 
+    			 	    		
+    			 	    		if($(".datepicker1").val().length == 0) {
+    			 	    			self.employee.dob = null;
+    			 	    		} else {
+    			 	    			self.employee.dob = $(".datepicker1").val();
+    			 	    		}
+    			 	    		
+    			 	    		if($(".datepicker2").val().length == 0) {
+    			 	    			self.employee.doj = null;
+    			 	    		} else {
+    			 	    			self.employee.doj = $(".datepicker2").val();
+    			 	    		}
+    			 	    		
     			 	    		createEmployee(self.employee);  
     			 	        	reset();
     			 	        	window.setTimeout( function(){	 	        		
@@ -330,8 +344,17 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     							self.employee.branchModel = JSON.parse($("#branch_id").val());
     			 	    		self.employee.empcategory = $("#empcategory_value").val();  
     			 	    		self.employee.location = JSON.parse($("#location_id").val());  	
-    			 	    		self.employee.dob = $(".datepicker1").val();
-    			 	    		self.employee.doj = $(".datepicker2").val();
+    			 	    		if($(".datepicker1").val().length == 0) {
+    			 	    			self.employee.dob = null;
+    			 	    		} else {
+    			 	    			self.employee.dob = $(".datepicker1").val();
+    			 	    		}
+    			 	    		
+    			 	    		if($(".datepicker2").val().length == 0) {
+    			 	    			self.employee.doj = null;
+    			 	    		} else {
+    			 	    			self.employee.doj = $(".datepicker2").val();
+    			 	    		}
     			 	    		
     			 	    		editEmployee(self.employee);  
     			 	    		reset();
