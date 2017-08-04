@@ -246,7 +246,7 @@ public class LocationController {
 	//=================EXCEL DOWNLOAD=====================================
 	@RequestMapping(value="downloadExcelLocation",method=RequestMethod.GET)
 	public ModelAndView downloadExcelProduct(){
-		List<Location> locationList=locationDao.getLocation(); 
+		List<Location> locationList=locationDao.fetchAllLocation(); 
 		return new ModelAndView("locationExcelView","locationList",locationList);
 	}
 	
