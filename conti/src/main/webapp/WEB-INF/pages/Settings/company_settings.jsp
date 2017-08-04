@@ -487,6 +487,7 @@
 										<label for="text">From<span
 											style="color: red">&nbsp;*</span></label> 
 									<div class=" input-group"><input type="text"
+											name="datepicker1"
 											data-ng-required="true" data-trigger="focus"
 											data-toggle="popover" data-placement="top"
 											data-content="Please Enter Form Date"
@@ -503,6 +504,7 @@
 										style="color: red">&nbsp;*</span></label>
 								<div class=" input-group">
 										<input type="text" data-ng-required="true"
+											name="datepicker2"
 											data-trigger="focus" data-toggle="popover"
 											data-placement="top"
 											data-content="Please Enter To Date"
@@ -573,7 +575,7 @@
 					<div class="col-lg-12">
 						<div class="form-group text-center">
 	     		 		 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						<button type="submit"  class="btn btn-success "><label><i class="fa fa-floppy-o"  aria-hidden="true"></i>
+						<button type="submit" data-ng-show="!companyForm.$pristine || companyForm.datepicker2.$touched || companyForm.datepicker1.$touched " class="btn btn-success "><label><i class="fa fa-floppy-o"  aria-hidden="true"></i>
 						<span id="submitText">Save</span></label></button>
 						</div>
 					</div>
