@@ -20,11 +20,14 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			"sender_branch" : {},
 			"consignee_branch" : {},
 			"service" : {},
-			"products" : []
+			"products" : [{
+				"product" : {}
+				
+			}]
 			
 	};
 	
-	self.shipment.products.push(product);
+	
 	
 	
 	/*self.shipment.hsns = {};*/
@@ -142,7 +145,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//---------------------------------- Declare Product Detailed begin
 	
 	//------------------------------------------------------------- ADD SHIPMENT DETAILED TABLE BEGIN----------------------------------------
-	self.shipment.products  = [];
+	/*self.shipment.products  = [];*/
 	
 	//--------------------------------------------- add Product begin
 	self.disable_add_product = true;
@@ -159,12 +162,13 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			'product_quantity' : 0,
 			'product_unitprice' : 0,
 			'product_totalprice' : 0*/
+			
+			"product" : {}
 
 		});
 		
 	}
 
-	self.addProduct();
 	//--------------------------------------------- add Product end
 	
 	//---------------------------------------------- Select All begin
@@ -257,6 +261,10 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		
 		//-- assign object
 		self.shipment.products[index].product = selected.originalObject;
+		
+		self.shipment.products[index].product = {
+				"hsns" : [{"hsn" : {}}]
+		}
 		
 		//-- assign to dynamic table in product
 		self.shipment.products[index].product_id = selected.originalObject.product_id;
@@ -384,24 +392,23 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------------------------------------------- ADD HSN BEGIN
 	
 	self.addHSN = function (index, hsn) {
-		console.log(index);
-		
-		self.shipment.products[index].hsns.push({});
+		self.shipment.products[index].product.hsns.push({});
 	}
 	
 	
 	//------------------------------------------------------------- ADD HSN END
 	
 	//--------------------------------------------- remove Product beging
-	self.removeHSN = function () {
+	self.removeHSN = function (index) {
+
         var selectedHSNList=[];
         $scope.HSNselectedAll = false;
-        angular.forEach(self.shipment.hsns, function(selected){
+        angular.forEach(self.shipment.products[index].product.hsns, function(selected){
             if(!selected.selected){
             	selectedHSNList.push(selected);
             }
         }); 
-        self.shipment.hsns = selectedHSNList;
+        self.shipment.products[index].product.hsns = selectedHSNList;
         
 	}
 	//--------------------------------------------- remove Product end	
@@ -411,13 +418,18 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	$scope.hsn_code=function (selected){
 		
 		var index = this.$parent.$index;
-		
-		console.log(index);
-		
+		var products_index = this.$parent.$parent.$index;
+
 		//-- assign object
-		self.shipment.hsns[index].hsn = selected.originalObject;
-		self.shipment.hsns[index].hsn_id = selected.originalObject.hsn_id;
-		$('#hsn_description'+index+'_value').val(selected.originalObject.hsn_description);
+		
+		console.log(selected.originalObject);
+		self.shipment.products[products_index].product.hsns[index].hsn = selected.originalObject;
+		$('#product'+ products_index +'_hsn_description'+index+'_value').val(selected.originalObject.hsn_description);
+		
+		/*self.shipment.products[products_index].product.hsns[index].hsn = selected.originalObject;
+
+		$('#hsn_description'+index+'_value').val(selected.originalObject.hsn_description);*/
+		
 	}
 	//---------------------------------------------- HSN CODE SEARCH end
 	
@@ -425,11 +437,11 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	$scope.hsn_description=function (selected){
 		
 		var index = this.$parent.$index;
+		var products_index = this.$parent.$parent.$index;
 		
-		//-- assign object
-		self.shipment.hsns[index].hsn = selected.originalObject;
-		self.shipment.hsns[index].hsn_id = selected.originalObject.hsn_id;
-		$('#hsn_code'+index+'_value').val(selected.originalObject.hsn_code);
+		//-- assign selected object to HSN
+		self.shipment.products[products_index].product.hsns[index].hsn = selected.originalObject;
+		$('#product'+ products_index +'_hsn_code'+index+'_value').val(selected.originalObject.hsn_code);
 	}
 	//---------------------------------------------- HSN DESCRIPTION SEARCH end
 	
