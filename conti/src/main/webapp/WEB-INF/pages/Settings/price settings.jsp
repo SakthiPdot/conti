@@ -59,9 +59,8 @@ data-ng-controller="priceSettingController as psctrl">
 						<div class="col-lg-8 col-lg-offset-2">
 
 							<div class="panel panel-default">
-								<div class="panel-body">								
-							<fieldset data-ng-disabled="disableBSP ">
-									<div class="col-lg-6 col-xs-12">
+								<div class="panel-body">		
+									<div class="col-lg-6 col-xs-12"  data-ng-disabled="disableBSP ">
 
 
 										<input type="hidden" id="saveOrNew" value="${saveOrNew}" /> <span>From
@@ -120,8 +119,6 @@ data-ng-controller="priceSettingController as psctrl">
 
 
 									</div>
-							</fieldset>
-							
 									<div class="col-lg-6 col-xs-12 default-price">
 										<input type="checkbox"
 											data-ng-click="defaultPrice(defaultPriceCheckBox)"
