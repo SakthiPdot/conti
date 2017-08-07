@@ -38,6 +38,19 @@ public class VehicleDaoImp implements VehicleDao  {
 
 	@Override
 	@Transactional
+	public List<VehicleMaster> getVehicleSorting100(String name,String order) {
+		@SuppressWarnings({ "unchecked"})
+		List<VehicleMaster> listVehicle = (List<VehicleMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster where obsolete = 'N' "
+						 + "order by ("+name+")"+  order )
+				.setMaxResults(100)
+				.list();
+				return listVehicle;
+	}
+
+	
+	@Override
+	@Transactional
 	public void saveOrUpdate(VehicleMaster vehicle) {
 		sessionFactory.getCurrentSession().saveOrUpdate(vehicle);
 	}

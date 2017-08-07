@@ -12,11 +12,31 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 				makeinActive : makeinActive,
 				registerSearch : registerSearch,
 				pagination_byPage : pagination_byPage,
-				checkVehicleRegno : checkVehicleRegno
+				checkVehicleRegno : checkVehicleRegno,
+				sortBy:sortBy
 		  };
 		
 		return factory;
 		
+		//=============================sort by name====================================
+		function sortBy(name,status){	
+			console.log(name,status);
+			var deferred=$q.defer();
+			$http({
+				method:'POST',
+				url:"sortByVehicle/"+name,
+				data:status,
+				headers:getCsrfHeader()
+			}).then(
+					function(response){
+						deferred.resolve(response.data);
+					},function(errResponse){
+						console.log("status change failed");
+						deferred.reject(errResponse);
+					}
+			);
+			return deferred.promise;
+		}
 		
 		//============= Check Vehicle RegNo Begin ===============//
 			

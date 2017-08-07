@@ -346,7 +346,7 @@ angular.module('contiApp').controller('locationController'
 				self.openDrawer();
 			}
 			
-			$scope.$broadcast('angucomplete-alt:clearInput');
+			//$scope.$broadcast('angucomplete-alt:clearInput');
 			//===================================open Drawer====================================
 			function openDrawer(){
 				

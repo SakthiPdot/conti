@@ -372,12 +372,36 @@
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.vehicSelectall()" data-ng-model = "selectall"/></th>
                                             <!-- <th>S.No</th> -->
-                                            <th data-ng-show = "setting_vehicleregno">Vehicle Reg No</th>
-                                            <th data-ng-show = "setting_vehiclecode">Vehicle Code</th>
-                                            <th data-ng-show = "setting_branchname">Branch Name</th>
-                                            <th data-ng-show = "setting_vehiclemodelno">Vehicle Model No</th>
-                                            <th data-ng-show = "setting_vehicletype">Vehicle Type</th>
-                                            <th data-ng-show = "setting_vehiclestatus">Status</th>
+                                            <th data-ng-show = "setting_vehicleregno"
+                                             data-ng-click="vehicleRegNo=!vehicleRegNo;sortTable('vehicleRegNo',vehicleRegNo);">Vehicle Reg No<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':vehicleRegNo,'fa fa-caret-down':!vehicleRegNo}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_vehiclecode"
+                                             data-ng-click="vehicleCode=!vehicleCode;sortTable('vehicleCode',vehicleCode);">Vehicle Code<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':vehicleCode,'fa fa-caret-down':!vehicleCode}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_branchname"
+                                            data-ng-click="branchName=!branchName;sortTable('branchName',branchName);">Branch Name<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':branchName,'fa fa-caret-down':!branchName}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_vehiclemodelno"
+                                            data-ng-click="vehicleModelNo=!vehicleModelNo;sortTable('vehicleModelNo',vehicleModelNo);">Vehicle Model No<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':vehicleModelNo,'fa fa-caret-down':!vehicleModelNo}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_vehicletype"
+                                            data-ng-click="vehicleType=!vehicleType;sortTable('vehicleType',vehicleType);">Vehicle Type<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':vehicleType,'fa fa-caret-down':!vehicleType}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_vehiclestatus"
+                                            data-ng-click="vehicleStatus=!vehicleStatus;sortTable('vehicleStatus',vehicleStatus);">Status<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':vehicleStatus,'fa fa-caret-down':!vehicleStatus}"
+														aria-hidden="true"></i></th>
                                         </tr>
                                     </thead>
                                     <tbody>

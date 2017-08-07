@@ -36,6 +36,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
 import com.conti.master.employee.EmployeeMaster;
+import com.conti.master.location.Location;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -57,7 +58,48 @@ public class VehicleRestController {
 	SessionListener sessionListener = new SessionListener();
 	UserInformation userInformation;
 	
-	
+	//======================================sort by==========================================
+		@RequestMapping(value="sortByVehicle/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+		public  ResponseEntity<List<VehicleMaster>>  sortByLocation(@RequestBody String status,@PathVariable("name") String name,HttpServletRequest request){
+			String sortBy="";
+			
+			switch(name.trim()){
+			case "vehicleRegNo":
+				 sortBy="vehicle_regno";
+				break;
+			case "vehicleCode":
+				 sortBy="vehicle_code";
+				break;
+			case "branchName":
+				 sortBy="branchModel.branch_name";
+				break;
+			case "vehicleModelNo":
+				 sortBy="vehicle_modelno";
+				break;
+			case "vehicleType":
+				 sortBy="vehicle_type";
+				break;
+			case "vehicleStatus":
+				 sortBy="active";
+				break;
+			default:
+				break;
+			}
+			List<VehicleMaster> vehicles ;
+			try {
+				vehicles = vehicleDao.getVehicleSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+				if(vehicles.isEmpty()) {
+					return new ResponseEntity<List<VehicleMaster>> (HttpStatus.NO_CONTENT);
+				} else {
+					return new ResponseEntity<List<VehicleMaster>> (vehicles, HttpStatus.OK);	
+				}			
+			} catch (Exception exception) {			
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+				return new ResponseEntity<List<VehicleMaster>> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+		}
+		
 	@RequestMapping(value = "checkVehicleRegNo",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> checkVehicleRegNo(@RequestBody String regno,HttpServletRequest request) {
 		String status = vehicleDao.checkVehicleRegno(regno.trim());

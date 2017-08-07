@@ -42,7 +42,34 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		fetchAllVehicles();
 		fetchAllBranches();
 		
+		function resetSorting(){
+			$scope.vehicleRegNo =false;
+			$scope.vehicleCode =false;
+			$scope.branchName =false;
+			$scope.vehicleModelNo =false;
+			$scope.vehicleType =false;
+			$scope.vehicleStatus=false;
+		}
 		
+		// ===================================sort table====================================
+		$scope.sortTable=function(x,status){
+			console.log("filer by---"+x,"status---"+status);
+			if(!$scope.disableSorting){
+				$scope.lastSorted = x;	
+				resetSorting();
+				$scope[x]=status;
+				VehicleService.sortBy(x,status?"ASC":"DESC")
+				.then(
+						function (response) {
+							self.vehicles = response;
+							self.Filtervehicles=response;					
+						}, 
+						function (errResponse) {
+							console.log('Error while fetching vehicles');
+						}
+					);
+			}
+		}
 	//============== Check Vehicle RegNo Function Begin ==============//
 		
 		self.checkVehicleRegno = function checkVehicleRegno(regno) {
@@ -592,6 +619,9 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 					      );
 				}
 				
+				
+				$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+				
 				if(self.Filtervehicles.length < $scope.pageSize) {
 					$scope.nextDisabled = true;
 				}
@@ -645,7 +675,7 @@ $scope.firstlastPaginate = function (page) {
 					}
 				}
 				
-				
+				$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
 			
 			}
 			
