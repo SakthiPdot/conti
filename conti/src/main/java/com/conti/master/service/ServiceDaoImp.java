@@ -81,7 +81,17 @@ public class ServiceDaoImp implements ServiceDao {
 					.setFirstResult(from_limit).setMaxResults(to_limit).list();
 			return listServ;
 		}
-
+		@Override
+		@Transactional
+		public List<ServiceMaster> getServiceSorting100(String name,String order) {
+			
+			@SuppressWarnings("unchecked")
+			List<ServiceMaster> listServ = (List<ServiceMaster>) sessionFactory.getCurrentSession()
+					.createQuery("from ServiceMaster where obsolete = 'N' " 
+							 + "order by ("+name+")"+  order )
+							.setMaxResults(100).list();
+			return listServ;
+		}
 
 		@Override
 		@Transactional

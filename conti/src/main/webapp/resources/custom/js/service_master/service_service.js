@@ -15,36 +15,32 @@ contiApp.factory('ServiceService',['$http','$q', function ($http,$q){
 				registerSearch : registerSearch,
 				pagination_byPage : pagination_byPage,
 				checkServiceName: checkServiceName,
-				allSorting : allSorting
+				sortBy:sortBy
+				
 				
 		};
 		
 		return factory;
 		
-			function allSorting (sorting) {
-				var deferred = $q.defer();
-			
-				$http({
-					method : 'POST',
-					url : 'allsorting',
-					data : sorting,
-					headers : getCsrfHeader()
-				})
-					
-				.then (
-							function (response) {
-								
-								deferred.resolve(response.data);
-								
-							},
-							function(errResponse) {
-								console.log(errResponse);
-								deferred.reject(errResponse);
-							}
-				      );
-				return deferred.promise;
-			}
-		
+		//=============================sort by name====================================
+		function sortBy(name,status){	
+			console.log(name,status);
+			var deferred=$q.defer();
+			$http({
+				method:'POST',
+				url:"sortByService/"+name,
+				data:status,
+				headers:getCsrfHeader()
+			}).then(
+					function(response){
+						deferred.resolve(response.data);
+					},function(errResponse){
+						console.log("status change failed");
+						deferred.reject(errResponse);
+					}
+			);
+			return deferred.promise;
+		}
 		//============ Check Service Name Begin===========//
 				
 			function checkServiceName(name) {

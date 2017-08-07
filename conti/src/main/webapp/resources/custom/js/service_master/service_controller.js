@@ -38,7 +38,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	self.confirm_msg = self.confirm_title + '' + self.service.service_name + 'service?'; 
 	self.confirm_btnclass = 'btn-success';
 	
-	self.sortname = sortname;
+	
 	
 	$scope.shownoofrec = 10;
 
@@ -52,8 +52,31 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 		self.service = {};	
 	}
 	
+	function resetSorting(){
+		$scope.serviceStatus = false;
+		$scope.serviceCode = false;
+		$scope.serviceStatus = false;
+	}
 	
-
+	// ===================================sort table (Monu)====================================
+	$scope.sortTable=function(x,status){
+		console.log("filer by---"+x,"status---"+status);
+		if(!$scope.disableSorting){
+			$scope.lastSorted = x;	
+			resetSorting();
+			$scope[x]=status;
+			ServiceService.sortBy(x,status?"ASC":"DESC")
+			.then(
+					function (response) {
+						self.services = response;
+						self.Filterservices = response;
+					},					
+					function(errResponse){
+						console.log("error sorting table"+errResponse);
+					}
+				  );
+		}
+	}
 	
 	//============ Check Service Name Function Begin =================//
 		
@@ -86,22 +109,6 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	
 	
 	
-	//===================================//
-	
-	function sortname (sorting) {		
-		console.log(sorting);		
-		ServiceService.allSorting(sorting)
-			.then(
-					function (res) {
-						console.log(res);
-						self.Filterservices = res;						
-					},
-					function (errResponse) {
-						console.log('Error while fetching services')
-					}
-			     ) ;	
-	}
-	//=================================//
 	
 	
 	//============= Close Function Begins ======================//
@@ -558,6 +565,8 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 								      );
 							}
 							
+							$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+							
 							if(self.Filterservices.length < $scope.pageSize) {
 								$scope.nextDisabled = true;
 							}
@@ -611,7 +620,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 								}
 							}
 							
-							
+							$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
 						}
 						
 			//============= Pagination Function End =============//

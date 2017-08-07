@@ -282,10 +282,22 @@
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.servSelectall()" data-ng-model = "selectall"></th>
                                          <!--    <th>S.No</th> -->
-                                            <th data-ng-show = "setting_servicename"><a href="" class="underline" data-ng-click="ctrl.sortname('service_name')">Service Name</a></th>
+                                            <th data-ng-show = "setting_servicename"
+                                             data-ng-click="serviceName=!serviceName;sortTable('serviceName',serviceName);">Service Name<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':serviceName,'fa fa-caret-down':!serviceName}"
+														aria-hidden="true"></i></th>
                                               
-                                            <th data-ng-show = "setting_servicecode"><a href="" class="underline" data-ng-click="ctrl.sortname('service_code')">Service Code</a></th>
-                                            <th data-ng-show = "setting_servicestatus">Status</th>
+                                            <th data-ng-show = "setting_servicecode"
+                                             data-ng-click="serviceCode=!serviceCode;sortTable('serviceCode',serviceCode);">Service Code<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':serviceCode,'fa fa-caret-down':!serviceCode}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_servicestatus"
+                                            data-ng-click="serviceStatus=!serviceStatus;sortTable('serviceStatus',serviceStatus);">Status<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':serviceStatus,'fa fa-caret-down':!serviceStatus}"
+														aria-hidden="true"></i></th>
                                         </tr>
                                     </thead>
                                     <tbody>

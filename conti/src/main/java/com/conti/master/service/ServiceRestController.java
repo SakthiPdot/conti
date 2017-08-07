@@ -34,6 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
+import com.conti.master.location.Location;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -54,7 +55,40 @@ public class ServiceRestController {
 	SessionListener sessionListener = new SessionListener();
 	UserInformation userInformation;
 	
+	//======================================sort by==========================================
+	@RequestMapping(value="sortByService/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<List<ServiceMaster>>  sortByService(@RequestBody String status,@PathVariable("name") String name,HttpServletRequest request){
+		String sortBy="";
+		
+		switch(name.trim()){
+		case "serviceName":
+			 sortBy="service_name";
+			break;
+		case "serviceCode":
+			 sortBy="service_code";
+			break;
+		case "serviceStatus":
+			 sortBy="active";
+			break;
+		default:
+			break;
+		}
+
+		List<ServiceMaster> serviceList=new ArrayList<>();
+		try {
+			serviceList=serviceDao.getServiceSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+			if(serviceList.isEmpty()){
+				return new ResponseEntity<List<ServiceMaster>>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<List<ServiceMaster>>(serviceList,HttpStatus.OK);
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<List<ServiceMaster>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	
+	}
 	
 	@RequestMapping(value = "checkServiceName", method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> checkServiceName(@RequestBody String name,HttpServletRequest request) {
