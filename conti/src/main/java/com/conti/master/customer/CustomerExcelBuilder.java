@@ -84,7 +84,7 @@ public class CustomerExcelBuilder extends AbstractExcelView {
 			row.createCell(3).setCellValue(customerModel.getCustomer_addressline1()+", "+customerModel.getCustomer_addressline2()
 									+", "+customerModel.getLocation().getLocation_name()
 									+", "+customerModel.getLocation().getAddress().getCity()
-									+", "+customerModel.getLocation().getAddress().getDistrict()
+									/*+", "+customerModel.getLocation().getAddress().getDistrict()*/
 									+", "+customerModel.getLocation().getAddress().getState());
 			row.createCell(4).setCellValue(customerModel.getCustomer_type());
 			row.createCell(5).setCellValue(customerModel.getCustomer_email());

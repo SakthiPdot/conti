@@ -93,7 +93,7 @@ public class EmployeeExcelBuilder extends AbstractExcelView {
 			row.createCell(6).setCellValue(employee.getEmp_address1()+", "+employee.getEmp_address2()
 									+", "+employee.getLocation().getLocation_name()
 									+", "+employee.getLocation().getAddress().getCity()
-									+", "+employee.getLocation().getAddress().getDistrict()
+									/*+", "+employee.getLocation().getAddress().getDistrict()*/
 									+", "+employee.getLocation().getAddress().getState());
 			row.createCell(7).setCellValue(employee.getDoj());
 			row.createCell(8).setCellValue(employee.getEmp_phoneno());

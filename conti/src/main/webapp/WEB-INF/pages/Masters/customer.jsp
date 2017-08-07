@@ -458,7 +458,7 @@
                                            		<div data-ng-if="!cust.customer_addressline2==''">{{cust.customer_addressline2}},</div>
                                            		<div data-ng-if="cust.location.location_name!=''">{{cust.location.location_name}},</div>
                                            		<div data-ng-if="cust.location.address.city!=''">{{cust.location.address.city}},</div>
-                                           		<div data-ng-if="cust.location.address.district!=''">{{cust.location.address.district}},</div>
+                                           		<!-- <div data-ng-if="cust.location.address.district!=''">{{cust.location.address.district}},</div> -->
                                            		<div data-ng-if="cust.location.address.state!=''">{{cust.location.address.state}},</div>
                                            		<div data-ng-if="cust.location.pincode!=''">{{cust.location.pincode}}.</div>
                                             </td>
