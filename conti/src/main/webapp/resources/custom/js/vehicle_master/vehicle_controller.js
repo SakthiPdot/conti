@@ -191,7 +191,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			 
 			function submit() {
 				
-				if( $("#branch_id").val() == "" || $("#branch_id").val() == null){
+				if( $("#branch_id").val() == "" || $("#branch_id").val() == null || $("#branch_name_value").val() == "" || $("#branch_name_value").val() == null ){
 						$("#branch_name_value").focus();
 				
 				} else if ($("#vehicle_type_value").val() == "" || $("#vehicle_type_value").val() == null) {
