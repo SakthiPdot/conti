@@ -2,6 +2,7 @@ package com.conti.master.employee;
 
 import java.util.List;
 
+import com.conti.master.location.Location;
 import com.conti.setting.usercontrol.User;
 
 
@@ -28,7 +29,8 @@ public interface EmployeeDao {
 	public List<EmployeeMaster> searchbyeyEmployeeforSA(String searchkey);
 	public List<EmployeeMaster> getEmployeeswithLimit(int branch_id, int from_limit, int to_limit, String order);
 	public List<EmployeeMaster> getEmployeeswithLimitforSA(int branch_id, int from_limit, int to_limit, String order);
-	
+
+	public List<EmployeeMaster> getEmployeeSorting100(String name,String order);
 	public List<EmployeeMaster> searchbyeyEmpCategory(String searchkey);
 	public List<EmployeeMaster> searchbyeyEmpCategoryforSA(String searchkey);
 	public int find_record_countforSA();

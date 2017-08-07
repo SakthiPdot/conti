@@ -82,6 +82,76 @@ public class EmployeeRestController {
 	SessionListener sessionListener = new SessionListener();
 	UserInformation userInformation;
 	
+	/*	empName  employee_controller.js:121:3
+	empCode  employee_controller.js:121:3
+	empCategory  employee_controller.js:121:3
+	empBN  employee_controller.js:121:3
+	empAdress1  employee_controller.js:121:3
+	empMobileNo  employee_controller.js:121:3
+	empEmail  employee_controller.js:121:3
+	empDOB  employee_controller.js:121:3
+	empDOJ  employee_controller.js:121:3
+	empStatus*/
+	//======================================sort by==========================================
+	@RequestMapping(value="sortByEmployee/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<List<EmployeeMaster>>  sortByEmployee(@RequestBody String status,@PathVariable("name") String name,HttpServletRequest request){
+	
+		String sortBy="";
+		
+		switch(name.trim()){
+		case "empName":
+			 sortBy="emp_name";
+			break;	
+		case "empCode":
+			 sortBy="emp_code";
+			break;
+		case "empCategory":
+			 sortBy="empcategory";
+			break;
+		case "empBN":
+			 sortBy="branchModel.branch_name";
+			break;
+		case "empAdress1":
+			 sortBy="emp_address1";
+			break;
+		case "empMobileNo":
+			 sortBy="emp_phoneno";
+			break;
+		case "empEmail":
+			 sortBy="emp_email";
+			break;
+		case "empDOB":
+			 sortBy="dob";
+			break;
+		case "empDOJ":
+			 sortBy="doj";
+			break;
+		case "empStatus":
+			 sortBy="active";
+			break;
+		default:
+			break;
+		}
+		
+
+		List<EmployeeMaster> employees=new ArrayList<>();
+		
+		try {
+			employees = employeeDao.getEmployeeSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");;
+			if(employees.isEmpty()) {
+				return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
+			} else {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
+			}
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<List<EmployeeMaster>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	
+	}
+	
 	@RequestMapping( value = "/employees/", method = RequestMethod.GET)
 	public ResponseEntity<List<EmployeeMaster>> fetchAllEmployees(HttpServletRequest request) {
 		userInformation = new UserInformation(request);

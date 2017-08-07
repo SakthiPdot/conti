@@ -116,6 +116,38 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	}
 	//-------------------------- ----------------------------------------------------------//
 
+
+	function resetSorting(){
+	$scope.empName = false;
+	$scope.empCode  = false;
+	$scope.empCategory  = false;
+	$scope.empBN  = false;
+	$scope.empAdress1  = false;
+	$scope.empMobileNo  = false;
+	$scope.empEmail  = false;
+	$scope.empDOB  = false;
+	$scope.empDOJ  = false;
+	$scope.empStatus= false;
+	}
+	// ===================================sort table====================================
+	$scope.sortTable=function(x,status){
+		console.log("filer by---"+x,"status---"+status);
+		if(!$scope.disableSorting){
+			$scope.lastSorted = x;	
+			resetSorting();
+			$scope[x]=status;
+			EmployeeService.sortBy(x,status?"ASC":"DESC")
+			.then(
+					function (response) {
+						self.employees = response;
+						self.Filteremployees=response;
+					}, 	
+					function (errResponse) {
+						console.log('Error while fetching employees');
+					}
+				);
+		}
+	}
 	//-------------------------- Fetch All Branch begin ---------------------//	
 	
 	function fetchAllBranches() {
@@ -644,6 +676,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     			);
     	} 
     	
+    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+    	
     	if(self.Filteremployees.length < $scope.pageSize) {
     		$scope.nextDisabled = true;
     	}
@@ -698,9 +732,9 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
         			);
     		}
     		
-    		
-    		
     	}
+    	
+    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
     	
     	
     	

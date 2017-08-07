@@ -214,6 +214,20 @@ public class EmployeeDaoImp implements EmployeeDao {
 		return listEmployee;
 	}
 	
+	
+	@Override
+	@Transactional
+	public List<EmployeeMaster> getEmployeeSorting100(String name,String order) {
+		@SuppressWarnings("unchecked")
+		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from EmployeeMaster where obsolete ='N'  "
+								+ "order by ("+name+")"+  order )
+				.setMaxResults(100)
+				.list();
+		return listEmployee;
+	}
+	
+	
 	@Override
 	@Transactional
 	public List<EmployeeMaster> getEmployeeswithLimitforSA(int branch_id, int from_limit, int to_limit, String order) {

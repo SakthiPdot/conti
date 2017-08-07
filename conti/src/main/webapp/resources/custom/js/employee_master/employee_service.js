@@ -21,11 +21,31 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
 			registerSearch : registerSearch,
 			pagination_byPage : pagination_byPage,
 			fetchEmployeebyBranchid : fetchEmployeebyBranchid,
-			findrecord_count : findrecord_count
+			findrecord_count : findrecord_count,
+			sortBy:sortBy
 			/*print : print*/
 	};
 	
 	return factory;
+	//=============================sort by name====================================
+	function sortBy(name,status){	
+		console.log(name,status);
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:"sortByEmployee/"+name,
+			data:status,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("sorting failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
 	//-------------------------- Fetch All Employees begin ---------------------//	
 	function fetchAllEmployees() {
 		var deferred = $q.defer();

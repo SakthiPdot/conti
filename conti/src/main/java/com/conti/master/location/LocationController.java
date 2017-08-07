@@ -147,13 +147,13 @@ public class LocationController {
 		
 		try{
 			locationList=locationDao.getLocationSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
-			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			if(locationList.isEmpty()){
 				return new ResponseEntity<List<Location>>(HttpStatus.NO_CONTENT);
 			}
 			return new ResponseEntity<List<Location>>(locationList,HttpStatus.OK);
 		}catch(Exception e){
-			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS,e);
 			e.printStackTrace();
 			return new ResponseEntity<List<Location>>(HttpStatus.INTERNAL_SERVER_ERROR);
 			

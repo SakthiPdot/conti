@@ -487,16 +487,56 @@
                                         <tr>
                                         	<th><input type="checkbox" data-ng-click="ctrl.empSelectall()" data-ng-model = "selectall" /></th>
                                             <!-- <th>S.No</th> -->
-                                            <th data-ng-show = "setting_empname">Employee Name</th>
-                                            <th data-ng-show = "setting_empcode">Employee Code</th>
-                                            <th data-ng-show = "setting_empcategory">Employee Category</th>
-                                            <th data-ng-show = "setting_empbranch">Branch</th>
-                                            <th data-ng-show = "setting_empaddress">Address</th>
-                                            <th data-ng-show = "setting_empmobileno">Mobile</th>
-                                            <th data-ng-show = "setting_empemail">Email</th>
-                                            <th data-ng-show = "setting_empdob">Date of Birth</th>
-                                            <th data-ng-show = "setting_empdoj">Date of Joining</th>
-                                            <th data-ng-show = "setting_empstatus">Status</th>
+                                            <th data-ng-show = "setting_empname"
+                                            data-ng-click="empName=!empName;sortTable('empName',empName);">Employee Name<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':empName,'fa fa-caret-down':!empName}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_empcode"
+                                            data-ng-click="empCode=!empCode;sortTable('empCode',empCode);">Employee Code<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':empCode,'fa fa-caret-down':!empCode}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_empcategory"
+                                            data-ng-click="empCategory=!empCategory;sortTable('empCategory',empCategory);">Employee Category<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':empCategory,'fa fa-caret-down':!empCategory}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_empbranch"
+                                            data-ng-click="empBN=!empBN;sortTable('empBN',empBN);">Branch<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':empBN,'fa fa-caret-down':!empBN}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_empaddress"
+                                            data-ng-click="empAdress1=!empAdress1;sortTable('empAdress1',empAdress1);">Address<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':empAdress1,'fa fa-caret-down':!empAdress1}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_empmobileno"
+                                            data-ng-click="empMobileNo=!empMobileNo;sortTable('empMobileNo',empMobileNo);">Mobile<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':empMobileNo,'fa fa-caret-down':!empMobileNo}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_empemail"
+                                            data-ng-click="empEmail=!empEmail;sortTable('empEmail',empEmail);">Email<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':empEmail,'fa fa-caret-down':!empEmail}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_empdob"
+                                            data-ng-click="empDOB=!empDOB;sortTable('empDOB',empDOB);">Date of Birth<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':empDOB,'fa fa-caret-down':!empDOB}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_empdoj"
+                                            data-ng-click="empDOJ=!empDOJ;sortTable('empDOJ',empDOJ);">Date of Joining<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':empDOJ,'fa fa-caret-down':!empDOJ}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_empstatus"
+                                            data-ng-click="empStatus=!empStatus;sortTable('empStatus',empStatus);">Status<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':empStatus,'fa fa-caret-down':!empStatus}"
+														aria-hidden="true"></i></th>
                                         </tr>
                                     </thead>
                                     <tbody>
