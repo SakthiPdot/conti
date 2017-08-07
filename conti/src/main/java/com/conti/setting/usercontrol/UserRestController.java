@@ -51,6 +51,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.conti.config.SessionListener;
 import com.conti.master.employee.EmployeeDao;
 import com.conti.master.employee.EmployeeMaster;
+import com.conti.master.location.Location;
 import com.conti.others.ConstantValues;
 import com.conti.others.DateTimeCalculation;
 import com.conti.others.Loggerconf;
@@ -97,6 +98,53 @@ public class UserRestController {
 	ConstantValues constantVal = new ConstantValues();
 	SessionListener sessionListener = new SessionListener();
 	UserInformation userInformation;
+	
+
+	
+	//======================================sort by==========================================
+	@RequestMapping(value="sortByUser/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<List<User>>  sortByLocation(@RequestBody String status,@PathVariable("name") String name,HttpServletRequest request){
+	
+		String sortBy="";
+		
+		switch(name.trim()){
+		case "empName":
+			 sortBy="employeeMaster.emp_name";
+			break;
+		case "usrName":
+			 sortBy="username";
+			break;
+		case "usrRole":
+			 sortBy="role.role_Name";
+			break;
+		case "branchName":
+			 sortBy="branchModel.branch_name";
+			break;
+		case "usrStatus":
+			 sortBy="active";
+			break;
+		default:
+			break;
+		}
+		
+		List<User> userList=new ArrayList<>();
+		try {
+			userList = usersDao.getLocationSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+			if(userList.isEmpty()) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				return new ResponseEntity<List<User>> (HttpStatus.NO_CONTENT);
+			} else {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				return new ResponseEntity<List<User>> (userList, HttpStatus.OK);	
+			}
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<List<User>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
+		
+	}
+	
 	
 	/* ------------------------- User page begin-------------------------------- */
 	@RequestMapping(value =  "user", method = RequestMethod.GET)

@@ -60,17 +60,14 @@
 		<i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}
 		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
 	</div>
-<!-- ------------------------- Success message end ------------------ -----  -->
+<!--------------------------- Success message end ------------------ -----  -->
 
-<!-- ------------------------- Failure message begin ------------------ -----  -->	
+<!--------------------------- Failure message begin ------------------ -----  -->	
 	<div class="failure hideme">
 		<i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}
-		
 	</div>
-<!-- ------------------------- Failure message end ------------------ -----  -->
+<!-- ------------------------- Failure message end ------------------------->
  
-
- 		
  		<div class="drawer hideme">
  		<form data-ng-submit = "ctrl.submit()" name = "userForm" class="formBottom form-horizontal">
  			
@@ -377,12 +374,32 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.userSelectall()" data-ng-model = "selectall"></th>
-                                            <th data-ng-show = "setting_employeename">Employee Name</th>
+                                            <th data-ng-show = "setting_employeename"
+                                            data-ng-click="empName=!empName;sortTable('empName',empName);">Employee Name<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':empName,'fa fa-caret-down':!empName}"
+														aria-hidden="true"></i></th>
                                             <th data-ng-show = "">Employee Code</th>
-                                            <th data-ng-show = "setting_username">User Name</th>
-                                            <th data-ng-show = "setting_rolename">Role</th>
-                                            <th data-ng-show = "setting_branchname">Branch</th>
-                                            <th data-ng-show = "setting_userstatus">Status</th>
+                                            <th data-ng-show = "setting_username"
+                                            data-ng-click="usrName=!usrName;sortTable('usrName',usrName);">User Name<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':usrName,'fa fa-caret-down':!usrName}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_rolename"
+                                            data-ng-click="usrRole=!usrRole;sortTable('usrRole',usrRole);">Role<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':usrRole,'fa fa-caret-down':!usrRole}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_branchname"
+                                            data-ng-click="branchName=!branchName;sortTable('branchName',branchName);">Branch<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':branchName,'fa fa-caret-down':!branchName}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_userstatus"
+                                            data-ng-click="usrStatus=!usrStatus;sortTable('usrStatus',usrStatus);">Status<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':usrStatus,'fa fa-caret-down':!usrStatus}"
+														aria-hidden="true"></i></th>
                                                                                 
                                         </tr>
                                     </thead>

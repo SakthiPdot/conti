@@ -152,6 +152,19 @@ class UsersDaoImpl implements UsersDao {
 		
 		@Override
 		@Transactional
+		public List<User> getLocationSorting100(String name,String order) {
+			@SuppressWarnings("unchecked")
+			List<User> listUser = (List<User>) sessionFactory.getCurrentSession()
+					.createQuery("from User where obsolete ='N' "
+							+ "order by ("+name+")"+  order )
+					.setMaxResults(100)
+					.list();
+			
+			return listUser;
+		}
+		
+		@Override
+		@Transactional
 		public List<User> getUserwithLimitbySA(int branch_id, int from_limit, int to_limit, String order) {
 			@SuppressWarnings("unchecked")
 			List<User> listUser = (List<User>) sessionFactory.getCurrentSession()

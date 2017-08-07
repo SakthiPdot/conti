@@ -51,7 +51,32 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
     fetchAllBranches();
 
     /*var currentUserRole = $('#currentUserRole').val();*/
+    function resetSorting(){		
+    	$scope.empName  = false;
+    	$scope.usrName  = false;
+    	$scope.usrRole  = false;
+    	$scope.branchName  = false;
+    	$scope.usrStatus  = false;
+    }
+ // ===================================sort table====================================
+	$scope.sortTable=function(x,status){
+		console.log("filer by---"+x,"status---"+status);
+		if(!$scope.disableSorting){
+			$scope.lastSorted = x;	
+			resetSorting();
+			$scope[x]=status;
+			UserService.sortBy(x,status?"ASC":"DESC")
+			.then(
+					function(response){
+						self.users = response;
+			            self.FilterUsers = response;
+					},function(errRespone){
+						console.log("error while fetching Location in search"+errResponse);
+					});
 
+          
+		}
+	}
 	function reset () {
 		   self.user = {};
 		   $('#employee_name_value').val('');
