@@ -260,10 +260,6 @@ public class ProductController {
 			e.printStackTrace();
 			return new ResponseEntity<List<Product>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
-		
-		
-		
-	
 	}
 		
 	

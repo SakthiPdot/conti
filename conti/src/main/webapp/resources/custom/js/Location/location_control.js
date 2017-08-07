@@ -69,6 +69,35 @@ angular.module('contiApp').controller('locationController'
 				    }
 				};
 			
+			function resetSorting(){
+				$scope.locationName = false;
+				$scope.locationCode = false;
+				$scope.abbreviation = false;
+				$scope.locationCity = false;
+				$scope.locationState = false;
+				$scope.locationCountry = false;
+				$scope.locationPincode = false;
+				$scope.locationActive = false;
+			}
+			
+			// ===================================sort table====================================
+			$scope.sortTable=function(x,status){
+				console.log("filer by---"+x,"status---"+status);
+				if(!$scope.disableSorting){
+					$scope.lastSorted = x;	
+					resetSorting();
+					$scope[x]=status;
+					LocationService.sortBy(x,status?"ASC":"DESC")
+					.then(
+							function(response){
+								self.Locations=response;
+								self.FilteredLocations=response;
+							},function(errRespone){
+								console.log("error while fetching Location in search"+errResponse);
+							});
+				}
+				
+			}
 		
 			//===================================SEARCH REGISTER====================================
 			function registerSearch(searchString){
@@ -504,6 +533,8 @@ angular.module('contiApp').controller('locationController'
 		    		$scope.nextDisabled = true;
 		    	}*/
 		    	
+		    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+		    	
 		    	if($scope.currentPage == 0) {
 		    		$scope.previouseDisabled = true;
 		    	}
@@ -543,6 +574,8 @@ angular.module('contiApp').controller('locationController'
 						
 		    		}
 		    	}
+				
+				$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
 			}
 				
 			//=============================RESET LOCATION====================================

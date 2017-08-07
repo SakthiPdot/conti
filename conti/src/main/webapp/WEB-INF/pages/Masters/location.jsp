@@ -398,7 +398,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 																		data-ng-class="{'fa-check': setting_active == true, 'fa-times': setting_active == false}"></i>
 																		<input type="checkbox"
 																		data-ng-init="setting_active = true"
-																		data-ng-model="setting_active" /> Active
+																		data-ng-model="setting_active" /> Active/Inactive
 																	</label>
 																</div>   
 										</div>
@@ -440,14 +440,46 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
                                         	data-ng-click="locctrl.selectAll()"></th>
                                            <!--  <th data-ng-show="">S.No</th> -->
                                            <!-- <td >{{location_id}}</td> -->
-                                            <th data-ng-show="setting_locName">Location Name</th>
-                                            <th data-ng-show="setting_locCode">Location Code</th>
-                                            <th data-ng-show="setting_abbr">Abbreviation</th>
-                                            <th data-ng-show="setting_city">City</th>
-                                            <th data-ng-show="setting_state">State</th>
-                                            <th data-ng-show="setting_country">Country</th>
-                                            <th data-ng-show="setting_pincode">Pincode</th>   
-                                            <th data-ng-show="setting_active">Active</th>                                          
+                                            <th data-ng-show="setting_locName"
+                                            data-ng-click="locationName=!locationName;sortTable('locationName',locationName);">Location Name<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':locationName,'fa fa-caret-down':!locationName}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_locCode"
+                                             data-ng-click="locationCode=!locationCode;sortTable('locationCode',locationCode);">Location Code<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':locationCode,'fa fa-caret-down':!productName}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_abbr"
+                                             data-ng-click="abbreviation=!abbreviation;sortTable('abbreviation',abbreviation);">Abbreviation<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':abbreviation,'fa fa-caret-down':!abbreviation}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_city"
+                                             data-ng-click="locationCity=!locationCity;sortTable('locationCity',locationCity);">City<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':locationCity,'fa fa-caret-down':!locationCity}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_state"
+                                             data-ng-click="locationState=!locationState;sortTable('locationState',locationState);">State<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':locationState,'fa fa-caret-down':!locationState}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_country"
+                                             data-ng-click="locationCountry=!locationCountry;sortTable('locationCountry',locationCountry);">Country<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':locationCountry,'fa fa-caret-down':!locationCountry}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_pincode"
+                                             data-ng-click="locationPincode=!locationPincode;sortTable('locationPincode',locationPincode);">Pincode<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':locationPincode,'fa fa-caret-down':!locationPincode}"
+														aria-hidden="true"></i></th>   
+                                            <th data-ng-show="setting_active"
+                                             data-ng-click="locationActive=!locationActive;sortTable('locationActive',locationActive);">Active<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':locationActive,'fa fa-caret-down':!locationActive}"
+														aria-hidden="true"></i></th>                                          
                                         </tr>
                                     </thead>
                                     

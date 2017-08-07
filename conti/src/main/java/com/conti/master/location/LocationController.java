@@ -109,7 +109,58 @@ public class LocationController {
 		return model;
 
 	}
+	//======================================sort by==========================================
+	@RequestMapping(value="sortByLocation/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<List<Location>>  sortByLocation(@RequestBody String status,@PathVariable("name") String name,HttpServletRequest request){
 	
+		String sortBy="";
+			
+		switch(name.trim()){
+		case "locationName":
+			 sortBy="location_name";
+			break;
+		case "locationCode":
+			 sortBy="location_code";
+			break;
+		case "abbreviation":
+			 sortBy="abbreviation";
+			break;
+		case "locationCity":
+			 sortBy="address.city";
+			break;
+		case "locationState":
+			 sortBy="address.state";
+			break;
+		case "locationCountry":
+			 sortBy="address.country";
+			break;			
+		case "locationPincode":
+			 sortBy="pincode";
+			break;			
+		case "locationActive":
+			 sortBy="active";
+			break;			
+		default:
+			break;
+		}
+		List<Location> locationList=new ArrayList<>();
+		
+		try{
+			locationList=locationDao.getLocationSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+			if(locationList.isEmpty()){
+				return new ResponseEntity<List<Location>>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<List<Location>>(locationList,HttpStatus.OK);
+		}catch(Exception e){
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<List<Location>>(HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+		
+		
+	}
 	//======================================get Record Count==========================================
 	@RequestMapping(value = "/locationRecordCount/", method = RequestMethod.GET)
 	public ResponseEntity<String> locationRecordCount(HttpServletRequest request) {
@@ -121,6 +172,8 @@ public class LocationController {
 		}
 	}
 
+	
+	
 	//=================PRINT=====================================
 	@RequestMapping(value="location_print",method=RequestMethod.POST)
 	public ModelAndView location_print(HttpServletRequest request,

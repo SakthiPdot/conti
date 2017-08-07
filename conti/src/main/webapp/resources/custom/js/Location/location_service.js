@@ -19,10 +19,31 @@ angular.module('contiApp').factory('LocationService',['$http','$q',function($htt
 			checkLocationName:checkLocationName,
 			searchLocation:searchLocation,
 			paginateFirstOrLast:paginateFirstOrLast,
-			findrecord_count:findrecord_count
+			findrecord_count:findrecord_count,
+			sortBy:sortBy
 		}
 	
 	return factory;
+	
+	//=============================sort by name====================================
+	function sortBy(name,status){	
+		console.log(name,status);
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:"sortByLocation/"+name,
+			data:status,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("status change failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
 	//=============================find record count====================================
 	   function findrecord_count() {
 	    	
