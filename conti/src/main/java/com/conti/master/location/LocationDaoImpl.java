@@ -77,6 +77,7 @@ public class LocationDaoImpl implements LocationDao {
 				.createQuery("from Location where  obsolete ='N' "
 						+ "order by IFNULL(updated_datetime,created_datetime)  DESC ")
 				.list();
+		
 	}
 
 	
