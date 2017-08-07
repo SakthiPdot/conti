@@ -13,10 +13,32 @@ angular.module('contiApp').factory('priceSettingRegisterService',['$http','$q',f
 			changeActive:changeActive,
 			searchPriceSetting:searchPriceSetting,
 			paginateFirstOrLast:paginateFirstOrLast,
-			findrecord_count:findrecord_count
+			findrecord_count:findrecord_count,
+			sortBy:sortBy
 	};
 		
 	return factory;	
+	
+	
+	//=============================sort by name====================================
+	function sortBy(name,status){	
+		console.log(name,status);
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:"sortByPS/"+name,
+			data:status,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("fetch by sorting failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
 	
 	//=============================find record count====================================
 	   function findrecord_count() {

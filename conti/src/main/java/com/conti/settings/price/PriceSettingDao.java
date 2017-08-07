@@ -2,6 +2,8 @@ package com.conti.settings.price;
 
 import java.util.List;
 
+import com.conti.master.location.Location;
+
 /**
  * @Project_Name conti
  * @Package_Name com.conti.settings.price  com.conti.settings.price
@@ -20,6 +22,7 @@ public interface  PriceSettingDao {
 	public List<PriceSetting> getPriceSettingWithLimit(int from ,int to ,String order);
 	public List<PriceSetting> searchByPriceSetting(String searchString);
 	public int priceSettingCount();
+	public List<PriceSetting> gePriceSettingSorting100(String name,String order);
 	
 	//---------------------------------------- FETCH PRICE BY from branch & product & service for add shipment by sankar
 	public PriceSetting fetchprice(int from_branch, int product, int service);

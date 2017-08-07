@@ -205,13 +205,41 @@ data-ng-controller="priceSettingRegisterController as psrctrl">
                                             <th><input type="checkbox"
                                             data-ng-model="psrctrl.selectAllPriceSetting"
                                             data-ng-click="psrctrl.selectAll()"></th>
-                                            <th data-ng-show="setting_FromBranch">From Branch</th>
-                                            <th data-ng-show="setting_Service">Service</th>
-                                            <th data-ng-show="setting_Product">Product</th>
-                                            <th data-ng-show="setting_ProductType">Product Type</th>
-                                            <th data-ng-show="setting_DefaultPrice">Default Price</th>
-                                            <th data-ng-show="setting_DefaultHandlingCharges">Default Handling Charges</th> 
-                                            <th data-ng-show="setting_Active">Active</th>    
+                                            <th data-ng-show="setting_FromBranch"
+                                            data-ng-click="FromBranch=!FromBranch;sortTable('FromBranch',FromBranch);">From Branch<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':FromBranch,'fa fa-caret-down':!FromBranch}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_Service"
+                                            data-ng-click="serviceName=!serviceName;sortTable('serviceName',serviceName);">Service<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':serviceName,'fa fa-caret-down':!serviceName}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_Product"
+                                            data-ng-click="productName=!productName;sortTable('productName',productName);">Product<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':productName,'fa fa-caret-down':!productName}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_ProductType"
+                                            data-ng-click="productType=!productType;sortTable('productType',productType);">Product Type<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':productType,'fa fa-caret-down':!productType}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_DefaultPrice"
+                                            data-ng-click="defaultPrice=!defaultPrice;sortTable('defaultPrice',defaultPrice);">Default Price<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':defaultPrice,'fa fa-caret-down':!defaultPrice}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_DefaultHandlingCharges"
+                                            data-ng-click="defaultHandlingCharges=!defaultHandlingCharges;sortTable('defaultHandlingCharges',defaultHandlingCharges);">Default Handling Charges<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':defaultHandlingCharges,'fa fa-caret-down':!defaultHandlingCharges}"
+														aria-hidden="true"></i></th> 
+                                            <th data-ng-show="setting_Active"
+                                            data-ng-click="psActive=!psActive;sortTable('psActive',psActive);">Active<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':psActive,'fa fa-caret-down':!psActive}"
+														aria-hidden="true"></i></th>    
                                         </tr>
                                     </thead>
                                     

@@ -60,6 +60,19 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 				.setMaxResults(100)
 				.list();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<PriceSetting> gePriceSettingSorting100(String name,String order) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from PriceSetting where  obsolete ='N' "
+						  + "order by ("+name+")"+  order )
+				.setMaxResults(100)
+				.list();
+	}
+	
+	
 	
 	@SuppressWarnings("unchecked")
 	@Override

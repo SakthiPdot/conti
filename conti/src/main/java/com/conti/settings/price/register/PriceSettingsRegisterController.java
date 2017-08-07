@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
+import com.conti.master.location.Location;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -77,7 +78,52 @@ public class PriceSettingsRegisterController {
 	SessionListener sessionListener = new SessionListener();
 
 	
-
+	//======================================sort by==========================================
+	@RequestMapping(value="sortByPS/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<List<PriceSetting>>  sortByPS(@RequestBody String status,@PathVariable("name") String name,HttpServletRequest request){
+		String sortBy="";		
+		
+		switch(name.trim()){
+		case "FromBranch":
+		    sortBy="branch.branch_name";
+			break;
+		case "serviceName":
+		    sortBy="service.service_name";
+			break;	
+		case "productName":
+		    sortBy="product.product_name";
+			break;	
+		case "productType":
+		    sortBy="product.product_Type";
+			break;	
+		case "defaultPrice":
+		    sortBy="default_price";
+			break;	
+		case "defaultHandlingCharges":
+		    sortBy="defaulthandling_charge";
+			break;	
+		case "psActive":
+		    sortBy="active";
+			break;	
+		default:
+			break;
+		}
+		
+		try{
+			List<PriceSetting> priceSettingList=new ArrayList<>();
+			priceSettingList=psDao.gePriceSettingSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+			if(priceSettingList.isEmpty()){
+				return new ResponseEntity<List<PriceSetting>>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<List<PriceSetting>>(priceSettingList,HttpStatus.OK);				
+		}catch(Exception e){
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<List<PriceSetting>>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+	
+		
+	}
 	//======================================get Record Count==========================================
 	@RequestMapping(value = "/priceSettingRecordCount/", method = RequestMethod.GET)
 	public ResponseEntity<String> priceSettingRecordCount(HttpServletRequest request) {

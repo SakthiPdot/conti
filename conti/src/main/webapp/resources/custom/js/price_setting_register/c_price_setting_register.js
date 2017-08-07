@@ -33,7 +33,33 @@ angular.module('contiApp').controller('priceSettingRegisterController',
 			self.priceSettingBackUp=[];
 			
 			
-
+			
+			function resetSorting(){
+				$scope.FromBranch  = false;
+				$scope.serviceName  = false;
+				$scope.productName  = false;
+				$scope.productType  = false;
+				$scope.defaultPrice  = false;
+				$scope.defaultHandlingCharges  = false;
+				$scope.psActive= false;
+			}
+			// ===================================sort table====================================
+			$scope.sortTable=function(x,status){
+				console.log("filer by---"+x,"status---"+status);
+				if(!$scope.disableSorting){
+					$scope.lastSorted = x;	
+					resetSorting();
+					$scope[x]=status;
+					priceSettingRegisterService.sortBy(x,status?"ASC":"DESC")
+					.then(
+							function(response){
+								self.filteredPriceSetting=response;
+								self.priceSettingBackUp=response;
+							},function(errRespone){
+								console.log("error while fetching price Setting in search"+errResponse);
+							});
+				}
+			}
 			//===================================edit price setting====================================
 			$scope.editPS=function(x){
 				 editPS(x)
@@ -66,6 +92,8 @@ angular.module('contiApp').controller('priceSettingRegisterController',
 					}
 				);
 		    	}
+		    	
+		    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
 		    	
 		    	/*if(self.filteredPriceSetting.length < $scope.pageSize) {
 		    		$scope.nextDisabled = true;
@@ -114,6 +142,7 @@ angular.module('contiApp').controller('priceSettingRegisterController',
 						
 			    	}
 		    	}
+				$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
 			}
 
 			//===================================SEARCH REGISTER====================================
