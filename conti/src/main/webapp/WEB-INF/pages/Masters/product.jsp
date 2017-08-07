@@ -474,16 +474,64 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 														data-ng-model="proctrl.selectAllProduct"
 														data-ng-click="proctrl.selectAll()"></th>
 													<!-- <th>S.No</th> -->
-													<th data-ng-show="setting_proname">Product Name</th>
-													<th data-ng-show="setting_procodename">Product Code</th>
-													<th data-ng-show="setting_protype">Product Type</th>
-													<th data-ng-show="setting_maxweight">Maximum Weight
-														(Kg)</th>
-													<th data-ng-show="setting_Dimension">Dimension Setup</th>
-													<th data-ng-show="setting_height">Maximum Height(Cm)</th>
-													<th data-ng-show="setting_Width">Maximum Width(Cm)</th>
-													<th data-ng-show="setting_Length">Maximum Length(Cm)</th>
-													<th data-ng-show="setting_status">Active/InActive</th>
+													<th data-ng-show="setting_proname"
+														data-ng-click="productName=!productName;sortTable('productName',productName);">Product Name <i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':productName,'fa fa-caret-down':!productName}"
+														aria-hidden="true"></i></th>
+													<th data-ng-show="setting_procodename"
+														data-ng-click="productCode=!productCode;sortTable('productCode',productCode);">Product Code<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':productCode,'fa fa-caret-down':!productCode}"
+														aria-hidden="true"></i></th>
+													<th data-ng-show="setting_protype"
+														data-ng-click="productType=!productType;sortTable('productType',productType);">Product Type<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':productType,'fa fa-caret-down':!productType}"
+														aria-hidden="true"></i></th>
+													<th data-ng-show="setting_maxweight"
+														data-ng-click="maxWeigt=!maxWeigt;sortTable('maxWeigt',maxWeigt);">Maximum Weight(Kg)<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':maxWeigt ,'fa fa-caret-down':!maxWeigt}"
+														aria-hidden="true"></i></th>
+													<th data-ng-show="setting_Dimension"
+														data-ng-click="dimenSetUp=!dimenSetUp;sortTable('dimenSetUp',dimenSetUp);">Dimension Setup<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':dimenSetUp ,'fa fa-caret-down':!dimenSetUp}"
+														aria-hidden="true"></i></th>
+													<th data-ng-show="setting_height"
+														data-ng-click="maxHeigt=!maxHeigt;sortTable('maxHeigt',maxHeigt);">Maximum Height(Cm)<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':maxHeigt ,'fa fa-caret-down':!maxHeigt}"
+														aria-hidden="true"></i></th>
+													<th data-ng-show="setting_Width"
+														data-ng-click="maxWidth=!maxWidth;sortTable('maxWidth',maxWidth);">Maximum Width(Cm)<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':maxWidth ,'fa fa-caret-down':!maxWidth}"
+														aria-hidden="true"></i></th>
+													<th data-ng-show="setting_Length"
+														data-ng-click="maxlength=!maxlength;sortTable('maxlength',maxlength);">Maximum Length(Cm)<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':maxlength ,'fa fa-caret-down':!maxlength}"
+														aria-hidden="true"></i></th>
+													<th data-ng-show="setting_status"
+														data-ng-click="settingStatus=!settingStatus;sortTable('settingStatus',settingStatus);">Active/InActive<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':settingStatus  ,'fa fa-caret-down':!settingStatus }"
+														aria-hidden="true"></i></th>
+													
+											<!-- 		<th data-ng-click="productName=false;
+																	 productCode=false;
+																	productType=false;																	
+																	settingStatus=false;
+																	maxWeigt=false;
+																	dimenSetUp=false;
+																	maxHeigt=false;
+																	maxWidth=false;
+																	maxlength=false;
+																	settingStatus=false;
+													">reset all</th> -->
+													
 												</tr>
 											</thead>
 											<tbody>
@@ -527,8 +575,6 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 										</div>
 										
 								</div>
-										
-										
 									</div>
 									
 								</div>

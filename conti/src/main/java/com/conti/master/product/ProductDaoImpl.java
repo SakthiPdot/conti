@@ -97,6 +97,18 @@ public class ProductDaoImpl implements ProductDAO {
 				.list();
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Product> getProductBySorting100(String name,String order) {		
+		
+		return sessionFactory.getCurrentSession()
+				.createQuery("from Product where  obsolete ='N' "
+						+ "order by ("+name+")"+  order ).setMaxResults(100)
+				.list();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
@@ -106,8 +118,6 @@ public class ProductDaoImpl implements ProductDAO {
 				.createQuery("from Product where  obsolete ='N' "
 						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
 				.setFirstResult(from).setMaxResults(to).list();
-		
-	
 	}
 
 
@@ -127,7 +137,6 @@ public class ProductDaoImpl implements ProductDAO {
 						+ "OR max_length LIKE '%"+searchString+ "%'"
 						+ "OR active LIKE '%"+searchString+ "%'"					
 						).list();
-
 	}
 
 

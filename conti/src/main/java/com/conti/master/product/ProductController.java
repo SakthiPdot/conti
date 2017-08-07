@@ -111,9 +111,7 @@ public class ProductController {
 		}else{
 			return	new ResponseEntity<Void>(HttpStatus.OK);
 		}			
-	}	
-	
-	
+	}
 	//======================================product Inactive==========================================
 	@RequestMapping(value="productStaus/{status}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> productInActive(@RequestBody int[] idArray,@PathVariable("status") String status,HttpServletRequest request){	
@@ -208,6 +206,66 @@ public class ProductController {
 		}
 		return new ResponseEntity<List<Product>>(productList,HttpStatus.OK);
 	}
+	
+	
+	//======================================sort by==========================================
+	@RequestMapping(value="sortBy/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<List<Product>>  sortBy(@RequestBody String status,@PathVariable("name") String name,HttpServletRequest request){
+		
+		String sortBy="";
+		
+		switch(name.trim()){
+		case "productName":
+			 sortBy="product_name";
+			break;
+		case "productCode":
+			 sortBy="product_code";
+			break;
+		case "productType":
+			 sortBy="product_Type";
+			break;
+		case "maxWeigt":
+			 sortBy="max_weight";
+			break;
+		case "dimenSetUp":
+			 sortBy="dimension_flag";
+			break;
+		case "maxHeigt":
+			 sortBy="max_height";
+			break;			
+		case "maxWidth":
+			 sortBy="max_width";
+			break;			
+		case "maxlength":
+			 sortBy="max_length";
+			break;			
+		case "settingStatus":
+			 sortBy="active";
+			break;			
+		default:
+			break;
+		}
+		
+		List<Product> productList=new ArrayList<>();
+		
+		try {
+			productList=productDao.getProductBySorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+			if(productList.isEmpty()){
+				return new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<List<Product>>(productList,HttpStatus.OK);
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<List<Product>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
+		
+		
+		
+	
+	}
+		
 	
 	//======================================get the object==========================================
 	@RequestMapping(value="ProductModel",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
@@ -320,7 +378,7 @@ public class ProductController {
 
 	}
 	
-	
+	//======================================print product==========================================
 	@RequestMapping(value="product_print",method=RequestMethod.POST)
 	public ModelAndView productPrint(HttpServletRequest request,
 			@RequestParam("SelectedProduct") String selectedProduct) throws IOException{

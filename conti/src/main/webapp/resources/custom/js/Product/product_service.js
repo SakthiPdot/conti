@@ -18,7 +18,8 @@ angular.module('contiApp').factory('ProductService',['$http','$q',function($http
 			searchProduct:searchProduct,
 			paginateFirstOrLast:paginateFirstOrLast,
 			checkProductName:checkProductName,
-			findrecord_count:findrecord_count
+			findrecord_count:findrecord_count,
+			sortBy:sortBy
 	};
 	
 	return factory;
@@ -106,6 +107,28 @@ angular.module('contiApp').factory('ProductService',['$http','$q',function($http
     	);
     	return deferred.promise;
     }
+    
+	
+
+	//=============================sort by name====================================
+	function sortBy(name,status){	
+		console.log(name,status);
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:"sortBy/"+name,
+			data:status,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("status change failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
 	//=============================change Active====================================
 	function changeActive(id,status){	
 		console.log(id,status);
@@ -172,6 +195,7 @@ angular.module('contiApp').factory('ProductService',['$http','$q',function($http
 				);
 		return deferred.promise;
 	}
+
 
 	//=============================UPDATE Product====================================
 	function updateProduct(product,id){
