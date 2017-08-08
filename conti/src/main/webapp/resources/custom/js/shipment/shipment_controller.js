@@ -49,6 +49,34 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		}
 	}
 	//-------------------------------- Change Pament mode function end
+	
+	//------------------------------- Reset begin
+	
+	function reset() {
+		self.shipment = {
+				
+				"sender_customer" : {},
+				"consignee_customer" : {},
+				"sender_branch" : {},
+				"consignee_branch" : {},
+				"service" : {},
+				"shipmentDetail" : [{
+					"product" : {},
+					
+				}]
+				
+		};
+		
+		$('#sender_search_mbl_value').val();
+		$('#consignee_search_mbl_value').val();
+		$('#sender_location_name_value').val();
+		$('#consignee_branch_name_value').val();
+		$('#consignee_location_name_value').val();
+		$('#service_name_value').val();
+		$('#product_name').val();
+	}
+	
+	//------------------------------- Reset end
 
 //---------------------------------------------------- SENDER & CONSIGNEE PROCESS BEGIN ------------------------------------------------------------------------	
 	//------------------------ Sender customer search by mobileno begin
@@ -277,7 +305,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 				"hsns" : [{"hsn" : {}}]
 		}*/
 		
-		self.shipment.shipmentDetail[index].shipmnetHsnDetail = [{"hsn" : null}];
+		self.shipment.shipmentDetail[index].shipmentHsnDetail = [{"hsn" : null, "product" : null}];
 		
 		//-- assign to dynamic table in product
 		/*self.shipment.shipmentDetail[index].product_id = selected.originalObject.product_id;*/
@@ -404,7 +432,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------------------------------------------- ADD HSN BEGIN
 	
 	self.addHSN = function (index, hsn) {
-		self.shipment.shipmentDetail[index].shipmnetHsnDetail.push({});
+		self.shipment.shipmentDetail[index].shipmentHsnDetail.push({});
 	}
 	
 	
@@ -415,12 +443,12 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 
         var selectedHSNList=[];
         $scope.HSNselectedAll = false;
-        angular.forEach(self.shipment.shipmentDetail[index].shipmnetHsnDetail, function(selected){
+        angular.forEach(self.shipment.shipmentDetail[index].shipmentHsnDetail, function(selected){
             if(!selected.selected){
             	selectedHSNList.push(selected);
             }
         }); 
-        self.shipment.shipmentDetail[index].shipmnetHsnDetail = selectedHSNList;
+        self.shipment.shipmentDetail[index].shipmentHsnDetail = selectedHSNList;
         
 	}
 	//--------------------------------------------- remove Product end	
@@ -434,10 +462,13 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 
 		//-- assign object
 		
-		self.shipment.shipmentDetail[products_index].shipmnetHsnDetail[index].hsn = selected.originalObject;
+		self.shipment.shipmentDetail[products_index].shipmentHsnDetail[index].hsn = selected.originalObject;
 		$('#product'+ products_index +'_hsn_description'+index+'_value').val(selected.originalObject.hsn_description);
 		
-		self.shipment.shipmentDetail[products_index].shipmnetHsnDetail[index].product = self.shipment.shipmentDetail[index].product;
+		self.shipment.shipmentDetail[products_index].shipmentHsnDetail[index].product = self.shipment.shipmentDetail[products_index].product;
+		
+		console.log(self.shipment.shipmentDetail[products_index].shipmentHsnDetail);
+		
 		
 		/*self.shipment.shipmentDetail[products_index].product.hsns[index].hsn = selected.originalObject;
 
@@ -453,8 +484,10 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		var products_index = this.$parent.$parent.$index;
 		
 		//-- assign selected object to HSN
-		self.shipment.shipmentDetail[products_index].shipmnetHsnDetail[index].hsn = selected.originalObject;
+		self.shipment.shipmentDetail[products_index].shipmentHsnDetail[index].hsn = selected.originalObject;
 		$('#product'+ products_index +'_hsn_code'+index+'_value').val(selected.originalObject.hsn_code);
+		
+		self.shipment.shipmentDetail[products_index].shipmentHsnDetail[index].product = self.shipment.shipmentDetail[products_index].product;
 	}
 	//---------------------------------------------- HSN DESCRIPTION SEARCH end
 	
@@ -465,66 +498,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------- Create new shipment begin --------------------------------------------//
     function createShipment(shipment){
     	
-    	/*shipment = {
-    			"shipment_id" : null,
-    			"lr_number" : null,
-    			"numberof_parcel" : null,
-    			"updated_by" : null,
-    			"created_by" : null,
-    			"reference_invoice_no" : null,
-    			"shipment_value" : null,
-    			"chargeable_weight" : null,
-    			"delivery_charge" : null,
-    			"handling_charge" : null,
-    			"tax" : null,
-    			"tax_amount" : null,
-    			"total_charges" : null,
-    			"shipment_date" : null,
-    			"pay_mode" : null,
-    			"bill_to" : null,
-    			"status" : null,
-    			"description" : null,
-    			"created_datetime" : null,
-    			"updated_datetime" : null,
-    			"cgst" : null,
-    			"igst" : null,
-    			"sgst" : null,
-    			"discount_amount" : null,
-    			"discount_percentage" : null,
-    			
-    			"sender_customer" : null,
-    			"consignee_customer" : null,
-    			"sender_branch" : null,
-    			"consignee_branch" : null,
-    			"service" : null,
-    			"shipmentDetail" : null [{
-    				
-    				"shipmentdetail_id" : null,
-    				"quantity" : null,
-    				"length" : null,
-    				"width" : null,
-    				"height" : null,
-    				"weight" : null,
-    				"unit_price" : null,
-    				"total_price" : null,
-    				"shipment" : null,
-    				"hsn" : null,
-    				"product" : null,
-    				
-    				"shipmnetHsnDetail" : [{
-    					"shipmenthsndetail_id" : null,
-        				"shipment" : null,
-    					"product" : null,
-    					"hsn" : null,
-    					"shipmentDetail" : null
-    					
-    				}],
-    				
-    				
-    			}]
-    			
-    	};*/
-    	console.log(shipment);
     	ShipmentService.createShipment(shipment)
             .then(
             		function () {
@@ -534,7 +507,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
            
             function(errResponse){
             			
-            			console.log(errResponse);
     			self.message = "Error while creating shipment..! ";
     			successAnimate('.failure');                  
             }
@@ -545,10 +517,10 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	self.submit = function () {
 		self.shipment.lr_number = $('#lr_number').val();
 		delete self.shipment.forpricesetting;
-		
-		/*delete self.shipment.shipmentDetail[0].product;*/
-		delete self.shipment.shipmentDetail[0].shipmnetHsnDetail;
-		delete self.shipment.shipmentDetail[0].product_type;
+		for(var i=0; i<self.shipment.shipmentDetail.length; i++ ) {
+			delete self.shipment.shipmentDetail[i].product_type;			
+		}
+
 		if( self.shipment.shipment_id == null ) {
 			
 			self.confirm_title = 'Save';
@@ -561,6 +533,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 									 	    		
 							createShipment(self.shipment);  
 			 	        	
+							reset();
 			 	        	
 						}
 					);

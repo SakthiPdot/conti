@@ -14,6 +14,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -36,6 +37,7 @@ public class CustomerModel
 	
 	@Id
 	@Column(name = "CUSTOMER_ID")
+	@GeneratedValue
 	public int getCustomer_id() {
 		return customer_id;
 	}

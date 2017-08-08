@@ -50,7 +50,7 @@ public class ShipmentModel {
 	//------------------Sender customer
 	private CustomerModel sender_customer;
 	@JoinColumn(name = "sendercustomer_id", referencedColumnName = "customer_id")
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	public CustomerModel getSender_customer() {
 		return sender_customer;
 	}
@@ -61,7 +61,7 @@ public class ShipmentModel {
 	//------------------Consignee customer	
 	private CustomerModel consignee_customer;
 	@JoinColumn(name = "consigneecustomer_id", referencedColumnName = "customer_id")
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	public CustomerModel getConsignee_customer() {
 		return consignee_customer;
 	}

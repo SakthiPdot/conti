@@ -10,18 +10,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonManagedReference;
 
-import com.conti.hsn.Hsn;
 import com.conti.master.product.Product;
 
 /**
@@ -41,7 +37,7 @@ public class ShipmentDetailModel {
 	public ShipmentDetailModel (){}
 	int shipmentdetail_id, quantity;
 	float length, width, height, weight, unit_price, total_price;
-	
+		
 	//------------shipmentmodel 
 		private ShipmentModel shipment;
 		@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
@@ -55,38 +51,26 @@ public class ShipmentDetailModel {
 		}
 		
 	//----------------shipmenthsn detail
-		/*private List<ShipmentHsnDetailModel> shipmnetHsnDetail = new ArrayList<>() ;
-		@JoinColumn(name = "shipmentdetail_id", referencedColumnName = "shipmentdetail_id")
-		@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-		@JsonManagedReference
-		public List<ShipmentHsnDetailModel> getShipmnetHsnDetail() {
-			return shipmnetHsnDetail;
-		}
-		public void setShipmnetHsnDetail(List<ShipmentHsnDetailModel> shipmnetHsnDetail) {
-			this.shipmnetHsnDetail = shipmnetHsnDetail;
-		}*/
-		
-		
-	//------ Hsn
-	private Hsn hsn;
+	private List<ShipmentHsnDetailModel> shipmentHsnDetail = new ArrayList<>() ;
 	
-	@JoinColumn(name = "hsn_id", referencedColumnName = "hsn_id")
-	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-	@JsonBackReference
-	public Hsn getHsn() {
-		return hsn;
+	@JoinColumn(name = "shipmentdetail_id", referencedColumnName = "shipmentdetail_id")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@JsonManagedReference
+	public List<ShipmentHsnDetailModel> getShipmentHsnDetail() {
+		return shipmentHsnDetail;
 	}
-	public void setHsn(Hsn hsn) {
-		this.hsn = hsn;
+	public void setShipmentHsnDetail(List<ShipmentHsnDetailModel> shipmentHsnDetail) {
+		this.shipmentHsnDetail = shipmentHsnDetail;
 	}
-		
+	
+	
 		
 		
 	//------------ Product
 	private Product product;	
 	
 	@JoinColumn(name="product_id", referencedColumnName = "product_id")
-	@OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
 	public Product getProduct() {
 		return product;
 	}

@@ -2,6 +2,7 @@ package com.conti.hsn;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -21,8 +22,10 @@ public class Hsn {
 	private String hsn_code, hsn_description, 
 				hsn_shortdescription, created_datetime, updated_datetime,
 				obsolete, active;
+		
 	
 	@Id
+	@GeneratedValue
 	@Column(name = "hsn_id")
 	public int getHsn_id() {
 		return hsn_id;

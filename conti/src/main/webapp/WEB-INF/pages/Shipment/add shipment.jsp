@@ -57,7 +57,22 @@
 
 
 <body style="overflow-x:hidden;" data-ng-app = "contiApp" data-ng-controller = "ShipmentController as ctrl">
- 
+  <!-- ------------------------- Overlay for message begin ------------------ -----  -->
+	<div class="overlay hideme"></div>
+<!-- ------------------------- Overlay for message end ------------------ -----  -->	
+<!-- ------------------------- Success message begin ------------------ -----  -->
+	<div class="success hideme">
+		<i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
+	</div>
+<!-- ------------------------- Success message end ------------------ -----  -->
+<!-- ------------------------- Failure message begin ------------------ -----  -->	
+	<div class="failure hideme">
+		<i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<!-- <span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span> -->
+	</div>
+<!-- ------------------------- Failure message end ------------------ -----  -->
+
 	 <jsp:include page="../Dashboard/nav.jsp"/>
 	
 	
@@ -682,11 +697,11 @@
                                         <tr data-ng-repeat = "product in ctrl.shipment.shipmentDetail track by $index">
                                             <td><input type="checkbox" class="form-control" data-ng-model = "product.selected"  ></td>
                                             <td>{{$index + 1}}
-	                                            <input type = "text" class="form-control" data-ng-model = "product.shipmentdetail_id" data-ng-value = "product_name.originalObject.product_id" /> 
+	                                            <input type = "hidden" class="form-control" data-ng-model = "product.shipmentdetail_id" data-ng-value = "product_name.originalObject.product_id" /> 
                                             </td>
                                             <td> 
                                             	
-                                            	<div angucomplete-alt id="product.product_name" data-ng-model = "product.product_name"
+                                            	<div angucomplete-alt id="product_name" data-ng-model = "product.product_name"
 															maxlength="5"
 															placeholder="Ex : Box (Large)" 
 															pause="0"											
@@ -731,9 +746,9 @@
 											                                        	</thead>
 											                                        	
 											                                        	<tbody>
-											                                        		<tr data-ng-repeat = "hsn in product.shipmnetHsnDetail track by $index">
+											                                        		<tr data-ng-repeat = "hsn in product.shipmentHsnDetail track by $index">
 											                                        			<td> <input type ="checkbox" data-ng-model = "hsn.selected" /> </td>
-											                                        			<td> {{$index + 1}}  <input type="text" class="form-control" data-ng-model = "hsn.shipmenthsndetail_id" />  </td>
+											                                        			<td> {{$index + 1}}  <input type="hidden" class="form-control" data-ng-model = "hsn.shipmenthsndetail_id" />  </td>
 											                                        			<td> 
 											                                        				
 											                                        				<div angucomplete-alt id="{{'product' + $parent.$index +'_hsn_code' + $index}}" data-ng-model = "hsn.hsn_code"

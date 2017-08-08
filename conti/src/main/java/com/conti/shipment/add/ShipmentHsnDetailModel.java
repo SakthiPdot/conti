@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
@@ -46,7 +47,7 @@ public class ShipmentHsnDetailModel {
 	}
 	
 	//------------shipmentmodel 
-	private ShipmentModel shipment;
+	/*private ShipmentModel shipment;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "shipment_id", referencedColumnName = "shipment_id")
 	@JsonBackReference
@@ -55,12 +56,12 @@ public class ShipmentHsnDetailModel {
 	}
 	public void setShipment(ShipmentModel shipment) {
 		this.shipment = shipment;
-	}
+	}*/
 	
 	//-------------shipmentdetailmodel
 	
 	private ShipmentDetailModel shipmentDetail;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name = "shipmentdetail_id", referencedColumnName = "shipmentdetail_id")
 	@JsonBackReference
 	public ShipmentDetailModel getShipmentDetail() {
@@ -70,31 +71,28 @@ public class ShipmentHsnDetailModel {
 	public void setShipmentDetail(ShipmentDetailModel shipmentDetail) {
 		this.shipmentDetail = shipmentDetail;
 	}
-	//------ Hsn
-			private List<Hsn> hsn = new ArrayList<>();
+
 			
-			/*@JoinColumn(name = "hsn_id", referencedColumnName = "hsn_id")*/
-			/*@OneToMany(cascade=CascadeType.MERGE)*/
-			@OneToMany(mappedBy = "hsn_id", fetch = FetchType.LAZY)
-			@JsonManagedReference
-			public List<Hsn> getHsn() {
-				return hsn;
-			}
-			public void setHsn(List<Hsn> hsn) {
-				this.hsn = hsn;
-			}
-			
-		
+		private Hsn hsn;
+		@JoinColumn(name="hsn_id", referencedColumnName = "hsn_id")
+		@OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
+		public Hsn getHsn() {
+		return hsn;
+		}
+	
+		public void setHsn(Hsn hsn) {
+			this.hsn = hsn;
+		}
+
 		//------------ Product
-			private List<Product> product = new ArrayList<>();
-			/*@JoinColumn(name = "product_id", referencedColumnName = "product_id")
-			@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true)*/
-			@OneToMany(mappedBy = "product_id", fetch = FetchType.LAZY)
-			@JsonManagedReference
-			public List<Product> getProduct() {
-				return product;
-			}
-			public void setProduct(List<Product> product) {
-				this.product = product;
-			}
+		private Product product;	
+		
+		@JoinColumn(name="product_id", referencedColumnName = "product_id")
+		@OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
+		public Product getProduct() {
+			return product;
+		}
+		public void setProduct(Product product) {
+			this.product = product;
+		}
 }
