@@ -134,6 +134,22 @@ public class CustomerDaoImpl implements CustomerDao
 		return listCustomer;
 	}
 	
+	
+	
+	@Override
+	@Transactional
+	public List<CustomerModel> getCustomerSorting100(String name,String order) 
+	{
+		@SuppressWarnings("unchecked")
+		List<CustomerModel> listCustomer = (List<CustomerModel>) sessionFactory.getCurrentSession()
+				.createQuery("from CustomerModel where obsolete ='N' "
+					    + "order by ("+name+")"+  order )
+						.setMaxResults(100)
+						.list();
+		return listCustomer;
+	}
+	
+	
 	/*------------------------------- Get Customer records count -----------------------*/
 	@Override
 	@Transactional

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.conti.master.customer.CustomerModel;
 import com.conti.master.employee.EmployeeMaster;
+import com.conti.master.location.Location;
 
 /**
  * @Project_Name conti
@@ -23,6 +24,7 @@ public interface CustomerDao
 	public CustomerModel getCustomerbyId(int id);
 	public List<CustomerModel> searchbyeyCustomer(String searchkey);
 	public List<CustomerModel> getCustomerswithLimit(int branch_id, int from_limit, int to_limit, String order);
+	public List<CustomerModel> getCustomerSorting100(String name,String order);
 	public int find_record_countforSA();
 	public int find_record_count();
 	public List<CustomerModel> searchbyMobileno(String searchkey);

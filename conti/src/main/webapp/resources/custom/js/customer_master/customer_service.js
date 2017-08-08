@@ -12,8 +12,7 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
 	//var REST_SERVICE_URI = 'http://localhost:8080/Conti/customers/';
 	
 	var factory = {
-			fetchAllCustomers : fetchAllCustomers,
-			
+			fetchAllCustomers : fetchAllCustomers,			
 			createCustomer : createCustomer,
 			updateCustomer : updateCustomer,
 			deleteCustomer : deleteCustomer,
@@ -21,12 +20,32 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
 			makeinActive : makeinActive,
 			registerSearch : registerSearch,
 			pagination_byPage : pagination_byPage,
-			findrecord_count : findrecord_count
+			findrecord_count : findrecord_count,
+			sortBy:sortBy
 			/*print : print*/
 	};
 	
 	return factory;
 	
+	//=============================sort by name====================================
+	function sortBy(name,status){	
+		console.log(name,status);
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:"sortByCustomerService/"+name,
+			data:status,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("fetch failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
 	
 	//-------------------------- Fetch All Customers begin ---------------------//	
 	function fetchAllCustomers() {

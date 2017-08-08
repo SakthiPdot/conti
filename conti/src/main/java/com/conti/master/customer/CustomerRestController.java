@@ -146,6 +146,60 @@ public class CustomerRestController
 		        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
 		    }
 		 
+		//======================================sort by==========================================
+			@RequestMapping(value="sortByCustomerService/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+			public  ResponseEntity<List<CustomerModel>>  sortByCustomerService(@RequestBody String status,@PathVariable("name") String name,HttpServletRequest request){
+			
+				String sortBy="";
+
+				switch(name.trim()){
+				case "customerName":
+					 sortBy="customer_name";
+					break;
+				case "customerCode":
+					 sortBy="customer_code";
+					break;
+				case "customerType":
+					 sortBy="customer_type";
+					break;
+				case "custBranch":
+					 sortBy="branchModel.branch_name";
+					break;
+				case "custCompanyName":
+					 sortBy="company_name";
+					break;
+				case "custAddress":
+					 sortBy="customer_addressline1";
+					break;
+				case "custPhoneNumber":
+					 sortBy="customer_mobileno";
+					break;
+				case "custEmail":
+					 sortBy="customer_email";
+					break;
+				case "custStatus":
+					 sortBy="active";
+					break;
+				default:
+					break;
+				}
+				
+				List<CustomerModel> customerList=new ArrayList<>();
+				
+				try{
+					customerList=customerDao.getCustomerSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+					loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					if(customerList.isEmpty()){
+						return new ResponseEntity<List<CustomerModel>>(HttpStatus.NO_CONTENT);
+					}
+					return new ResponseEntity<List<CustomerModel>>(customerList,HttpStatus.OK);
+				}catch(Exception e){
+					loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS,e);
+					e.printStackTrace();
+					return new ResponseEntity<List<CustomerModel>>(HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+				
+			}
 		 
 		/* ------------------------- Create a Customer begin -------------------------------------  */
 		@RequestMapping( value = "/create_customer", method = RequestMethod.POST)

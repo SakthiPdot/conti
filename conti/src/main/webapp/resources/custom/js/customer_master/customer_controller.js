@@ -58,6 +58,45 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 
 	}
 	
+	/*customerName  customer_controller.js:62:3
+	customerCode  customer_controller.js:62:3
+	customerType  customer_controller.js:62:3
+	custBranch  customer_controller.js:62:3
+	custCompanyName  customer_controller.js:62:3
+	custAddress  customer_controller.js:62:3
+	custPhoneNumber  customer_controller.js:62:3
+	custEmail  customer_controller.js:62:3
+	custStatus  customer_controller.js:62:3*/
+	
+	function resetSorting(){
+		$scope.customerName  =false;
+		$scope.customerCode  =false;
+		$scope.customerType  =false;
+		$scope.custBranch  =false;
+		$scope.custCompanyName  =false;
+		$scope.custAddress  =false;
+		$scope.custPhoneNumber  =false;
+		$scope.custEmail  =false;
+		$scope.custStatus  =false;
+	}
+	// ===================================sort table====================================
+	$scope.sortTable=function(x,status){
+		console.log(x);
+		if(!$scope.disableSorting){
+			$scope.lastSorted = x;	
+			resetSorting();
+			$scope[x]=status;
+			CustomerService.sortBy(x,status?"ASC":"DESC")
+			.then(
+					function(response){
+						self.customers=response;
+						self.Filtercustomers =response;
+						
+					},function(errRespone){
+						console.log("error while fetching customer service in search"+errRespone);
+					});
+		}
+	}
 //	function close() {
 //		self.confirm_title = 'Cancel';
 //		self.confirm_type = BootstrapDialog.TYPE_WARNING;
@@ -554,6 +593,8 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     			);
     	} 	
     	
+    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+    	
     	if(self.Filtercustomers.length < $scope.pageSize) {
     		console.log(self.Filtercustomers.length);
     		$scope.nextDisabled = true;
@@ -608,6 +649,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     		}
     		
     	}
+    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
     }
 
       //-------------------------- Pagnation end -----------------------//	
@@ -691,7 +733,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     	
 		var success = false;
 		
-		if ( (item.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.customer_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+		if ((item.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.customer_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)

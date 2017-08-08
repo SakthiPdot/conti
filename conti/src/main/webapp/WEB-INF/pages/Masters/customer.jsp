@@ -429,15 +429,51 @@
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.customerSelectall()" data-ng-model = "selectall"></th>
                                            
-                                            <th data-ng-show = "setting_custname">Customer Name</th>
-                                            <th data-ng-show = "setting_custcode">Customer Code</th>
-                                            <th data-ng-show = "setting_custtype">Customer Type</th>
-                                            <th data-ng-show = "setting_custbranch">Branch Name</th>
-                                            <th data-ng-show = "setting_custcompany">Company Name</th>
-                                            <th data-ng-show = "setting_custaddress">Address</th>
-                                            <th data-ng-show = "setting_custphone">Phone Number</th>
-                                            <th data-ng-show = "setting_custemail">Email</th>
-                                   			<th data-ng-show = "setting_custstatus">Status</th>
+                                            <th data-ng-show = "setting_custname"
+                                               data-ng-click="customerName=!customerName;sortTable('customerName',customerName);">Customer Name<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':customerName,'fa fa-caret-down':!customerName}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_custcode"
+                                               data-ng-click="customerCode=!customerCode;sortTable('customerCode',customerCode);">Customer Code<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':customerCode,'fa fa-caret-down':!customerCode}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_custtype"
+                                               data-ng-click="customerType=!customerType;sortTable('customerType',customerType);">Customer Type<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':customerType,'fa fa-caret-down':!customerType}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_custbranch"
+                                               data-ng-click="custBranch=!custBranch;sortTable('custBranch',custBranch);">Branch Name<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':custBranch,'fa fa-caret-down':!custBranch}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_custcompany"
+                                               data-ng-click="custCompanyName=!custCompanyName;sortTable('custCompanyName',custCompanyName);">Company Name<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':custCompanyName,'fa fa-caret-down':!custCompanyName}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_custaddress"
+                                               data-ng-click="custAddress=!custAddress;sortTable('custAddress',custAddress);">Address<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':custAddress,'fa fa-caret-down':!custAddress}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_custphone"
+                                               data-ng-click="custPhoneNumber=!custPhoneNumber;sortTable('custPhoneNumber',custPhoneNumber);">Phone Number<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':custPhoneNumber,'fa fa-caret-down':!custPhoneNumber}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show = "setting_custemail"
+                                               data-ng-click="custEmail=!custEmail;sortTable('custEmail',custEmail);">Email<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':custEmail,'fa fa-caret-down':!custEmail}"
+														aria-hidden="true"></i></th>
+                                   			<th data-ng-show = "setting_custstatus"
+                                   			   data-ng-click="custStatus=!custStatus;sortTable('custStatus',custStatus);">Status<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':custStatus,'fa fa-caret-down':!custStatus}"
+														aria-hidden="true"></i></th>
                                         </tr>
                                     </thead>
                                     <tbody>	
@@ -445,7 +481,7 @@
 											<tr data-ng-repeat="cust in ctrl.Filtercustomers | limitTo:pageSize"
 												data-ng-dblclick="ctrl.updateCustomer(cust)">
                                             <td><input type="checkbox" data-ng-change="ctrl.customerSelect(cust)" data-ng-model = "cust.select" /></td>
-<!--                                             <td>{{(currentPage*10)-(10-($index+1))}}</td> -->
+											<!--<td>{{(currentPage*10)-(10-($index+1))}}</td> -->
                                             <td data-ng-show = "setting_custname">{{cust.customer_name}}</td>
                                             <td data-ng-show = "setting_custcode">{{cust.customer_code}}</td>
                                             <td data-ng-show = "setting_custtype">{{cust.customer_type}}</td>
@@ -458,7 +494,7 @@
                                            		<div data-ng-if="!cust.customer_addressline2==''">{{cust.customer_addressline2}},</div>
                                            		<div data-ng-if="cust.location.location_name!=''">{{cust.location.location_name}},</div>
                                            		<div data-ng-if="cust.location.address.city!=''">{{cust.location.address.city}},</div>
-                                           		<!-- <div data-ng-if="cust.location.address.district!=''">{{cust.location.address.district}},</div> -->
+<!--                                            		<div data-ng-if="cust.location.address.district!=''">{{cust.location.address.district}},</div> -->
                                            		<div data-ng-if="cust.location.address.state!=''">{{cust.location.address.state}},</div>
                                            		<div data-ng-if="cust.location.pincode!=''">{{cust.location.pincode}}.</div>
                                             </td>
