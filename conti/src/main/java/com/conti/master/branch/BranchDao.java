@@ -3,6 +3,7 @@ package com.conti.master.branch;
 import java.util.List;
 
 import com.conti.master.employee.EmployeeMaster;
+import com.conti.master.location.Location;
 
 /**
  * @Project_Name conti
@@ -21,6 +22,7 @@ public interface BranchDao
 	public List<BranchModel> searchbyeyBranch(String search_key);
 	public List<BranchModel> searchbyeyBranchName(String search_key);
 	public List<BranchModel> getBrancheswithLimit(int branch_id, int from_limit, int to_limit, String order);
+	public List<BranchModel> getBranchSorting100(String name,String order);
 	public String checkBranchName(String SearchString);
 	public int find_record_countforSA();
 	public int find_record_count();

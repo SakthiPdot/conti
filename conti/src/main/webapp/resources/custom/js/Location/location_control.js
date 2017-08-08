@@ -80,6 +80,7 @@ angular.module('contiApp').controller('locationController'
 				$scope.locationActive = false;
 			}
 			
+			
 			// ===================================sort table====================================
 			$scope.sortTable=function(x,status){
 				console.log("filer by---"+x,"status---"+status);

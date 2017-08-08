@@ -97,6 +97,58 @@ public class BranchRestController {
 	UserInformation userInformation;
 
 	
+	//======================================sort by==========================================
+	@RequestMapping(value="sortByBranch/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<List<BranchModel>>  sortByBranch(@RequestBody String status,@PathVariable("name") String name,HttpServletRequest request){
+
+		String sortBy="";
+		switch(name.trim()){
+		case "branchName":
+			 sortBy="branch_name";
+			break;
+		case "branchCode":
+			 sortBy="branch_code";
+			break;
+		case "branchAddress":
+			 sortBy="branch_addressline1";
+			break;
+		case "branchContactPerson":
+			 sortBy="branch_contactperson";
+			break;
+		case "branchContactNumber":
+			 sortBy="branch_mobileno";
+			break;
+		case "branchContactEmail":
+			 sortBy="branch_email";
+			break;			
+		case "lrNoPrefix":
+			 sortBy="lrno_prefix";
+			break;			
+		case "receiptNoPrefix":
+			 sortBy="receiptno_prefix";
+			break;	
+		case "branchStatus":
+			 sortBy="active";
+			break;	
+		default:
+			break;
+		}
+		List<BranchModel> branchList=new ArrayList<>();
+		
+		try{
+			branchList=branchDao.getBranchSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			if(branchList.isEmpty()){
+				return new ResponseEntity<List<BranchModel>>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<List<BranchModel>>(branchList,HttpStatus.OK);
+		}catch(Exception e){
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<List<BranchModel>>(HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+	}
 	
 	@RequestMapping( value = "/branches", method = RequestMethod.GET)
 	public ResponseEntity<List<BranchModel>> fetchAllBranches(HttpServletRequest request) {

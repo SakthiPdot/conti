@@ -202,13 +202,8 @@
 				                  	data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Receipt number"  required/>
 			                  	</div>
 			               </div>		                                
-		                </div>  
-		                               
-	                </div> 
-	                
-	           
-	                       
-	                
+		                </div>                 
+	                </div>      
 	                            
 	             </div>
                  
@@ -398,15 +393,51 @@
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.branchSelectall()" data-ng-model="selectallbranches"></th>
                                             
-                                            <th data-ng-show="setting_branchname">Branch Name</th>
-                                            <th data-ng-show="setting_branchcode">Branch Code</th>
-                                            <th data-ng-show="setting_branchaddress">Address</th>
-                                            <th data-ng-show="setting_branchcontactperson">Contact Person</th>
-                                            <th data-ng-show="setting_branchcontactnumber">Contact Number</th>
-                                            <th data-ng-show="setting_branchcontactemail">Contact Mail</th>
-                                            <th data-ng-show="setting_branchlrnoprefix">LR No Prefix</th>
-                                            <th data-ng-show="setting_branchreceiptnoprefix">Receipt No Prefix</th>
-                                            <th data-ng-show="setting_branchstatus">Status</th>
+                                            <th data-ng-show="setting_branchname"
+                                            data-ng-click="branchName=!branchName;sortTable('branchName',branchName);">Branch Name<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':branchName,'fa fa-caret-down':!branchName}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_branchcode"
+                                            data-ng-click="branchCode=!branchCode;sortTable('branchCode',branchCode);">Branch Code<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':branchCode,'fa fa-caret-down':!branchCode}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_branchaddress"
+                                            data-ng-click="branchAddress=!branchAddress;sortTable('branchAddress',branchAddress);">Address<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':branchAddress,'fa fa-caret-down':!branchAddress}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_branchcontactperson"
+                                            data-ng-click="branchContactPerson=!branchContactPerson;sortTable('branchContactPerson',branchContactPerson);">Contact Person<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':branchContactPerson,'fa fa-caret-down':!branchContactPerson}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_branchcontactnumber"
+                                            data-ng-click="branchContactNumber=!branchContactNumber;sortTable('branchContactNumber',branchContactNumber);">Contact Number<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':branchContactNumber,'fa fa-caret-down':!branchContactNumber}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_branchcontactemail"
+                                            data-ng-click="branchContactEmail=!branchContactEmail;sortTable('branchContactEmail',branchContactEmail);">Contact Mail<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':branchContactEmail,'fa fa-caret-down':!branchContactEmail}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_branchlrnoprefix"
+                                            data-ng-click="lrNoPrefix=!lrNoPrefix;sortTable('lrNoPrefix',lrNoPrefix);">LR No Prefix<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':lrNoPrefix,'fa fa-caret-down':!lrNoPrefix}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_branchreceiptnoprefix"
+                                            data-ng-click="receiptNoPrefix=!receiptNoPrefix;sortTable('receiptNoPrefix',receiptNoPrefix);">Receipt No Prefix<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':receiptNoPrefix,'fa fa-caret-down':!receiptNoPrefix}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_branchstatus"
+                                            data-ng-click="branchStatus=!branchStatus;sortTable('branchStatus',branchStatus);">Status<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':branchStatus,'fa fa-caret-down':!branchStatus}"
+														aria-hidden="true"></i></th>
                                             
                                         </tr>
                                     </thead>

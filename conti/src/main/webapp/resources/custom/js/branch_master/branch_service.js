@@ -23,11 +23,31 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 			fetchBranchbyBranchid : fetchBranchbyBranchid,
 			checkBranchName:checkBranchName,
 			findrecord_count : findrecord_count,
-			fetchbyBranchid : fetchbyBranchid
+			fetchbyBranchid : fetchbyBranchid,
+			sortBy:sortBy
 			};
 	
 	return factory;
 	
+	//=============================sort by name====================================
+	function sortBy(name,status){	
+		console.log(name,status);
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:"sortByBranch/"+name,
+			data:status,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("status change failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
 	//----------------Check branch name already exist-------------
 	function checkBranchName(name)
 	{

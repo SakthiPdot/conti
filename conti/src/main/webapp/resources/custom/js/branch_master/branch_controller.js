@@ -52,6 +52,34 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
         fetchAllBranches();
 	}
 	
+	function resetSorting(){
+		$scope.branchName  =false;
+		$scope.branchCode  =false;
+		$scope.branchAddress  =false;
+		$scope.branchContactPerson  =false;
+		$scope.branchContactNumber  =false;
+		$scope.branchContactEmail  =false;
+		$scope.lrNoPrefix  =false;
+		$scope.receiptNoPrefix  =false;
+		$scope.branchStatus  =false;
+	}
+	// ===================================sort table====================================
+	$scope.sortTable=function(x,status){
+		console.log("filer by---"+x,"status---"+status);
+		if(!$scope.disableSorting){
+			$scope.lastSorted = x;	
+			resetSorting();
+			$scope[x]=status;
+			BranchService.sortBy(x,status?"ASC":"DESC")
+			.then(
+					function(response){
+						self.branches=response;
+						self.Filterbranches=response;						
+					},function(errRespone){
+						console.log("error while fetching Location in search"+errResponse);
+					});
+		}
+	}
 //-------------------------- Fetch All Location begin ---------------------//	
 	
 	function fetchAllLocations() {
@@ -584,6 +612,8 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     			);
     	} 
     	
+    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+    	
     	if(self.Filterbranches.length < $scope.pageSize) {
     		$scope.nextDisabled = true;
     	}
@@ -616,7 +646,6 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     		self.Filterbranches = self.branches.slice($scope.currentPage*$scope.pageSize);
     		fetchAllBranches();
     	} else { // last
-    		
     		$scope.currentPage = ((Math.ceil(self.Filterbranches.length/$scope.pageSize)) - 1 );
     		$scope.previouseDisabled = false;
     		$scope.nextDisabled = true;
@@ -634,11 +663,9 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
         					console.log('Error while fetching Branch');
         				}
         			);
-    		}
-    		
-    		
-    		
+    		}	
     	}
+    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
     }
     
 

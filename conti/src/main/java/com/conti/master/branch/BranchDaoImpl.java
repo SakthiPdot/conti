@@ -135,6 +135,21 @@ public class BranchDaoImpl implements BranchDao
 	
 	@Override
 	@Transactional
+	public List<BranchModel> getBranchSorting100(String name,String order) 
+	{
+		@SuppressWarnings("unchecked")
+		List<BranchModel> listBranch = (List<BranchModel>) sessionFactory.getCurrentSession()
+				.createQuery("from BranchModel where obsolete ='N'  "
+						+ "order by ("+name+")"+  order )
+					.setMaxResults(100)
+					.list();
+		return listBranch;
+	}
+	
+	
+	
+	@Override
+	@Transactional
 	public String checkBranchName(String name) {
 		@SuppressWarnings("unchecked")
 		List<Product> branchList=sessionFactory.getCurrentSession()
