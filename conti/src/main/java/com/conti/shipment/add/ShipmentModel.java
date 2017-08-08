@@ -1,11 +1,25 @@
 package com.conti.shipment.add;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
+import com.conti.master.branch.BranchModel;
+import com.conti.master.customer.CustomerModel;
+import com.conti.master.service.ServiceMaster;
 
 /**
  * @Project_Name conti
@@ -20,14 +34,93 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ShipmentModel {
 	
-	int shipment_id, lr_number, sendercustomer_id, senderbranch_id, 
-		consigneecustomer_id, consigneebranch_id, numberof_parcel,
-		shipment_value, chargeable_weight, delivery_charge, handling_charge,
-		tax_amount, total_charges, updated_by, created_by;
-	String shipment_date, pay_mode, bill_to, status, service, description, 
+	int shipment_id, lr_number, numberof_parcel,
+		updated_by, created_by, reference_invoice_no;
+	String shipment_date, pay_mode, bill_to, status, description, 
 			created_datetime, updated_datetime, obsolete;
 	
+	float shipment_value, chargeable_weight, delivery_charge, handling_charge,
+	tax_amount, total_charges, cgst, igst, sgst, discount_amount, discount_percentage, tax;
+	
+	
+	public ShipmentModel() {
+		
+	}
+	
+	//------------------Sender customer
+	private CustomerModel sender_customer;
+	@JoinColumn(name = "sendercustomer_id", referencedColumnName = "customer_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	public CustomerModel getSender_customer() {
+		return sender_customer;
+	}
+	public void setSender_customer(CustomerModel sender_customer) {
+		this.sender_customer = sender_customer;
+	}
+	
+	//------------------Consignee customer	
+	private CustomerModel consignee_customer;
+	@JoinColumn(name = "consigneecustomer_id", referencedColumnName = "customer_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	public CustomerModel getConsignee_customer() {
+		return consignee_customer;
+	}
+	public void setConsignee_customer(CustomerModel consignee_customer) {
+		this.consignee_customer = consignee_customer;
+	}
+	
+	//------------------ Sender branch
+	private BranchModel sender_branch;
+	@JoinColumn(name = "senderbranch_id", referencedColumnName = "branch_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	public BranchModel getSender_branch() {
+		return sender_branch;
+	}
+	public void setSender_branch(BranchModel sender_branch) {
+		this.sender_branch = sender_branch;
+	}
+	
+	//------------------ Consignee Branch
+	private BranchModel consignee_branch;
+	@JoinColumn(name = "consigneebranch_id", referencedColumnName = "branch_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	public BranchModel getConsignee_branch() {
+		return consignee_branch;
+	}
+	public void setConsignee_branch(BranchModel consignee_branch) {
+		this.consignee_branch = consignee_branch;
+	}
+	
+	//----------------- Service
+	private ServiceMaster service;
+	@JoinColumn(name = "service_id", referencedColumnName = "service_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	public ServiceMaster getService() {
+		return service;
+	}
+	public void setService(ServiceMaster service) {
+		this.service = service;
+	}
+	
+	//-------------- Shipment Detailed
+	private List<ShipmentDetailModel> shipmentDetail = new ArrayList<>();
+	
+	@JoinColumn(name = "shipment_id", referencedColumnName = "shipment_id")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval= true, fetch = FetchType.EAGER)
+	@JsonManagedReference
+	public List<ShipmentDetailModel> getShipmentDetail() {
+		return shipmentDetail;
+	}
+	public void setShipmentDetail(List<ShipmentDetailModel> shipmentDetail) {
+		this.shipmentDetail = shipmentDetail;
+	}
+
+	
+	
+	
+	
 	@Id
+	@GeneratedValue
 	@Column(name = "shipment_id")
 	public int getShipment_id() {
 		return shipment_id;
@@ -44,38 +137,6 @@ public class ShipmentModel {
 		this.lr_number = lr_number;
 	}
 	
-	@Column(name = "sendercustomer_id")
-	public int getSendercustomer_id() {
-		return sendercustomer_id;
-	}
-	public void setSendercustomer_id(int sendercustomer_id) {
-		this.sendercustomer_id = sendercustomer_id;
-	}
-	
-	@Column(name = "senderbranch_id")
-	public int getSenderbranch_id() {
-		return senderbranch_id;
-	}
-	public void setSenderbranch_id(int senderbranch_id) {
-		this.senderbranch_id = senderbranch_id;
-	}
-	
-	@Column(name = "consigneecustomer_id")
-	public int getConsigneecustomer_id() {
-		return consigneecustomer_id;
-	}
-	public void setConsigneecustomer_id(int consigneecustomer_id) {
-		this.consigneecustomer_id = consigneecustomer_id;
-	}
-	
-	@Column(name = "consigneebranch_id")
-	public int getConsigneebranch_id() {
-		return consigneebranch_id;
-	}
-	public void setConsigneebranch_id(int consigneebranch_id) {
-		this.consigneebranch_id = consigneebranch_id;
-	}
-	
 	@Column(name = "numberof_parcel")
 	public int getNumberof_parcel() {
 		return numberof_parcel;
@@ -85,51 +146,49 @@ public class ShipmentModel {
 	}
 	
 	@Column(name = "shipment_value")
-	public int getShipment_value() {
+	public float getShipment_value() {
 		return shipment_value;
 	}
-	public void setShipment_value(int shipment_value) {
+	public void setShipment_value(float shipment_value) {
 		this.shipment_value = shipment_value;
 	}
 	
-	@Column(name = "chargeable_weight")
-	public int getChargeable_weight() {
+	@Column(name ="chargeable_weight")
+	public float getChargeable_weight() {
 		return chargeable_weight;
 	}
-	public void setChargeable_weight(int chargeable_weight) {
+	public void setChargeable_weight(float chargeable_weight) {
 		this.chargeable_weight = chargeable_weight;
 	}
-	
-	@Column(name = "delivery_charge")
-	public int getDelivery_charge() {
+	@Column(name ="delivery_charge")
+	public float getDelivery_charge() {
 		return delivery_charge;
 	}
-	public void setDelivery_charge(int delivery_charge) {
+	public void setDelivery_charge(float delivery_charge) {
 		this.delivery_charge = delivery_charge;
 	}
-	@Column(name = "handling_charge")
-	public int getHandling_charge() {
+	@Column(name ="handling_charge")
+	public float getHandling_charge() {
 		return handling_charge;
 	}
-	public void setHandling_charge(int handling_charge) {
+	public void setHandling_charge(float handling_charge) {
 		this.handling_charge = handling_charge;
 	}
-	
-	@Column(name = "tax_amount")
-	public int getTax_amount() {
+	@Column(name ="tax_amount")
+	public float getTax_amount() {
 		return tax_amount;
 	}
-	public void setTax_amount(int tax_amount) {
+	public void setTax_amount(float tax_amount) {
 		this.tax_amount = tax_amount;
 	}
-	
-	@Column(name = "total_charges")
-	public int getTotal_charges() {
+	@Column(name ="total_charges")
+	public float getTotal_charges() {
 		return total_charges;
 	}
-	public void setTotal_charges(int total_charges) {
+	public void setTotal_charges(float total_charges) {
 		this.total_charges = total_charges;
 	}
+	
 	
 	@Column(name = "updated_by")
 	public int getUpdated_by() {
@@ -179,14 +238,6 @@ public class ShipmentModel {
 		this.status = status;
 	}
 	
-	@Column(name = "service")
-	public String getService() {
-		return service;
-	}
-	public void setService(String service) {
-		this.service = service;
-	}
-	
 	@Column(name = "description")
 	public String getDescription() {
 		return description;
@@ -218,6 +269,59 @@ public class ShipmentModel {
 	public void setObsolete(String obsolete) {
 		this.obsolete = obsolete;
 	}
+	
+	@Column(name = "reference_invoice_no")
+	public int getReference_invoice_no() {
+		return reference_invoice_no;
+	}
+	public void setReference_invoice_no(int reference_invoice_no) {
+		this.reference_invoice_no = reference_invoice_no;
+	}
+	
+	@Column(name = "cgst")
+	public float getCgst() {
+		return cgst;
+	}
+	public void setCgst(float cgst) {
+		this.cgst = cgst;
+	}
+	@Column(name = "igst")
+	public float getIgst() {
+		return igst;
+	}
+	public void setIgst(float igst) {
+		this.igst = igst;
+	}
+	@Column(name = "sgst")
+	public float getSgst() {
+		return sgst;
+	}
+	public void setSgst(float sgst) {
+		this.sgst = sgst;
+	}
+	@Column(name = "discount_amount")
+	public float getDiscount_amount() {
+		return discount_amount;
+	}
+	public void setDiscount_amount(float discount_amount) {
+		this.discount_amount = discount_amount;
+	}
+	@Column(name = "discount_percentage")
+	public float getDiscount_percentage() {
+		return discount_percentage;
+	}
+	public void setDiscount_percentage(float discount_percentage) {
+		this.discount_percentage = discount_percentage;
+	}
+	@Column(name = "tax")
+	public float getTax() {
+		return tax;
+	}
+	public void setTax(float tax) {
+		this.tax = tax;
+	}
+	
+	
 	
 	
 	

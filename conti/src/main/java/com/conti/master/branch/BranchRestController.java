@@ -190,7 +190,28 @@ public class BranchRestController {
 	}	
 	
 	
-	
+	@RequestMapping( value = "/branch/{id}", method = RequestMethod.GET)
+	public ResponseEntity<BranchModel> fetchBranchebyid(@PathVariable ("id") int id,  HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+
+		try {
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			BranchModel branche = branchDao.getBranchbyId(id);
+			
+			if(branche == null) {
+				return new ResponseEntity<BranchModel> (HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<BranchModel> (branche, HttpStatus.OK);	
+			}			
+		}
+		catch (Exception exception) 
+		{			
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<BranchModel> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+	}
 
 	//-------Create Branch begin---------------------
 	 
