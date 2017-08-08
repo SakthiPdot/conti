@@ -22,7 +22,8 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 			pagination_byPage : pagination_byPage,
 			fetchBranchbyBranchid : fetchBranchbyBranchid,
 			checkBranchName:checkBranchName,
-			findrecord_count : findrecord_count
+			findrecord_count : findrecord_count,
+			fetchbyBranchid : fetchbyBranchid
 			};
 	
 	return factory;
@@ -87,6 +88,22 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 	//-------------------------- Fetch All Branches end ---------------------//
 	
 	
+	//-------------------------- Fetch All Branches begin ---------------------//	
+	function fetchbyBranchid(id) {
+		var deferred = $q.defer();
+		$http.get('branch/'+id)
+			.then(
+					function (response) {
+						deferred.resolve(response.data);
+					},
+					function (errResponse) {
+						console.log("Error while fetching Branches by branch id");
+						deferred.reject(errResponse);
+					}
+				);
+		return deferred.promise;
+	}
+	//-------------------------- Fetch All Branches end ---------------------//
 	
 	
 	//-----------Fetch Create branch--------------

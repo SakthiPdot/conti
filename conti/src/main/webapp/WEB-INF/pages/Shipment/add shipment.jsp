@@ -66,6 +66,7 @@
            
       	    <form name = "shipment" data-ng-submit = "ctrl.submit()" >		
       	    	<input type = "hidden" data-ng-model = "ctrl.shipment.shipment_id" />
+      	    	<input type="hidden" id="lr_number" value = "${lrno}" />
       		  <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default panelMarginBottom">                            
@@ -94,7 +95,7 @@
 	              </div>
 	              
 	              <div class="col-md-3 col-sm-4 col-xs-6">	              
-	               <c:if test="${ lrno > 0 }"> <b>Last LR No : lrno   </b></c:if>     
+	               <c:if test="${ lrno > 0 }"> <b>Last LR No : ${lrno}   </b></c:if>     
 	              </div>
 	              
               </div>
@@ -678,10 +679,10 @@
                                         
                                     </thead>
                                     <tbody>
-                                        <tr data-ng-repeat = "product in ctrl.shipment.products track by $index">
+                                        <tr data-ng-repeat = "product in ctrl.shipment.shipmentDetail track by $index">
                                             <td><input type="checkbox" class="form-control" data-ng-model = "product.selected"  ></td>
                                             <td>{{$index + 1}}
-	                                            <input type = "hidden" class="form-control" data-ng-model = "product.product_id" data-ng-value = "product_name.originalObject.product_id" /> 
+	                                            <input type = "text" class="form-control" data-ng-model = "product.shipmentdetail_id" data-ng-value = "product_name.originalObject.product_id" /> 
                                             </td>
                                             <td> 
                                             	
@@ -730,9 +731,9 @@
 											                                        	</thead>
 											                                        	
 											                                        	<tbody>
-											                                        		<tr data-ng-repeat = "hsn in product.product.hsns track by $index">
+											                                        		<tr data-ng-repeat = "hsn in product.shipmnetHsnDetail track by $index">
 											                                        			<td> <input type ="checkbox" data-ng-model = "hsn.selected" /> </td>
-											                                        			<td> {{$index + 1}} <!-- <input type="text" class="form-control" data-ng-model = "hsn.hsn_id" />  --></td>
+											                                        			<td> {{$index + 1}}  <input type="text" class="form-control" data-ng-model = "hsn.shipmenthsndetail_id" />  </td>
 											                                        			<td> 
 											                                        				
 											                                        				<div angucomplete-alt id="{{'product' + $parent.$index +'_hsn_code' + $index}}" data-ng-model = "hsn.hsn_code"
@@ -805,39 +806,39 @@
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product height"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
-													data-ng-model = "product.max_height" /> 
+													data-ng-model = "product.height" /> 
 											</td>
                                             <td> <input type = "number" placeholder="Product width" class="form-control" 
 
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product width"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
-                                            		data-ng-model = "product.max_width" /> </td>
+                                            		data-ng-model = "product.width" /> </td>
                                             <td> <input type = "number" placeholder="Product length" class="form-control" 
 
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product length"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
-                                            		data-ng-model = "product.max_length" /> </td>
+                                            		data-ng-model = "product.length" /> </td>
                                             <td> <input type = "number" placeholder="Product weight" class="form-control" 
 
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product weight"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
-                                            		data-ng-model = "product.max_weight" data-ng-keyup = "ctrl.priceby_weight($index)" required/> </td>
+                                            		data-ng-model = "product.weight" data-ng-keyup = "ctrl.priceby_weight($index)" required/> </td>
                                             <td> <input type = "number" placeholder="Product weight" class="form-control" 
                                           			
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product quantity"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
-                                            		data-ng-model = "product.product_quantity" data-ng-keyup = "ctrl.checkQuantity($index)" required/> </td>
+                                            		data-ng-model = "product.quantity" data-ng-keyup = "ctrl.checkQuantity($index)" required/> </td>
                                             <td> <input type = "number" placeholder="unit price" class="form-control" 
                                             
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product price"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
-                                            		data-ng-model = "product.product_unitprice" data-ng-keyup = "ctrl.calc_totalprice($index)" required/> </td>
-                                            <td> <input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.product_totalprice" /> </td>
+                                            		data-ng-model = "product.unit_price" data-ng-keyup = "ctrl.calc_totalprice($index)" required/> </td>
+                                            <td> <input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.total_price" /> </td>
                                      
                                         </tr>
                                             
@@ -1076,7 +1077,7 @@
                             		    
                             		</div>
                             	
-                            	
+                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             	
                             		                        	
                         </div>

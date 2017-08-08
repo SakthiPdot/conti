@@ -20,15 +20,14 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			"sender_branch" : {},
 			"consignee_branch" : {},
 			"service" : {},
-			"products" : [{
-				"product" : {}
+			"shipmentDetail" : [{
+				"product" : {},
 				
 			}]
 			
 	};
 	
-	
-	
+
 	
 	/*self.shipment.hsns = {};*/
 	
@@ -131,31 +130,41 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     	self.shipment.consignee_branch.branch_id = consignee_branch_name.originalObject.branch_id;*/
     	self.shipment.consignee_branch = consignee_branch_name.originalObject;
     	
-    	self.shipment.sender_branch.branch_id = $('#sender_branch_id').val();
-    	self.shipment.sender_branch.branch_name = $('#sender_branch_name').val();
-    	
-    	console.log(self.shipment.consignee_branch);
-    	console.log(self.shipment.sender_branch);
-    	
+    	/*self.shipment.sender_branch.branch_id = $('#sender_branch_id').val();
+    	self.shipment.sender_branch.branch_name = $('#sender_branch_name').val();*/
+	
+    	sender_branch($('#sender_branch_id').val());
 	};	
 	//------------------------ Consignee branch end
+	
+	function sender_branch(sender_branch_id) {
+		BranchService.fetchbyBranchid(sender_branch_id)
+			.then(
+					function(branch) {
+						self.shipment.sender_branch = branch;
+					}, function (errres) {
+						console.log(errres);
+					}
+			)
+	}
+	
 	//---------------------------------------------------- SENDER & CONSIGNEE PROCESS END ------------------------------------------------------------------------	
 	
 	
 	//---------------------------------- Declare Product Detailed begin
 	
 	//------------------------------------------------------------- ADD SHIPMENT DETAILED TABLE BEGIN----------------------------------------
-	/*self.shipment.products  = [];*/
+	/*self.shipment.shipmentDetail  = [];*/
 	
 	//--------------------------------------------- add Product begin
 	self.disable_add_product = true;
 	self.disable_save = true;
 	self.addProduct = function (product) {
-		self.shipment.products.push({
+		self.shipment.shipmentDetail.push({
 			/*'product_id' : 0,
 			'product_name' : null,
 			'product_type' : null,
-			'max_height' : 0,
+			'height' : 0,
 			'max_width' : 0,
 			'max_length' : 0,
 			'max_weight' : 0,
@@ -173,8 +182,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//---------------------------------------------- Select All begin
 /*	self.product_selectAll = function() {
-		for(var i=0; i<self.shipment.products.length; i++) {
-			self.shipment.products[i].selected = self.selectAll_product;
+		for(var i=0; i<self.shipment.shipmentDetail.length; i++) {
+			self.shipment.shipmentDetail[i].selected = self.selectAll_product;
 		}
 		
 	}*/
@@ -185,12 +194,12 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	self.removeProduct = function () {
         var selectedProductList=[];
         $scope.selectedAll = false;
-        angular.forEach(self.shipment.products, function(selected){
+        angular.forEach(self.shipment.shipmentDetail, function(selected){
             if(!selected.selected){
             	selectedProductList.push(selected);
             }
         }); 
-        self.shipment.products = selectedProductList;
+        self.shipment.shipmentDetail = selectedProductList;
         self.checkQuantity(-1); // Call CheckQuantity method for check whethere noofparcel == qunatity
 	}
 	//--------------------------------------------- remove Product end
@@ -210,11 +219,11 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		self.disable_add_product = false;
 		var quantity = 0;
 		var selected_quantity = 0;
-		for(var i = 0; i < self.shipment.products.length; i++) {
+		for(var i = 0; i < self.shipment.shipmentDetail.length; i++) {
 			
-			selected_quantity = self.shipment.products[i].product_quantity;
+			selected_quantity = self.shipment.shipmentDetail[i].quantity;
 			
-			if(self.shipment.products[i].product_quantity == null || isNaN(self.shipment.products[i].product_quantity) ) {
+			if(self.shipment.shipmentDetail[i].quantity == null || isNaN(self.shipment.shipmentDetail[i].quantity) ) {
 				selected_quantity = 0;
 			} 
 						
@@ -236,7 +245,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 								self.disable_add_product = true;
 								self.disable_save = false;
 							}, function (reject) {
-								self.shipment.products[i].product_quantity = null;
+								self.shipment.shipmentDetail[i].quantity = null;
 							}
 						);
 				break;
@@ -260,19 +269,23 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		var index = this.$parent.$index;
 		
 		//-- assign object
-		self.shipment.products[index].product = selected.originalObject;
+		self.shipment.shipmentDetail[index].product = selected.originalObject;
 		
-		self.shipment.products[index].product = {
+		console.log(self.shipment.shipmentDetail[index].product.product_id);
+		
+		/*self.shipment.shipmentDetail[index].product = {
 				"hsns" : [{"hsn" : {}}]
-		}
+		}*/
+		
+		self.shipment.shipmentDetail[index].shipmnetHsnDetail = [{"hsn" : null}];
 		
 		//-- assign to dynamic table in product
-		self.shipment.products[index].product_id = selected.originalObject.product_id;
-		self.shipment.products[index].product_type = selected.originalObject.product_Type;
-		self.shipment.products[index].max_height = selected.originalObject.max_height;
-		self.shipment.products[index].max_width = selected.originalObject.max_width;
-		self.shipment.products[index].max_length = selected.originalObject.max_length;
-		self.shipment.products[index].max_weight = selected.originalObject.max_weight;
+		/*self.shipment.shipmentDetail[index].product_id = selected.originalObject.product_id;*/
+		self.shipment.shipmentDetail[index].product_type = selected.originalObject.product_Type;
+		self.shipment.shipmentDetail[index].height = selected.originalObject.max_height;
+		self.shipment.shipmentDetail[index].width = selected.originalObject.max_width;
+		self.shipment.shipmentDetail[index].length = selected.originalObject.max_length;
+		self.shipment.shipmentDetail[index].weight = selected.originalObject.max_weight;
 		
 		
 		
@@ -289,17 +302,16 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		self.shipment.forpricesetting = {
 				"from_branch_id" : self.shipment.sender_branch.branch_id,
 				"to_branch_id" : self.shipment.consignee_branch.branch_id,
-				"product_id" : 	self.shipment.products[index].product_id,
+				"product_id" : 	self.shipment.shipmentDetail[index].product.product_id,
 				"service_id" : self.shipment.service.service_id,
-				"max_weight" : self.shipment.products[index].max_weight
+				"max_weight" : self.shipment.shipmentDetail[index].weight
 		};
-		
 
 		priceSettingService.fetch_priceforShipment(self.shipment.forpricesetting)
 			.then(
 					function(res) {
 						self.shipment.handling_charge = res.handling_charges;
-						self.shipment.products[index].product_unitprice = parseFloat(res.price);
+						self.shipment.shipmentDetail[index].unit_price = parseFloat(res.price);
 						
 						self.checkQuantity(index);
 					}, function(errResponse) {
@@ -320,14 +332,14 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------------ Calculate total price in a row begin
 	
 	self.calc_totalprice = function (index) {
-		self.shipment.products[index].product_totalprice = 
-			parseInt(self.shipment.products[index].product_quantity) * parseFloat(self.shipment.products[index].product_unitprice);	
+		self.shipment.shipmentDetail[index].total_price = 
+			parseInt(self.shipment.shipmentDetail[index].quantity) * parseFloat(self.shipment.shipmentDetail[index].unit_price);	
 		
 		//calculate chargeable weight & Delivery charges
 		var chargeabled_weight = 0, delivery_charges = 0;
-		for(var i = 0; i < self.shipment.products.length; i++) {
-			delivery_charges = delivery_charges + self.shipment.products[i].product_totalprice; 
-			chargeabled_weight = chargeabled_weight + self.shipment.products[i].max_weight; 
+		for(var i = 0; i < self.shipment.shipmentDetail.length; i++) {
+			delivery_charges = delivery_charges + self.shipment.shipmentDetail[i].total_price; 
+			chargeabled_weight = chargeabled_weight + self.shipment.shipmentDetail[i].weight; 
 		}
 		
 		
@@ -392,7 +404,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------------------------------------------- ADD HSN BEGIN
 	
 	self.addHSN = function (index, hsn) {
-		self.shipment.products[index].product.hsns.push({});
+		self.shipment.shipmentDetail[index].shipmnetHsnDetail.push({});
 	}
 	
 	
@@ -403,12 +415,12 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 
         var selectedHSNList=[];
         $scope.HSNselectedAll = false;
-        angular.forEach(self.shipment.products[index].product.hsns, function(selected){
+        angular.forEach(self.shipment.shipmentDetail[index].shipmnetHsnDetail, function(selected){
             if(!selected.selected){
             	selectedHSNList.push(selected);
             }
         }); 
-        self.shipment.products[index].product.hsns = selectedHSNList;
+        self.shipment.shipmentDetail[index].shipmnetHsnDetail = selectedHSNList;
         
 	}
 	//--------------------------------------------- remove Product end	
@@ -422,11 +434,12 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 
 		//-- assign object
 		
-		console.log(selected.originalObject);
-		self.shipment.products[products_index].product.hsns[index].hsn = selected.originalObject;
+		self.shipment.shipmentDetail[products_index].shipmnetHsnDetail[index].hsn = selected.originalObject;
 		$('#product'+ products_index +'_hsn_description'+index+'_value').val(selected.originalObject.hsn_description);
 		
-		/*self.shipment.products[products_index].product.hsns[index].hsn = selected.originalObject;
+		self.shipment.shipmentDetail[products_index].shipmnetHsnDetail[index].product = self.shipment.shipmentDetail[index].product;
+		
+		/*self.shipment.shipmentDetail[products_index].product.hsns[index].hsn = selected.originalObject;
 
 		$('#hsn_description'+index+'_value').val(selected.originalObject.hsn_description);*/
 		
@@ -440,7 +453,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		var products_index = this.$parent.$parent.$index;
 		
 		//-- assign selected object to HSN
-		self.shipment.products[products_index].product.hsns[index].hsn = selected.originalObject;
+		self.shipment.shipmentDetail[products_index].shipmnetHsnDetail[index].hsn = selected.originalObject;
 		$('#product'+ products_index +'_hsn_code'+index+'_value').val(selected.originalObject.hsn_code);
 	}
 	//---------------------------------------------- HSN DESCRIPTION SEARCH end
@@ -449,9 +462,112 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT BEGIN------------------------------------
 	
+	//------------------------- Create new shipment begin --------------------------------------------//
+    function createShipment(shipment){
+    	
+    	/*shipment = {
+    			"shipment_id" : null,
+    			"lr_number" : null,
+    			"numberof_parcel" : null,
+    			"updated_by" : null,
+    			"created_by" : null,
+    			"reference_invoice_no" : null,
+    			"shipment_value" : null,
+    			"chargeable_weight" : null,
+    			"delivery_charge" : null,
+    			"handling_charge" : null,
+    			"tax" : null,
+    			"tax_amount" : null,
+    			"total_charges" : null,
+    			"shipment_date" : null,
+    			"pay_mode" : null,
+    			"bill_to" : null,
+    			"status" : null,
+    			"description" : null,
+    			"created_datetime" : null,
+    			"updated_datetime" : null,
+    			"cgst" : null,
+    			"igst" : null,
+    			"sgst" : null,
+    			"discount_amount" : null,
+    			"discount_percentage" : null,
+    			
+    			"sender_customer" : null,
+    			"consignee_customer" : null,
+    			"sender_branch" : null,
+    			"consignee_branch" : null,
+    			"service" : null,
+    			"shipmentDetail" : null [{
+    				
+    				"shipmentdetail_id" : null,
+    				"quantity" : null,
+    				"length" : null,
+    				"width" : null,
+    				"height" : null,
+    				"weight" : null,
+    				"unit_price" : null,
+    				"total_price" : null,
+    				"shipment" : null,
+    				"hsn" : null,
+    				"product" : null,
+    				
+    				"shipmnetHsnDetail" : [{
+    					"shipmenthsndetail_id" : null,
+        				"shipment" : null,
+    					"product" : null,
+    					"hsn" : null,
+    					"shipmentDetail" : null
+    					
+    				}],
+    				
+    				
+    			}]
+    			
+    	};*/
+    	console.log(shipment);
+    	ShipmentService.createShipment(shipment)
+            .then(
+            		function () {
+                        self.message = " shipment created..!";
+            			successAnimate('.success');            			
+            		},
+           
+            function(errResponse){
+            			
+            			console.log(errResponse);
+    			self.message = "Error while creating shipment..! ";
+    			successAnimate('.failure');                  
+            }
+        );
+    } 
+	//------------------------- Create new shipment end ----------------------------------------------//  
+    
 	self.submit = function () {
-		console.log(self.shipment);
+		self.shipment.lr_number = $('#lr_number').val();
+		delete self.shipment.forpricesetting;
+		
+		/*delete self.shipment.shipmentDetail[0].product;*/
+		delete self.shipment.shipmentDetail[0].shipmnetHsnDetail;
+		delete self.shipment.shipmentDetail[0].product_type;
+		if( self.shipment.shipment_id == null ) {
+			
+			self.confirm_title = 'Save';
+			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+			self.confirm_msg = self.confirm_title+ ' shipment?';
+			self.confirm_btnclass = 'btn-success';
+			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+				.then(
+						function (res) {
+									 	    		
+							createShipment(self.shipment);  
+			 	        	
+			 	        	
+						}
+					);
+			
+		}
 	}
 	
+
 	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT END------------------------------------	
 }]);

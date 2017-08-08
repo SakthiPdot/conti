@@ -10,10 +10,34 @@
 contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	
 	var factory = {
-
+			createShipment : createShipment
 	};
 	
 	return factory;
 
     
+	//---------------------------------- Create shipment begin
+	
+	 function createShipment(shipment) {
+	        var deferred = $q.defer();
+	        
+	    	$http({
+	    		method : 'POST',
+	    		url : 'create_shipment',
+	    		data : shipment,
+	    		headers : getCsrfHeader()
+	    	})
+	    	.then(
+	    			function (response) {    				
+	    				deferred.resolve(response.data);
+	    			},
+	    			function (errResponse) {
+	    				deferred.reject(errResponse);
+	    			}
+	    		);
+	    		return deferred.promise;
+	     
+	    }
+	 
+		//---------------------------------- Create shipment end
 }]);

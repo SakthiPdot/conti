@@ -48,5 +48,16 @@ public class ShipmentDaoImpl implements ShipmentDao {
 			return lrno;
 		}
 	}
+	
+	@Override
+	@Transactional
+	public void saveOrUpdate(ShipmentModel shipment) {
+		// TODO Auto-generated method stub
+		
+		sessionFactory.getCurrentSession().saveOrUpdate(shipment);
+		
+	}
+	
+	
 
 }
