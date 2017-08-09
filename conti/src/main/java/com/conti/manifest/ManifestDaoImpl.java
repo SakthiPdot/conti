@@ -2,11 +2,15 @@ package com.conti.manifest;
 
 import java.util.List;
 
-import org.hibernate.Query;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+
+import com.conti.manifest.*;
+import com.conti.master.customer.CustomerModel;
 
 /**
  * @Project_Name conti
@@ -35,14 +39,6 @@ public class ManifestDaoImpl implements ManifestDao
 				.createQuery("from ManifestModel WHERE obsolete ='N' and branch_id = " + branch_id ).list();
 		return listmanifest;
 		
-	}
-	
-	@Override
-	@Transactional
-	public int fetchLastManifestNo(){
-		int lastManifestNo=0;
-		Query query=sessionFactory.getCurrentSession().createQuery("select MAX(manifest_number) from ManifestModel WHERE obsolete = 'N'");
-		return (query.uniqueResult()==null)?lastManifestNo:Integer.parseInt(query.uniqueResult().toString());
 	}
 	
 	

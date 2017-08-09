@@ -15,9 +15,6 @@ import com.conti.master.branch.BranchModel;
 import java.util.List;
 public interface ManifestDao 
 {
-	//====================add manifest===================
-		public int fetchLastManifestNo();
-	
 	//====================Manifest  DAO declaration Start===================
 	
 		public List<ManifestModel>getManifest(int branch_id);
