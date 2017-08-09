@@ -795,7 +795,7 @@
 																			 	</div>
 																			 	
 																			 	<div class = "col-lg-12">
-																			 			<a type="button" class="btn btn-danger pull-left" data-ng-click="ctrl.hsnCancel()" data-dismiss="modal"> <i class="fa fa-times"></i> Cancel</a>
+																			 			<!-- <a type="button" class="btn btn-danger pull-left" data-ng-click="ctrl.hsnCancel()" data-dismiss="modal"> <i class="fa fa-times"></i> Cancel</a> -->
 																				 		<a type="button" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</a>
 										                                            
 																			 	</div>
