@@ -64,7 +64,7 @@ public class AddShipmentController {
 			int lrno = shipmentDao.fetchMAXlrno(branch_id);
 			
 			model.addObject("lrno", lrno);
-			model.addObject("branch", branch);
+			model.addObject("branch", branch);   
 			model.addObject("title", "Add Shipment");
 			model.setViewName("Shipment/add shipment");
 			

@@ -76,11 +76,11 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 							<b>${title}</b>
 						</div>
 					</div>
-
+	
 					<div class="col-md-2"></div>
 
 					<div class="col-md-3 col-sm-4 col-xs-6">
-						<b>Last Manifest No : MNFT 59202</b>
+						<b>Last Manifest No : MNFT {{lastManifestNumber}}</b>
 					</div>
 
 				</div>
@@ -146,7 +146,8 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										<span class="text-padding">Status</span> <select
 											class="form-control">
 											<option>--Select--</option>
-											<option>Booked</option>
+											<option>Booked</option>										
+											<option>Missing</option>
 										</select>
 
 									</div>
@@ -326,10 +327,13 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 
   
      <!-- DATA TABLE SCRIPTS -->
-    <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
      <script src="resources/custom/js/custom.js"></script>
-  	<script src="resources/custom/js/session.js"></script>
+  	<script src="resources/custom/js/session.js"></script>  	
+	<script src="resources/custom/js/confirmDialog.js"></script>
+  	<script src="resources/custom/js/manifest/add_manifest_controller.js"></script>
+  	<script src="resources/custom/js/manifest/add_manifest_service.js"></script>
+  	
+  	
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();

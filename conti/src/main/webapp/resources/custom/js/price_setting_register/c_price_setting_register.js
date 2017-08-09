@@ -8,8 +8,8 @@
  */
 
 	function editPS(id){
-				window.location.href="price_settings?id="+id;
-				valid = true;	
+				valid = true;
+				window.location.href="price_settings?id="+id;	
 			}
 			
 angular.module('contiApp').controller('priceSettingRegisterController',
