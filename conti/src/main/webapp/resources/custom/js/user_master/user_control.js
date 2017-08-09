@@ -1032,5 +1032,5 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 			
 			return success;
 		}
-	    //---------------------------- Register search end ---------------------------------------//
+	    //---------------------------- Register search end ---------------------------------------//	    
 }]);
