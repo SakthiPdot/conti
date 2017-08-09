@@ -534,7 +534,13 @@ console.log(self.shipment.shipmentDetail[products_index].shipmentHsnDetail);
 			delete self.shipment.shipmentDetail[i].product_type;	
 			delete self.shipment.shipmentDetail[i].viewHSNDetail_link;
 		}
-		console.log(self.shipment);
+		self.shipment.sendercustomer_address1 = self.shipment.sender_customer.customer_addressline1;
+		self.shipment.sendercustomer_address2 = self.shipment.sender_customer.customer_addressline2;
+		self.shipment.consigneecustomer_address1 = self.shipment.consignee_customer.customer_addressline1;
+		self.shipment.consigneecustomer_address2 = self.shipment.consignee_customer.customer_addressline2;
+		self.shipment.sender_location = self.shipment.sender_customer.location;
+		self.shipment.consignee_location = self.shipment.consignee_customer.location;
+		
 		if( self.shipment.shipment_id == null ) {
 			
 			self.confirm_title = 'Save';

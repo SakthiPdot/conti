@@ -19,6 +19,7 @@ import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerModel;
+import com.conti.master.location.Location;
 import com.conti.master.service.ServiceMaster;
 
 /**
@@ -37,6 +38,8 @@ public class ShipmentModel {
 	int shipment_id, lr_number, numberof_parcel,
 		updated_by, created_by, reference_invoice_no;
 	String shipment_date, pay_mode, bill_to, status, description, 
+			sendercustomer_address1, sendercustomer_address2,
+			consigneecustomer_address1, consigneecustomer_address2,
 			created_datetime, updated_datetime, obsolete;
 	
 	float shipment_value, chargeable_weight, delivery_charge, handling_charge,
@@ -90,6 +93,29 @@ public class ShipmentModel {
 	public void setConsignee_branch(BranchModel consignee_branch) {
 		this.consignee_branch = consignee_branch;
 	}
+	
+	//------------------- Sender location
+	private Location sender_location;
+	@JoinColumn(name = "sendercustomer_location_id", referencedColumnName = "location_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	public Location getSender_location() {
+		return sender_location;
+	}
+	public void setSender_location(Location sender_location) {
+		this.sender_location = sender_location;
+	}
+	
+	//------------------ consigee location
+	private Location consignee_location;
+	@JoinColumn(name = "consigneecustomer_location_id", referencedColumnName = "location_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE) 
+	public Location getConsignee_location() {
+		return consignee_location;
+	}
+	public void setConsignee_location(Location consignee_location) {
+		this.consignee_location = consignee_location;
+	}
+
 	
 	//----------------- Service
 	private ServiceMaster service;
@@ -239,6 +265,36 @@ public class ShipmentModel {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	
+	@Column(name = "sendercustomer_address1")
+	public String getSendercustomer_address1() {
+		return sendercustomer_address1;
+	}
+	public void setSendercustomer_address1(String sendercustomer_address1) {
+		this.sendercustomer_address1 = sendercustomer_address1;
+	}
+	@Column(name = "sendercustomer_address2")
+	public String getSendercustomer_address2() {
+		return sendercustomer_address2;
+	}
+	public void setSendercustomer_address2(String sendercustomer_address2) {
+		this.sendercustomer_address2 = sendercustomer_address2;
+	}
+	@Column(name = "consigneecustomer_address1")
+	public String getConsigneecustomer_address1() {
+		return consigneecustomer_address1;
+	}
+	public void setConsigneecustomer_address1(String consigneecustomer_address1) {
+		this.consigneecustomer_address1 = consigneecustomer_address1;
+	}
+	@Column(name = "consigneecustomer_address2")
+	public String getConsigneecustomer_address2() {
+		return consigneecustomer_address2;
+	}
+	public void setConsigneecustomer_address2(String consigneecustomer_address2) {
+		this.consigneecustomer_address2 = consigneecustomer_address2;
 	}
 	
 	@Column(name = "created_datetime")
