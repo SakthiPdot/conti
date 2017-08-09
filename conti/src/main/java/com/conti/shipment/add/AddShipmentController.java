@@ -103,6 +103,7 @@ public class AddShipmentController {
 				shipment.getSender_customer().setUpdated_by(user_id);
 				shipment.getSender_customer().setCreated_datetime(dateFormat.format(date).toString());
 				shipment.getSender_customer().setUpdated_datetime(dateFormat.format(date).toString());
+				shipment.getSender_customer().setBranchModel(shipment.getSender_branch());
 				customerDao.saveOrUpdate(shipment.getSender_customer());
 			}
 			
@@ -113,6 +114,7 @@ public class AddShipmentController {
 				shipment.getConsignee_customer().setUpdated_by(user_id);
 				shipment.getConsignee_customer().setCreated_datetime(dateFormat.format(date).toString());
 				shipment.getConsignee_customer().setUpdated_datetime(dateFormat.format(date).toString());
+				shipment.getConsignee_customer().setBranchModel(shipment.getConsignee_branch());
 				customerDao.saveOrUpdate(shipment.getConsignee_customer());
 			}
 			
