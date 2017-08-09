@@ -370,8 +370,9 @@
     <!-- JS Scripts-->
     <!-- jQuery Js -->
     <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
+    
     <!-- Bootstrap Js -->
-    <script src="resources/built-in/assets/js/bootstrap.min.js"></script>
+     <script src="resources/built-in/assets/js/bootstrap.min.js"></script> 
 	<script src=" resources/custom/js/date-time-picker.min.js" ></script>
     <!-- Metis Menu Js -->
     <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>

@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
+import com.conti.master.customer.CustomerDao;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -40,6 +41,9 @@ public class AddShipmentController {
 	private BranchDao brandhDao;
 	@Autowired
 	private ShipmentDao shipmentDao;
+	@Autowired
+	private CustomerDao customerDao;
+	
 	Loggerconf loggerconf = new Loggerconf();	
 	UserInformation userInformation;
 	ConstantValues constantVal = new ConstantValues();
@@ -79,11 +83,40 @@ public class AddShipmentController {
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
 		int user_id = Integer.parseInt(userInformation.getUserId());
-		
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		
 	/*	try {*/
+		
+			int lrno = shipmentDao.fetchMAXlrno(branch_id);
+			if( lrno == 0 ) {
+				lrno = 10001;
+			} else {
+				lrno = lrno + 1;
+			}
+			
+			if(shipment.getSender_customer().getCustomer_id() == 0){
+				shipment.getSender_customer().setActive("Y");
+				shipment.getSender_customer().setObsolete("N");
+				shipment.getSender_customer().setCreated_by(user_id);
+				shipment.getSender_customer().setUpdated_by(user_id);
+				shipment.getSender_customer().setCreated_datetime(dateFormat.format(date).toString());
+				shipment.getSender_customer().setUpdated_datetime(dateFormat.format(date).toString());
+				customerDao.saveOrUpdate(shipment.getSender_customer());
+			}
+			
+			if(shipment.getConsignee_customer().getCustomer_id() == 0) {
+				shipment.getConsignee_customer().setActive("Y");
+				shipment.getConsignee_customer().setObsolete("N");
+				shipment.getConsignee_customer().setCreated_by(user_id);
+				shipment.getConsignee_customer().setUpdated_by(user_id);
+				shipment.getConsignee_customer().setCreated_datetime(dateFormat.format(date).toString());
+				shipment.getConsignee_customer().setUpdated_datetime(dateFormat.format(date).toString());
+				customerDao.saveOrUpdate(shipment.getConsignee_customer());
+			}
+			
+			shipment.setLr_number(lrno);
 			shipment.setObsolete("N");
 			shipment.setCreated_by(user_id);
 			shipment.setUpdated_by(user_id);
