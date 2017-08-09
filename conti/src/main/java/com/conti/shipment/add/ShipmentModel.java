@@ -36,9 +36,9 @@ import com.conti.master.service.ServiceMaster;
 public class ShipmentModel {
 	
 	int shipment_id, lr_number, numberof_parcel,
-		updated_by, created_by, reference_invoice_no;
+		updated_by, created_by;
 	String shipment_date, pay_mode, bill_to, status, description, 
-			sendercustomer_address1, sendercustomer_address2,
+			sendercustomer_address1, sendercustomer_address2, reference_invoice_no,
 			consigneecustomer_address1, consigneecustomer_address2,
 			created_datetime, updated_datetime, obsolete;
 	
@@ -322,17 +322,17 @@ public class ShipmentModel {
 	}
 	
 	@Column(name = "reference_invoice_no")
-	public int getReference_invoice_no() {
+	public String getReference_invoice_no() {
 		return reference_invoice_no;
 	}
-	public void setReference_invoice_no(int reference_invoice_no) {
+	public void setReference_invoice_no(String reference_invoice_no) {
 		this.reference_invoice_no = reference_invoice_no;
 	}
-	
 	@Column(name = "cgst")
 	public float getCgst() {
 		return cgst;
 	}
+	
 	public void setCgst(float cgst) {
 		this.cgst = cgst;
 	}
