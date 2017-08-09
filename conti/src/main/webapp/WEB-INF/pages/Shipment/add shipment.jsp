@@ -276,7 +276,7 @@
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer address"
 											placeholder = "Ex: NGO Colony, Landmark: post office opp."
-                            		    required />                             		    
+                            		     />                             		    
                             		    
                             		</div>
                             		
@@ -470,7 +470,7 @@
 	                            		    	data-trigger="focus" data-toggle="popover" 
 												data-placement="top" data-content="Please enter customer address"
 												placeholder = "Ex: NGO Colony, Landmark: post office opp."
-	                            		    required />                             		    
+	                            		    />                             		    
 	                            		    
 	                            		</div>
                             	
@@ -839,12 +839,11 @@
 			   										data-placement="top" data-content="Please enter product weight"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
                                             		data-ng-model = "product.weight" data-ng-keyup = "ctrl.priceby_weight($index)" required/> </td>
-                                            <td> <input type = "number" placeholder="Product weight" class="form-control" 
-                                          			
+                                            <td> <input type = "text" placeholder="Product weight" class="form-control" 
+                                          			onkeypress="return CheckIsNumeric(event)"
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product quantity"
-													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
-                                            		data-ng-model = "product.quantity" data-ng-keyup = "ctrl.checkQuantity($index)" required/> </td>
+													data-ng-model = "product.quantity" data-ng-keyup = "ctrl.checkQuantity($index)" required/> </td>
                                             <td> <input type = "number" placeholder="unit price" class="form-control" 
                                             
                                             		data-trigger="focus" data-toggle="popover" 

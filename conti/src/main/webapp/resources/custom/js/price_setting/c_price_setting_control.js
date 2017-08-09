@@ -10,8 +10,8 @@
 	function afterSave(x){
 		console.log(x);
 		if(x=="close"){
-			location.href='price_settings_register';
-			valid = true;			  
+			valid = true;
+			location.href='price_settings_register';			  
 		}else{
 			angular.element(document.getElementById('priceSettingFormId')).scope().formReset();
 		}			
