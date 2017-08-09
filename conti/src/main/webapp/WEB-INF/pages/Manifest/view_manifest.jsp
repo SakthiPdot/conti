@@ -374,9 +374,8 @@
     <script src="resources/custom/js/manifest/manifest_controller.js"></script>
     <script src="resources/custom/js/manifest/manifest_service.js"></script>
     <script src="resources/custom/js/branch_master/branch_service.js"></script>
-
-  <script src="resources/custom/js/confirmDialog.js"></script>   
-  <script type="text/javascript" src="resources/custom/js/validation.js"></script>
+   <script src="resources/custom/js/confirmDialog.js"></script>   
+   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
     <script>
 		$('[data-toggle="popover"]').popover();
 		$('.regSettings').click(function(e) {

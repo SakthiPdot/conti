@@ -33,8 +33,24 @@
 </head>
 
 
-<body style="overflow-x:hidden;">
+<body style="overflow-x:hidden;" data-ng-app="contiApp" data-ng-controller="ReceiptController">
  
+<!-- ------------------------- Overlay for message begin ------------------ -----  -->
+	<div class="overlay hideme"></div>
+<!-- ------------------------- Overlay for message end ------------------ -----  -->	
+<!-- ------------------------- Success message begin ------------------ -----  -->
+	<div class="success hideme">
+		<i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span>
+	</div>
+<!-- ------------------------- Success message end ------------------ -----  -->
+<!-- ------------------------- Failure message begin ------------------ -----  -->	
+	<div class="failure hideme">
+		<i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}
+		<!-- <span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times" aria-hidden="true"></i></span> -->
+	</div>
+<!-- ------------------------- Failure message end ------------------ -----  -->
+	
 	
 	<jsp:include page="../Dashboard/nav.jsp"/>
 	
@@ -85,21 +101,18 @@
                 			     <div class="col-lg-12 noPaddingLeft"> 
                 			      <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">From</span>
-                			      		<select class="form-control">
-                			      			<option>--Select--</option>
-                			      			<option>Coimbatore</option>
-                			      			<option>Chennai</option>
-                			      			<option>Bangalore</option>
+                			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches"
+                			      		 data-ng-model="ctrl.receipt.frombranch" data-ng-init="ctrl.branches[0].branch_id">
+                			      			<option value="">--Select--</option>
                 			      		</select>
                 			      </div>
                 			      
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">To</span>
-                			      		<select class="form-control">
-                			      			<option>--Select--</option>
-                			      			<option>Coimbatore</option>
-                			      			<option>Chennai</option>
-                			      			<option>Bangalore</option>
+                			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches" 
+                			      		data-ng-model="ctrl.receipt.tobranch">
+                			      			<option value=''>--Select--</option>
+                			      			
                 			      		</select>
                 			      </div>
                 			      </div>
@@ -112,20 +125,21 @@
                 			         <div class="col-lg-3 branchclass">
 	                			      		 <span class="paddingtop">From  </span>   	                                       
 	                                          <div class="form-group input-group marginleftrightspace">
-					                                <input type="text" class="form-control"/>
-		                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
-		                                            </span>
-		                                          
+					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.fromdate"
+					                           			   data-trigger= "focus"data-toggle="popover" data-placement="top"
+					                            		   data-content="Please select from date"/>
+					                            	 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 		                                     </div>
 	                                  </div>
                 			      
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="paddingtop">To</span>
-                			      		  <div class="form-group input-group spacemarginleftright">
-				                                <input type="text" class="form-control"/>
+                			      		 <div class="form-group input-group marginleftrightspace">
+				                                <input type="text" class="form-control datepicker2" data-ng-model="ctrl.todate"
+													  data-trigger= "focus"data-toggle="popover" data-placement="top"
+					                            		data-content="Please select to date"/>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                            </span>
-	                                          
 	                                     </div>
                 			      </div>
                 			      </div>
@@ -321,19 +335,46 @@
 		
     </div>
 
-<!--     <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>     
-    <script src="resources/built-in/assets/js/bootstrap.min.js"></script>  
-    <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script> -->
-     <!-- DATA TABLE SCRIPTS -->
-    <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
-     <script src="resources/custom/js/custom.js"></script>
-  	<script src="resources/custom/js/session.js"></script>
+<script src="resources/custom/js/custom.js"></script>
+    <script src="resources/custom/js/manifest/receipt_controller.js"></script>
+    <script src="resources/custom/js/manifest/receipt_service.js"></script>
+    <script src="resources/custom/js/branch_master/branch_service.js"></script>
+   <script src="resources/custom/js/confirmDialog.js"></script>   
+   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();
             });
     </script>
+    
+    <script type="text/javascript">
+
+    function getDate()
+    {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        } 
+
+        if(mm<10) {
+            mm = '0'+mm
+        } 
+
+        today =  yyyy+'-'+mm+ '-'+ dd;
+        return today;
+    }
+	    $('.datepicker1').dateTimePicker({
+	        limitMax: getDate()
+	    });
+	    
+	    $('.datepicker2').dateTimePicker({
+	        limitMax: getDate()
+	    });
+        </script>
 
 </body>
 
