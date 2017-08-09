@@ -2,7 +2,11 @@ package com.conti.manifest;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
+import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerModel;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
@@ -141,7 +146,7 @@ public class ManifestRestController
 		
   //--------------------- TO get all manifest  list function start -------------------	
 	
-	@RequestMapping( value = "/manifest/", method = RequestMethod.GET)
+	@RequestMapping( value = "manifest", method = RequestMethod.GET)
 		public ResponseEntity<List<ManifestModel>> fetchAllManifest(HttpServletRequest request) 
 		{
 			userInformation = new UserInformation(request);
@@ -154,10 +159,12 @@ public class ManifestRestController
 				
 				if(manifestModel.isEmpty()) 
 				{
+					
 					return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
 				}
 				else 
 				{
+					//System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy "+manifestModel);
 					return new ResponseEntity<List<ManifestModel>> (manifestModel, HttpStatus.OK);	
 				}			
 			} 
@@ -166,10 +173,7 @@ public class ManifestRestController
 				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
 				return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
 			}
-				
-				
-			
-		}
+	}
 	//--------------------- TO get all manifest  list function End ------------------------
 	
 	
@@ -350,8 +354,82 @@ public class ManifestRestController
 		}
 	//----------------------Manifest number search function End---------------------------------
 		
+	//--------------------------------------Manifest print Start------------------------------------------
+		@RequestMapping(value="/manifest_print", method=RequestMethod.POST)
+		public ModelAndView manifestPrint(@RequestParam("manifest") String manifest, HttpServletRequest request)throws JsonProcessingException,IOException
+		{
+			JSONArray jsonArray=new JSONArray(manifest);
+			String[] manifestid=new String[jsonArray.length()];
+			for(int i=0;i<jsonArray.length();i++)
+			{
+				JSONObject jsonObject=jsonArray.getJSONObject(i);
+				manifestid[i]=Integer.toString(jsonObject.getInt("manifest_id"));
+			}
+			
+			List<ManifestModel> listManifest=new ArrayList<ManifestModel>();
+			for(int i=0;i<manifestid.length;i++)
+			{
+				ManifestModel manifestModel=manifestDao.getManifestbyId(Integer.parseInt(manifestid[i]));
+				listManifest.add(manifestModel);
+			}
+			Company company=companySettingDAO.getById(1);
+			ModelAndView model = new ModelAndView("print/manifest_print");
+			
+			String base64DataString ="";
+			if(company!=null && company.getCompany_logo()!=null){
+				byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+				try {
+					 base64DataString = new String(encodeBase64 , "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+				}		
+			}else{
+				base64DataString = ConstantValues.NO_IMAGE;	
+			}
+			
+			model.addObject("title","Manifest");
+			model.addObject("company",company);
+			model.addObject("listManifest",listManifest);
+			model.addObject("image",base64DataString);
+			return model;
+		}
 		
-	//==========================================Manifest Detailed Controller==============================================================
+//------------------------------------------------------------------------------------------------
+		
+//------------------------------------Manifest delete function Start-------------------------------------
+		
+		@RequestMapping(value="delete_manifest/{id}", method=RequestMethod.DELETE)
+		public ResponseEntity<ManifestModel>deleteManifest(@PathVariable("id") int[] id, HttpServletRequest request)
+		{
+			
+			try
+			{
+				userInformation=new UserInformation(request);
+			
+			String username=userInformation.getUserName();
+			int user_id=Integer.parseInt(userInformation.getUserId());
+			int i=0;
+			Date date=new Date();
+			DateFormat dateformat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			for( i=0; i<id.length;i++)
+			{
+				System.out.print(" UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU  Delete id value : "+ id[i]);
+				ManifestModel manifestModel=manifestDao.getManifestbyId(id[i]);
+				manifestModel.setUpdated_by(user_id);
+				manifestModel.setUpdated_datetime(dateformat.format(date));
+				manifestModel.setObsolete("Y");
+				manifestDao.saveOrUpdate(manifestModel);
+			}
+			return new ResponseEntity<ManifestModel>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			catch(Exception exception) 
+			{
+				return new ResponseEntity<ManifestModel>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+	//----------------------------------------------------------------------------------------------------------------------
+		
+	//==========================================Manifest Detailed Controller START==============================================================
 		
 	//------------------------------To get Manifest detailed data--------------------------------------
 	

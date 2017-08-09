@@ -22,24 +22,35 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.Filtermanifests=[];//Store all manifest detailed
 		self.FilterManifestdetailed=[];//for store detailed manifest based on manifest id
 		self.branches=[];
+		self.selected_manifest=[];
+		//self.selected_manifestdetailed[];
 		self.manifest={};
 		self.manifest1={};
 		self.heading="Master";
 		self.message=null;
 		self.print = print;
-		//self.submit=submit;
+		self.manifestSelectAll=manifestSelectAll;
+		self.manifestDetailedSelectAll=manifestDetailedSelectAll;
+		self.manifestSelect=manifestSelect;
+		self.manifestDetailedSelect=manifestDetailedSelect;
 		self.save='saveclose'
 		self.close=close;
+		self.deleteManifest=deleteManifest;
 		self.manifestFilter=manifestFilter;
 		self.inwardManifest=inwardManifest;
 		self.outwardManifest=outwardManifest;
 		self.manifestSearch=manifestSearch;
-		
+		self.shownoofRecord=shownoofRecord;
 		self.manifestDetailed=manifestDetailed;
+		$scope.shownoofrec=10;
 		
 		var manifest_id=$("#manifest_id").val();
-		console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" +manifest_id);
-		manifestDetailed(manifest_id);
+		//--call detailed manifest
+		if(manifest_id!=null)
+		{
+			console.log("call detailed manifest and id: " +manifest_id);
+			manifestDetailed(manifest_id);
+		}
 		fetchAllManifest();
 		fetchAllBranches();
 		
@@ -48,9 +59,19 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			self.manifest={};
 			self.heading='Master';
 			fetchAllManifest();
+			
 		}	
-
 		
+	//-----------------------------New and close function---------------------------	
+		function newOrClose(){
+			console.log(self.save);				
+			if(self.save== "saveclose" ){
+				 drawerClose('.drawer') ;
+			}
+			reset();
+		}
+	
+	//-------------------------------------------------------------------------------
 		//---------------------Customer Master drawer close begin-----------
 		
 		function close(title)
@@ -74,6 +95,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 				.then(
 						function (branches) {
 							self.branches = branches;
+							pagination();
 							console.log("get all branches "+self.branches)
 						}, 
 						function (errResponse) {
@@ -93,7 +115,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 						{
 							self.manifests = manifest;
 							self.Filtermanifests=self.manifests;
-							//pagination();
+							console.log('fetching manifest '+self.Filtermanifests);
 						}, 
 						function (errResponse) {
 							console.log('Error while fetching manifest');
@@ -102,8 +124,58 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		}
 		//-------------------------- Fetch All Manifest records end  ---------------------//
 		
-		//-------------------------------------- Print begin -----------------------------//
-	    function print() {
+		
+	//--------------------------------Manifest delete function -----------------------------------
+			
+	function deleteManifest()
+	{
+		console.log('selected manifest length :'+self.selected_manifest.length);
+		if(self.selected_manifest.length == 0 ) 
+		{
+	   		self.message ="Please select atleast one record for delete..!";
+			successAnimate('.failure');
+    	} 
+		else
+		{
+			self.confirm_title='Delete';
+			self.confirm_type=BootstrapDialog.TYPE_DANGER;
+			self.confirm_msg=self.confirm_title+' '+' Manifest?';
+			self.confirm_btnclass='btn-danger';
+			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+			.then(function (res) 
+				{	
+					var deleted_id=[];
+					for(var i=0; i<self.selected_manifest.length; i++)
+					{
+						deleted_id[i]=self.selected_manifest[i].manifest_id;
+						console.log(' for delete :    '+self.selected_manifest[i].manifest_id);
+					}
+					console.log('Number of manifest id for delete :    '+deleted_id);
+					ManifestService.deleteManifest(deleted_id)
+					.then(function (manifest) 
+					{
+						var index = self.manifests.indexOf(manifest);
+						self.manifests.splice(index,1);
+						self.message =manifest.manifest_number+ " Manifest Deleted...!";
+						successAnimate('.success');
+						newOrClose();
+						
+					}, 
+					function (errResponse) 
+					{
+		                console.error('Error while Delete Manifest' + errResponse );
+					}
+				);
+			}
+		
+		);
+		}
+	}
+	//-------------------------------------------------------------------------------------------------------------------
+	
+	//-------------------------------------- Print begin -----------------------------//
+	    
+	function print() {
 	    	if(self.selected_manifest.length == 0 ) {
 		   		self.message ="Please select atleast one record..!";
 				successAnimate('.failure');
@@ -114,7 +186,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    	}
 	    }
 	    
-	    //-------------------------------------- Print end -----------------------------//
+	    //-------------------------------------------------------------------------------//
 	    
 	  //------------------------- View Manifest Filter function start ------------------//   
 	    function manifestFilter(manifest) 
@@ -137,7 +209,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    			}
 	    		);
 	    }
-	    //------------------------- View Manifest Filter function start ------------------//       
+	    //------------------------------------------------------------------------------//       
 	    
 	    
 	    //-----------------------To get inward manifest list function Start--------------------------
@@ -208,25 +280,259 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	//---------------------------------------------------------------------------------------------------
 
 	  
-	//--------------------------------------Open Manifest Detailed view Start----------------------------
+	
 	  
-	  function manifestDetailed(manifest_id)
+	  //--------------------------Manifest Select All check box function start------------------
+	  
+	  function manifestSelectAll()
 	  {
-		  console.log('Contoller: Manifest detailed call !')
-		  ManifestService.manifestDetailed(manifest_id)
-		  .then(
-				  function(manifestdetailed)
-				  {
-					  self.FilterManifestdetailed=manifestdetailed;
-					  console.log(self.FilterManifestdetailed)
-				  },
-				  function(errResponse)
-				  {
-					  console.log('Error while Manifest detailed get')
-				  }
-			 );
-//		  window.location.href='detailed_manifest'
+		  console.log('Call select all Manifest '+ $scope.pageSize);
+		  self.selected_manifest=[];
+		  for(var i=0; i<$scope.pageSize; i++)
+		  {
+			  self.Filtermanifests[i].select=$scope.selectallmanifests;
+			  if($scope.selectallmanifests)
+			  {
+			  	 self.selected_manifest.push(self.Filtermanifests[i]);
+			  }
+		  }
 	  }
-	 //--------------------------------------------------------------------------------------------------
+	  //--------------------------------------------------------------------------------------
+	  
+	  //---------------------Manifest Record select on Register start-----------------------
+	  
+	  function manifestSelect(manifest)
+	  {
+		  console.log('Call Manifest select all function')
+		  var index=self.selected_manifest.indexOf(manifest);
+		  if(manifest.select)
+			  {
+			  	self.selected_manifest.push(manifest);
+			  }
+		  else
+			  {
+			  	//$scope.selectallmanifests=false;
+			  	self.selected_manifest.splice(index,1);
+			  }
+	  }
+	  
+	  //----------------------------------------------------------------------------------------
+	  
+	  
+	//---------------------Show no of record in Manifest Register---------------------------
+	
+	  function shownoofRecord()
+	  {
+		  $scope.pageSize=$scope.shownoofrec;
+		  self.Filtermanifests=self.manifests.slice($scope.currentPage*$scope.pageSize);
+		  if(self.Filtermanifests.length<$scope.pageSize)
+		  {
+			  $scope.previousDisabled=true;
+			  $scope.nextDisabled=true;
+		  }
+		  else
+		  {
+			  $scope.nextDisabled=false;
+		  }
+	  }
+	  //----------------------------------------------------------------------------------------
+	  
+	//----------------------------------- Record Count begin -----------------------------//
+		
+		function findrecord_count()
+		{
+			BranchService.findrecord_count()
+			.then(
+					function (record_count) {
+						console.log(record_count);
+						$scope.totalnof_records  = record_count;
+					}, 
+					function (errResponse) {
+						console.log('Error while fetching record count');
+					}
+				);
+		}
+		
+	//------------------------------------------------------------------------------------//  
+	   
+	//-------------------------------------Manifest Pagination---------------------------------  
+	  function pagination() 
+	    {
+	        $scope.pageSize = $scope.shownoofrec;
+	    	console.log($scope.pageSize);
+			$scope.currentPage = 0;
+			$scope.totalPages = 0;
+			//$scope.totalItems = Math.ceil(self.Filterbranches.length/$scope.pageSize);
+			self.Filtermanifests = self.manifests;
+			
+			$scope.nextDisabled = false;
+			$scope.previouseDisabled = true;
+			if( self.Filtermanifests.length <= 10 )
+			{
+				$scope.nextDisabled = true;
+			} 
+			if( self.Filtermanifests.length < 100 ) 
+			{
+				$scope.totalnof_records  = self.Filtermanifests.length;
+				//findrecord_count();
+			} else {
+				findrecord_count();
+			}
+						
+	    }
+	  
+	//---------------------------------------------------------------------------------------------------
+	  
+ //---------------------------------Pagination function start------------------------------------------
+	  
+	  $scope.paginate = function(nextPrevMultiplier) 
+	    {
+	    	$scope.selectallmanifests=false;
+	    	$scope.currentPage += (nextPrevMultiplier * 1);
+	    	self.Filtermanifests = self.manifests.slice($scope.currentPage*$scope.pageSize);
+	    	
+	    	console.log(self.Filtermanifests.length);
+	    	
+	    	if(self.Filtermanifests.length == 0) {
+	    		BranchService.pagination_byPage($scope.currentPage)
+	    		.then(
+	    				function (filterManifest) {
+	    					
+	    					if ( filterManifest.length == 0 ) {
+	    						$scope.nextDisabled = true;
+	    					} else if ( filterManifest.length < 10 ) {
+	    						self.Filtermanifests = filterManifest;
+	    						$scope.nextDisabled = true;
+	    					} else {
+	    						self.Filtermanifests = filterManifest;
+	    					}
+	    					
+	    				}, 
+	    				function (errResponse) {
+	    					console.log('Error while pagination');
+	    				}
+	    			);
+	    	} 
+	    	
+	    	if(self.Filtermanifests.length < $scope.pageSize) {
+	    		$scope.nextDisabled = true;
+	    	}
+	    	console.log(nextPrevMultiplier);
+	    	if($scope.currentPage == 0) {
+	    		$scope.previouseDisabled = true;
+	    	}
+	    	if(nextPrevMultiplier == -1) {    		
+	    		$scope.nextDisabled = false;
+	    	} else {
+	    		$scope.previouseDisabled = false;
+	    	}
+	    	
+	    }
+
+//----------------------------------------------------------------------------------------------------
+	  
+//------------------------------------First last pagination--------------------------------------------
+	  
+	  $scope.firstlastPaginate = function (page) 
+	    {
+	    	 $scope.selectallmanifests=false;
+	    	if( page == 1 ) { // first
+	    		$scope.currentPage = 0;
+	    		$scope.previouseDisabled = true;
+	    		$scope.nextDisabled = false;
+	    		self.Filtermanifests = self.manifests.slice($scope.currentPage*$scope.pageSize);
+	    		fetchAllManifest();
+	    	} else { // last
+	    		
+	    		$scope.currentPage = ((Math.ceil(self.Filtermanifests.length/$scope.pageSize)) - 1 );
+	    		$scope.previouseDisabled = false;
+	    		$scope.nextDisabled = true;
+	    		
+	    		self.Filtermanifests = self.manifests.slice($scope.currentPage*$scope.pageSize);
+	    		console.log(self.Filtermanifests.length);
+	    		if(self.Filtermanifests.length == 0) 
+	    		{
+	    			BranchService.pagination_byPage(page)
+	        		.then(
+	        				function (filterManifest) {
+	        					self.Filtermanifests = filterManifest;
+	        				}, 
+	        				function (errResponse) {
+	        					console.log('Error while fetching Branch');
+	        				}
+	        			);
+	    		}
+	    	}
+	    }
+	    
+	//----------------------------------------------------------------------------------  
+	
+	
+	  
+ //=================================MANIFEST DETAILED PAGE ALL FUNCTION START===============================
+
+	  
+  //--------------------------------------Open Manifest Detailed view Start----------------------------
+  
+  function manifestDetailed(manifest_id)
+  {
+	  console.log('Contoller: Manifest detailed call !')
+	  ManifestService.manifestDetailed(manifest_id)
+	  .then(
+			  function(manifestdetailed)
+			  {
+				  self.FilterManifestdetailed=manifestdetailed;
+				  console.log(self.FilterManifestdetailed)
+			  },
+			  function(errResponse)
+			  {
+				  console.log('Error while Manifest detailed get')
+			  }
+		 );
+
+  }
+ //--------------------------------------------------------------------------------------------------
+	  
+//--------------------------Manifest Detailed Select All check box function start------------------
+	  
+	  function manifestDetailedSelectAll()
+	  {
+		  console.log('Call select all Manifest Detailed'+$scope.pageSize)
+		  self.selected_manifestdetailed=[];
+		  for(var i=0; i<$scope.pageSize; i++)
+		  {
+			  self.FilterManifestdetailed[i].select=$scope.selectallmanifestdetailed;
+			  if($scope.selectallmanifestdetailed)
+				  {
+				  	 self.selected_manifestdetailed.push(self.FilterManifestdetailed[i]);
+				  }
+		  }
+	  }
+	  //--------------------------------------------------------------------------------------------
+	  
+	  //---------------------Manifest Detailed Record select on Register start-----------------------
+	  
+	  function manifestDetailedSelect(manifestdetailed)
+	  {
+		  console.log('Call Manifest Detailed select all function')
+		  var index=self.selected_manifestdetailed.indexOf(manifestdetailed);
+		  if(manifestdetailed.select)
+			  {
+			  	self.selected_manifestdetailed.push(manifestdetailed);
+			  }
+		  else
+			  {
+			  	//$scope.selectallmanifests=false;
+			  	self.selected_manifestdetailed.splice(index,1);
+			  }
+	  }
+	  
+	  //--------------------------------------------------------------------------------------------
+	  
+	 
+	  
+	  
+	  
+	  //=================================MANIFEST DETAILED PAGE ALL FUNCTION END===============================
 	}
 	]);

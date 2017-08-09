@@ -240,25 +240,66 @@
 										<div class ="checkbox">
 											<label>
 												<i class = "fa" data-ng-class="{'fa-check': setting_sltnumber == true, 'fa-times': setting_sltnumber == false}"></i>										
-												<input type="checkbox" data-ng-init = "setting_sltnumber=true" data-ng-model="setting_sltnumber" /> Manifest Number
+												<input type="checkbox" data-ng-init = "setting_sltnumber=true" data-ng-model="setting_sltnumber" /> SL No
 											</label>
 										</div>
 										
 										<div class ="checkbox">
 											<label>
-												<i class = "fa" data-ng-class="{'fa-check': setting_shipmentnumber == true, 'fa-times': setting_shipmentnumber == false}"></i>										
-												<input type="checkbox" data-ng-init = "setting_shipmentnumber=true" data-ng-model="setting_shipmentnumber" /> Manifest Number
+												<i class = "fa" data-ng-class="{'fa-check': setting_date == true, 'fa-times': setting_date == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_date=true" data-ng-model="setting_date" /> Date
+											</label>
+										</div>
+										
+											
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_lrnumber == true, 'fa-times': setting_lrnumber == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_lrnumber=true" data-ng-model="setting_lrnumber" /> LR Number
 											</label>
 										</div>
 										
 										<div class ="checkbox">
 											<label>
-												<i class = "fa" data-ng-class="{'fa-check': setting_shipmentstatus == true, 'fa-times': setting_shipmentstatus == false}"></i>										
-												<input type="checkbox" data-ng-init = "setting_shipmentstatus=true" data-ng-model="setting_shipmentstatus" /> Origin
+												<i class = "fa" data-ng-class="{'fa-check': setting_product == true, 'fa-times': setting_product == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_product=true" data-ng-model="setting_product" />Product
 											</label>
 										</div>
 										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_origin == true, 'fa-times': setting_origin == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_origin=true" data-ng-model="setting_origin" />Origin
+											</label>
+										</div>
 										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_destination == true, 'fa-times': setting_destination == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_destination=true" data-ng-model="setting_destination" />Destination
+											</label>
+										</div>
+										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check':setting_sender == true, 'fa-times': setting_sender == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_sender=true" data-ng-model="setting_sender" />Sender
+											</label>
+										</div>
+										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check':setting_consignee == true, 'fa-times': setting_consignee == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_consignee=true" data-ng-model="setting_consignee" />Consignee
+											</label>
+										</div>
+										
+										<div class ="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check':setting_shipmentstatus == true, 'fa-times':setting_shipmentstatus == false}"></i>										
+												<input type="checkbox" data-ng-init = "setting_shipmentstatus=true" data-ng-model="setting_shipmentstatus" />Status
+											</label>
+										</div>
 										
 									</div>
 										<a type="button" class="btn btn-primary" onclick="location.href='downloadExcelManifest';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
@@ -277,10 +318,12 @@
                                     <thead>
                                         <tr 
                                         	>
-                                            <th><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" data-ng-model="selectall"></th>
+                                            <th><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" 
+                                            data-ng-model="selectallmanifestdetailed"></th>
+                                            
                                             <th data-ng-show="setting_sltnumber">SL no</th>
                                             <th data-ng-show="setting_date">Date</th>
-                                            <th data-ng-show="setting_lrnumber">LRNumber</th>
+                                            <th data-ng-show="setting_lrnumber">LR Number</th>
                                             <th data-ng-show="setting_product">Product</th>
                                             <th data-ng-show="setting_origin">Origin</th>
                                             <th data-ng-show="setting_destination">Destination</th>
@@ -294,16 +337,17 @@
                                     </thead>
                                     <tbody>
                                         <tr data-ng-repeat = "manifestdetailed in ctrl.FilterManifestdetailed">
-                                        	<td><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" data-ng-model="selectall"></td>
-                                            <th data-ng-show="setting_sltnumber">SL no</th>
-                                            <th data-ng-show="setting_date">Date</th>
-                                            <th data-ng-show="setting_lrnumber">{{manifestdetailed.lr_number}}</th>
-                                            <th data-ng-show="setting_product">Product</th>
-                                            <th data-ng-show="setting_origin">Origin</th>
-                                            <th data-ng-show="setting_destination">Destination</th>
-                                            <th data-ng-show="setting_sender">Sender</th>
-                                            <th data-ng-show="setting_consignee">Consignee</th>
-                                            <th data-ng-show="setting_shipmentstatus">{{manifestdetailed.status}}</th>
+                                        	<td><input type="checkbox" data-ng-click="ctrl.manifestDetailedSelect(manifestdetailed)"
+                                        	 data-ng-model="manifestdetailed.select"></td>
+                                            <td data-ng-show="setting_sltnumber" >{{$index+1}}</td>
+                                            <td data-ng-show="setting_date">{{manifestdetailed.shipmentModel.created_datetime}}</td>
+                                            <td data-ng-show="setting_lrnumber">{{manifestdetailed.shipmentModel.lr_number}}</td>
+                                            <td data-ng-show="setting_product">{{manifestdetailed.shipmentModel.senderbranch_id}}</td>
+                                            <td data-ng-show="setting_origin">{{manifestdetailed.shipmentModel.senderbranch_id}}</td>
+                                            <td data-ng-show="setting_destination">{{manifestdetailed.shipmentModel.consigneebranch_id}}</td>
+                                            <td data-ng-show="setting_sender">{{manifestdetailed.shipmentModel.sendercustomer_id}}</td>
+                                            <td data-ng-show="setting_consignee">{{manifestdetailed.shipmentModel.consigneecustomer_id}}</td>
+                                            <td data-ng-show="setting_shipmentstatus">{{manifestdetailed.shipmentModel.status}}</td>
                                             
                                            
                                             

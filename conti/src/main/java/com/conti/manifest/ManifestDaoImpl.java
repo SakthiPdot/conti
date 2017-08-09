@@ -151,7 +151,14 @@ public class ManifestDaoImpl implements ManifestDao
 		
 	//-------------------------------------Get Manifest Search by End----------------------------------------------	
 		
+	//-------------------------------------Manifest Save and Update function---------------------------------------
 		
+		@Override
+		@Transactional
+		public void saveOrUpdate(ManifestModel manifestModel)
+		{
+			sessionFactory.getCurrentSession().saveOrUpdate(manifestModel);
+		}
 		
 		
 		

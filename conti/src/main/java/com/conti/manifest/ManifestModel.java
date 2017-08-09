@@ -18,7 +18,7 @@ import com.conti.master.branch.BranchModel;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ManifestModel 
 {
-	private int manifest_id,shipment_id,updated_by,created_by,manifest_origin,manifest_destination;
+	private int manifest_id,updated_by,created_by,manifest_origin,manifest_destination;
 	private String manifest_number,vehicle_number,driver_name,manifest_status,obsolete;
 	private String created_datetime,updated_datetime;
 	
@@ -62,14 +62,6 @@ public class ManifestModel
 		this.branchModel2 = branchModel2;
 	}
 	
-	
-	@Column(name = "SHIPMENT_ID")
-	public int getShipment_id() {
-		return shipment_id;
-	}
-	public void setShipment_id(int shipment_id) {
-		this.shipment_id = shipment_id;
-	}
 	
 	@Column(name = "UPDATED_BY")
 	public int getUpdated_by() {

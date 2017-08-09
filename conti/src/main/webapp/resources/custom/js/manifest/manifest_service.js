@@ -16,14 +16,15 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 			inwardManifest:inwardManifest,
 			outwardManifest:outwardManifest,
 			manifestSearch:manifestSearch,
-			manifestDetailed:manifestDetailed
+			manifestDetailed:manifestDetailed,
+			deleteManifest:deleteManifest
 	};
 	
 	return factory;
 	//-------------------------- Fetch All Manifest begin ---------------------//	
 	function fetchAllManifest() {
 		var deferred = $q.defer();
-		$http.get('manifest/')
+		$http.get('manifest')
 			.then(
 					function (response) {
 						deferred.resolve(response.data);
@@ -120,8 +121,7 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 			data:searchkey,
 			headers:getCsrfHeader()
 		})
-		.then(
-				function(response)
+		.then(function(response)
 				{
 					console.log(response.data);
 					deferred.resolve(response.data);
@@ -136,6 +136,31 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 	
 	//-----------------------------------------------------------------------------------------------
 	
+//------------------ Manifest Delete service start-----------------------------------
+
+function deleteManifest(manifest_id)
+{
+	var def=$q.defer();
+	$http({
+		method:'DELETE',
+		url:'delete_manifest/'+manifest_id,
+		headers:getCsrfHeader()
+		}).then(
+				function(response)
+				{
+					def.resolve(response.data);
+				},
+				function(errResponse)
+				{
+					def.reject(errResponse);
+				}
+			);
+	return def.promise;
+}
+//-------------------------------------------------------------------------------------------------------
+
+
+//====================================Manifest detailed Service function Start================================
 	
 	//--------------------------Get Manifest detailed data begin---------------------------
 	
@@ -164,4 +189,7 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 			return deferred.promise;
 		}
 	//------------------------------------------------------------------------------------
+		
+	//=========================================================================================
+		
 }]);

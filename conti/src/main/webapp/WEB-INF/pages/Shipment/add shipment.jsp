@@ -110,7 +110,7 @@
 	              </div>
 	              
 	              <div class="col-md-3 col-sm-4 col-xs-6">	              
-	               <c:if test="${ lrno > 0 }"> <b>Last LR No : ${lrno}   </b></c:if>     
+	               <c:if test="${ lrno > 0 }"> <b>Last LR No : ${branch.lrno_prefix}${lrno}   </b></c:if>     
 	              </div>
 	              
               </div>
@@ -718,13 +718,11 @@
 			   											    data-placement="top" data-content="Please enter & select prduct"
 															
 														    ></div>
-                                            	<a href="" data-toggle="modal" data-target="#HSNmodal{{$index}}" style="text-decoration: none !important;"> Add HSN Details</a>
-                                            	
-                                            	
-                                            	
+                                            	<a href="" data-toggle="modal" data-target="#HSNmodal{{$index}}" id = "HSNmodal_a{{$index}}" data-toggle="tooltip" style="text-decoration: none !important;"> {{product.viewHSNDetail_link? product.shipmentHsnDetail.length+' HSN added' : 'Add HSN Details'}}</a>
+
                                             	<!-- HSN MODAL BEGIN -->
                                             	
-				                                            	<div class="modal fade" id="HSNmodal{{$index}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				                                            	<div class="modal fade" id="HSNmodal{{$index}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  data-backdrop="static" data-keyboard="false" aria-hidden="true">
 									                                <div class="modal-dialog">
 									                                    <div class="modal-content">
 									                                    
@@ -797,7 +795,7 @@
 																			 	</div>
 																			 	
 																			 	<div class = "col-lg-12">
-																			 			<a type="button" class="btn btn-danger pull-left" data-dismiss="modal"> <i class="fa fa-times"></i> Cancel</a>
+																			 			<!-- <a type="button" class="btn btn-danger pull-left" data-ng-click="ctrl.hsnCancel()" data-dismiss="modal"> <i class="fa fa-times"></i> Cancel</a> -->
 																				 		<a type="button" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</a>
 										                                            
 																			 	</div>
@@ -1149,7 +1147,10 @@
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
 
 <script>
-	$('[data-toggle="popover"]').popover();
+$('[data-toggle="popover"]').popover();
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
 </script>
 </body>
 

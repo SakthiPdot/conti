@@ -222,15 +222,20 @@
 									Batch Action <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a href="#">Delete</a></li>
-									
+									<li><a data-ng-click="ctrl.deleteManifest()">Delete</a></li>
 								</ul>
-								
 							</div>
-							
+							<div class = "row paddingtop">
+                               	<div class = "col-md-12"> 
+                               		<select name ="shownoofrec" data-ng-model="shownoofrec" 
+                               		data-ng-options = "noofrec for noofrec in [10, 15, 25, 50, 100]" 
+                               		class ="form-control" data-ng-click="ctrl.shownoofRecord()">
+                               	</select>
+                               	</div>
+                   			</div>
 
 						</div> 
-                                </div>
+                       </div>
                               
                                 <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
@@ -287,7 +292,7 @@
 									</div>
 										<a type="button" class="btn btn-primary" onclick="location.href='downloadExcelManifest';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
                                       	  <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_manifest.length == 0" ><i class="fa fa-print fa-lg"></i></button>
-	                                      <input type = "hidden" name = "cust" value = "{{ctrl.selected_manifest}}" />
+	                                      <input type = "hidden" name = "manifest" value = "{{ctrl.selected_manifest}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										</form>
 <!--                                      <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button> -->
@@ -303,7 +308,7 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" data-ng-model="selectall"></th>
+                                            <th><input type="checkbox" data-ng-click="ctrl.manifestSelectAll()" data-ng-model="selectallmanifests"></th>
                                             <th data-ng-show="setting_manifestnumber">Manifest Number</th>
                                             <th data-ng-show="setting_manifestorigin">Origin</th>
                                             <th data-ng-show="setting_manifestdestination">Destination</th>
@@ -315,12 +320,12 @@
                                     </thead>
                                     <tbody>
                                     
-                                        <tr data-ng-repeat = "manifest in ctrl.Filtermanifests| limitTo:padeSize" 
+                                        <tr data-ng-repeat = "manifest in ctrl.Filtermanifests| limitTo:pageSize" 
 											data-id = {{manifest.manifest_id}} ondblClick = "test(this)">
                                        
                                         <!-- data-ng-dblclick="ctrl.manifestDetailed(manifest.manifest_id)" > -->
                                         		
-                                            <td><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" data-ng-model="selectall"></td>
+                                            <td><input type="checkbox" data-ng-click="ctrl.manifestSelect(manifest)" data-ng-model="manifest.select"></td>
                                             <td data-ng-show="setting_manifestnumber">{{manifest.manifest_number}}</td>
                                             <td data-ng-show="setting_manifestorigin">{{manifest.branchModel1.branch_name}}</td>
                                             <td data-ng-show="setting_manifestdestination">{{manifest.branchModel2.branch_name}}</td>
@@ -342,6 +347,14 @@
                                		</div>
                                 </div>
                             
+                            	<div class="col-lg-6 icons-button">
+                                   <div class="pull-right">
+                                   		<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                                     											
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previous</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "paginate(1)">Next</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
+                                	</div>
+                                </div>
                         </div>
                     </div>
                   

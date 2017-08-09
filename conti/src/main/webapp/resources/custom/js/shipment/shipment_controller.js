@@ -27,7 +27,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			
 	};
 	
-
+	$scope.newHSN = [];
 	
 	/*self.shipment.hsns = {};*/
 	
@@ -67,13 +67,16 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 				
 		};
 		
-		$('#sender_search_mbl_value').val();
-		$('#consignee_search_mbl_value').val();
-		$('#sender_location_name_value').val();
-		$('#consignee_branch_name_value').val();
-		$('#consignee_location_name_value').val();
-		$('#service_name_value').val();
-		$('#product_name').val();
+		self.shipment.shipment_date = $filter("date")(Date.now(), 'yyyy-MM-dd HH:mm:ss');
+		self.shipment.status = "Booked";
+		
+		$('#sender_search_mbl_value').val('');
+		$('#consignee_search_mbl_value').val('');
+		$('#sender_location_name_value').val('');
+		$('#consignee_branch_name_value').val('');
+		$('#consignee_location_name_value').val('');
+		$('#service_name_value').val('');
+		$('#product_name_value').val('');
 	}
 	
 	//------------------------------- Reset end
@@ -104,7 +107,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------ Sender address begin
     $scope.sender_location_name = function (sender_location_name) {
  	    
-    	self.shipment.sender_customer.location = sender_location_name.originalObject.location;
+    	self.shipment.sender_customer.location = sender_location_name.originalObject;
     	
     	$("#sender_city").val(sender_location_name.originalObject.address.city);
     	$("#sender_state").val(sender_location_name.originalObject.address.state);
@@ -140,7 +143,9 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------ Consignee address begin
     $scope.consignee_location_name = function (consignee_location_name) {
  	    
-    	self.shipment.consignee_customer.location = consignee_location_name.originalObject.location;
+    	self.shipment.consignee_customer.location = consignee_location_name.originalObject;
+    	
+    	console.log(consignee_location_name);
     	
     	$("#consignee_city").val(consignee_location_name.originalObject.address.city);
     	$("#consignee_state").val(consignee_location_name.originalObject.address.state);
@@ -149,7 +154,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     	
 	};	
 	//------------------------ Consignee address end
-	
+
 	
 	//------------------------ Consignee branch begin
     $scope.consignee_branch_name = function (consignee_branch_name) {
@@ -467,13 +472,16 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		
 		self.shipment.shipmentDetail[products_index].shipmentHsnDetail[index].product = self.shipment.shipmentDetail[products_index].product;
 		
-		console.log(self.shipment.shipmentDetail[products_index].shipmentHsnDetail);
+		self.shipment.shipmentDetail[products_index].viewHSNDetail_link = true; //for HSN detail link
+		//for view hsn_code
+		var hsn_code = [];
+		for ( var i =0; i<self.shipment.shipmentDetail[products_index].shipmentHsnDetail.length; i++ ) {
+			hsn_code[i] = self.shipment.shipmentDetail[products_index].shipmentHsnDetail[i].hsn.hsn_code;			
+		}
+		$('#HSNmodal_a'+products_index).attr("title", hsn_code);
 		
-		
-		/*self.shipment.shipmentDetail[products_index].product.hsns[index].hsn = selected.originalObject;
-
-		$('#hsn_description'+index+'_value').val(selected.originalObject.hsn_description);*/
-		
+		$scope.newHSN.push( selected.originalObject );
+console.log(self.shipment.shipmentDetail[products_index].shipmentHsnDetail);
 	}
 	//---------------------------------------------- HSN CODE SEARCH end
 	
@@ -491,6 +499,11 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	}
 	//---------------------------------------------- HSN DESCRIPTION SEARCH end
 	
+	//-------------------------------- HSN CANCEL BEGIN
+		self.hsnCancel = function () {
+			
+		}
+	//-------------------------------- HSN CANCEL END
 	//------------------------------------------------------------------------------HSN FUNCTIONS END	
 	
 	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT BEGIN------------------------------------
@@ -518,9 +531,10 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		self.shipment.lr_number = $('#lr_number').val();
 		delete self.shipment.forpricesetting;
 		for(var i=0; i<self.shipment.shipmentDetail.length; i++ ) {
-			delete self.shipment.shipmentDetail[i].product_type;			
+			delete self.shipment.shipmentDetail[i].product_type;	
+			delete self.shipment.shipmentDetail[i].viewHSNDetail_link;
 		}
-
+		console.log(self.shipment);
 		if( self.shipment.shipment_id == null ) {
 			
 			self.confirm_title = 'Save';
