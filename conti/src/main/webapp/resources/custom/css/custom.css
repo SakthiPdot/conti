@@ -262,7 +262,12 @@
 .makeGreen{
 	color:green;
 }
-			
+	
+.viewprofile_color{
+	
+	color:#2e6da4;
+}	
+	
 	.checkbox input[type="checkbox"] {
 		-webkit-appearance: none !important;
 		-moz-appearance: none !important;

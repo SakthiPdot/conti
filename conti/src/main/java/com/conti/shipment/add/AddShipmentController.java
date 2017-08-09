@@ -23,6 +23,7 @@ import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerDao;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
+import com.conti.others.SendMailSMS;
 import com.conti.others.UserInformation;
 
 /**
@@ -43,7 +44,8 @@ public class AddShipmentController {
 	private ShipmentDao shipmentDao;
 	@Autowired
 	private CustomerDao customerDao;
-	
+	@Autowired
+	private SendMailSMS sendMailSMS;
 	Loggerconf loggerconf = new Loggerconf();	
 	UserInformation userInformation;
 	ConstantValues constantVal = new ConstantValues();
@@ -87,15 +89,15 @@ public class AddShipmentController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		
-	/*	try {*/
-		
+		try {
+			// LRNO CALCULATION
 			int lrno = shipmentDao.fetchMAXlrno(branch_id);
 			if( lrno == 0 ) {
 				lrno = 10001;
 			} else {
 				lrno = lrno + 1;
 			}
-			
+			//NEW CUSTOMER SAVE FOR SNEDER
 			if(shipment.getSender_customer().getCustomer_id() == 0){
 				shipment.getSender_customer().setActive("Y");
 				shipment.getSender_customer().setObsolete("N");
@@ -104,9 +106,18 @@ public class AddShipmentController {
 				shipment.getSender_customer().setCreated_datetime(dateFormat.format(date).toString());
 				shipment.getSender_customer().setUpdated_datetime(dateFormat.format(date).toString());
 				shipment.getSender_customer().setBranchModel(shipment.getSender_branch());
+				shipment.getSender_customer().setCustomer_type(shipment.getPay_mode());
+				
+				if( shipment.getSender_customer().getGstin_number().length() != 0 ) {
+					shipment.getSender_customer().setTaxin_payable("Yes");
+				} else {
+					shipment.getSender_customer().setTaxin_payable("No");
+				}
+				
 				customerDao.saveOrUpdate(shipment.getSender_customer());
 			}
 			
+			//NEW CUSTOMER SAVE FOR CONSIGNEE
 			if(shipment.getConsignee_customer().getCustomer_id() == 0) {
 				shipment.getConsignee_customer().setActive("Y");
 				shipment.getConsignee_customer().setObsolete("N");
@@ -115,6 +126,13 @@ public class AddShipmentController {
 				shipment.getConsignee_customer().setCreated_datetime(dateFormat.format(date).toString());
 				shipment.getConsignee_customer().setUpdated_datetime(dateFormat.format(date).toString());
 				shipment.getConsignee_customer().setBranchModel(shipment.getConsignee_branch());
+				shipment.getConsignee_customer().setCustomer_type(shipment.getPay_mode());
+				if( shipment.getSender_customer().getGstin_number().length() != 0 ) {
+					shipment.getSender_customer().setTaxin_payable("Yes");
+				} else {
+					shipment.getSender_customer().setTaxin_payable("No");
+				}
+				
 				customerDao.saveOrUpdate(shipment.getConsignee_customer());
 			}
 			
@@ -130,15 +148,27 @@ public class AddShipmentController {
 				shipmentDetail.setShipment(shipment);
 			}
 			
-			shipmentDao.saveOrUpdate(shipment);
-					
+			shipmentDao.saveOrUpdate(shipment);  // SAVE SHIPMENT
+			
+			
+			//SMS FOR SENDER 
+			/*String message = "Your parcel have been booked successfully at Conti Courier Service."
+					+ "LR Number: " + lrno + " "
+					+ "From city " + shipment.getSender_customer().location.address.getCity() +" to "
+									+ shipment.getConsignee_customer().location.address.getCity() + " " 
+					+ "No.of Parcel " + shipment.getNumberof_parcel() + " "
+					+ "Delivery Charge " + shipment.getDelivery_charge();
+			String mobileno = Long.toString(shipment.getSender_customer().getCustomer_mobileno());
+			String sms_respone = sendMailSMS.send_SMS(mobileno, message);*/
+			
+			
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<Void> (HttpStatus.CREATED);
 			
-		/*} catch ( Exception exception) {
+		} catch ( Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
 			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}*/
+		}
 		
 		
 	}

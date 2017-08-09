@@ -20,10 +20,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			"sender_branch" : {},
 			"consignee_branch" : {},
 			"service" : {},
-			"shipmentDetail" : [{
-				"product" : {},
-				
-			}]
+			"shipmentDetail" : []
 			
 	};
 	
@@ -165,7 +162,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     	
     	/*self.shipment.sender_branch.branch_id = $('#sender_branch_id').val();
     	self.shipment.sender_branch.branch_name = $('#sender_branch_name').val();*/
-	
+    	makeenable_shipmentDetail_add();  // make enable shipment detail if consignee branch, service and no of parcel != 0
     	sender_branch($('#sender_branch_id').val());
 	};	
 	//------------------------ Consignee branch end
@@ -242,14 +239,29 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//---------------------------------------------- Search service begin
 	$scope.service_name=function (selected){
+		
 		self.shipment.service = selected.originalObject;
+		
+		makeenable_shipmentDetail_add();  // make enable shipment detail if consignee branch, service and no of parcel != 0
+		
 	}
 	//---------------------------------------------- Search service end
 	
+	//------------------------ CHECK shipment detail if consignee branch, service and no of parcel != 0
+	function makeenable_shipmentDetail_add() {
+		if( self.shipment.numberof_parcel.length == 0 ||  $('#service_name_value').val().length == 0 
+				|| $('#consignee_branch_name_value').val().length == 0 ) {
+			self.disable_add_product = true;
+		} else {
+			self.disable_add_product = false;
+		}
+	}
 	
 	//--------------------------------------------- Compare quantity and no of parcel beging
 	self.checkQuantity = function (index) {
-		self.disable_add_product = false;
+		/*self.disable_add_product = false;*/
+		makeenable_shipmentDetail_add();  // make enable shipment detail if consignee branch, service and no of parcel != 0
+		
 		var quantity = 0;
 		var selected_quantity = 0;
 		for(var i = 0; i < self.shipment.shipmentDetail.length; i++) {
@@ -369,14 +381,14 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			parseInt(self.shipment.shipmentDetail[index].quantity) * parseFloat(self.shipment.shipmentDetail[index].unit_price);	
 		
 		//calculate chargeable weight & Delivery charges
-		var chargeabled_weight = 0, delivery_charges = 0;
+		var chargeabled_weight = 0, delivery_charge = 0;
 		for(var i = 0; i < self.shipment.shipmentDetail.length; i++) {
-			delivery_charges = delivery_charges + self.shipment.shipmentDetail[i].total_price; 
+			delivery_charge = delivery_charge + self.shipment.shipmentDetail[i].total_price; 
 			chargeabled_weight = chargeabled_weight + self.shipment.shipmentDetail[i].weight; 
 		}
 		
 		
-		self.shipment.delivery_charges = delivery_charges.toFixed(2);		
+		self.shipment.delivery_charge = delivery_charge.toFixed(2);		
 		self.shipment.chargeable_weight = chargeabled_weight.toFixed(2);	
 		
 		self.calc_discount(); // call discount
@@ -388,23 +400,23 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	self.calc_discount = function() {
 		var discount_percent = parseFloat(self.shipment.discount_percentage) / parseInt(100);
-		self.shipment.discount_amount = ( parseFloat(self.shipment.delivery_charges) *  (parseFloat(discount_percent)) ).toFixed(2);
+		self.shipment.discount_amount = ( parseFloat(self.shipment.delivery_charge) *  (parseFloat(discount_percent)) ).toFixed(2);
 		
 		if(isNaN(self.shipment.discount_amount)) {
 			self.shipment.discount_amount = null;
 		}
-		if(isNaN(self.shipment.delivery_charges)) {
-			self.shipment.delivery_charges = null;
+		if(isNaN(self.shipment.delivery_charge)) {
+			self.shipment.delivery_charge = null;
 		}
 		if(isNaN(self.shipment.chargeable_weight)) {
 			self.shipment.chargeable_weight = null;
 		}
 		
 		if( self.shipment.discount_amount != null ) { // if discount is applicable
-			self.shipment.total_amount = (parseFloat(self.shipment.delivery_charges) - parseFloat(self.shipment.discount_amount)) 
+			self.shipment.total_amount = (parseFloat(self.shipment.delivery_charge) - parseFloat(self.shipment.discount_amount)) 
 											+ parseFloat(self.shipment.handling_charge);			
 		} else {// if discount is not applicable
-			self.shipment.total_amount = parseFloat(self.shipment.delivery_charges) + parseFloat(self.shipment.handling_charge);			
+			self.shipment.total_amount = parseFloat(self.shipment.delivery_charge) + parseFloat(self.shipment.handling_charge);			
 		}
 		
 		
@@ -528,31 +540,51 @@ console.log(self.shipment.shipmentDetail[products_index].shipmentHsnDetail);
 	//------------------------- Create new shipment end ----------------------------------------------//  
     
 	self.submit = function () {
-		self.shipment.lr_number = $('#lr_number').val();
-		delete self.shipment.forpricesetting;
-		for(var i=0; i<self.shipment.shipmentDetail.length; i++ ) {
-			delete self.shipment.shipmentDetail[i].product_type;	
-			delete self.shipment.shipmentDetail[i].viewHSNDetail_link;
-		}
-		console.log(self.shipment);
-		if( self.shipment.shipment_id == null ) {
+		
+		
+		if ( $('#sender_location_name_value').val().length == 0 ) {
+			$("#sender_location_name_value").focus();
+		} else if ( $('#consignee_branch_name_value').val().length == 0 ) {
+			$("#consignee_branch_name_value").focus();
+		} else if ( $("#consignee_location_name_value").val().length == 0 ) {
+			$("#consignee_location_name_value").focus();
+		} else if ( $("#service_name_value").val().length == 0 ) {
+			$("#service_name_value").focus();
+		} else {
+			self.shipment.lr_number = $('#lr_number').val();
+			delete self.shipment.forpricesetting;
+			for(var i=0; i<self.shipment.shipmentDetail.length; i++ ) {
+				delete self.shipment.shipmentDetail[i].product_type;	
+				delete self.shipment.shipmentDetail[i].viewHSNDetail_link;
+			}
+			self.shipment.sendercustomer_address1 = self.shipment.sender_customer.customer_addressline1;
+			self.shipment.sendercustomer_address2 = self.shipment.sender_customer.customer_addressline2;
+			self.shipment.consigneecustomer_address1 = self.shipment.consignee_customer.customer_addressline1;
+			self.shipment.consigneecustomer_address2 = self.shipment.consignee_customer.customer_addressline2;
+			self.shipment.sender_location = self.shipment.sender_customer.location;
+			self.shipment.consignee_location = self.shipment.consignee_customer.location;
 			
-			self.confirm_title = 'Save';
-			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
-			self.confirm_msg = self.confirm_title+ ' shipment?';
-			self.confirm_btnclass = 'btn-success';
-			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-				.then(
-						function (res) {
-									 	    		
-							createShipment(self.shipment);  
-			 	        	
-							reset();
-			 	        	
-						}
-					);
 			
+			if( self.shipment.shipment_id == null ) {
+				
+				self.confirm_title = 'Save';
+				self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+				self.confirm_msg = self.confirm_title+ ' shipment?';
+				self.confirm_btnclass = 'btn-success';
+				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+					.then(
+							function (res) {
+										 	    		
+								createShipment(self.shipment);  
+				 	        	
+								reset();
+				 	        	
+							}
+						);
+				
+			}
 		}
+				
 	}
 	
 
