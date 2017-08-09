@@ -76,7 +76,40 @@ public class ManifestRestController
 
 	private UserInformation userInformation;
 
+	
+	//========================== to display Add Manifest Screen==========================
+	
+	@RequestMapping(value =  "add_manifest", method = RequestMethod.GET)
+	public ModelAndView add_manifest(HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		
+		UserInformation userinfo = new UserInformation(request);
+		String username = userinfo.getUserName();
+		
+		String userid = userinfo.getUserId();
+		
+		session.setAttribute("username", username);
+		session.setAttribute("userid", userid);
+		
+		
+		ModelAndView model = new ModelAndView();
+		
+		
+		try
+		{
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			
+			model.addObject("title", "Add Manifest");
+			model.addObject("message", "This page is for ROLE_ADMIN only!");
+			model.setViewName("Manifest/add_manifest");
 
+			
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);
+		}
+		return model;
+	}
 	
 	
 	
@@ -98,6 +131,7 @@ public class ManifestRestController
 		try
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			
 			model.addObject("title", "View Manifest");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Manifest/view_manifest");
