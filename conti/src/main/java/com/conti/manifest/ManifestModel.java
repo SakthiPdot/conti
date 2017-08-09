@@ -18,8 +18,8 @@ import com.conti.master.branch.BranchModel;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ManifestModel 
 {
-	private int manifest_id,updated_by,created_by,manifest_origin,manifest_destination;
-	private String manifest_number,vehicle_number,driver_name,manifest_status,obsolete;
+	private int manifest_id,manifest_number,updated_by,created_by,manifest_origin,manifest_destination;
+	private String vehicle_number,driver_name,manifest_status,obsolete;
 	private String created_datetime,updated_datetime;
 	
 	
@@ -80,10 +80,10 @@ public class ManifestModel
 	}
 	
 	@Column(name = "MANIFEST_NUMBER")
-	public String getManifest_number() {
+	public int getManifest_number() {
 		return manifest_number;
 	}
-	public void setManifest_number(String manifest_number) {
+	public void setManifest_number(int manifest_number) {
 		this.manifest_number = manifest_number;
 	}
 	
