@@ -27,14 +27,15 @@
 	
 	 <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 	
-	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
-	  <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
-	 <link href="resources/custom/css/custom.css" rel="stylesheet">
+	<link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
+    <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
+    <link href="resources/custom/css/custom.css" rel="stylesheet">
 	<link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
 	<link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 
 	
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
-	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 	 
+	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
@@ -97,23 +98,28 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 
 								<div class="col-lg-12 noPaddingLeft">
 									<div class="col-lg-3 branchclass">
-										<span class="text-padding">From</span> <select
-											class="form-control">
-											<option>--Select--</option>
-											<option>Coimbatore</option>
-											<option>Chennai</option>
-											<option>Bangalore</option>
+										<span class="text-padding">From</span> 
+										
+										
+										<select
+											class="form-control" data-ng-model="fromBranch">				
+											 <option value="">--Select Branch Name--</option>
+											 <option data-ng-repeat="x in amctrl.branches" value="x.branch_id">{{x.branch_name}}</option>
 										</select>
+										
+										
 									</div>
 
 									<div class="col-lg-3 branchclass">
-										<span class="text-padding">To</span> <select
-											class="form-control">
-											<option>--Select--</option>
-											<option>Coimbatore</option>
-											<option>Chennai</option>
-											<option>Bangalore</option>
+										<span class="text-padding">To</span> 
+										
+										<select
+											class="form-control" data-ng-model="toBranch">														
+											 <option value="">--Select Branch Name--</option>
+											 <option data-ng-repeat="x in amctrl.branches" value="x.branch_id">{{x.branch_name}}</option>
 										</select>
+										
+										
 									</div>
 								</div>
 
@@ -122,7 +128,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									<div class="col-lg-3 branchclass">
 										<span class="paddingtop">From </span>
 										<div class="form-group input-group marginleftrightspace">
-											<input type="text" class="form-control" /> <span
+											<input type="text" class="form-control datepicker1" data-ng-model="amctrl.fromdate"/> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
 											</span>
 
@@ -132,10 +138,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									<div class="col-lg-3 branchclass">
 										<span class="paddingtop">To</span>
 										<div class="form-group input-group spacemarginleftright">
-											<input type="text" class="form-control" /> <span
+											<input type="text" class="form-control datepicker2" data-ng-model="amctrl.todate" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
 											</span>
-
 										</div>
 									</div>
 
@@ -143,20 +148,18 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 
 								<div class="col-lg-12 noPaddingLeft subhead-padding">
 									<div class="col-lg-3 branchclass">
-										<span class="text-padding">Status</span> <select
+										<span class="text-padding" data-ng-model="amctrl.status">Status</span> <select
 											class="form-control">
 											<option>--Select--</option>
 											<option>Booked</option>										
 											<option>Missing</option>
 										</select>
-
 									</div>
-
-									<div class="col-lg-3 branchclass"></div>
-									<div class="col-lg-4 branchclass">
-										<button class="btn btn-primary">View Shipment</button>
-									</div>
+									<div class="col-lg-4  col-lg-offset-3 branchclass">
+										<button class="btn btn-primary">View Shipment</button>									
+									</div>									
 								</div>
+								
 							</div>
 						</div>
 					</div>
@@ -331,14 +334,44 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
   	<script src="resources/custom/js/session.js"></script>  	
 	<script src="resources/custom/js/confirmDialog.js"></script>
   	<script src="resources/custom/js/manifest/add_manifest_controller.js"></script>
-  	<script src="resources/custom/js/manifest/add_manifest_service.js"></script>
-  	
+  	<script src="resources/custom/js/manifest/add_manifest_service.js"></script>  	
+    <script src="resources/custom/js/branch_master/branch_service.js"></script>
   	
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();
             });
     </script>
+    
+        <script type="text/javascript">
+
+    function getDate(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        } 
+
+        if(mm<10) {
+            mm = '0'+mm
+        } 
+
+        today =  yyyy+'-'+mm+ '-'+ dd;
+        return today;
+        }
+    
+	    $('.datepicker1').dateTimePicker({
+	        limitMax: getDate()
+	    });
+	    
+	    $('.datepicker2').dateTimePicker({
+	        limitMax: getDate()
+	    });
+        </script>
+        
          <!-- Custom Js -->
 
 </body>

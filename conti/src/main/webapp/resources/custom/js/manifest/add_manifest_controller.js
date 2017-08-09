@@ -7,9 +7,12 @@
  * @Updated_date_time aug 9, 2017 4:20:17 PM
  * 
  */
-angular.module('contiApp').controller('addManifestController',['$scope','addManifestService','ConfirmDialogService',
-	function($scope,addManifestService,ConfirmDialogService){
+angular.module('contiApp').controller('addManifestController',['$scope','BranchService','addManifestService','ConfirmDialogService',
+	function($scope,BranchService,addManifestService,ConfirmDialogService){
 
+	
+	var self=this;
+	self.branches = [];
 	//===================================Total Record Count====================================
 	fetchLastManifestNo();
 	
@@ -32,5 +35,37 @@ angular.module('contiApp').controller('addManifestController',['$scope','addMani
 	    return s;
 	}
 	
+	
+	//===================================fetch Address====================================	
+	fetchAllBranches();	
+	function fetchAllBranches() 
+	{
+		BranchService.fetchAllBranches()
+			.then(
+					function (response) 
+					{
+						console.log(response);
+						self.branches = response;
+					}, 
+					function (errResponse) {
+						console.log('Error while fetching branches');
+					}
+				);
+	}
+	//===================================fetch Address====================================
+	fetchAllShipment();
+	
+	function fetchAllShipment(){
+		addManifestService.fetchAllShipment()
+		.then(function(response){
+			self.Manifests=response;
+			self.FilteredManifests=response;
+			// pagination();
+			console.log(self.Manifests);
+		},
+		function(errResponse){
+			console.log("error fetching all shipment");					
+		});
+	}
 	
 }]);
