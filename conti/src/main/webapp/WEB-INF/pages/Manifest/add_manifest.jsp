@@ -293,15 +293,6 @@
 									<option>Vehicle No--</option>
 								</select>
 							</div>
-							
-							<div class="branchclass">
-								<span> Vehicle Destination</span> <select class="form-control">
-									<option>--Select--</option>
-									<option>Chennai--</option>
-									<option>Bangalore--</option>
-								</select>
-							</div> 
-							
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-danger pull-left"

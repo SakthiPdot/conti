@@ -10,7 +10,7 @@ package com.conti.manifest;
  */
 
 import com.conti.manifest.*;
-
+import com.conti.master.branch.BranchModel;
 
 import java.util.List;
 public interface ManifestDao 
@@ -25,6 +25,7 @@ public interface ManifestDao
 		public List<ManifestModel>getInwardManifest(int id);
 		public List<ManifestModel>getOutwardManifest(int id);
 		public List<ManifestModel>manifestSearch(String searchkey);
+		public void saveOrUpdate(ManifestModel manifestModel);//Save and update function
 	
 	//====================Manifest  DAO declaration End===================
 	

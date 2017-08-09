@@ -1,19 +1,24 @@
 package com.conti.manifest;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import com.conti.shipment.add.ShipmentModel;
+
 @Entity
-@Table(name = "t_manifestdetails")
+@Table(name = "t_manifestdetailes")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ManifestDetailedModel 
 {
-	private int manifestdetailed_id,manifest_id,shipment_id;
-	private String lr_number;
+	private int manifestdetailed_id,manifest_id;
 	
 	
 	@Id
@@ -33,22 +38,33 @@ public class ManifestDetailedModel
 		this.manifest_id = manifest_id;
 	}
 	
-	@Column(name="SHIPMENT_ID")
-	public int getShipment_id() {
-		return shipment_id;
-	}
-	public void setShipment_id(int shipment_id) {
-		this.shipment_id = shipment_id;
-	}
 	
-	@Column(name="LR_NUMBER")
-	public String getLr_number() {
-		return lr_number;
+	public ShipmentModel shipmentModel;
+	@JoinColumn(name="SHIPMENT_ID")
+	@OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	
+	public ShipmentModel getShipmentModel() 
+	{
+		return shipmentModel;
 	}
-	public void setLr_number(String lr_number) {
-		this.lr_number = lr_number;
+	public void setShipmentModel(ShipmentModel shipmentModel) 
+	{
+		this.shipmentModel = shipmentModel;
 	}
 	
 	
+//	public ShipmentModel shipmentModel_lrnumber;
+//	
+//	@JoinColumn(name="LR_NUMBER")
+//	@OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+//	public ShipmentModel getShipmentModel_lrnumber() 
+//	{
+//		return shipmentModel_lrnumber;
+//	}
+//	public void setShipmentModel_lrnumber(ShipmentModel shipmentModel_lrnumber) 
+//	{
+//		this.shipmentModel_lrnumber = shipmentModel_lrnumber;
+//	}
+
 	
 }
