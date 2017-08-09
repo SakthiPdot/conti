@@ -131,7 +131,6 @@ public class ManifestRestController
 		try
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			
 			model.addObject("title", "View Manifest");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Manifest/view_manifest");

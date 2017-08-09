@@ -9,14 +9,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="_csrf" content="${_csrf.token}"/>
+	<meta name="_csrf_header" content="${_csrf.headerName}"/>
+    
     <title>${title}</title>
     <!-- Bootstrap Styles-->
-    <link href="resources/built-in/assets/ css/bootstrap.css" rel="stylesheet" />
+    <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
-	
-	 <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
-	 
     <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <!-- Custom Styles-->
@@ -25,16 +25,34 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
+	 <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+	
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
-	  <link href="resources/custom/css/custom.css" rel="stylesheet">
+	  <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
+	 <link href="resources/custom/css/custom.css" rel="stylesheet">
+	<link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
+	<link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 
+	
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="resources/custom/js/app.js"></script>
+
+
+
 </head>
 
 
-<body style="overflow-x:hidden;">
+<body style="overflow-x:hidden;"
+data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
  
 	
 	<jsp:include page="../Dashboard/nav.jsp"/>
 	
+	<div class="success hideme"><i class="fa fa-check-circle" aria-hidden="true"></i> {{amctrl.message}}</div>
+	<div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{amctrl.message}}</div>
+
     <div id="wrapper">
 		<div id="page-wrapper">
 
@@ -99,9 +117,6 @@
 									</div>
 								</div>
 
-
-
-
 								<div class="col-lg-12 noPaddingLeft">
 									<div class="sec-padding">Specific Period</div>
 									<div class="col-lg-3 branchclass">
@@ -137,15 +152,10 @@
 									</div>
 
 									<div class="col-lg-3 branchclass"></div>
-
 									<div class="col-lg-4 branchclass">
-
 										<button class="btn btn-primary">View Shipment</button>
-
 									</div>
-
 								</div>
-
 							</div>
 						</div>
 					</div>
