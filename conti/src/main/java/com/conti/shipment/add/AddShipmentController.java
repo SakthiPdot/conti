@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerDao;
+import com.conti.master.location.Location;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.SendMailSMS;
@@ -176,5 +177,14 @@ public class AddShipmentController {
 	//--------------------------------- Create new shipment end
 
 	
+	//==================================Fetch all shipment(100)============================
+	@RequestMapping(value="fetchAllShipment",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ShipmentModel>>  getAllLocation(){
+		List<ShipmentModel> shipment=shipmentDao.fetchAllShipment100();
+		if(shipment.isEmpty()){
+			return new ResponseEntity<List<ShipmentModel>>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<ShipmentModel>>(shipment,HttpStatus.OK);
+	}
 
 }

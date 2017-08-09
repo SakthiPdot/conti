@@ -2,6 +2,8 @@ package com.conti.shipment.add;
 
 import java.util.List;
 
+import com.conti.master.location.Location;
+
 /**
  * @Project_Name conti
  * @Package_Name com.conti.shipment.add
@@ -14,4 +16,5 @@ public interface ShipmentDao {
 	public List<ShipmentModel> fetchAllShipment(int branch_id);
 	public int fetchMAXlrno(int branch_id);
 	public void saveOrUpdate(ShipmentModel shipment);
+	public List<ShipmentModel> fetchAllShipment100();
 }
