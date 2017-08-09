@@ -339,7 +339,7 @@
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer email address"
 											placeholder = "Ex: sachin@gmail.com"
-                            		    required /> 
+                            		    /> 
                             		    
                             		</div>
                             		
@@ -351,7 +351,7 @@
 											data-placement="top" data-content="Please enter customer GSTIN no."
 											onKeyPress="return CheckIsAlphaNumeric(event)"
 											placeholder = "Ex: 11ABCDE1234F2Z5"
-                            		    required />                               		    
+                            		    />                               		    
                             		    
                             		</div>
                             		
@@ -533,7 +533,7 @@
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer email address"
 											placeholder = "Ex: dravid@gmail.com"
-                            		    required />                            		    
+                            		    />                            		    
                             		    
                             		</div>
                             		
@@ -545,7 +545,7 @@
 											data-placement="top" data-content="Please enter customer GSTIN no."
 											onKeyPress="return CheckIsAlphaNumeric(event)"
 											placeholder = "Ex: 11ABCDE1234F2Z5"
-                            		    required />                              		    
+                            		    />                              		    
                             		    
                             		</div>
                             		
@@ -931,12 +931,12 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Reference Invoice No</span>
                             		    <input type="text" class="form-control" maxlength="15"
-                            		    	data-ng-model = "ctrl.shipment.reference_invoiceno"
+                            		    	data-ng-model = "ctrl.shipment.reference_invoice_no"
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter reference invoice no."
 											onKeyPress="return CheckIsAlphaNumeric(event)"
 											placeholder = "Ex: 11ABCDE1234F2Z5"
-                            		    required />                               		    
+                            		    />                               		    
                             		    
                             		</div>
                             
@@ -978,7 +978,7 @@
                             			
                             			 <div class = "form-group input-group">
 	                            		    <input type="text" class="form-control disabled" 
-	                            		    	data-ng-model = "ctrl.shipment.delivery_charges" tabindex="-1"
+	                            		    	data-ng-model = "ctrl.shipment.delivery_charge" tabindex="-1"
 	                            		    required />  
 	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
                             		    </div>   
