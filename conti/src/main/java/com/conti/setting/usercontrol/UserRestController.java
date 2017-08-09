@@ -623,14 +623,17 @@ public class UserRestController {
 
 			if(employeeMaster != null) {
 				
-				
 				// get current date
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date date = new Date();
 				// get password requested date			
-
-				List<UserLogModel> userlog_list = userLogDao.getUserlogListbyId(employeeMaster.getUser().getUser_id());
+				
+				User user = usersDao.getUserbyEmp(employeeMaster.getEmp_id());
+				System.out.println();
+				List<UserLogModel> userlog_list = userLogDao.getUserlogListbyId(user.getUser_id());
 				userLogModel = Collections.max(userlog_list, Comparator.comparing(c -> c.getLog_id()));
+				
+				
 				
 				int minute = 0;
 				if( userLogModel.getUsername_request() != null ) {
@@ -666,7 +669,7 @@ public class UserRestController {
 						userLogDao.saveorupdate(userLogModel);
 						loggerconf.saveLogger(Long.toString(employeeMaster.getEmp_phoneno()), "forgotUsername", ConstantValues.SAVE_SUCCESS, null);
 						
-						String message= "Dear CONTI user, Your Conti Cargo courier portal username: " + employeeMaster.getUser().getUsername();
+						String message= "Dear CONTI user, Your Conti Cargo courier portal username: " + user.getUsername();
 						String sms_respone = sendMailSMS.send_SMS(mobileno, message); // call send_sms method
 						
 						// check sms send success or not
