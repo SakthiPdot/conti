@@ -95,7 +95,7 @@
                             	<div class="col-md-12">
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Address</span> <span class="spanclass">:  </span>                            		                               		    
-                            		     <span class="viewprofile_color">${user.employeeMaster.emp_address1},${user.employeeMaster.emp_address2}</span>
+                            		     <span class="viewprofile_color">${user.employeeMaster.emp_address1} ${user.employeeMaster.emp_address2}</span>
                             		</div>
                             	</div>
                             	
