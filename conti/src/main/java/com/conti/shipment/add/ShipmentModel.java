@@ -113,12 +113,7 @@ public class ShipmentModel {
 	}
 	public void setShipmentDetail(List<ShipmentDetailModel> shipmentDetail) {
 		this.shipmentDetail = shipmentDetail;
-	}
-
-	
-	
-	
-	
+	}	
 	@Id
 	@GeneratedValue
 	@Column(name = "shipment_id")
