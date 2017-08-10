@@ -155,14 +155,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//------------------------ Consignee branch begin
     $scope.consignee_branch_name = function (consignee_branch_name) {
- 	    
-/*    	self.shipment.consignee_branch.branch_name = consignee_branch_name.originalObject.branch_name;
-    	self.shipment.consignee_branch.branch_id = consignee_branch_name.originalObject.branch_id;*/
+    	makeenable_shipmentDetail_add();  // make enable shipment detail 
     	self.shipment.consignee_branch = consignee_branch_name.originalObject;
-    	
-    	/*self.shipment.sender_branch.branch_id = $('#sender_branch_id').val();
-    	self.shipment.sender_branch.branch_name = $('#sender_branch_name').val();*/
-    	makeenable_shipmentDetail_add();  // make enable shipment detail if consignee branch, service and no of parcel != 0
     	sender_branch($('#sender_branch_id').val());
 	};	
 	//------------------------ Consignee branch end
@@ -172,10 +166,13 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			.then(
 					function(branch) {
 						self.shipment.sender_branch = branch;
+						
 					}, function (errres) {
 						console.log(errres);
 					}
 			)
+			
+			
 	}
 	
 	//---------------------------------------------------- SENDER & CONSIGNEE PROCESS END ------------------------------------------------------------------------	
@@ -240,27 +237,60 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//---------------------------------------------- Search service begin
 	$scope.service_name=function (selected){
 		
+		makeenable_shipmentDetail_add();  // make enable shipment detail 
 		self.shipment.service = selected.originalObject;
-		
-		makeenable_shipmentDetail_add();  // make enable shipment detail if consignee branch, service and no of parcel != 0
 		
 	}
 	//---------------------------------------------- Search service end
 	
-	//------------------------ CHECK shipment detail if consignee branch, service and no of parcel != 0
+	//------------------------ MAKE SAVE ENABLE BEGIN
+	
+	function make_enable_save(index) {
+		
+		
+		if(index != -1) {
+
+			if (self.shipment.shipmentDetail[index].shipmentHsnDetail[0].hsn == null ) {
+				console.log(index);
+				self.disable_save = true;
+			} else {
+				var quantity = 0;
+				for(var i=0; i<self.shipment.shipmentDetail.length; i++) {
+					selected_quantity = self.shipment.shipmentDetail[i].quantity;
+					quantity = parseInt(selected_quantity) + parseInt(quantity);	
+					
+				}
+				
+				if(quantity == self.shipment.numberof_parcel) {
+					self.disable_save = false;
+				} else {
+					self.disable_save = true;
+				}
+				
+			}
+		} 
+			
+	}
+	
+	//------------------------ MAKE SAVE ENABLE END
+	
+	//------------------------ CHECK shipment detail if consignee branch, service and no of parcel != 0 begin
 	function makeenable_shipmentDetail_add() {
-		if( self.shipment.numberof_parcel.length == 0 ||  $('#service_name_value').val().length == 0 
+		
+		if( self.shipment.numberof_parcel == null 
+				||  $('#service_name_value').val().length == 0 
 				|| $('#consignee_branch_name_value').val().length == 0 ) {
 			self.disable_add_product = true;
 		} else {
 			self.disable_add_product = false;
 		}
 	}
+	//------------------------ CHECK shipment detail if consignee branch, service and no of parcel != 0 end
 	
 	//--------------------------------------------- Compare quantity and no of parcel beging
 	self.checkQuantity = function (index) {
 		/*self.disable_add_product = false;*/
-		makeenable_shipmentDetail_add();  // make enable shipment detail if consignee branch, service and no of parcel != 0
+		makeenable_shipmentDetail_add();  // make enable shipment detail 
 		
 		var quantity = 0;
 		var selected_quantity = 0;
@@ -304,7 +334,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			self.calc_totalprice(index);		//calculate totalprice in a row			
 		}
 
-
+		
+		make_enable_save(index) // make enable save
 	}
 	//--------------------------------------------- Compare quantity and no of parcel end	
 
@@ -316,14 +347,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		//-- assign object
 		self.shipment.shipmentDetail[index].product = selected.originalObject;
 		
-		console.log(self.shipment.shipmentDetail[index].product.product_id);
-		
-		/*self.shipment.shipmentDetail[index].product = {
-				"hsns" : [{"hsn" : {}}]
-		}*/
-		
 		self.shipment.shipmentDetail[index].shipmentHsnDetail = [{"hsn" : null, "product" : null}];
-		
+		//self.shipment.shipmentDetail[index].shipmentHsnDetail = [];
 		//-- assign to dynamic table in product
 		/*self.shipment.shipmentDetail[index].product_id = selected.originalObject.product_id;*/
 		self.shipment.shipmentDetail[index].product_type = selected.originalObject.product_Type;
@@ -336,6 +361,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		
 		fetch_price(index);		//----- fetch price from price settings
 		
+		make_enable_save(index) // make enable save
 	}
 	
 	
@@ -431,9 +457,24 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		CompanySettingService.fetchCompanySetting(1)
 			.then(
 					function (res) {
-						self.shipment.cgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.cgst) / 100) ).toFixed(2);
+						
+						console.log(self.shipment.sender_branch);
+						console.log(self.shipment.consignee_branch);
+						
+						if( self.shipment.sender_branch.location.address.state == self.shipment.consignee_branch.location.address.state ) {
+							self.shipment.cgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.cgst) / 100) ).toFixed(2);
+							self.shipment.sgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.sgst) / 100) ).toFixed(2);
+							self.shipment.igst = ( parseFloat(0) );
+						} else {
+							self.shipment.cgst = ( parseFloat(0) );
+							self.shipment.sgst = ( parseFloat(0) );
+							self.shipment.igst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.igst) / 100) ).toFixed(2);
+						}
+						
+						
+						/*self.shipment.cgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.cgst) / 100) ).toFixed(2);
 						self.shipment.sgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.sgst) / 100) ).toFixed(2);
-						self.shipment.igst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.igst) / 100) ).toFixed(2);
+						self.shipment.igst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.igst) / 100) ).toFixed(2);*/
 						
 						self.shipment.tax = ( parseFloat(self.shipment.cgst) + parseFloat(self.shipment.sgst) + parseFloat(self.shipment.igst) ).toFixed(2);
 						self.shipment.total_charges = ( parseFloat(self.shipment.tax) + parseFloat(self.shipment.tax) ).toFixed(2);
@@ -473,9 +514,21 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//---------------------------------------------- HSN CODE SEARCH begin
 	$scope.hsn_code=function (selected){
-		
 		var index = this.$parent.$index;
 		var products_index = this.$parent.$parent.$index;
+		hsncode_desc_proc(selected, index, products_index);
+	}
+	//---------------------------------------------- HSN CODE SEARCH end
+	
+	//---------------------------------------------- HSN DESCRIPTION SEARCH begin
+	$scope.hsn_description=function (selected){
+		hsncode_desc_proc(selected, index, products_index);
+		
+	}
+	//---------------------------------------------- HSN DESCRIPTION SEARCH end
+
+	function hsncode_desc_proc(selected, index, products_index) {
+		
 
 		//-- assign object
 		
@@ -491,31 +544,12 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			hsn_code[i] = self.shipment.shipmentDetail[products_index].shipmentHsnDetail[i].hsn.hsn_code;			
 		}
 		$('#HSNmodal_a'+products_index).attr("title", hsn_code);
-		
+		$('#product'+ products_index +'_hsn_description'+index+'_value')
+			.attr("title", $('#product'+ products_index +'_hsn_description'+index+'_value').val());
 		$scope.newHSN.push( selected.originalObject );
-console.log(self.shipment.shipmentDetail[products_index].shipmentHsnDetail);
+		make_enable_save(products_index); // make enable save
 	}
-	//---------------------------------------------- HSN CODE SEARCH end
 	
-	//---------------------------------------------- HSN DESCRIPTION SEARCH begin
-	$scope.hsn_description=function (selected){
-		
-		var index = this.$parent.$index;
-		var products_index = this.$parent.$parent.$index;
-		
-		//-- assign selected object to HSN
-		self.shipment.shipmentDetail[products_index].shipmentHsnDetail[index].hsn = selected.originalObject;
-		$('#product'+ products_index +'_hsn_code'+index+'_value').val(selected.originalObject.hsn_code);
-		
-		self.shipment.shipmentDetail[products_index].shipmentHsnDetail[index].product = self.shipment.shipmentDetail[products_index].product;
-	}
-	//---------------------------------------------- HSN DESCRIPTION SEARCH end
-	
-	//-------------------------------- HSN CANCEL BEGIN
-		self.hsnCancel = function () {
-			
-		}
-	//-------------------------------- HSN CANCEL END
 	//------------------------------------------------------------------------------HSN FUNCTIONS END	
 	
 	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT BEGIN------------------------------------

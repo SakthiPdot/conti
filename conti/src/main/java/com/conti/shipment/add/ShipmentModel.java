@@ -43,7 +43,7 @@ public class ShipmentModel {
 			created_datetime, updated_datetime, obsolete;
 	
 	float shipment_value, chargeable_weight, delivery_charge, handling_charge,
-	tax_amount, total_charges, cgst, igst, sgst, discount_amount, discount_percentage, tax;
+	total_charges, cgst, igst, sgst, discount_amount, discount_percentage, tax;
 	
 	
 	public ShipmentModel() {
@@ -195,13 +195,7 @@ public class ShipmentModel {
 	public void setHandling_charge(float handling_charge) {
 		this.handling_charge = handling_charge;
 	}
-	@Column(name ="tax_amount")
-	public float getTax_amount() {
-		return tax_amount;
-	}
-	public void setTax_amount(float tax_amount) {
-		this.tax_amount = tax_amount;
-	}
+	
 	@Column(name ="total_charges")
 	public float getTotal_charges() {
 		return total_charges;
