@@ -289,12 +289,11 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 								ServiceService.deleteService(self.service.service_id)
 								.then(
 										function (service) {
-											var index=self.services.indexOf(service);
-											self.services.splice(index,1);
 											self.message = service.service_name+ " service Deleted..!";
 											successAnimate('.success');
 											newOrClose();
-											
+											var index=self.services.indexOf(service);
+											self.services.splice(index,1);
 											console.log(service);
 											console.log(self.services);											
 										},
