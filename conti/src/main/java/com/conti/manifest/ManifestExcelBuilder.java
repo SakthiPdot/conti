@@ -21,11 +21,11 @@ import com.conti.manifest.ManifestDetailedModel;
 
 /**
  * @Project_Name conti
- * @Package_Name com.conti.master.employee
- * @File_name EmployeeExcelBuilder.java
- * @author Sankar
- * @Created_date_time Jul 13, 2017 6:13:27 PM
- * @Updated_date_time Jul 13, 2017 6:13:27 PM
+ * @Package_Name com.conti.master.manifest
+ * @File_name ManifestExcelBuilder.java
+ * @author Suresh
+ * @Created_date_time Aug 03, 2017 6:13:27 PM
+ * @Updated_date_time Aug 03, 2017 6:13:27 PM
  */
 public class ManifestExcelBuilder extends AbstractExcelView {
 

@@ -17,6 +17,8 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.conti.master.product.Product;
 
@@ -52,7 +54,7 @@ public class ShipmentDetailModel {
 		
 	//----------------shipmenthsn detail
 	private List<ShipmentHsnDetailModel> shipmentHsnDetail = new ArrayList<>() ;
-	
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinColumn(name = "shipmentdetail_id", referencedColumnName = "shipmentdetail_id")
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	@JsonManagedReference

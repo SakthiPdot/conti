@@ -34,7 +34,7 @@ public class ReceiptDaoImpl implements ReceiptDao
 		
 		@SuppressWarnings("unchecked")
 		List<ReceiptModel> listReceipt = (List<ReceiptModel>) sessionFactory.getCurrentSession()
-				.createQuery("from ReceiptModel WHERE obsolete ='N' and shipmentModel.status='Delivered' and shipmentModel.status='Pending' ").list();
+				.createQuery("from ReceiptModel WHERE obsolete ='N'  ").list();
 		return listReceipt;
 		
 	}

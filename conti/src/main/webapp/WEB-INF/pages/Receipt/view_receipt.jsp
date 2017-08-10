@@ -217,54 +217,133 @@
 					</div> 
                          </div>
                          
-                        <div class="col-xs-6 icons-button">
-                            <div class="pull-right">
-                              <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button>
-                               <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button>
-                               <button type="button" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button>
-                         	</div>
-                         </div>
-                       </div>
-                     </div>
-                   
-                     
-                     
-                         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <div class="col-xs-6 icons-button">
+                    <div class="pull-right">
+                    <form name="receiptPrint" method="POST" action="receipt_print" class="padding-button">
+                    	<a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
+                    	<div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
+	                    	
+	                    	<div class ="checkbox">
+								<label>
+									<i class = "fa" data-ng-class="{'fa-check': setting_sltnumber == true, 'fa-times': setting_sltnumber == false}"></i>										
+									<input type="checkbox" data-ng-init = "setting_sltnumber=true" data-ng-model="setting_sltnumber" /> SL no
+								</label>
+							</div>
+							
+							<div class ="checkbox">
+								<label>
+									<i class = "fa" data-ng-class="{'fa-check': setting_receiptdate == true, 'fa-times':setting_receiptdate == false}"></i>										
+									<input type="checkbox" data-ng-init = "setting_receiptdate=true" data-ng-model="setting_receiptdate" /> Date
+								</label>
+							</div>
+							
+							<div class ="checkbox">
+								<label>
+									<i class = "fa" data-ng-class="{'fa-check': setting_receiptlrnumber== true, 'fa-times':setting_receiptlrnumber == false}"></i>										
+									<input type="checkbox" data-ng-init = "setting_receiptlrnumber=true" data-ng-model="setting_receiptlrnumber" /> LR No
+								</label>
+							</div>
+							
+							<div class ="checkbox">
+								<label>
+									<i class = "fa" data-ng-class="{'fa-check': setting_receiptnumber== true, 'fa-times':setting_receiptnumber == false}"></i>										
+									<input type="checkbox" data-ng-init = "setting_receiptnumber=true" data-ng-model="setting_receiptnumber" /> Receipt
+								</label>
+							</div>
+							
+							<div class ="checkbox">
+								<label>
+									<i class = "fa" data-ng-class="{'fa-check': setting_receiptproduct == true, 'fa-times':setting_receiptproduct == false}"></i>										
+									<input type="checkbox" data-ng-init = "setting_receiptproduct=true" data-ng-model="setting_receiptproduct" /> Product
+								</label>
+							</div>
+							
+							<div class ="checkbox">
+								<label>
+									<i class = "fa" data-ng-class="{'fa-check': setting_receiptorigin == true, 'fa-times':setting_receiptorigin == false}"></i>										
+									<input type="checkbox" data-ng-init = "setting_receiptorigin=true" data-ng-model="setting_receiptorigin" /> Origin
+								</label>
+							</div>
+							
+							<div class ="checkbox">
+								<label>
+									<i class = "fa" data-ng-class="{'fa-check':setting_receiptdestination == true, 'fa-times':setting_receiptdestination== false}"></i>										
+									<input type="checkbox" data-ng-init = "setting_receiptdestination=true" data-ng-model="setting_receiptdestination" /> Destination
+								</label>
+							</div>
+							
+							<div class ="checkbox">
+								<label>
+									<i class = "fa" data-ng-class="{'fa-check':setting_receiptsender== true, 'fa-times':setting_receiptsender== false}"></i>										
+									<input type="checkbox" data-ng-init = "setting_receiptsender=true" data-ng-model="setting_receiptsender" /> Sender
+								</label>
+							</div>
+							
+							<div class ="checkbox">
+								<label>
+									<i class = "fa" data-ng-class="{'fa-check':setting_receiptconsignee== true, 'fa-times':setting_receiptconsignee== false}"></i>										
+									<input type="checkbox" data-ng-init = "setting_receiptconsignee=true" data-ng-model="setting_receiptconsignee" /> Consignee
+								</label>
+							</div>
+							
+							<div class ="checkbox">
+								<label>
+									<i class = "fa" data-ng-class="{'fa-check':setting_receiptmanifest== true, 'fa-times':setting_receiptmanifest== false}"></i>										
+									<input type="checkbox" data-ng-init = "setting_receiptmanifest=true" data-ng-model="setting_receiptmanifest" /> Manifest
+								</label>
+							</div>
+							
+							<div class ="checkbox">
+								<label>
+									<i class = "fa" data-ng-class="{'fa-check':setting_receiptstatus== true, 'fa-times':setting_receiptstatus== false}"></i>										
+									<input type="checkbox" data-ng-init = "setting_receiptstatus=true" data-ng-model="setting_receiptstatus" /> Status
+								</label>
+							</div>
+                    	
+                    	</div>
+                     <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelReceipt';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                      	  <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_receipt.length == 0" ><i class="fa fa-print fa-lg"></i></button>
+                          <input type = "hidden" name = "receipt" value = "{{ctrl.selected_receipt}}" />
+                          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				</form>
+               	</div>
+               </div>
+             </div>
+             </div>
+                      <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                              <thead>
                                  <tr>
-                                     <th><input type="checkbox"></th>
-                                     <th>S.No</th>
-                                     <th>Date</th>
-                                     <th>LR No</th>
-                                     <th>Receipt</th>
-                                     <th>Product</th>
-                                     <th>Origin</th>
-                                     <th>Destination</th>
-                                     <th>Sender</th>
-                                     <th>Consignee</th>
-                                     <th>Manifest</th>
-                                     <th>Status</th>
-                            
-                                 </tr>
+                                     <th><input type="checkbox" data-ng-click="ctrl.receiptSelectAll()" data-ng-model="selectallreceipts"></th>
+                                     <th data-ng-show="setting_sltnumber">SL no</th>
+                                     <th data-ng-show="setting_receiptdate">Date</th>
+                                     <th data-ng-show="setting_receiptlrnumber">LR Number</th>
+                                     <th data-ng-show="setting_receiptnumber">Receipt</th>
+                                     <th data-ng-show="setting_receiptproduct">Product</th>
+                                     <th data-ng-show="setting_receiptorigin">Origin</th>
+                                     <th data-ng-show="setting_receiptdestination">Destination</th>
+                                     <th data-ng-show="setting_receiptsender">Sender</th>
+                                     <th data-ng-show="setting_receiptconsignee">Consignee</th>
+                                     <th data-ng-show="setting_receiptmanifest">Manifest</th>
+                                     <th data-ng-show="setting_receiptstatus">Status</th>
+                             	</tr>
                              </thead>
                              <tbody>
-                                 <tr>
+                                 <tr data-ng-repeat="receipt in ctrl.Filterreceipts|limitTo:pageSize"
+                                 data-id="{{receipt.receipt_id}}">
                                      <td><input type="checkbox"></td>
-                                     <td>1</td>
-                                     <td>15-9-2017</td>
-                                     <td>LR4532</td>
-                                     <td>RECP5238</td>
-                                     <td>Cover</td>
-                                     <td>Coimbatore</td>
-                                     <td>Chennai</td>
-                                     <td>Dinesh</td>
-                                     <td>Mani</td>
-                                     <td>MANIF5902</td>
-                                     <td>Status</td>
+                                     <td data-ng-show="setting_sltnumber" >{{$index+1}}</td>
+                                     <td data-ng-show="setting_receiptdate">{{receipt.created_datetime}}</td>
+                                     <td data-ng-show="setting_receiptlrnumber">{{receipt.shipmentModel.lr_number}}</td>
+                                     <td data-ng-show="setting_receiptnumber">{{receipt.receipt_id}}</td>
+                                     <td data-ng-show="setting_receiptproduct">{{receipt.shipmentModel.shipmentDetail}}</td>
+                                     <td data-ng-show="setting_receiptorigin">{{receipt.manifestModel.branchModel1.branch_name}}</td>
+                                     <td data-ng-show="setting_receiptdestination">{{receipt.manifestModel.branchModel2.branch_name}}</td>
+                                     <td data-ng-show="setting_receiptsender">{{receipt.shipmentModel.sender_customer.customer_name}}</td>
+                                     <td data-ng-show="setting_receiptconsignee">{{receipt.shipmentModel.consignee_customer.customer_name}}</td>
+                                     <td data-ng-show="setting_receiptmanifest">{{receipt.manifestModel.manifest_number}}</td>
+                                     <td data-ng-show="setting_receiptstatus">{{receipt.shipmentModel.status}}</td>
                                  
                                 </tr>
-                                                       
-                   
                              </tbody>
                          </table>
                      </div>
@@ -275,11 +354,6 @@
                     </div>
                 </div>
             </div>
-                             
-                
-                
-              
-            
         </div>
         <!-- /. PAGE WRAPPER  -->
 		

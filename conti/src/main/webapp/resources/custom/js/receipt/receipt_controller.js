@@ -12,14 +12,16 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 {
 	var self=this;
 	self.receipts=[];
+	self.selected_receipts=[];
 	self.Filterreceipts=[];
 	self.branches=[];
 	self.heading="Manster"
 	self.message=null;
 	self.print=print;
 	
+	self.receiptSelectAll=receiptSelectAll;
 	fetchAllReceipt();
-	fetchAllBranches();
+	//fetchAllBranches();
 		
 	function reset()
 	{
@@ -91,7 +93,35 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			);
 	}
 	//--------------------------------------------------------------------
+
+	//-----------------------Receipt select all check box function start-------------------------
 	
+	function receiptSelectAll()
+	{
+		console.log('Call select all receipt '+$scope.pageSize);
+		self.selected_receipt=[];
+		for (var i=0; i<$scope.pageSize;i++)
+			{
+				self.Filterreceipts[i].select=$scope.selectallreceipts;
+				if($scope.selectallreceipts)
+					{
+						self.selected_receipt.push(self.Filterreceipts[i]);
+					}
+			}
+	}
+	//---------------------------------------------------------------------------------------------
+	
+	//-----------------------------Receipt record select on Register------------------------------
+	
+	function receiptSelect(receipt)
+	{
+		console.log('Call Receipt select function ....');
+		var index=self.selected_receipt.indexOf(receipt);
+		if(receipt.select)
+		{
+			self.selected_receipt.push(re)
+		}
+	}
 	
 	}
 ]);

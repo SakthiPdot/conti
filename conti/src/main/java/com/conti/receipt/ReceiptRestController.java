@@ -72,6 +72,8 @@ public class ReceiptRestController {
 		
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
+	
+	private UserInformation userInformation;
 
 	@RequestMapping(value =  "receipt_generate", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
@@ -152,8 +154,8 @@ public class ReceiptRestController {
 		UserInformation userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
 		String branch_id = userInformation.getUserBranchId();
-		try
-		{
+//		TRY
+//		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			List<ReceiptModel> receiptModel=receiptDao.getAllReceipt();
 			if(receiptModel.isEmpty()) 
@@ -166,12 +168,12 @@ public class ReceiptRestController {
 				//System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy "+manifestModel);
 				return new ResponseEntity<List<ReceiptModel>> (receiptModel, HttpStatus.OK);	
 			}	
-		}
-		catch(Exception exception)
-		{
-			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-			return new ResponseEntity<List<ReceiptModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+//		}
+//		catch(Exception exception)
+//		{
+//			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+//			return new ResponseEntity<List<ReceiptModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+//		}
 	}
 	
 	//-------------------------------------------------------------------------------------------------------------------
@@ -217,11 +219,17 @@ public class ReceiptRestController {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
 			return new ResponseEntity<List<ReceiptModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-			
-			
-		
 	}
 	
+	
+	//-------------------------------Receipt Excel Export function start----------------------------
+	@RequestMapping(value="downloadExcelReceipt",method=RequestMethod.GET)
+	public ModelAndView downloadExcelReceipt()
+	{
+		
+		List<ReceiptModel> receiptList=receiptDao.getAllReceipt();
+		return new ModelAndView("receiptExcelView","receiptList",receiptList);
+	}
 	
 	
 	//===============================================================================================

@@ -22,6 +22,7 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import com.conti.manifest.ManifestModel;
 import com.conti.shipment.add.ShipmentModel;
 
 @Entity
@@ -31,16 +32,34 @@ public class ReceiptModel
 {
 	public int receipt_id,updated_by,created_by,receipt_number,manifest_number,lr_number,contact_number;
 	public String paymode,courier_staff,obsolete;
+	private String created_datetime,updated_datetime;
 	
 	@Id
 	@GeneratedValue
-	@Column(name = "MANIFEST_ID")
+	@Column(name = "RECEIPT_ID")
 	public int getReceipt_id() {	
 		return receipt_id;
 	}
 	public void setReceipt_id(int receipt_id) {
 		this.receipt_id = receipt_id;
 	}
+	
+	@Column(name = "CREATED_DATETIME")
+	public String getCreated_datetime() {
+		return created_datetime;
+	}
+	public void setCreated_datetime(String created_datetime) {
+		this.created_datetime = created_datetime;
+	}
+	
+	@Column(name = "UPDATED_DATETIME")
+	public String getUpdated_datetime() {
+		return updated_datetime;
+	}
+	public void setUpdated_datetime(String updated_datetime) {
+		this.updated_datetime = updated_datetime;
+	}
+	
 	
 	@Column(name = "CONTACT_NUMBER")
 	public int getContact_number() {
@@ -112,12 +131,14 @@ public class ReceiptModel
 		this.receipt_number = receipt_number;
 	}
 	
-	@Column(name="MANIFEST_NUMBER")
-	public int getManifest_number() {
-		return manifest_number;
+	public ManifestModel manifestModel;
+	@JoinColumn(name="MANIFEST_ID")
+	@OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	public ManifestModel getManifestModel() {
+		return manifestModel;
 	}
-	public void setManifest_number(int manifest_number) {
-		this.manifest_number = manifest_number;
+	public void setManifestModel(ManifestModel manifestModel) {
+		this.manifestModel = manifestModel;
 	}
 	
 	@Column(name="LR_NUMBER")
