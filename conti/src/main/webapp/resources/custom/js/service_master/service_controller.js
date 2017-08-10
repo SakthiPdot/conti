@@ -289,11 +289,12 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 								ServiceService.deleteService(self.service.service_id)
 								.then(
 										function (service) {
+											var index=self.services.indexOf(service);
+											self.services.splice(index,1);
 											self.message = service.service_name+ " service Deleted..!";
 											successAnimate('.success');
 											newOrClose();
-											var index=self.services.indexOf(service);
-											self.services.splice(index,1);
+											
 											console.log(service);
 											console.log(self.services);											
 										},
@@ -305,7 +306,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 					     );
 			}
 			
-			//============= Delete Function Begin ===========//	
+			//============= Delete Function End ===========//	
 					function servSelect(service) {
 						var index = self.selected_service.indexOf(service);
 						/*(service.select)? self.selected_service.push(service) : self.selected_service.splice(index, 1);*/
