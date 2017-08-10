@@ -39,7 +39,7 @@ public class ShipmentModel {
 		updated_by, created_by;
 	String shipment_date, pay_mode, bill_to, status, description, 
 			sendercustomer_address1, sendercustomer_address2, reference_invoice_no,
-			consigneecustomer_address1, consigneecustomer_address2,
+			consigneecustomer_address1, consigneecustomer_address2, taxin_payable,
 			created_datetime, updated_datetime, obsolete;
 	
 	float shipment_value, chargeable_weight, delivery_charge, handling_charge,
@@ -291,6 +291,13 @@ public class ShipmentModel {
 		this.consigneecustomer_address2 = consigneecustomer_address2;
 	}
 	
+	@Column(name = "taxin_payable")
+	public String getTaxin_payable() {
+		return taxin_payable;
+	}
+	public void setTaxin_payable(String taxin_payable) {
+		this.taxin_payable = taxin_payable;
+	}
 	@Column(name = "created_datetime")
 	public String getCreated_datetime() {
 		return created_datetime;
