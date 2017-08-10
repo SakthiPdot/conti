@@ -13,6 +13,10 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 	
 	var self=this;
 	self.branches = [];
+	self.viewShipment=viewShipment;
+	self.Manifests=[];
+	self.FilteredManifests=[];
+	
 	//===================================Total Record Count====================================
 	fetchLastManifestNo();
 	
@@ -67,5 +71,31 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 			console.log("error fetching all shipment");					
 		});
 	}
+	
+	//===================================fetch Address====================================
+
+	
+	function viewShipment(){
+		
+		var filter={
+				"fromBranch":self.fromBranch,
+				"toBranch":self.toBranch,
+				"fromDate":$(".datepicker1").val(),
+				"toDate":$(".datepicker2").val(),
+				"status":self.status
+				}
+		
+		console.log(filter);
+		addManifestService.filterManifest(filter)
+		.then(
+				function(response){
+					self.FilteredManifests=response;
+				},function(errRespone){
+					console.log("error while fetching manifest in filter"+errResponse);
+				});
+		
+
+		}
+	
 	
 }]);

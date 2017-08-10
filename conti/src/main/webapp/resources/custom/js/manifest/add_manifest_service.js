@@ -12,11 +12,31 @@ angular.module('contiApp').factory('addManifestService',['$http','$q',function($
 	
 	var factory={
 			fetchAllShipment:fetchAllShipment,
-			fetchLastManifestNo:fetchLastManifestNo			
+			fetchLastManifestNo:fetchLastManifestNo,
+			filterManifest:filterManifest
 	}
 	
 	return factory;
-	
+
+	//=============================filter manifest====================================
+	function filterManifest(x){
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:"filterShipment/",
+			data:x,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("status change failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
+
 	//=============================FETCH ALL LOCATION====================================
 	function fetchAllShipment(){
 		var deferred=$q.defer();

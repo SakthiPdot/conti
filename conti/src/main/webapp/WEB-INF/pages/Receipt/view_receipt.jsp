@@ -330,12 +330,12 @@
                              <tbody>
                                  <tr data-ng-repeat="receipt in ctrl.Filterreceipts|limitTo:pageSize"
                                  data-id="{{receipt.receipt_id}}">
-                                     <td><input type="checkbox"></td>
+                                     <td><input type="checkbox" data-ng-click="ctrl.receiptSelect(receipt)" data-ng-model="receipt.select"></td>
                                      <td data-ng-show="setting_sltnumber" >{{$index+1}}</td>
                                      <td data-ng-show="setting_receiptdate">{{receipt.created_datetime}}</td>
                                      <td data-ng-show="setting_receiptlrnumber">{{receipt.shipmentModel.lr_number}}</td>
                                      <td data-ng-show="setting_receiptnumber">{{receipt.receipt_id}}</td>
-                                     <td data-ng-show="setting_receiptproduct">{{receipt.shipmentModel.shipmentDetail}}</td>
+                                     <td data-ng-show="setting_receiptproduct">{{receipt.shipmentModel.shipmentDetail[0].product.product_name}}</td>
                                      <td data-ng-show="setting_receiptorigin">{{receipt.manifestModel.branchModel1.branch_name}}</td>
                                      <td data-ng-show="setting_receiptdestination">{{receipt.manifestModel.branchModel2.branch_name}}</td>
                                      <td data-ng-show="setting_receiptsender">{{receipt.shipmentModel.sender_customer.customer_name}}</td>
@@ -347,7 +347,13 @@
                              </tbody>
                          </table>
                      </div>
-                     
+                     <div class ="col-lg-6">
+                    	<div class="pull-left">
+                   			 Showing {{(currentPage*pageSize)+1}} to 
+                   			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                   			 of {{totalnof_records}} entries
+                   		</div>
+                    </div>
                  </div>
                     </div>
                     <!--End Advanced Tables -->

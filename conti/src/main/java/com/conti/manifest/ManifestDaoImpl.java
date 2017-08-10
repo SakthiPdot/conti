@@ -41,6 +41,14 @@ public class ManifestDaoImpl implements ManifestDao
 		
 	}
 	
+
+	@Override
+	@Transactional
+	public int fetchLastManifestNo(){
+		int lastManifestNo=0;
+		Query query=sessionFactory.getCurrentSession().createQuery("select MAX(manifest_number) from ManifestModel WHERE obsolete = 'N'");
+		return (query.uniqueResult()==null)?lastManifestNo:Integer.parseInt(query.uniqueResult().toString());
+	}
 	
 	
 	@Override

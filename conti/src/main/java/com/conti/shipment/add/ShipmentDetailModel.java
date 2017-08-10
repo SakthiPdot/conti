@@ -56,7 +56,8 @@ public class ShipmentDetailModel {
 	private List<ShipmentHsnDetailModel> shipmentHsnDetail = new ArrayList<>() ;
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinColumn(name = "shipmentdetail_id", referencedColumnName = "shipmentdetail_id")
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	/*@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)*/
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonManagedReference
 	public List<ShipmentHsnDetailModel> getShipmentHsnDetail() {
 		return shipmentHsnDetail;

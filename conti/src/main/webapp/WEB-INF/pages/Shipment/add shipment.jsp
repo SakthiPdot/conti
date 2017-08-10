@@ -582,10 +582,10 @@
                     		<div class="col-md-4">
                     			<span class="spanclass"><b>Bill To</b></span>
                     			<label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" data-ng-model = "ctrl.shipment.bill_to" value="Sender" data-ng-disabled= "ctrl.shipment.pay_mode=='Credit'" data-ng-required = "!ctrl.shipment.bill_to"><b>Sender</b>
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" data-ng-model = "ctrl.shipment.bill_to" value="Sender" data-ng-disabled= "ctrl.shipment.pay_mode=='Credit'" data-ng-required = "!ctrl.shipment.bill_to" data-ng-click = "ctrl.tax_payable()"><b>Sender</b>
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" data-ng-model = "ctrl.shipment.bill_to" value="Consignee" data-ng-disabled= "ctrl.shipment.pay_mode=='Credit'" data-ng-required = "!ctrl.shipment.bill_to" ><b>Consignee</b>
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" data-ng-model = "ctrl.shipment.bill_to" value="Consignee" data-ng-disabled= "ctrl.shipment.pay_mode=='Credit'" data-ng-required = "!ctrl.shipment.bill_to" data-ng-click = "ctrl.tax_payable()"><b>Consignee</b>
                                             </label>  
                     		 </div>
 
@@ -985,6 +985,7 @@
                             		  
                             		</div>
                             		
+                            		
                             	
                             		<div class="col-md-6 branchclass">
                             		
@@ -1028,6 +1029,15 @@
 	                            		    required />  
 	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
                             		    </div> 
+                            		</div>
+                            		
+                            		<div class="col-md-12 branchclass">
+                            			<span class="text-paddingwidth">Tax payable on Reverse Charge <span class="required">*</span></span>
+                            			     <select class="form-control" data-ng-options = "tax_payable for tax_payable in ['Yes', 'No']" data-ng-model = "ctrl.shipment.taxin_payable"
+					                             data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please select tax payable on Reverse Charge" required>
+					                             <option value = "" disabled>---Select--</option>
+					                           </select>	                            		   
+                            		    
                             		</div>
                             		
                             		<div class="col-md-4 branchclass">

@@ -26,6 +26,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	$scope.newHSN = [];
 	
+	var sender_taxin_payable = null;
+	var consignee_taxin_payable = null;
 	/*self.shipment.hsns = {};*/
 	
 /*	self.shipment.sender_customer = {};
@@ -36,7 +38,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	self.changePaymentmode = changePaymentmode;
 	
-	
 	//-------------------------------- Change Pament mode function begin 
 	function changePaymentmode(payment_mode) {
 		if( payment_mode == 'Credit' ) {
@@ -44,6 +45,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		} else {
 			self.shipment.bill_to = '';
 		}
+		self.tax_payable(); // Tax payable on Reverse Charge 
 	}
 	//-------------------------------- Change Pament mode function end
 	
@@ -98,6 +100,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     	self.shipment.sender_customer.customer_email = sender_search_mbl.originalObject.customer_email;
     	self.shipment.sender_customer.gstin_number = sender_search_mbl.originalObject.gstin_number;
     	
+    	sender_taxin_payable = sender_search_mbl.originalObject.taxin_payable;
+    	self.tax_payable(); // Tax payable on Reverse Charge
 	};	
 	//------------------------ Sender customer search by mobileno end
 	
@@ -134,6 +138,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     	$("#consignee_location_name_value").val(consignee_search_mbl.originalObject.location.location_name);
     	self.shipment.consignee_customer.location = consignee_search_mbl.originalObject.location;
 
+    	consignee_taxin_payable = consignee_search_mbl.originalObject.taxin_payable;
+    	self.tax_payable(); // Tax payable on Reverse Charge
 	};	
 	//------------------------ Consignee customer search by mobileno end
 	
@@ -399,6 +405,23 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		fetch_price(index);
 	}
 	//----------------------------- Price by product weight end
+	
+	//----------------------------- TAX PAYABLE ON REVERSE CHARGE begin
+	
+	self.tax_payable = function() {
+		console.log("inside tax payable");
+		if( self.shipment.bill_to == "Sender" ) {
+			self.shipment.taxin_payable = sender_taxin_payable;
+		} else if( self.shipment.bill_to == "Consignee" ) {
+			self.shipment.taxin_payable = consignee_taxin_payable;
+		} else {
+			self.shipment.taxin_payable = null;
+		}
+		
+	}
+	
+	//----------------------------- TAX PAYABLE ON REVERSE CHARGE end
+	
 	
 	//------------------------------ Calculate total price in a row begin
 	
