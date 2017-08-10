@@ -358,7 +358,7 @@ public class ShipmentModel {
 	public void setDiscount_percentage(float discount_percentage) {
 		this.discount_percentage = discount_percentage;
 	}
-	@Column(name = "tax")
+	@Column(name = "tax_amount")
 	public float getTax() {
 		return tax;
 	}
