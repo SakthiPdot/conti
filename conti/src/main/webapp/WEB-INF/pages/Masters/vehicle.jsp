@@ -111,7 +111,7 @@
 			                   data-ng-model= "ctrl.vehicle.vehicle_regno"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" 
 			                   data-content="Please Enter Vehicle Reg No" required>
-			                  <span class="makeRed" data-ng-show = "nameWrong"> Vehicle RegNo Already Existing..!</span><br>
+			                  <span class="makeRed" data-ng-show = "nameWrong"> Vehicle RegNo Already Existing..!<br></span>
 			                  
 			                  <span>Vehicle Code</span>
 			                 <input type="text" class="form-control" maxlength="6" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.vehicle.vehicle_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee code"/>
