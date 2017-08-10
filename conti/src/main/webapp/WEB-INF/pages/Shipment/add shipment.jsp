@@ -1071,22 +1071,26 @@
                             	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Tax</span> 
+                            			<div class = "form-group input-group">
                             		     <input type="text" class="form-control disabled" 
 	                            		    	data-ng-model = "ctrl.shipment.tax"	                            		    	
 												tabindex="-1"											
-	                            		     />                             		    
+	                            		     />  
+	                            		      <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
+	                            		</div>                                		    
                             		    
                             		</div>
                             	
                             	
-                            	
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Total Charges</span> 
+                            			<div class = "form-group input-group">
                             		     <input type="text" class="form-control disabled" 
 	                            		    	data-ng-model = "ctrl.shipment.total_charges"	                            		    	
 												tabindex="-1"											
-	                            		     />                            		    
-                            		    
+	                            		     /> 
+	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>                           		    
+                            		    </div>
                             		</div>
                             	
                             	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -1113,7 +1117,7 @@
                        </div>
                        
                        <div class="col-lg-6">
-                       	<button type="submit" class="btn btn-success" data-ng-disabled = "ctrl.disable_save"><i class="fa fa-floppy-o"></i>  Save</button>
+                       	<button type="submit" class="btn btn-success" data-ng-disabled = " ctrl.disable_save"><i class="fa fa-floppy-o"></i>  Save</button>
                        </div>
                        </div>
                        </div>
