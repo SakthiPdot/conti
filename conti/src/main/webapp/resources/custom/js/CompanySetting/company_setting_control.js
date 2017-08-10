@@ -56,6 +56,7 @@ angular.module('contiApp')
 			    "cgst": null,
 			    "igst":null,
 			    "hsn_code": null,
+			    "gst_slab_amount":null
 			    
 			};
 	

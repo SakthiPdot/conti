@@ -398,6 +398,26 @@
 								<span>Tax Setting</span>
 							</div>
 							
+						<div class="row">
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="slabamount">Slab Amount<span style="color:red">&nbsp;*</span></label> 
+									<div class="input-group">
+									<input type="text"							 
+						  			 	 data-trigger="focus" data-toggle="popover"
+				 					  	data-placement="top" data-content="Please Enter Slab Amount"
+										data-ng-required="true"
+										data-ng-model="comctrl.company.gst_slab_amount"
+										placeholder="Enter Slab Amount"
+										class="form-control" id="gst_slab_amount"
+										onKeyPress="return CheckIsNumericAnddot(event,this.value)"
+										maxlength="10">
+										<span class="input-group-addon" id="basic-addon1"><label><i class="fa fa-inr" aria-hidden="true"></i>
+										</label></span>
+									</div>
+								</div>
+							</div>
+						</div>
 							
 						<div class="row">
 							<div class="col-lg-3">

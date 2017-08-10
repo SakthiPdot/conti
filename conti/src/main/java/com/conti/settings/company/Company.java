@@ -31,9 +31,12 @@ public class Company {
 	TIN_number,GST_number,company_email,Financial_year_from,Financial_year_to;
 	private  byte[] company_logo;
 	private String created_datetime,updated_datetime,HSN_code;
-	private float SGST,CGST,IGST;
+	private float SGST,CGST,IGST,GST_slab_amount;
 	private long company_landlineno,company_alternateno;
 	
+	
+
+
 	public Company() {
 	}
 
@@ -164,8 +167,7 @@ public class Company {
 		return this.company_email;
 	}
 	
-	@Column(name="company_logo")
-	
+	@Column(name="company_logo")	
 	public byte[] getCompany_logo() {
 		return this.company_logo;
 	}
@@ -181,10 +183,14 @@ public class Company {
 	}
 
 	
-	
+	@Column(name="GST_slab_amount")
+	public float getGST_slab_amount() {
+		return this.GST_slab_amount;
+	}
 
-
-
+	public void setGST_slab_amount(float gST_slab_amount) {
+		this.GST_slab_amount = gST_slab_amount;
+	}
 	public void setCompany_id(int company_id) {
 		this.company_id = company_id;
 	}
