@@ -60,7 +60,7 @@
 							</div>
 							<div class="col-lg-8">					
 								<h2 style="color:blue; font-family: verdana;font-weight:bold;" align="center">comapny name</h2>
-								<h4 align="center">area, &nbsp;street,</h4>
+								<h4 align="center" class="c">area, &nbsp;street,</h4>
 								<h4 align="center">city. &nbsp; phoneno.</h4>
 								<h4 align="center">title Details</h4>
 							</div>
@@ -70,7 +70,7 @@
 			</div>
 			
 			    Company master<div id="companyname">${company.company_name}</div>
-				<div id="area">${company.company_address1}, ${company.company_address2}</div>
+				<div id="area">${company.company_address1},${company.company_address2}</div>
 				<div id="street">${company.location.location_name}</div>
 				<div id="city">${company.location.address.city}</div>
 				<div id="phoneno">${company.company_landlineno}</div>

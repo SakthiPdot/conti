@@ -337,7 +337,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 										self.message = vehicle.vehicle_regno+ " vehicle reg no Deleted..!";
 										successAnimate('.success');
 										newOrClose();
-										var index=self.vehicle.indexOf(vehicle);
+										var index=self.vehicles.indexOf(vehicle);
 										self.vehicles.splice(index,1);
 										console.log(vehicle);
 										console.log(self.vehicles);
