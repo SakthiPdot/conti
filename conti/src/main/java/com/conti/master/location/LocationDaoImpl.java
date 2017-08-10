@@ -138,15 +138,15 @@ public class LocationDaoImpl implements LocationDao {
 		
 		return sessionFactory.getCurrentSession()
 				.createQuery("from Location where obsolete ='N' "
-						+ "and location_name  LIKE '%"+searchString + "%'"
-						+ "OR location_code LIKE '%"+searchString+ "%'"
-						+ "OR pincode LIKE '%"+searchString+ "%'"
-						+ "OR abbreviation LIKE '%"+searchString+ "%'"
-						+ "OR obsolete LIKE '%"+searchString+ "%'"
-						+ "OR address.city LIKE '%"+searchString+ "%'"
-						+ "OR address.state LIKE '%"+searchString+ "%'"
-						+ "OR address.country LIKE '%"+searchString+ "%'"
-						+ "OR address.pincode LIKE '%"+searchString+ "%'"
+						+ "and location_name  LIKE '%"+searchString + "%' "
+						+ "OR location_code LIKE '%"+searchString+ "%' "
+						+ "OR pincode LIKE '%"+searchString+ "%' "
+						+ "OR abbreviation LIKE '%"+searchString+ "%' "
+						+ "OR obsolete LIKE '%"+searchString+ "%' "
+						+ "OR address.city LIKE '%"+searchString+ "%' "
+						+ "OR address.state LIKE '%"+searchString+ "%' "
+						+ "OR address.country LIKE '%"+searchString+ "%' "
+						+ "OR pincode LIKE '%"+searchString+ "%' "
 						).list();
 		
 	}

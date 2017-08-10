@@ -102,9 +102,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										
 										
 										<select
-											class="form-control" data-ng-model="fromBranch">				
+											class="form-control" data-ng-model="amctrl.fromBranch">				
 											 <option value="">--Select Branch Name--</option>
-											 <option data-ng-repeat="x in amctrl.branches" value="x.branch_id">{{x.branch_name}}</option>
+											 <option data-ng-repeat="x in amctrl.branches" value="{{x.branch_id}}">{{x.branch_name}}</option>
 										</select>
 										
 										
@@ -114,9 +114,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										<span class="text-padding">To</span> 
 										
 										<select
-											class="form-control" data-ng-model="toBranch">														
+											class="form-control" data-ng-model="amctrl.toBranch">														
 											 <option value="">--Select Branch Name--</option>
-											 <option data-ng-repeat="x in amctrl.branches" value="x.branch_id">{{x.branch_name}}</option>
+											 <option data-ng-repeat="x in amctrl.branches" value="{{x.branch_id}}">{{x.branch_name}}</option>
 										</select>
 										
 										
@@ -128,8 +128,10 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									<div class="col-lg-3 branchclass">
 										<span class="paddingtop">From </span>
 										<div class="form-group input-group marginleftrightspace">
-											<input type="text" class="form-control datepicker1" data-ng-model="amctrl.fromdate"/> <span
-												class="input-group-addon"><i class="fa fa-calendar"></i>
+											<input type="text" class="form-control datepicker1"
+											placeholder="Enter From Date"
+											 data-ng-model="amctrl.fromdate"/>
+											 <span class="input-group-addon"><i class="fa fa-calendar"></i>
 											</span>
 
 										</div>
@@ -138,25 +140,30 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									<div class="col-lg-3 branchclass">
 										<span class="paddingtop">To</span>
 										<div class="form-group input-group spacemarginleftright">
-											<input type="text" class="form-control datepicker2" data-ng-model="amctrl.todate" /> <span
+											<input type="text" class="form-control datepicker2" 
+											placeholder="Enter To Date"
+											data-ng-model="amctrl.todate" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
 											</span>
 										</div>
 									</div>
+							
 
 								</div>
 
 								<div class="col-lg-12 noPaddingLeft subhead-padding">
 									<div class="col-lg-3 branchclass">
-										<span class="text-padding" data-ng-model="amctrl.status">Status</span> <select
-											class="form-control">
-											<option>--Select--</option>
+										<span class="text-padding" >Status</span>
+										<select data-ng-model="amctrl.status"
+											class="form-control">														
+											 <option value="">--Select Status--</option>
 											<option>Booked</option>										
 											<option>Missing</option>
 										</select>
 									</div>
 									<div class="col-lg-4  col-lg-offset-3 branchclass">
-										<button class="btn btn-primary">View Shipment</button>									
+										<button class="btn btn-primary" 
+										data-ng-click="amctrl.viewShipment()">View Shipment</button>									
 									</div>									
 								</div>
 								
@@ -221,7 +228,6 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										<thead>
 											<tr>
 												<th><input type="checkbox"></th>
-												<th>S.No</th>
 												<th>LR No</th>
 												<th>Origin</th>
 												<th>Destination</th>
@@ -233,17 +239,17 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
+											<tr 
+											data-ng-repeat='x in amctrl.FilteredManifests | limitTo:pageSize track by x.shipment_id'>
 												<td><input type="checkbox"></td>
-												<td>1</td>
-												<td>LR 9843</td>
-												<td>Coimbatore</td>
-												<td>Chennai</td>
-												<td>Kumar</td>
-												<td>Raju</td>
-												<td>2</td>
-												<td>1.5 Kg</td>
-												<td>Service</td>
+												<td>{{x.lr_number}}</td>
+												<td>{{x.sender_customer.branchModel.branch_name}}</td>
+												<td>{{x.consignee_customer.branchModel.branch_name}}</td>
+												<td>{{x.sender_customer.customer_name}}</td>
+												<td>{{x.consignee_customer.customer_name}}</td>
+												<td>{{x.numberof_parcel}}</td>
+												<td>{{x.chargeable_weight}}</td>
+												<td>{{x.service.service_name}}</td>
 											</tr>
 										</tbody>
 									</table>
