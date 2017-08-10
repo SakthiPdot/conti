@@ -246,19 +246,29 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------ MAKE SAVE ENABLE BEGIN
 	
 	function make_enable_save(index) {
+		
+		
 		if(index != -1) {
-			
-			/*if (self.shipment.shipmentDetail[index].shipmentHsnDetail == null ) {
+
+			if (self.shipment.shipmentDetail[index].shipmentHsnDetail[0].hsn == null ) {
+				console.log(index);
 				self.disable_save = true;
 			} else {
+				var quantity = 0;
 				for(var i=0; i<self.shipment.shipmentDetail.length; i++) {
-					if(self.shipment.shipmentDetail[i].quantity == self.shipment.numberof_parcel) {
-						self.disable_save = false;
-					}
+					selected_quantity = self.shipment.shipmentDetail[i].quantity;
+					quantity = parseInt(selected_quantity) + parseInt(quantity);	
+					
 				}
 				
-			}*/
-		}
+				if(quantity == self.shipment.numberof_parcel) {
+					self.disable_save = false;
+				} else {
+					self.disable_save = true;
+				}
+				
+			}
+		} 
 			
 	}
 	
@@ -504,9 +514,21 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//---------------------------------------------- HSN CODE SEARCH begin
 	$scope.hsn_code=function (selected){
-		
 		var index = this.$parent.$index;
 		var products_index = this.$parent.$parent.$index;
+		hsncode_desc_proc(selected, index, products_index);
+	}
+	//---------------------------------------------- HSN CODE SEARCH end
+	
+	//---------------------------------------------- HSN DESCRIPTION SEARCH begin
+	$scope.hsn_description=function (selected){
+		hsncode_desc_proc(selected, index, products_index);
+		
+	}
+	//---------------------------------------------- HSN DESCRIPTION SEARCH end
+
+	function hsncode_desc_proc(selected, index, products_index) {
+		
 
 		//-- assign object
 		
@@ -525,36 +547,9 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		$('#product'+ products_index +'_hsn_description'+index+'_value')
 			.attr("title", $('#product'+ products_index +'_hsn_description'+index+'_value').val());
 		$scope.newHSN.push( selected.originalObject );
-		make_enable_save(index); // make enable save
+		make_enable_save(products_index); // make enable save
 	}
-	//---------------------------------------------- HSN CODE SEARCH end
 	
-	//---------------------------------------------- HSN DESCRIPTION SEARCH begin
-	$scope.hsn_description=function (selected){
-		
-		var index = this.$parent.$index;
-		var products_index = this.$parent.$parent.$index;
-
-		//-- assign object
-		
-		self.shipment.shipmentDetail[products_index].shipmentHsnDetail[index].hsn = selected.originalObject;
-		$('#product'+ products_index +'_hsn_description'+index+'_value').val(selected.originalObject.hsn_description);
-		
-		self.shipment.shipmentDetail[products_index].shipmentHsnDetail[index].product = self.shipment.shipmentDetail[products_index].product;
-		
-		self.shipment.shipmentDetail[products_index].viewHSNDetail_link = true; //for HSN detail link
-		//for view hsn_code
-		var hsn_code = [];
-		for ( var i =0; i<self.shipment.shipmentDetail[products_index].shipmentHsnDetail.length; i++ ) {
-			hsn_code[i] = self.shipment.shipmentDetail[products_index].shipmentHsnDetail[i].hsn.hsn_code;			
-		}
-		$('#HSNmodal_a'+products_index).attr("title", hsn_code);
-		
-		$scope.newHSN.push( selected.originalObject );
-		make_enable_save(index); // make enable save
-	}
-	//---------------------------------------------- HSN DESCRIPTION SEARCH end
-
 	//------------------------------------------------------------------------------HSN FUNCTIONS END	
 	
 	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT BEGIN------------------------------------
