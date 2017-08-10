@@ -401,11 +401,11 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="slabamount">Slab Amount<span style="color:red">&nbsp;*</span></label> 
+									<label for="slabamount">GST Slab Amount<span style="color:red">&nbsp;*</span></label> 
 									<div class="input-group">
 									<input type="text"							 
 						  			 	 data-trigger="focus" data-toggle="popover"
-				 					  	data-placement="top" data-content="Please Enter Slab Amount"
+				 					  	data-placement="top" data-content="Please Enter GST Slab Amount"
 										data-ng-required="true"
 										data-ng-model="comctrl.company.gst_slab_amount"
 										placeholder="Enter Slab Amount"
