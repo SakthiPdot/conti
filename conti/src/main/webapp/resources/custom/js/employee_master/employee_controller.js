@@ -442,7 +442,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 						EmployeeService.deleteEmployee(self.employee.emp_id)
 						.then(
 								function (employee) {
-									self.employees.splice(employee,1);
+									var index = self.employees.indexOf(employee);
+									self.employees.splice(index,1);
 									self.message =employee.emp_name+ " employee Deleted..!";
 									successAnimate('.success');
 									window.setTimeout( function(){	 	        		
