@@ -153,14 +153,14 @@ public class AddShipmentController {
 			
 			
 			//SMS FOR SENDER 
-			String message = "Your parcel have been booked successfully at Conti Courier Service."
+			/*String message = "Your parcel have been booked successfully at Conti Courier Service."
 					+ "LR Number: " + lrno + " "
 					+ "From city " + shipment.getSender_customer().location.address.getCity() +" to "
 									+ shipment.getConsignee_customer().location.address.getCity() + " " 
 					+ "No.of Parcel " + shipment.getNumberof_parcel() + " "
 					+ "Delivery Charge " + shipment.getDelivery_charge();
 			String mobileno = Long.toString(shipment.getSender_customer().getCustomer_mobileno());
-			String sms_respone = sendMailSMS.send_SMS(mobileno, message);
+			String sms_respone = sendMailSMS.send_SMS(mobileno, message);*/
 			
 			
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
