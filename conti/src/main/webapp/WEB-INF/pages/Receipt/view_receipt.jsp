@@ -110,10 +110,7 @@
                 			      		</select>
                 			      </div>
                 			      </div>
-                			      
-                			      
-                			     
-                			      
+                			       
                 			      <div class="col-lg-12 noPaddingLeft"> 
                 			        <div class="sec-padding">Specific Period</div>
                 			         
@@ -369,8 +366,8 @@
   
   
     <script src="resources/custom/js/custom.js"></script>
-    <script src="resources/custom/js/receipt/receipt_controller.js"></script>
-    <script src="resources/custom/js/receipt/receipt_service.js"></script>
+    <script src="resources/custom/js/receipt/view_receipt_controller.js"></script>
+    <script src="resources/custom/js/receipt/view_receipt_service.js"></script>
     <script src="resources/custom/js/branch_master/branch_service.js"></script>
     <script src="resources/custom/js/confirmDialog.js"></script>   
     <script type="text/javascript" src="resources/custom/js/validation.js"></script>

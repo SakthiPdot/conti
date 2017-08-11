@@ -41,6 +41,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
 import com.conti.manifest.ManifestModel;
+import com.conti.master.branch.BranchDao;
+import com.conti.master.branch.BranchModel;
 import com.conti.receipt.ReceiptModel;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
@@ -50,28 +52,36 @@ import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
+import com.conti.shipment.add.ShipmentDao;
+import com.conti.shipment.add.ShipmentModel;
 
 
 
 /**
  * @Project_Name conti
  * @Package_Name com.conti.receipt
- * @File_name ReceiptGenerationController.java
- * @author Sakthi
+ * @File_name ViewReceiptGenerationController.java
+ * @author Suresh
  * @Created_date_time Jun 20, 2017 2:21:39 PM
  * @Updated_date_time Jun 20, 2017 2:21:39 PM
  */
 
 @RestController
-public class ReceiptRestController {
+public class ViewReceiptRestController {
 
-	final Logger logger = LoggerFactory.getLogger(ReceiptRestController.class);
+	final Logger logger = LoggerFactory.getLogger(ViewReceiptRestController.class);
 
 	@Autowired
 	private UsersDao usersDao;
 	
 	@Autowired
 	private ReceiptDao receiptDao;
+	
+	@Autowired
+	private BranchDao branchDao;
+	
+	@Autowired
+	private ShipmentDao shipmentDao;
 		
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
@@ -85,44 +95,9 @@ public class ReceiptRestController {
 	
 	private UserInformation userInformation;
 
-	@RequestMapping(value =  "receipt_generate", method = RequestMethod.GET)
-	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		
-		UserInformation userinfo = new UserInformation(request);
-		String username = userinfo.getUserName();
-		
-		String userid = userinfo.getUserId();
-		
-		session.setAttribute("username", username);
-		session.setAttribute("userid", userid);
-		
-		
-		ModelAndView model = new ModelAndView();
-		
-		
-		try
-		{
-			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			
-			model.addObject("title", "Receipt Generation");
-			model.addObject("message", "This page is for ROLE_ADMIN only!");
-			model.setViewName("Receipt/receipt_generation");
-
-			
-		} catch (Exception exception) {
-			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);
-		}
-		return model;
-
-	}
-
-	//===============================================================================================
-	//=============================================View RECEIPT======================================
-	//===============================================================================================
 	
 	//--------------------------------Open view receipt page----------------------------------------
+	
 	@RequestMapping(value =  "view_receipt", method = RequestMethod.GET)
 	public ModelAndView viewadminPage(HttpServletRequest request) throws Exception {
 		
@@ -158,39 +133,38 @@ public class ReceiptRestController {
 //-------------------------------------------------------------------------------------------------------
 	
 //-----------------------------------Get Receipt details------------------------------------------------
-	@RequestMapping(value="receipt", method=RequestMethod.GET)
-	public ResponseEntity<List<ReceiptModel>>fetchAllReceipt(HttpServletRequest request)
+	@RequestMapping(value="view_receipt_preload", method=RequestMethod.GET)
+	public ResponseEntity<List<ReceiptModel>>fetchAllReceipt_view(HttpServletRequest request)
 	{
 		UserInformation userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
-		String branch_id = userInformation.getUserBranchId();
-//		TRY
-//		{
+		
+		try
+		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			List<ReceiptModel> receiptModel=receiptDao.getAllReceipt();
+			List<ReceiptModel> receiptModel=receiptDao.getAllReceipt_view();
 			if(receiptModel.isEmpty()) 
 			{
-				
 				return new ResponseEntity<List<ReceiptModel>> (HttpStatus.NO_CONTENT);
 			}
 			else 
 			{
-				//System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy "+manifestModel);
 				return new ResponseEntity<List<ReceiptModel>> (receiptModel, HttpStatus.OK);	
 			}	
-//		}
-//		catch(Exception exception)
-//		{
-//			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-//			return new ResponseEntity<List<ReceiptModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
-//		}
+		}
+		catch(Exception exception)
+		{
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<ReceiptModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 	}
 	
 	//-------------------------------------------------------------------------------------------------------------------
 	
 	//-------------------------------Filter Receipt funtion start-----------------------------------------------------------
 	
-	@RequestMapping( value = "receipt_filter", method = RequestMethod.POST)
+	
+	@RequestMapping( value = "view_receipt_filter", method = RequestMethod.POST)
 	public ResponseEntity<List<ReceiptModel>> receiptFilterbycondition(@RequestBody String manifest,HttpServletRequest request) throws JsonProcessingException, IOException 
 	{
 		HttpSession session = request.getSession();
@@ -198,18 +172,12 @@ public class ReceiptRestController {
 		String username = userinfo.getUserName();
 		String userid = userinfo.getUserId();
 		
-		 ObjectMapper mapper = new ObjectMapper();
-		 mapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
-		 JsonNode rootNode =mapper.readTree(manifest);
-		 JsonNode frombranch = rootNode.path("frombranch");
-		 JsonNode tobranch = rootNode.path("tobranch");
-		 JsonNode fromdat = rootNode.path("fromdate");
-		 JsonNode todat = rootNode.path("todate");
-		 int frombranchid=frombranch.asInt();
-		 int tobranchid=tobranch.asInt();
-		 String fromdate=fromdat.asText();
-		 String todate=todat.asText();
-		 		
+		 JSONObject obj=new JSONObject(manifest);
+		 int frombranchid=(int) obj.get("frombranch");
+		 int tobranchid=(int) obj.get("tobranch");
+		 String fromdate=(String) obj.get("fromdate");
+		 String todate=(String) obj.get("todate");
+		
 		try 
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
@@ -221,7 +189,6 @@ public class ReceiptRestController {
 			else 
 			{
 				return new ResponseEntity<List<ReceiptModel>> (receiptModel, HttpStatus.OK);	
-				 
 			}		
 		} 
 		catch (Exception exception) 
@@ -231,13 +198,12 @@ public class ReceiptRestController {
 		}
 	}
 	
-	
 	//-------------------------------Receipt Excel Export function start----------------------------
 	@RequestMapping(value="downloadExcelReceipt",method=RequestMethod.GET)
 	public ModelAndView downloadExcelReceipt()
 	{
 		
-		List<ReceiptModel> receiptList=receiptDao.getAllReceipt();
+		List<ReceiptModel> receiptList=receiptDao.getAllReceipt_view();
 		return new ModelAndView("receiptExcelView","receiptList",receiptList);
 	}
 	

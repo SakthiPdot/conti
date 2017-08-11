@@ -24,7 +24,8 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	$scope.shownoofrec=10;
 	
 	self.receiptSelectAll=receiptSelectAll;
-	fetchAllReceipt();
+	
+	fetchAllReceipt_view();
 	fetchAllBranches();
 		
 	function reset()
@@ -58,7 +59,6 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	
 	//----------------------------------------------------------------------------
 	
-	
 	//-------------------------- Fetch All Branch begin ---------------------//	
 	
 	function fetchAllBranches() 
@@ -82,9 +82,9 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	//-------------------------- Fetch All Branch end ---------------------//
 	
 	//---------------------------Fetch All Receipt details start----------------------
-	function fetchAllReceipt()
+	function fetchAllReceipt_view()
 	{
-		ReceiptService.fetchAllReceipt()
+		ReceiptService.fetchAllReceipt_view()
 		.then(
 				function(receipt)
 				{
@@ -275,7 +275,8 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			$scope.previouseDisabled=true;
 			$scope.nextDisabled=false;
 			self.Filterreceipts=self.receipts.slice($scope.currentPage*$scope.pageSize);
-			fetchAllReceipt();
+			//fetchAllReceipt_add();
+			fetchAllReceipt_view();
 		}
 		else
 		{
@@ -301,5 +302,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		}
 	}
 	//-----------------------------------------------------------------------------------------------
+	
+	
 	}
 ]);
