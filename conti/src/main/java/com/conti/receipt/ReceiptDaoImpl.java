@@ -25,11 +25,10 @@ public class ReceiptDaoImpl implements ReceiptDao
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	
 	//======================================VIEW RECEIPT===============================================
 	@Override
 	@Transactional
-	public List<ReceiptModel> getAllReceipt() 
+	public List<ReceiptModel> getAllReceipt_view() 
 	{
 		// TODO Auto-generated method stub
 		
