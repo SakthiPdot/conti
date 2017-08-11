@@ -182,6 +182,19 @@ public class EmployeeDaoImp implements EmployeeDao {
 		
 	}
 	
+	@Override
+	@Transactional
+	public List<EmployeeMaster> searchDriver(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<EmployeeMaster> listemp = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
+		.createQuery("from EmployeeMaster WHERE obsolete ='N'"
+				+ " AND empcategory LIKE '%Driver%'"	
+				+ "and emp_name  LIKE '%"+search_key+"%'").list();
+		return listemp;
+		
+	}
 	
 	
 	@Override

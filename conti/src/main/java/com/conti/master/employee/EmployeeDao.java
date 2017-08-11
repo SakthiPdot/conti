@@ -33,6 +33,8 @@ public interface EmployeeDao {
 	public List<EmployeeMaster> getEmployeeSorting100(String name,String order);
 	public List<EmployeeMaster> searchbyeyEmpCategory(String searchkey);
 	public List<EmployeeMaster> searchbyeyEmpCategoryforSA(String searchkey);
+	public List<EmployeeMaster> searchDriver(String searchkey);
+	
 	public int find_record_countforSA();
 	public int find_record_count();
 	public List<EmployeeMaster> searchbyEmployee(String searchkey);
