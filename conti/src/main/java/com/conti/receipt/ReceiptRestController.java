@@ -2,15 +2,20 @@ package com.conti.receipt;
 
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.binary.Base64;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonParser.Feature;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +48,8 @@ import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.RoleDao;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 
 
 
@@ -66,6 +73,9 @@ public class ReceiptRestController {
 	@Autowired
 	private ReceiptDao receiptDao;
 		
+	@Autowired
+	private CompanySettingDAO companySettingDAO;
+	
 	@Autowired
 	@Qualifier("sessionRegistry")
 	private SessionRegistry sessionRegistry;
@@ -231,7 +241,45 @@ public class ReceiptRestController {
 		return new ModelAndView("receiptExcelView","receiptList",receiptList);
 	}
 	
+	//-----------------------------Receipt print function start------------------------------------
 	
+	@RequestMapping(value="/receipt_print",method=RequestMethod.POST)
+	public ModelAndView receiptPrint(@RequestParam("receipt") String receipt,HttpServletRequest request)throws JsonProcessingException, IOException
+	{
+		JSONArray jsonArray = new JSONArray(receipt);
+		String[] receiptid = new String[jsonArray.length()];
+		for(int i=0; i <jsonArray.length();i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			receiptid[i] = Integer.toString(jsonObject.getInt("receipt_id"));			
+		}
+		
+		List<ReceiptModel> listReceipt = new ArrayList<ReceiptModel> ();
+		for(int i=0; i<receiptid.length;i++) {
+			ReceiptModel receiptModel = receiptDao.getReceiptbyId(Integer.parseInt(receiptid[i]));
+			listReceipt.add(receiptModel);
+		}
+		Company company = companySettingDAO.getById(1);
+		ModelAndView model = new ModelAndView("print/receipt_print");
+
+		String base64DataString ="";
+		if(company!=null && company.getCompany_logo()!=null){
+			byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+			try {
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+			}		
+		}else{
+			base64DataString = ConstantValues.NO_IMAGE;	
+		}
+		
+		model.addObject("title", "Receipt");
+		model.addObject("company", company);
+		model.addObject("listCust", listReceipt);
+		model.addObject("image",base64DataString);
+			
+		return model;
+	}
 	//===============================================================================================
 	
 	

@@ -729,7 +729,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
 				|| (item.branch_contactperson.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| ((String(item.branch_mobileno)).indexOf(toSearch) > -1 ) ||  (item.branch_email.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)  
-				|| (item.lrno_prefix.toLowerCase().indexOf(toSearch.toLowerCase())) ||(item.receiptno_prefix.toLowerCase().indexOf(toSearch.toLowerCase()))) 
+				|| (item.lrno_prefix.toLowerCase().indexOf(toSearch.toLowerCase())>-1) ||(item.receiptno_prefix.toLowerCase().indexOf(toSearch.toLowerCase())>-1)) 
 		{
 			success = true;
 		} else {
