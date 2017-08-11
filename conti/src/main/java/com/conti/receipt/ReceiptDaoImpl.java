@@ -12,6 +12,7 @@ package com.conti.receipt;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -54,5 +55,20 @@ public class ReceiptDaoImpl implements ReceiptDao
 	}
 	//------------------------------------------------------------------------------------------------------
 	
+	//------------------------------Get Receipt by id------------------------------------------
+	
+	@Override
+	@Transactional
+	public ReceiptModel getReceiptbyId(int id) {
+		String hql = "FROM ReceiptModel WHERE obsolete ='N' and receipt_id ="+ id + "";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		List<ReceiptModel> receiptlist = (List<ReceiptModel>) query.list();
+		if(receiptlist != null && !receiptlist.isEmpty()) {
+			return receiptlist.get(0);
+		}
+		return null;
+	}
+	//---------------------------------------------------------------------------------
 	//===================================================================================================
 }

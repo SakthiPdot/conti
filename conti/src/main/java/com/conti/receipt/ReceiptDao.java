@@ -8,4 +8,5 @@ public interface ReceiptDao
 {
 	public List<ReceiptModel>getAllReceipt();
 	public List<ReceiptModel>getReceiptByCondition(int frombranch,int tobranch,String fromdate,String todate);
+	public ReceiptModel getReceiptbyId(int id);
 }

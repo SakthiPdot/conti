@@ -32,24 +32,16 @@
 	   
   	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
-  	
-	       
-	   <script src="resources/custom/js/custom.js"></script>
-	   
-	   <script src="resources/custom/js/app.js"></script>
-   
-   
-	    <title>Conti - ${title} - PDF</title>
+  	<script src="resources/custom/js/custom.js"></script>
+	<script src="resources/custom/js/app.js"></script>
+    <title>Conti - ${title} - PDF</title>
 	    <style>
        
     </style>
 	    
     </head>
     <body>
-    
-   
-
-			<div class="pure-g" style="height: 100%;">
+    	<div class="pure-g" style="height: 100%;">
 			    <div id="panel" class="pure-u-1 pure-u-md-1-5">
 			        <ul class="menu" >
 			            <li style="color:white;">Conti</li>
@@ -95,9 +87,9 @@
 				
 				
 				Company master<div id="companyname">${company.company_name}</div>
-				<div id="area">${company.company_address1}</div>
-				<div id="street">${company.company_address2}</div>
-				<div id="city">${company.location.location_name},${company.location.address.city}</div>
+				<div id="area">${company.company_address1}, ${company.company_address2}</div>
+				<div id="street">street</div>
+				<div id="city">${company.location.address.city}</div>
 				<div id="phoneno">${company.company_landlineno}</div>
 				<div id="title">${title} Master</div>
 				<div id="logo">${image}</div>
@@ -115,21 +107,38 @@
 	               <thead>	    
 	        				 <tr>
 	                            <th>S.No</th>
-	                            <th>Employee Name</th>
-	                            <th>Employee code</th>	                                 
-	                            <th>Employee Category</th>
-	                            <th>DOJ</th>
+	                            <th>Date</th>
+	                            <th>LR Number</th>	                                 
+	                            <th>Receipt</th>
+	                            <td>Product </td>
+	                            <td>Origin </td>
+	                            <td>Destination </td>
+	                            <td>Sender </td>
+	                            <td>Consignee </td>
+	                            <td>Manifest </td>    
+	                            <td>Status </td> 
+<!-- 	                            <th>Branch Name</th> -->
+	                            <th>Company Name</th>
 	                        </tr>	                        
 	                    </thead>
 	                    <tbody>
 	                    
-	                    <c:forEach var="emp" items="${listEmp}" varStatus="loop">	                    
+	                    <c:forEach var="receipt" items="${listReceipt}" varStatus="loop">	                    
 	                        <tr>
                               	<td><c:out value="${loop.count}" />
-                                <td>${emp.emp_name}</td>                   
-                               <td>${emp.emp_code}</td> 
-                               <td>${emp.empcategory}</td> 
-                               <td>${emp.doj}</td>                        
+                                <td>${receipt.created_datetime}</td>                   
+                               <td>${receipt.shipmentModel.lr_number}</td> 
+                               <td>${receipt.receipt_number}</td> 
+                               <td>${receipt.shipmentModel.shipmentDetail[0].product.product_name}</td> 
+                               <td>${receipt.manifestModel.branchModel1.branch_name}</td> 
+                               <td>${receipt.manifestModel.branchModel2.branch_name}</td> 
+                               <td>${receipt.shipmentModel.sender_customer.customer_name}</td> 
+                               <td>${receipt.shipmentModel.consignee_customer.customer_name}</td> 
+                               <td>${receipt.manifestModel.manifest_number}</td> 
+                               <td>${receipt.shipmentModel.status}</td> 
+                                 
+<%--                                <td>${cust.customer_type}</td> --%>
+                               <td>${cust.company_name}</td>                      
                             </tr>                           
 	                      </c:forEach> 
 	                      
@@ -139,8 +148,8 @@
 	         <!-- - Item Category Print -->
 	            
 	
-	  <script src="resources/custom/js/employee_master/employee_controller.js"></script>
-	  <script src="resources/custom/js/employee_master/employee_service.js"></script>
+	  <script src="resources/custom/js/customer_master/customer_controller.js"></script>
+	  <script src="resources/custom/js/customer_master/customer_service.js"></script>
 	  <script src="resources/custom/js/branch_master/branch_service.js"></script>
 	  <script src="resources/custom/js/Location/location_service.js"></script>
 	  <script src="resources/custom/js/confirmDialog.js"></script>   
@@ -170,12 +179,12 @@
 		        var doc = examples[funcStr]();
 		
 		        doc.setProperties({
-		            title: 'Conti: Employee',
-		            subject: 'Broman Master (' + funcStr + ')'
+		            title: 'Conti: Coustomer',
+		            subject: 'Conti Master (' + funcStr + ')'
 		        });
 		
 		        if (shouldDownload) {
-		            doc.save('conti_employee.pdf');
+		            doc.save('conti_customer.pdf');
 		        } else {
 		            document.getElementById("output").src = doc.output('datauristring');
 		        }
