@@ -120,4 +120,12 @@ public class ServiceDaoImp implements ServiceDao {
 			return SortList;
 		
 		}
+
+
+		@Override
+		@Transactional
+		public int serviceSettingCount() {
+			int record_count = ((Long) sessionFactory.getCurrentSession().createQuery("select count(*) from ServiceMaster WHERE obsolete = 'N'").uniqueResult()).intValue();		
+			return record_count;
+		}
 }

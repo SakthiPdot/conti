@@ -438,5 +438,21 @@ public class ServiceRestController {
 			
 			return new ResponseEntity<Map<String,List<ServiceMaster>>> (result,HttpStatus.OK);
 		}			
+		
+		
+		//========================= Get Record Count Begin ==========//
+		
+		@RequestMapping(value = "/servicerecordcount/", method = RequestMethod.GET)
+		public ResponseEntity<String> servicerecordcount(HttpServletRequest request){
+			try {
+				return new ResponseEntity<String> (String.valueOf(serviceDao.serviceSettingCount()),HttpStatus.OK);
+			} catch (Exception exception) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+				return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 			
+			
+		}
+		
+		//========================= Get Record Count End =============//
 }

@@ -579,7 +579,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     						$scope.nextDisabled = true;
     					} else if ( filterCust.length < 10 ) {
     						self.Filtercustomers = filterCust;
-    						$scope.nextDisabled = true;
+    						/*$scope.nextDisabled = true;*/
     					}
     					else 
     					{

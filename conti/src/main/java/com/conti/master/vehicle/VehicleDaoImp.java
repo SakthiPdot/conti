@@ -127,6 +127,25 @@ public class VehicleDaoImp implements VehicleDao  {
 		
 		return "NOTAVAILABLE";
 	}
+
+	@Override
+	@Transactional
+	public int vehicleSettingCount() {
+		int record_count = ((Long) sessionFactory.getCurrentSession().createQuery("select count(*) from VehicleMaster WHERE obsolete = 'N'").uniqueResult()).intValue();
+		
+		return record_count;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<VehicleMaster> getVehicleBy100() {
+		
+		return sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster where obsolete= 'N'"
+						+ "order by IFNULL (created_datetime) DESC").setMaxResults(100)
+				.list();
+	}
 	
 	
 
