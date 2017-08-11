@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.conti.manifest.ManifestModel;
 import com.conti.master.location.Location;
 
 /**
@@ -43,11 +44,40 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	public List<ShipmentModel> fetchAllShipment100() {
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
-				.createQuery("from ShipmentModel WHERE obsolete = 'N'" )
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and  status in ('Booked','Missing')" )
 				.setMaxResults(100).list();
 		
 		return listShipment;
 	}
+	
+	@Override
+	@Transactional
+	public List<ShipmentModel> filterShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status)
+	{
+		StringBuilder queryString =new StringBuilder();
+		queryString.append("FROM ShipmentModel WHERE obsolete ='N' ");
+		
+		if(fromBranch!=null && !fromBranch.trim().isEmpty())
+			queryString.append(" AND sender_branch.branch_id='"+fromBranch+"' ");
+		if(toBranch!=null && !toBranch.trim().isEmpty())
+			queryString.append(" AND consignee_branch.branch_id='"+toBranch+"' ");
+		if(fromDate!=null && !fromDate.trim().isEmpty())			
+			queryString.append(" AND shipment_date >= '"+fromDate+" 00:00:00'");
+		if(toDate!=null && !toDate.trim().isEmpty())
+			queryString.append(" AND shipment_date <= '"+toDate+" 00:00:00'");
+		if(status!=null && !status.trim().isEmpty())
+			queryString.append(" AND status = '"+status+"' ");
+		
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = (List<ShipmentModel>) sessionFactory.getCurrentSession()
+				.createQuery(queryString.toString()).list();
+		
+		return listShipment;
+		
+	}
+	
+	
 	
 	@Override
 	@Transactional
