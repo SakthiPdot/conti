@@ -1034,7 +1034,8 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Tax payable on Reverse Charge <span class="required">*</span></span>
                             			     <select class="form-control" data-ng-options = "tax_payable for tax_payable in ['Yes', 'No']" data-ng-model = "ctrl.shipment.taxin_payable"
-					                             data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please select tax payable on Reverse Charge" required>
+					                             data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please select tax payable on Reverse Charge"
+					                             data-ng-change="ctrl.calc_discount()" required>
 					                             <option value = "" disabled>---Select--</option>
 					                           </select>	                            		   
                             		    

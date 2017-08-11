@@ -76,6 +76,10 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		$('#consignee_location_name_value').val('');
 		$('#service_name_value').val('');
 		$('#product_name_value').val('');
+		
+		var sender_taxin_payable = null;
+		var consignee_taxin_payable = null;
+		self.disable_save = true;
 	}
 	
 	//------------------------------- Reset end
@@ -409,7 +413,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//----------------------------- TAX PAYABLE ON REVERSE CHARGE begin
 	
 	self.tax_payable = function() {
-		console.log("inside tax payable");
 		if( self.shipment.bill_to == "Sender" ) {
 			self.shipment.taxin_payable = sender_taxin_payable;
 		} else if( self.shipment.bill_to == "Consignee" ) {
@@ -417,7 +420,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		} else {
 			self.shipment.taxin_payable = null;
 		}
-		
+		self.calc_discount();
 	}
 	
 	//----------------------------- TAX PAYABLE ON REVERSE CHARGE end
@@ -481,26 +484,43 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			.then(
 					function (res) {
 						
-						console.log(self.shipment.sender_branch);
-						console.log(self.shipment.consignee_branch);
-						
-						if( self.shipment.sender_branch.location.address.state == self.shipment.consignee_branch.location.address.state ) {
-							self.shipment.cgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.cgst) / 100) ).toFixed(2);
-							self.shipment.sgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.sgst) / 100) ).toFixed(2);
-							self.shipment.igst = ( parseFloat(0) );
+						if ( self.shipment.taxin_payable == "Yes" ) { // if taxin_payable reverse charge == Yes
+							
+							if( self.shipment.total_amount >= res.data.gst_slab_amount ) { // if total amt greater or equat to slab amount 
+								
+								if( self.shipment.sender_branch.location.address.state == self.shipment.consignee_branch.location.address.state ) {
+									self.shipment.cgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.cgst) / 100) ).toFixed(2);
+									self.shipment.sgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.sgst) / 100) ).toFixed(2);
+									self.shipment.igst = ( parseFloat(0) );
+								} else {
+									self.shipment.cgst = ( parseFloat(0) );
+									self.shipment.sgst = ( parseFloat(0) );
+									self.shipment.igst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.igst) / 100) ).toFixed(2);
+								}
+								
+								
+								/*self.shipment.cgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.cgst) / 100) ).toFixed(2);
+								self.shipment.sgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.sgst) / 100) ).toFixed(2);
+								self.shipment.igst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.igst) / 100) ).toFixed(2);*/
+								
+								self.shipment.tax = ( parseFloat(self.shipment.cgst) + parseFloat(self.shipment.sgst) + parseFloat(self.shipment.igst) ).toFixed(2);
+								self.shipment.total_charges = ( parseFloat(self.shipment.total_amount) + parseFloat(self.shipment.tax) ).toFixed(2);
+								
+							} else {// if total amt less than slab amount
+								
+								console.log("inside else");
+								self.shipment.cgst = ( parseFloat(0) );
+								self.shipment.sgst = ( parseFloat(0) );
+								self.shipment.tax = ( parseFloat(0) );
+								self.shipment.total_charges = parseFloat(self.shipment.total_amount);
+							}
 						} else {
 							self.shipment.cgst = ( parseFloat(0) );
 							self.shipment.sgst = ( parseFloat(0) );
-							self.shipment.igst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.igst) / 100) ).toFixed(2);
+							self.shipment.tax = ( parseFloat(0) );
+							self.shipment.total_charges = parseFloat(self.shipment.total_amount);
 						}
 						
-						
-						/*self.shipment.cgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.cgst) / 100) ).toFixed(2);
-						self.shipment.sgst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.sgst) / 100) ).toFixed(2);
-						self.shipment.igst = ( parseFloat(self.shipment.total_amount) * (parseFloat(res.data.igst) / 100) ).toFixed(2);*/
-						
-						self.shipment.tax = ( parseFloat(self.shipment.cgst) + parseFloat(self.shipment.sgst) + parseFloat(self.shipment.igst) ).toFixed(2);
-						self.shipment.total_charges = ( parseFloat(self.shipment.tax) + parseFloat(self.shipment.tax) ).toFixed(2);
 					}, function (errRes) {
 						console.log(errRes);
 					} 
