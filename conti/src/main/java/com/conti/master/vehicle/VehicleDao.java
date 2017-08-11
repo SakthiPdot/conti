@@ -2,7 +2,7 @@ package com.conti.master.vehicle;
 
 import java.util.List;
 
-
+import com.conti.master.location.Location;
 
 public interface VehicleDao {
 		
@@ -18,9 +18,9 @@ public interface VehicleDao {
 	public List<VehicleMaster> getVehicleSorting100(String name,String order);
 	public List<VehicleMaster> searchbyVehicleType(String search_key);
 	public List<VehicleMaster> searchforVehicleType(String search_key);
+	public List<VehicleMaster> searchforVehicleRegNo(String search_key);
+	
+	
 	
 	public String checkVehicleRegno(String SearchString);
-	
-	public int vehicleSettingCount();
-	public List<VehicleMaster> getVehicleBy100();
 }

@@ -94,6 +94,7 @@ public class VehicleDaoImp implements VehicleDao  {
 		return listVehicle;
 	}
 
+	
 	@Override
 	@Transactional
 	public List<VehicleMaster> searchbyVehicleType(String search_key) {
@@ -105,6 +106,17 @@ public class VehicleDaoImp implements VehicleDao  {
 		return listtype;
 	}
 
+	
+	@Override
+	@Transactional
+	public List<VehicleMaster> searchforVehicleRegNo(String search_key) {
+		
+		@SuppressWarnings("unchecked")
+		List<VehicleMaster> listtype = (List<VehicleMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster WHERE obsolete = 'N' "
+						+ " AND vehicle_regno LIKE '%" + search_key+ "%'").list();
+		return listtype;
+	}
 	@Override
 	@Transactional
 	public List<VehicleMaster> searchforVehicleType(String search_key) {
@@ -126,25 +138,6 @@ public class VehicleDaoImp implements VehicleDao  {
 		}
 		
 		return "NOTAVAILABLE";
-	}
-
-	@Override
-	@Transactional
-	public int vehicleSettingCount() {
-		int record_count = ((Long) sessionFactory.getCurrentSession().createQuery("select count(*) from VehicleMaster WHERE obsolete = 'N'").uniqueResult()).intValue();
-		
-		return record_count;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@Transactional
-	public List<VehicleMaster> getVehicleBy100() {
-		
-		return sessionFactory.getCurrentSession()
-				.createQuery("from VehicleMaster where obsolete= 'N'"
-						+ "order by IFNULL (created_datetime) DESC").setMaxResults(100)
-				.list();
 	}
 	
 	

@@ -412,8 +412,8 @@ public class VehicleRestController {
 				from_limit = page;
 				to_limit = 10;
 			} else {
-				from_limit = (page * 10) + 1;
-				to_limit =  (page + 10 ) * 10;
+				from_limit = (page * 100) + 1;
+				to_limit =  (page + 1 ) * 100;
 			}
 			
 			List<VehicleMaster> vehicList = vehicleDao.getVehicleswithLimit(Integer.parseInt(branch_id), from_limit, to_limit, order);
@@ -438,21 +438,4 @@ public class VehicleRestController {
 				
 			
 		}
-		
-		//================= Get Record Count Bgin ========//
-		
-		@RequestMapping(value = "/vehiclerecordcount/", method = RequestMethod.GET)
-		public ResponseEntity<String> vehiclerecordcount(HttpServletRequest request) {
-			try {
-				return new ResponseEntity<String> (String.valueOf(vehicleDao.vehicleSettingCount()),HttpStatus.OK);
-			} catch (Exception exception) {
-				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-				return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
-			}
-			
-			
-		}
-		
-		
-		//================= Get Record Count End =========//
 }
