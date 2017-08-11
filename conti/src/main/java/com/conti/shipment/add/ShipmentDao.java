@@ -17,5 +17,6 @@ public interface ShipmentDao {
 	public int fetchMAXlrno(int branch_id);
 	public void saveOrUpdate(ShipmentModel shipment);
 	public List<ShipmentModel> fetchAllShipment100();
+	public List<ShipmentModel> fetchShipmentByLR(String searchString);
 	public List<ShipmentModel> filterShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status);
 }

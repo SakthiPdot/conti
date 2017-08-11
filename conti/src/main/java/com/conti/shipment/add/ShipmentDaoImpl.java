@@ -51,6 +51,20 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchShipmentByLR(String searchString) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and  lr_number LIKE '%"+searchString+ "%' ")
+				.setMaxResults(100).list();
+		
+		return listShipment;
+	}
+	
 	@Override
 	@Transactional
 	public List<ShipmentModel> filterShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status)
