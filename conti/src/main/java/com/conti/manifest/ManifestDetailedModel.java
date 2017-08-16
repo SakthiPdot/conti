@@ -6,9 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import com.conti.shipment.add.ShipmentModel;
@@ -20,6 +22,18 @@ public class ManifestDetailedModel
 {
 	private int manifestdetailed_id,manifest_id;
 	
+	private ManifestModel manifestModel;
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="manifest_id",referencedColumnName="manifest_id")
+	@JsonBackReference
+	public ManifestModel getManifestModel() {
+		return this.manifestModel;
+	}
+	public void setManifestModel(ManifestModel manifestModel) {
+		this.manifestModel = manifestModel;
+	}
+	
 	
 	@Id
 	@Column(name="MANIFESTDETAILED_ID")
@@ -30,19 +44,18 @@ public class ManifestDetailedModel
 		this.manifestdetailed_id = manifestdetailed_id;
 	}
 	
-	@Column(name="MANIFEST_ID")
+/*	@Column(name="MANIFEST_ID")
 	public int getManifest_id() {
 		return manifest_id;
 	}
 	public void setManifest_id(int manifest_id) {
 		this.manifest_id = manifest_id;
-	}
+	}*/
 	
 	
 	public ShipmentModel shipmentModel;
 	@JoinColumn(name="SHIPMENT_ID")
-	@OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-	
+	@OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)	
 	public ShipmentModel getShipmentModel() 
 	{
 		return shipmentModel;

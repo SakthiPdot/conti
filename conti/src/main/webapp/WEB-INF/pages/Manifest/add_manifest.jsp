@@ -48,12 +48,14 @@
 <body style="overflow-x:hidden;"
 data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
  
-	
+	 
 	<jsp:include page="../Dashboard/nav.jsp"/>
 	
 	<div class="success hideme"><i class="fa fa-check-circle" aria-hidden="true"></i> {{amctrl.message}}</div>
 	<div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{amctrl.message}}</div>
 
+
+<form name="addManifestForm" data-ng-submit="amctrl.submit()">
     <div id="wrapper">
 		<div id="page-wrapper">
 
@@ -100,10 +102,10 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									<div class="col-lg-3 branchclass">
 										<span class="text-padding">From</span> 
 										
-										
-										<select
+									
+										<select name ="fromBranch"
 											class="form-control" data-ng-model="amctrl.fromBranch">				
-											 <option value="">--Select Branch Name--</option>
+											 <option value="" data-ng-disabled="true">--Select Branch Name--</option>
 											 <option data-ng-repeat="x in amctrl.branches" value="{{x.branch_id}}">{{x.branch_name}}</option>
 										</select>
 										
@@ -112,10 +114,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 
 									<div class="col-lg-3 branchclass">
 										<span class="text-padding">To</span> 
-										
-										<select
+										<select name ="toBranch"
 											class="form-control" data-ng-model="amctrl.toBranch">														
-											 <option value="">--Select Branch Name--</option>
+											 <option value="" data-ng-disabled="true">--Select Branch Name--</option>
 											 <option data-ng-repeat="x in amctrl.branches" value="{{x.branch_id}}">{{x.branch_name}}</option>
 										</select>
 										
@@ -126,9 +127,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 								<div class="col-lg-12 noPaddingLeft">
 									<div class="sec-padding">Specific Period</div>
 									<div class="col-lg-3 branchclass">
-										<span class="paddingtop">From </span>
+										<span class="paddingtop" >From </span>
 										<div class="form-group input-group marginleftrightspace">
-											<input type="text" class="form-control datepicker1"
+											<input type="text" name="datePicker1" class="form-control datepicker1"
 											placeholder="Enter From Date"
 											 data-ng-model="amctrl.fromdate"/>
 											 <span class="input-group-addon"><i class="fa fa-calendar"></i>
@@ -140,7 +141,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									<div class="col-lg-3 branchclass">
 										<span class="paddingtop">To</span>
 										<div class="form-group input-group spacemarginleftright">
-											<input type="text" class="form-control datepicker2" 
+											<input type="text"  name="datePicker2" class="form-control datepicker2" 
 											placeholder="Enter To Date"
 											data-ng-model="amctrl.todate" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
@@ -151,12 +152,13 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 
 								</div>
 
+
 								<div class="col-lg-12 noPaddingLeft subhead-padding">
 									<div class="col-lg-3 branchclass">
 										<span class="text-padding" >Status</span>
-										<select data-ng-model="amctrl.status"
+										<select data-ng-model="amctrl.status" name="status"
 											class="form-control">														
-											 <option value="">--Select Status--</option>
+											 <option value="" data-ng-disabled="true">--Select Status--</option>
 											<option>Booked</option>										
 											<option>Missing</option>
 										</select>
@@ -166,7 +168,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										data-ng-click="amctrl.viewShipment()">View Shipment</button>									
 									</div>									
 								</div>
-								
+									
 							</div>
 						</div>
 					</div>
@@ -181,7 +183,10 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 							<div class="panel-body">
 								<div class="col-lg-12 noPaddingLeft">
 									<div class="col-lg-3 branchclass">
-										<span class="text-padding boldletter">Search</span> <input
+										<span class="text-padding boldletter">Search</span>
+										 <input
+										 data-ng-model="amctrl.search"
+										 data-ng-keyup="amctrl.registerSearch(amctrl.search)"
 											type="text" class="form-control searchbar"
 											placeholder="LR Number">
 									</div>
@@ -212,7 +217,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 												<button type="button" class="btn btn-primary">
 													<i class="fa fa-file-excel-o fa-lg"></i>
 												</button>
-												<button type="button" class="btn btn-primary">
+												<button type="button" 
+												data-ng-disabled="amctrl.selectedManifest.length<1"
+												class="btn btn-primary">
 													<i class="fa fa-print fa-lg"></i>
 												</button>
 											</div>
@@ -227,7 +234,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										id="dataTables-example">
 										<thead>
 											<tr>
-												<th><input type="checkbox"></th>
+												<th><input type="checkbox"
+												data-ng-model="amctrl.selectAllManifest"
+												data-ng-click="amctrl.selectAll()"></th>
 												<th>LR No</th>
 												<th>Origin</th>
 												<th>Destination</th>
@@ -241,10 +250,12 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										<tbody>
 											<tr 
 											data-ng-repeat='x in amctrl.FilteredManifests | limitTo:pageSize track by x.shipment_id'>
-												<td><input type="checkbox"></td>
+												<td><input type="checkbox"
+												data-ng-model="x.select"
+												data-ng-click="amctrl.selectManifest(x)"></td>
 												<td>{{x.lr_number}}</td>
-												<td>{{x.sender_customer.branchModel.branch_name}}</td>
-												<td>{{x.consignee_customer.branchModel.branch_name}}</td>
+												<td>{{x.sender_branch.branch_name}}</td>
+												<td>{{x.consignee_branch.branch_name}}</td>
 												<td>{{x.sender_customer.customer_name}}</td>
 												<td>{{x.consignee_customer.customer_name}}</td>
 												<td>{{x.numberof_parcel}}</td>
@@ -272,7 +283,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									<div class="col-lg-5 branchclass"></div>
 
 									<div class="col-lg-2 branchclass">
-										<button class="btn btn-primary btn-lg" data-toggle="modal"
+										<button class="btn btn-primary btn-lg" 
+										data-ng-disabled="amctrl.selectedManifest.length<1"
+										data-toggle="modal"
 											data-target="#myModal">Add Manifest</button>
 									</div>
 
@@ -288,7 +301,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 
 
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-				aria-labelledby="myModalLabel" aria-hidden="true">
+				aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -298,28 +311,83 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 						</div>
 						<div class="modal-body">
 
-							<div class="branchclass">
+						<div class="branchclass">
+									<div class="col-lg-12">
+										<div class="col-lg-6">
+											<span>Driver Name <span class="required">*</span></span>
+										</div>
+										<div class="col-lg-6">
+											<angucomplete-alt id="driver_name"
+												data-ng-model="amctrl.manifest.driver_name" placeholder="Ex: Sankar"
+												pause="100" selected-object="emp_name"
+												remote-url="getEmployeeDriver4Search/"
+												remote_url-data-field="Employees" search-fields="emp_name"
+												title-field="emp_name" match-class="highlight"
+											    minlength="1" field-required="true"
+												data-trigger="focus" data-toggle="popover"
+												data-placement="top"
+												data-content="Please Enter Employee Name"
+												onKeyPress="return CheckIsCharacter(event)"
+												input-class="form-control form-control-small">
+											</angucomplete-alt>
+										</div>
+									</div>
+								</div>
 
-								<span class="text-padding"> Driver Name</span> <select
-									class="form-control">
-									<option>--Select--</option>
-									<option>Murugan</option>
-								</select>
-							</div>
+								<div class="branchclass">
+									<div class="col-lg-12">
+										<div class="col-lg-6">
+											<span> Vehicle Number<span class="required">*</span></span></span>
+										</div>
 
-							<div class="branchclass">
-								<span> Vehicle Number</span> <select class="form-control">
-									<option>--Select--</option>
-									<option>Vehicle No--</option>
-								</select>
+										<div class="col-lg-6">
+										
+											<angucomplete-alt id="vehicle_type"
+												maxlength="30" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+												data-ng-model="amctrl.manifest.vehicle_number" pause="100"
+												selected-object="vehicle_type" remote-url="vehicleRegNo/"
+												remote_url-data-field="VehicleType"
+												search-fields="vehicle_regno" title-field="vehicle_regno"
+												match-class="highlight" minlength="1"
+												field-required="true" data-trigger="focus"
+												data-toggle="popover" data-placement="top"
+												data-content="Please Enter Vehicle Number"
+												placeholder="EX : TN 32 BX 7114"
+												input-class="form-control form-control-small">
+											</angucomplete-alt>
+										</div>
+									</div>
+								</div>
+
+								<div class="branchclass">
+									<div class="col-lg-12">
+										<div class="col-lg-6">
+											<span> Vehicle Destination<span class="required">*</span></span></span>
+										</div>
+										<div class="col-lg-6">
+										<div angucomplete-alt id="vehicleDestinationBranch"
+										data-ng-model="amctrl.manifest.vehicle_destination"
+											placeholder="Ex : Coimbatore" pause="0"
+											selected-object="branch_name" remote-url="getBranchByStr/"
+											remote-url-data-field="Branch" title-field="branch_name"
+											match-class="highlight" minlength="1" maxlength="30"
+											input-class="form-control form-control-small"
+											onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+											data-trigger="focus" data-toggle="popover"
+											data-placement="top" data-content="Please Enter Branch Name"></div>
+										</div>
+									</div>
+								</div>
+
 							</div>
-						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-danger pull-left"
+							<button type="button" 
+							class="btn btn-danger pull-left"
+							data-ng-click="amctrl.clearModalValue()"
 								data-dismiss="modal">
 								<i class="fa fa-times"></i> Cancel
 							</button>
-							<button type="button" class="btn btn-success">
+							<button type="submit" class="btn btn-success">
 								<i class="fa fa-floppy-o"></i> Save
 							</button>
 						</div>
@@ -327,10 +395,12 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 				</div>
 			</div>
 		</div>
+		
 		<!-- /. PAGE WRAPPER  -->
 
 
 	</div>
+	</form>
     <!-- /. WRAPPER  -->
 
 

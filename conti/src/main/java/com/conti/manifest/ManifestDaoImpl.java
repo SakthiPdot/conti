@@ -40,8 +40,20 @@ public class ManifestDaoImpl implements ManifestDao
 		return listmanifest;
 		
 	}
-	
 
+	@Override
+	@Transactional
+	public ManifestModel getManifestByID(int manifestId) 
+	{
+		// TODO Auto-generated method stub
+		
+		@SuppressWarnings("unchecked")
+		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
+				.createQuery("from ManifestModel WHERE obsolete ='N' and manifest_id = " + manifestId ).list();
+		
+		return listmanifest.get(0);
+		
+	}
 	@Override
 	@Transactional
 	public int fetchLastManifestNo(){

@@ -16,7 +16,101 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 	self.viewShipment=viewShipment;
 	self.Manifests=[];
 	self.FilteredManifests=[];
+	self.selectedManifest=[];
 	
+	self.fromBranch="";
+	self.toBranch="";
+	self.status="";
+	self.registerSearch=registerSearch;
+	self.selectManifest=selectManifest;
+	self.selectAll=selectAll;
+	self.clearModalValue=clearModalValue;
+	self.submitManifest=submitManifest;
+
+	
+	self.manifest={
+		  "manifest_id": null,
+		  "updated_by": null,
+		  "created_by": null,
+		  "manifest_number": null,
+		  "vehicle_number": null,
+		  "driver_name":null,
+		  "manifest_status": null,
+		  "obsolete": null,
+		  "created_datetime": null,
+		  "updated_datetime": null,
+		  "manifestDetailModel": [{
+			  "manifestdetailed_id":null,
+			  "shipmentModel":null
+		  }],
+		  "branchModel1": null,
+		  "branchModel2": null,
+		  "vehicle_destination":null
+		}
+	
+	function submitManifest(){
+		console.log(self.manifest);
+	}
+	//===================================select all====================================
+	function selectAll(){
+
+		self.selectedManifest=[];
+		var size=10;
+		
+		for(var i=0;i<size;i++){
+			self.FilteredManifests[i].select=self.selectAllManifest;
+			if(self.selectAllManifest){
+				self.selectedManifest.push(self.FilteredManifests[i]);
+			}
+		}
+		
+	}
+	
+	//===================================ClearModalValue====================================
+	function clearModalValue(){
+		self.manifest.driver_name=null;
+		self.manifest.vehicle_number=null;
+		self.manifest.vehicle_destination=null;
+		$('#driver_name_value').val("");
+		$('#vehicle_type_value').val("");
+		$('#vehicleDestinationBranch_value').val("");
+	}
+	
+	
+	//===================================select Manifest====================================
+	function selectManifest(x){
+		console.log(x);
+		if(x.select){
+			self.selectedManifest.push(x);	
+		}else{
+			self.selectAllManifest=x.select;
+			var index=self.selectedManifest.indexOf(x);
+			self.selectedManifest.splice(index,1);
+		}
+		console.log(self.selectedManifest);
+	}
+	//===================================SEARCH REGISTER====================================
+	function registerSearch(searchString){	
+		//console.log(searchString);
+		if(searchString.length==0){			
+			self.FilteredManifests=self.Manifests;
+		}else if(searchString.length>3){
+			addManifestService.searchLRShipment(searchString)
+			.then(
+					function (response) {	
+						self.FilteredManifests=response;
+					}, 
+					function (errResponse) {
+						console.log('Error while fetching record  using lr');
+					});
+		
+		}else{
+			self.FilteredManifests=_.filter(self.Manifests,function(item){
+				return String(item.lr_number).indexOf(searchString) > -1;
+			});
+		}
+	}
+
 	//===================================Total Record Count====================================
 	fetchLastManifestNo();
 	
@@ -42,6 +136,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 	
 	//===================================fetch Address====================================	
 	fetchAllBranches();	
+	
 	function fetchAllBranches() 
 	{
 		BranchService.fetchAllBranches()
@@ -77,6 +172,13 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 	
 	function viewShipment(){
 		
+		if(self.fromBranch==null || typeof self.fromBranch == undefined)
+		self.fromBranch="";
+		if(self.toBranch==null || typeof self.toBranch == undefined)
+		self.toBranch="";
+		if(self.status==null || typeof self.status == undefined)
+		self.status="";
+		
 		var filter={
 				"fromBranch":self.fromBranch,
 				"toBranch":self.toBranch,
@@ -85,11 +187,15 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 				"status":self.status
 				}
 		
+		
+		
 		console.log(filter);
+		
 		addManifestService.filterManifest(filter)
 		.then(
 				function(response){
 					self.FilteredManifests=response;
+					console.log(response);
 				},function(errRespone){
 					console.log("error while fetching manifest in filter"+errResponse);
 				});

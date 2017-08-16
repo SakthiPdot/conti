@@ -1,15 +1,23 @@
 package com.conti.manifest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.conti.master.branch.BranchModel;
 
@@ -23,8 +31,23 @@ public class ManifestModel
 	private String created_datetime,updated_datetime;
 	
 	
+	private List<ManifestDetailedModel> manifestDetailModel=new ArrayList<>();
+	
+	
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinColumn(name="manifest_id",referencedColumnName="manifest_id")
+	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true)
+	@JsonManagedReference
+	public List<ManifestDetailedModel> getManifestDetailModel() {
+		return this.manifestDetailModel;
+	}
+	public void setManifestDetailModel(List<ManifestDetailedModel> manifestDetailModel) {
+		this.manifestDetailModel = manifestDetailModel;
+	}
+	
 	
 	@Id
+	@GeneratedValue
 	@Column(name = "MANIFEST_ID")
 	public int getManifest_id() {
 		return manifest_id;
@@ -62,7 +85,16 @@ public class ManifestModel
 		this.branchModel2 = branchModel2;
 	}
 	
+	public BranchModel 	vehicle_destination;	
 	
+	@JoinColumn(name="vehicle_destination")
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.MERGE)
+	public BranchModel getVehicle_destination() {
+		return this.vehicle_destination;
+	}
+	public void setVehicle_destination(BranchModel vehicle_destination) {
+		this.vehicle_destination = vehicle_destination;
+	}
 	@Column(name = "UPDATED_BY")
 	public int getUpdated_by() {
 		return updated_by;
