@@ -35,19 +35,16 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
-import com.conti.master.employee.EmployeeMaster;
-import com.conti.master.location.Location;
+
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
-import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 @RestController
 public class VehicleRestController {
 	
-	@Autowired
-	private UsersDao usersDao;
+
 	@Autowired
 	private VehicleDao vehicleDao;
 	@Autowired
@@ -400,7 +397,7 @@ public class VehicleRestController {
 		public ResponseEntity<List<VehicleMaster>> vehicle_pagination(@RequestBody int page, HttpServletRequest request) {
 			
 			userInformation = new UserInformation(request);
-			String branch_id = userInformation.getUserBranchId();
+			
 		
 			int from_limit = 0, to_limit = 0;
 			String order = "DESC";

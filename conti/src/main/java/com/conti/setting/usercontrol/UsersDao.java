@@ -2,8 +2,6 @@ package com.conti.setting.usercontrol;
 
 import java.util.List;
 
-import com.conti.master.employee.EmployeeMaster;
-import com.conti.master.location.Location;
 
 /**
  * @Project_Name conti
@@ -28,7 +26,7 @@ public interface UsersDao {
 	
 	public List<User> getUserbyEmpid(int emp_id);
 	public List<User> getAllUsers();
-	public List<User> getUserwithLimitbySA(int branch_id, int from_limit, int to_limit, String order);
+	public List<User> getUserwithLimitbySA(int from_limit, int to_limit, String order);
 	public List<User> getUserwithLimit(int branch_id, int from_limit, int to_limit, String order);
 	public List<User> getLocationSorting100(String name,String order);
 	public List<User> searchbySAUser(String search_key);
@@ -37,6 +35,8 @@ public interface UsersDao {
 	
 	public int find_record_countforSA();
 	public int find_record_count();
+	
+	public List<User> getUser100();
 
 }
 

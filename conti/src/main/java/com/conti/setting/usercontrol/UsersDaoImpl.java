@@ -165,11 +165,10 @@ class UsersDaoImpl implements UsersDao {
 		
 		@Override
 		@Transactional
-		public List<User> getUserwithLimitbySA(int branch_id, int from_limit, int to_limit, String order) {
+		public List<User> getUserwithLimitbySA( int from_limit, int to_limit, String order) {
 			@SuppressWarnings("unchecked")
 			List<User> listUser = (List<User>) sessionFactory.getCurrentSession()
-					.createQuery("from User where obsolete ='N' AND branchModel.branch_id =" + branch_id + " "
-							+ "ORDER BY IFNULL(created_datetime, updated_datetime) "+order)
+					.createQuery("from User where obsolete ='N' ORDER BY IFNULL(created_datetime, updated_datetime) "+order)
 					.setFirstResult(from_limit).setMaxResults(to_limit).list();
 			return listUser;
 		}
@@ -240,6 +239,16 @@ class UsersDaoImpl implements UsersDao {
 		public int find_record_count() {
 			int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from User WHERE obsolete = 'N' AND role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'").uniqueResult()).intValue();
 			return rec_count;
+		}
+
+		@Override
+		@Transactional
+		public List<User> getUser100() {
+			@SuppressWarnings("unchecked")
+			List<User> getuser = (List<User>) sessionFactory.getCurrentSession()
+					.createQuery("from User where obsolete = 'N' "
+					+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC").setMaxResults(100).list();
+			return getuser;
 		}
 }
 	
