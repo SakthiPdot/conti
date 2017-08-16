@@ -121,7 +121,7 @@ public class VehicleRestController {
 		
 		try {
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			List<VehicleMaster> vehicles = vehicleDao.getAllVehicles();
+			List<VehicleMaster> vehicles = vehicleDao.getVehicleBy100();
 			if(vehicles.isEmpty()) {
 				return new ResponseEntity<List<VehicleMaster>> (HttpStatus.NO_CONTENT);
 			} else {
@@ -412,12 +412,12 @@ public class VehicleRestController {
 				from_limit = page;
 				to_limit = 10;
 			} else {
-				from_limit = (page * 100) + 1;
-				to_limit =  (page + 1 ) * 100;
+				from_limit = (page * 10) + 1;
+				to_limit =  (page + 10 ) * 10;
 			}
 			
-			List<VehicleMaster> vehicList = vehicleDao.getVehicleswithLimit(Integer.parseInt(branch_id), from_limit, to_limit, order);
-			return new ResponseEntity<List<VehicleMaster>> (vehicList, HttpStatus.OK);
+			List<VehicleMaster> vehicList = vehicleDao.getVehicleswithLimit(from_limit, to_limit, order);
+			return new ResponseEntity <List<VehicleMaster>> (vehicList, HttpStatus.OK);
 		}
 		
 		//=================== Pagination Function End ================//

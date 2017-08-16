@@ -16,5 +16,6 @@ public interface ServiceDao {
 	public List<ServiceMaster> allSorting(String sorting);
 	
 	public int serviceSettingCount();
+	public List<ServiceMaster> getServiceBy100();
 	
 }
