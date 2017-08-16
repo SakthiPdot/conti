@@ -438,4 +438,21 @@ public class VehicleRestController {
 				
 			
 		}
+		
+		//========================= Get Record Count Begin ==========//
+			@RequestMapping(value = "/vehiclerecordcount/", method = RequestMethod.GET)
+			public ResponseEntity <String> vehiclerecordcount(HttpServletRequest request) {
+				try {
+					return new ResponseEntity<String> (String.valueOf(vehicleDao.vehicleSettingCount()),HttpStatus.OK);
+					
+				} catch (Exception exception) {
+					loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+					return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+				}
+				
+				
+			}
+		
+		//========================= Get Record Count End =============//
+		
 }

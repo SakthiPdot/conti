@@ -139,6 +139,15 @@ public class VehicleDaoImp implements VehicleDao  {
 		
 		return "NOTAVAILABLE";
 	}
+
+	@Override
+	@Transactional
+	public int vehicleSettingCount() {
+		int record_count = ((Long) sessionFactory.getCurrentSession()
+				.createQuery("select count(*) from VehicleMaster WHERE obsolete = 'N'").uniqueResult()).intValue();
+		
+		return record_count;
+	}
 	
 	
 

@@ -2,7 +2,6 @@ package com.conti.master.vehicle;
 
 import java.util.List;
 
-import com.conti.master.location.Location;
 
 public interface VehicleDao {
 		
@@ -23,4 +22,5 @@ public interface VehicleDao {
 	
 	
 	public String checkVehicleRegno(String SearchString);
+	public int vehicleSettingCount();
 }
