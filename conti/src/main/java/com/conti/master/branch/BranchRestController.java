@@ -172,6 +172,29 @@ public class BranchRestController {
 	}
 	
 	
+	
+	@RequestMapping( value = "/allbranches", method = RequestMethod.GET)
+	public ResponseEntity<List<BranchModel>> fetchAllBranchesForManifest(HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		String branch_id = userInformation.getUserBranchId();
+		try {
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			//List<BranchModel> branches = branchDao.getBranchesbyid(Integer.parseInt(branch_id));
+			List<BranchModel> branches = branchDao.getBranches();
+			if(branches.isEmpty()) {
+				return new ResponseEntity<List<BranchModel>> (HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<List<BranchModel>> (branches, HttpStatus.OK);	
+			}			
+		} catch (Exception exception) {			
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<BranchModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+	}
+	
+	
 	//=================CHECK PRODUCT NAME=====================================
 		@RequestMapping(value="checkBranchName",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 		public ResponseEntity<Void> checkBranchName(@RequestBody String name,HttpServletRequest request){		 
