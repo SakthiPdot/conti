@@ -38,6 +38,8 @@ import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
+import com.conti.settings.price.PriceSetting;
+import com.conti.settings.price.PriceSettingDao;
 
 @RestController
 public class ServiceRestController {
@@ -46,6 +48,8 @@ public class ServiceRestController {
 	private ServiceDao serviceDao;
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
+	@Autowired
+	private PriceSettingDao psDao;
 	
 	
 	Loggerconf loggerconf = new Loggerconf();
@@ -204,6 +208,13 @@ public class ServiceRestController {
 			@RequestMapping(value = "delete_service/{id}", method = RequestMethod.DELETE)
 			public ResponseEntity<ServiceMaster> deleteService(@PathVariable ("id") int id, HttpServletRequest request) {
 				ServiceMaster serviceModel = serviceDao.getServiceId(id);
+				/*PriceSetting priceSetting=psDao.getServiceById((int)id);*/
+				
+				/*boolean deleteflag = false;
+				if(priceSetting == null){
+					deleteflag = true;
+				}*/
+				
 				userInformation = new UserInformation(request);
 				String username = userInformation.getUserName();
 				int user_id = Integer.parseInt(userInformation.getUserId());

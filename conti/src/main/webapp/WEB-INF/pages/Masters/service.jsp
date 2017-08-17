@@ -218,7 +218,7 @@
 							
 							<div class="row paddingtop">
 								<div class="col-md-12">
-									<select name="shownoofrec" data-ng-model="shownoofrec" data-ng-options = "noofrec for noofrec in [10, 15, 25, 50, 100]" class="form-control" data-ng-click = "ctrl.shownoofRecord()">
+									<select name="shownoofrec" data-ng-model="shownoofrec" data-ng-options = "noofrec for noofrec in [10, 15, 25, 50, 100]" class="form-control" data-ng-change = "ctrl.shownoofRecord()">
 									</select>
 								</div>
 							</div>

@@ -53,6 +53,26 @@
 	    } 
 	//------------------------- Success animate end ---------------------------------- //	
 	    
+	    
+		//------------------------- shipment bill open begin ---------------------------------- //    
+	    function bill_open(element){
+	    	console.log("inside successanimate");
+	    	window.setTimeout( function(){
+	    		$(element).removeClass('hideme');
+	    		
+	    		animationOpenClick(element,'bounceInDown');
+	    	}, 200);
+			
+/*			window.setTimeout( function(){
+				animationOpenClick(element,'bounceOutUp');
+				
+	    	}, 4000); 
+			window.setTimeout( function(){
+				$(element).addClass('hideme');	
+	    	}, 5000);*/
+	    } 
+	//------------------------- shipment bill open end ---------------------------------- //	    
+	    
 	//------------------------- Success animate for forgot begin ---------------------------------- //    
 	    function successforgot_AnimateOpen(element){
 	    	
