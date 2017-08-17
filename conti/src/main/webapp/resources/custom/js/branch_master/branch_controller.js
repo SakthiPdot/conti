@@ -691,6 +691,8 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     		//$scope.previouseDisabled=false;
     		$scope.nextDisabled=false;
     	}
+    	fetchAllBranches();
+    	
     }
     //-------------------------------- Show no of record end ----------------------------------------//  
     

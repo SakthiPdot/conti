@@ -717,6 +717,8 @@ angular
 									$scope.previouseDisabled = true;
 									$scope.nextDisabled = true;
 								}
+								fetchProducts();
+								
 							}
 
 							// ===================================pagination====================================

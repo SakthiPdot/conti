@@ -668,7 +668,8 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     		//$scope.previouseDisabled=false;
     		$scope.nextDisabled=false;
     	}
-    		
+    	fetchAllCustomers();
+    	    		
     }
 //-------------------------------- Show no of record end ----------------------------------------//  
     

@@ -620,6 +620,8 @@ angular.module('contiApp').controller('locationController'
 		    		$scope.previouseDisabled = true;
 		    		$scope.nextDisabled = true;
 		    	}
+		    	fetchAllLocation();
+		    	
 		    }
 		    
 		    

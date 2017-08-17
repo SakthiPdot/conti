@@ -506,6 +506,8 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 					$scope.nextDisabled = true;
 					
 				}
+				 fetchAllVehicles();
+				 
 			}
 			
 	//============== Show no of Record End ================//
