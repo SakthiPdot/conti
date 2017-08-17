@@ -20,7 +20,7 @@ public interface ShipmentDao
 	public List<ShipmentModel> fetchAllShipment100();
 	public List<ShipmentModel> fetchShipmentByLR(String searchString);
 	public List<ShipmentModel> filterShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status);
-	
+	public ShipmentModel getshipmentby_lrno(int lrno);
 //===========================Add Receipt======================================
 	public List<ShipmentModel>getShipmentByCondition(int from,int to,String frombranch,String tobranch,String service,String paymode);
 	public List<ShipmentModel> fetchAllShipment4receipt(int branch_id);

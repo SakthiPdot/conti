@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.conti.manifest.ManifestModel;
-import com.conti.master.location.Location;
-
 /**
  * @Project_Name conti
  * @Package_Name com.conti.shipment.add
@@ -146,4 +143,25 @@ public class ShipmentDaoImpl implements ShipmentDao {
 						+ " and senderbranch_id = " + branch_id).list();
 		return listShipment;
 	}
+
+
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public ShipmentModel getshipmentby_lrno(int lrno) {
+		// TODO Auto-generated method stub
+		
+		String hql = "FROM ShipmentModel WHERE obsolete = 'N' and lr_number = " + lrno;
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		List<ShipmentModel> shipmentList = (List<ShipmentModel>)query.list();
+		if ( shipmentList != null && !shipmentList.isEmpty()) {
+			return shipmentList.get(0);
+		}
+		return null;
+	}
+	
+	
 }
