@@ -15,13 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerDao;
-import com.conti.master.location.Location;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.SendMailSMS;
@@ -185,6 +185,32 @@ public class AddShipmentController {
 			return new ResponseEntity<List<ShipmentModel>>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<ShipmentModel>>(shipment,HttpStatus.OK);
+	}
+	
+	//------------------------------------ 
+	
+	@RequestMapping(value =  "shipment_bill", method = RequestMethod.GET)
+	public ModelAndView shipment_bill(@RequestParam (value = "lrno", required = false) int lrno, HttpServletRequest request) throws Exception {
+		
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		String userid = userInformation.getUserId();
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		ModelAndView model = new ModelAndView();
+		
+		try
+		{
+						
+			model.addObject("lrno", lrno);
+			model.addObject("title", "Add Shipment");
+			model.setViewName("Shipment/shipment_bill");
+			
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.LOGGER_STATUS_E, exception);
+		}
+		return model;
+
 	}
 
 }

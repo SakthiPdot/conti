@@ -565,6 +565,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//---------------------------------------------- HSN DESCRIPTION SEARCH begin
 	$scope.hsn_description=function (selected){
+		var index = this.$parent.$index;
+		var products_index = this.$parent.$parent.$index;
 		hsncode_desc_proc(selected, index, products_index);
 		
 	}
@@ -577,6 +579,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		
 		self.shipment.shipmentDetail[products_index].shipmentHsnDetail[index].hsn = selected.originalObject;
 		$('#product'+ products_index +'_hsn_description'+index+'_value').val(selected.originalObject.hsn_description);
+		
+		$('#product'+ products_index +'_hsn_code'+index+'_value').val(selected.originalObject.hsn_code);
 		
 		self.shipment.shipmentDetail[products_index].shipmentHsnDetail[index].product = self.shipment.shipmentDetail[products_index].product;
 		
@@ -666,4 +670,14 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 
 	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT END------------------------------------	
+	
+	
+	//-------------------------------- SHIPMENT BILL OPEN BEGIN
+	
+	self.shipment_bill_open = function () {
+		bill_open('.shipment_bill'); 
+	}
+	
+	//-------------------------------- SHIPEMTN BILL OPEN END
+	
 }]);

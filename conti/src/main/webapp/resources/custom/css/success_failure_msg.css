@@ -126,3 +126,18 @@
 				z-index: 301;
 				color:white;
 			}
+			
+			.shipment_bill {
+  			background-color: #4d5b5c;
+		    padding: 25px;
+		   /*  color: white; */
+		   /*  text-align: center; */
+		    position:fixed;
+		    width : 100%;
+		   /*  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3); */
+		   
+		      -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
+   			 box-shadow:0 1px 4px rgba(0, 0, 0, 0.3);
+		    font-size: 5mm;
+		    z-index: 1500;
+  		}
