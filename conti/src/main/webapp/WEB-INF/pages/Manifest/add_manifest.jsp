@@ -55,7 +55,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 	<div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{amctrl.message}}</div>
 
 
-<form name="addManifestForm" data-ng-submit="amctrl.submit()">
+<form name="addManifestForm" data-ng-submit="amctrl.submitManifest()">
     <div id="wrapper">
 		<div id="page-wrapper">
 
@@ -104,9 +104,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										
 									
 										<select name ="fromBranch"
-											class="form-control" data-ng-model="amctrl.fromBranch">				
+											class="form-control" data-ng-model="amctrl.manifest.branchModel1">				
 											 <option value="" data-ng-disabled="true">--Select Branch Name--</option>
-											 <option data-ng-repeat="x in amctrl.branches" value="{{x.branch_id}}">{{x.branch_name}}</option>
+											 <option data-ng-repeat="x in amctrl.branches" value="{{x}}">{{x.branch_name}}</option>
 										</select>
 										
 										
@@ -115,9 +115,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									<div class="col-lg-3 branchclass">
 										<span class="text-padding">To</span> 
 										<select name ="toBranch"
-											class="form-control" data-ng-model="amctrl.toBranch">														
+											class="form-control" data-ng-model="amctrl.manifest.branchModel2">														
 											 <option value="" data-ng-disabled="true">--Select Branch Name--</option>
-											 <option data-ng-repeat="x in amctrl.branches" value="{{x.branch_id}}">{{x.branch_name}}</option>
+											 <option data-ng-repeat="x in amctrl.branches" value="{{x}}">{{x.branch_name}}</option>
 										</select>
 										
 										
@@ -142,7 +142,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										<span class="paddingtop">To</span>
 										<div class="form-group input-group spacemarginleftright">
 											<input type="text"  name="datePicker2" class="form-control datepicker2" 
-											placeholder="Enter To Date"
+											placeholder="Enter To Date"											
+											data-trigger="focus" data-toggle="popover"
+											data-placement="top" data-content="Please Select To Branch"
 											data-ng-model="amctrl.todate" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
 											</span>
@@ -156,7 +158,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 								<div class="col-lg-12 noPaddingLeft subhead-padding">
 									<div class="col-lg-3 branchclass">
 										<span class="text-padding" >Status</span>
-										<select data-ng-model="amctrl.status" name="status"
+										<select data-ng-model="amctrl.manifest.manifest_status" name="status"
 											class="form-control">														
 											 <option value="" data-ng-disabled="true">--Select Status--</option>
 											<option>Booked</option>										
@@ -164,7 +166,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										</select>
 									</div>
 									<div class="col-lg-4  col-lg-offset-3 branchclass">
-										<button class="btn btn-primary" 
+										<button class="btn btn-primary" type="button"
 										data-ng-click="amctrl.viewShipment()">View Shipment</button>									
 									</div>									
 								</div>
@@ -284,8 +286,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 
 									<div class="col-lg-2 branchclass">
 										<button class="btn btn-primary btn-lg" 
+										type="button"
 										data-ng-disabled="amctrl.selectedManifest.length<1"
-										data-toggle="modal"
+										data-toggle="modal" data-ng-click="amctrl.clearModalValue()"
 											data-target="#myModal">Add Manifest</button>
 									</div>
 
@@ -298,8 +301,8 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 					</div>
 				</div>
 			</div>
-
-
+		
+<!--================================================== Modal==================================================== -->
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 				aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 				<div class="modal-dialog">
@@ -318,7 +321,8 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										</div>
 										<div class="col-lg-6">
 											<angucomplete-alt id="driver_name"
-												data-ng-model="amctrl.manifest.driver_name" placeholder="Ex: Sankar"
+												data-ng-model="amctrl.manifest.driver_name=emp_name.originalObject"
+												 placeholder="Ex: Sankar"
 												pause="100" selected-object="emp_name"
 												remote-url="getEmployeeDriver4Search/"
 												remote_url-data-field="Employees" search-fields="emp_name"
@@ -333,6 +337,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										</div>
 									</div>
 								</div>
+					
 
 								<div class="branchclass">
 									<div class="col-lg-12">
@@ -343,8 +348,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										<div class="col-lg-6">
 										
 											<angucomplete-alt id="vehicle_type"
+												data-ng-model="amctrl.manifest.vehicle_number=vehicle_type.originalObject" 
 												maxlength="30" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
-												data-ng-model="amctrl.manifest.vehicle_number" pause="100"
+												pause="100"
 												selected-object="vehicle_type" remote-url="vehicleRegNo/"
 												remote_url-data-field="VehicleType"
 												search-fields="vehicle_regno" title-field="vehicle_regno"
@@ -366,7 +372,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										</div>
 										<div class="col-lg-6">
 										<div angucomplete-alt id="vehicleDestinationBranch"
-										data-ng-model="amctrl.manifest.vehicle_destination"
+										    data-ng-model="amctrl.manifest.vehicle_destination=branch_name.originalObject"
 											placeholder="Ex : Coimbatore" pause="0"
 											selected-object="branch_name" remote-url="getBranchByStr/"
 											remote-url-data-field="Branch" title-field="branch_name"
@@ -387,15 +393,18 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 								data-dismiss="modal">
 								<i class="fa fa-times"></i> Cancel
 							</button>
-							<button type="submit" class="btn btn-success">
+							<button type="submit" 
+							data-ng-disabled="amctrl.manifest.driver_name==null ||  amctrl.manifest.vehicle_number==null || amctrl.manifest.vehicle_destination==null;"
+							class="btn btn-success">
 								<i class="fa fa-floppy-o"></i> Save
 							</button>
+		
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		
+	<!--================================================== Modal end==================================================== -->s	
 		<!-- /. PAGE WRAPPER  -->
 
 
@@ -407,6 +416,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
   
      <!-- DATA TABLE SCRIPTS -->
      <script src="resources/custom/js/custom.js"></script>
+     <script type="text/javascript" src="resources/custom/js/validation.js"></script>
   	<script src="resources/custom/js/session.js"></script>  	
 	<script src="resources/custom/js/confirmDialog.js"></script>
   	<script src="resources/custom/js/manifest/add_manifest_controller.js"></script>
@@ -414,9 +424,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
     <script src="resources/custom/js/branch_master/branch_service.js"></script>
   	
         <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
     </script>
     
         <script type="text/javascript">

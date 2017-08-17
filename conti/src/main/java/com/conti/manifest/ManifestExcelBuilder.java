@@ -81,8 +81,8 @@ public class ManifestExcelBuilder extends AbstractExcelView {
 			row.createCell(0).setCellValue(manifestModel.getManifest_number());
 			row.createCell(1).setCellValue(manifestModel.branchModel1.getBranch_name());
 			row.createCell(2).setCellValue(manifestModel.branchModel2.getBranch_name());
-			row.createCell(3).setCellValue(manifestModel.getVehicle_number());
-			row.createCell(4).setCellValue(manifestModel.getDriver_name());
+			row.createCell(3).setCellValue(manifestModel.getVehicleMaster().getVehicle_regno());
+			row.createCell(4).setCellValue(manifestModel.getEmployeeDriver().getEmp_id());
 			row.createCell(5).setCellValue(manifestModel.getManifest_status());
 			
 		}
