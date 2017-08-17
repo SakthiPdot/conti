@@ -120,7 +120,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		
 	}
 	
-	//-----------------------Receipt Filter condition start-------------------------------
+	//----------------------------------------------Receipt Filter condition start-------------------------------------------------------
 	@Override
 	@Transactional
 	public List<ShipmentModel>getShipmentByCondition(int from,int tobranch,String fromdate,String todate,String service,String paymode)
@@ -133,7 +133,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 					+"and '"+todate+"23:59:59' and ").list();
 		return listShipment;
 	}
-	
+	//------------------------------------------------------------------------------------------------------------------------------------
 	
 	@Override
 	@Transactional
