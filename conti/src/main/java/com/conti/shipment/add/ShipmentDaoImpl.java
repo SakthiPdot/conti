@@ -117,36 +117,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		
 	}
 	
-	//----------------------------------------------Receipt Filter condition start-------------------------------------------------------
-	@Override
-	@Transactional
-	public List<ShipmentModel>getShipmentByCondition(int from,int tobranch,String fromdate,String todate,String service,String paymode)
-	{
-		@SuppressWarnings("unchecked")
-		List<ShipmentModel> listShipment=(List<ShipmentModel>)sessionFactory.getCurrentSession()
-			.createQuery("from ShipmentModel where obsolete='N' and sender_branch.branch_id="+from
-					+"and consignee_branch.branch_id="+tobranch
-					+"and created_datetime BETWEEN '"+fromdate+"00:00:00'"
-					+"and '"+todate+"23:59:59' and ").list();
-		return listShipment;
-	}
-	//------------------------------------------------------------------------------------------------------------------------------------
 	
-	@Override
-	@Transactional
-	public List<ShipmentModel> fetchAllShipment4receipt(int branch_id) {
-		// TODO Auto-generated method stub
-		
-		@SuppressWarnings("unchecked")
-		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
-				.createQuery("from ShipmentModel WHERE obsolete = 'N' and status ='Received'"
-						+ " and senderbranch_id = " + branch_id).list();
-		return listShipment;
-	}
-
-
-
-
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
@@ -162,6 +133,51 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		}
 		return null;
 	}
+	
+	//========================================4 RECEIPT===========================================
+	
+	//----------------------------------------------Receipt Filter condition start-------------------------------------------------------
+	@Override
+	@Transactional
+	public List<ShipmentModel>getShipmentByCondition(int from,int tobranch,String fromdate,String todate,String service,String paymode)
+	{
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment=(List<ShipmentModel>)sessionFactory.getCurrentSession()
+			.createQuery("from ShipmentModel where obsolete='N' and sender_branch.branch_id="+from
+					+"and consignee_branch.branch_id="+tobranch
+					+"and created_datetime BETWEEN '"+fromdate+"00:00:00'"
+					+"and pay_mode='"+paymode+"'"
+					+"and '"+todate+"23:59:59' and ").list();
+		return listShipment;
+	}
+	//------------------------------------------------------------------------------------------------------------------------------------
+	
+	//--------------------------Fetch all shipment details--------------------------------------
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchAllShipment4receipt(int branch_id) {
+		// TODO Auto-generated method stub
+		
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N' and status ='Received'"
+						+ " and senderbranch_id = " + branch_id).list();
+		return listShipment;
+	}
+ //----------------------------------------------------------------------------
+	@Override
+	@Transactional
+	public List<ShipmentModel>searchLRnumber(String searchkey)
+	{
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment=(List<ShipmentModel>)sessionFactory.getCurrentSession()
+		.createQuery("from ShipmentModel where obsolete='N' and lr_number like '%"+searchkey+"%'").list();
+		return listShipment;
+	}
+
+//==============================================================================================
+
+
 	
 	
 }

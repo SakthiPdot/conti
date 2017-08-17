@@ -125,7 +125,7 @@
                 			         <div class="col-lg-3 branchclass">
 	                			      		 <span class="paddingtop">From  </span>   	                                       
 	                                          <div class="form-group input-group marginleftrightspace">
-					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.fromdate"
+					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.receipt.fromdate"
 					                           			   data-trigger= "focus"data-toggle="popover" data-placement="top"
 					                            		   data-content="Please select from date"/>
 					                            	 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -135,7 +135,7 @@
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="paddingtop">To</span>
                 			      		 <div class="form-group input-group marginleftrightspace">
-				                                <input type="text" class="form-control datepicker2" data-ng-model="ctrl.todate"
+				                                <input type="text" class="form-control datepicker2" data-ng-model="ctrl.receipt.todate"
 													  data-trigger= "focus"data-toggle="popover" data-placement="top"
 					                            		data-content="Please select to date"/>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
@@ -180,8 +180,10 @@
                 			<div class="panel-body">
                 			     <div class="col-lg-12 noPaddingLeft"> 
                 			       		<div class="col-lg-3 branchclass">
-                			      		 <span class="text-padding boldletter">Search</span>	                	                                       
-                                            <input type="text" class="form-control searchbar" placeholder="LR Number">                                           
+                			      		 <span class="text-padding boldletter" >Search</span>	                	                                       
+                                            <input type="text" class="form-control searchbar" placeholder="LR Number"
+                                            data-ng-model="ctrl.receipt.search" data-ng-keyup="ctrl.registerSearch(ctrl.receipt.search)">                                           
+                                       
                                         </div>
                 			      </div>
                 			</div>

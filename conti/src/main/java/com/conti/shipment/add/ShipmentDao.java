@@ -24,5 +24,6 @@ public interface ShipmentDao
 //===========================Add Receipt======================================
 	public List<ShipmentModel>getShipmentByCondition(int from,int to,String frombranch,String tobranch,String service,String paymode);
 	public List<ShipmentModel> fetchAllShipment4receipt(int branch_id);
+	public List<ShipmentModel>searchLRnumber(String searchkey);
 //============================================================================
 }

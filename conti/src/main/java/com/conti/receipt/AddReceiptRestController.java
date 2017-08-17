@@ -138,14 +138,15 @@ public class AddReceiptRestController
 		HttpSession session = request.getSession();
 		UserInformation userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();
-		
 		JSONObject obj=new JSONObject(receipt);
-		 int frombranchid=(int) obj.get("frombranch");
-		 int tobranchid=(int) obj.get("tobranch");
-		 String fromdate=(String) obj.get("fromdate");
-		 String todate=(String) obj.get("todate");
-		 String servic=(String) obj.get("service");
-		 String paymod=(String) obj.get("paymode");	
+		System.out.println("=================================================================="+obj);
+		
+		int frombranchid=(int) obj.getInt("frombranch.branch_id");
+		int tobranchid=(int) obj.getInt("tobranch.branch_id");
+		String fromdate=(String) obj.get("fromdate");
+		String todate=(String) obj.get("todate");
+		String servic=(String) obj.get("service");
+		String paymod=(String) obj.get("paymode");	
 		try 
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
@@ -166,4 +167,14 @@ public class AddReceiptRestController
 		}
 	}
 	//--------------------------------------------------------------------------------------------------------------------------
+	
+	//======================LR Number search start==================================
+	
+	@RequestMapping(value="search_lrnumber", method=RequestMethod.POST)
+	public ResponseEntity<List<ShipmentModel>> receipt_search(@RequestBody String searchkey,HttpServletRequest request)
+	{
+		List<ShipmentModel> shipmentModel=shipmentDao.searchLRnumber(searchkey);
+		System.out.println("++++++++++++++++++++++++++++++++============================================================================== "+shipmentModel.toString());
+		return new ResponseEntity<List<ShipmentModel>>(shipmentModel,HttpStatus.OK);
+	}
 }

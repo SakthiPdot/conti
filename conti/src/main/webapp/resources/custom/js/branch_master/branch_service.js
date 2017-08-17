@@ -74,7 +74,8 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 	//----------------Check branch name already exist process End-------------	
 	
 	//-------------------------- Fetch All Branches begin ---------------------//	
-	function fetchAllBranches() {
+	function fetchAllBranches() 
+	{
 		var deferred = $q.defer();
 		$http.get('branches')
 			.then(
