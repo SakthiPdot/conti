@@ -97,6 +97,26 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	}
 	//--------------------------------------------------------------------
 
+	
+	//--------------------View shipment filter condition-------------------------------
+	
+	function viewShipment(receipt)
+	{
+		ReceiptService.viewShipment(receipt)
+		.then(
+				function(receipt)
+				{
+					self.Filterreceipts=receipt;
+					console.log('Filter shipments details '+self.Filterreceipts);
+				},
+				function(errResponse)
+				{
+					console.log('Error while fetching Receipt ....');
+				}
+			);
+	}
+	//--------------------------------------------------------------------------------
+	
 	//-----------------------Receipt select all check box function start-------------------------
 	
 	function receiptSelectAll()
@@ -129,7 +149,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			self.selected_receipt.splice(index,1);
 		}
 	}
-	//---------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------
 
 	//--------------------------------------Show number of records-------------------------------------
 	

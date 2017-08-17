@@ -303,7 +303,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	  
 	  function manifestSelect(manifest)
 	  {
-		  console.log('Call Manifest select function ......')
+		  console.log('Call Manifest select all function')
 		  var index=self.selected_manifest.indexOf(manifest);
 		  if(manifest.select)
 			  {

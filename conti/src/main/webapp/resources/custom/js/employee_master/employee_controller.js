@@ -652,15 +652,18 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     }*/
     
     $scope.paginate = function(nextPrevMultiplier) {
+    	console.log($scope.currentPage);
     	$scope.selectall = false;
     	$scope.currentPage += (nextPrevMultiplier * 1);
     	self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
-    	
+    	console.log(self.employees.length);
+    	console.log(self.Filteremployees.length);
     	if(self.Filteremployees.length == 0) {
+    		console.log("empty");
     		EmployeeService.pagination_byPage($scope.currentPage)
     		.then(
     				function (filterEmp) {
-    					
+    					console.log(filterEmp);
     					if ( filterEmp.length == 0 ) {
     						$scope.nextDisabled = true;
     					} else if ( filterEmp.length < 10 ) {
@@ -679,10 +682,10 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     	
     	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
     	
-    	if(self.Filteremployees.length < $scope.pageSize) {
+    	/*if(self.Filteremployees.length < $scope.pageSize) {
     		$scope.nextDisabled = true;
     	}
-
+*/
     	if($scope.currentPage == 0) {
     		$scope.previouseDisabled = true;
     	}
@@ -706,7 +709,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = false;
     		self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
-    		fetchAllEmployees();
+    	/*	fetchAllEmployees();*/
     	} else { // last
     		
     		/*if(self.Filteremployees.length < $scope.pageSize) {
@@ -715,7 +718,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     			$scope.currentPage = ( (Math.ceil(self.Filteremployees.length/$scope.pageSize)) - 1 );
     		}*/
     		$scope.currentPage = ( (Math.ceil(self.Filteremployees.length/$scope.pageSize)) - 1 );
-    		
+    		console.log($scope.currentPage);
     		$scope.previouseDisabled = false;
     		$scope.nextDisabled = true;
     		

@@ -96,7 +96,7 @@ public class CustomerRestController
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			List<CustomerModel> customers = customerDao.getAllCustomers(Integer.parseInt(branch_id));
-			if(customers.isEmpty()) 
+			if(customers.isEmpty())                      
 			{
 				return new ResponseEntity<List<CustomerModel>> (HttpStatus.NO_CONTENT);
 			}
@@ -469,6 +469,7 @@ public class CustomerRestController
 		public ResponseEntity<List<CustomerModel>> pagination(@RequestBody int page, HttpServletRequest request) {
 			
 			userInformation = new UserInformation(request);
+			String username = userInformation.getUserName();
 			String branch_id = userInformation.getUserBranchId();
 		
 			int from_limit = 0, to_limit = 0;
@@ -481,20 +482,27 @@ public class CustomerRestController
 				from_limit = page;
 				to_limit = 10;
 			} else {
-				from_limit = (page * 100) + 1;
+				from_limit = (page * 10) + 1;
 				to_limit =  (page + 1 ) * 100;
 			}
 			
 			List<CustomerModel> customerList = customerDao.getCustomerswithLimit(Integer.parseInt(branch_id), from_limit, to_limit, order);
-			return new ResponseEntity<List<CustomerModel>> (customerList, HttpStatus.OK);
+			if(customerList.isEmpty())
+			{
+				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				return new ResponseEntity<List<CustomerModel>> ( HttpStatus.NO_CONTENT);
+			}
+			else
+			{
+				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				return new ResponseEntity<List<CustomerModel>> (customerList, HttpStatus.OK);
+			}
 		}
 		
-		//======================================Pagination end==========================================
+	//======================================Pagination end==========================================
 		
 		
-		
-		
-		//===========================To get all location for Customer search ================================
+	//===========================To get all location for Customer search ================================
 		
 		@RequestMapping(value="getLocations4Search/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 		public ResponseEntity<Map<String,List<Location>>> fetchAllLocations4Customer(HttpServletRequest request,

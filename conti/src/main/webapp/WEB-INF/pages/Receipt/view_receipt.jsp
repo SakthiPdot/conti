@@ -339,8 +339,7 @@
                                      <td data-ng-show="setting_receiptconsignee">{{receipt.shipmentModel.consignee_customer.customer_name}}</td>
                                      <td data-ng-show="setting_receiptmanifest">{{receipt.manifestModel.manifest_number}}</td>
                                      <td data-ng-show="setting_receiptstatus">{{receipt.shipmentModel.status}}</td>
-                                 
-                                </tr>
+                               </tr>
                              </tbody>
                          </table>
                      </div>
@@ -359,9 +358,7 @@
             </div>
         </div>
         <!-- /. PAGE WRAPPER  -->
-		
-		
-    </div>
+   </div>
     <!-- /. WRAPPER  -->
   
   
