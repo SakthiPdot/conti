@@ -46,6 +46,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	$scope.reverseSort = false;
 	
 	fetchAllServices();
+
 	/*checkServiceName();*/
 
 	function reset(){
@@ -437,13 +438,17 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			//================ Show no of Record Begin ============//
 			
 						function shownoofRecord(){
+							
+							
 							$scope.pageSize = $scope.shownoofrec;
 							self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
-							
+						
 							if(self.Filterservices.length < $scope.pageSize) {
 								$scope.previousDisabled = true;
 								$scope.nextDisabled = true;
 							}
+							fetchAllServices();
+							console.log("ddsss");
 						}
 						
 			//================ Show no of Record Begin ============//

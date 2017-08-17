@@ -162,6 +162,24 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 	}
 
 
+	@Override
+	@Transactional
+	public PriceSetting getServiceById(int serviceid) {
+	
+			
+			@SuppressWarnings("unchecked")
+			List<PriceSetting> priceSettingList=sessionFactory.getCurrentSession()
+					.createQuery("from PriceSetting where obsolete ='N' AND service_id="+serviceid).list();
+			
+			if(priceSettingList!=null && !priceSettingList.isEmpty()){
+				return priceSettingList.get(0);
+			}
+			return null;
+		}
+		
+	
+
+
 	
 
 }

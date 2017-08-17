@@ -26,6 +26,6 @@ public interface  PriceSettingDao {
 	
 	//---------------------------------------- FETCH PRICE BY from branch & product & service for add shipment by sankar
 	public PriceSetting fetchprice(int from_branch, int product, int service);
-	
+	public PriceSetting getServiceById(int serviceid);
 }
      
