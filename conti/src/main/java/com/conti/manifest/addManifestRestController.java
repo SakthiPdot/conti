@@ -1,7 +1,9 @@
 package com.conti.manifest;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -163,6 +165,49 @@ public class addManifestRestController {
 			System.err.println("@@$$WWWW$"+ searchStr);
 			return new ResponseEntity<Map<String,List<VehicleMaster>>> (result,HttpStatus.OK);
 			
+		
+	}
+
+	//========================== save Manifest==========================
+	@RequestMapping(value="manifestSave",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> manifestSave(HttpServletRequest request,@RequestBody ManifestModel manifest){
+
+		System.out.println("++ inside manifest save");
+		
+		//intialize	
+		String userid = request.getSession().getAttribute("userid").toString();		
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+		
+		
+		//set variable
+		manifest.setCreated_by(Integer.parseInt(userid));
+		manifest.setUpdated_by(Integer.parseInt(userid));
+		manifest.setCreated_datetime(dateFormat.format(date));
+		manifest.setUpdated_datetime(dateFormat.format(date));
+		manifest.setObsolete("N");
+		
+
+		//set shipment and manifest status (Intransit) and set manifest id manually
+		manifest.setManifest_status("Intransit");
+		for(ManifestDetailedModel manifestDetailModel:manifest.getManifestDetailModel()){
+			manifestDetailModel.setManifestModel(manifest);
+			manifestDetailModel.getShipmentModel().setStatus("Intransit");
+		}
+		
+		
+		
+		//generate manifest number
+		
+		try {
+			mDao.saveOrUpdate(manifest);
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
+		} catch (Exception e) {
+			e.printStackTrace();
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, e);
+			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 		
 	}
 	//========================== filter Shipment==========================

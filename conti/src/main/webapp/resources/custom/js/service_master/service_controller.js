@@ -46,6 +46,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	$scope.reverseSort = false;
 	
 	fetchAllServices();
+
 	/*checkServiceName();*/
 
 	function reset(){
@@ -154,8 +155,9 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			.then(
 					function (service) {
 						self.services = service;
-						console.log(self.services);
+						self.Filterservices = self.services;				
 						pagination();
+						console.log(service);
 					},
 					function (errResponse) {
 						console.log('Error while fetching services')
@@ -436,13 +438,17 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			//================ Show no of Record Begin ============//
 			
 						function shownoofRecord(){
-							$scope.pageSize = $scope.shownoofrec;
-							self.Filterservices = self.Filterservices.slice($scope.currentPage*$scope.pageSize);
 							
+							
+							$scope.pageSize = $scope.shownoofrec;
+							self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
+						
 							if(self.Filterservices.length < $scope.pageSize) {
 								$scope.previousDisabled = true;
 								$scope.nextDisabled = true;
 							}
+							fetchAllServices();
+							console.log("ddsss");
 						}
 						
 			//================ Show no of Record Begin ============//
@@ -499,6 +505,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 							ServiceService.findrecord_count()
 								.then(
 											function(record_count) {
+												console.log(record_count);
 												$scope.totalnoof_records = record_count;
 											},
 											function (errResponse) {
@@ -515,10 +522,10 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 						function pagination() {
 							
 							$scope.pageSize = $scope.shownoofrec;
-							console.log($scope.pageSize);							
+														
 							$scope.currentPage = 0;
 							$scope.totalPages = 0;							
-							self.Filterservices = self.services;
+							/*self.Filterservices = self.services;*/
 							
 							$scope.nextDisabled = false;
 							$scope.previousDisabled = true;
@@ -539,22 +546,26 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 						
 						
 						$scope.paginate = function(nextPrevMultiplier) {
+							console.log($scope.currentPage);
 							$scope.selectall = false;
 							$scope.currentPage += (nextPrevMultiplier * 1);
-							console.log($scope.currentPage);
-							self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
 							
+							self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
+							console.log(self.services.length);
+							console.log(self.Filterservices.length);
 							
 							
 							if(self.Filterservices.length == 0) {
+								console.log("empty");
 								ServiceService.pagination_byPage($scope.currentPage)
 								.then(
 										function (filterService) {
-											
+											console.log(filterService);
 											if(filterService.length == 0 ) {
 												$scope.nextDisabled = true;
 											} else if (filterService.length < 10 ) {
 												self.Filterservices = filterService;
+												$scope.nextDisabled = true;
 											} else {
 												self.Filterservices = filterService;
 											}
@@ -567,11 +578,11 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 							
 							$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
 							
-							if(self.Filterservices.length < $scope.pageSize) {
+							/*if(self.Filterservices.length < $scope.pageSize) {
 								$scope.nextDisabled = true;
-							}
+							}*/
 							
-							console.log(nextPrevMultiplier);
+							/*console.log(nextPrevMultiplier);*/
 							if($scope.currentPage == 0 ) {
 								$scope.previousDisabled = true;
 							}
@@ -597,7 +608,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 								$scope.previousDisabled = true;
 								$scope.nextDisabled = false;
 								self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
-								fetchAllServices();
+								/*fetchAllServices();*/
 							} else {
 								$scope.currentPage = ((Math.ceil(self.Filterservices.length/$scope.pageSize)) - 1 );
 								console.log($scope.currentPage);
@@ -612,6 +623,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 									.then(
 											function (filterService) {
 												self.Filterservices = filterService;
+												console.log(filterService);
 											},
 											function (errResponse) {
 												console.log("Error while fetching services");

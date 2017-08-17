@@ -158,6 +158,29 @@ public class BranchRestController {
 		try {
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			//List<BranchModel> branches = branchDao.getBranchesbyid(Integer.parseInt(branch_id));
+			List<BranchModel> branches = branchDao.getBranchBy100();
+			if(branches.isEmpty()) {
+				return new ResponseEntity<List<BranchModel>> (HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<List<BranchModel>> (branches, HttpStatus.OK);	
+			}			
+		} catch (Exception exception) {			
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<BranchModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+	}
+	
+	
+	
+	@RequestMapping( value = "/allbranches", method = RequestMethod.GET)
+	public ResponseEntity<List<BranchModel>> fetchAllBranchesForManifest(HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		String branch_id = userInformation.getUserBranchId();
+		try {
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			//List<BranchModel> branches = branchDao.getBranchesbyid(Integer.parseInt(branch_id));
 			List<BranchModel> branches = branchDao.getBranches();
 			if(branches.isEmpty()) {
 				return new ResponseEntity<List<BranchModel>> (HttpStatus.NO_CONTENT);
@@ -583,7 +606,7 @@ public class BranchRestController {
 				to_limit = 10;
 			} else {
 				from_limit = (page * 10) + 1;
-				to_limit =  (page + 1 ) * 100;
+				to_limit =  (page + 10 ) * 10;
 			}
 			
 			List<BranchModel> branchList = branchDao.getBrancheswithLimit(Integer.parseInt(branch_id), from_limit, to_limit, order);

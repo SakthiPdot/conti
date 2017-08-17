@@ -20,6 +20,7 @@ public class VehicleExcelBuilder extends AbstractExcelView {
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		@SuppressWarnings("unchecked")
 		List<VehicleMaster> vehicleList = (List<VehicleMaster>) model.get("vehicleList");
 		
 		int rowcount = 0;
@@ -59,7 +60,7 @@ public class VehicleExcelBuilder extends AbstractExcelView {
 		//Decimal Format
 		
 		DecimalFormat f = new DecimalFormat("##.00");
-		
+		System.out.println(f);
 		//Details
 		
 		for(VehicleMaster vehicle:vehicleList){

@@ -190,7 +190,7 @@ public class UserRestController {
 			List<User> userList = new ArrayList<User>();
 			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
 				
-				userList = usersDao.getAllUsers();
+				userList = usersDao.getUser100();
 				if(userList.isEmpty()) {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 					return new ResponseEntity<List<User>> (HttpStatus.NO_CONTENT);
@@ -970,14 +970,14 @@ public class UserRestController {
 				to_limit = 10;
 			} else {
 				from_limit = (page * 10) + 1;
-				to_limit =  (page + 1 ) * 100;
+				to_limit =  (page + 10 ) * 10;
 			}
 			
 			User user = usersDao.get(userid);
 			List<User> userList = new ArrayList<User>();
 			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
 				
-				userList = usersDao.getUserwithLimitbySA(branch_id, from_limit, to_limit, order);
+				userList = usersDao.getUserwithLimitbySA(from_limit, to_limit, order);
 				
 				
 				if(userList.isEmpty()) {

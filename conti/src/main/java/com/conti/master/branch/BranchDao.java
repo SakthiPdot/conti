@@ -27,4 +27,5 @@ public interface BranchDao
 	public int find_record_countforSA();
 	public int find_record_count();
 	public List<BranchModel> getBranchesbyid(int id);
+	public List<BranchModel> getBranchBy100();
 }

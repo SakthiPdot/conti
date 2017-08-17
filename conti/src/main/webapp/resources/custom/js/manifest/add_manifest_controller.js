@@ -39,7 +39,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		  "obsolete": null,
 		  "created_datetime": null,
 		  "updated_datetime": null,
-		  "manifestDetailModel": [{
+		  "manifestDetailModel":[{
 			  "manifestdetailed_id":null,
 			  "shipmentModel":null
 		  }],
@@ -48,8 +48,56 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		  "vehicle_destination":null
 		}
 	
+	self.manifestDetailModel= {
+		  "manifestdetailed_id":null,
+		  "shipmentModel":null
+	  };
+	
 	function submitManifest(){
 		console.log(self.manifest);
+		$('#myModal').css('z-index','1039');
+		
+		
+		ConfirmDialogService.confirmBox("Save",
+				BootstrapDialog.TYPE_SUCCESS, "Save Manifest  ..?", 'btn-success')
+		.then(
+				function(response){
+
+				
+					
+					for(var i=0;i<self.selectedManifest.length;i++){
+						
+						self.manifest.manifestDetailModel[i].shipmentModel=self.selectedManifest[i];
+						console.log("lr",self.manifest.manifestDetailModel[i].shipmentModel.lr_number);
+					
+						if(i<self.selectedManifest.length-1){
+							self.manifest.manifestDetailModel.push({
+								  "manifestdetailed_id":null,
+								  "shipmentModel":null
+							  });
+						}
+							
+						
+					}
+
+					console.log("result",self.manifest);
+					//self.manifest.manifestDetailModel.shipmentModel=self.selectedManifest;
+					self.manifest.branchModel1=JSON.parse(self.manifest.branchModel1);
+					self.manifest.branchModel2=JSON.parse(self.manifest.branchModel2);
+
+					
+					
+					addManifestService.saveManifest(self.manifest)
+					.then(
+							function (response) {	
+								console.log('save success');
+							}, 
+							function (errResponse) {
+								console.log('Error while saving record');
+							});
+		},function(errResponse){
+			$('#myModal').css('z-index','1050');
+		});
 	}
 	//===================================select all====================================
 	function selectAll(){
@@ -62,19 +110,24 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 			if(self.selectAllManifest){
 				self.selectedManifest.push(self.FilteredManifests[i]);
 			}
-		}
+		}	
 		
+		console.log(self.selectedManifest);
 	}
 	
 	//===================================ClearModalValue====================================
 	function clearModalValue(){
-		self.manifest.driver_name=null;
-		self.manifest.vehicle_number=null;
-		self.manifest.vehicle_destination=null;
+		$scope.emp_name.originalObject=null;
+		$scope.vehicle_type.originalObject=null;
+		$scope.branch_name.originalObject=null;
 		$('#driver_name_value').val("");
 		$('#vehicle_type_value').val("");
 		$('#vehicleDestinationBranch_value').val("");
 	}
+	
+	
+	
+	
 	
 	
 	//===================================select Manifest====================================
@@ -172,19 +225,19 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 	
 	function viewShipment(){
 		
-		if(self.fromBranch==null || typeof self.fromBranch == undefined)
+		if(self.manifest.branchModel1==null || typeof self.manifest.branchModel1== undefined)
 		self.fromBranch="";
-		if(self.toBranch==null || typeof self.toBranch == undefined)
+		if(self.manifest.branchModel2==null || typeof self.manifest.branchModel2 == undefined)
 		self.toBranch="";
-		if(self.status==null || typeof self.status == undefined)
+		if(self.manifest.manifest_status==null || typeof self.manifest.manifest_status == undefined)
 		self.status="";
 		
 		var filter={
-				"fromBranch":self.fromBranch,
-				"toBranch":self.toBranch,
+				"fromBranch":JSON.parse(self.manifest.branchModel1).branch_id,
+				"toBranch":JSON.parse(self.manifest.branchModel2).branch_id,
 				"fromDate":$(".datepicker1").val(),
 				"toDate":$(".datepicker2").val(),
-				"status":self.status
+				"status":self.manifest.manifest_status
 				}
 		
 		
@@ -196,7 +249,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 				function(response){
 					self.FilteredManifests=response;
 					console.log(response);
-				},function(errRespone){
+				},function(errResponse){
 					console.log("error while fetching manifest in filter"+errResponse);
 				});
 		

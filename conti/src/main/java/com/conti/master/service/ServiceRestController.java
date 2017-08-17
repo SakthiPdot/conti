@@ -38,6 +38,8 @@ import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
+import com.conti.settings.price.PriceSetting;
+import com.conti.settings.price.PriceSettingDao;
 
 @RestController
 public class ServiceRestController {
@@ -46,6 +48,8 @@ public class ServiceRestController {
 	private ServiceDao serviceDao;
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
+	@Autowired
+	private PriceSettingDao psDao;
 	
 	
 	Loggerconf loggerconf = new Loggerconf();
@@ -119,7 +123,7 @@ public class ServiceRestController {
 		
 		try{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			List<ServiceMaster> services = serviceDao.getAllServices();
+			List<ServiceMaster> services = serviceDao.getServiceBy100();
 			if(services.isEmpty()) {
 				return new ResponseEntity<List<ServiceMaster>> (HttpStatus.NO_CONTENT);	
 			} else {
@@ -204,6 +208,13 @@ public class ServiceRestController {
 			@RequestMapping(value = "delete_service/{id}", method = RequestMethod.DELETE)
 			public ResponseEntity<ServiceMaster> deleteService(@PathVariable ("id") int id, HttpServletRequest request) {
 				ServiceMaster serviceModel = serviceDao.getServiceId(id);
+				/*PriceSetting priceSetting=psDao.getServiceById((int)id);*/
+				
+				/*boolean deleteflag = false;
+				if(priceSetting == null){
+					deleteflag = true;
+				}*/
+				
 				userInformation = new UserInformation(request);
 				String username = userInformation.getUserName();
 				int user_id = Integer.parseInt(userInformation.getUserId());
@@ -411,8 +422,8 @@ public class ServiceRestController {
 							from_limit = page;
 							to_limit = 10;
 						} else {
-							from_limit = (page * 100) + 1;
-							to_limit = (page + 1) * 100;
+							from_limit = (page * 10) + 1;
+							to_limit = (page + 10) * 10;
 						}
 						
 						List<ServiceMaster> servlist = serviceDao.getServiceswithLimit(from_limit, to_limit, order);

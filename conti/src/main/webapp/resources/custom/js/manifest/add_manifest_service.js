@@ -15,12 +15,31 @@ angular.module('contiApp').factory('addManifestService',['$http','$q',function($
 			searchLRShipment:searchLRShipment,
 			filterManifest:filterManifest,
 			fetchAllShipment:fetchAllShipment,
-			fetchLastManifestNo:fetchLastManifestNo
+			fetchLastManifestNo:fetchLastManifestNo,
+			saveManifest:saveManifest
 	}
 	
 	return factory;
 
 	
+	//=============================save manifest====================================
+	function saveManifest(manifest){
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:'manifestSave',
+			data:manifest,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("save failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
 	//=============================search LR Shipment====================================
 	function searchLRShipment(searchString){
 	var deferred = $q.defer();

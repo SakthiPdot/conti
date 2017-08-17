@@ -85,13 +85,16 @@ public class VehicleDaoImp implements VehicleDao  {
 
 	@Override
 	@Transactional
-	public List<VehicleMaster> getVehicleswithLimit(int branch_id, int from_limit, int to_limit, String order) {
+	public List<VehicleMaster> getVehicleswithLimit(int from_limit, int to_limit, String order) {
 		@SuppressWarnings("unchecked")
+		
 		List<VehicleMaster> listVehicle = (List<VehicleMaster>) sessionFactory.getCurrentSession()
-				.createQuery("from VehicleMaster where obsolete = 'N' AND branchModel.branch_id = " + branch_id + " "
-						+ "ORDER BY IFNULL (created_datetime, updated_datetime)" +order)
+				.createQuery("from VehicleMaster where obsolete = 'N' ORDER BY IFNULL (created_datetime, updated_datetime)" +order)
 				.setFirstResult(from_limit).setMaxResults(to_limit).list();
+
 		return listVehicle;
+		
+	
 	}
 
 	
@@ -147,6 +150,16 @@ public class VehicleDaoImp implements VehicleDao  {
 				.createQuery("select count(*) from VehicleMaster WHERE obsolete = 'N'").uniqueResult()).intValue();
 		
 		return record_count;
+	}
+
+	@Override
+	@Transactional
+	public List<VehicleMaster> getVehicleBy100() {
+		@SuppressWarnings("unchecked")
+		List<VehicleMaster> getlist = (List<VehicleMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster where obsolete = 'N' ORDER BY created_datetime DESC ").setMaxResults(100).list();
+		
+		return getlist;
 	}
 	
 	

@@ -611,12 +611,12 @@ public class EmployeeRestController {
 				to_limit = 10;
 			} else {
 				from_limit = (page * 10) + 1;
-				to_limit =  (page + 1 ) * 100;
+				to_limit =  (page + 10 ) * 10;
 			}
 			User user = usersDao.get(userid);
 			List<EmployeeMaster> employees = new ArrayList<EmployeeMaster>();
 			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
-				employees = employeeDao.getEmployeeswithLimitforSA(branch_id, from_limit, to_limit, order);
+				employees = employeeDao.getEmployeeswithLimitforSA( from_limit, to_limit, order);
 				if(employees.isEmpty()) {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 					return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
