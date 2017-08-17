@@ -166,19 +166,14 @@
                 			            <div class="col-lg-4 branchclass">
                 			      		   <button class="btn btn-primary" data-ng-click="ctrl.viewShipment(ctrl.receipt)"> View Shipment</button>
                                          </div>
-                			        
                 			       </div>
-                			      
                 			</div>
                 		</div>
                 		</div>
                 	</div>
                 </div>
                 
-                
-                
-                
-                <div class="row">
+               <div class="row">
                 	<div class="col-lg-12">
                 		<div class="col-lg-12 ">                		
                 		<div class="panel panel-default">

@@ -129,17 +129,17 @@ public class AddReceiptRestController
 		
 	//-------------------------------------------------------------------------------------------------------------------
 	
-	//----------------------------Add Receipt filter function start-----------------------------
+	//-------------------------------------------Add Receipt filter function start----------------------------------------
 	
 	@RequestMapping( value = "add_receipt_filter", method = RequestMethod.POST)
-	public ResponseEntity<List<ShipmentModel>> addreceiptFilterbycondition(@RequestBody String receipt,HttpServletRequest request) throws JsonProcessingException, IOException 
+	public ResponseEntity<List<ShipmentModel>> addreceiptFilterbycondition(@RequestBody String receipt,HttpServletRequest request) 
+			throws JsonProcessingException, IOException 
 	{
 		HttpSession session = request.getSession();
 		UserInformation userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();
 		
 		JSONObject obj=new JSONObject(receipt);
-		 
 		 int frombranchid=(int) obj.get("frombranch");
 		 int tobranchid=(int) obj.get("tobranch");
 		 String fromdate=(String) obj.get("fromdate");
@@ -165,5 +165,5 @@ public class AddReceiptRestController
 			return new ResponseEntity<List<ShipmentModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
-	
+	//--------------------------------------------------------------------------------------------------------------------------
 }

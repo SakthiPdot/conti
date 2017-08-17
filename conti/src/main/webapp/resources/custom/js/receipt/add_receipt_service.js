@@ -11,8 +11,7 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 {
 	var factory={
 			fetchAllReceipt_add:fetchAllReceipt_add,
-			fetchAllReceipt_view:fetchAllReceipt_view,
-			receiptFilter:receiptFilter
+						viewShipment:viewShipment	
 	};
 	
 	return factory;
@@ -60,7 +59,7 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 	//----------------------------------------------------------------------
 	
 	//--------------------Filter All Receipt by filter condition------------------
-	function receiptFilter(receipt)
+	function viewShipment(receipt)
 	{
 		console.log("Service Receipt filter function call");
 		var def=$q.defer();
