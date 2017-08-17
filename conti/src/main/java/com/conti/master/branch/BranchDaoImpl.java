@@ -72,7 +72,7 @@ public class BranchDaoImpl implements BranchDao
 		@SuppressWarnings("unchecked")
 		List<BranchModel> listBranch = (List<BranchModel>) sessionFactory.getCurrentSession()
 				.createQuery("from BranchModel where obsolete ='N' "
-						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC")
+						+ "ORDER BY IFNULL(created_datetime, created_datetime) DESC")
 				.list();
 		return listBranch;
 	}
@@ -175,6 +175,15 @@ public class BranchDaoImpl implements BranchDao
 	public int find_record_count() {
 		int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from BranchModel WHERE obsolete = 'N' AND user.role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'").uniqueResult()).intValue();
 		return rec_count;
+	}
+
+	@Override
+	@Transactional
+	public List<BranchModel> getBranchBy100() {
+		@SuppressWarnings("unchecked")
+		List<BranchModel> listget = (List<BranchModel>) sessionFactory.getCurrentSession()
+				.createQuery("from BranchModel where obsolete = 'N'"+" ORDER BY IFNULL(created_datetime,created_datetime) DESC").setMaxResults(100).list();
+		return listget;
 	}
 	
 }

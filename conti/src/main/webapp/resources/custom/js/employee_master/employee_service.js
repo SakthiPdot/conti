@@ -294,6 +294,7 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
     	})
     	.then (
     		function (response) {
+    			console.log(response);
     			deferred.resolve(response.data);
     		},
     		function (errResponse) {

@@ -8,29 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.session.SessionAuthenticationException;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.conti.config.SessionListener;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
-import com.conti.setting.usercontrol.RoleDao;
-import com.conti.setting.usercontrol.User;
-import com.conti.setting.usercontrol.UsersDao;
+
 
 /**
  * @Project_Name conti
@@ -46,8 +33,7 @@ public class ServiceController {
 
 	final Logger logger = LoggerFactory.getLogger(ServiceController.class);
 
-	@Autowired
-	private UsersDao usersDao;
+	
 		
 	@Autowired
 	@Qualifier("sessionRegistry")

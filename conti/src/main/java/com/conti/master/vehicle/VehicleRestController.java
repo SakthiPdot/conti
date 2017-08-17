@@ -35,19 +35,16 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
-import com.conti.master.employee.EmployeeMaster;
-import com.conti.master.location.Location;
+
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
-import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 @RestController
 public class VehicleRestController {
 	
-	@Autowired
-	private UsersDao usersDao;
+
 	@Autowired
 	private VehicleDao vehicleDao;
 	@Autowired
@@ -121,7 +118,7 @@ public class VehicleRestController {
 		
 		try {
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			List<VehicleMaster> vehicles = vehicleDao.getAllVehicles();
+			List<VehicleMaster> vehicles = vehicleDao.getVehicleBy100();
 			if(vehicles.isEmpty()) {
 				return new ResponseEntity<List<VehicleMaster>> (HttpStatus.NO_CONTENT);
 			} else {
@@ -400,7 +397,7 @@ public class VehicleRestController {
 		public ResponseEntity<List<VehicleMaster>> vehicle_pagination(@RequestBody int page, HttpServletRequest request) {
 			
 			userInformation = new UserInformation(request);
-			String branch_id = userInformation.getUserBranchId();
+			
 		
 			int from_limit = 0, to_limit = 0;
 			String order = "DESC";
@@ -412,12 +409,12 @@ public class VehicleRestController {
 				from_limit = page;
 				to_limit = 10;
 			} else {
-				from_limit = (page * 100) + 1;
-				to_limit =  (page + 1 ) * 100;
+				from_limit = (page * 10) + 1;
+				to_limit =  (page + 10 ) * 10;
 			}
 			
-			List<VehicleMaster> vehicList = vehicleDao.getVehicleswithLimit(Integer.parseInt(branch_id), from_limit, to_limit, order);
-			return new ResponseEntity<List<VehicleMaster>> (vehicList, HttpStatus.OK);
+			List<VehicleMaster> vehicList = vehicleDao.getVehicleswithLimit(from_limit, to_limit, order);
+			return new ResponseEntity <List<VehicleMaster>> (vehicList, HttpStatus.OK);
 		}
 		
 		//=================== Pagination Function End ================//
@@ -438,4 +435,21 @@ public class VehicleRestController {
 				
 			
 		}
+		
+		//========================= Get Record Count Begin ==========//
+			@RequestMapping(value = "/vehiclerecordcount/", method = RequestMethod.GET)
+			public ResponseEntity <String> vehiclerecordcount(HttpServletRequest request) {
+				try {
+					return new ResponseEntity<String> (String.valueOf(vehicleDao.vehicleSettingCount()),HttpStatus.OK);
+					
+				} catch (Exception exception) {
+					loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+					return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+				}
+				
+				
+			}
+		
+		//========================= Get Record Count End =============//
+		
 }

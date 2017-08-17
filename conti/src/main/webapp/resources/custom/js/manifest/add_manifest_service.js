@@ -11,13 +11,55 @@
 angular.module('contiApp').factory('addManifestService',['$http','$q',function($http,$q){
 	
 	var factory={
+
+			searchLRShipment:searchLRShipment,
+			filterManifest:filterManifest,
 			fetchAllShipment:fetchAllShipment,
 			fetchLastManifestNo:fetchLastManifestNo,
-			filterManifest:filterManifest
+			saveManifest:saveManifest
 	}
 	
 	return factory;
 
+	
+	//=============================save manifest====================================
+	function saveManifest(manifest){
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:'manifestSave',
+			data:manifest,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("save failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
+	//=============================search LR Shipment====================================
+	function searchLRShipment(searchString){
+	var deferred = $q.defer();
+    	
+    	$http({
+    		method : 'POST',
+    		url : 'searchLRShipment',
+    		data : searchString,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+	}
 	//=============================filter manifest====================================
 	function filterManifest(x){
 		var deferred=$q.defer();
@@ -30,7 +72,7 @@ angular.module('contiApp').factory('addManifestService',['$http','$q',function($
 				function(response){
 					deferred.resolve(response.data);
 				},function(errResponse){
-					console.log("status change failed");
+					console.log("fetch filter failed");
 					deferred.reject(errResponse);
 				}
 		);

@@ -179,7 +179,9 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 					function (branch) 
 					{
 						self.branches = branch;
+						self.Filterbranches = self.branches;
 						pagination();
+						console.log(branch);
 					}, 
 					function (errResponse) {
 						console.log('Error while fetching branches');
@@ -559,11 +561,11 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     {
         
     	$scope.pageSize = $scope.shownoofrec;
-    	console.log($scope.pageSize);
+    	
 		$scope.currentPage = 0;
 		$scope.totalPages = 0;
 		//$scope.totalItems = Math.ceil(self.Filterbranches.length/$scope.pageSize);
-		self.Filterbranches = self.branches;
+		/*self.Filterbranches = self.branches;*/
 		
 		$scope.nextDisabled = false;
 		$scope.previouseDisabled = true;
@@ -585,17 +587,19 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     
     $scope.paginate = function(nextPrevMultiplier) 
     {
+    	console.log($scope.currentPage);
     	$scope.selectallbranches=false;
     	$scope.currentPage += (nextPrevMultiplier * 1);
     	self.Filterbranches = self.branches.slice($scope.currentPage*$scope.pageSize);
-    	
+    	console.log(self.branches.length);
     	console.log(self.Filterbranches.length);
     	
     	if(self.Filterbranches.length == 0) {
+    		console.log("empty");
     		BranchService.pagination_byPage($scope.currentPage)
     		.then(
     				function (filterBranch) {
-    					
+    					console.log(filterBranch);
     					if ( filterBranch.length == 0 ) {
     						$scope.nextDisabled = true;
     					} else if ( filterBranch.length < 10 ) {
@@ -614,11 +618,11 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     	
     	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
     	
-    	if(self.Filterbranches.length < $scope.pageSize) {
+    	/*if(self.Filterbranches.length < $scope.pageSize) {
     		$scope.nextDisabled = true;
     	}
-    	
-    	console.log(nextPrevMultiplier);
+    	*/
+    	/*console.log(nextPrevMultiplier);*/
     	if($scope.currentPage == 0) {
     		$scope.previouseDisabled = true;
     	}
@@ -644,7 +648,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = false;
     		self.Filterbranches = self.branches.slice($scope.currentPage*$scope.pageSize);
-    		fetchAllBranches();
+    		/*fetchAllBranches();*/
     	} else { // last
     		$scope.currentPage = ((Math.ceil(self.Filterbranches.length/$scope.pageSize)) - 1 );
     		$scope.previouseDisabled = false;

@@ -243,11 +243,10 @@ public class EmployeeDaoImp implements EmployeeDao {
 	
 	@Override
 	@Transactional
-	public List<EmployeeMaster> getEmployeeswithLimitforSA(int branch_id, int from_limit, int to_limit, String order) {
+	public List<EmployeeMaster> getEmployeeswithLimitforSA( int from_limit, int to_limit, String order) {
 		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> listEmployee = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
-				.createQuery("from EmployeeMaster where obsolete ='N' AND branchModel.branch_id =" + branch_id + " "
-						+ "ORDER BY IFNULL(created_datetime, updated_datetime) "+order)
+				.createQuery("from EmployeeMaster where obsolete ='N' ORDER BY IFNULL(created_datetime, updated_datetime) "+order)
 				.setFirstResult(from_limit).setMaxResults(to_limit).list();
 		return listEmployee;
 	}

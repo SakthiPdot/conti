@@ -158,8 +158,9 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 					.then(
 							function (vehicle) {
 								self.vehicles = vehicle;
-								console.log(self.vehicles);
+								self.Filtervehicles = self.vehicles;							
 								pagination();
+								console.log(self.vehicles);
 							},
 							function (errResponse) {
 								console.log('Error while fetching vehicles');
@@ -496,12 +497,14 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 	//=============== Show no of Record Begin =============//
 			function shownoofRecord() {
 				$scope.pageSize = $scope.shownoofrec;
-				
+				/*$scope.currentPage = 0 ;*/
 				self.Filtervehicles = self.vehicles.slice($scope.currentPage*$scope.pageSize);
 				
+				/*$scope.previousDisabled = true;*/
 				if(self.Filtervehicles.length < $scope.pageSize) {
-					$scope.nextDisabled = true;
 					$scope.previousDisabled = true;
+					$scope.nextDisabled = true;
+					
 				}
 			}
 			
@@ -555,7 +558,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				VehicleService.findrecord_count()
 					.then(
 								function (record_count) {
-								
+									console.log(record_count);
 									$scope.totalnoof_records = record_count;
 								},
 								function (errResponse) {
@@ -571,10 +574,10 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 	
 			function pagination() {
 				$scope.pageSize = $scope.shownoofrec;
-				console.log($scope.pageSize);
+				
 				$scope.currentPage = 0;
 				$scope.totalPages = 0;
-				self.Filtervehicles = self.vehicles;
+				
 				
 				$scope.nextDisabled = false;
 				$scope.previousDisabled = true;
@@ -585,7 +588,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				
 				if(self.Filtervehicles.length < 100) {
 					$scope.totalnoof_records = self.Filtervehicles.length;
-					console.log($scope.totalnoof_records);
+				
 				} else {
 					findrecord_count();
 				}
@@ -593,22 +596,25 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			
 			
 			$scope.paginate = function(nextPrevMultiplier) {
+				console.log($scope.currentPage);
 				$scope.selectall = false;
 				$scope.currentPage += (nextPrevMultiplier * 1);
-				console.log($scope.currentPage);
 				self.Filtervehicles = self.vehicles.slice($scope.currentPage*$scope.pageSize);
-				
-				
+				console.log(self.vehicles.length);
+				console.log(self.Filtervehicles.length);
 				
 				if(self.Filtervehicles.length == 0) {
+					console.log("empty")
 					VehicleService.pagination_byPage($scope.currentPage)
 					.then(
-							function (filterVervice) {
+							function (filterVehicle) {
+								console.log(filterVehicle);
 								
-								if(filterService.length == 0 ) {
+								if(filterVehicle.length == 0 ) {
 									$scope.nextDisabled = true;
 								} else if (filterVehicle.length < 10 ) {
 									self.Filtervehicles = filterVehicle;
+									$scope.nextDisabled = true;
 								} else {
 									self.Filtervehicles = filterVehicle;
 								}
@@ -622,11 +628,11 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				
 				$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
 				
-				if(self.Filtervehicles.length < $scope.pageSize) {
+				/*if(self.Filtervehicles.length < $scope.pageSize) {
 					$scope.nextDisabled = true;
 				}
-				
-				console.log(nextPrevMultiplier);
+				*/
+				/*console.log(nextPrevMultiplier);*/
 				if($scope.currentPage == 0 ) {
 					$scope.previousDisabled = true;
 				}
@@ -653,7 +659,7 @@ $scope.firstlastPaginate = function (page) {
 					$scope.previousDisabled = true;
 					$scope.nextDisabled = false;
 					self.Filtervehicles = self.vehicles.slice($scope.currentPage*$scope.pageSize);
-					fetchAllVehicles();
+					/*fetchAllVehicles();*/
 				} else {
 					$scope.currentPage = ( (Math.ceil(self.Filtervehicles.length/$scope.pageSize)) - 1 );
 					console.log($scope.currentPage);
@@ -667,6 +673,7 @@ $scope.firstlastPaginate = function (page) {
 						.then(
 								function (filterVehicle) {
 									self.Filtervehicles = filterVehicle;
+									console.log(filterVehicle);
 								},
 								function (errResponse) {
 									console.log("Error while fetching services");

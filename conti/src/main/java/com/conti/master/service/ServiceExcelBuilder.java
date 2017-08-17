@@ -55,7 +55,7 @@ public class ServiceExcelBuilder extends AbstractExcelView {
 		//Decimal Format 
 		
 		DecimalFormat f = new DecimalFormat("##.00");
-		
+		System.out.println(f);
 		//Detail
 		
 		for(ServiceMaster service:serviceList){

@@ -119,7 +119,7 @@ public class ServiceRestController {
 		
 		try{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			List<ServiceMaster> services = serviceDao.getAllServices();
+			List<ServiceMaster> services = serviceDao.getServiceBy100();
 			if(services.isEmpty()) {
 				return new ResponseEntity<List<ServiceMaster>> (HttpStatus.NO_CONTENT);	
 			} else {
@@ -411,8 +411,8 @@ public class ServiceRestController {
 							from_limit = page;
 							to_limit = 10;
 						} else {
-							from_limit = (page * 100) + 1;
-							to_limit = (page + 1) * 100;
+							from_limit = (page * 10) + 1;
+							to_limit = (page + 10) * 10;
 						}
 						
 						List<ServiceMaster> servlist = serviceDao.getServiceswithLimit(from_limit, to_limit, order);
@@ -438,5 +438,21 @@ public class ServiceRestController {
 			
 			return new ResponseEntity<Map<String,List<ServiceMaster>>> (result,HttpStatus.OK);
 		}			
+		
+		
+		//========================= Get Record Count Begin ==========//
+		
+		@RequestMapping(value = "/servicerecordcount/", method = RequestMethod.GET)
+		public ResponseEntity<String> servicerecordcount(HttpServletRequest request){
+			try {
+				return new ResponseEntity<String> (String.valueOf(serviceDao.serviceSettingCount()),HttpStatus.OK);
+			} catch (Exception exception) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+				return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 			
+			
+		}
+		
+		//========================= Get Record Count End =============//
 }

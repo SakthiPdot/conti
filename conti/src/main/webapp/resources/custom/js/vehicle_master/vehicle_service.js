@@ -13,6 +13,7 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 				registerSearch : registerSearch,
 				pagination_byPage : pagination_byPage,
 				checkVehicleRegno : checkVehicleRegno,
+				findrecord_count:findrecord_count,
 				sortBy:sortBy
 		  };
 		
@@ -253,6 +254,7 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 						})
 						.then (
 								function (response) {
+									console.log(response);
 									deferred.resolve(response.data);
 								},
 								function (errResponse) {
@@ -263,4 +265,25 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 					}
 					
 			//============== Pagination Function Begin =======//
+					
+			//============== Find Record Count Begin ============//
+					
+					function findrecord_count() {
+						
+						var deferred = $q.defer();
+						$http.get('vehiclerecordcount/')
+							.then(
+									function (response) {
+										deferred.resolve(response.data);
+									},
+									function (errResponse) {
+										console.log('Error while fetching vehicle record count');
+										deferred.reject(errResponse);
+									}
+							     );
+						return deferred.promise;
+					}
+					
+			//============== Find Record Count End ============//
+					
 }]);

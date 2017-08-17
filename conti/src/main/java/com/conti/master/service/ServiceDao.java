@@ -14,4 +14,8 @@ public interface ServiceDao {
 	public String checkServiceName(String SearchString);
 	public List<ServiceMaster> getServiceSorting100(String name,String order);
 	public List<ServiceMaster> allSorting(String sorting);
+	
+	public int serviceSettingCount();
+	public List<ServiceMaster> getServiceBy100();
+	
 }

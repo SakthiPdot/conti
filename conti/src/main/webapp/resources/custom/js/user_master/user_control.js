@@ -128,7 +128,9 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
             .then(
             function(users) {
                 self.users = users;
+                self.FilterUsers =   self.users;
                 pagination();
+                console.log(users);
             },
             function(errResponse){
                 console.error('Error while fetching Users');
@@ -840,7 +842,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    	$scope.pageSize = $scope.shownoofrec;
 			$scope.currentPage = 0;
 			$scope.totalPages = 0;
-			self.FilterUsers = self.users;
+		/*	self.FilterUsers = self.users;*/
 			$scope.nextDisabled = false;
 			$scope.previouseDisabled = true;
 			if(self.FilterUsers.length <= 10 ) {
@@ -859,15 +861,20 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    
 	    // --------------------------- Next page begin ------------------------  
 	    $scope.paginate = function(nextPrevMultiplier) {
-
+	    	console.log($scope.currentPage);
+	    	$scope.selectall = false;
 	    	$scope.currentPage += (nextPrevMultiplier * 1);
 	    	self.FilterUsers = self.users.slice($scope.currentPage*$scope.pageSize);
 	    	
+	    	console.log(self.users.length);
+	    	console.log(self.FilterUsers.length);
+	    	
 	    	if(self.FilterUsers.length == 0) {
+	    		console.log("empty")
 	    		UserService.pagination_byPage($scope.currentPage)
 	    		.then(
 	    				function (filterUser) {
-	    					
+	    					console.log(filterUser);
 	    					if ( filterUser.length == 0 ) {
 	    						$scope.nextDisabled = true;
 	    					} else if ( filterUser.length < 10 ) {
@@ -884,10 +891,11 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    			);
 	    	} 
 	    	
-	    	if(self.FilterUsers.length < $scope.pageSize) {
+	    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+	    	/*if(self.FilterUsers.length < $scope.pageSize) {
 	    		
 	    		$scope.nextDisabled = true;
-	    	}
+	    	}*/
 	    	
 	    	if($scope.currentPage == 0) {
 	    		$scope.previouseDisabled = true;
@@ -903,7 +911,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    
 	  // --------------------------- First & Last page begin ------------------------  
 	    $scope.firstlastPaginate = function (page) {
-	    	
+	    	$scope.selectall = false;
 	    	if( page == 1 ) { // first
 	    		
 	    		$scope.currentPage = 0;
@@ -911,7 +919,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    		$scope.nextDisabled = false;
 	    		
 	    		self.FilterUsers = self.users.slice($scope.currentPage*$scope.pageSize);
-	    		fetchAllUsers();
+	    		/*fetchAllUsers();*/
 	    	} else { // last
 	    		
 	    		/*if(self.FilterUsers.length < 20) {
@@ -941,7 +949,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 		    	} 
 	    		
 	    	}
-	    
+	    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
 	    }
 	    
 	    // --------------------------- First & Last page end ------------------------

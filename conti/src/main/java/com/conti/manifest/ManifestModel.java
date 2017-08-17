@@ -1,21 +1,30 @@
 package com.conti.manifest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.conti.master.branch.BranchModel;
+import com.conti.master.employee.EmployeeMaster;
+import com.conti.master.vehicle.VehicleMaster;
 
 @Entity
 @Table(name = "t_manifest")
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ManifestModel 
 {
 	private int manifest_id,updated_by,created_by,manifest_origin,manifest_destination;
@@ -23,8 +32,23 @@ public class ManifestModel
 	private String created_datetime,updated_datetime;
 	
 	
+	private List<ManifestDetailedModel> manifestDetailModel=new ArrayList<>();
+	
+	
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinColumn(name="manifest_id",referencedColumnName="manifest_id")
+	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true)
+	@JsonManagedReference
+	public List<ManifestDetailedModel> getManifestDetailModel() {
+		return this.manifestDetailModel;
+	}
+	public void setManifestDetailModel(List<ManifestDetailedModel> manifestDetailModel) {
+		this.manifestDetailModel = manifestDetailModel;
+	}
+	
 	
 	@Id
+	@GeneratedValue
 	@Column(name = "MANIFEST_ID")
 	public int getManifest_id() {
 		return manifest_id;
@@ -62,7 +86,16 @@ public class ManifestModel
 		this.branchModel2 = branchModel2;
 	}
 	
+	public BranchModel 	vehicle_destination;	
 	
+	@JoinColumn(name="vehicle_destination")
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.MERGE)
+	public BranchModel getVehicle_destination() {
+		return this.vehicle_destination;
+	}
+	public void setVehicle_destination(BranchModel vehicle_destination) {
+		this.vehicle_destination = vehicle_destination;
+	}
 	@Column(name = "UPDATED_BY")
 	public int getUpdated_by() {
 		return updated_by;
@@ -79,6 +112,9 @@ public class ManifestModel
 		this.created_by = created_by;
 	}
 	
+	
+	
+	
 	@Column(name = "MANIFEST_NUMBER")
 	public String getManifest_number() {
 		return manifest_number;
@@ -87,22 +123,46 @@ public class ManifestModel
 		this.manifest_number = manifest_number;
 	}
 	
-	@Column(name = "VEHICLE_NUMBER")
+	private VehicleMaster vehicleMaster;
+	
+	
+	@JsonProperty("vehicle_number")
+	@JoinColumn(name="VEHICLE_NUMBER",referencedColumnName="vehicle_id")
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.MERGE)
+	public VehicleMaster getVehicleMaster() {
+		return this.vehicleMaster;
+	}
+	public void setVehicleMaster(VehicleMaster vehicleMaster) {
+		this.vehicleMaster = vehicleMaster;
+	}
+/*	@Column(name = "VEHICLE_NUMBER")
 	public String getVehicle_number() {
 		return vehicle_number;
 	}
 	public void setVehicle_number(String vehicle_number) {
 		this.vehicle_number = vehicle_number;
-	}
+	}*/
 	
-	@Column(name = "DRIVER_NAME")
+	
+	private EmployeeMaster employeeDriver;
+	
+	@JsonProperty("driver_name")
+	@JoinColumn(name="DRIVER_NAME",referencedColumnName="emp_id")
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.MERGE)
+	public EmployeeMaster getEmployeeDriver() {
+		return this.employeeDriver;
+	}
+	public void setEmployeeDriver(EmployeeMaster employeeDriver) {
+		this.employeeDriver = employeeDriver;
+	}
+/*	@Column(name = "DRIVER_NAME")
 	public String getDriver_name() {
 		return driver_name;
 	}
 	public void setDriver_name(String driver_name) {
 		this.driver_name = driver_name;
 	}
-	
+	*/
 	@Column(name = "MANIFEST_STATUS")
 	public String getManifest_status() {
 		return manifest_status;

@@ -85,15 +85,19 @@ public class VehicleDaoImp implements VehicleDao  {
 
 	@Override
 	@Transactional
-	public List<VehicleMaster> getVehicleswithLimit(int branch_id, int from_limit, int to_limit, String order) {
+	public List<VehicleMaster> getVehicleswithLimit(int from_limit, int to_limit, String order) {
 		@SuppressWarnings("unchecked")
+		
 		List<VehicleMaster> listVehicle = (List<VehicleMaster>) sessionFactory.getCurrentSession()
-				.createQuery("from VehicleMaster where obsolete = 'N' AND branchModel.branch_id = " + branch_id + " "
-						+ "ORDER BY IFNULL (created_datetime, updated_datetime)" +order)
+				.createQuery("from VehicleMaster where obsolete = 'N' ORDER BY IFNULL (created_datetime, updated_datetime)" +order)
 				.setFirstResult(from_limit).setMaxResults(to_limit).list();
+
 		return listVehicle;
+		
+	
 	}
 
+	
 	@Override
 	@Transactional
 	public List<VehicleMaster> searchbyVehicleType(String search_key) {
@@ -105,6 +109,17 @@ public class VehicleDaoImp implements VehicleDao  {
 		return listtype;
 	}
 
+	
+	@Override
+	@Transactional
+	public List<VehicleMaster> searchforVehicleRegNo(String search_key) {
+		
+		@SuppressWarnings("unchecked")
+		List<VehicleMaster> listtype = (List<VehicleMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster WHERE obsolete = 'N' "
+						+ " AND vehicle_regno LIKE '%" + search_key+ "%'").list();
+		return listtype;
+	}
 	@Override
 	@Transactional
 	public List<VehicleMaster> searchforVehicleType(String search_key) {
@@ -126,6 +141,25 @@ public class VehicleDaoImp implements VehicleDao  {
 		}
 		
 		return "NOTAVAILABLE";
+	}
+
+	@Override
+	@Transactional
+	public int vehicleSettingCount() {
+		int record_count = ((Long) sessionFactory.getCurrentSession()
+				.createQuery("select count(*) from VehicleMaster WHERE obsolete = 'N'").uniqueResult()).intValue();
+		
+		return record_count;
+	}
+
+	@Override
+	@Transactional
+	public List<VehicleMaster> getVehicleBy100() {
+		@SuppressWarnings("unchecked")
+		List<VehicleMaster> getlist = (List<VehicleMaster>) sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster where obsolete = 'N' ORDER BY created_datetime DESC ").setMaxResults(100).list();
+		
+		return getlist;
 	}
 	
 	

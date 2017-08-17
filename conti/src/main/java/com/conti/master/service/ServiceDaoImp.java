@@ -20,7 +20,7 @@ public class ServiceDaoImp implements ServiceDao {
 		public List<ServiceMaster> getAllServices() {
 			@SuppressWarnings("unchecked")
 			List<ServiceMaster> listService = (List<ServiceMaster>) sessionFactory.getCurrentSession()
-					.createQuery("from ServiceMaster where obsolete ='N' ORDER BY  created_datetime DESC ").list();
+					.createQuery("from ServiceMaster where obsolete ='N' ORDER BY  created_datetime DESC ").setMaxResults(100).list();
 			return listService;
 			
 		}
@@ -79,6 +79,7 @@ public class ServiceDaoImp implements ServiceDao {
 			List<ServiceMaster> listServ = (List<ServiceMaster>) sessionFactory.getCurrentSession()
 					.createQuery("from ServiceMaster where obsolete = 'N' " + "ORDER BY IFNULL(created_datetime,updated_datetime)" + order)
 					.setFirstResult(from_limit).setMaxResults(to_limit).list();
+			
 			return listServ;
 		}
 		@Override
@@ -119,5 +120,23 @@ public class ServiceDaoImp implements ServiceDao {
 			
 			return SortList;
 		
+		}
+
+
+		@Override
+		@Transactional
+		public int serviceSettingCount() {
+			int record_count = ((Long) sessionFactory.getCurrentSession().createQuery("select count(*) from ServiceMaster WHERE obsolete = 'N'").uniqueResult()).intValue();		
+			return record_count;
+		}
+
+
+		@Override
+		@Transactional
+		public List<ServiceMaster> getServiceBy100() {
+			@SuppressWarnings("unchecked")
+			List<ServiceMaster> getlist = (List<ServiceMaster>) sessionFactory.getCurrentSession()
+					.createQuery("from ServiceMaster where obsolete = 'N' ORDER BY  created_datetime DESC").setMaxResults(100).list();
+			return getlist;
 		}
 }
