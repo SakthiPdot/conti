@@ -7,8 +7,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.conti.master.employee.EmployeeMaster;
 import com.conti.master.product.Product;
 import com.conti.others.ConstantValues;
 
@@ -184,6 +182,19 @@ public class BranchDaoImpl implements BranchDao
 		List<BranchModel> listget = (List<BranchModel>) sessionFactory.getCurrentSession()
 				.createQuery("from BranchModel where obsolete = 'N'"+" ORDER BY IFNULL(created_datetime,created_datetime) DESC").setMaxResults(100).list();
 		return listget;
+	}
+
+	@Override
+	@Transactional
+	public BranchModel getLocationbyId(int locationid) {
+	
+		@SuppressWarnings("unchecked")
+		List<BranchModel> getlocation = sessionFactory.getCurrentSession()
+				.createQuery("FROM BranchModel WHERE obsolete = 'N' and location_id = "+locationid).list();
+		if(getlocation != null && !getlocation.isEmpty()){
+			return getlocation.get(0);
+		}
+		return null;
 	}
 	
 }

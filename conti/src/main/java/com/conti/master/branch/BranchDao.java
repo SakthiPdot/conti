@@ -2,8 +2,6 @@ package com.conti.master.branch;
 
 import java.util.List;
 
-import com.conti.master.employee.EmployeeMaster;
-import com.conti.master.location.Location;
 
 /**
  * @Project_Name conti
@@ -28,4 +26,9 @@ public interface BranchDao
 	public int find_record_count();
 	public List<BranchModel> getBranchesbyid(int id);
 	public List<BranchModel> getBranchBy100();
+	
+	//===== Referred Delete Process in Foreign key =========//
+	public BranchModel getLocationbyId(int locationid);
+	
+	
 }
