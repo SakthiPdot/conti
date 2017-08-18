@@ -146,6 +146,24 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return null;
 	}
 	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public ShipmentModel getShipmentModelById(int shipmentId) {
+		
+		String hql = "FROM ShipmentModel WHERE obsolete = 'N' and shipment_id = " + shipmentId;
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		List<ShipmentModel> shipmentList = (List<ShipmentModel>)query.list();
+		if ( shipmentList != null && !shipmentList.isEmpty()) {
+			return shipmentList.get(0);
+		}
+		return null;
+	}
+
+	
 	//========================================4 RECEIPT===========================================
 	
 	//----------------------------------------------Receipt Filter condition start-------------------------------------------------------
@@ -237,6 +255,10 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		}
 		return null;
 	}
+
+
+
+
 
 
 	
