@@ -15,6 +15,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	 $scope.branchnamewrong=false;
 	var self=this;
 	self.branches=[];
+	self.currentBranch=[];
 	self.Filterbranches=[];
 	self.branch={};
 	self.heading = "Master";

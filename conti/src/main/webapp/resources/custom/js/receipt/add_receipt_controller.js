@@ -18,6 +18,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	self.heading="Manster"
 	self.message=null;
 	self.print=print;
+	self.currentBranch=[];
 	self.viewShipment=viewShipment;
 	self.receiptSelect=receiptSelect;
 	self.registerSearch=registerSearch;
@@ -29,6 +30,8 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	self.receiptSelectAll=receiptSelectAll;
 	fetchAllReceipt_add();
 	fetchAllBranches();
+	var branch_id=$('#branchid').val();
+	fetchCurrentBranch(branch_id);
 		
 	function reset()
 	{
@@ -80,6 +83,27 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	}
 	
 	//-------------------------- Fetch All Branch end -----------------------//
+	
+	//-----------------Get Current branch from branch Master-----------------//
+	
+	function fetchCurrentBranch(branch_id)
+	{
+		console.log("Current Branch location id : "+branch_id);
+		BranchService.fetchbyBranchid(branch_id)
+		.then(
+				function(branch)
+				{
+					self.currentBranch=branch;
+					console.log(self.currentBranch);
+					pagination();
+				},
+				function(errResponse)
+				{
+					console.log('Error while fetching current branch.....');
+				}
+			);
+	}
+	//--------------------------------------------------------------------------//
 	
 	//---------------------------Fetch All Receipt details start----------------------
 	function fetchAllReceipt_add()

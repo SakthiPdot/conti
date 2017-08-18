@@ -110,12 +110,12 @@
                 			      			<option value="">--Select--</option>
                 			      		</select>
                 			      </div>
-                			      
+                			      <input type="hidden" value="${branch_id}" id="branchid"/>
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">To</span>
-                			      		<select class="form-control" data-ng-model="ctrl.receipt.tobranch" 
+                			      		<select class="form-control" data-ng-model="ctrl.receipt.tobranch"  
                 			      		data-ng-options ="branch.branch_name for branch in ctrl.branches">
-                			      			<option value="">${branch_name}</option>
+                			      			<option value="">--Select--</option>
                 			      			
                 			      		</select>
                 			      </div>
@@ -290,7 +290,7 @@
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.receiptSelectAll()" data-ng-model="selectallreceipts"></th>
                                             <th data-ng-show="setting-slnumber">S.No</th>
-                                            <th data-ng-show="setting_receiptlrnumber">LR No</th>
+                                            <th data-ng-show="setting_receiptlrnumber">LR Number</th>
                                             <th data-ng-show="setting_receiptorigin">Origin</th>
                                             <th data-ng-show="setting_receiptdestination">Destination</th>
                                             <th data-ng-show="setting_receiptsender">Sender</th>
@@ -303,7 +303,7 @@
                                         <tr data-ng-repeat="receipt in ctrl.Filterreceipts|limitTo:pageSize" data-id="{{receipt.receipt_id}}">
                                             <td><input type="checkbox" data-ng-click="ctrl.receiptSelect(receipt)" data-ng-model="receipt.select"></td>
                                             <td data-ng-show="setting-slnumber">{{$index+1}}</td>
-                                            <td data-ng-show="setting_receiptlrnumber">{{receipt.lr_number}}</td>
+                                            <td data-ng-show="setting_receiptlrnumber">${lr_prefix}{{receipt.lr_number}}</td>
                                             <td data-ng-show="setting_receiptorigin">{{receipt.sender_branch.branch_name}}</td>
                                             <td data-ng-show="setting_receiptdestination">{{receipt.consignee_branch.branch_name}}</td>
                                             <td data-ng-show="setting_receiptsender">{{receipt.sender_customer.customer_name}}</td>
