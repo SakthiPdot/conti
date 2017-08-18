@@ -16,6 +16,8 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
+import com.conti.others.ConstantValues;
+import com.conti.others.Loggerconf;
 import com.conti.settings.price.PriceSetting;
 import com.conti.settings.price.PriceSettingDetail;
 
@@ -28,6 +30,8 @@ import com.conti.settings.price.PriceSettingDetail;
  */
 public class PriceSettingExcelBuilder extends AbstractExcelView{
 
+	Loggerconf loggerconf = new Loggerconf();
+	
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -119,21 +123,26 @@ public class PriceSettingExcelBuilder extends AbstractExcelView{
 				//detail
 				for(PriceSetting priceSetting:priceSettingList){
 					if(priceSetting!=null){
-						for(PriceSettingDetail priceSettingDetail:priceSetting.getPriceSettingDetail()){
-							if(priceSettingDetail!=null){
-							HSSFRow rowDetail=detailSheet.createRow(rowcountDetail++);
-							rowDetail.createCell(0).setCellValue(priceSetting.getBranch().getBranch_name());
-							rowDetail.createCell(1).setCellValue(priceSetting.getProduct().getProduct_name());
-							
-							if(priceSettingDetail.getBranch()!=null){
-								rowDetail.createCell(2).setCellValue(priceSettingDetail.getBranch().getBranch_name());
-							}else{
-								rowDetail.createCell(2).setCellValue("");
+						try {
+							for(PriceSettingDetail priceSettingDetail:priceSetting.getPriceSettingDetail()){
+								if(priceSettingDetail!=null){
+								HSSFRow rowDetail=detailSheet.createRow(rowcountDetail++);
+								rowDetail.createCell(0).setCellValue(priceSetting.getBranch().getBranch_name());
+								rowDetail.createCell(1).setCellValue(priceSetting.getProduct().getProduct_name());
+								
+								if(priceSettingDetail.getBranch()!=null){
+									rowDetail.createCell(2).setCellValue(priceSettingDetail.getBranch().getBranch_name());
+								}else{
+									rowDetail.createCell(2).setCellValue("");
+								}
+								rowDetail.createCell(3).setCellValue(f.format(priceSettingDetail.getPs_weightfrom()));
+								rowDetail.createCell(4).setCellValue(f.format(priceSettingDetail.getPs_weightto()));
+								rowDetail.createCell(5).setCellValue(f.format(priceSettingDetail.getPs_price()));
+								}
 							}
-							rowDetail.createCell(3).setCellValue(f.format(priceSettingDetail.getPs_weightfrom()));
-							rowDetail.createCell(4).setCellValue(f.format(priceSettingDetail.getPs_weightto()));
-							rowDetail.createCell(5).setCellValue(f.format(priceSettingDetail.getPs_price()));
-							}
+						} catch (Exception e) {
+							loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, e);
+							e.printStackTrace();
 						}	
 					}
 				}

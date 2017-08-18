@@ -115,6 +115,12 @@ public class ShipmentExcelBuilder extends AbstractExcelView {
 		//============================================Hsn Table initialization=======================================================
 		int rowCountHsn=0;
 		
+		//create style for header cells
+		CellStyle detailHsnStyle=workbook.createCellStyle();
+		detailHsnStyle.setFont(font);
+		detailHsnStyle.setFillForegroundColor(HSSFColor.BLUE.index);
+		detailHsnStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		
 		//create a new excel Sheet
 		HSSFSheet hsnDetailSheet=workbook.createSheet("HSN For Products");
 		hsnDetailSheet.setDefaultColumnWidth(40);
@@ -123,19 +129,17 @@ public class ShipmentExcelBuilder extends AbstractExcelView {
 		HSSFRow hsnHeader=hsnDetailSheet.createRow(rowCountHsn++);
 		
 		String[] detailHsnHeading={"LR NO","Product Name","HSN Code","HSN Description"};
-		
 
-		
 		for(int j=0;j<detailHsnHeading.length;j++){
+			System.err.println(detailHsnHeading[j]);
 			hsnHeader.createCell(j).setCellValue(detailHsnHeading[j]);
-			hsnHeader.createCell(j).setCellStyle(style);
+			hsnHeader.getCell(j).setCellStyle(detailHsnStyle);
 		}
 		
 		//============================================ Initialization End=======================================================
 		for(ShipmentModel shipmentModel:shipmentList){
 			HSSFRow row=sheet.createRow(rowcount++);			
 			try {
-				
 				row.createCell(0).setCellValue(shipmentModel.getLr_number());
 				
 				if(shipmentModel.getSender_branch()!=null){
