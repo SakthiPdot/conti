@@ -7,6 +7,7 @@
 <%@ page isELIgnored="false" %> 
 <%@page session="true"%>
 
+
 <html>
   		 <!-- Print  css -->
   		<meta name="viewport" content="width=device-width">	
@@ -14,13 +15,12 @@
 	    <link rel="stylesheet" href="resources/built-in/pdf_print/grids-responsive-min.css">
 	    <link href="resources/custom/css/print.css" rel="stylesheet">
 	 
-
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Location print</title>
+<title>Shipment print</title>
 </head>
 <body>
+
 
 <!--====================================================== Page=========================================-->
 			<div class="pure-g" style="height: 100%;">
@@ -37,7 +37,8 @@
 			</div>     	 
 <!--====================================================== page end=========================================-->		     	 
 
-<h1>Location Master</h1>
+
+<h1>Shipment</h1>
 <h5>(Print Preview)</h5>
 
 	<div class="col-lg-12">
@@ -62,54 +63,55 @@
 			</div>
 		</div>
 	</div>
-
-
-
-		
-			    <div id="companyname">${company.company_name}</div>
+	
+	
+	
+		    <div id="companyname">${company.company_name}</div>
 				<div id="area">${company.company_address1} </div>
 				<div id="street">${company.company_address2}</div>
 				<div id="city">${company.location.location_name},${company.location.address.city}</div>
 				<div id="phoneno">${company.company_landlineno}</div>
-				<div id="title">${title} Master</div>
+				<div id="title">${title}</div>
 				<div id="logo">${image}</div>
 			
-			
 
+	<!--====================================================== Shipment table START=========================================-->
+				<table id="basic-table">
+					<thead>
+						<tr>
+							<th>S.No</th>
+							<th>LR No</th>
+							<th>Origin</th>
+							<th>Destination</th>
+							<th>Sender</th>
+							<th>Consignee</th>
+							<th>Total Parcel</th>
+							<th>Weight</th>
+							<th>Service</th>							
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="Shipment" items="${ShipmentList}" varStatus="loop">
+							<tr>
+								<td><c:out value="${loop.count}" />
+								<td>${Shipment.lr_number}</td>
+								<td>${Shipment.sender_branch.branch_name}</td>
+								<td>${Shipment.consignee_branch.branch_name}</td>
+								<td>${Shipment.sender_customer.customer_name}</td>
+								<td>${Shipment.consignee_customer.customer_name }</td>
+								<td>${Shipment.numberof_parcel}</td>								
+								<td>${Shipment.chargeable_weight}</td>							
+								<td>${Shipment.service.service_name}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
 
-	<!--====================================================== Location table START=========================================-->
-        			<table id="basic-table">
-	               		<thead>	    
-	        				 <tr>
-	                            <th>S.No</th>
-	                            <th>Location Name</th>
-	                            <th>Location Code</th>	                                 
-	                            <th>Abbreviation</th>
-	                            <th>City</th>
-	                            <th>State</th>	 
-	                            <th>Pincode</th>
-	                        </tr>	                        
-	                    </thead>
-	                    <tbody>	                    
-	                    <c:forEach var="location" items="${locationList}" varStatus="loop">	                    
-	                        <tr>
-                              	<td><c:out value="${loop.count}" />
-                                <td>${location.location_name}</td>                   
-                               <td>${location.location_code}</td> 
-                               <td>${location.abbreviation}</td> 
-                               <td>${location.address.city}</td>                   
-                               <td>${location.address.state }</td>                                 
-                               <td>${location.pincode}</td>                      
-                            </tr>                           
-	                      </c:forEach> 	                      
-	                    </tbody>
-	                </table>
-	                
-<!--====================================================== Location table END=========================================-->
+	<!--====================================================== Shipment table END=========================================-->
 
 
 <!--====================================================== SCRIPTS START=========================================-->
-	<!-- Print  js -->
+						<!-- Print  js -->
 	<script src="resources/built-in/pdf_print/jspdf.min.js"></script>
 	<script src="resources/built-in/pdf_print/jspdf.plugin.autotable.src.js"></script>
 	<script src="resources/built-in/pdf_print/examples.js"></script>
@@ -135,7 +137,7 @@
         var doc = examples[funcStr]();
 
         doc.setProperties({
-            title: 'Conti: Location',
+            title: 'Conti: Shipment',
             subject: 'Conti Master (' + funcStr + ')'
         });
 
@@ -148,5 +150,6 @@
 	
 	</script>
 <!--====================================================== SCRIPTS END =========================================-->
+
 </body>
-</html>
+</html>			
