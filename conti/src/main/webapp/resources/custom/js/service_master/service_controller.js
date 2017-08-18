@@ -300,7 +300,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 										
 																				
 										},function(pricesettting) {
-											self.message = self.service.service_name+ " Already referred in Price Settings please check";
+											self.message = self.service.service_name+ " referred in Price Settings or Add Shipment please check";
 											successAnimate('.success');
 										},
 										
