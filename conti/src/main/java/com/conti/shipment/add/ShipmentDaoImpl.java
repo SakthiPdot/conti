@@ -51,6 +51,18 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchAllShipment() {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and  status in ('Booked','Missing')" ).list();
+		
+		return listShipment;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	@Override
