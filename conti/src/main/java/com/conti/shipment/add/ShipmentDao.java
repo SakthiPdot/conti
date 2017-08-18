@@ -16,6 +16,7 @@ public interface ShipmentDao
 {
 	public List<ShipmentModel> fetchAllShipment(int branch_id);
 	public int fetchMAXlrno(int branch_id);
+	public String fetchMAXlrno_prefix(int branch_id);
 	public void saveOrUpdate(ShipmentModel shipment);
 	public List<ShipmentModel> fetchAllShipment100();
 	public List<ShipmentModel> fetchAllShipment();

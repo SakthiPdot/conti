@@ -10,10 +10,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +33,6 @@ import com.conti.others.SendMailSMS;
 import com.conti.others.UserInformation;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
-import com.itextpdf.text.pdf.qrcode.Mode;
 
 /**
  * @Project_Name conti
@@ -92,9 +93,31 @@ public class AddShipmentController {
 
 	}
 	
+	//--------------------------------- FETCH MAXIMUM LRNO BEGIN
+	
+	@RequestMapping(value = "/fetchMAXlrno/{branch_id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> fetchMAXLRno (@PathVariable("branch_id") int branch_id, HttpServletRequest request) {
+		
+		userInformation = new UserInformation(request);
+		String lrno = shipmentDao.fetchMAXlrno_prefix(branch_id);
+		String lrwithPrefix = null;
+		if(lrno == null) {
+			lrwithPrefix = Integer.toString(0);	
+		} else {
+			BranchModel branch = branchDao.getBranchbyId(branch_id);
+			/*lrwithPrefix = branch.getLrno_prefix() + lrno;*/
+			lrwithPrefix = lrno;
+		}
+		
+		return new ResponseEntity<String> (lrwithPrefix, HttpStatus.OK);
+		
+	}
+	
+	//--------------------------------- FETCH MAXIMUM LRNO END
+	
 	//--------------------------------- Create new shipment begin
 	
-	@RequestMapping(value = "/create_shipment", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/create_shipment", method = RequestMethod.POST)
 	public ResponseEntity<String> createShipment (@RequestBody ShipmentModel shipment,  HttpServletRequest request) {
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
@@ -150,7 +173,7 @@ public class AddShipmentController {
 				customerDao.saveOrUpdate(shipment.getConsignee_customer());
 			}
 			BranchModel branch = branchDao.getBranchbyId(branch_id);
-			String lrno_prefix = branch.getLrno_prefix() + lrno;
+			String lrno_prefix = branch.getLrno_prefix() + String.format("%06d", lrno) ;
 			shipment.setLr_number(lrno);
 			shipment.setLrno_prefix(lrno_prefix);
 			shipment.setObsolete("N");
@@ -176,9 +199,12 @@ public class AddShipmentController {
 					+ "Delivery Charge " + shipment.getDelivery_charge();
 			String mobileno = Long.toString(shipment.getSender_customer().getCustomer_mobileno());
 			String sms_respone = sendMailSMS.send_SMS(mobileno, message);*/
+			JSONObject lr_details = new JSONObject();
+			lr_details.put("lrno", lrno);
+			lr_details.put("lrno_prefix", lrno_prefix);
 			
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
-			return new ResponseEntity<String> (Integer.toString(lrno),HttpStatus.CREATED);
+			return new ResponseEntity<String> (lr_details.toString(),HttpStatus.CREATED);
 			
 		} catch ( Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);

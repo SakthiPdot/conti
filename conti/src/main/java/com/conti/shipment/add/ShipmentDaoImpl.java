@@ -108,6 +108,22 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	
 	@Override
 	@Transactional
+	public String fetchMAXlrno_prefix(int branch_id) {
+		// TODO Auto-generated method stub
+		String lrno = null;
+		Query query = sessionFactory.getCurrentSession()
+				.createQuery("Select lrno_prefix from ShipmentModel WHERE " 
+						+ " lr_number = (SELECT MAX(lr_number) FROM ShipmentModel WHERE sender_branch.branch_id= "+ branch_id + ")");
+		if(query.uniqueResult() == null) {
+			return lrno;
+		} else {
+			lrno = query.uniqueResult().toString();
+			return lrno;
+		}
+	}
+	
+	@Override
+	@Transactional
 	public int fetchMAXlrno(int branch_id) {
 		// TODO Auto-generated method stub
 		int lrno = 0;

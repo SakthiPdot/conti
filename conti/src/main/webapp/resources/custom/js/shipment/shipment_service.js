@@ -10,7 +10,8 @@
 contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	
 	var factory = {
-			createShipment : createShipment
+			createShipment : createShipment,
+			fetchMAXLRno : fetchMAXLRno
 	};
 	
 	return factory;
@@ -41,4 +42,24 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	    }
 	 
 		//---------------------------------- Create shipment end
+	 
+	//---------------------------------- FETCH MAXLRNO begin
+	 
+	 function fetchMAXLRno(branch_id) {
+		 
+		 var deferred = $q.defer();
+			$http.get('fetchMAXlrno/'+branch_id)
+				.then(
+						function (response) {
+							deferred.resolve(response.data);
+						},
+						function (errResponse) {							
+							deferred.reject(errResponse);
+						}
+					);
+			return deferred.promise;
+	 }
+	 
+	  
+	//---------------------------------- FETCH MAXLRNO END
 }]);

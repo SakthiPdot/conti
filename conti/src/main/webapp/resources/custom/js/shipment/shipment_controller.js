@@ -101,16 +101,15 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	self.shipment.shipment_date = $filter("date")(Date.now(), 'yyyy-MM-dd HH:mm:ss');
 	self.shipment.status = "Booked";
 	
-	
 	self.changePaymentmode = changePaymentmode;
 	
 	//-------------------------------- Change Pament mode function begin 
 	function changePaymentmode(payment_mode) {
-		if( payment_mode == 'Credit' ) {
+		/*if( payment_mode == 'Credit' ) {
 			self.shipment.bill_to = 'Sender';	
 		} else {
 			self.shipment.bill_to = '';
-		}
+		}*/
 		self.tax_payable(); // Tax payable on Reverse Charge 
 	}
 	//-------------------------------- Change Pament mode function end
@@ -146,6 +145,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		var sender_taxin_payable = null;
 		var consignee_taxin_payable = null;
 		self.disable_save = true;
+		fetchMAXLRno();
 	}
 	
 	//------------------------------- Reset end
@@ -154,26 +154,46 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//------------------------ Fetch current branch by branch id begin
 	
-	function fetch_branch() {
+	/*function fetch_branch() {
 		BranchService.fetchbyBranchid($('#sender_branch_id').val())
 			.then(
 					function (branch) {
-						console.log(branch);
+						self.branch = branch;
 					}, function (error) {
 						console.log(error)
 					}
 				);
 	}
-	fetch_branch();
+	fetch_branch();*/
 	
 	
 	//------------------------ Fetch current branch by branch id end
 	
+	//------------------------ FETCH MAX LR NO BEGIN
+	$scope.maxlrno = null;
+	function fetchMAXLRno() {
+		console.log("inside fetchmaxlrno");
+		ShipmentService.fetchMAXLRno($('#sender_branch_id').val())
+			.then(
+					function (maxlrno) {
+						console.log(maxlrno);
+						
+						$scope.maxlrno = maxlrno;
+					}, function (errRes) {
+						$scope.maxlrno = null;
+						console.log(errRes);
+					}
+				);
+		
+	}
+	fetchMAXLRno();
+	//------------------------ FETCH MAX LR NO END
 	
 	//------------------------ Sender customer search by mobileno begin
     $scope.sender_search_mbl = function (sender_search_mbl) {
     	self.shipment.sender_customer.customer_id = sender_search_mbl.originalObject.customer_id;
     	self.shipment.sender_customer.customer_name = sender_search_mbl.originalObject.customer_name;
+    	self.shipment.sender_customer.company_name = sender_search_mbl.originalObject.company_name;
     	self.shipment.sender_customer.customer_mobileno = sender_search_mbl.originalObject.customer_mobileno;
     	self.shipment.sender_customer.customer_addressline1 = sender_search_mbl.originalObject.customer_addressline1;
     	self.shipment.sender_customer.customer_addressline2 = sender_search_mbl.originalObject.customer_addressline2;
@@ -211,6 +231,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     $scope.consignee_search_mbl = function (consignee_search_mbl) {
     	self.shipment.consignee_customer.customer_id = consignee_search_mbl.originalObject.customer_id;
     	self.shipment.consignee_customer.customer_name = consignee_search_mbl.originalObject.customer_name;
+    	self.shipment.consignee_customer.company_name = consignee_search_mbl.originalObject.company_name;
     	self.shipment.consignee_customer.customer_mobileno = consignee_search_mbl.originalObject.customer_mobileno;
     	self.shipment.consignee_customer.customer_addressline1 = consignee_search_mbl.originalObject.customer_addressline1;
     	self.shipment.consignee_customer.customer_addressline2 = consignee_search_mbl.originalObject.customer_addressline2;
@@ -690,11 +711,13 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     function createShipment(shipment){
     	ShipmentService.createShipment(shipment)
             .then(
-            		function (lrno) {
+            		function (lr_details) {
             			
-                        self.message = " shipment created..! Shipment LR No. is "+lrno;
-            			successAnimate('.success');         
-            			bill_open(lrno);
+                        self.message = " shipment created..! Shipment LR No. is "+lr_details.lrno_prefix;
+            			successAnimate('.success');  
+            			reset();
+            			
+            			bill_open(lr_details.lrno);
             			
             		},
            
@@ -744,14 +767,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 							function (res) {
 										 	    		
 								createShipment(self.shipment);  
-				 	        	
 								
-								reset();
-								
-								
-								
-								
-				 	        	
 							}
 						);
 				
