@@ -26,10 +26,12 @@ import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerDao;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
+import com.conti.others.NumberToWord;
 import com.conti.others.SendMailSMS;
 import com.conti.others.UserInformation;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
+import com.itextpdf.text.pdf.qrcode.Mode;
 
 /**
  * @Project_Name conti
@@ -51,9 +53,13 @@ public class AddShipmentController {
 	private CustomerDao customerDao;
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
-	
+	@Autowired
+	private BranchDao branchDao;
 	@Autowired
 	private SendMailSMS sendMailSMS;
+	
+	@Autowired
+	private NumberToWord numberToWord;
 	Loggerconf loggerconf = new Loggerconf();	
 	UserInformation userInformation;
 	ConstantValues constantVal = new ConstantValues();
@@ -101,7 +107,7 @@ public class AddShipmentController {
 			// LRNO CALCULATION
 			int lrno = shipmentDao.fetchMAXlrno(branch_id);
 			if( lrno == 0 ) {
-				lrno = 10001;
+				lrno = 1;
 			} else {
 				lrno = lrno + 1;
 			}
@@ -143,8 +149,10 @@ public class AddShipmentController {
 				
 				customerDao.saveOrUpdate(shipment.getConsignee_customer());
 			}
-			
+			BranchModel branch = branchDao.getBranchbyId(branch_id);
+			String lrno_prefix = branch.getLrno_prefix() + lrno;
 			shipment.setLr_number(lrno);
+			shipment.setLrno_prefix(lrno_prefix);
 			shipment.setObsolete("N");
 			shipment.setCreated_by(user_id);
 			shipment.setUpdated_by(user_id);
@@ -162,8 +170,8 @@ public class AddShipmentController {
 			//SMS FOR SENDER 
 			/*String message = "Your parcel have been booked successfully at Conti Courier Service."
 					+ "LR Number: " + lrno + " "
-					+ "From city " + shipment.getSender_customer().location.address.getCity() +" to "
-									+ shipment.getConsignee_customer().location.address.getCity() + " " 
+					+ "From city " + shipment.getSender_branch().getBranch_name() +" to "
+									+ shipment.getConsignee_branch().getBranch_name() + " " 
 					+ "No.of Parcel " + shipment.getNumberof_parcel() + " "
 					+ "Delivery Charge " + shipment.getDelivery_charge();
 			String mobileno = Long.toString(shipment.getSender_customer().getCustomer_mobileno());
@@ -221,9 +229,19 @@ public class AddShipmentController {
 			BranchModel branch = brandhDao.getBranchbyId(branch_id);
 			model.addObject("branch", branch);
 			ShipmentModel shipment = shipmentDao.getshipmentby_lrno(lrno);
+			
+			String total_charges = Float.toString(shipment.getTotal_charges());
+			String[] total_charges_split = total_charges.split("\\.");
+			
+			String currency_rs = numberToWord.convert(Integer.parseInt(total_charges_split[0]));
+			String currency_paise = numberToWord.convert(Integer.parseInt(total_charges_split[1]));
+			
+			String currency = currency_rs + " rupees " + currency_paise + " paise.";
+			
 			model.addObject("company",company);
 			model.addObject("image",base64DataString);
 			model.addObject("shipment", shipment);
+			model.addObject("currency", currency);
 			model.addObject("lrno", lrno);
 			model.addObject("title", "Add Shipment");
 			model.setViewName("Shipment/shipment_bill");
