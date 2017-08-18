@@ -190,9 +190,23 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> getServiceList = sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel where obsolete = 'N' and service_id = "+serviceid).list();
-		if(getServiceList!= null && !getServiceList.isEmpty()){
-			System.out.println(getServiceList.get(0));
+		if(getServiceList!= null && !getServiceList.isEmpty()){			
 			return getServiceList.get(0);
+		}
+		return null;
+	}
+
+
+
+
+	@Override
+	@Transactional
+	public ShipmentModel getCustomerId(int customerid,int ccustomerid) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> getCustomerList = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where obsolete = 'N' and sendercustomer_id = "+customerid+" OR consigneecustomer_id='"+ccustomerid+"'").list();
+		if(getCustomerList!= null && !getCustomerList.isEmpty()){
+			return getCustomerList.get(0);
 		}
 		return null;
 	}

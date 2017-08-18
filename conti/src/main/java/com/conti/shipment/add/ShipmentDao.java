@@ -28,4 +28,5 @@ public interface ShipmentDao
 //============================================================================
 	//====== Delete in foreign key check process ==================//
 	public ShipmentModel getServiceId(int serviceid);
+	public ShipmentModel getCustomerId(int scustomerid,int ccustomerid);
 }

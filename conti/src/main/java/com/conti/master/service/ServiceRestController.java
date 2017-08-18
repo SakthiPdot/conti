@@ -220,15 +220,13 @@ public class ServiceRestController {
 				String username = userInformation.getUserName();
 				int user_id = Integer.parseInt(userInformation.getUserId());
 				try {
-					  
-					System.out.println("Price Settings Value"+priceSetting);
-					System.out.println("Shipment Settings Value"+shipmentModel);
+				
 						 if(serviceModel == null ) {
 							 loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
 							 return new ResponseEntity<String> (HttpStatus.NOT_FOUND);
 			            } else {
 			            	if(  priceSetting == null && shipmentModel == null){
-			            		System.out.println("Price Settings");
+			            		
 			            		Date date = new Date();
 				            	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				            	
@@ -243,7 +241,7 @@ public class ServiceRestController {
 				            	return new ResponseEntity<String> (HttpStatus.OK);
 				            	
 			            	} else {
-			            		System.out.println("WWWWWWWWWWWWWWWWWWWW");
+			            		
 			            		loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
 			            		 return new ResponseEntity<String> ("already referred pricesetttings",HttpStatus.IM_USED);	
 			            	}

@@ -359,14 +359,19 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 												
 						CustomerService.deleteCustomer(self.customer.customer_id)
 						.then(
-								function (customer) {
-									var index = self.customers.indexOf(customer);
+								function (msg) {
+									var index = self.customers.indexOf(self.customer);
 									self.customers.splice(index,1);
-									self.message =customer.customer_name+ " Customer Deleted..!";
+									self.message =self.customer.customer_name+ " Customer Deleted..!";
 									successAnimate('.success');
 									newOrClose();
 									
-								}, 
+								}, function(refershipment) {
+									self.message =self.customer.customer_name+ " referred in Add Shipment please check";
+									successAnimate('.failure');
+									newOrClose();
+								},
+								
 								function (errResponse) {
 					                console.error('Error while Delete Customer' + errResponse );
 								}

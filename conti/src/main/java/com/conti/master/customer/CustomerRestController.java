@@ -63,6 +63,8 @@ import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
+import com.conti.shipment.add.ShipmentDao;
+import com.conti.shipment.add.ShipmentModel;
 
 @RestController
 public class CustomerRestController 
@@ -80,6 +82,8 @@ public class CustomerRestController
 	private LocationDao locationDao;
 	@Autowired
 	private BranchDao branchDao;
+	@Autowired
+	private ShipmentDao shipmentDao;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
@@ -278,33 +282,43 @@ public class CustomerRestController
 		
 		/* ------------------------- Delete Customer begin ------------------------------------- */
 		@RequestMapping(value = "delete_customer/{id}", method = RequestMethod.DELETE)
-		public ResponseEntity<CustomerModel> deleteCustomer(@PathVariable ("id") int id, HttpServletRequest request) {
+		public ResponseEntity<String> deleteCustomer(@PathVariable ("id") int id, HttpServletRequest request) {
 			CustomerModel customerModel = customerDao.getCustomerbyId(id);
+			ShipmentModel shipmentModel = shipmentDao.getCustomerId(id, id);
 			userInformation = new UserInformation(request);
 			String username = userInformation.getUserName();
 			int user_id = Integer.parseInt(userInformation.getUserId());
 			try {
-				
+				System.out.println("Shipment Values "+shipmentModel);
 				if(customerModel == null) {
 					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
-					return new ResponseEntity<CustomerModel>(HttpStatus.NOT_FOUND);
+					return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 				} else {
 					
-					Date date = new Date();
-					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+					if(shipmentModel == null) {
+						System.out.println("hddddddddddddddd");
+						Date date = new Date();
+						DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+						
+						customerModel.setUpdated_by(user_id);
+						customerModel.setUpdated_datetime(dateFormat.format(date));
+						customerModel.setActive("N");
+						customerModel.setObsolete("Y");
+						
+						customerDao.saveOrUpdate(customerModel);
+						loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
+						return new ResponseEntity<String> (HttpStatus.OK);
 					
-					customerModel.setUpdated_by(user_id);
-					customerModel.setUpdated_datetime(dateFormat.format(date));
-					customerModel.setActive("N");
-					customerModel.setObsolete("Y");
+					} else {
+						System.out.println("else ========================");
+						loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
+						return new ResponseEntity<String> ("referred in shipment",HttpStatus.IM_USED);
+					}
 					
-					customerDao.saveOrUpdate(customerModel);
-					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
-					return new ResponseEntity<CustomerModel> (customerModel,HttpStatus.OK);
-				}
+					}
 			} catch (Exception exception) {
 				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, exception);
-				return new ResponseEntity<CustomerModel> (HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<String> (HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
 		/* ------------------------- Delete Customer end ------------------------------------- */
