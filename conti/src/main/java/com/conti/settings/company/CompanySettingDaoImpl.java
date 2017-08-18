@@ -50,5 +50,17 @@ public class CompanySettingDaoImpl implements CompanySettingDAO {
 		}
 		return null;
 	}
+	//===== Referred Delete Process in Foreign key =========//
+	@Override
+	@Transactional
+	public Company getLocationId(int locationid) {
+		@SuppressWarnings("unchecked")
+		List<Company> getLocationid = sessionFactory.getCurrentSession()
+				.createQuery("from Company where location_id="+locationid).list();
+		if(getLocationid != null && !getLocationid.isEmpty()){
+			return getLocationid.get(0);
+		}
+		return null;
+	}
 
 }

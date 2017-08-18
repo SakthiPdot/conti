@@ -2,8 +2,6 @@ package com.conti.master.employee;
 
 import java.util.List;
 
-import com.conti.master.location.Location;
-import com.conti.setting.usercontrol.User;
 
 
 
@@ -38,5 +36,8 @@ public interface EmployeeDao {
 	public int find_record_countforSA();
 	public int find_record_count();
 	public List<EmployeeMaster> searchbyEmployee(String searchkey);
+	
+	//===== Referred Delete Process in Foreign key =========//
+	public EmployeeMaster getLocationId(int locationid);
 	
 }

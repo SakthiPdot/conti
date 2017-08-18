@@ -38,13 +38,20 @@ import org.springframework.web.servlet.ModelAndView;
 import com.conti.address.AddressDao;
 import com.conti.address.AddressModel;
 import com.conti.config.SessionListener;
-import com.conti.master.product.Product;
+import com.conti.master.branch.BranchDao;
+import com.conti.master.branch.BranchModel;
+import com.conti.master.customer.CustomerDao;
+import com.conti.master.customer.CustomerModel;
+import com.conti.master.employee.EmployeeDao;
+import com.conti.master.employee.EmployeeMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
-import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
+import com.conti.shipment.add.ShipmentDao;
+import com.conti.shipment.add.ShipmentModel;
+
 
 /**
  * @Project_Name conti
@@ -61,8 +68,7 @@ public class LocationController {
 
 	final Logger logger = LoggerFactory.getLogger(LocationController.class);
 
-	@Autowired
-	private UsersDao usersDao;
+	
 	
 	@Autowired
 	private AddressDao addressDao;
@@ -72,6 +78,15 @@ public class LocationController {
 	
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
+	@Autowired
+	private ShipmentDao shipmentDao;
+	@Autowired
+	private BranchDao branchDao;
+	@Autowired
+	private CustomerDao customerDao;
+	@Autowired
+	private EmployeeDao employeeDao;
+	
 		
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
@@ -373,15 +388,21 @@ public class LocationController {
 	//=================DELETE LOCATION ID =====================================
 	@RequestMapping(value="/locationDelete/{id}",method=RequestMethod.DELETE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> deleteLocation(@PathVariable("id") long id,
+	public ResponseEntity<String> deleteLocation(@PathVariable("id") long id,
 			HttpServletRequest request){
 		
 		System.out.println("++ delete user "+id);
 		Location locationFromDb=locationDao.getLocationById((int)id);
-		
+		ShipmentModel shipmentModel = shipmentDao.getLocationId((int)id, (int)id);
+		BranchModel branchModel = branchDao.getLocationbyId((int)id);
+		CustomerModel customerModel = customerDao.getLocationId((int)id);
+		EmployeeMaster employeeMaster = employeeDao.getLocationId((int)id);
+		Company company = companySettingDAO.getLocationId((int)id);
 		if(locationFromDb==null){
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
+		
+		
 		
 		//intialize		
 		Date date = new Date();
@@ -395,12 +416,18 @@ public class LocationController {
 		
 		
 		try {
-			locationDao.saveOrUpdate(locationFromDb);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			if(shipmentModel == null && branchModel == null && customerModel == null && employeeMaster == null && company == null) {
+				locationDao.saveOrUpdate(locationFromDb);
+				return new ResponseEntity<String>(HttpStatus.OK);
+			} else {
+				System.out.println("location else ========================");
+				return new ResponseEntity<String>("referred someone table",HttpStatus.IM_USED);
+			}
+			
 		} catch (Exception e) {
 			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
 			e.printStackTrace();
-			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 	}

@@ -12,4 +12,7 @@ public interface CompanySettingDAO {
 	public void saveOrUpdate(Company company);
 	public Company getById(int id);	
 	
+	//===== Referred Delete Process in Foreign key =========//
+	public Company getLocationId(int locationid);
+	
 }
