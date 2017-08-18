@@ -5,13 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
-import com.conti.manifest.*;
-import com.conti.master.branch.BranchModel;
-import com.conti.master.customer.CustomerModel;
 
 /**
  * @Project_Name conti
@@ -227,6 +223,10 @@ public class ManifestDaoImpl implements ManifestDao
 			return listmanifestdetailed;
 			
 		}
+
+
+
+	
 		
 	//------------------------------------------------------------------------------------------
 		
@@ -235,9 +235,19 @@ public class ManifestDaoImpl implements ManifestDao
 		//+++++++++++++++++++++++++++ MANIFEST DETAILED IMPLEMENTATION END +++++++++++++++++++++++++++++++
 		
 		
+		//===== Referred Delete Process in Foreign key =========//	
 		
-		
-		
+		@Override
+		@Transactional
+		public ManifestModel getVehicleId(int vehicleid) {
+			@SuppressWarnings("unchecked")
+			List<ManifestModel> getvehicleId = sessionFactory.getCurrentSession()
+					.createQuery("from ManifestModel where vehicle_number=" +vehicleid).list();
+			if(getvehicleId != null && !getvehicleId.isEmpty()){
+				return getvehicleId.get(0);
+			}
+			return null;
+		}
 		
 		
 		

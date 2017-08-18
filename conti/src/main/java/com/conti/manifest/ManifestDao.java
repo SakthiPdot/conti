@@ -9,8 +9,7 @@ package com.conti.manifest;
  * @Updated_date_time Jun 22, 2017 4:31:53 PM
  */
 
-import com.conti.manifest.*;
-import com.conti.master.branch.BranchModel;
+
 
 import java.util.List;
 public interface ManifestDao 
@@ -41,4 +40,7 @@ public interface ManifestDao
 		public List<ManifestDetailedModel>getAllManifestDetailes(int branch_id);
 		
 	//====================Manifest Detailed DAO declaration End===================
+		
+		//===== Referred Delete Process in Foreign key =========//
+		public ManifestModel getVehicleId(int vehicleid);
 }

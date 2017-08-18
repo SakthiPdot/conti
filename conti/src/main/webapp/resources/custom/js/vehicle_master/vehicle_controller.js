@@ -334,14 +334,16 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 						function (res) {
 							VehicleService.deleteVehicle(self.vehicle.vehicle_id)
 							.then(
-									function (vehicle) {
-										self.message = vehicle.vehicle_regno+ " vehicle reg no Deleted..!";
+									function (msg) {
+										self.message = self.vehicle.vehicle_regno+ " vehicle reg no Deleted..!";
 										successAnimate('.success');
 										newOrClose();
-										var index=self.vehicles.indexOf(vehicle);
+										var index=self.vehicles.indexOf(self.vehicle);
 										self.vehicles.splice(index,1);
-										console.log(vehicle);
-										console.log(self.vehicles);
+										
+									},function(referdata) {
+										self.message = self.vehicle.vehicle_regno+ " referred in Add Manifest..!";
+										successAnimate('.failure');
 									},
 									function (errResponse) {
 										console.error('Error while Delete vehicle' + errResponse);
