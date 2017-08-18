@@ -184,6 +184,7 @@ public class BranchDaoImpl implements BranchDao
 		return listget;
 	}
 
+	//===== Referred Delete Process in Foreign key =========//
 	@Override
 	@Transactional
 	public BranchModel getLocationbyId(int locationid) {

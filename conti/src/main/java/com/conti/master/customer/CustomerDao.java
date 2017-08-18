@@ -28,5 +28,7 @@ public interface CustomerDao
 	public int find_record_countforSA();
 	public int find_record_count();
 	public List<CustomerModel> searchbyMobileno(String searchkey);
+	//===== Referred Delete Process in Foreign key =========//
+	public CustomerModel getLocationId(int locationid);
 	
 }

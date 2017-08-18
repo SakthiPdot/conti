@@ -20,7 +20,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.conti.master.customer.CustomerModel;
-import com.conti.master.employee.EmployeeMaster;
 import com.conti.others.ConstantValues;
 import com.conti.master.customer.CustomerDao;
 
@@ -183,6 +182,19 @@ public class CustomerDaoImpl implements CustomerDao
 		.createQuery("from CustomerModel WHERE obsolete ='N' and customer_mobileno  LIKE '%" + search_key + "%'").list();
 		return listcust;
 		
+	}
+	
+	//===== Referred Delete Process in Foreign key =========//
+	@Override
+	@Transactional
+	public CustomerModel getLocationId(int locationid) {
+		@SuppressWarnings("unchecked")
+		List<CustomerModel> getLocationid = sessionFactory.getCurrentSession()
+				.createQuery("from CustomerModel WHERE obsolete = 'N' and location_id = "+locationid).list();
+		if(getLocationid!= null && !getLocationid.isEmpty()) {
+			return getLocationid.get(0);
+		}
+		return null;
 	}
 	
 	/*------------------------------- Get Customer  by id End -----------------------*/

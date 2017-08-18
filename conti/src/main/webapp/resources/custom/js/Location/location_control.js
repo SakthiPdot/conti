@@ -468,7 +468,12 @@ angular.module('contiApp').controller('locationController'
 							var index=self.Locations.indexOf(self.selectedRow);
 							self.Locations.splice(index,1);
 							console.log(self.Locations);
-						},function(errResponse){
+						},function(refdata) {
+							self.message =locationName+ " referred some one filed..!";
+							successAnimate('.failure');			
+						},
+						
+						function(errResponse){
 							self.message = "Error While Deleting Location ("+locationName+") ..!";
 							successAnimate('.failure');
 						});					

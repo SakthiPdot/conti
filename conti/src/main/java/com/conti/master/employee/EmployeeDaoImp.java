@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.conti.others.ConstantValues;
-import com.conti.setting.usercontrol.User;
+
 
 /**
  * @Project_Name conti
@@ -278,8 +278,22 @@ public class EmployeeDaoImp implements EmployeeDao {
 		return listcust;
 		
 	}
+
 	
 	/*------------------------------- Get Customer  by id End -----------------------*/
+	
+	//===== Referred Delete Process in Foreign key =========//
+	@Override
+	@Transactional
+	public EmployeeMaster getLocationId(int locationid) {
+		@SuppressWarnings("unchecked")
+		List<EmployeeMaster> getLocationId = sessionFactory.getCurrentSession()
+				.createQuery("from EmployeeMaster where obsolete = 'N' and location_id =" +locationid).list();
+		if(getLocationId != null && !getLocationId.isEmpty()){
+			return getLocationId.get(0);
+		}
+		return null;
+	}
 	
 	
 }
