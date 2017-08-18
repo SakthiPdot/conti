@@ -18,6 +18,8 @@ public interface ManifestDao
 	
 	//====================add manifest===================
 			public int fetchLastManifestNo();
+			public int fetchLastManifestNoWithOriginAndDestination(int manifest_origin,int manifest_destination);
+			public ManifestModel getLastManifestModel();			
 			public ManifestModel getManifestByID(int manifestId);
 	//====================Manifest  DAO declaration Start===================
 	

@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
 import com.conti.manifest.*;
+import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerModel;
 
 /**
@@ -40,6 +41,8 @@ public class ManifestDaoImpl implements ManifestDao
 		return listmanifest;
 		
 	}
+	
+	
 
 	@Override
 	@Transactional
@@ -61,6 +64,18 @@ public class ManifestDaoImpl implements ManifestDao
 		Query query=sessionFactory.getCurrentSession().createQuery("select MAX(manifest_number) from ManifestModel WHERE obsolete = 'N'");
 		return (query.uniqueResult()==null)?lastManifestNo:Integer.parseInt(query.uniqueResult().toString());
 	}
+	
+	@Override
+	@Transactional
+	public int fetchLastManifestNoWithOriginAndDestination(int manifest_origin,int manifest_destination){
+		int lastManifestNo=0;
+		Query query=sessionFactory.getCurrentSession().createQuery("select MAX(manifest_number) from ManifestModel WHERE obsolete = 'N'"
+				+ "and manifest_origin ="+manifest_origin
+				+ "and manifest_destination ="+manifest_destination);
+		
+		return (query.uniqueResult()==null)?lastManifestNo:Integer.parseInt(query.uniqueResult().toString());
+	}
+	
 	
 	
 	@Override
@@ -104,6 +119,21 @@ public class ManifestDaoImpl implements ManifestDao
 		return null;
 	}
 	
+	
+	@Override
+	@Transactional
+	public ManifestModel getLastManifestModel() {
+		@SuppressWarnings("unchecked")
+		List<ManifestModel> manifestlist = (List<ManifestModel>) sessionFactory.getCurrentSession()
+				.createQuery("from ManifestModel where obsolete ='N' "
+						+ "ORDER BY IFNULL(created_datetime, created_datetime) DESC")
+				.list();
+		
+		if(manifestlist != null && !manifestlist.isEmpty()) {
+			return manifestlist.get(0);
+		}
+		return null;
+	}
 	/*------------------------------- Get Manifest by id begin -----------------------*/	
 	
 	//---------------Manifest Filter by Filter Condition Start---------------------------
