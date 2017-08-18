@@ -369,7 +369,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 								}, function(refershipment) {
 									self.message =self.customer.customer_name+ " referred in Add Shipment please check";
 									successAnimate('.failure');
-									newOrClose();
+								
 								},
 								
 								function (errResponse) {
