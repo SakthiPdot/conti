@@ -35,7 +35,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
-
+import com.conti.manifest.ManifestDao;
+import com.conti.manifest.ManifestModel;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -49,6 +50,8 @@ public class VehicleRestController {
 	private VehicleDao vehicleDao;
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
+	@Autowired
+	private ManifestDao mDao;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
@@ -201,8 +204,9 @@ public class VehicleRestController {
 //================= Delete Vehicle Function Begin ======================//
 	
 	@RequestMapping(value = "delete_vehicle/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<VehicleMaster> deleteVehicle(@PathVariable ("id") int id, HttpServletRequest request) {
+	public ResponseEntity<String> deleteVehicle(@PathVariable ("id") int id, HttpServletRequest request) {
 		VehicleMaster vehicleModel = vehicleDao.getVehiclebyId(id);
+		ManifestModel manifestModel = mDao.getVehicleId(id);
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
 		int user_id = Integer.parseInt(userInformation.getUserId());
@@ -210,26 +214,32 @@ public class VehicleRestController {
 			  
 				 if(vehicleModel == null) {
 					 loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
-					 return new ResponseEntity<VehicleMaster> (HttpStatus.NOT_FOUND);
+					 return new ResponseEntity<String> (HttpStatus.NOT_FOUND);
 	            } else {
 	            	
-	            	Date date = new Date();
-	            	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	            	if(manifestModel == null ) {
+	            		Date date = new Date();
+		            	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		            	
+		            	vehicleModel.setUpdated_by(user_id);
+		            	vehicleModel.setUpdated_datetime(dateFormat.format(date));
+		            	vehicleModel.setActive("N");
+		            	vehicleModel.setObsolete("Y");
+		            	
+		            	
+		                vehicleDao.saveOrUpdate(vehicleModel);
+		            	loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
+		            	return new ResponseEntity<String> (HttpStatus.OK);
+	            	} else {
+	            		loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
+	            		 return new ResponseEntity<String> ("already referred manifest",HttpStatus.IM_USED);	
+	            	}
 	            	
-	            	vehicleModel.setUpdated_by(user_id);
-	            	vehicleModel.setUpdated_datetime(dateFormat.format(date));
-	            	vehicleModel.setActive("N");
-	            	vehicleModel.setObsolete("Y");
-	            	
-	            	
-	                vehicleDao.saveOrUpdate(vehicleModel);
-	            	loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
-	            	return new ResponseEntity<VehicleMaster> (vehicleModel,HttpStatus.OK);
 	            	
 	            }
 		     } catch (Exception exception) {
 		    	 loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, exception);
-		    	 return new ResponseEntity<VehicleMaster> (HttpStatus.INTERNAL_SERVER_ERROR);	
+		    	 return new ResponseEntity<String> (HttpStatus.INTERNAL_SERVER_ERROR);	
 		    	
 		     }
 		}
