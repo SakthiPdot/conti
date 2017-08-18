@@ -248,6 +248,20 @@ public class ManifestDaoImpl implements ManifestDao
 			}
 			return null;
 		}
+
+
+
+		@Override
+		@Transactional
+		public ManifestModel getEmployeeId(int employeeid) {
+			@SuppressWarnings("unchecked")
+			List<ManifestModel> getemployeeId = sessionFactory.getCurrentSession()
+					.createQuery("from ManifestModel where driver_name="+employeeid).list();
+			if(getemployeeId != null && !getemployeeId.isEmpty()){
+				return getemployeeId.get(0);
+			}
+			return null;
+		}
 		
 		
 		
