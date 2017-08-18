@@ -212,6 +212,21 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	}
 
 
+
+
+	@Override
+	@Transactional
+	public ShipmentModel getLocationId(int slocationid,int clocationid) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> getLocationid = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where obsolete = 'N' and sendercustomer_location_id = "+slocationid+" OR consigneecustomer_location_id = '"+clocationid+"'").list();
+		if(getLocationid!= null && !getLocationid.isEmpty()){
+			return getLocationid.get(0);
+		}
+		return null;
+	}
+
+
 	
 	
 }
