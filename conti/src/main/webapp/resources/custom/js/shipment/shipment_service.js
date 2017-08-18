@@ -28,7 +28,8 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	    		headers : getCsrfHeader()
 	    	})
 	    	.then(
-	    			function (response) {    				
+	    			function (response) {  
+	    				console.log(response);	
 	    				deferred.resolve(response.data);
 	    			},
 	    			function (errResponse) {

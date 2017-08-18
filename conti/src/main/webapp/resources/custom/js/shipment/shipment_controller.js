@@ -8,6 +8,12 @@
  * @Updated_date_time Jun 27, 2017 03:12:17 PM
  */
 
+function bill_open(lrno){
+	valid = true;
+	window.open("shipment_bill?lrno="+lrno, '_blank');
+	
+	/*window.location.href = "shipment_bill?lrno="+lrno;*/
+}
 
 contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout', 'ShipmentService', 'priceSettingService', 'BranchService', 'CompanySettingService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,  ShipmentService, priceSettingService, BranchService, CompanySettingService, ConfirmDialogService){
 	
@@ -603,12 +609,14 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//------------------------- Create new shipment begin --------------------------------------------//
     function createShipment(shipment){
-    	
     	ShipmentService.createShipment(shipment)
             .then(
-            		function () {
-                        self.message = " shipment created..!";
-            			successAnimate('.success');            			
+            		function (lrno) {
+            			
+                        self.message = " shipment created..! Shipment LR No. is "+lrno;
+            			successAnimate('.success');         
+            			bill_open(lrno);
+            			
             		},
            
             function(errResponse){
@@ -658,7 +666,12 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 										 	    		
 								createShipment(self.shipment);  
 				 	        	
+								
 								reset();
+								
+								
+								
+								
 				 	        	
 							}
 						);
@@ -670,14 +683,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 
 	//----------------------------------------------------------------- ADD SHIPMENT SUBMIT END------------------------------------	
-	
-	
-	//-------------------------------- SHIPMENT BILL OPEN BEGIN
-	
-	self.shipment_bill_open = function () {
-		bill_open('.shipment_bill'); 
-	}
-	
-	//-------------------------------- SHIPEMTN BILL OPEN END
+
 	
 }]);

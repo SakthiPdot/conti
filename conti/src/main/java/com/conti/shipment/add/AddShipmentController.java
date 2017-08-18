@@ -1,6 +1,7 @@
 package com.conti.shipment.add;
 
 
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +28,8 @@ import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.SendMailSMS;
 import com.conti.others.UserInformation;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 
 /**
  * @Project_Name conti
@@ -45,6 +49,9 @@ public class AddShipmentController {
 	private ShipmentDao shipmentDao;
 	@Autowired
 	private CustomerDao customerDao;
+	@Autowired
+	private CompanySettingDAO companySettingDAO;
+	
 	@Autowired
 	private SendMailSMS sendMailSMS;
 	Loggerconf loggerconf = new Loggerconf();	
@@ -82,7 +89,7 @@ public class AddShipmentController {
 	//--------------------------------- Create new shipment begin
 	
 	@RequestMapping(value = "/create_shipment", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> createShipment (@RequestBody ShipmentModel shipment,  HttpServletRequest request) {
+	public ResponseEntity<String> createShipment (@RequestBody ShipmentModel shipment,  HttpServletRequest request) {
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
 		int user_id = Integer.parseInt(userInformation.getUserId());
@@ -162,13 +169,12 @@ public class AddShipmentController {
 			String mobileno = Long.toString(shipment.getSender_customer().getCustomer_mobileno());
 			String sms_respone = sendMailSMS.send_SMS(mobileno, message);*/
 			
-			
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
-			return new ResponseEntity<Void> (HttpStatus.CREATED);
+			return new ResponseEntity<String> (Integer.toString(lrno),HttpStatus.CREATED);
 			
 		} catch ( Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
-			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
+			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		
 		
@@ -200,7 +206,24 @@ public class AddShipmentController {
 		
 		try
 		{
-						
+			Company company = companySettingDAO.getById(1);	
+			String base64DataString ="";
+			if(company!=null && company.getCompany_logo()!=null){
+				byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+				try {
+					 base64DataString = new String(encodeBase64 , "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+				}		
+			}else{
+				base64DataString = ConstantValues.NO_IMAGE;	
+			}
+			BranchModel branch = brandhDao.getBranchbyId(branch_id);
+			model.addObject("branch", branch);
+			ShipmentModel shipment = shipmentDao.getshipmentby_lrno(lrno);
+			model.addObject("company",company);
+			model.addObject("image",base64DataString);
+			model.addObject("shipment", shipment);
 			model.addObject("lrno", lrno);
 			model.addObject("title", "Add Shipment");
 			model.setViewName("Shipment/shipment_bill");
