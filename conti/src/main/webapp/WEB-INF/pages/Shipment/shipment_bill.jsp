@@ -49,17 +49,19 @@
 		  margin: 0;
 		}
 		@media print {
-		  html, body {
+		  #wrapper{
 		    width: 210mm;
 		    height: 297mm;
 		  }
+		  .non-print {
+		  	display: none;
+		  }
+		  
     	.tbl_header {
     		margin : 0 auto;
     		table-layout: fixed; 
     		/* width: 50%; */
     		
-    		 
-   			
     	}
     	.tbl_header tr td {
     		padding : 15px;
@@ -70,8 +72,6 @@
     		table-layout: fixed; 
     		/* width : 50%; */
     		
-    		
-    		
     	}
     	.tbl_detailed tr th {
     		padding : 15px;
@@ -79,6 +79,24 @@
     		
     	}
     	.tbl_detailed tr td {
+    		padding : 15px;
+    		word-wrap: break-word;
+    	}
+    	
+    	
+    	
+    	.tbl_customer {
+    		margin : 0 auto;
+    		table-layout: fixed; 
+    		/* width : 50%; */
+    		
+    	}
+    	.tbl_customer tr th {
+    		padding : 15px;
+    		word-wrap: break-word;
+    		
+    	}
+    	.tbl_customer tr td {
     		padding : 15px;
     		word-wrap: break-word;
     	}
@@ -94,7 +112,7 @@
 <body style="overflow-x:hidden;">
  	
     <div id="wrapper"> 
-   	 
+   	 <div id="editor"></div>
            <div class="row">
     		<div class="col-lg-12 col-md-12">
     			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style = "padding: 25px;">
@@ -128,12 +146,14 @@
 								Date : ${shipment.shipment_date}
     						</td>
     					</tr>
+    				</table>
+    				<table border = "1" class="tbl_customer table table-striped table-bordered table-hover">
     					<tr>
-    						<th class = "text-center th_background" colspan = "2"> From </th>
-    						<th class = "text-center th_background" > To </th>
+    						<th class = "text-center th_background"> From </th>
+    						<th class = "text-center th_background"> To </th>
     					</tr>
     					<tr>
-							<td colspan = "2">
+							<td>
 								Name : ${shipment.sender_customer.customer_name} <br/>
 								Address : ${shipment.sender_customer.customer_addressline1},
 											${shipment.sender_customer.customer_addressline2},
@@ -239,7 +259,7 @@
 	    							<tfoot>
 	    								<tr>
 	    									<th colspan = "8">
-	    										Amount in words : 
+	    										Amount in words : ${currency}
 	    									</th>
 	    									<th>
 	    										Total :
@@ -274,13 +294,29 @@
     		</div>
     		</div>
     	 	  
-	
+		
 	</div>	
+	
+	<div class = "row non-print">
+		<div class = "col-md-12">
+			<div class ="col-md-6"></div>
+			<div class ="col-md-6">
+				
+					<button type="button" class="btn btn-success pull-right" onClick = "window.print()"><i class="fa fa-print" aria-hidden="true"></i></button>
+								
+					<button type="button" id="pdf" class="btn btn-success pull-right"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+					
+
+			</div>
+		</div>
+	</div>
+	
     <!-- jQuery Js -->
     <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>
-    
+
     <!-- Bootstrap Js -->
      <script src="resources/built-in/assets/js/bootstrap.min.js"></script> 
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
 	<script src=" resources/custom/js/date-time-picker.min.js" ></script>
     <!-- Metis Menu Js -->
     <script src="resources/built-in/assets/js/jquery.metisMenu.js"></script>
@@ -308,6 +344,7 @@
   <script src="resources/custom/js/custom.js"></script>
   <script src="resources/custom/js/confirmDialog.js"></script>   
   <script type="text/javascript" src="resources/custom/js/validation.js"></script>
+  
   
 </body>
 

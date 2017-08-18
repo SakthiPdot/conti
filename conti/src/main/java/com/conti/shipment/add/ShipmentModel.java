@@ -40,7 +40,7 @@ public class ShipmentModel {
 	String shipment_date, pay_mode, bill_to, status, description, 
 			sendercustomer_address1, sendercustomer_address2, reference_invoice_no,
 			consigneecustomer_address1, consigneecustomer_address2, taxin_payable,
-			created_datetime, updated_datetime, obsolete;
+			created_datetime, updated_datetime, obsolete, lrno_prefix;
 	
 	float shipment_value, chargeable_weight, delivery_charge, handling_charge,
 	total_charges, cgst, igst, sgst, discount_amount, discount_percentage, tax;
@@ -373,8 +373,16 @@ public class ShipmentModel {
 		this.tax = tax;
 	}
 	
+	@Column(name  = "lrno_prefix")
+	public String getLrno_prefix() {
+		return lrno_prefix;
+	}
+	public void setLrno_prefix(String lrno_prefix) {
+		this.lrno_prefix = lrno_prefix;
+	}
 	
 	
+	 
 	
 	
 }
