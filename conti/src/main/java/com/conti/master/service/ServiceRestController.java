@@ -40,6 +40,8 @@ import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 import com.conti.settings.price.PriceSetting;
 import com.conti.settings.price.PriceSettingDao;
+import com.conti.shipment.add.ShipmentDao;
+import com.conti.shipment.add.ShipmentModel;
 
 @RestController
 public class ServiceRestController {
@@ -50,6 +52,8 @@ public class ServiceRestController {
 	private CompanySettingDAO companySettingDAO;
 	@Autowired
 	private PriceSettingDao psDao;
+	@Autowired
+	private ShipmentDao shipmentDao;
 	
 	
 	Loggerconf loggerconf = new Loggerconf();
@@ -209,7 +213,7 @@ public class ServiceRestController {
 			public ResponseEntity<String> deleteService(@PathVariable ("id") int id, HttpServletRequest request) {
 				ServiceMaster serviceModel = serviceDao.getServiceId(id);
 				PriceSetting priceSetting=psDao.getServiceById(id);
-				
+				ShipmentModel shipmentModel = shipmentDao.getServiceId(id);
 				
 				
 				userInformation = new UserInformation(request);
@@ -221,7 +225,7 @@ public class ServiceRestController {
 							 loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
 							 return new ResponseEntity<String> (HttpStatus.NOT_FOUND);
 			            } else {
-			            	if(priceSetting == null){
+			            	if(priceSetting == null || shipmentModel == null){
 			            		System.out.println("OOOOOOOOOOOOOPPPPPPPPPPPP");
 			            		Date date = new Date();
 				            	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

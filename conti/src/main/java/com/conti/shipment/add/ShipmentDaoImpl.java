@@ -175,7 +175,25 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 
+
+
+
+	
 //==============================================================================================
+	
+	//====== Delete in foreign key check process ==================//
+	@Override
+	@Transactional
+	public ShipmentModel getServiceId(int serviceid) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> getServiceList = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where obsolete = 'N' and service_id = "+serviceid).list();
+		if(getServiceList!= null && !getServiceList.isEmpty()){
+			System.out.println(getServiceList.get(0));
+			return getServiceList.get(0);
+		}
+		return null;
+	}
 
 
 	
