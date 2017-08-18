@@ -71,7 +71,8 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
-						+ "and  lr_number LIKE '%"+searchString+ "%' ")
+						+ "and  lr_number LIKE '%"+searchString+ "%'"
+								+ "and  status in ('Booked','Missing') ")
 				.setMaxResults(100).list();
 		
 		return listShipment;
@@ -111,7 +112,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		// TODO Auto-generated method stub
 		int lrno = 0;
 		Query query = sessionFactory.getCurrentSession()
-				.createQuery("Select MAX(lr_number) from ShipmentModel WHERE senderbranch_id = " + branch_id);
+				.createQuery("Select MAX(lr_number) from ShipmentModel WHERE sender_branch.branch_id= " + branch_id);
 		if(query.uniqueResult() == null) {
 			return lrno;
 		} else {
