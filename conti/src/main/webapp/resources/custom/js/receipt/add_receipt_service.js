@@ -73,7 +73,7 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 		$http({
 			method:'POST',
 			url:'search_lrnumber',
-			data:searchkey,
+			data:searchkey, 
 			headers:getCsrfHeader()
 		})
 		.then(

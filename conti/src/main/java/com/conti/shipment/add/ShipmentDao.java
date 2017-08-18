@@ -2,7 +2,7 @@ package com.conti.shipment.add;
 
 import java.util.List;
 
-import com.conti.master.location.Location;
+
 
 /**
  * @Project_Name conti
@@ -26,4 +26,6 @@ public interface ShipmentDao
 	public List<ShipmentModel> fetchAllShipment4receipt(int branch_id);
 	public List<ShipmentModel>searchLRnumber(String searchkey);
 //============================================================================
+	//====== Delete in foreign key check process ==================//
+	public ShipmentModel getServiceId(int serviceid);
 }

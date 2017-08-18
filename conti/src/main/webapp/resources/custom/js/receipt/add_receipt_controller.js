@@ -14,7 +14,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	self.receipts=[];
 	self.selected_receipt=[];
 	self.Filterreceipts=[];
-	self.receipts=[];
+
 	self.heading="Manster"
 	self.message=null;
 	self.print=print;
@@ -105,7 +105,13 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	
 	function viewShipment(receipt)
 	{
-		console.log('View shipment function call successfully.............');
+		receipt.fromdate=$('.datepicker1').val();
+		receipt.todate=$('.datepicker2').val();
+		receipt.frombranch=receipt.frombranch.branch_id;
+		receipt.tobranch=receipt.tobranch.branch_id;
+		receipt.paymode=receipt.paymode;
+		receipt.service=receipt.service;
+		console.log(receipt);
 		ReceiptService.viewShipment(receipt)
 		.then(
 				function(receipt)
@@ -122,7 +128,6 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	//---------------------------------------------------------------------------------
 	
 	//-----------------------Receipt select all check box function start-------------------------
-	
 	function receiptSelectAll()
 	{
 		console.log('Call select all receipt '+$scope.pageSize);
@@ -173,7 +178,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	}
 	//------------------------------------------------------------------------------------------------
 		
-	//-----------------------Record count begin-------------------------------------
+	//-----------------------------Record count begin-------------------------------------
 	
 	function findrecord_count()
 	{

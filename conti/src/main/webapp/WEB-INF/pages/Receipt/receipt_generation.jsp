@@ -113,9 +113,9 @@
                 			      
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">To</span>
-                			      		<select class="form-control"  
-                			      		data-ng-model="ctrl.receipt.tobranch" data-ng-model="ctrl.receipt.tobranch">
-                			      			<option value=''>${branch_name}</option>
+                			      		<select class="form-control" data-ng-model="ctrl.receipt.tobranch" 
+                			      		data-ng-options ="branch.branch_name for branch in ctrl.branches">
+                			      			<option value="">${branch_name}</option>
                 			      			
                 			      		</select>
                 			      </div>
@@ -125,7 +125,7 @@
                 			         <div class="col-lg-3 branchclass">
 	                			      		 <span class="paddingtop">From  </span>   	                                       
 	                                          <div class="form-group input-group marginleftrightspace">
-					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.receipt.fromdate"
+					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.fromdate"
 					                           			   data-trigger= "focus"data-toggle="popover" data-placement="top"
 					                            		   data-content="Please select from date"/>
 					                            	 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -156,7 +156,7 @@
                 			            <div class="col-lg-3 branchclass">
                 			      		 <span class="">Payment Mode</span>	                	                                       
                                             <select class="form-control" data-ng-options= "pay for pay in ['Cash','Credit','Check']"
-                                            data-ng-model="ctrl.receipt.payment_mode">
+                                            data-ng-model="ctrl.receipt.paymode">
                                             	<option value=''>--Select--</option>
                                                	
                                             </select>

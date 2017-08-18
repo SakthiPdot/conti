@@ -10,6 +10,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonParser.Feature;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -139,32 +140,35 @@ public class AddReceiptRestController
 		UserInformation userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();
 		JSONObject obj=new JSONObject(receipt);
-		System.out.println("=================================================================="+obj);
 		
-		int frombranchid=(int) obj.getInt("frombranch.branch_id");
-		int tobranchid=(int) obj.getInt("tobranch.branch_id");
+		int frombranchid=obj.getInt("frombranch");
+		int tobranchid=obj.getInt("tobranch");
+		
 		String fromdate=(String) obj.get("fromdate");
 		String todate=(String) obj.get("todate");
+		
 		String servic=(String) obj.get("service");
 		String paymod=(String) obj.get("paymode");	
-		try 
-		{
+//		try 
+//		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			List<ShipmentModel> shipmentModel = shipmentDao.getShipmentByCondition(frombranchid,tobranchid,fromdate,todate,servic,paymod);
 			if(shipmentModel.isEmpty()) 
 			{
+				System.out.println("=====Emtry====================================="+shipmentModel);
 				return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT);
 			}
 			else 
 			{
+				System.out.println("=====Success====================================="+shipmentModel);
 				return new ResponseEntity<List<ShipmentModel>> (shipmentModel, HttpStatus.OK);	
 			}		
-		} 
-		catch (Exception exception) 
-		{			
-			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-			return new ResponseEntity<List<ShipmentModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		//} 
+//		catch (Exception exception) 
+//		{			
+			//loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			//return new ResponseEntity<List<ShipmentModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		//}
 	}
 	//--------------------------------------------------------------------------------------------------------------------------
 	

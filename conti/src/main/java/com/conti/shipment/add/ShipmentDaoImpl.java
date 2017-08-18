@@ -139,15 +139,17 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	//----------------------------------------------Receipt Filter condition start-------------------------------------------------------
 	@Override
 	@Transactional
-	public List<ShipmentModel>getShipmentByCondition(int from,int tobranch,String fromdate,String todate,String service,String paymode)
+	public List<ShipmentModel>getShipmentByCondition(int frombranch,int tobranch,String fromdate,String todate,String service,String paymode)
 	{
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment=(List<ShipmentModel>)sessionFactory.getCurrentSession()
-			.createQuery("from ShipmentModel where obsolete='N' and sender_branch.branch_id="+from
-					+"and consignee_branch.branch_id="+tobranch
-					+"and created_datetime BETWEEN '"+fromdate+"00:00:00'"
-					+"and pay_mode='"+paymode+"'"
-					+"and '"+todate+"23:59:59' and ").list();
+			.createQuery("from ShipmentModel where obsolete='N'"
+		+" and sender_branch.branch_id="+frombranch
+		//+" and consignee_branch.branch_id="+tobranch
+		+" and created_datetime BETWEEN '"+fromdate+" 00:00:00'"
+		+" and '"+todate+" 23:59:59'"
+		+" and pay_mode='"+paymode+"'"
+					).list(); 	 	
 		return listShipment;
 	}
 	//------------------------------------------------------------------------------------------------------------------------------------
@@ -175,7 +177,25 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 
+
+
+
+	
 //==============================================================================================
+	
+	//====== Delete in foreign key check process ==================//
+	@Override
+	@Transactional
+	public ShipmentModel getServiceId(int serviceid) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> getServiceList = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where obsolete = 'N' and service_id = "+serviceid).list();
+		if(getServiceList!= null && !getServiceList.isEmpty()){
+			System.out.println(getServiceList.get(0));
+			return getServiceList.get(0);
+		}
+		return null;
+	}
 
 
 	
