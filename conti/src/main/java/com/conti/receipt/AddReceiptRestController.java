@@ -67,7 +67,9 @@ public class AddReceiptRestController
 	SessionListener sessionListener = new SessionListener();
 	
 	private UserInformation userInformation;
-
+	
+//-----------------------------------------Open Generate Receipt page------------------------------------------------
+	
 	@RequestMapping(value =  "receipt_generate", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
 		
@@ -81,6 +83,8 @@ public class AddReceiptRestController
 		session.setAttribute("userid", userid);
 		BranchModel branchModel=branchDao.getBranchbyId(Integer.parseInt(userinfo.getUserBranchId()));
 		String branch_name=branchModel.getBranch_name();
+		int branch_id=branchModel.getBranch_id();
+		String lr_prefix=branchModel.getLrno_prefix();
 		ModelAndView model = new ModelAndView();
 		try
 		{
@@ -88,6 +92,8 @@ public class AddReceiptRestController
 			
 			model.addObject("title", "Receipt Generation");
 			model.addObject("branch_name",branch_name);
+			model.addObject("branch_id", branch_id);
+			model.addObject("lr_prefix",lr_prefix);
 			model.addObject("branch_id",Integer.parseInt(userinfo.getUserBranchId()));
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Receipt/receipt_generation");
@@ -98,7 +104,7 @@ public class AddReceiptRestController
 		}
 		return model;
 	}
-	//---------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
 	
 	//-----------------------------------Get All Receipt  for default loaded in Add Receipt ----------------------------------
 		
@@ -149,13 +155,13 @@ public class AddReceiptRestController
 		
 		String servic=(String) obj.get("service");
 		String paymod=(String) obj.get("paymode");	
-//		try 
-//		{
+		try 
+		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			List<ShipmentModel> shipmentModel = shipmentDao.getShipmentByCondition(frombranchid,tobranchid,fromdate,todate,servic,paymod);
 			if(shipmentModel.isEmpty()) 
 			{
-				System.out.println("=====Emtry====================================="+shipmentModel);
+				System.out.println("=====Empty====================================="+shipmentModel);
 				return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT);
 			}
 			else 
@@ -163,12 +169,12 @@ public class AddReceiptRestController
 				System.out.println("=====Success====================================="+shipmentModel);
 				return new ResponseEntity<List<ShipmentModel>> (shipmentModel, HttpStatus.OK);	
 			}		
-		//} 
-//		catch (Exception exception) 
-//		{			
-			//loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-			//return new ResponseEntity<List<ShipmentModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
-		//}
+		} 
+		catch (Exception exception) 
+		{			
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<ShipmentModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 	}
 	//--------------------------------------------------------------------------------------------------------------------------
 	

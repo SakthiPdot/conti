@@ -190,9 +190,38 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> getServiceList = sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel where obsolete = 'N' and service_id = "+serviceid).list();
-		if(getServiceList!= null && !getServiceList.isEmpty()){
-			System.out.println(getServiceList.get(0));
+		if(getServiceList!= null && !getServiceList.isEmpty()){			
 			return getServiceList.get(0);
+		}
+		return null;
+	}
+
+
+
+
+	@Override
+	@Transactional
+	public ShipmentModel getCustomerId(int customerid,int ccustomerid) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> getCustomerList = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where obsolete = 'N' and sendercustomer_id = "+customerid+" OR consigneecustomer_id='"+ccustomerid+"'").list();
+		if(getCustomerList!= null && !getCustomerList.isEmpty()){
+			return getCustomerList.get(0);
+		}
+		return null;
+	}
+
+
+
+
+	@Override
+	@Transactional
+	public ShipmentModel getLocationId(int slocationid,int clocationid) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> getLocationid = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where obsolete = 'N' and sendercustomer_location_id = "+slocationid+" OR consigneecustomer_location_id = '"+clocationid+"'").list();
+		if(getLocationid!= null && !getLocationid.isEmpty()){
+			return getLocationid.get(0);
 		}
 		return null;
 	}
