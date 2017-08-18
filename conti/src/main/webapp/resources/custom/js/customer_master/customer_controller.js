@@ -533,11 +533,10 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     
     //-------------------------- Pagination begin -----------------------//
     
-    function pagination() {
-        
-    	$scope.pageSize = $scope.shownoofrec;
-    	//console.log($scope.pageSize);
-		$scope.currentPage = 0;
+    function pagination() 
+    {
+        $scope.pageSize = $scope.shownoofrec;
+    	$scope.currentPage = 0;
 		$scope.totalPages = 0;
 		//$scope.totalItems = Math.ceil(self.Filtercustomers.length/$scope.pageSize);
 		self.Filtercustomers = self.customers;
@@ -564,18 +563,17 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     
     $scope.paginate = function(nextPrevMultiplier) 
     {
-    	$scope.selectall=false;
     	$scope.currentPage += (nextPrevMultiplier * 1);
+    	console.log('current page : '+$scope.currentPage);
     	self.Filtercustomers = self.customers.slice($scope.currentPage*$scope.pageSize);
-    	
-    	
-    	
-    	if(self.Filtercustomers.length == 0) {
+    	if(self.Filtercustomers.length == 0) 
+    	{
     		CustomerService.pagination_byPage($scope.currentPage)
     		.then(
     				function (filterCust) 
     				{
-    					if ( filterCust.length == 0 ) {
+    					if ( filterCust.length == 0 ) 
+    					{
     						$scope.nextDisabled = true;
     					} else if ( filterCust.length < 10 ) {
     						self.Filtercustomers = filterCust;
@@ -594,8 +592,9 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     	} 	
     	
     	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
-    	
-    	if(self.Filtercustomers.length < $scope.pageSize) {
+    	console.log('Filter customer length : '+self.Filtercustomers.length+' and pageSize : '+$scope.pageSize);
+    	if(self.Filtercustomers.length < $scope.pageSize) 
+    	{
     		console.log(self.Filtercustomers.length);
     		$scope.nextDisabled = true;
     	}
@@ -611,8 +610,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     	}
     	
     }
-    
- //-------------------------- Pagnation end -----------------------//	
+ //--------------------------------------------------------------------------------------//	
     
   //---------------------------- Pagination begin ---------------------------------------//
     $scope.firstlastPaginate = function (page) 
@@ -647,12 +645,11 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
         				}
         			);
     		}
-    		
     	}
     	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
     }
 
-      //-------------------------- Pagnation end -----------------------//	
+      //-----------------------------------------------------------------//	
     
     
 //-------------------------------- Show no of record begin ----------------------------------------//
@@ -671,9 +668,10 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     		//$scope.previouseDisabled=false;
     		$scope.nextDisabled=false;
     	}
-    		
+    	fetchAllCustomers();
+    	    		
     }
-    //-------------------------------- Show no of record end ----------------------------------------//  
+//-------------------------------- Show no of record end ----------------------------------------//  
     
     
     
@@ -720,31 +718,27 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 					 function(item){  
 						 return searchUtil(item,searchkey); 
 					 });
-				
-    		}
+			}
     	
     }
     
-    
-    
-    
     function searchUtil(item,toSearch)
 	{
-    	
-		var success = false;
-		
+    	var success = false;
 		if ((item.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.customer_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
 			//	|| (item.customer_email.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)) {
-				||((String(item.customer_mobileno)).indexOf(toSearch) > -1 )
-			){
+				||((String(item.customer_mobileno)).indexOf(toSearch) > -1 ))
+			
+		{
 			success = true;
-		} else {
+		} 
+		else
+		{
 			success = false;
 		}
-		
 		return success;
 	}
     //---------------------------- Register search end ---------------------------------------//

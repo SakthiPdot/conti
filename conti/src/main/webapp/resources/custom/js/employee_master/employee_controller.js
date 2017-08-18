@@ -765,6 +765,8 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     		//$scope.previouseDisabled=false;
     		$scope.nextDisabled=false;
     	}
+    	fetchAllEmployees();
+    	console.log("ss");
     }
     //-------------------------------- Show no of record end ----------------------------------------//  
     

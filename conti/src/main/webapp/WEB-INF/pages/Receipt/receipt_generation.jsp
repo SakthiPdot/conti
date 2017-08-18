@@ -113,9 +113,9 @@
                 			      
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">To</span>
-                			      		<select class="form-control"  
-                			      		data-ng-model="ctrl.receipt.tobranch" data-ng-model="ctrl.receipt.tobranch">
-                			      			<option value=''>${branch_name}</option>
+                			      		<select class="form-control" data-ng-model="ctrl.receipt.tobranch" 
+                			      		data-ng-options ="branch.branch_name for branch in ctrl.branches">
+                			      			<option value="">${branch_name}</option>
                 			      			
                 			      		</select>
                 			      </div>
@@ -135,7 +135,7 @@
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="paddingtop">To</span>
                 			      		 <div class="form-group input-group marginleftrightspace">
-				                                <input type="text" class="form-control datepicker2" data-ng-model="ctrl.todate"
+				                                <input type="text" class="form-control datepicker2" data-ng-model="ctrl.receipt.todate"
 													  data-trigger= "focus"data-toggle="popover" data-placement="top"
 					                            		data-content="Please select to date"/>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
@@ -156,7 +156,7 @@
                 			            <div class="col-lg-3 branchclass">
                 			      		 <span class="">Payment Mode</span>	                	                                       
                                             <select class="form-control" data-ng-options= "pay for pay in ['Cash','Credit','Check']"
-                                            data-ng-model="ctrl.receipt.payment_mode">
+                                            data-ng-model="ctrl.receipt.paymode">
                                             	<option value=''>--Select--</option>
                                                	
                                             </select>
@@ -166,27 +166,24 @@
                 			            <div class="col-lg-4 branchclass">
                 			      		   <button class="btn btn-primary" data-ng-click="ctrl.viewShipment(ctrl.receipt)"> View Shipment</button>
                                          </div>
-                			        
                 			       </div>
-                			      
                 			</div>
                 		</div>
                 		</div>
                 	</div>
                 </div>
                 
-                
-                
-                
-                <div class="row">
+               <div class="row">
                 	<div class="col-lg-12">
                 		<div class="col-lg-12 ">                		
                 		<div class="panel panel-default">
                 			<div class="panel-body">
                 			     <div class="col-lg-12 noPaddingLeft"> 
                 			       		<div class="col-lg-3 branchclass">
-                			      		 <span class="text-padding boldletter">Search</span>	                	                                       
-                                            <input type="text" class="form-control searchbar" placeholder="LR Number">                                           
+                			      		 <span class="text-padding boldletter" >Search</span>	                	                                       
+                                            <input type="text" class="form-control searchbar" placeholder="LR Number"
+                                            data-ng-model="ctrl.receipt.search" data-ng-keyup="ctrl.registerSearch(ctrl.receipt.search)">                                           
+                                       
                                         </div>
                 			      </div>
                 			</div>

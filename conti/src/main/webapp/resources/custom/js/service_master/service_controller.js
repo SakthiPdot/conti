@@ -290,19 +290,26 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 								
 								ServiceService.deleteService(self.service.service_id)
 								.then(
-										function (service) {
-											self.message = service.service_name+ " service Deleted..!";
+										function (msg) {
+										
+											self.message = self.service.service_name+ " service Deleted..!";
 											successAnimate('.success');
 											newOrClose();
-											var index=self.services.indexOf(service);
+											var index=self.services.indexOf(self.service);
 											self.services.splice(index,1);
-											console.log(service);
-											console.log(self.services);											
+										
+																				
+										},function(pricesettting) {
+											self.message = self.service.service_name+ " Already referred in Price Settings please check";
+											successAnimate('.success');
 										},
+										
 										function (errResponse) {
 											console.error('Error while Delete service' + errResponse);
 										}
 								      );
+								
+								
 							}
 					     );
 			}

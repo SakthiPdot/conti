@@ -333,7 +333,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 																<select name="shownoofrec" data-ng-model="shownoofrec"
 																	data-ng-options="noofrec for noofrec in [10, 15, 25, 50, 100]"
 																	class="form-control"
-																	data-ng-click="proctrl.shownoofRecord()">
+																	data-ng-change="proctrl.shownoofRecord()">
 
 																</select>
 															</div>

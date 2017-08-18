@@ -14,13 +14,16 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	self.receipts=[];
 	self.selected_receipt=[];
 	self.Filterreceipts=[];
-	self.receipts=[];
+
 	self.heading="Manster"
 	self.message=null;
 	self.print=print;
+	self.viewShipment=viewShipment;
 	self.receiptSelect=receiptSelect;
+	self.registerSearch=registerSearch;
 	self.receiptSelectAll=receiptSelectAll;
 	self.shownoofRecord=shownoofRecord;
+
 	$scope.shownoofrec=50;
 	
 	self.receiptSelectAll=receiptSelectAll;
@@ -63,7 +66,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		console.log("get all branches")
 		BranchService.fetchAllBranches()
 		.then(
-				function (branches) 
+				function(branches) 
 				{
 					self.branches = branches;
 					pagination();
@@ -76,7 +79,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			);
 	}
 	
-	//-------------------------- Fetch All Branch end ---------------------//
+	//-------------------------- Fetch All Branch end -----------------------//
 	
 	//---------------------------Fetch All Receipt details start----------------------
 	function fetchAllReceipt_add()
@@ -95,10 +98,36 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 				}
 			);
 	}
-	//--------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
-	//-----------------------Receipt select all check box function start-------------------------
 	
+	//--------------------View shipment filter condition-------------------------------
+	
+	function viewShipment(receipt)
+	{
+		receipt.fromdate=$('.datepicker1').val();
+		receipt.todate=$('.datepicker2').val();
+		receipt.frombranch=receipt.frombranch.branch_id;
+		receipt.tobranch=receipt.tobranch.branch_id;
+		receipt.paymode=receipt.paymode;
+		receipt.service=receipt.service;
+		console.log(receipt);
+		ReceiptService.viewShipment(receipt)
+		.then(
+				function(receipt)
+				{
+					self.Filterreceipts=receipt;
+					console.log('Filter shipments details '+self.Filterreceipts);
+				},
+				function(errResponse)
+				{
+					console.log('Error while fetching Receipt ....');
+				}
+			);
+	}
+	//---------------------------------------------------------------------------------
+	
+	//-----------------------Receipt select all check box function start-------------------------
 	function receiptSelectAll()
 	{
 		console.log('Call select all receipt '+$scope.pageSize);
@@ -112,7 +141,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 					}
 			}
 	}
-	//---------------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------------
 	
 	//-----------------------------Receipt record select on Register------------------------------
 	
@@ -129,7 +158,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			self.selected_receipt.splice(index,1);
 		}
 	}
-	//---------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------
 
 	//--------------------------------------Show number of records-------------------------------------
 	
@@ -148,23 +177,8 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		}
 	}
 	//------------------------------------------------------------------------------------------------
-	
-	//----------------------------------------Register Search-----------------------------------------
-	
-	function registerSearch(searchkey)
-	{
-		if(searchkey.length==0)
-		{
-			self.Filterreceipts=self.receipts;
-		}
-		else if(searchkey.length>3)
-		{
-			Branch
-		}
-	}
-	//----------------------------------------------------------------------------------------------------
-	
-	//-----------------------Record count begin-------------------------------------
+		
+	//-----------------------------Record count begin-------------------------------------
 	
 	function findrecord_count()
 	{
@@ -299,7 +313,56 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		}
 	}
 	//-----------------------------------------------------------------------------------------------
+
+	//------------------------------------Register LR number search start----------------------------
 	
+	function registerSearch(searchkey)
+	{
+		if(searchkey.length==0)
+		{
+			self.Filterreceipts=self.receipts;
+		}
+		else if(searchkey.length>3)
+		{
+			ReceiptService.registerSearch(searchkey)
+			.then(
+					function(filterReceipt)
+					{
+						console.log('Search function successfully call');
+						self.Filterreceipts=filterReceipt;
+						console.log(filterReceipt);
+					},
+					function(errResponse)
+					{
+						console.log('Error while fetching branches ');
+					}
+					
+				);
+		}
+		else
+		{
+			self.Filterreceipts=_.filter(self.receipts,
+					function(item)
+					{
+						return searchUtil(item,searchkey);
+					});
+		}
+	}
+	
+	function searchUtil(item,toSearch)
+	{
+		var success=false;
+		if(String(item.lr_number).indexOf(toSearch)>-1)
+		{
+			success=true;
+		}
+		else
+		{
+			success=false;
+		}
+		return success;
+	}
+	//--------------------------------------------------------------------------------------------//
 	
 	}
 ]);

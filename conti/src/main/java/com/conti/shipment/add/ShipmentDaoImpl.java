@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.conti.manifest.ManifestModel;
-import com.conti.master.location.Location;
-
 /**
  * @Project_Name conti
  * @Package_Name com.conti.shipment.add
@@ -120,21 +117,44 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		
 	}
 	
-	//-----------------------Receipt Filter condition start-------------------------------
+	
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
-	public List<ShipmentModel>getShipmentByCondition(int from,int tobranch,String fromdate,String todate,String service,String paymode)
+	public ShipmentModel getshipmentby_lrno(int lrno) {
+		// TODO Auto-generated method stub
+		
+		String hql = "FROM ShipmentModel WHERE obsolete = 'N' and lr_number = " + lrno;
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		List<ShipmentModel> shipmentList = (List<ShipmentModel>)query.list();
+		if ( shipmentList != null && !shipmentList.isEmpty()) {
+			return shipmentList.get(0);
+		}
+		return null;
+	}
+	
+	//========================================4 RECEIPT===========================================
+	
+	//----------------------------------------------Receipt Filter condition start-------------------------------------------------------
+	@Override
+	@Transactional
+	public List<ShipmentModel>getShipmentByCondition(int frombranch,int tobranch,String fromdate,String todate,String service,String paymode)
 	{
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment=(List<ShipmentModel>)sessionFactory.getCurrentSession()
-			.createQuery("from ShipmentModel where obsolete='N' and sender_branch.branch_id="+from
-					+"and consignee_branch.branch_id="+tobranch
-					+"and created_datetime BETWEEN '"+fromdate+"00:00:00'"
-					+"and '"+todate+"23:59:59' and ").list();
+			.createQuery("from ShipmentModel where obsolete='N'"
+		+" and sender_branch.branch_id="+frombranch
+		//+" and consignee_branch.branch_id="+tobranch
+		+" and created_datetime BETWEEN '"+fromdate+" 00:00:00'"
+		+" and '"+todate+" 23:59:59'"
+		+" and pay_mode='"+paymode+"'"
+					).list(); 	 	
 		return listShipment;
 	}
+	//------------------------------------------------------------------------------------------------------------------------------------
 	
-	
+	//--------------------------Fetch all shipment details--------------------------------------
 	@Override
 	@Transactional
 	public List<ShipmentModel> fetchAllShipment4receipt(int branch_id) {
@@ -146,4 +166,38 @@ public class ShipmentDaoImpl implements ShipmentDao {
 						+ " and senderbranch_id = " + branch_id).list();
 		return listShipment;
 	}
+ //----------------------------------------------------------------------------
+	@Override
+	@Transactional
+	public List<ShipmentModel>searchLRnumber(String searchkey)
+	{
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment=(List<ShipmentModel>)sessionFactory.getCurrentSession()
+		.createQuery("from ShipmentModel where obsolete='N' and lr_number like '%"+searchkey+"%'").list();
+		return listShipment;
+	}
+
+
+
+
+	
+//==============================================================================================
+	
+	//====== Delete in foreign key check process ==================//
+	@Override
+	@Transactional
+	public ShipmentModel getServiceId(int serviceid) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> getServiceList = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where obsolete = 'N' and service_id = "+serviceid).list();
+		if(getServiceList!= null && !getServiceList.isEmpty()){
+			System.out.println(getServiceList.get(0));
+			return getServiceList.get(0);
+		}
+		return null;
+	}
+
+
+	
+	
 }

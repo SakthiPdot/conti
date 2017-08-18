@@ -995,6 +995,8 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    		$scope.previouseDisabled = true;
 	    		$scope.nextDisabled = true;
 	    	}
+	    	 fetchAllUsers();
+	    	
 	    	
 	    }
 	    //-------------------------------- Show no of record end ----------------------------------------//  

@@ -10,6 +10,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonParser.Feature;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -129,41 +130,55 @@ public class AddReceiptRestController
 		
 	//-------------------------------------------------------------------------------------------------------------------
 	
-	//----------------------------Add Receipt filter function start-----------------------------
+	//-------------------------------------------Add Receipt filter function start----------------------------------------
 	
 	@RequestMapping( value = "add_receipt_filter", method = RequestMethod.POST)
-	public ResponseEntity<List<ShipmentModel>> addreceiptFilterbycondition(@RequestBody String receipt,HttpServletRequest request) throws JsonProcessingException, IOException 
+	public ResponseEntity<List<ShipmentModel>> addreceiptFilterbycondition(@RequestBody String receipt,HttpServletRequest request) 
+			throws JsonProcessingException, IOException 
 	{
 		HttpSession session = request.getSession();
 		UserInformation userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();
-		
 		JSONObject obj=new JSONObject(receipt);
-		 
-		 int frombranchid=(int) obj.get("frombranch");
-		 int tobranchid=(int) obj.get("tobranch");
-		 String fromdate=(String) obj.get("fromdate");
-		 String todate=(String) obj.get("todate");
-		 String servic=(String) obj.get("service");
-		 String paymod=(String) obj.get("paymode");	
-		try 
-		{
+		
+		int frombranchid=obj.getInt("frombranch");
+		int tobranchid=obj.getInt("tobranch");
+		
+		String fromdate=(String) obj.get("fromdate");
+		String todate=(String) obj.get("todate");
+		
+		String servic=(String) obj.get("service");
+		String paymod=(String) obj.get("paymode");	
+//		try 
+//		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			List<ShipmentModel> shipmentModel = shipmentDao.getShipmentByCondition(frombranchid,tobranchid,fromdate,todate,servic,paymod);
 			if(shipmentModel.isEmpty()) 
 			{
+				System.out.println("=====Emtry====================================="+shipmentModel);
 				return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT);
 			}
 			else 
 			{
+				System.out.println("=====Success====================================="+shipmentModel);
 				return new ResponseEntity<List<ShipmentModel>> (shipmentModel, HttpStatus.OK);	
 			}		
-		} 
-		catch (Exception exception) 
-		{			
-			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-			return new ResponseEntity<List<ShipmentModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		//} 
+//		catch (Exception exception) 
+//		{			
+			//loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			//return new ResponseEntity<List<ShipmentModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		//}
 	}
+	//--------------------------------------------------------------------------------------------------------------------------
 	
+	//======================LR Number search start==================================
+	
+	@RequestMapping(value="search_lrnumber", method=RequestMethod.POST)
+	public ResponseEntity<List<ShipmentModel>> receipt_search(@RequestBody String searchkey,HttpServletRequest request)
+	{
+		List<ShipmentModel> shipmentModel=shipmentDao.searchLRnumber(searchkey);
+		System.out.println("++++++++++++++++++++++++++++++++============================================================================== "+shipmentModel.toString());
+		return new ResponseEntity<List<ShipmentModel>>(shipmentModel,HttpStatus.OK);
+	}
 }

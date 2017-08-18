@@ -1128,7 +1128,7 @@
                        <div class="col-lg-12">
                        
                        <div class="col-lg-6">
-                       	<a type="button" class="btn btn-danger pull-right" data-ng-click = "ctrl.shipment_bill_open()"><i class="fa fa-ban"></i>  Clear</a>
+                       	<a type="button" class="btn btn-danger pull-right"><i class="fa fa-ban"></i>  Clear</a>
                        </div>
                        
                        <div class="col-lg-6">

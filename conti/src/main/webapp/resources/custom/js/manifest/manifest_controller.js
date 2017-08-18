@@ -72,19 +72,20 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		}
 	
 	//-------------------------------------------------------------------------------
-		//---------------------Customer Master drawer close begin-----------
+	
+	//---------------------Customer Master drawer close begin-----------
 		
-		function close(title)
-		{
-			ConfirmDialogService.confirmBox(title,
-					BootstrapDialog.TYPE_WARNING, title+" Without Save ..? ", 'btn-warning')
-			.then(function(response){
-				 drawerClose('.drawer');
-					reset();
-			});
-		}
+	function close(title)
+	{
+		ConfirmDialogService.confirmBox(title,
+				BootstrapDialog.TYPE_WARNING, title+" Without Save ..? ", 'btn-warning')
+		.then(function(response){
+			 drawerClose('.drawer');
+				reset();
+		});
+	}
 		
-		//---------------------Customer Master drawer close end-----------
+	//---------------------Customer Master drawer close end-----------
 		
 		
 		//-------------------------- Fetch All Branch begin ---------------------//	
@@ -303,7 +304,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	  
 	  function manifestSelect(manifest)
 	  {
-		  console.log('Call Manifest select function ......')
+		  console.log('Call Manifest select all function')
 		  var index=self.selected_manifest.indexOf(manifest);
 		  if(manifest.select)
 			  {

@@ -11,8 +11,8 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 {
 	var factory={
 			fetchAllReceipt_add:fetchAllReceipt_add,
-			fetchAllReceipt_view:fetchAllReceipt_view,
-			receiptFilter:receiptFilter
+			viewShipment:viewShipment,	
+			registerSearch : registerSearch
 	};
 	
 	return factory;
@@ -36,31 +36,8 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 	}
 	//----------------------------------------------------------------------
 	
-	
-	
-	//=========================================VIEW RECEIT=================================================
-	
-	//--------------------------Fetch All view_receipt_preload-------------------------
-	function fetchAllReceipt_view()
-	{
-		var def=$q.defer();
-		$http.get('view_receipt_preload')
-		.then(
-				function(response)
-				{
-					def.resolve(response.data);
-					console.log(response.data);
-				},function(errResponse)
-				{
-					console.log('Error while fetching Receipt....');
-				}
-			);
-		return def.promise;
-	}
-	//----------------------------------------------------------------------
-	
 	//--------------------Filter All Receipt by filter condition------------------
-	function receiptFilter(receipt)
+	function viewShipment(receipt)
 	{
 		console.log("Service Receipt filter function call");
 		var def=$q.defer();
@@ -68,7 +45,7 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 		$http({
 			method:"POST",
 			url:'add_receipt_filter',
-			data:receipt,
+			data:receipt,	
 			headers:headers
 		}).then(
 				function(response)
@@ -79,7 +56,7 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 				function(errResponse)
 				{
 					console.log('Error while fetching Receipt by filter')
-					deferred.reject(errResponse);
+					def.reject(errResponse);
 				}
 			);
 		return def.promise;
@@ -87,7 +64,33 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 	//-------------------------------------------------------------------------------
 	
 	
-	//===========================================================================================
+	//--------------------------Register Search--------------------------------
 	
+	function registerSearch(searchkey)
+	{
+		console.log("RECEIPT Service Register search function call success....")
+		var def=$q.defer();
+		$http({
+			method:'POST',
+			url:'search_lrnumber',
+			data:searchkey, 
+			headers:getCsrfHeader()
+		})
+		.then(
+				function(response)
+				{
+					def.resolve(response.data);
+					console.log('Service success................');
+					console.log(response.data);
+				},
+				function(errResponse)
+				{
+					def.reject(errResponse);
+					console.log('Service ERROR................');
+				}
+			);
+		return def.primise;
+	}
+	//-------------------------------------------------------------------------
 
 }]);

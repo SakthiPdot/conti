@@ -13,9 +13,9 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	var self=this;
 	self.receipts=[];
 	self.selected_receipt=[];
-	self.Filterreceipts=[];
+	self.Filterreceipts={};
 	self.receipts=[];
-	self.heading="Manster"
+	self.heading="Master"
 	self.message=null;
 	self.print=print;
 	self.receiptSelect=receiptSelect;
@@ -107,13 +107,13 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		console.log('Call select all receipt '+$scope.pageSize);
 		self.selected_receipt=[];
 		for (var i=0; i<$scope.pageSize;i++)
+		{
+			self.Filterreceipts[i].select=$scope.selectallreceipts;
+			if($scope.selectallreceipts)
 			{
-				self.Filterreceipts[i].select=$scope.selectallreceipts;
-				if($scope.selectallreceipts)
-					{
-						self.selected_receipt.push(self.Filterreceipts[i]);
-					}
+				self.selected_receipt.push(self.Filterreceipts[i]);
 			}
+		}
 	}
 	//---------------------------------------------------------------------------------------------
 	

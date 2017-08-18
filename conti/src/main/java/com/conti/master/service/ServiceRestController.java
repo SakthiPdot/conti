@@ -40,6 +40,8 @@ import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 import com.conti.settings.price.PriceSetting;
 import com.conti.settings.price.PriceSettingDao;
+import com.conti.shipment.add.ShipmentDao;
+import com.conti.shipment.add.ShipmentModel;
 
 @RestController
 public class ServiceRestController {
@@ -50,6 +52,8 @@ public class ServiceRestController {
 	private CompanySettingDAO companySettingDAO;
 	@Autowired
 	private PriceSettingDao psDao;
+	@Autowired
+	private ShipmentDao shipmentDao;
 	
 	
 	Loggerconf loggerconf = new Loggerconf();
@@ -206,14 +210,11 @@ public class ServiceRestController {
 	//================= Delete Service Function Begin ======================//
 			
 			@RequestMapping(value = "delete_service/{id}", method = RequestMethod.DELETE)
-			public ResponseEntity<ServiceMaster> deleteService(@PathVariable ("id") int id, HttpServletRequest request) {
+			public ResponseEntity<String> deleteService(@PathVariable ("id") int id, HttpServletRequest request) {
 				ServiceMaster serviceModel = serviceDao.getServiceId(id);
-				/*PriceSetting priceSetting=psDao.getServiceById((int)id);*/
+				PriceSetting priceSetting=psDao.getServiceById(id);
+				ShipmentModel shipmentModel = shipmentDao.getServiceId(id);
 				
-				/*boolean deleteflag = false;
-				if(priceSetting == null){
-					deleteflag = true;
-				}*/
 				
 				userInformation = new UserInformation(request);
 				String username = userInformation.getUserName();
@@ -222,26 +223,33 @@ public class ServiceRestController {
 					  
 						 if(serviceModel == null) {
 							 loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
-							 return new ResponseEntity<ServiceMaster> (HttpStatus.NOT_FOUND);
+							 return new ResponseEntity<String> (HttpStatus.NOT_FOUND);
 			            } else {
-			            	
-			            	Date date = new Date();
-			            	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			            	
-			            	serviceModel.setUpdated_by(user_id);
-			            	serviceModel.setUpdated_datetime(dateFormat.format(date));
-			            	serviceModel.setActive("N");
-			            	serviceModel.setObsolete("Y");
-			            	
-			            	
-			            	serviceDao.saveOrUpdate(serviceModel);
-			            	loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
-			            	return new ResponseEntity<ServiceMaster> (serviceModel,HttpStatus.OK);
+			            	if(priceSetting == null || shipmentModel == null){
+			            		System.out.println("OOOOOOOOOOOOOPPPPPPPPPPPP");
+			            		Date date = new Date();
+				            	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				            	
+				            	serviceModel.setUpdated_by(user_id);
+				            	serviceModel.setUpdated_datetime(dateFormat.format(date));
+				            	serviceModel.setActive("N");
+				            	serviceModel.setObsolete("Y");
+				            	
+				            	
+				            	serviceDao.saveOrUpdate(serviceModel);
+				            	loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
+				            	return new ResponseEntity<String> (HttpStatus.OK);
+				            	
+			            	}else {
+			            		System.out.println("WWWWWWWWWWWWWWWWWWWW");
+			            		loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
+			            		 return new ResponseEntity<String> ("already referred pricesetttings",HttpStatus.IM_USED);	
+			            	}
 			            	
 			            }
 				     } catch (Exception exception) {
 				    	 loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, exception);
-				    	 return new ResponseEntity<ServiceMaster> (HttpStatus.INTERNAL_SERVER_ERROR);	
+				    	 return new ResponseEntity<String> (HttpStatus.INTERNAL_SERVER_ERROR);	
 				    	
 				     }
 				}

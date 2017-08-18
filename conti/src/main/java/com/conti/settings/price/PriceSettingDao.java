@@ -1,9 +1,6 @@
 package com.conti.settings.price;
 
 import java.util.List;
-
-import com.conti.master.location.Location;
-
 /**
  * @Project_Name conti
  * @Package_Name com.conti.settings.price  com.conti.settings.price

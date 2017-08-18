@@ -333,7 +333,8 @@
 							</div>
 								<div class = "row paddingtop">
                                    <div class = "col-md-12"> 
-                                   <select name ="shownoofrec" data-ng-model="shownoofrec" data-ng-options = "noofrec for noofrec in [10, 15, 25, 50, 100]" class ="form-control" data-ng-click="ctrl.shownoofRecord()">
+                                   <select name ="shownoofrec" data-ng-model="shownoofrec" data-ng-options = "noofrec for noofrec in [10, 15, 25, 50, 100]" 
+                                   class ="form-control" data-ng-change="ctrl.shownoofRecord()">
                                    	
                                    </select>
 	                             </div>
@@ -514,17 +515,13 @@
                                			 of {{totalnof_records}} entries
                                		</div>
                                 </div>
-                                
-                                
-                                
-                                <div class="col-lg-6 icons-button">
+                                 <div class="col-lg-6 icons-button">
                                    <div class="pull-right">
-                                   		
-										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                                     											
+                                   		<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                                     											
 										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previous</button>
 										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "paginate(1)">Next</button>
 										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
-                                	</div>
+                                  </div>
                                 </div>
                                 
                             </div>
