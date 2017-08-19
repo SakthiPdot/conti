@@ -289,7 +289,11 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 							fetchAllVehicles();
 							self.message = vehicle.vehicle_regno + " vehicle reg no updated..!";
 							successAnimate('.success');
-							newOrClose();
+							window.setTimeout(function(){
+								newOrClose();
+								reset();
+							},5000);
+							
 						},
 						
 						
@@ -337,13 +341,18 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 									function (msg) {
 										self.message = self.vehicle.vehicle_regno+ " vehicle reg no Deleted..!";
 										successAnimate('.success');
-										newOrClose();
+										window.setTimeout(function(){
+											newOrClose();
+										},5000);										
 										var index=self.vehicles.indexOf(self.vehicle);
 										self.vehicles.splice(index,1);
 										
 									},function(referdata) {
 										self.message = self.vehicle.vehicle_regno+ " referred in Add Manifest..!";
 										successAnimate('.failure');
+										window.setTimeout(function(){
+											newOrClose();
+										},5000);
 									},
 									function (errResponse) {
 										console.error('Error while Delete vehicle' + errResponse);
