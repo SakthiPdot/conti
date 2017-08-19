@@ -51,6 +51,22 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchAllShipment100Manifest(int branch_id) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and sender_branch.branch_id='"+branch_id+"' "
+						+ "and  status in ('Booked','Missing')" )
+				.setMaxResults(100).list();
+		
+		return listShipment;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
@@ -67,16 +83,20 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
-	public List<ShipmentModel> fetchShipmentByLR(String searchString) {
+	public List<ShipmentModel> fetchShipmentByLR(String searchString,int branch_id) {
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
 						+ "and  lr_number LIKE '%"+searchString+ "%'"
+								+ "and sender_branch.branch_id='"+branch_id+"' "
 								+ "and  status in ('Booked','Missing') ")
+				
 				.setMaxResults(100).list();
 		
 		return listShipment;
 	}
+	
+	
 	
 	@Override
 	@Transactional
@@ -93,8 +113,12 @@ public class ShipmentDaoImpl implements ShipmentDao {
 			queryString.append(" AND shipment_date >= '"+fromDate+" 00:00:00'");
 		if(toDate!=null && !toDate.trim().isEmpty())
 			queryString.append(" AND shipment_date <= '"+toDate+" 00:00:00'");
-		if(status!=null && !status.trim().isEmpty())
+		
+		if(status!=null && !status.trim().isEmpty()){
 			queryString.append(" AND status = '"+status+"' ");
+		}else{
+			queryString.append("AND  status in ('Booked','Missing') ");
+		}
 		
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = (List<ShipmentModel>) sessionFactory.getCurrentSession()

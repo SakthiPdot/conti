@@ -27,6 +27,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 	self.clearModalValue=clearModalValue;
 	self.submitManifest=submitManifest;
 
+
 	
 	self.manifest={
 		  "manifest_id": null,
@@ -53,6 +54,10 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		  "shipmentModel":null
 	  };
 	
+
+	
+	
+	
 	function submitManifest(){
 		console.log(self.manifest);
 		$('#myModal').css('z-index','1039');
@@ -63,8 +68,6 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		.then(
 				function(response){
 
-				
-					
 					for(var i=0;i<self.selectedManifest.length;i++){
 						
 						self.manifest.manifestDetailModel[i].shipmentModel=self.selectedManifest[i];
@@ -75,9 +78,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 								  "manifestdetailed_id":null,
 								  "shipmentModel":null
 							  });
-						}
-							
-						
+						}					
 					}
 
 					console.log("result",self.manifest);
@@ -91,9 +92,16 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 					.then(
 							function (response) {	
 								console.log('save success');
+								self.message = "Manifest Created Successfully..!";
+								successAnimate('.success');	
+								valid="true";
+								setTimeout(function(){ location.reload(); }, 4000);								
 							}, 
 							function (errResponse) {
 								console.log('Error while saving record');
+								self.message = "Error While Creating Manifest ..!";
+								successAnimate('.failure');
+								setTimeout(function(){ location.reload(); }, 4000);	
 							});
 		},function(errResponse){
 			$('#myModal').css('z-index','1050');
@@ -110,19 +118,35 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 			if(self.selectAllManifest){
 				self.selectedManifest.push(self.FilteredManifests[i]);
 			}
-		}	
-		
+		}		
 		console.log(self.selectedManifest);
 	}
 	
 	//===================================ClearModalValue====================================
 	function clearModalValue(){
-		$scope.emp_name.originalObject=null;
+		/*$scope.emp_name.originalObject=null;
 		$scope.vehicle_type.originalObject=null;
-		$scope.branch_name.originalObject=null;
+		$scope.branch_name.originalObject=null;*/
+		
+		/*$scope.emp_name=null;
+		$scope.vehicle_type=null;
+		$scope.branch_name=null;*/
+
+
+		self.manifest.driver_name=null;
+		self.manifest.vehicle_number=null;
+		self.manifest.vehicle_destination=null;
+
+
+		$scope.$broadcast('angucomplete-alt:clearInput','vehicleDestinationBranch');
+		$scope.$broadcast('angucomplete-alt:clearInput','vehicle_type');
+		$scope.$broadcast('angucomplete-alt:clearInput','driver_name');
+
+
 		$('#driver_name_value').val("");
 		$('#vehicle_type_value').val("");
 		$('#vehicleDestinationBranch_value').val("");
+		
 	}
 	
 	
@@ -163,6 +187,25 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 			});
 		}
 	}
+	
+	
+	//===================================Total Record Count====================================
+	getUserBranchDetails();
+	
+	function getUserBranchDetails() {				
+		addManifestService.getUserBranchDetails()
+		.then(
+				function (response) {					
+					console.log(response);
+					$scope.branch_name=response.branch_name;
+					self.manifest.branchModel1=JSON.stringify(response);
+					
+				}, 
+				function (errResponse) {
+					console.log(errResponse);
+					console.log('Error while fetching user branch');
+				});
+	}
 
 	//===================================Total Record Count====================================
 	fetchLastManifestNo();
@@ -171,11 +214,12 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		addManifestService.fetchLastManifestNo()
 		.then(
 				function (response) {					
-					$scope.lastManifestNumber=pad(response,4);
+					$scope.lastManifestNumber=response;
 					console.log($scope.lastManifestNumber);
 				}, 
 				function (errResponse) {
-					console.log('Error while fetching record count');
+					console.log(errResponse);
+					console.log('Error while fetching last man no');
 				});
 	}
 	
@@ -192,7 +236,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 	
 	function fetchAllBranches() 
 	{
-		BranchService.fetchAllBranches()
+		BranchService.fetchAllBranchesForManifest()
 			.then(
 					function (response) 
 					{
@@ -228,9 +272,10 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		if(self.manifest.branchModel1==null || typeof self.manifest.branchModel1== undefined)
 		self.fromBranch="";
 		if(self.manifest.branchModel2==null || typeof self.manifest.branchModel2 == undefined)
-		self.toBranch="";
+		self.toBranch=""	;
+		console.log(self.manifest.manifest_status==null);
 		if(self.manifest.manifest_status==null || typeof self.manifest.manifest_status == undefined)
-		self.status="";
+		self.manifest.manifest_status="";
 		
 		var filter={
 				"fromBranch":JSON.parse(self.manifest.branchModel1).branch_id,

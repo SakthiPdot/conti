@@ -55,7 +55,6 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 	<div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{amctrl.message}}</div>
 
 
-<form name="addManifestForm" data-ng-submit="amctrl.submitManifest()">
     <div id="wrapper">
 		<div id="page-wrapper">
 
@@ -70,8 +69,6 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 					</div>
 				</div>
 			</div>
-
-
 			<div class="row">
 				<div class="col-md-12 col-sm-12 col-xs-12">
 					<div class="col-md-6 col-sm-6 col-xs-6 GenLeftRight">
@@ -83,7 +80,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 					<div class="col-md-2"></div>
 
 					<div class="col-md-3 col-sm-4 col-xs-6">
-						<b>Last Manifest No : MNFT {{lastManifestNumber}}</b>
+						<b>Last Manifest No : {{lastManifestNumber}}</b>
 					</div>
 
 				</div>
@@ -102,12 +99,21 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									<div class="col-lg-3 branchclass">
 										<span class="text-padding">From</span> 
 										
-									
-										<select name ="fromBranch"
+						
+										<!-- defaultBranch -->
+										
+										<fieldset data-ng-disabled="true">										
+										<input type="text" class="form-control " data-ng-model="branch_name">
+										</fieldset>
+										
+										
+										<input type="hidden"  data-ng-model="amctrl.manifest.branchModel1">
+										
+										<!-- <select name ="fromBranch"
 											class="form-control" data-ng-model="amctrl.manifest.branchModel1">				
 											 <option value="" data-ng-disabled="true">--Select Branch Name--</option>
 											 <option data-ng-repeat="x in amctrl.branches" value="{{x}}">{{x.branch_name}}</option>
-										</select>
+										</select> -->
 										
 										
 									</div>
@@ -165,10 +171,15 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 											<option>Missing</option>
 										</select>
 									</div>
+									
 									<div class="col-lg-4  col-lg-offset-3 branchclass">
-										<button class="btn btn-primary" type="button"
-										data-ng-click="amctrl.viewShipment()">View Shipment</button>									
-									</div>									
+										<button class="btn btn-primary" name="ViewShipmentButton" type="button"
+										data-ng-init="count=0"
+										data-ng-click="amctrl.viewShipment();count=count+1">View Shipment</button>									
+									</div>		
+									
+									
+							
 								</div>
 									
 							</div>
@@ -213,17 +224,26 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 
 										<div class="col-xs-6 icons-button">
 											<div class="pull-right">
+												<form name="selectManifestForm" method="post" action="shipmentPrint" class="padding-button">
 												<button type="button" class="btn btn-primary">
 													<i class="fa fa-cog fa-lg"></i>
 												</button>
-												<button type="button" class="btn btn-primary">
-													<i class="fa fa-file-excel-o fa-lg"></i>
-												</button>
-												<button type="button" 
+												<!--=============== excel============== -->
+												 <a type="button" onclick="location.href='downloadExcelForAddManifest';valid = true;" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></a>											
+												<!--=============== print ============== -->
+												<button type="submit"  
 												data-ng-disabled="amctrl.selectedManifest.length<1"
 												class="btn btn-primary">
-													<i class="fa fa-print fa-lg"></i>
-												</button>
+													<i class="fa fa-print fa-lg"></i></button>
+													 
+													 <input type="hidden" name="selectedShipment"
+																value="{{amctrl.selectedManifest}}" />
+																
+													 <input type="hidden" name="${_csrf.parameterName}"
+																value="${_csrf.token}" />
+																
+												
+												</form>
 											</div>
 										</div>
 									</div>
@@ -283,7 +303,6 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 							<div class="panel-body">
 								<div class="col-lg-12 noPaddingLeft">
 									<div class="col-lg-5 branchclass"></div>
-
 									<div class="col-lg-2 branchclass">
 										<button class="btn btn-primary btn-lg" 
 										type="button"
@@ -291,10 +310,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										data-toggle="modal" data-ng-click="amctrl.clearModalValue()"
 											data-target="#myModal">Add Manifest</button>
 									</div>
-
 									<div class="col-lg-5 branchclass"></div>
-
-
 								</div>
 							</div>
 						</div>
@@ -409,7 +425,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 
 
 	</div>
-	</form>
+	
     <!-- /. WRAPPER  -->
 
 

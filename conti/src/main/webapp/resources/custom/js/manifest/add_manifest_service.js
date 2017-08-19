@@ -11,7 +11,7 @@
 angular.module('contiApp').factory('addManifestService',['$http','$q',function($http,$q){
 	
 	var factory={
-
+			getUserBranchDetails:getUserBranchDetails,
 			searchLRShipment:searchLRShipment,
 			filterManifest:filterManifest,
 			fetchAllShipment:fetchAllShipment,
@@ -21,6 +21,18 @@ angular.module('contiApp').factory('addManifestService',['$http','$q',function($
 	
 	return factory;
 
+	//=============================get user Branch details====================================
+	function getUserBranchDetails(){
+		var deferred=$q.defer();
+		$http.get('getUserBranchDetails')
+			.then(function(response){
+				deferred.resolve(response.data);
+			},function(errResponse){
+				deferred.reject(errResponse);
+			}
+			);	
+		return deferred.promise;
+	}
 	
 	//=============================save manifest====================================
 	function saveManifest(manifest){
@@ -82,7 +94,7 @@ angular.module('contiApp').factory('addManifestService',['$http','$q',function($
 	//=============================FETCH ALL LOCATION====================================
 	function fetchAllShipment(){
 		var deferred=$q.defer();
-		$http.get('fetchAllShipment')
+		$http.get('fetchAllShipmentManifest')
 			.then(function(response){
 				deferred.resolve(response.data);
 			},function(errResponse){

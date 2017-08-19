@@ -1,8 +1,10 @@
 package com.conti.manifest;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,8 +13,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.binary.Base64;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +28,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.conti.master.branch.BranchModel;
 import com.conti.master.employee.EmployeeDao;
 import com.conti.master.employee.EmployeeMaster;
 import com.conti.master.vehicle.VehicleDao;
@@ -33,6 +40,10 @@ import com.conti.master.vehicle.VehicleMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
+import com.conti.setting.usercontrol.User;
+import com.conti.setting.usercontrol.UsersDao;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 import com.conti.shipment.add.ShipmentDao;
 import com.conti.shipment.add.ShipmentModel;
 
@@ -48,6 +59,10 @@ import com.conti.shipment.add.ShipmentModel;
 @RestController
 public class addManifestRestController {
 
+
+	@Autowired
+	private ShipmentDao shipmentDao;
+	
 	@Autowired
 	private ManifestDao mDao;
 
@@ -60,6 +75,12 @@ public class addManifestRestController {
 	@Autowired
 	private EmployeeDao employeeDao;
 
+	@Autowired
+	private UsersDao userDao;
+	
+	@Autowired
+	private CompanySettingDAO companySettingDAO;
+		
 	
 	Loggerconf loggerconf = new Loggerconf();
 	
@@ -83,12 +104,17 @@ public class addManifestRestController {
 		
 		ModelAndView model = new ModelAndView();
 		
+		User user =userDao.get(Integer.parseInt(userid));
 		
+		ObjectMapper mapper =new ObjectMapper();
+		String defaultBranch=mapper.writeValueAsString(user.getBranchModel());
 		try
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			
+
 			model.addObject("title", "Add Manifest");
+			model.addObject("defaultBranch",defaultBranch);
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Manifest/add_manifest");
 
@@ -99,10 +125,32 @@ public class addManifestRestController {
 		return model;
 	}
 	
+	//=================get user branch=====================================
+	@RequestMapping(value="getUserBranchDetails",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<BranchModel> getUserBranchDetails(HttpServletRequest request){
+		
+		
+		HttpSession session = request.getSession();
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =userDao.get(Integer.parseInt(userid));		
+		return new ResponseEntity<BranchModel> (user.getBranchModel(), HttpStatus.OK);
+		
+		
+		//change to fetch all 	
+	}
+	
 	//======================================search shipment  by lr==========================================
 	@RequestMapping(value = "searchLRShipment", method=RequestMethod.POST)
 	public ResponseEntity<List<ShipmentModel>> searchLRShipment(@RequestBody String searchString, HttpServletRequest request) {				
-			List<ShipmentModel> shipmentList=sDao.fetchShipmentByLR(searchString);		
+			
+
+			UserInformation userinfo = new UserInformation(request);
+			String userid = userinfo.getUserId();
+			User user =userDao.get(Integer.parseInt(userid));
+			
+			List<ShipmentModel> shipmentList=sDao.fetchShipmentByLR(searchString,user.getBranchModel().getBranch_id());	
+			
 			return new ResponseEntity<List<ShipmentModel>> (shipmentList, HttpStatus.OK);		
 	}
 	
@@ -117,19 +165,82 @@ public class addManifestRestController {
 		result.put("Employees",employees);
 		return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);
 	}
+	
+	
+	
 			
+	//=================PRINT=====================================
+	@RequestMapping(value="shipmentPrint",method=RequestMethod.POST)
+	public ModelAndView shipmentPrint(HttpServletRequest request,
+			@RequestParam("selectedShipment") String selectedShipment) throws IOException{
+		
+		ObjectMapper mapper=new ObjectMapper();
+		List<ShipmentModel> ShipmentList=null;
+		
+		try {
+			JSONArray jsonShipmentArray=new JSONArray(selectedShipment);
+			ShipmentList=new ArrayList<ShipmentModel>();
+			
+			for(int i=0;i<jsonShipmentArray.length();i++){
+				JSONObject shipmentObject=jsonShipmentArray.getJSONObject(i);
+				ShipmentModel shipmentModel=sDao.getShipmentModelById(shipmentObject.getInt("shipment_id"));
+				ShipmentList.add(shipmentModel);
+			}
+			
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		ModelAndView model = new ModelAndView("print/shipment_print");
+		
+		Company company = companySettingDAO.getById(1);
+		String base64DataString = "";
+		if(company!=null && company.getCompany_logo()!=null){
+			byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+			try {
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+			}		
+		}else{
+			base64DataString = ConstantValues.NO_IMAGE;	
+		}
+		
+		model.addObject("title", "Shipment");
+		model.addObject("company", company);
+		model.addObject("ShipmentList",ShipmentList);
+		model.addObject("image",base64DataString);
+		return model;
+		
+	}
 	//========================== fetch last manifest no==========================
-	@RequestMapping(value="/fetchLastManifestNo/",method=RequestMethod.GET)
+	@RequestMapping(value="/fetchLastManifestNo/",method=RequestMethod.GET,produces=MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> fetchLastManifestNo(HttpServletRequest request){		
 		try {
-			return new ResponseEntity<String>(String.valueOf(mDao.fetchLastManifestNo()),HttpStatus.OK);
+			ManifestModel manifestModel=mDao.getLastManifestModel();
+			if(manifestModel!=null){
+				String lastManNo=manifestModel.getBranchModel1().getBranch_code()+
+						manifestModel.getBranchModel2().getBranch_code()+padManifestNumber(Integer.parseInt(manifestModel.getManifest_number()), 5);
+				System.err.println(lastManNo);
+				return new ResponseEntity<String>(lastManNo,HttpStatus.CREATED);
+			}else{
+				return new ResponseEntity<String>("No Manifest Found",HttpStatus.OK);
+			}			
 		} catch (Exception e) {
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, e);
 			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	
+	public String padManifestNumber(int num,int size){
+		String manNo=String.valueOf(num);
+		while (manNo.length()<size){
+			manNo="0"+manNo;
+		}
+		return manNo;
+	}
 	
+
 	//=================test==========================
 	@RequestMapping(value ="fetchManifest",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ManifestModel> fetchManifest(){
@@ -195,9 +306,14 @@ public class addManifestRestController {
 			manifestDetailModel.getShipmentModel().setStatus("Intransit");
 		}
 		
-		
-		
 		//generate manifest number
+		int lastManNo=mDao.fetchLastManifestNoWithOriginAndDestination(manifest.branchModel1.getBranch_id(), manifest.branchModel2.getBranch_id());		
+		if(lastManNo!=0 ){
+			manifest.setManifest_number(String.valueOf(lastManNo+1));
+		}else{
+			manifest.setManifest_number(String.valueOf(1));
+		}
+		
 		
 		try {
 			mDao.saveOrUpdate(manifest);
@@ -208,8 +324,34 @@ public class addManifestRestController {
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, e);
 			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-		
 	}
+	
+	//==================================Fetch all shipment(100)============================
+	@RequestMapping(value="fetchAllShipmentManifest",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ShipmentModel>>  fetchAllShipmentManifest(HttpServletRequest request){
+	
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =userDao.get(Integer.parseInt(userid));
+		
+		List<ShipmentModel> shipment=shipmentDao.fetchAllShipment100Manifest(user.getBranchModel().getBranch_id());
+		if(shipment.isEmpty()){
+			return new ResponseEntity<List<ShipmentModel>>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<ShipmentModel>>(shipment,HttpStatus.OK);
+	}
+	
+	
+	//=================EXCEL DOWNLOAD=====================================
+	@RequestMapping(value="downloadExcelForAddManifest",method=RequestMethod.GET)
+	public ModelAndView downloadExcelForAddManifest(){
+		
+		//change to fetch all 
+		List<ShipmentModel>  shipmentList=sDao.fetchAllShipment();
+		return new ModelAndView("ShipmentExcelView","shipmentList",shipmentList);		
+	}
+	
+
 	//========================== filter Shipment==========================
 	@RequestMapping(value="/filterShipment/",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ShipmentModel>>  filterShipment(@RequestBody String filterValues,HttpServletRequest request){

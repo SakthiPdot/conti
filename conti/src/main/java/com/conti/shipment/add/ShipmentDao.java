@@ -12,6 +12,7 @@ import java.util.List;
  * @Created_date_time Jul 27, 2017 4:52:07 PM
  * @Updated_date_time Jul 27, 2017 4:52:07 PM
  */
+
 public interface ShipmentDao
 {
 	public List<ShipmentModel> fetchAllShipment(int branch_id);
@@ -19,8 +20,9 @@ public interface ShipmentDao
 	public String fetchMAXlrno_prefix(int branch_id);
 	public void saveOrUpdate(ShipmentModel shipment);
 	public List<ShipmentModel> fetchAllShipment100();
+	public List<ShipmentModel> fetchAllShipment100Manifest(int branch_id);
 	public List<ShipmentModel> fetchAllShipment();
-	public List<ShipmentModel> fetchShipmentByLR(String searchString);
+	public List<ShipmentModel> fetchShipmentByLR(String searchString,int branchid);
 	public List<ShipmentModel> filterShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status);
 	public ShipmentModel getshipmentby_lrno(int lrno);
 //===========================Add Receipt======================================
