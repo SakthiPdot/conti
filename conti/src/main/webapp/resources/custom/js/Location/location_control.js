@@ -414,8 +414,11 @@ angular.module('contiApp').controller('locationController'
 							.then(
 									function(response){
 										self.message =locationName+ "  Location Updated..!";
-										successAnimate('.success');								
-										newOrClose();	
+										successAnimate('.success');	
+										window.setTimeout(function(){
+											newOrClose();	
+										},5000);
+										
 									},function(errResponse){
 										self.message = "Error While Updating Location ("+locationName+") ..!";
 										successAnimate('.failure');
@@ -460,8 +463,11 @@ angular.module('contiApp').controller('locationController'
 				.then(
 						function(response){
 							self.message =locationName+ " Location Deleted..!";
-							successAnimate('.success');								
-							newOrClose();
+							successAnimate('.success');		
+							window.setTimeout(function(){
+								newOrClose();
+							},5000);
+							
 							console.log(self.Locations[self.selectedRow]+"123");
 							console.log(self.selectedRow+"123");
 							//delete self.Locations[self.selectedRow];
@@ -470,7 +476,10 @@ angular.module('contiApp').controller('locationController'
 							console.log(self.Locations);
 						},function(refdata) {
 							self.message =locationName+ " referred some one filed..!";
-							successAnimate('.failure');			
+							successAnimate('.failure');	
+							window.setTimeout(function(){
+								newOrClose();
+							},5000);
 						},
 						
 						function(errResponse){

@@ -233,6 +233,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			  				/*reset();*/
 			  				window.setTimeout(function(){
 			  					newOrClose();
+			  					reset();
 			  				},5000);
 			  			}
 			  	     );
@@ -249,7 +250,9 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 							
 							self.message = service.service_name + " service updated...!";
 							successAnimate('.success');
-							newOrClose();
+							window.setTimeout(function(){
+								newOrClose();	
+							},5000);							
 						},
 						
 						function(errResponse){
@@ -292,16 +295,21 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 								.then(
 										function (msg) {
 										
-											self.message = self.service.service_name+ " service Deleted..!";
-											successAnimate('.success');
-											newOrClose();
+											
 											var index=self.services.indexOf(self.service);
 											self.services.splice(index,1);
-										
+											self.message = self.service.service_name+ " service Deleted..!";
+											successAnimate('.success');	
+											window.setTimeout( function(){
+												newOrClose();
+											},5000);
 																				
 										},function(pricesettting) {
 											self.message = self.service.service_name+ " referred in Price Settings or Add Shipment please check";
-											successAnimate('.success');
+											successAnimate('.failure');
+											window.setTimeout(function(){
+												newOrClose();
+											},5000);
 										},
 										
 										function (errResponse) {

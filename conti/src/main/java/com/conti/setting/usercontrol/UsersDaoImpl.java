@@ -250,5 +250,18 @@ class UsersDaoImpl implements UsersDao {
 					+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC").setMaxResults(100).list();
 			return getuser;
 		}
+		
+		//===== Referred Delete Process in Foreign key =========//	
+		@Override
+		@Transactional
+		public User getEmployeeId(int emp_id) {
+			@SuppressWarnings("unchecked")
+			List<User> getEmpId = sessionFactory.getCurrentSession()
+					.createQuery("from User where obsolete = 'N' and emp_id = "+emp_id).list();
+			if(getEmpId != null && !getEmpId.isEmpty()){
+				return getEmpId.get(0);
+			}
+			return null;
+		}
 }
 	

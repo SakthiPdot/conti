@@ -256,8 +256,11 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 	        		function () {
 	                    fetchAllCustomers();
 	                    self.message = customer.customer_name+" Customer updated..!";
-	        			successAnimate('.success');   
-	        			newOrClose();
+	        			successAnimate('.success');
+	        			window.setTimeout(function(){
+	        				newOrClose();
+	        			},5000);
+	        			
 	        		},
 	       
 	        function(errResponse){
@@ -308,9 +311,10 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     			 	    		self.customer.location = JSON.parse($("#location_id").val());    	
 
     			 	    		editCustomer(self.customer);  
-    			 	        	reset();
+    			 	        	
     			 	        	window.setTimeout( function(){	 	        		
     			 	        		newOrClose();
+    			 	        		reset();
     							},5000);
     						}
     					);
@@ -364,11 +368,17 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 									self.customers.splice(index,1);
 									self.message =self.customer.customer_name+ " Customer Deleted..!";
 									successAnimate('.success');
-									newOrClose();
+									window.setTimeout(function(){
+										newOrClose();
+									},5000);
+									
 									
 								}, function(refershipment) {
 									self.message =self.customer.customer_name+ " referred in Add Shipment please check";
 									successAnimate('.failure');
+									window.setTimeout(function(){
+										newOrClose();
+									},5000);
 								
 								},
 								
