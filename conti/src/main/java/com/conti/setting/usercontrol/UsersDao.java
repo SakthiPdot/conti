@@ -37,6 +37,9 @@ public interface UsersDao {
 	public int find_record_count();
 	
 	public List<User> getUser100();
+	
+	//===== Referred Delete Process in Foreign key =========//
+	public User getEmployeeId(int emp_id);
 
 }
 

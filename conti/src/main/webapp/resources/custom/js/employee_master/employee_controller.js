@@ -389,8 +389,12 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     			 	    		}
     			 	    		
     			 	    		editEmployee(self.employee);  
-    			 	    		reset();
-    			 	        	newOrClose();
+    			 	    		
+    			 	    		window.setTimeout(function(){
+    			 	    			newOrClose();
+    			 	    			reset();
+    			 	    		},5000);
+    			 	    		
     			 	        	
     						}
     					);
@@ -441,18 +445,24 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 												
 						EmployeeService.deleteEmployee(self.employee.emp_id)
 						.then(
-								function (employee) {
-									var index = self.employees.indexOf(employee);
+								function (msg) {
+									var index = self.employees.indexOf(self.employee);
 									self.employees.splice(index,1);
-									self.message =employee.emp_name+ " employee Deleted..!";
+									self.message =self.employee.emp_name+ " employee Deleted..!";
 									successAnimate('.success');
 									window.setTimeout( function(){	 	        		
 	    			 	        		newOrClose();
 	    							},5000);
 									
-								}, 
+								}, function(referdata) {
+									self.message =self.employee.emp_name+ " referred in User Master or Add Manifest fields..!";
+									successAnimate('.failure');
+									window.setTimeout(function(){
+										newOrClose();
+									},5000);
+								},
 								function (errResponse) {									
-									self.message = "Error while Deleting employee "+employee.emp_name+"";
+									self.message = "Error while Deleting employee "+self.employee.emp_name+"";
 					    			successAnimate('.failure'); 
 								}
 							);
