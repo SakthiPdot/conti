@@ -113,7 +113,8 @@
                 			      <input type="hidden" value="${branch_id}" id="branchid"/>
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">To</span>
-                			      		<select class="form-control" data-ng-model="ctrl.receipt.tobranch"  
+                			      		<select class="form-control" 
+                			      		data-ng-init="ctrl.receipt.tobranch=ctrl.currentBranch" data-ng-model="ctrl.receipt.tobranch"  
                 			      		data-ng-options ="branch.branch_name for branch in ctrl.branches">
                 			      			<option value="">--Select--</option>
                 			      			

@@ -142,7 +142,7 @@ public class ManifestRestController
 				return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
 			}
 	}
-	//--------------------- TO get all manifest  list function End ------------------------
+	//-----------------------------------------------------------------------------------------\\
 	
 	
 	//----------------------To get all inward manifest list function start--------------------
@@ -274,22 +274,17 @@ public class ManifestRestController
 			String username = userinfo.getUserName();
 			String userid = userinfo.getUserId();
 			
-			 ObjectMapper mapper = new ObjectMapper();
-			 mapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
-			 JsonNode rootNode =mapper.readTree(manifest);
-			 JsonNode frombranch = rootNode.path("frombranch");
-			 JsonNode tobranch = rootNode.path("tobranch");
-			 JsonNode fromdat = rootNode.path("fromdate");
-			 JsonNode todat = rootNode.path("todate");
-			 int frombranchid=frombranch.asInt();
-			 int tobranchid=tobranch.asInt();
-			 String fromdate=fromdat.asText();
-			 String todate=todat.asText();
-			 		
+			 JSONObject obj=new JSONObject(manifest);
+			 
+			 int frombranch=obj.getInt("frombranch");
+			 int tobranch=obj.getInt("tobranch");
+					 
+			 String fromdate=(String) obj.get("fromdate");
+			 String todate=(String) obj.get("todate");
 			try 
 			{
 				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-				List<ManifestModel> manifestModel = manifestDao.getManifestByCondition(frombranchid,tobranchid,fromdate,todate);
+				List<ManifestModel> manifestModel = manifestDao.getManifestByCondition(frombranch,tobranch,fromdate,todate);
 				if(manifestModel.isEmpty()) 
 				{
 					return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
@@ -297,7 +292,6 @@ public class ManifestRestController
 				else 
 				{
 					return new ResponseEntity<List<ManifestModel>> (manifestModel, HttpStatus.OK);	
-					 
 				}		
 			} 
 			catch (Exception exception) 

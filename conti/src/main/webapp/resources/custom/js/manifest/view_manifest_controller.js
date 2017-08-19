@@ -39,10 +39,10 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.manifestFilter=manifestFilter;
 		self.inwardManifest=inwardManifest;
 		self.outwardManifest=outwardManifest;
-		self.manifestSearch=manifestSearch;
+		self.manifestSearch=manifestSearch;	
 		self.shownoofRecord=shownoofRecord;
 		self.manifestDetailed=manifestDetailed;
-		$scope.shownoofrec=10;
+		$scope.shownoofrec=50;
 		
 		var manifest_id=$("#manifest_id").val();
 		//--call detailed manifest
@@ -97,7 +97,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 						function (branches) {
 							self.branches = branches;
 							pagination();
-							console.log("get all branches "+self.branches)
+							//console.log("get all branches "+self.branches)
 						}, 
 						function (errResponse) {
 							console.log('Error while fetching branches');
@@ -116,7 +116,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 						{
 							self.manifests = manifest;
 							self.Filtermanifests=self.manifests;
-							console.log('fetching manifest '+self.Filtermanifests);
+							//console.log('fetching manifest '+self.Filtermanifests);
 						}, 
 						function (errResponse) {
 							console.log('Error while fetching manifest');
@@ -160,7 +160,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 						self.message =manifest.manifest_number+ " Manifest Deleted...!";
 						successAnimate('.success');
 						newOrClose();
-						
 					}, 
 					function (errResponse) 
 					{
@@ -175,7 +174,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	//-------------------------------------------------------------------------------------------------------------------
 	
 	//-------------------------------------- Print begin -----------------------------//
-	    
 	function print() {
 	    	if(self.selected_manifest.length == 0 ) {
 		   		self.message ="Please select atleast one record..!";
@@ -187,7 +185,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    	}
 	    }
 	    
-	    //-------------------------------------------------------------------------------//
+	//-------------------------------------------------------------------------------//
 	    
 	  //------------------------- View Manifest Filter function start ------------------//   
 	    function manifestFilter(manifest) 
@@ -382,10 +380,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 						
 	    }
 	  
-	//---------------------------------------------------------------------------------------------------
-	  
- //---------------------------------Pagination function start------------------------------------------
-	  
+		  
 	  $scope.paginate = function(nextPrevMultiplier) 
 	    {
 	    	$scope.selectallmanifests=false;
@@ -473,11 +468,11 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
  //=================================MANIFEST DETAILED PAGE ALL FUNCTION START===============================
 
 	  
-  //--------------------------------------Open Manifest Detailed view Start----------------------------
+  //------------------------------------Open Manifest Detailed view Start----------------------------//
   
   function manifestDetailed(manifest_id)
   {
-	  console.log('Contoller: Manifest detailed call !')
+	  console.log('Contoller: Manifest detailed call....!')
 	  ManifestService.manifestDetailed(manifest_id)
 	  .then(
 			  function(manifestdetailed)
@@ -490,9 +485,8 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 				  console.log('Error while Manifest detailed get')
 			  }
 		 );
-
   }
- //--------------------------------------------------------------------------------------------------
+ //--------------------------------------------------------------------------------------------------//
 	  
 //--------------------------Manifest Detailed Select All check box function start------------------
 	  
@@ -504,12 +498,12 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		  {
 			  self.FilterManifestdetailed[i].select=$scope.selectallmanifestdetailed;
 			  if($scope.selectallmanifestdetailed)
-				  {
-				  	 self.selected_manifestdetailed.push(self.FilterManifestdetailed[i]);
-				  }
+			  {
+			  	 self.selected_manifestdetailed.push(self.FilterManifestdetailed[i]);
+			  }
 		  }
 	  }
-	  //--------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------//
 	  
 	  //---------------------Manifest Detailed Record select on Register start-----------------------
 	  

@@ -31,7 +31,7 @@
 	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
 	 
 	 <link href="resources/custom/css/demo.css" rel="stylesheet">
-<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
 	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
@@ -244,7 +244,6 @@
                                      <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
                                      	<div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
                                      	
-										
 										<div class ="checkbox">
 											<label>
 												<i class = "fa" data-ng-class="{'fa-check': setting_manifestnumber == true, 'fa-times': setting_manifestnumber == false}"></i>										
@@ -295,7 +294,7 @@
 	                                      <input type = "hidden" name = "manifest" value = "{{ctrl.selected_manifest}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										</form>
-<!--                                      <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button> -->
+<!--                                       <button type="button" class="btn btn-primary"><i class="fa fa-cog fa-lg"></i></button> -->
 <!--                                       <button type="button" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></button> -->
 <!--                                       <button type="button" class="btn btn-primary"><i class="fa fa-print fa-lg"></i></button> -->
                                 	</div>
@@ -303,9 +302,7 @@
                               </div>
                             </div>
                           
-                            
-                             
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.manifestSelectAll()" data-ng-model="selectallmanifests"></th>
@@ -329,8 +326,8 @@
                                             <td data-ng-show="setting_manifestnumber">{{manifest.manifest_number}}</td>
                                             <td data-ng-show="setting_manifestorigin">{{manifest.branchModel1.branch_name}}</td>
                                             <td data-ng-show="setting_manifestdestination">{{manifest.branchModel2.branch_name}}</td>
-                                            <td data-ng-show="setting_manifestvehicle">{{manifest.vehicle_number}}</td>
-                                            <td data-ng-show="setting_manifestdriver">{{manifest.driver_name}}</td>
+                                            <td data-ng-show="setting_manifestvehicle">{{manifest.vehicle_number.vehicle_regno}}</td>
+                                            <td data-ng-show="setting_manifestdriver">{{manifest.driver_name.emp_name}}</td>
                                             <td data-ng-show="setting_manifeststatus">{{manifest.manifest_status}}</td>
                                          
                                         </tr>
@@ -364,15 +361,11 @@
            
         </div>
         <!-- /. PAGE WRAPPER  -->
-		
-		
-    </div>
+  </div>
     <!-- /. WRAPPER  -->
-
-  
     <script src="resources/custom/js/custom.js"></script>
-    <script src="resources/custom/js/manifest/manifest_controller.js"></script>
-    <script src="resources/custom/js/manifest/manifest_service.js"></script>
+    <script src="resources/custom/js/manifest/view_manifest_controller.js"></script>
+    <script src="resources/custom/js/manifest/view_manifest_service.js"></script>
     <script src="resources/custom/js/branch_master/branch_service.js"></script>
    <script src="resources/custom/js/confirmDialog.js"></script>   
    <script type="text/javascript" src="resources/custom/js/validation.js"></script>

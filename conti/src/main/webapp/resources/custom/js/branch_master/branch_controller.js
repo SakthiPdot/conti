@@ -81,8 +81,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 					});
 		}
 	}
-//-------------------------- Fetch All Location begin ---------------------//	
-	
+  //-------------------------- Fetch All Location begin ---------------------//	
 	function fetchAllLocations() {
 		LocationService.fetchAllLocation()
 			.then(
@@ -95,11 +94,10 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 					}
 				);
 	}
-	//-----------------------------------------------------------------------
+	//-----------------------------------------------------------------------//
 	
 	
-	//-------------------------Branch Name checking----------------------
-	
+	//---------------------------------Branch Name checking--------------------------------------------
 	
 	function checkBranchName(name)
 	{
@@ -117,15 +115,12 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 			{
 				if(response=="204")//if logger value set no content that error code is 204
 				{
-					
 					$scope.branchnamewrong=true;
 					self.branch.branch_name=null;
 				}
 				else
 				{
-					
 					$scope.branchnamewrong=false;
-					
 				}
 			},
 			function(errResponse)
@@ -140,8 +135,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	
   //----------------------------------------------------------------------------------------------
 	
-	//---------------------Branch Master drawer close begin-----------
-	
+//---------------------Branch Master drawer close begin-----------
 	
 	function close(title){
 		ConfirmDialogService.confirmBox(title,
@@ -153,8 +147,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	}
 		
 	
-	//----------Branch Master drawer field clear begin-----------
-	
+//------------------------Branch Master drawer field clear begin--------------------------------
 	function clear() 
 	{
 		self.confirm_title = 'Clear';
@@ -168,8 +161,8 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 		 	        	
 					}
 				);
-	}
-	//----------Branch Master drawer field clear End-----------
+	}-
+	//-------------------------------------------------------------------------------------//
 	
 	//-------------------------- Fetch All Branches start ---------------------//
 	
@@ -192,11 +185,11 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 	//-------------------------- Fetch All Branches end ---------------------//
 	
 	
-	//===========================on save button click set value as SAVEANDCLOSE or SAVEANDNEW begin============
+	//=========-===on save button click set value as SAVEANDCLOSE or SAVEANDNEW begin============
 	$scope.save = function(event){
 		self.save=event.target.id;
 	}
-	//===========================on save button click set value as SAVEANDCLOSE or SAVEANDNEW end============	
+	//------------------------------------------------------------------------------------------	
 	
 	function newOrClose(){
 		console.log(self.save);				

@@ -316,8 +316,7 @@
                             <input type="hidden" id="manifest_id" value="${m_id}" >
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
-                                        <tr 
-                                        	>
+                                        <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" 
                                             data-ng-model="selectallmanifestdetailed"></th>
                                             
@@ -330,8 +329,6 @@
                                             <th data-ng-show="setting_sender">Sender</th>
                                             <th data-ng-show="setting_consignee">Consignee</th>
                                             <th data-ng-show="setting_shipmentstatus">Status</th>
-                                          
-                                            
                                          
                                         </tr>
                                     </thead>
@@ -341,16 +338,20 @@
                                         	 data-ng-model="manifestdetailed.select"></td>
                                             <td data-ng-show="setting_sltnumber" >{{$index+1}}</td>
                                             <td data-ng-show="setting_date">{{manifestdetailed.shipmentModel.created_datetime}}</td>
-                                            <td data-ng-show="setting_lrnumber">{{manifestdetailed.shipmentModel.lr_number}}</td>
-                                            <td data-ng-show="setting_product">{{manifestdetailed.shipmentModel.senderbranch_id}}</td>
-                                            <td data-ng-show="setting_origin">{{manifestdetailed.shipmentModel.senderbranch_id}}</td>
-                                            <td data-ng-show="setting_destination">{{manifestdetailed.shipmentModel.consigneebranch_id}}</td>
-                                            <td data-ng-show="setting_sender">{{manifestdetailed.shipmentModel.sendercustomer_id}}</td>
-                                            <td data-ng-show="setting_consignee">{{manifestdetailed.shipmentModel.consigneecustomer_id}}</td>
+                                            <td data-ng-show="setting_lrnumber">{{manifestdetailed.shipmentModel.lrno_prefix}}</td>
+                                            
+                                            <td data-ng-show="setting_product">
+                                          
+                                           		<div data-ng-repeat = "shipmentdet in manifestdetailed.shipmentModel.shipmentDetail">
+                                           			{{shipmentdet.product.product_name}}<span data-ng-if = !($last)>,</span>
+                                           		</div>
+                                            </td>
+                                            
+                                            <td data-ng-show="setting_origin">{{manifestdetailed.shipmentModel.sender_branch.branch_name}}</td>
+                                            <td data-ng-show="setting_destination">{{manifestdetailed.shipmentModel.consignee_branch.branch_name}}</td>
+                                            <td data-ng-show="setting_sender">{{manifestdetailed.shipmentModel.sender_customer.customer_name}}</td>
+                                            <td data-ng-show="setting_consignee">{{manifestdetailed.shipmentModel.consignee_customer.customer_name}}</td>
                                             <td data-ng-show="setting_shipmentstatus">{{manifestdetailed.shipmentModel.status}}</td>
-                                            
-                                           
-                                            
                                            
                                         </tr>
                                       </tbody>
@@ -381,8 +382,8 @@
 
   
     <script src="resources/custom/js/custom.js"></script>
-    <script src="resources/custom/js/manifest/manifest_controller.js"></script>
-    <script src="resources/custom/js/manifest/manifest_service.js"></script>
+    <script src="resources/custom/js/manifest/view_manifest_controller.js"></script>
+    <script src="resources/custom/js/manifest/view_manifest_service.js"></script>
     <script src="resources/custom/js/branch_master/branch_service.js"></script>
 
   <script src="resources/custom/js/confirmDialog.js"></script>   

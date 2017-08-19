@@ -93,7 +93,8 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		.then(
 				function(branch)
 				{
-					self.currentBranch=branch;
+//					self.receipt.tobranch=branch.branch_name;
+					self.currentBranch=branch.branch_name;
 					console.log(self.currentBranch);
 					pagination();
 				},

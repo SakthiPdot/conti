@@ -10,7 +10,8 @@
 
 contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 {
-	var factory={
+	var factory=
+	{
 			fetchAllManifest:fetchAllManifest,
 			manifestFilter:manifestFilter,
 			inwardManifest:inwardManifest,
@@ -21,7 +22,9 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 	};
 	
 	return factory;
+	
 	//-------------------------- Fetch All Manifest begin ---------------------//	
+	
 	function fetchAllManifest() {
 		var deferred = $q.defer();
 		$http.get('manifest')
@@ -39,7 +42,8 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 	}
 	//-------------------------- Fetch All Manifest end ---------------------//
 	
-	//-------------------------- Filter All Manifest based filter condition begin ---------------------//	
+	//-------------------------- Filter All Manifest based filter condition begin ---------------------//
+	
 	function manifestFilter(manifest) 
 	{
 		console.log("Service Manifest filter function call ");
@@ -63,9 +67,9 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 				);
 		return deferred.promise;
 	}
-	//--------------------------  Filter All Manifest based filter condition end ---------------------//
+	//------------------------------------------------------------------------------------------------//
 	
-	//---------------------------Inward manifest function Service Start--------------------------------
+	//-------------------Inward manifest function Service Start------------------------//
 	
 	function inwardManifest()
 	{
@@ -84,7 +88,7 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 			);
 		return deferred.promise;
 	}
-	//---------------------------Inward manifest function Service End--------------------------------
+	//--------------------------------------------------------------------------------//
 	
 	
 	//---------------------------Outward manifest function Service Start--------------------------------
@@ -106,11 +110,10 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 			);
 		return deferred.promise;
 	}
+	//-------------------------------------------------------------------------------------------------//
 	
-	//---------------------------Outward manifest function Service End--------------------------------
 	
-	
-	//--------------------------------Manifest number Search function start-------------------------------
+	//--------------------------------Manifest number Search function start-----------------------------//
 	
 	function manifestSearch(searchkey)
 	{
@@ -121,7 +124,7 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 			data:searchkey,
 			headers:getCsrfHeader()
 		})
-		.then(function(response)
+		.then(	function(response)
 				{
 					console.log(response.data);
 					deferred.resolve(response.data);
@@ -134,30 +137,30 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 		return deferred.promise;
 	}
 	
-	//-----------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------//
 	
-//------------------ Manifest Delete service start-----------------------------------
+	//-------------------------------- Manifest Delete service start-----------------------------------//
 
-function deleteManifest(manifest_id)
-{
-	var def=$q.defer();
-	$http({
-		method:'DELETE',
-		url:'delete_manifest/'+manifest_id,
-		headers:getCsrfHeader()
-		}).then(
-				function(response)
-				{
-					def.resolve(response.data);
-				},
-				function(errResponse)
-				{
-					def.reject(errResponse);
-				}
-			);
-	return def.promise;
-}
-//-------------------------------------------------------------------------------------------------------
+	function deleteManifest(manifest_id)
+	{
+		var def=$q.defer();
+		$http({
+			method:'DELETE',
+			url:'delete_manifest/'+manifest_id,
+			headers:getCsrfHeader()
+			}).then(
+					function(response)
+					{
+						def.resolve(response.data);
+					},
+					function(errResponse)
+					{
+						def.reject(errResponse);
+					}
+				);
+		return def.promise;
+	}
+	//---------------------------------------------------------------------------------------------------
 
 
 //====================================Manifest detailed Service function Start================================
