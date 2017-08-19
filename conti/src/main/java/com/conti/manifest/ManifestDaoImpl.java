@@ -218,11 +218,6 @@ public class ManifestDaoImpl implements ManifestDao
 			return listmanifestdetailed;
 			
 		}
-
-
-
-	
-		
 	//------------------------------------------------------------------------------------------
 		
 		

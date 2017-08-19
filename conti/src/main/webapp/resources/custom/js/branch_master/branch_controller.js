@@ -161,7 +161,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 		 	        	
 					}
 				);
-	}-
+	}
 	//-------------------------------------------------------------------------------------//
 	
 	//-------------------------- Fetch All Branches start ---------------------//

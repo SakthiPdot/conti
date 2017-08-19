@@ -37,7 +37,8 @@ public interface ManifestDao
 	
 	//====================Manifest Detailed DAO declaration Start===================
 		
-		public List<ManifestDetailedModel>getAllManifestDetailes(int branch_id);
+		public List<ManifestDetailedModel>getAllManifestDetailes(int manifest_id);
+		//public List<ManifestDetailedModel>getManifestDetailed(int manifest_id);
 		
 	//====================Manifest Detailed DAO declaration End===================
 		

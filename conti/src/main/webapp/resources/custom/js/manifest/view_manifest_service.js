@@ -25,7 +25,9 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 	
 	//-------------------------- Fetch All Manifest begin ---------------------//	
 	
-	function fetchAllManifest() {
+	function fetchAllManifest()
+	{
+		console.log('Fetch all Service function call success....')
 		var deferred = $q.defer();
 		$http.get('manifest')
 			.then(
@@ -71,72 +73,72 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 	
 	//-------------------Inward manifest function Service Start------------------------//
 	
-	function inwardManifest()
-	{
-		var deferred = $q.defer();
-		$http.get('inward_manifest')
-		.then(
-				function(response)
-				{
-					deferred.resolve(response.data);
-					console.log(response.data);
-				},
-				function(errResponse)
-				{
-					console.log('Error while inward manifest ');
-				}
-			);
-		return deferred.promise;
-	}
+		function inwardManifest()
+		{
+			var deferred = $q.defer();
+			$http.get('inward_manifest')
+			.then(
+					function(response)
+					{
+						deferred.resolve(response.data);
+						console.log(response.data);
+					},
+					function(errResponse)
+					{
+						console.log('Error while inward manifest ');
+					}
+				);
+			return deferred.promise;
+		}
 	//--------------------------------------------------------------------------------//
 	
 	
 	//---------------------------Outward manifest function Service Start--------------------------------
 	
-	function outwardManifest()
-	{
-		var deferred = $q.defer();
-		$http.get('outward_manifest')
-		.then(
-				function(response)
-				{
-					deferred.resolve(response.data);
-					console.log(response.data);
-				},
-				function(errResponse)
-				{
-					console.log('Error while outward manifest ');
-				}
-			);
-		return deferred.promise;
-	}
+		function outwardManifest()
+		{
+			var deferred = $q.defer();
+			$http.get('outward_manifest')
+			.then(
+					function(response)
+					{
+						deferred.resolve(response.data);
+						console.log(response.data);
+					},
+					function(errResponse)
+					{
+						console.log('Error while outward manifest ');
+					}
+				);
+			return deferred.promise;
+		}
 	//-------------------------------------------------------------------------------------------------//
 	
 	
 	//--------------------------------Manifest number Search function start-----------------------------//
 	
-	function manifestSearch(searchkey)
-	{
-		var deferred=$q.defer();
-		$http({
-			method:'POST',
-			url:'manifest_search',
-			data:searchkey,
-			headers:getCsrfHeader()
-		})
-		.then(	function(response)
-				{
-					console.log(response.data);
-					deferred.resolve(response.data);
-				},
-				function(errResponse)
-				{
-					deferred.reject(errResponse);
-				}
-			);
-		return deferred.promise;
-	}
-	
+		function manifestSearch(searchkey)
+		{
+			var deferred=$q.defer();
+			$http({
+				method:'POST',
+				url:'manifest_search',
+				data:searchkey,
+				headers:getCsrfHeader()
+			})
+			.then(	function(response)
+					{
+						console.log(response.data);
+						deferred.resolve(response.data);
+					},
+					function(errResponse)
+					{
+						deferred.reject(errResponse);
+					}
+				);
+			return deferred.promise;
+		}
+		
 	//-------------------------------------------------------------------------------------------------//
 	
 	//-------------------------------- Manifest Delete service start-----------------------------------//

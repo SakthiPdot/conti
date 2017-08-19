@@ -76,6 +76,7 @@ contiApp.factory('BranchService', ['$http', '$q', function ($http, $q){
 	//-------------------------- Fetch All Branches begin ---------------------//	
 	function fetchAllBranches() 
 	{
+		console.log('Call fetch all branche Service function...');
 		var deferred = $q.defer();
 		$http.get('branches')
 			.then(

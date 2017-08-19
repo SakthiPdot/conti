@@ -43,6 +43,8 @@ import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
+import com.conti.shipment.add.ShipmentDao;
+import com.conti.shipment.add.ShipmentModel;
 
 /**
  * @Project_Name conti
@@ -63,6 +65,8 @@ public class ManifestRestController
 	@Autowired
 	private ManifestDao manifestDao;
 	
+	@Autowired
+	private ShipmentDao shipmentDao;
 	
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
@@ -80,7 +84,7 @@ public class ManifestRestController
 	
 	
 	
-	//========================== to display View Manifest Screen==========================
+	//============================================= to display View Manifest Screen============================================
 	
 	@RequestMapping(value =  "view_manifest", method = RequestMethod.GET)
 	public ModelAndView view_manifest(HttpServletRequest request) throws Exception {
@@ -111,8 +115,9 @@ public class ManifestRestController
 		}
 		return model;
 	}
-		
-  //--------------------- TO get all manifest  list function start -------------------	
+	//------------------------------------------------------------------------------------------------------------------------	
+  
+	//----------------------------------- TO get all manifest  list function start ----------------------------------------\\
 	
 	@RequestMapping( value = "manifest", method = RequestMethod.GET)
 		public ResponseEntity<List<ManifestModel>> fetchAllManifest(HttpServletRequest request) 
@@ -124,10 +129,8 @@ public class ManifestRestController
 			{
 				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 				List<ManifestModel> manifestModel = manifestDao.getAllManifest(Integer.parseInt(branch_id));
-				
 				if(manifestModel.isEmpty()) 
 				{
-					
 					return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
 				}
 				else 
@@ -141,40 +144,40 @@ public class ManifestRestController
 				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
 				return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
 			}
-	}
-	//-----------------------------------------------------------------------------------------\\
+		}
+	//-------------------------------------------------------------------------------------------------------------------\\
 	
 	
-	//----------------------To get all inward manifest list function start--------------------
+	//----------------------------------To get all inward manifest list function start--------------------------------\\
 	
-	@RequestMapping(value="/inward_manifest", method=RequestMethod.GET)
-	public ResponseEntity<List<ManifestModel>>inwardManifest(HttpServletRequest request)
-	{
-		userInformation = new UserInformation(request);
-		String username = userInformation.getUserName();
-		String branch_id = userInformation.getUserBranchId();
-		try
+		@RequestMapping(value="/inward_manifest", method=RequestMethod.GET)
+		public ResponseEntity<List<ManifestModel>>inwardManifest(HttpServletRequest request)
 		{
-			loggerconf.saveLogger(username,request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			List<ManifestModel> manifestModel=manifestDao.getInwardManifest(Integer.parseInt( branch_id));
-			if(manifestModel.isEmpty()) 
+			userInformation = new UserInformation(request);
+			String username = userInformation.getUserName();
+			String branch_id = userInformation.getUserBranchId();
+			try
 			{
-				return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
+				loggerconf.saveLogger(username,request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				List<ManifestModel> manifestModel=manifestDao.getInwardManifest(Integer.parseInt( branch_id));
+				if(manifestModel.isEmpty()) 
+				{
+					return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
+				}
+				else 
+				{
+					return new ResponseEntity<List<ManifestModel>> (manifestModel, HttpStatus.OK);	
+				}	
 			}
-			else 
+			catch(Exception exception)
 			{
-				return new ResponseEntity<List<ManifestModel>> (manifestModel, HttpStatus.OK);	
-			}	
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+				return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 		}
-		catch(Exception exception)
-		{
-			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-			return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}
-	}
-	//----------------------To get all inward manifest list function End--------------------	
+	//-----------------------------------------------------------------------------------------------------------------	//
 	
-	//----------------------To get all inward manifest list function start--------------------
+	//-----------------------------To get all inward manifest list function start-------------------------------------
 	
 		@RequestMapping(value="/outward_manifest", method=RequestMethod.GET)
 		public ResponseEntity<List<ManifestModel>>outwardManifest(HttpServletRequest request)
@@ -201,7 +204,7 @@ public class ManifestRestController
 				return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
 			}
 		}
-		//----------------------To get all inward manifest list function End--------------------	
+	//----------------------------------------------------------------------------------------------------------	
 	
 	
 	
@@ -363,26 +366,35 @@ public class ManifestRestController
 		@RequestMapping(value="delete_manifest/{id}", method=RequestMethod.DELETE)
 		public ResponseEntity<ManifestModel>deleteManifest(@PathVariable("id") int[] id, HttpServletRequest request)
 		{
-			
 			try
 			{
 				userInformation=new UserInformation(request);
-			
-			String username=userInformation.getUserName();
-			int user_id=Integer.parseInt(userInformation.getUserId());
-			int i=0;
-			Date date=new Date();
-			DateFormat dateformat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			for( i=0; i<id.length;i++)
-			{
-				System.out.print(" UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU  Delete id value : "+ id[i]);
-				ManifestModel manifestModel=manifestDao.getManifestbyId(id[i]);
-				manifestModel.setUpdated_by(user_id);
-				manifestModel.setUpdated_datetime(dateformat.format(date));
-				manifestModel.setObsolete("Y");
-				manifestDao.saveOrUpdate(manifestModel);
-			}
-			return new ResponseEntity<ManifestModel>(HttpStatus.INTERNAL_SERVER_ERROR);
+				String username=userInformation.getUserName();
+				int user_id=Integer.parseInt(userInformation.getUserId());
+				int i=0;
+				Date date=new Date();
+				DateFormat dateformat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				for( i=0; i<id.length;i++)
+				{
+					System.out.print(" Delete id value : "+ id[i]);
+					ManifestModel manifestModel=manifestDao.getManifestbyId(id[i]);
+					//List<ManifestDetailedModel> manifestDetailed=manifestDao.getAllManifestDetailes(id[i]);
+					manifestModel.setUpdated_by(user_id);
+					manifestModel.setUpdated_datetime(dateformat.format(date));
+					manifestModel.setObsolete("Y");
+					manifestDao.saveOrUpdate(manifestModel);
+					
+					int count=manifestModel.getManifestDetailModel().size();
+					System.out.println("===============Manifest detailed countt==================:"+count);
+					for(int k=0; k<count;k++)
+					{
+						int shipment_id=manifestModel.getManifestDetailModel().get(k).shipmentModel.getShipment_id();
+						ShipmentModel shipmentModel=shipmentDao.getShipmentModelById(shipment_id);
+						shipmentModel.setStatus("Booked");
+						shipmentDao.saveOrUpdate(shipmentModel);
+					}
+				}
+				return new ResponseEntity<ManifestModel>(HttpStatus.OK);
 			}
 			catch(Exception exception) 
 			{

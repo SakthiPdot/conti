@@ -42,17 +42,21 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.manifestSearch=manifestSearch;	
 		self.shownoofRecord=shownoofRecord;
 		self.manifestDetailed=manifestDetailed;
-		$scope.shownoofrec=50;
+		$scope.shownoofrec=10;
+		
+		
+		fetchAllManifest();
+		fetchAllBranches();
 		
 		var manifest_id=$("#manifest_id").val();
+		
 		//--call detailed manifest
 		if(manifest_id!=null)
 		{
 			console.log("call detailed manifest and id: " +manifest_id);
 			manifestDetailed(manifest_id);
 		}
-		fetchAllManifest();
-		fetchAllBranches();
+		
 		
 		function reset()
 		{
@@ -110,13 +114,14 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		//-------------------------- Fetch All Manifest records Start ---------------------//
 		function fetchAllManifest() 
 		{
+			console.log('Fetch all manifest call successfully........');
 			ManifestService.fetchAllManifest()
 				.then(
 						function (manifest) 
 						{
 							self.manifests = manifest;
 							self.Filtermanifests=self.manifests;
-							//console.log('fetching manifest '+self.Filtermanifests);
+							console.log('fetching manifest '+self.Filtermanifests.length);
 						}, 
 						function (errResponse) {
 							console.log('Error while fetching manifest');
@@ -158,6 +163,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 						var index = self.manifests.indexOf(manifest);
 						self.manifests.splice(index,1);
 						self.message =manifest.manifest_number+ " Manifest Deleted...!";
+						self.selected_manifest=[];
 						successAnimate('.success');
 						newOrClose();
 					}, 
@@ -357,6 +363,8 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	//-------------------------------------Manifest Pagination---------------------------------  
 	  function pagination() 
 	    {
+		  
+		  	console.log('Pagination function call successfully..........');
 	        $scope.pageSize = $scope.shownoofrec;
 	    	console.log($scope.pageSize);
 			$scope.currentPage = 0;
@@ -373,6 +381,8 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			if( self.Filtermanifests.length < 100 ) 
 			{
 				$scope.totalnof_records  = self.Filtermanifests.length;
+				console.log(self.Filtermanifests.length);
+				
 				//findrecord_count();
 			} else {
 				findrecord_count();
