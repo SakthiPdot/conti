@@ -205,7 +205,7 @@ public class ManifestDaoImpl implements ManifestDao
 		
 		//+++++++++++++++++++++++++++ MANIFEST DETAILED IMPLEMENTATION START ++++++++++++++++++++++++++++++
 		
-	//-------------------Get all Manifest detailed list-----------------------------------------
+	//----------------------------------------------Get all Manifest detailed list---------------------------------------------
 		@Override
 		@Transactional
 		public List<ManifestDetailedModel> getAllManifestDetailes(int manifest_id) 
@@ -220,7 +220,21 @@ public class ManifestDaoImpl implements ManifestDao
 		}
 	//------------------------------------------------------------------------------------------
 		
-		
+	//----------------------------------------Get Shipment from manifest detailed------------------------------------------
+	
+			@Override
+			@Transactional
+			public List<ManifestDetailedModel> searchShipmentLRnumber(String lr_number)
+			{
+			
+				String hql = "from ManifestDetailedModel where shipmentModel.lrno_prefix LIKE '%"+lr_number+"%' ";
+				Query query = sessionFactory.getCurrentSession().createQuery(hql);
+				@SuppressWarnings("unchecked")
+				List<ManifestDetailedModel> manifestDetailed= (List<ManifestDetailedModel>) query.list();
+				return manifestDetailed;
+				
+			}
+	//----------------------------------------------------------------------------------------------------------------------
 		
 		//+++++++++++++++++++++++++++ MANIFEST DETAILED IMPLEMENTATION END +++++++++++++++++++++++++++++++
 		
