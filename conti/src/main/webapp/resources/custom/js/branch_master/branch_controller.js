@@ -365,7 +365,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 							BranchService.deleteBranch(self.branch.branch_id)
 							.then(
 									function (msg) {
-										var index = self.branches.indexOf(branch);
+										var index = self.branches.indexOf(self.branch);
 										self.branches.splice(index,1);
 										self.message =self.branch.branch_name+ " branch Deleted..!";
 										successAnimate('.success');

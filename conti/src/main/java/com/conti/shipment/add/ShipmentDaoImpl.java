@@ -350,5 +350,41 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 
+	@Override
+	@Transactional
+	public ShipmentModel getBranchId(int sbranch_id, int cbranch_id) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> getbranchId = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N' and senderbranch_id=" +sbranch_id+" OR consigneebranch_id='" +cbranch_id+"'").list();
+		if(getbranchId != null && !getbranchId.isEmpty()){
+			return getbranchId.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	@Transactional
+	public ShipmentDetailModel getProductid(int product_id) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentDetailModel> getproductid = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentDetailModel where product_id= "+product_id).list();
+		if(getproductid != null && !getproductid.isEmpty()){
+			return getproductid.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	@Transactional
+	public ShipmentHsnDetailModel getProcductID(int productid) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentHsnDetailModel> getidProduct = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentHsnDetailModel where product_id ="+productid ).list();
+		if(getidProduct != null && !getidProduct.isEmpty()){
+			return getidProduct.get(0);
+		}
+		return null;
+	}
+
 	
 }

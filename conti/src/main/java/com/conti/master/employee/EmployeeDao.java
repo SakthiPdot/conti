@@ -39,5 +39,6 @@ public interface EmployeeDao {
 	
 	//===== Referred Delete Process in Foreign key =========//
 	public EmployeeMaster getLocationId(int locationid);
+	public EmployeeMaster getBranchId(int branch_id);
 	
 }

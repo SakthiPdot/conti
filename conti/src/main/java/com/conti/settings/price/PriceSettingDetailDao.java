@@ -15,4 +15,7 @@ public interface PriceSettingDetailDao {
 	
 	//---------------------------------------- FETCH PRICE BY  to pricesetting & branch & productweight for add shipment by sankar
 		public PriceSettingDetail fetchprice(int priceSettingId, int to_branch, int product_weight);
+		
+		//===== Referred Delete Process in Foreign key =========//
+		public PriceSettingDetail getBranchid(int branch_id);
 }

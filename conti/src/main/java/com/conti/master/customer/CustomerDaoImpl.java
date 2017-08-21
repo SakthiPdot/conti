@@ -196,6 +196,18 @@ public class CustomerDaoImpl implements CustomerDao
 		}
 		return null;
 	}
+
+	@Override
+	@Transactional
+	public CustomerModel getBranchId(int branchid) {
+		@SuppressWarnings("unchecked")
+		List<CustomerModel> getbranchId = sessionFactory.getCurrentSession()
+				.createQuery("from CustomerModel WHERE obsolete = 'N' and branch_id =" +branchid).list();
+		if(getbranchId != null && !getbranchId.isEmpty()){
+			return getbranchId.get(0);
+		}
+		return null;
+	}
 	
 	/*------------------------------- Get Customer  by id End -----------------------*/
 }

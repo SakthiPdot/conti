@@ -91,6 +91,19 @@ class UserPrivilegeDaoImpl implements UserPrivilegeDao {
 		sessionFactory.getCurrentSession().createQuery(hql).executeUpdate();
 			
 	}
+	
+	//===== Referred Delete Process in Foreign key =========//
+	@Override
+	@Transactional
+	public UserPrivilege getBranchid(int branch_id) {
+		@SuppressWarnings("unchecked")
+		List<UserPrivilege> getidBranch = sessionFactory.getCurrentSession()
+				.createQuery("from UserPrivilege where obsolete = 'N' and branch_id =" +branch_id).list();
+		if(getidBranch != null && !getidBranch.isEmpty()){
+			return getidBranch.get(0);
+		}
+		return null;
+	}
 
 }
 

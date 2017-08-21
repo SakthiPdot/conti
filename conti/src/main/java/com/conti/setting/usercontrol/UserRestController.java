@@ -7,7 +7,6 @@ package com.conti.setting.usercontrol;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,7 +50,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.conti.config.SessionListener;
 import com.conti.master.employee.EmployeeDao;
 import com.conti.master.employee.EmployeeMaster;
-import com.conti.master.location.Location;
 import com.conti.others.ConstantValues;
 import com.conti.others.DateTimeCalculation;
 import com.conti.others.Loggerconf;
@@ -62,7 +60,7 @@ import com.conti.settings.company.CompanySettingDAO;
 import com.conti.userlog.UserLogDao;
 import com.conti.userlog.UserLogModel;
 
-import javassist.bytecode.Descriptor.Iterator;
+
 
 /**
  * @Project_Name conti

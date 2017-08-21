@@ -294,6 +294,18 @@ public class EmployeeDaoImp implements EmployeeDao {
 		}
 		return null;
 	}
+
+	@Override
+	@Transactional
+	public EmployeeMaster getBranchId(int branch_id) {
+		@SuppressWarnings("unchecked")
+		List<EmployeeMaster> getBranchId = sessionFactory.getCurrentSession()
+				.createQuery("from EmployeeMaster where obsolete = 'N' and branch_id = " +branch_id).list();
+		if(getBranchId != null && !getBranchId.isEmpty()){
+			return getBranchId.get(0);
+		}
+		return null;
+	}
 	
 	
 }

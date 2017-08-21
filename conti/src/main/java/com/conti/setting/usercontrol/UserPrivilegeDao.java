@@ -19,6 +19,9 @@ public interface UserPrivilegeDao {
 	public void delete(int id);
 	public void deleteall(int id);
 	public List<UserPrivilege> getprivilegebyUserId(int id);
+	
+	//===== Referred Delete Process in Foreign key =========//
+	public UserPrivilege getBranchid(int branch_id);
 
 }
 

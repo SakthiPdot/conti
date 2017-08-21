@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.conti.setting.usercontrol.User;
 
 /**
  * @Project_Name conti
@@ -160,7 +159,7 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 		return null;			
 		
 	}
-
+	//===== Referred Delete Process in Foreign key =========//
 
 	@Override
 	@Transactional
@@ -176,6 +175,19 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 			}
 			return null;
 		}
+
+
+	@Override
+	@Transactional
+	public PriceSetting getBranchId(int branchid) {
+		@SuppressWarnings("unchecked")
+		List<PriceSetting> getBranchId = sessionFactory.getCurrentSession()
+				.createQuery("from PriceSetting where obsolete = 'N' and frombranch_id= " +branchid).list();
+		if(getBranchId != null && !getBranchId.isEmpty()){
+			return getBranchId.get(0);
+		}
+		return null;
+	}
 		
 	
 

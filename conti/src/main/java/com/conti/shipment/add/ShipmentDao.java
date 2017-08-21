@@ -37,6 +37,10 @@ public interface ShipmentDao
 	public ShipmentModel getServiceId(int serviceid);
 	public ShipmentModel getCustomerId(int scustomerid,int ccustomerid);
 	public ShipmentModel getLocationId(int locationid,int clocationid);
+	public ShipmentModel getBranchId(int sbranch_id,int cbranch_id);
+	
+	public ShipmentDetailModel getProductid(int product_id);
+	public ShipmentHsnDetailModel getProcductID(int productid);
 	/**
 	 * @param int1
 	 * @return
