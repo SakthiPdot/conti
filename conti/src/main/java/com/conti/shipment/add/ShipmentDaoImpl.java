@@ -52,7 +52,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@Transactional
 	public List<ShipmentModel> fetchShipmentWithLimit(int from, int to, String order) {
 		return sessionFactory.getCurrentSession()
-				.createQuery("from fetchShipmentWithLimit where obsolete ='N'"
+				.createQuery("from ShipmentModel where obsolete ='N'"
 						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
 					.setFirstResult(from).setMaxResults(to).list();
 	}
