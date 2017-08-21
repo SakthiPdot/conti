@@ -352,7 +352,10 @@ angular.module('contiApp').controller('priceSettingRegisterController',
 		    	if( self.filteredPriceSetting.length < $scope.pageSize ) {
 		    		$scope.previouseDisabled = true;
 		    		$scope.nextDisabled = true;
+		    	}else{
+		    		$scope.nextDisabled=false;
 		    	}
+		    	fetchAllPriceSetting();
 		    }
 		    
 		    

@@ -716,6 +716,8 @@ angular
 								if (self.FilteredProducts.length < $scope.pageSize) {
 									$scope.previouseDisabled = true;
 									$scope.nextDisabled = true;
+								}else{
+						    		$scope.nextDisabled=false;
 								}
 								fetchProducts();
 								
