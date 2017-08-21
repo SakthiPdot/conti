@@ -188,6 +188,19 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 		}
 		return null;
 	}
+
+
+	@Override
+	@Transactional
+	public PriceSetting getProductId(int product_id) {
+		@SuppressWarnings("unchecked")
+		List<PriceSetting> getproductId = sessionFactory.getCurrentSession()
+				.createQuery("from PriceSetting where obsolete = 'N' and product_id=" +product_id).list();
+		if(getproductId != null && !getproductId.isEmpty()){
+			return getproductId.get(0);
+		}
+		return null;
+	}
 		
 	
 

@@ -568,8 +568,11 @@ angular
 																				self.message = "Product "
 																						+ self.product.product_name
 																						+ " Updated..!";
-																				newOrClose();
+																				
 																				successAnimate('.success');
+																				window.setTimeout(function(){
+																					newOrClose();
+																				},5000);
 																			},
 																			function(
 																					errResponse) {
@@ -642,7 +645,7 @@ angular
 																	self.product.product_id)
 															.then(
 																	function(
-																			response) {
+																			msg) {
 																		var index = self.products
 																				.indexOf(self.product);
 																		self.products
@@ -653,8 +656,20 @@ angular
 																				+ self.product.product_name
 																				+ " deleted..!";
 																		self.save = "saveclose";
-																		newOrClose();
 																		successAnimate('.success');
+																		window.setTimeout(function(){
+																			newOrClose();
+																		},5000);
+																	
+																		
+																	},function(referdata){
+																		self.message = "Product "
+																			+ self.product.product_name
+																			+ " already referred some one fields..!";
+																		successAnimate('.failure');
+																		window.setTimeout(function(){
+																			newOrClose();
+																		},5000);
 																	},
 																	function(
 																			errResponse) {
