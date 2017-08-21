@@ -401,8 +401,10 @@ public class BranchRestController {
 	
 	/* ------------------------- Delete Branch begin ------------------------------------- */
 	@RequestMapping(value = "delete_branch/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<BranchModel> deleteBranch(@PathVariable ("id") int id, HttpServletRequest request) {
+	public ResponseEntity<String> deleteBranch(@PathVariable ("id") int id, HttpServletRequest request) {
 		BranchModel branchModel = branchDao.getBranchbyId(id);
+		User users = usersDao.getBranchId(id);
+		
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
 		int user_id = Integer.parseInt(userInformation.getUserId());
@@ -410,24 +412,30 @@ public class BranchRestController {
 			
 			if(branchModel == null) {
 				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
-				return new ResponseEntity<BranchModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 			} else {
+				if(users == null) {
+					Date date = new Date();
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+					
+					branchModel.setUpdated_by(user_id);
+					branchModel.setUpdated_datetime(dateFormat.format(date));
+					branchModel.setActive("N");
+					branchModel.setObsolete("Y");
+					
+					branchDao.saveOrUpdate(branchModel);
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
+					return new ResponseEntity<String> (HttpStatus.OK);
+				} else {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
+					return new ResponseEntity <String> ("refer data",HttpStatus.IM_USED);
+				}
 				
-				Date date = new Date();
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
 				
-				branchModel.setUpdated_by(user_id);
-				branchModel.setUpdated_datetime(dateFormat.format(date));
-				branchModel.setActive("N");
-				branchModel.setObsolete("Y");
-				
-				branchDao.saveOrUpdate(branchModel);
-				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
-				return new ResponseEntity<BranchModel> (branchModel,HttpStatus.OK);
 			}
 		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, exception);
-			return new ResponseEntity<BranchModel> (HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String> (HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	/* ------------------------- Delete Branch end ------------------------------------- */

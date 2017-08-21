@@ -263,5 +263,17 @@ class UsersDaoImpl implements UsersDao {
 			}
 			return null;
 		}
+
+		@Override
+		@Transactional
+		public User getBranchId(int branch_id) {
+			@SuppressWarnings("unchecked")
+			List<User> getBranchId = sessionFactory.getCurrentSession()
+					.createQuery("from User where obsolete = 'N' and branch_id="+branch_id).list();
+			if(getBranchId != null && !getBranchId.isEmpty()){
+				return getBranchId.get(0);
+			}
+			return null;
+		}
 }
 	
