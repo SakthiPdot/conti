@@ -49,27 +49,18 @@ public class ViewShipmentController {
 	@Autowired
 	private UsersDao usersDao;
 		
-	@Autowired
-	@Qualifier("sessionRegistry")
-	private SessionRegistry sessionRegistry;
-		
 	Loggerconf loggerconf = new Loggerconf();
-	SessionListener sessionListener = new SessionListener();
+	UserInformation userInformation;
+	ConstantValues constantVal = new ConstantValues();
 
 	@RequestMapping(value =  "view_shipment", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
 		
-		HttpSession session = request.getSession();
-		
-		UserInformation userinfo = new UserInformation(request);
-		String username = userinfo.getUserName();
-		
-		String userid = userinfo.getUserId();
-		
-		session.setAttribute("username", username);
-		session.setAttribute("userid", userid);
-		
-		
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		String userid = userInformation.getUserId();
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+
 		ModelAndView model = new ModelAndView();
 		
 		

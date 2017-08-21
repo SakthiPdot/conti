@@ -4,13 +4,25 @@
     uri="http://java.sun.com/jsp/jstl/core" 
 %>
 <%@ page isELIgnored="false" %> 
+<!DOCTYPE html>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib
+    prefix="c"
+    uri="http://java.sun.com/jsp/jstl/core" 
+%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
+<%@ page isELIgnored="false" %> 
 <%@page session="true"%>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
-    <!-- Bootstrap Styles-->
+       <!-- Bootstrap Styles-->
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
@@ -25,13 +37,26 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	 <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+	 
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
+	 <link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
+	 <link href="resources/custom/css/custom.css" rel="stylesheet">
+	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
+	 
 	 <link href="resources/custom/css/demo.css" rel="stylesheet">
-	  <link href="resources/custom/css/custom.css" rel="stylesheet">
+
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
+	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="resources/custom/js/app.js"></script>
 </head>
 
 
-<body style="overflow-x:hidden;">
+<body style="overflow-x:hidden;" data-ng-app = "contiApp" data-ng-controller = "ViewShipmentController as ctrl">
  
 	
 	<jsp:include page="../Dashboard/nav.jsp"/>
@@ -271,10 +296,16 @@
     </div>
     <!-- /. WRAPPER  -->
     
-   <!--  <script src="resources/built-in/assets/js/jquery-1.10.2.js"></script>  -->
-    <script src=" resources/custom/js/date-time-picker.min.js" ></script>
-    
-    <script> $('.datepicker').dateTimePicker();</script>
+  <script src="resources/custom/js/shipment/viewshipment_controller.js"></script>
+  <script src="resources/custom/js/shipment/shipment_service.js"></script>
+  <script src="resources/custom/js/user_master/user_service.js"></script>
+  <script src="resources/custom/js/branch_master/branch_service.js"></script>
+  <script src="resources/custom/js/price_setting/s_price_setting_service.js"></script>
+  <script src="resources/custom/js/CompanySetting/company_setting_service.js"></script>
+  <script src="resources/custom/js/custom.js"></script>
+  <script src="resources/custom/js/confirmDialog.js"></script>   
+  <script type="text/javascript" src="resources/custom/js/validation.js"></script>
+
 
 </body>
 
