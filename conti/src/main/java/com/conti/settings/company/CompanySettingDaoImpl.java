@@ -63,4 +63,16 @@ public class CompanySettingDaoImpl implements CompanySettingDAO {
 		return null;
 	}
 
+	@Override
+	@Transactional
+	public Company getUserId(int created_user, int updated_user) {
+		@SuppressWarnings("unchecked")
+		List<Company> getUserId = sessionFactory.getCurrentSession()
+				.createQuery("from Company where created_by="+created_user+"OR updated_by='"+updated_user+"'").list();
+		if(getUserId != null && !getUserId.isEmpty()){
+			return getUserId.get(0);
+		}
+		return null;
+	}
+
 }

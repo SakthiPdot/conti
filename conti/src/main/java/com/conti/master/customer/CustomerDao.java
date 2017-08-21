@@ -30,5 +30,6 @@ public interface CustomerDao
 	//===== Referred Delete Process in Foreign key =========//
 	public CustomerModel getLocationId(int locationid);
 	public CustomerModel getBranchId(int branchid);
+	public CustomerModel getUserId(int c_user,int u_user);
 	
 }

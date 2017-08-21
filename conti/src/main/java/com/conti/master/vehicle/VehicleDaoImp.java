@@ -173,6 +173,18 @@ public class VehicleDaoImp implements VehicleDao  {
 		}
 		return null;
 	}
+
+	@Override
+	@Transactional
+	public VehicleMaster getUserId(int c_user, int u_user) {
+		@SuppressWarnings("unchecked")
+		List<VehicleMaster> getuser = sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster where obsolete = 'N' and created_by="+c_user+"OR updated_by='"+u_user+"'").list();
+		if( getuser != null && !getuser.isEmpty()){
+			return getuser.get(0);
+		}
+		return null;
+	}
 	
 	
 

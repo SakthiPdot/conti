@@ -197,6 +197,19 @@ public class BranchDaoImpl implements BranchDao
 		}
 		return null;
 	}
+
+	@Override
+	@Transactional
+	public BranchModel getUserId(int c_user, int u_user) {
+		@SuppressWarnings("unchecked")
+		List<BranchModel> getUser = sessionFactory.getCurrentSession()
+				.createQuery("from BranchModel where obsolete = 'N' and created_by="+c_user+"OR updated_by='"+u_user+"'").list();
+		if(getUser != null && !getUser.isEmpty()){
+			return getUser.get(0);
+		}
+		return null;
+	}
+
 	
 }
 
