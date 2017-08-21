@@ -298,10 +298,35 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	}
 
 
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchshipmentforView(int branch_id) { // View Shipment for Manager and Staff
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and sender_branch.branch_id=" + branch_id
+						+ "and  status in ('Booked','Intransit','Pending','Return')" )
+				.setMaxResults(100).list();
+		
+		return listShipment;		
+	}
 
 
 
 
-	
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchshipmentforView() { // View shipment for SuperAdmin
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and  status in ('Booked','Intransit','Pending','Return')" )
+				.setMaxResults(100).list();
+		
+		return listShipment;
+	}
+
 	
 }

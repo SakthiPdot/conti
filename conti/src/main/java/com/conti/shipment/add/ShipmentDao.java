@@ -39,4 +39,7 @@ public interface ShipmentDao
 	 * @return
 	 */
 	public ShipmentModel getShipmentModelById(int shipmentId);
+	
+	public List<ShipmentModel> fetchshipmentforView(int branch_id); // for Manager / User
+	public List<ShipmentModel> fetchshipmentforView(); // for Super Admin
 }

@@ -11,6 +11,15 @@ contiApp.controller('ViewShipmentController', ['$http', '$filter', '$scope','$q'
 	
 	$("#screen_addshipment").addClass("active-menu");
 	var self = this;
+	self.shipment = {};
 	
+	ShipmentService.fetchAllShipmentforView()
+		.then(
+				function (shipment) {
+					self.shipment = shipment;				
+				}, function (errResponse) {
+					console.log(errResponse);
+				}
+			);
 	
 }]);

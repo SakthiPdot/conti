@@ -246,7 +246,6 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox"></th>
-                                            <th>S.No</th>
                                             <th>Date</th>
                                             <th>LR No</th>
                                             <th>Product</th>
@@ -255,26 +254,27 @@
                                             <th>Sender</th>
                                             <th>Consignee</th>
                                             <th>Status</th>
-                                            <th>Receipt</th>
-                                            <th>Actions</th>
-                                   
+                                                                               
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>1</td>
-                                            <td>15-09-2013</td>
-                                            <td>LR7230</td>
-                                            <td>Box</td>
-                                            <td>Coimbatore</td>
-                                            <td>Chennai</td>
-                                            <td>Velu</td>
-                                            <td>Tamil</td>
-                                            <td>Status</td>
-                                            <td>RE84267</td>
-                                            <td>Actions</td>
-                                        
+                                        <tr
+                                        	data-ng-repeat = "shipment in ctrl.shipment"
+                                        >
+                                            <td><input type="checkbox" data-ng-model = "shipment.select" /></td>                                            
+                                            <td>{{shipment.shipment_date}}</td>
+                                            <td>{{shipment.lrno_prefix}}</td>
+                                            <td>
+                                            	<div data-ng-repeat = "shipmentDet in shipment.shipmentDetail">
+                                            		{{shipmentDet.product.product_name}}<span data-ng-if="!($last)">,</span>
+                                            	</div>
+                                            </td>
+                                            <td>{{shipment.sender_branch.branch_name}}</td>
+                                            <td>{{shipment.consignee_branch.branch_name}}</td>
+                                            <td>{{shipment.sender_customer.customer_name}}</td>
+                                            <td>{{shipment.consignee_customer.customer_name}}</td>
+                                            <td>{{shipment.status}}</td>
+                                                                                    
                                        </tr>
                                     <tbody>
                                 </table>
