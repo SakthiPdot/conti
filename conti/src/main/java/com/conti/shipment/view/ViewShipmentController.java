@@ -62,6 +62,7 @@ public class ViewShipmentController {
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			
+			model.addObject("branch_id", branch_id);
 			model.addObject("title", "View Shipment");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Shipment/view shipment");
@@ -86,7 +87,8 @@ public class ViewShipmentController {
 		try {
 			
 			User user = usersDao.get(Integer.parseInt(userid));
-			if (user.role.getRole_Name() == constantVal.ROLE_SADMIN) { //block for SUPER ADMIN
+			
+			if (user.role.getRole_Name().equals(constantVal.ROLE_SADMIN)) { //block for SUPER ADMIN
 				List<ShipmentModel> shipment=shipmentDao.fetchshipmentforView();
 				if(shipment.isEmpty()) {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, null);	
@@ -97,7 +99,7 @@ public class ViewShipmentController {
 				}
 				
 			} else { //block for MANAGER AND USER
-				List<ShipmentModel> shipment=shipmentDao.fetchshipmentforView();
+				List<ShipmentModel> shipment=shipmentDao.fetchshipmentforView(branch_id);
 				if(shipment.isEmpty()) {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, null);	
 					return new ResponseEntity <List<ShipmentModel>>(HttpStatus.NOT_FOUND);	
@@ -106,6 +108,8 @@ public class ViewShipmentController {
 					return new ResponseEntity <List<ShipmentModel>>(shipment, HttpStatus.OK);		
 				}
 			}
+			
+			
 			
 		}catch (Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.LOGGER_STATUS_E, exception);
