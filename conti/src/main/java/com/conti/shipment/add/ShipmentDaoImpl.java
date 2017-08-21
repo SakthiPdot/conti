@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.conti.master.location.Location;
+
 /**
  * @Project_Name conti
  * @Package_Name com.conti.shipment.add
@@ -35,6 +37,26 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 	
+	@Override
+	@Transactional
+	public int shipmentCount(){
+		int recCount=((Long)sessionFactory.getCurrentSession().
+				createQuery("select count(*) from ShipmentModel WHERE obsolete='N'").
+				uniqueResult()).intValue();
+		return recCount;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchShipmentWithLimit(int from, int to, String order) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from fetchShipmentWithLimit where obsolete ='N'"
+						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
+					.setFirstResult(from).setMaxResults(to).list();
+	}
+
 	
 	
 	

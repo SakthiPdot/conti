@@ -15,6 +15,9 @@ import java.util.List;
 
 public interface ShipmentDao
 {
+
+	public int shipmentCount();
+	public List<ShipmentModel> fetchShipmentWithLimit(int from,int to,String order);
 	public List<ShipmentModel> fetchAllShipment(int branch_id);
 	public int fetchMAXlrno(int branch_id);
 	public String fetchMAXlrno_prefix(int branch_id);
