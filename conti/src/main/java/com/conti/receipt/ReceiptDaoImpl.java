@@ -69,6 +69,18 @@ public class ReceiptDaoImpl implements ReceiptDao
 		return null;
 	}
 	//---------------------------------------------------------------------------------
+
+	@Override
+	@Transactional
+	public ReceiptModel getUser(int c_user, int u_user) {
+		@SuppressWarnings("unchecked")
+		List<ReceiptModel> getuserid = sessionFactory.getCurrentSession()
+				.createQuery("from ReceiptModel where ReceiptModel obsolete ='N' and created_by="+c_user+"OR updated_by='"+u_user+"'").list();
+		if (getuserid != null && !getuserid.isEmpty()){
+			return getuserid.get(0);
+		}
+		return null;
+	}
 	
 	//===================================================================================================
 }

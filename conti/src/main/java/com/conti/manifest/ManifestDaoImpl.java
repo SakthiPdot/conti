@@ -108,6 +108,7 @@ public class ManifestDaoImpl implements ManifestDao
 		String hql = "FROM ManifestModel WHERE obsolete ='N' and manifest_id ="+ id + "";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
+		@SuppressWarnings("unchecked")
 		List<ManifestModel> manifestlist = (List<ManifestModel>) query.list();
 		if(manifestlist != null && !manifestlist.isEmpty()) {
 			return manifestlist.get(0);
@@ -278,6 +279,20 @@ public class ManifestDaoImpl implements ManifestDao
 			if(getBranchId != null && !getBranchId.isEmpty()){
 				return getBranchId.get(0);
 			}
+			return null;
+		}
+
+
+
+		@Override
+		@Transactional
+		public ManifestModel getUserId(int c_user, int u_user) {
+			@SuppressWarnings("unchecked")
+			List<ManifestModel> getuser = sessionFactory.getCurrentSession()
+					.createQuery("from ManifestModel where created_by="+c_user+"OR updated_by='"+u_user+"'").list();
+					if(getuser != null && !getuser.isEmpty()){
+						return getuser.get(0);
+					}
 			return null;
 		}
 		

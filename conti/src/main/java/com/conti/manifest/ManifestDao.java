@@ -46,4 +46,5 @@ public interface ManifestDao
 		public ManifestModel getVehicleId(int vehicleid);
 		public ManifestModel getEmployeeId(int employeeid);
 		public ManifestModel getBranchId(int branch_id);
+		public ManifestModel getUserId(int c_user,int u_user);
 }
