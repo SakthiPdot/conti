@@ -64,6 +64,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	public List<ShipmentModel> fetchShipmentWithLimit(int from, int to, String order) {
 		return sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel where obsolete ='N'"
+						+ "and  status in ('Booked','Missing')" 
 						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
 					.setFirstResult(from).setMaxResults(to).list();
 	}
@@ -76,6 +77,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel where obsolete ='N'"
 						+ "and sender_branch.branch_id='"+branch_id+"' "
+						+ "and  status in ('Booked','Missing')" 
 						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
 					.setFirstResult(from).setMaxResults(to).list();
 	}
