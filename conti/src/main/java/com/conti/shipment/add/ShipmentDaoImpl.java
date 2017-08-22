@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.conti.master.location.Location;
+
 
 /**
  * @Project_Name conti
@@ -29,7 +29,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@Override
 	@Transactional
 	public List<ShipmentModel> fetchAllShipment(int branch_id) {
-		// TODO Auto-generated method stub
+		
 		
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
@@ -83,7 +83,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	}
 	
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@Transactional
 	public List<ShipmentModel> fetchAllShipment100() {
@@ -97,7 +97,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	}
 	
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@Transactional
 	public List<ShipmentModel> fetchAllShipment100Admin() {
@@ -110,7 +110,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@Transactional
 	public List<ShipmentModel> fetchAllShipment100Manifest(int branch_id) {
@@ -152,7 +152,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 				.list();
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@Transactional
 	public List<ShipmentModel> fetchAllShipment() {
@@ -165,7 +165,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	}
 	
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@Transactional
 	public List<ShipmentModel> fetchAllShipmentForStaff(int branchid) {
@@ -180,7 +180,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	
 	
 	
-	@SuppressWarnings("unchecked")
+
 	@Override
 	@Transactional
 	public List<ShipmentModel> fetchShipmentByLR(String searchString,int branch_id) {
@@ -196,7 +196,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@Transactional
 	public List<ShipmentModel> fetchShipmentByLRAdmin(String searchString) {
@@ -247,7 +247,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@Override
 	@Transactional
 	public String fetchMAXlrno_prefix(int branch_id) {
-		// TODO Auto-generated method stub
+		
 		String lrno = null;
 		Query query = sessionFactory.getCurrentSession()
 				.createQuery("Select lrno_prefix from ShipmentModel WHERE " 
@@ -263,7 +263,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@Override
 	@Transactional
 	public int fetchMAXlrno(int branch_id) {
-		// TODO Auto-generated method stub
+		
 		int lrno = 0;
 		Query query = sessionFactory.getCurrentSession()
 				.createQuery("Select MAX(lr_number) from ShipmentModel WHERE sender_branch.branch_id= " + branch_id);
@@ -278,7 +278,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@Override
 	@Transactional
 	public void saveOrUpdate(ShipmentModel shipment) {
-		// TODO Auto-generated method stub
+		
 		
 		sessionFactory.getCurrentSession().saveOrUpdate(shipment);
 		
@@ -289,7 +289,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@Override
 	@Transactional
 	public ShipmentModel getshipmentby_lrno(int lrno) {
-		// TODO Auto-generated method stub
+		
 		
 		String hql = "FROM ShipmentModel WHERE obsolete = 'N' and lr_number = " + lrno;
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
@@ -343,7 +343,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@Override
 	@Transactional
 	public List<ShipmentModel> fetchAllShipment4receipt(int branch_id) {
-		// TODO Auto-generated method stub
+		
 		
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
@@ -415,7 +415,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@Override
 	@Transactional
 	public List<ShipmentModel> fetchshipmentforView(int branch_id) { // View Shipment for Manager and Staff
-		// TODO Auto-generated method stub
+		
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
@@ -432,7 +432,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@Override
 	@Transactional
 	public List<ShipmentModel> fetchshipmentforView() { // View shipment for SuperAdmin
-		// TODO Auto-generated method stub
+		
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
@@ -474,6 +474,20 @@ public class ShipmentDaoImpl implements ShipmentDao {
 				.createQuery("from ShipmentHsnDetailModel where product_id ="+productid ).list();
 		if(getidProduct != null && !getidProduct.isEmpty()){
 			return getidProduct.get(0);
+		}
+		return null;
+	}
+
+
+
+	@Override
+	@Transactional
+	public ShipmentModel getUserId(int c_user, int u_user) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> getuser = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where obsolete = 'N' and created_by="+c_user+" OR updated_by='"+u_user+"'").list();
+		if( getuser != null && !getuser.isEmpty()){
+			return getuser.get(0);
 		}
 		return null;
 	}

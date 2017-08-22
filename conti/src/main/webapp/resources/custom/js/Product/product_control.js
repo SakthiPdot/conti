@@ -665,7 +665,7 @@ angular
 																	},function(referdata){
 																		self.message = "Product "
 																			+ self.product.product_name
-																			+ " already referred some one fields..!";
+																			+ "  referred in several process..!";
 																		successAnimate('.failure');
 																		window.setTimeout(function(){
 																			newOrClose();

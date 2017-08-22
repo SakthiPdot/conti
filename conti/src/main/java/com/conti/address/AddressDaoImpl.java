@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.conti.master.product.Product;
+
 
 @Repository
 public class AddressDaoImpl implements AddressDao{

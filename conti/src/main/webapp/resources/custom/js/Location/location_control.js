@@ -475,7 +475,7 @@ angular.module('contiApp').controller('locationController'
 							self.Locations.splice(index,1);
 							console.log(self.Locations);
 						},function(refdata) {
-							self.message =locationName+ " referred some one filed..!";
+							self.message =locationName+ " referred in several process..!";
 							successAnimate('.failure');	
 							window.setTimeout(function(){
 								newOrClose();

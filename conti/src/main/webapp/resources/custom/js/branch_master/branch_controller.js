@@ -373,7 +373,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 										
 										
 									}, function (referdata) {
-										self.message = self.branch.branch_name+ " already referred in some fields..!";
+										self.message = self.branch.branch_name+ " referred in several process..!";
 										successAnimate('.failure');
 										window.setTimeout(function(){
 											newOrClose();
