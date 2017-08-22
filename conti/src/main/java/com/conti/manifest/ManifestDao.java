@@ -45,4 +45,5 @@ public interface ManifestDao
 		//===== Referred Delete Process in Foreign key =========//
 		public ManifestModel getVehicleId(int vehicleid);
 		public ManifestModel getEmployeeId(int employeeid);
+		public ManifestModel getBranchId(int branch_id);
 }

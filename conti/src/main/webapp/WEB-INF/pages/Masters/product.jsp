@@ -219,7 +219,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-4 col-xs-4 footerLeft">
-							<button type="button" class=" btn btn-danger  pull-left"
+							<button type="button" class=" btn btn-warning  pull-left"
 								data-ng-click="proctrl.close('Cancel')" data-ng-click="reset()">
 								<i class="fa fa-ban" aria-hidden="true"></i>&nbsp;Cancel
 							</button>
@@ -227,7 +227,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 
 						<div class="col-lg-4 col-xs-4"
 							style="text-align: center; !important;">
-							<a id="" class="btnPadding btn btn-warning"
+							<a id="" class="btnPadding btn btn-danger"
 								data-ng-click="proctrl.deleteProduct()"
 								data-ng-show="!(proctrl.product.product_id== null)"><i
 								class="fa fa-trash" aria-hidden="true"></i> &nbsp;Delete</a> <a

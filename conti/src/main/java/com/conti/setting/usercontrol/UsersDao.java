@@ -40,6 +40,7 @@ public interface UsersDao {
 	
 	//===== Referred Delete Process in Foreign key =========//
 	public User getEmployeeId(int emp_id);
+	public User getBranchId(int branch_id);
 
 }
 

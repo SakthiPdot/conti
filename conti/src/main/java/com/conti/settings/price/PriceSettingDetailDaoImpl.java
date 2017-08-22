@@ -52,6 +52,19 @@ public class PriceSettingDetailDaoImpl implements PriceSettingDetailDao {
 		} 
 		return null;
 	}
+	//===== Referred Delete Process in Foreign key =========//
+	@Override
+	@Transactional
+	public PriceSettingDetail getBranchid(int branch_id) {
+		@SuppressWarnings("unchecked")
+		List<PriceSettingDetail> getbranch = sessionFactory.getCurrentSession()
+				.createQuery("from PriceSettingDetail where tobranch_id="+branch_id).list();
+		if(getbranch != null && !getbranch.isEmpty()){
+			return getbranch.get(0);
+		}
+		return null;
+	}
+	
 	
 	
 	

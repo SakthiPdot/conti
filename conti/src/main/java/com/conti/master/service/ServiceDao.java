@@ -18,4 +18,7 @@ public interface ServiceDao {
 	public int serviceSettingCount();
 	public List<ServiceMaster> getServiceBy100();
 	
+	//=======Delete by foreign key =============//
+	public ServiceMaster getUserid(int c_user,int u_user);
+	
 }

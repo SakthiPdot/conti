@@ -266,6 +266,20 @@ public class ManifestDaoImpl implements ManifestDao
 			}
 			return null;
 		}
+
+
+
+		@Override
+		@Transactional
+		public ManifestModel getBranchId(int branch_id) {
+			@SuppressWarnings("unchecked")
+			List<ManifestModel> getBranchId = sessionFactory.getCurrentSession()
+					.createQuery("from ManifestModel where vehicle_destination =" +branch_id).list();
+			if(getBranchId != null && !getBranchId.isEmpty()){
+				return getBranchId.get(0);
+			}
+			return null;
+		}
 		
 		
 		

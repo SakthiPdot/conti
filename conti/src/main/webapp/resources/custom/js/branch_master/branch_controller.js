@@ -362,14 +362,23 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 												
 							BranchService.deleteBranch(self.branch.branch_id)
 							.then(
-									function (branch) {
-										var index = self.branches.indexOf(branch);
+									function (msg) {
+										var index = self.branches.indexOf(self.branch);
 										self.branches.splice(index,1);
-										self.message =branch.branch_name+ " branch Deleted..!";
+										self.message =self.branch.branch_name+ " branch Deleted..!";
 										successAnimate('.success');
-										newOrClose();
+										window.setTimeout(function(){
+											newOrClose();
+										},5000);
 										
-									}, 
+										
+									}, function (referdata) {
+										self.message = self.branch.branch_name+ " already referred in some fields..!";
+										successAnimate('.failure');
+										window.setTimeout(function(){
+											newOrClose();
+										},5000);
+									},
 									function (errResponse) {
 						                console.error('Error while Delete branch' + errResponse );
 									}

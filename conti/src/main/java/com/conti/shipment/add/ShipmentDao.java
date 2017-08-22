@@ -15,6 +15,9 @@ import java.util.List;
 
 public interface ShipmentDao
 {
+
+	public int shipmentCount();
+	public List<ShipmentModel> fetchShipmentWithLimit(int from,int to,String order);
 	public List<ShipmentModel> fetchAllShipment(int branch_id);
 	public int fetchMAXlrno(int branch_id);
 	public String fetchMAXlrno_prefix(int branch_id);
@@ -34,9 +37,16 @@ public interface ShipmentDao
 	public ShipmentModel getServiceId(int serviceid);
 	public ShipmentModel getCustomerId(int scustomerid,int ccustomerid);
 	public ShipmentModel getLocationId(int locationid,int clocationid);
+	public ShipmentModel getBranchId(int sbranch_id,int cbranch_id);
+	
+	public ShipmentDetailModel getProductid(int product_id);
+	public ShipmentHsnDetailModel getProcductID(int productid);
 	/**
 	 * @param int1
 	 * @return
 	 */
 	public ShipmentModel getShipmentModelById(int shipmentId);
+	
+	public List<ShipmentModel> fetchshipmentforView(int branch_id); // for Manager / User
+	public List<ShipmentModel> fetchshipmentforView(); // for Super Admin
 }

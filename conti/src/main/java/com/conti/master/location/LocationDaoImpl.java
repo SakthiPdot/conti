@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.conti.master.branch.BranchModel;
+
 
 /**
  * @Project_Name conti
@@ -179,6 +179,18 @@ public class LocationDaoImpl implements LocationDao {
 		.createQuery("from Location WHERE obsolete ='N'and active='Y' and location_name LIKE '%" + search_key + "%'"+"OR pincode LIKE '%"+search_key + "%'").list();
 		return locationlist;
 		
+	}
+
+	@Override
+	@Transactional
+	public Location getUser(int c_user, int u_user) {
+		@SuppressWarnings("unchecked")
+		List<Location> getUserId = sessionFactory.getCurrentSession()
+				.createQuery("from Location WHERE obsolete = 'N' and created_by="+c_user+"OR updated_by ='"+u_user+"'" ).list();
+		if(getUserId != null && !getUserId.isEmpty()){
+			return getUserId.get(0);
+		}
+		return null;
 	}
 	
 

@@ -165,7 +165,7 @@ angular.module('contiApp').controller('locationController'
 				var size;
 				
 				if($scope.pageSize>self.FilteredLocations.length){
-					size=self.filteredPriceSetting.length;
+					size=self.FilteredLocations.length;
 				}else{
 					size=$scope.pageSize;
 				}
@@ -499,7 +499,7 @@ angular.module('contiApp').controller('locationController'
 				.then(function(response){
 					self.Locations=response;
 					self.FilteredLocations=response;
-					 pagination();
+					pagination();
 					console.log(self.Locations);
 				},
 				function(errResponse){
@@ -576,7 +576,7 @@ angular.module('contiApp').controller('locationController'
 		    		$scope.nextDisabled = true;
 		    		self.FilteredLocations = self.Locations.slice($scope.currentPage*$scope.pageSize);
 		    		
-		    		if(self.FilteredLocations==0){
+		    		if(self.FilteredLocations.length==0){
 
 						LocationService.paginateFirstOrLast(page)
 						.then(
@@ -633,6 +633,8 @@ angular.module('contiApp').controller('locationController'
 		    	if( self.FilteredLocations.length < $scope.pageSize ) {
 		    		$scope.previouseDisabled = true;
 		    		$scope.nextDisabled = true;
+		    	}else{
+		    		$scope.nextDisabled=false;
 		    	}
 		    	fetchAllLocation();
 		    	

@@ -209,18 +209,24 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 												
 						UserService.deleteUser(self.user.user_id)
 						.then(
-								function (user) {
-									var index = self.users.indexOf(user);
+								function (msg) {
+									var index = self.users.indexOf(self.user);
 									self.users.splice(index,1);
-									self.message =user.username+ " username Deleted..!";
+									self.message =self.user.username+ " username Deleted..!";
 									successAnimate('.success');
 									window.setTimeout( function(){	 	        		
 										newOrClose();
 	    							},5000);
 									
-								}, 
+								}, function(referdata) {
+									self.message =self.user.username+ " already referred some one fields..!";
+									successAnimate('.failure');
+									window.setTimeout( function(){	 	        		
+										newOrClose();
+	    							},5000);
+								},
 								function (errResponse) {
-					                self.message = "Error while deleting user "+user.username+" ";
+					                self.message = "Error while deleting user "+self.user.username+" ";
 				        			successAnimate('.failure');        		
 								}
 							);

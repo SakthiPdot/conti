@@ -3,8 +3,7 @@ package com.conti.master.customer;
 import java.util.List;
 
 import com.conti.master.customer.CustomerModel;
-import com.conti.master.employee.EmployeeMaster;
-import com.conti.master.location.Location;
+
 
 /**
  * @Project_Name conti
@@ -30,5 +29,7 @@ public interface CustomerDao
 	public List<CustomerModel> searchbyMobileno(String searchkey);
 	//===== Referred Delete Process in Foreign key =========//
 	public CustomerModel getLocationId(int locationid);
+	public CustomerModel getBranchId(int branchid);
+	public CustomerModel getUserId(int c_user,int u_user);
 	
 }

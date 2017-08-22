@@ -7,7 +7,6 @@ package com.conti.setting.usercontrol;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,9 +48,20 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
+import com.conti.master.branch.BranchDao;
+import com.conti.master.branch.BranchModel;
+import com.conti.master.customer.CustomerDao;
+import com.conti.master.customer.CustomerModel;
 import com.conti.master.employee.EmployeeDao;
 import com.conti.master.employee.EmployeeMaster;
 import com.conti.master.location.Location;
+import com.conti.master.location.LocationDao;
+import com.conti.master.product.Product;
+import com.conti.master.product.ProductDAO;
+import com.conti.master.service.ServiceDao;
+import com.conti.master.service.ServiceMaster;
+import com.conti.master.vehicle.VehicleDao;
+import com.conti.master.vehicle.VehicleMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.DateTimeCalculation;
 import com.conti.others.Loggerconf;
@@ -59,10 +69,12 @@ import com.conti.others.SendMailSMS;
 import com.conti.others.UserInformation;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
+import com.conti.settings.price.PriceSetting;
+import com.conti.settings.price.PriceSettingDao;
 import com.conti.userlog.UserLogDao;
 import com.conti.userlog.UserLogModel;
 
-import javassist.bytecode.Descriptor.Iterator;
+
 
 /**
  * @Project_Name conti
@@ -94,6 +106,21 @@ public class UserRestController {
 	private UserPrivilegeDao userPrivilegeDao;
 	@Autowired
 	private RolePrivilegeDao rolePrivilegeDao;
+	@Autowired
+	private PriceSettingDao psDao;
+	@Autowired
+	private BranchDao branchDao;
+	@Autowired
+	private CustomerDao customerDao;
+	@Autowired
+	private LocationDao locationDao;
+	@Autowired
+	private ProductDAO productDao;
+	@Autowired
+	private ServiceDao serviceDao;
+	@Autowired
+	private VehicleDao vehicleDao;
+	
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
 	SessionListener sessionListener = new SessionListener();
@@ -368,21 +395,37 @@ public class UserRestController {
 	
 	/* ------------------------- Delete a User begin ----------------------------------- */
 	@RequestMapping(value = "/delete_user/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<User> deleteUser(@PathVariable("id") int id, HttpServletRequest request) {
+	public ResponseEntity<String> deleteUser(@PathVariable("id") int id, HttpServletRequest request) {
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
+		Company company = companySettingDAO.getUserId(id, id);
+		PriceSetting priceSetting = psDao.getUserId(id, id);
+		BranchModel branchModel = branchDao.getUserId(id, id);
+		CustomerModel customerModel = customerDao.getUserId(id, id);
+		EmployeeMaster employeeMaster = employeeDao.getUserId(id, id);
+		Location location = locationDao.getUser(id, id);
+		Product product = productDao.getUserId(id, id);
+		ServiceMaster serviceMaster = serviceDao.getUserid(id, id);
+		VehicleMaster vehicleMaster = vehicleDao.getUserId(id, id);
+		
 		try {
 			User currentUser = usersDao.get(id);
 			if(currentUser == null) {
-				return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 			} else {
-				usersDao.delete(id);
-				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
-				return new ResponseEntity<User>(currentUser, HttpStatus.OK);
-			}
+				if(company == null && priceSetting == null && branchModel == null && customerModel == null && employeeMaster == null
+						&& location == null && product == null && serviceMaster == null && vehicleMaster == null) {
+					usersDao.delete(id);
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
+					return new ResponseEntity<String>( HttpStatus.OK);
+			
+				} else {
+					return new ResponseEntity<String>("referdata", HttpStatus.IM_USED);
+				}
+					}
 		} catch (Exception exception) {
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, exception);
-			return new ResponseEntity<User> (HttpStatus.UNPROCESSABLE_ENTITY);
+			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		
 	}	

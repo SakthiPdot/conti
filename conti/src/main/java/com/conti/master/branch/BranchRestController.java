@@ -49,18 +49,30 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
+import com.conti.master.customer.CustomerDao;
 import com.conti.master.customer.CustomerModel;
+import com.conti.master.employee.EmployeeDao;
 import com.conti.master.employee.EmployeeMaster;
 import com.conti.master.location.Location;
 import com.conti.master.location.LocationDao;
+import com.conti.master.vehicle.VehicleDao;
+import com.conti.master.vehicle.VehicleMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.RoleDao;
 import com.conti.setting.usercontrol.User;
+import com.conti.setting.usercontrol.UserPrivilege;
+import com.conti.setting.usercontrol.UserPrivilegeDao;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
+import com.conti.settings.price.PriceSetting;
+import com.conti.settings.price.PriceSettingDao;
+import com.conti.settings.price.PriceSettingDetail;
+import com.conti.settings.price.PriceSettingDetailDao;
+import com.conti.shipment.add.ShipmentDao;
+import com.conti.shipment.add.ShipmentModel;
 
 /**
  * @Project_Name conti
@@ -86,6 +98,21 @@ public class BranchRestController {
 	
 	@Autowired
 	private LocationDao locationDao;
+	
+	@Autowired
+	private EmployeeDao employeeDao;
+	@Autowired
+	private VehicleDao vehicleDao;
+	@Autowired
+	private CustomerDao customerDao;
+	@Autowired
+	private UserPrivilegeDao userPrivilegeDao;
+	@Autowired
+	private PriceSettingDao psDao;
+	@Autowired
+	private PriceSettingDetailDao psdDao;
+	@Autowired
+	private ShipmentDao shipmentDao;
 	
 	@Autowired
 	@Qualifier("sessionRegistry")
@@ -401,8 +428,16 @@ public class BranchRestController {
 	
 	/* ------------------------- Delete Branch begin ------------------------------------- */
 	@RequestMapping(value = "delete_branch/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<BranchModel> deleteBranch(@PathVariable ("id") int id, HttpServletRequest request) {
+	public ResponseEntity<String> deleteBranch(@PathVariable ("id") int id, HttpServletRequest request) {
 		BranchModel branchModel = branchDao.getBranchbyId(id);
+		User users = usersDao.getBranchId(id);
+		EmployeeMaster employeeMaster = employeeDao.getBranchId(id);
+		VehicleMaster vehicleMaster = vehicleDao.getBranchId(id);
+		CustomerModel customerModel = customerDao.getBranchId(id);
+		UserPrivilege userPrivilege = userPrivilegeDao.getBranchid(id);
+		PriceSetting priceSetting = psDao.getBranchId(id);
+		PriceSettingDetail priceSettingDetail = psdDao.getBranchid(id);
+		ShipmentModel shipmentModel = shipmentDao.getBranchId(id, id);
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
 		int user_id = Integer.parseInt(userInformation.getUserId());
@@ -410,24 +445,30 @@ public class BranchRestController {
 			
 			if(branchModel == null) {
 				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
-				return new ResponseEntity<BranchModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 			} else {
+				if(users == null && employeeMaster == null && vehicleMaster == null && customerModel == null && userPrivilege == null && priceSetting == null && priceSettingDetail == null && shipmentModel == null)  {
+					Date date = new Date();
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+					
+					branchModel.setUpdated_by(user_id);
+					branchModel.setUpdated_datetime(dateFormat.format(date));
+					branchModel.setActive("N");
+					branchModel.setObsolete("Y");
+					
+					branchDao.saveOrUpdate(branchModel);
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
+					return new ResponseEntity<String> (HttpStatus.OK);
+				} else {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, null);
+					return new ResponseEntity <String> ("refer data",HttpStatus.IM_USED);
+				}
 				
-				Date date = new Date();
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
 				
-				branchModel.setUpdated_by(user_id);
-				branchModel.setUpdated_datetime(dateFormat.format(date));
-				branchModel.setActive("N");
-				branchModel.setObsolete("Y");
-				
-				branchDao.saveOrUpdate(branchModel);
-				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
-				return new ResponseEntity<BranchModel> (branchModel,HttpStatus.OK);
 			}
 		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, exception);
-			return new ResponseEntity<BranchModel> (HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String> (HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	/* ------------------------- Delete Branch end ------------------------------------- */

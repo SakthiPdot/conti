@@ -24,4 +24,8 @@ public interface VehicleDao {
 	public String checkVehicleRegno(String SearchString);
 	public int vehicleSettingCount();
 	public List<VehicleMaster> getVehicleBy100();
+	
+	//===== Referred Delete Process in Foreign key =========//
+	public VehicleMaster getBranchId(int branch_id);
+	public VehicleMaster getUserId(int c_user,int u_user);
 }

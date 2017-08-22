@@ -11,7 +11,8 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	
 	var factory = {
 			createShipment : createShipment,
-			fetchMAXLRno : fetchMAXLRno
+			fetchMAXLRno : fetchMAXLRno,
+			fetchAllShipmentforView : fetchAllShipmentforView
 	};
 	
 	return factory;
@@ -62,4 +63,20 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	 
 	  
 	//---------------------------------- FETCH MAXLRNO END
+	 
+	//---------------------------------- FETCH ALL SHIPMENT
+	 function fetchAllShipmentforView() {
+		 var deferred = $q.defer();
+		 $http.get('fetchshipmentforview/')
+		 	.then(
+		 			function (response) {
+		 				deferred.resolve(response.data);
+		 			},
+		 			function (errResponse) {
+		 				deferrend.reject(errResponse);
+		 			}
+		 		);
+		 return deferred.promise;
+	 }
+	 
 }]);

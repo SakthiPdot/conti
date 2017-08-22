@@ -161,6 +161,30 @@ public class VehicleDaoImp implements VehicleDao  {
 		
 		return getlist;
 	}
+	//===== Referred Delete Process in Foreign key =========//
+	@Override
+	@Transactional
+	public VehicleMaster getBranchId(int branch_id) {
+		@SuppressWarnings("unchecked")
+		List<VehicleMaster> getbranchId = sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster where obsolete = 'N' and branch_id=" +branch_id).list();
+		if(getbranchId != null && !getbranchId.isEmpty()){
+			return getbranchId.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	@Transactional
+	public VehicleMaster getUserId(int c_user, int u_user) {
+		@SuppressWarnings("unchecked")
+		List<VehicleMaster> getuser = sessionFactory.getCurrentSession()
+				.createQuery("from VehicleMaster where obsolete = 'N' and created_by="+c_user+"OR updated_by='"+u_user+"'").list();
+		if( getuser != null && !getuser.isEmpty()){
+			return getuser.get(0);
+		}
+		return null;
+	}
 	
 	
 
