@@ -7,6 +7,15 @@
  * @Updated_date_time aug 9, 2017 4:20:17 PM
  * 
  */
+
+//======================================function to do after save======================================
+	function afterSave(){
+			valid = true;
+			location.href='view_manifest';
+		}
+	
+	
+	
 angular.module('contiApp').controller('addManifestController',['$scope','BranchService','addManifestService','ConfirmDialogService',
 	function($scope,BranchService,addManifestService,ConfirmDialogService){
 
@@ -97,15 +106,16 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 								console.log('save success');
 								self.message = "Manifest ( "+response.ManifestNo+" ) Created Successfully..! ";
 								successAnimate('.success');	
-								valid="true";
-								//setTimeout(function(){ location.reload(); }, 4000);		
+								setTimeout(function(){afterSave(); }, 4000);
+								
+								/*setTimeout(function(){ location.reload(); }, 4000);	*/	
 								//save and view manifest number
 							}, 
 							function (errResponse) {
 								console.log('Error while saving record');
 								self.message = "Error While Creating Manifest ..!";
 								successAnimate('.failure');
-								//setTimeout(function(){ location.reload(); }, 4000);	
+								setTimeout(function(){ location.reload(); }, 4000);	
 							});
 		},function(errResponse){
 			$('#myModal').css('z-index','1050');
@@ -193,6 +203,8 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		$scope.totalParcel = false;
 		$scope.weight = false;
 		$scope.service = false;
+		$scope.date = false;
+		$scope.status = false;
 	}
 	// ===================================sort table====================================
 	$scope.sortTable=function(x,status){

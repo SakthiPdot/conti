@@ -287,7 +287,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 																		data-ng-model="setting_totalparcel" /> Total Parcel
 																	</label>
 																</div>
-																	<div class="checkbox">
+																	<div class="checkbox" data-ng-hide="true">
 																	<label> <i class="fa"
 																		data-ng-class="{'fa-check': setting_weight == true, 'fa-times': setting_weight == false}"></i>
 																		<input type="checkbox"
@@ -295,14 +295,31 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 																		data-ng-model="setting_weight" /> Weight
 																	</label>
 																</div>
-																	<div class="checkbox">
+																		<div class="checkbox">
 																	<label> <i class="fa"
-																		data-ng-class="{'fa-check': setting_sevice == true, 'fa-times': setting_sevice== false}"></i>
+																		data-ng-class="{'fa-check': setting_sevice == true, 'fa-times': setting_sevice ==false}"></i>
 																		<input type="checkbox"
 																		data-ng-init="setting_sevice = true"
 																		data-ng-model="setting_sevice" /> Service
 																	</label>
 																</div>
+																	<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_status == true, 'fa-times': setting_status== false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_status = true"
+																		data-ng-model="setting_status" /> Status
+																	</label>
+																</div>
+																	<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_date == true, 'fa-times': setting_date== false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_date = true"
+																		data-ng-model="setting_date" /> Date
+																	</label>
+																</div>
+																
 																
 														</div>
 												<!--=============== excel============== -->
@@ -364,7 +381,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 														data-ng-hide="disableSorting"
 														data-ng-class=" {'fa fa-caret-up':totalParcel,'fa fa-caret-down':!totalParcel}"
 														aria-hidden="true"></i></th>
-												<th data-ng-show="setting_weight"
+												<th
+												data-ng-hide="true"
+												 data-ng-show="setting_weight"
 												data-ng-click="weight=!weight;sortTable('weight',weight);">Weight<i
 														data-ng-hide="disableSorting"
 														data-ng-class=" {'fa fa-caret-up':weight,'fa fa-caret-down':!weight}"
@@ -373,6 +392,16 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 												data-ng-click="service=!service;sortTable('service',service);">Service<i
 														data-ng-hide="disableSorting"
 														data-ng-class=" {'fa fa-caret-up':service,'fa fa-caret-down':!service}"
+														aria-hidden="true"></i></th>
+																<th data-ng-show="setting_status"
+												data-ng-click="status=!status;sortTable('status',status);">Status<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':status,'fa fa-caret-down':!status}"
+														aria-hidden="true"></i></th>
+																<th data-ng-show="setting_date"
+												data-ng-click="date=!date;sortTable('date',date);">Date<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':date,'fa fa-caret-down':!date}"
 														aria-hidden="true"></i></th>
 											</tr>
 										</thead>
@@ -389,8 +418,10 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 												<td data-ng-show="setting_sender">{{x.sender_customer.customer_name}}</td>
 												<td data-ng-show="setting_consignee">{{x.consignee_customer.customer_name}}</td>
 												<td data-ng-show="setting_totalparcel">{{x.numberof_parcel}}</td>
-												<td data-ng-show="setting_weight">{{x.chargeable_weight}}</td>
+												<td data-ng-show="setting_weight" data-ng-hide="true">{{x.chargeable_weight}}</td>
 												<td data-ng-show="setting_sevice">{{x.service.service_name}}</td>
+												<td data-ng-show="setting_status">{{x.status}}</td>
+												<td data-ng-show="setting_date">{{x.updated_datetime.slice(0,-2)}}</td>
 											</tr>
 										</tbody>
 									</table>

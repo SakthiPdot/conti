@@ -86,22 +86,24 @@
 							<th>Sender</th>
 							<th>Consignee</th>
 							<th>Total Parcel</th>
-							<th>Weight</th>
-							<th>Service</th>							
+							<th>Service</th>
+							<th>Status</th>
+							<th>Date</th>							
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="Shipment" items="${ShipmentList}" varStatus="loop">
 							<tr>
 								<td><c:out value="${loop.count}" />
-								<td>${Shipment.lr_number}</td>
+								<td>${Shipment.lrno_prefix}</td>
 								<td>${Shipment.sender_branch.branch_name}</td>
 								<td>${Shipment.consignee_branch.branch_name}</td>
 								<td>${Shipment.sender_customer.customer_name}</td>
 								<td>${Shipment.consignee_customer.customer_name }</td>
 								<td>${Shipment.numberof_parcel}</td>								
-								<td>${Shipment.chargeable_weight}</td>							
 								<td>${Shipment.service.service_name}</td>
+								<td>${Shipment.status}</td>								
+								<td>${Shipment.updated_datetime}</td>
 							</tr>
 						</c:forEach>
 					</tbody>

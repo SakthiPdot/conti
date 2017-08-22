@@ -148,8 +148,14 @@ public class addManifestRestController {
 			UserInformation userinfo = new UserInformation(request);
 			String userid = userinfo.getUserId();
 			User user =userDao.get(Integer.parseInt(userid));
+			List<ShipmentModel> shipmentList;
 			
-			List<ShipmentModel> shipmentList=sDao.fetchShipmentByLR(searchString,user.getBranchModel().getBranch_id());	
+			if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){	
+				shipmentList=sDao.fetchShipmentByLRAdmin(searchString);
+			}else{
+				shipmentList=sDao.fetchShipmentByLR(searchString,user.getBranchModel().getBranch_id());
+			}
+				
 			
 			return new ResponseEntity<List<ShipmentModel>> (shipmentList, HttpStatus.OK);		
 	}
@@ -309,6 +315,12 @@ public class addManifestRestController {
 			case "service":
 				sortBy="service.service_name";
 			break;
+			case "status":
+				sortBy="status";
+			break;
+			case "date":
+				sortBy="updated_datetime";
+			break;
 			default:
 			break;
 		}
@@ -417,10 +429,19 @@ public class addManifestRestController {
 	
 	//=================EXCEL DOWNLOAD=====================================
 	@RequestMapping(value="downloadExcelForAddManifest",method=RequestMethod.GET)
-	public ModelAndView downloadExcelForAddManifest(){
+	public ModelAndView downloadExcelForAddManifest(HttpServletRequest request){
 		
 		//change to fetch all 
-		List<ShipmentModel>  shipmentList=sDao.fetchAllShipment();
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =userDao.get(Integer.parseInt(userid));
+		List<ShipmentModel>  shipmentList;
+		if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+			  shipmentList=sDao.fetchAllShipment();
+		}else{
+			  shipmentList=sDao.fetchAllShipmentForStaff(user.getBranchModel().getBranch_id());
+		}
+		
 		return new ModelAndView("ShipmentExcelView","shipmentList",shipmentList);		
 	}
 
@@ -431,8 +452,18 @@ public class addManifestRestController {
 	//======================================get Record Count==========================================
 	@RequestMapping(value = "/manifestRecordCount/", method = RequestMethod.GET)
 	public ResponseEntity<String> manifestRecordCount(HttpServletRequest request) {
+		
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =userDao.get(Integer.parseInt(userid));
+		
 		try {	
-			return new ResponseEntity<String> (String.valueOf(sDao.shipmentCount()), HttpStatus.OK);			
+			if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+				return new ResponseEntity<String> (String.valueOf(sDao.shipmentCount()), HttpStatus.OK);	
+			}else{
+				return new ResponseEntity<String> (String.valueOf(sDao.shipmentCountStaff(user.getBranchModel().getBranch_id())), HttpStatus.OK);	
+			}
+					
 		} catch (Exception exception) {
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
 			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
@@ -460,9 +491,22 @@ public class addManifestRestController {
 			to_limit =  (page + 10 ) * 10;
 		}
 		
-		List<ShipmentModel> shipmentList=sDao.fetchShipmentWithLimit(from_limit, to_limit, order);
-		return new ResponseEntity<List<ShipmentModel>>(shipmentList,HttpStatus.OK);
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =userDao.get(Integer.parseInt(userid));
 		
+		List<ShipmentModel> shipmentList;
+		try {	
+			if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+				shipmentList=sDao.fetchShipmentWithLimit(from_limit, to_limit, order);
+			}else{
+				shipmentList=sDao.fetchShipmentWithLimitStaff(from_limit, to_limit, order,user.getBranchModel().getBranch_id());	
+			}				
+			return new ResponseEntity<List<ShipmentModel>>(shipmentList,HttpStatus.OK);
+		} catch (Exception exception) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT);
+		}
 	}
 
 	//========================== filter Shipment==========================
