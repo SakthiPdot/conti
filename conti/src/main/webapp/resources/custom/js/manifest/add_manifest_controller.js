@@ -12,6 +12,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 
 	
 	var self=this;
+	$scope.shownoofrec = 10;
 	self.branches = [];
 	self.viewShipment=viewShipment;
 	self.Manifests=[];
@@ -26,6 +27,8 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 	self.selectAll=selectAll;
 	self.clearModalValue=clearModalValue;
 	self.submitManifest=submitManifest;
+	self.pad=pad;
+	self.checkOriginAndDestination=checkOriginAndDestination;
 
 
 	
@@ -86,22 +89,23 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 					self.manifest.branchModel1=JSON.parse(self.manifest.branchModel1);
 					self.manifest.branchModel2=JSON.parse(self.manifest.branchModel2);
 
-					
-					
 					addManifestService.saveManifest(self.manifest)
 					.then(
 							function (response) {	
+
+								console.log('response');
 								console.log('save success');
-								self.message = "Manifest Created Successfully..!";
+								self.message = "Manifest ( "+response.ManifestNo+" ) Created Successfully..! ";
 								successAnimate('.success');	
 								valid="true";
-								setTimeout(function(){ location.reload(); }, 4000);								
+								//setTimeout(function(){ location.reload(); }, 4000);		
+								//save and view manifest number
 							}, 
 							function (errResponse) {
 								console.log('Error while saving record');
 								self.message = "Error While Creating Manifest ..!";
 								successAnimate('.failure');
-								setTimeout(function(){ location.reload(); }, 4000);	
+								//setTimeout(function(){ location.reload(); }, 4000);	
 							});
 		},function(errResponse){
 			$('#myModal').css('z-index','1050');
@@ -111,7 +115,15 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 	function selectAll(){
 
 		self.selectedManifest=[];
-		var size=10;
+		
+		var size;
+		
+		if($scope.pageSize>self.FilteredManifests.length){
+			size=self.FilteredManifests.length;
+		}else{
+			size=$scope.pageSize;
+		}
+		
 		
 		for(var i=0;i<size;i++){
 			self.FilteredManifests[i].select=self.selectAllManifest;
@@ -122,6 +134,84 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		console.log(self.selectedManifest);
 	}
 	
+	
+	//===================================select all====================================
+	function checkOriginAndDestination(){
+		
+		clearModalValue();
+		
+		var origin=true,destination=true;
+		
+		for(var i=0;i<self.selectedManifest.length;i++){
+			if(self.selectedManifest[0].sender_branch.branch_name !=self.selectedManifest[i].sender_branch.branch_name){
+				origin=false;
+			}
+			if(self.selectedManifest[0].consignee_branch.branch_name !=self.selectedManifest[i].consignee_branch.branch_name){
+				destination=false;
+			}
+		}
+		
+		
+		showMessageOriginDestination(origin,destination,self.selectedManifest[0].sender_branch, self.selectedManifest[0].consignee_branch);
+		
+		
+	}
+	
+	function showMessageOriginDestination(x,y,origin_id,destination_id){
+		var msg="";
+		
+		if(x==false && y==false){
+			msg="Both Origin And Destination Are Different." + "<br/>" +"Please Select Same Origin And Destination."
+		}else if(x==false ){
+			msg="Please Select Same Origin."
+		}else if(y==false){
+			msg="Please Select Same  Destination."
+		}else{	
+			$('#myModal').modal('show');
+			self.manifest.branchModel1=JSON.stringify(origin_id);
+			self.manifest.branchModel2=JSON.stringify(destination_id);	
+		}
+		
+		if(msg.trim().length!=0){
+			BootstrapDialog.alert({	
+				title:' Manifest Alert',
+				message: msg,
+				type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+				closable: false, 
+				draggable: false});
+			self.selectAllManifest=false;
+			selectAll();
+		}	
+	}
+	
+	function resetSorting(){
+		$scope.lrno = false;
+		$scope.origin = false;
+		$scope.destination = false;
+		$scope.sender = false;
+		$scope.consignee = false;
+		$scope.totalParcel = false;
+		$scope.weight = false;
+		$scope.service = false;
+	}
+	// ===================================sort table====================================
+	$scope.sortTable=function(x,status){
+		console.log("filer by---"+x,"status---"+status);
+		if(!$scope.disableSorting){
+			$scope.lastSorted = x;	
+			resetSorting();
+			$scope[x]=status;
+			addManifestService.sortBy(x,status?"ASC":"DESC")
+			.then(
+					function(response){
+						self.Manifests=response;
+						self.FilteredManifests=response;
+					},function(errRespone){
+						console.log("error while fetching shipment in search"+errRespone);
+					});	
+		}
+
+	}
 	//===================================ClearModalValue====================================
 	function clearModalValue(){
 		/*$scope.emp_name.originalObject=null;
@@ -148,11 +238,6 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		$('#vehicleDestinationBranch_value').val("");
 		
 	}
-	
-	
-	
-	
-	
 	
 	//===================================select Manifest====================================
 	function selectManifest(x){
@@ -183,12 +268,90 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		
 		}else{
 			self.FilteredManifests=_.filter(self.Manifests,function(item){
-				return String(item.lr_number).indexOf(searchString) > -1;
+				return String(item.lrno_prefix).indexOf(searchString) > -1;
 			});
 		}
 	}
 	
+	//===================================first last login page====================================
+	$scope.firstlastPaginate = function (page) {
+		
+		
+		self.selectAllManifest=false;
+		
+		if(page==1){	
+    		$scope.currentPage = 0;
+    		$scope.previouseDisabled = true;
+    		$scope.nextDisabled = false;
+    		self.FilteredManifests=self.Manifests.slice($scope.currentPage*$scope.pageSize);
+		}else{
+/*    		$scope.currentPage = ((Math.ceil(self.FilteredManifests.length/$scope.pageSize)) - 1);
+    		$scope.previouseDisabled = false;	
+    		$scope.nextDisabled = true;
+			self.FilteredManifests=self.Manifests.slice($scope.currentPage*$scope.pageSize);
+		
+			console.log(self.FilteredManifests.length);
+		if(self.FilteredManifests.length==0){
+*/
+			
+			
+			addManifestService.paginateFirstOrLast(page)
+			.then(
+					function(response){
+						self.FilteredManifests=response;
+			    		$scope.nextDisabled = true;
+			    		$scope.previouseDisabled = false;			    		
+			    		$scope.currentPage = ((Math.ceil($scope.totalnof_records/$scope.pageSize)) - 1);
+						console.log(response);
+					},function(errRespone){
+						console.log("error while fetching Manifest in search"+errRespone);
+					});
+		/*}*/
+		
+			$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+			
+		}
+	}
 	
+	  //===================================next and previous page====================================  
+    $scope.paginate=function(nextPrevMultiplier){
+    	self.selectAllManifest=false;
+    	$scope.currentPage += (nextPrevMultiplier * 1);
+    	self.FilteredManifests=self.Manifests.slice($scope.currentPage*$scope.pageSize);
+    	
+    	
+    	if(self.FilteredManifests.length==0){
+    		addManifestService.paginateFirstOrLast($scope.currentPage)
+			.then(
+					function(response){
+						console.log(response);
+						if(response.length == 0){
+							$scope.nextDisabled = true;
+						}else if(response.length < 10 ){
+							self.FilteredManifests = response;
+							$scope.nextDisabled = true;
+						}else{
+							self.FilteredManifests = response;							
+						}
+					},function(errRespone){
+						console.log("error while fetching Manifest in search"+errRespone);
+					});
+    	}
+    	
+    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+    	
+    	if($scope.currentPage == 0) {
+    		$scope.previouseDisabled = true;
+    	}
+    	
+    	if(nextPrevMultiplier == -1) {    		
+    		$scope.nextDisabled = false;
+    	} else {
+    		$scope.previouseDisabled = false;
+    	}
+    	
+    }
+    
 	//===================================Total Record Count====================================
 	getUserBranchDetails();
 	
@@ -248,6 +411,23 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 					}
 				);
 	}
+	
+	//===================================fetch Address====================================
+    self.shownoofRecord=function shownoofRecord() {    
+    	
+    	$scope.pageSize = $scope.shownoofrec;
+    	
+    	self.FilteredManifests=self.Manifests.slice($scope.currentPage*$scope.pageSize);
+    	if( self.FilteredManifests.length < $scope.pageSize ) {
+    		$scope.previouseDisabled = true;
+    		$scope.nextDisabled = true;
+    	}else{
+    		$scope.nextDisabled=false;
+    	}
+    	fetchAllShipment();
+    }
+	
+	
 	//===================================fetch Address====================================
 	fetchAllShipment();
 	
@@ -256,7 +436,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		.then(function(response){
 			self.Manifests=response;
 			self.FilteredManifests=response;
-			// pagination();
+			pagination();
 			console.log(self.Manifests);
 		},
 		function(errResponse){
@@ -266,13 +446,48 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 	
 	//===================================fetch Address====================================
 
-	
-	function viewShipment(){
+	//===================================pagination====================================
+    function pagination() {
+    	
+
+		console.log("inside pagination");
+    	$scope.pageSize = $scope.shownoofrec;
+		$scope.currentPage = 0;
+		$scope.totalPages = 0;	
+		$scope.previouseDisabled = true;	
+		$scope.nextDisabled = false;	
 		
+		if(self.FilteredManifests.length<=10){
+			console.log("less than 10");
+			$scope.nextDisabled = true;			
+		}
+
+		if(self.FilteredManifests.length<100){
+			$scope.totalnof_records = self.FilteredManifests.length;
+			console.log("less than 100");
+		}else{
+			findrecord_count();
+		}
+    }
+    //===================================Total Record Count====================================
+	function findrecord_count() {				
+		addManifestService.findrecord_count()
+		.then(
+				function (record_count) {
+					console.log(record_count);
+					$scope.totalnof_records  = record_count;
+				}, 
+				function (errResponse) {
+					console.log('Error while fetching record count');
+				});
+	}
+	
+    //===================================filter and view shipment====================================
+	function viewShipment(){		
 		if(self.manifest.branchModel1==null || typeof self.manifest.branchModel1== undefined)
 		self.fromBranch="";
 		if(self.manifest.branchModel2==null || typeof self.manifest.branchModel2 == undefined)
-		self.toBranch=""	;
+		self.toBranch="";
 		console.log(self.manifest.manifest_status==null);
 		if(self.manifest.manifest_status==null || typeof self.manifest.manifest_status == undefined)
 		self.manifest.manifest_status="";
@@ -297,8 +512,6 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 				},function(errResponse){
 					console.log("error while fetching manifest in filter"+errResponse);
 				});
-		
-
 		}
 	
 	

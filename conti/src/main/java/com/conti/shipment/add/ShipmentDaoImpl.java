@@ -36,6 +36,8 @@ public class ShipmentDaoImpl implements ShipmentDao {
 				.createQuery("from ShipmentModel WHERE obsolete = 'N' and senderbranch_id = " + branch_id).list();
 		return listShipment;
 	}
+
+	
 	
 	@Override
 	@Transactional
@@ -74,6 +76,18 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchAllShipment100Admin() {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and  status in ('Booked','Missing')" )
+				.setMaxResults(100).list();
+		
+		return listShipment;
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -87,6 +101,34 @@ public class ShipmentDaoImpl implements ShipmentDao {
 				.setMaxResults(100).list();
 		
 		return listShipment;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> getShipmentBySorting100ManifestAdmin (String name,String order) {
+		
+		return sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where  obsolete ='N' "
+							+ "and  status in ('Booked','Missing')"
+						    + "order by ("+name+")"+  order )
+				.setMaxResults(100)
+				.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> getShipmentBySorting100Manifest(String name,String order,int branchId) {
+		
+		return sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where  obsolete ='N' "
+							+ "and sender_branch.branch_id='"+branchId+"' "
+							+ "and  status in ('Booked','Missing')"
+						    + "order by ("+name+")"+  order )
+				.setMaxResults(100)
+				.list();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -109,7 +151,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
-						+ "and  lr_number LIKE '%"+searchString+ "%'"
+						+ "and  lrno_prefix LIKE '%"+searchString+ "%'"
 								+ "and sender_branch.branch_id='"+branch_id+"' "
 								+ "and  status in ('Booked','Missing') ")
 				

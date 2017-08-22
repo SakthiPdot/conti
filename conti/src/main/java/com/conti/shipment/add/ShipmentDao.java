@@ -16,6 +16,16 @@ import java.util.List;
 public interface ShipmentDao
 {
 
+	
+	
+	public List<ShipmentModel> getShipmentBySorting100ManifestAdmin (String name,String Order);
+	public List<ShipmentModel> getShipmentBySorting100Manifest(String name,String Order,int branchId);
+	
+	public List<ShipmentModel> fetchAllShipment100Admin();
+	public List<ShipmentModel> fetchAllShipment100Manifest(int branch_id);
+	public List<ShipmentModel> filterShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status);
+	public ShipmentModel getshipmentby_lrno(int lrno);
+	
 	public int shipmentCount();
 	public List<ShipmentModel> fetchShipmentWithLimit(int from,int to,String order);
 	public List<ShipmentModel> fetchAllShipment(int branch_id);
@@ -23,11 +33,8 @@ public interface ShipmentDao
 	public String fetchMAXlrno_prefix(int branch_id);
 	public void saveOrUpdate(ShipmentModel shipment);
 	public List<ShipmentModel> fetchAllShipment100();
-	public List<ShipmentModel> fetchAllShipment100Manifest(int branch_id);
 	public List<ShipmentModel> fetchAllShipment();
 	public List<ShipmentModel> fetchShipmentByLR(String searchString,int branchid);
-	public List<ShipmentModel> filterShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status);
-	public ShipmentModel getshipmentby_lrno(int lrno);
 //===========================Add Receipt======================================
 	public List<ShipmentModel>getShipmentByCondition(int from,int to,String frombranch,String tobranch,String service,String paymode);
 	public List<ShipmentModel> fetchAllShipment4receipt(int branch_id);
