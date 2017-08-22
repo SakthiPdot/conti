@@ -16,18 +16,33 @@ import java.util.List;
 public interface ShipmentDao
 {
 
+	
+	
+	public List<ShipmentModel> getShipmentBySorting100ManifestAdmin (String name,String Order);
+	public List<ShipmentModel> getShipmentBySorting100Manifest(String name,String Order,int branchId);
+	
+	public List<ShipmentModel> fetchAllShipment100Admin();
+	public List<ShipmentModel> fetchAllShipment100Manifest(int branch_id);
+	public List<ShipmentModel> filterShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status);
+	public ShipmentModel getshipmentby_lrno(int lrno);
+	
 	public int shipmentCount();
+	public int shipmentCountStaff(int branch_id);
+	
 	public List<ShipmentModel> fetchShipmentWithLimit(int from,int to,String order);
+	public List<ShipmentModel> fetchShipmentWithLimitStaff(int from,int to,String order,int branch_id);
+	
+	
 	public List<ShipmentModel> fetchAllShipment(int branch_id);
 	public int fetchMAXlrno(int branch_id);
 	public String fetchMAXlrno_prefix(int branch_id);
 	public void saveOrUpdate(ShipmentModel shipment);
 	public List<ShipmentModel> fetchAllShipment100();
-	public List<ShipmentModel> fetchAllShipment100Manifest(int branch_id);
 	public List<ShipmentModel> fetchAllShipment();
+	public List<ShipmentModel> fetchAllShipmentForStaff(int branchid);
+	
 	public List<ShipmentModel> fetchShipmentByLR(String searchString,int branchid);
-	public List<ShipmentModel> filterShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status);
-	public ShipmentModel getshipmentby_lrno(int lrno);
+	public List<ShipmentModel> fetchShipmentByLRAdmin(String searchString);
 //===========================Add Receipt======================================
 	public List<ShipmentModel>getShipmentByCondition(int from,int to,String frombranch,String tobranch,String service,String paymode);
 	public List<ShipmentModel> fetchAllShipment4receipt(int branch_id);
@@ -38,6 +53,7 @@ public interface ShipmentDao
 	public ShipmentModel getCustomerId(int scustomerid,int ccustomerid);
 	public ShipmentModel getLocationId(int locationid,int clocationid);
 	public ShipmentModel getBranchId(int sbranch_id,int cbranch_id);
+	public ShipmentModel getUserId(int c_user,int u_user);
 	
 	public ShipmentDetailModel getProductid(int product_id);
 	public ShipmentHsnDetailModel getProcductID(int productid);

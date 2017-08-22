@@ -25,6 +25,14 @@ contiApp.controller('ViewShipmentController', [
 	var self = this;
 	self.shipments = {};
 	self.branches = {};
+	self.viewShipment = {
+			"fromdate" : "",
+			"todate" : "",
+			"from_branch" : "",
+			"to_branch" : "",
+			"status" : "",
+			"product_id" : ""
+	};
 	self.fromBranch_disable = false;
 	//---------------------------- FETCH ALL SHIPMENT BEGIN
 	function fetchAllShipmentforView() {
@@ -50,13 +58,7 @@ contiApp.controller('ViewShipmentController', [
 					function (branches) {
 						self.branches = branches;
 						
-						if($('#currentUserRole').val() == "SUPER_ADMIN") {
-							self.fromBranch_disable = false;
-						} else {
-							self.fromBranch_disable = true;
-							
-							self.from_branch = parseInt($('#branch_id').val());
-						}
+						
 						
 						
 					}, function (errRes) {
@@ -64,7 +66,14 @@ contiApp.controller('ViewShipmentController', [
 					}
 				)
 				
-				
+			if($('#currentUserRole').val() == "SUPER_ADMIN") {
+					self.fromBranch_disable = false;
+					self.viewShipment.from_branch = parseInt($('#branch_id').val());
+				} else {
+					self.fromBranch_disable = true;
+					
+					self.viewShipment.from_branch = parseInt($('#branch_id').val());
+				}	
 	}
 	fetchAllBranch();
 	//---------------------------- FETCH ALL BRANCH END
@@ -93,4 +102,37 @@ contiApp.controller('ViewShipmentController', [
 	}
 	
 	//--------------------------- PAGINATION END
+	
+	//--------------------------- ANGU COMPLETE FRO PRODUCT NAME BEGIN
+	
+	$scope.product_name = function (product) {
+		self.viewShipment.product_id = product.originalObject.product_id;
+	}
+	
+	//--------------------------- ANGU COMPLETE FRO PRODUCT NAME END
+	
+	//--------------------------- FILTER SHIPMENT BEGIN
+	
+	self.filterShipment = function() {
+		
+		if($('.datepicker1').val().length != 0) {
+			self.viewShipment.fromdate = $('.datepicker1').val();	
+		} 
+		if($('.datepicker2').val().length != 0) {
+			self.viewShipment.todate = $('.datepicker2').val();	
+		} 
+		
+				
+		ShipmentService.filterShipment(self.viewShipment)
+			.then(
+					function (shipment) {
+						self.shipments = shipment
+					}, function (errRes) {
+						console.log(errRes);
+					}
+				);
+		console.log(self.viewShipment);
+	}
+	
+	//--------------------------- FILTER SHIPMENT END
 }]);
