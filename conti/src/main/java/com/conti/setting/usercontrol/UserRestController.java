@@ -48,6 +48,8 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
+import com.conti.hsn.Hsn;
+import com.conti.hsn.HsnDao;
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerDao;
@@ -120,6 +122,8 @@ public class UserRestController {
 	private ServiceDao serviceDao;
 	@Autowired
 	private VehicleDao vehicleDao;
+	@Autowired 
+	private HsnDao hsnDao;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
@@ -407,6 +411,7 @@ public class UserRestController {
 		Product product = productDao.getUserId(id, id);
 		ServiceMaster serviceMaster = serviceDao.getUserid(id, id);
 		VehicleMaster vehicleMaster = vehicleDao.getUserId(id, id);
+		Hsn hsn = hsnDao.getUserId(id, id);
 		
 		try {
 			User currentUser = usersDao.get(id);
@@ -414,7 +419,7 @@ public class UserRestController {
 				return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 			} else {
 				if(company == null && priceSetting == null && branchModel == null && customerModel == null && employeeMaster == null
-						&& location == null && product == null && serviceMaster == null && vehicleMaster == null) {
+						&& location == null && product == null && serviceMaster == null && vehicleMaster == null && hsn == null) {
 					usersDao.delete(id);
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
 					return new ResponseEntity<String>( HttpStatus.OK);
