@@ -626,6 +626,7 @@ angular.module('contiApp').controller('locationController'
 			
 			//===================================change no of page to view in register====================================
 		    self.shownoofRecord=function shownoofRecord() {    
+		    	self.location_search = null;
 		    	$scope.pageSize = $scope.shownoofrec;
 		    	
 		    	self.FilteredLocations = self.Locations.slice($scope.currentPage*$scope.pageSize);

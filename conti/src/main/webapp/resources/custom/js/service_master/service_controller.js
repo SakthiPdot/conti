@@ -454,7 +454,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			
 						function shownoofRecord(){
 							
-							
+							self.service_regSearch = null;
 							$scope.pageSize = $scope.shownoofrec;
 							self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
 						
@@ -463,7 +463,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 								$scope.nextDisabled = true;
 							}
 							fetchAllServices();
-							console.log("ddsss");
+							
 						}
 						
 			//================ Show no of Record Begin ============//

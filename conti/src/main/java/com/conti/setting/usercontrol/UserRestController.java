@@ -427,21 +427,7 @@ public class UserRestController {
 		ManifestModel manifest = mDao.getUserId(id, id);
 		ReceiptModel receipt = receiptDao.getUser(id, id);
 		ShipmentModel shipment = shipmentDao.getUserId(id, id);
-		
-		System.out.println("Company"+company);
-		System.out.println("branchModel"+branchModel);
-		System.out.println("priceSetting"+priceSetting);
-		System.out.println("customerModel"+customerModel);
-		System.out.println("employeeMaster"+employeeMaster);
-		System.out.println("location"+location);
-		System.out.println("product"+product);
-		System.out.println("serviceMaster"+serviceMaster);
-		System.out.println("Company"+company);
-		System.out.println("hsn"+hsn);
-		System.out.println("manifest"+manifest);
-		System.out.println("receipt"+receipt);
-		System.out.println("shipment"+shipment);
-		
+				
 		
 		try {
 			User currentUser = usersDao.get(id);

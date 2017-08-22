@@ -991,7 +991,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    //-------------------------------- Show no of record begin ----------------------------------------//
 	    
 	    function shownoofRecord() {    
-	    	
+	    	self.user_regSearch = null;
 	    	$scope.pageSize = $scope.shownoofrec;
 	    	
 	    	self.FilterUsers = self.users.slice($scope.currentPage*$scope.pageSize);
