@@ -48,6 +48,15 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return recCount;
 	}
 	
+	@Override
+	@Transactional
+	public int shipmentCountStaff(int branch_id){
+		int recCount=((Long)sessionFactory.getCurrentSession().
+				createQuery("select count(*) from ShipmentModel WHERE obsolete='N'"
+						+ "and sender_branch.branch_id='"+branch_id+"' ").
+				uniqueResult()).intValue();
+		return recCount;
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -60,6 +69,16 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	}
 
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchShipmentWithLimitStaff(int from, int to, String order,int branch_id) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where obsolete ='N'"
+						+ "and sender_branch.branch_id='"+branch_id+"' "
+						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
+					.setFirstResult(from).setMaxResults(to).list();
+	}
 	
 	
 	@SuppressWarnings("unchecked")
@@ -147,6 +166,21 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
+	public List<ShipmentModel> fetchAllShipmentForStaff(int branchid) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and sender_branch.branch_id='"+branchid+"' "
+						+ "and  status in ('Booked','Missing')" ).list();
+		
+		return listShipment;
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
 	public List<ShipmentModel> fetchShipmentByLR(String searchString,int branch_id) {
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
@@ -160,6 +194,20 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchShipmentByLRAdmin(String searchString) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and  lrno_prefix LIKE '%"+searchString+ "%'"
+								+ "and  status in ('Booked','Missing') ")
+				
+				.setMaxResults(100).list();
+		
+		return listShipment;
+	}
 	
 	
 	@Override

@@ -27,14 +27,22 @@ public interface ShipmentDao
 	public ShipmentModel getshipmentby_lrno(int lrno);
 	
 	public int shipmentCount();
+	public int shipmentCountStaff(int branch_id);
+	
 	public List<ShipmentModel> fetchShipmentWithLimit(int from,int to,String order);
+	public List<ShipmentModel> fetchShipmentWithLimitStaff(int from,int to,String order,int branch_id);
+	
+	
 	public List<ShipmentModel> fetchAllShipment(int branch_id);
 	public int fetchMAXlrno(int branch_id);
 	public String fetchMAXlrno_prefix(int branch_id);
 	public void saveOrUpdate(ShipmentModel shipment);
 	public List<ShipmentModel> fetchAllShipment100();
 	public List<ShipmentModel> fetchAllShipment();
+	public List<ShipmentModel> fetchAllShipmentForStaff(int branchid);
+	
 	public List<ShipmentModel> fetchShipmentByLR(String searchString,int branchid);
+	public List<ShipmentModel> fetchShipmentByLRAdmin(String searchString);
 //===========================Add Receipt======================================
 	public List<ShipmentModel>getShipmentByCondition(int from,int to,String frombranch,String tobranch,String service,String paymode);
 	public List<ShipmentModel> fetchAllShipment4receipt(int branch_id);
