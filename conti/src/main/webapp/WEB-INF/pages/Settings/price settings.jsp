@@ -67,6 +67,7 @@ data-ng-controller="priceSettingController as psctrl">
 											Branch<span style="color: red">&nbsp;*</span>
 										</span>
 
+										<fieldset data-ng-disabled="disableBSP">
 										<div angucomplete-alt id="selectedBranch"
 											placeholder="Ex : Coimbatore" pause="0"
 											selected-object="branch_name" remote-url="getBranchByStr/"
@@ -77,12 +78,14 @@ data-ng-controller="priceSettingController as psctrl">
 											initial-value="{{psctrl.priceSetting.branch.branch_name}}"
 											data-trigger="focus" data-toggle="popover"
 											data-placement="top" data-content="Please Enter Branch Name"></div>
-
+										</fieldset>
+										
 										<input type=hidden id="fromBranch"
 											data-ng-model="psctrl.priceSetting.branch" />
 										<!-- description-field="branch_code" -->
 
 										<span>Service<span style="color: red">&nbsp;*</span></span>
+										<fieldset data-ng-disabled="disableBSP">
 										<div angucomplete-alt id="selectedService"
 											placeholder="Ex : Door Delivery" pause="0"
 											selected-object="service_name" remote-url="getServiceByStr/"
@@ -93,11 +96,12 @@ data-ng-controller="priceSettingController as psctrl">
 											initial-value="{{psctrl.priceSetting.service.service_name}}"
 											data-trigger="focus" data-toggle="popover"
 											data-placement="top" data-content="Please Enter Service Name"></div>
-
+										</fieldset>
 
 										<input type="hidden" id="service"
 											data-ng-model="psctrl.priceSetting.service" /> <span>Product<span
 											style="color: red">&nbsp;*</span></span>
+										<fieldset data-ng-disabled="disableBSP">
 										<div angucomplete-alt id="selectedProduct"
 											placeholder="Ex : Box (Large)" pause="0"
 											selected-object="product_name" remote-url="getProductByStr/"
@@ -108,7 +112,7 @@ data-ng-controller="priceSettingController as psctrl">
 											data-trigger="focus" data-toggle="popover"
 											initial-value="{{psctrl.priceSetting.product.product_name}}"
 											data-placement="top" data-content="Please Enter Product Name"></div>
-
+										</fieldset>
 
 										<input type="hidden" id="product"
 											data-ng-model="psctrl.priceSetting.product" /> <span>Product
@@ -130,7 +134,9 @@ data-ng-controller="priceSettingController as psctrl">
 											maxlength="10" data-placement="top"
 											data-content="Please Enter Default Price"
 											data-ng-model="psctrl.priceSetting.default_price"
-											class="form-control"> <input type="checkbox"
+											class="form-control"> 
+											
+											<input type="checkbox"
 											data-ng-click="defaultHCPrice(defaultHandlingChargeCheckBox)"
 											data-ng-model="defaultHandlingChargeCheckBox">
 										&nbsp;&nbsp; <span>Default Handling Charges</span> <input
@@ -165,7 +171,7 @@ data-ng-controller="priceSettingController as psctrl">
 													<tr>
 
 														<th class="text-center">To Branch</th>
-														<th class="text-center" colspan="3">Weight Range</th>
+														<th class="text-center" colspan="3">Weight Range(Kg)</th>
 														<th class="text-center">Price</th>
 														<th class="text-center">Actions</th>
 													</tr>
@@ -205,8 +211,9 @@ data-ng-controller="priceSettingController as psctrl">
 														</td>
 
 
-														<td class="col-sm-1"><input type="text"
-															data-ng-disabled="!psdetails.edit "
+														<td class="col-sm-1" style="min-width: 80px;"><input type="text"
+															data-ng-disabled="!psdetails.edit "															
+															data-ng-keyup="CheckIsLessThanMaxValueFrom(event,psdetails.ps_weightfrom, $index)"
 															onKeyPress="return CheckIsNumericAnddot(event,this.value)"
 															class="form-control"
 															data-ng-model="psdetails.ps_weightfrom"
@@ -220,13 +227,15 @@ data-ng-controller="priceSettingController as psctrl">
 
 
 
-														<td class="col-sm-1"><input type="text"
+														<td class="col-sm-1" style="min-width: 80px;"><input type="text"
 															class="form-control" data-ng-disabled="!psdetails.edit "
-															onKeyPress="return CheckIsNumericAnddot(event,this.value)"
+															data-ng-keyup="CheckIsLessThanMaxValue(event,psdetails.ps_weightto, $index)"
+															onKeyPress="return CheckIsNumericAnddot(event,this.value)"	
 															data-ng-model="psdetails.ps_weightto"
 															data-trigger="focus" data-toggle="popover" maxlength="8"
 															data-placement="top"
-															data-content="Please Enter Weight(To) Name"></td>
+															data-content="Please Enter Weight(To) Name">
+															</td>
 
 
 
@@ -261,6 +270,10 @@ data-ng-controller="priceSettingController as psctrl">
 
 												</tbody>
 											</table>
+											
+											<span data-ng-cloak class="makeRed" data-ng-show="weightError">Maximum weight for {{psctrl.priceSetting.product.product_name}} is {{psctrl.priceSetting.product.max_weight}}kg . Please enter value less than specified weight.<br><br></span>
+								
+								
 											<button type="button" class="btn btn-primary"
 												data-ng-click="psctrl.addNew()">
 												<i class="fa fa-plus fa-lg"></i>

@@ -18,6 +18,7 @@
 	}
 	
 	
+	
 angular.module('contiApp').controller('priceSettingController',
 		['$scope','$timeout','priceSettingService','ConfirmDialogService',
 			function($scope,$timeout,priceSettingService,ConfirmDialogService){
@@ -35,6 +36,31 @@ angular.module('contiApp').controller('priceSettingController',
 	self.deletePriceSetting=deletePriceSetting;
 	self.formReset=formReset;
 	
+
+	$scope.CheckIsLessThanMaxValue=function(event,str,index){
+		if(self.priceSetting.product==null){
+			$("#selectedProduct_value").focus();
+			self.priceSetting.priceSettingDetail[index].ps_weightto=null;
+		}else if(str>self.priceSetting.product.max_weight){
+			self.priceSetting.priceSettingDetail[index].ps_weightto=null;
+			$scope.weightError=true;
+			setTimeout(function(){$scope.weightError=false;}, 200);			
+		}else{
+		}
+	}
+	
+	
+	$scope.CheckIsLessThanMaxValueFrom=function(event,str,index){
+		if(self.priceSetting.product==null){
+			$("#selectedProduct_value").focus();
+			self.priceSetting.priceSettingDetail[index].ps_weightfrom=null;
+		}else if(str>self.priceSetting.product.max_weight){
+			self.priceSetting.priceSettingDetail[index].ps_weightfrom=null;
+			$scope.weightError=true;
+			setTimeout(function(){$scope.weightError=false;}, 200);			
+		}else{
+		}
+	}
 	$scope.formReset=function(){
 		formReset();
 	}
@@ -347,6 +373,9 @@ angular.module('contiApp').controller('priceSettingController',
 	    			.then(function(){
 						self.message = " Price Setting For Product("+self.priceSetting.product.product_name +") created..!";
 	    				successAnimate('.success');	
+	    				if($scope.saveAttr=='new'){
+	    					$scope.defaultHandlingChargeCheckBox=false;
+	    				}
 	    				$timeout(function(){
 	    					afterSave($scope.saveAttr);
 	    				},4000);
@@ -461,6 +490,16 @@ angular.module('contiApp').controller('priceSettingController',
 			priceSettingService.fetchPSbyBSPId(id)
 			.then(function(response){
 				self.priceSetting=response;
+				
+				if(self.priceSetting.default_price==0){
+					$scope.showTable=false;
+					$scope.defaultPriceCheckBox=false;
+				}
+				
+				if(self.priceSetting.default_price==0){
+					$scope.defaultHandlingChargeCheckBox=false;
+				}
+				
 				$scope.showEdit=true;
 				$scope.disableBSP=true;
 				$scope.edit=true;

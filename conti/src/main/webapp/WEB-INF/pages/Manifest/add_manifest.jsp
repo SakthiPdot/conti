@@ -345,7 +345,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 
 								<div class="table-responsive">						
 									<table class="table table-striped table-bordered table-hover"
-										id="dataTables-example">
+										id="dataTables-example" data-ng-cloak>
 										<thead>
 											<tr>
 												<th><input type="checkbox"
@@ -429,7 +429,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									        <!--====================pagination tab============================ -->                               		
                                 		          
                                 <div class ="col-lg-6 col-md-6 col-xs-12">
-                                	<div class="pull-left">
+                                	<div class="pull-left" data-ng-cloak>
                                			 Showing {{(currentPage*pageSize)+1}} to 
                                			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
                                			 of {{totalnof_records}} entries
