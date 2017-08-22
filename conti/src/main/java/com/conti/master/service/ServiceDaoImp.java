@@ -139,4 +139,17 @@ public class ServiceDaoImp implements ServiceDao {
 					.createQuery("from ServiceMaster where obsolete = 'N' ORDER BY  created_datetime DESC").setMaxResults(100).list();
 			return getlist;
 		}
+
+
+		@Override
+		@Transactional
+		public ServiceMaster getUserid(int c_user, int u_user) {
+			@SuppressWarnings("unchecked")
+			List<ServiceMaster> getUser = sessionFactory.getCurrentSession()
+					.createQuery("from ServiceMaster where obsolete = 'N' and created_by="+c_user+"OR updated_by='"+u_user+"'").list();
+			if( getUser != null && !getUser.isEmpty()){
+				return getUser.get(0);
+			}
+			return null;
+		}
 }

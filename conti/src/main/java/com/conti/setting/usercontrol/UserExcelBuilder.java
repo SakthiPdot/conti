@@ -16,7 +16,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
-import com.conti.master.product.Product;
+
 
 /**
  * @Project_Name conti
@@ -69,7 +69,7 @@ public class UserExcelBuilder extends AbstractExcelView {
 		
 		//decimal format
 		DecimalFormat f=new DecimalFormat("##.00");		
-		
+		System.out.println(""+f);
 		//detail
 		for(User user:userList){
 			HSSFRow row=sheet.createRow(rowcount++);

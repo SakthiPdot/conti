@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.conti.master.location.Location;
+
 
 /**
  * @Project_Name conti
@@ -177,6 +177,18 @@ public class ProductDaoImpl implements ProductDAO {
 		}
 		
 		return "NOTAVAILABLE";
+	}
+//======= DELETE BY FOREIGN KEY =========//
+	@Override
+	@Transactional
+	public Product getUserId(int c_user, int u_user) {
+		@SuppressWarnings("unchecked")
+		List<Product> getuser = sessionFactory.getCurrentSession()
+				.createQuery("from Product where obsolete = 'N' and created_by="+c_user+"OR updated_by='"+u_user+"'").list();
+		if( getuser != null && !getuser.isEmpty()){
+			return getuser.get(0);
+		}
+		return null;
 	}
 
 }

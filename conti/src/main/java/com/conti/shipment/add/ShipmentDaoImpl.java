@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.conti.master.location.Location;
+
 /**
  * @Project_Name conti
  * @Package_Name com.conti.shipment.add
@@ -35,6 +37,26 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 	
+	@Override
+	@Transactional
+	public int shipmentCount(){
+		int recCount=((Long)sessionFactory.getCurrentSession().
+				createQuery("select count(*) from ShipmentModel WHERE obsolete='N'").
+				uniqueResult()).intValue();
+		return recCount;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchShipmentWithLimit(int from, int to, String order) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where obsolete ='N'"
+						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
+					.setFirstResult(from).setMaxResults(to).list();
+	}
+
 	
 	
 	
@@ -326,6 +348,42 @@ public class ShipmentDaoImpl implements ShipmentDao {
 				.setMaxResults(100).list();
 		
 		return listShipment;
+	}
+
+	@Override
+	@Transactional
+	public ShipmentModel getBranchId(int sbranch_id, int cbranch_id) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> getbranchId = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N' and senderbranch_id=" +sbranch_id+" OR consigneebranch_id='" +cbranch_id+"'").list();
+		if(getbranchId != null && !getbranchId.isEmpty()){
+			return getbranchId.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	@Transactional
+	public ShipmentDetailModel getProductid(int product_id) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentDetailModel> getproductid = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentDetailModel where product_id= "+product_id).list();
+		if(getproductid != null && !getproductid.isEmpty()){
+			return getproductid.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	@Transactional
+	public ShipmentHsnDetailModel getProcductID(int productid) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentHsnDetailModel> getidProduct = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentHsnDetailModel where product_id ="+productid ).list();
+		if(getidProduct != null && !getidProduct.isEmpty()){
+			return getidProduct.get(0);
+		}
+		return null;
 	}
 
 	

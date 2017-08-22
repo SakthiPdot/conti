@@ -23,6 +23,11 @@ public interface  PriceSettingDao {
 	
 	//---------------------------------------- FETCH PRICE BY from branch & product & service for add shipment by sankar
 	public PriceSetting fetchprice(int from_branch, int product, int service);
+	
+	//===== Referred Delete Process in Foreign key =========//
 	public PriceSetting getServiceById(int serviceid);
+	public PriceSetting getBranchId(int branchid);	
+	public PriceSetting getProductId(int product_id);
+	public PriceSetting getUserId(int created_user,int updated_user);
 }
      

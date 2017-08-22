@@ -2,7 +2,6 @@ package com.conti.master.location;
 
 import java.util.List;
 
-import com.conti.master.branch.BranchModel;
 
 /**
  * @Project_Name conti
@@ -26,5 +25,7 @@ public interface LocationDao {
 	public List<Location> getLocationSorting100(String name,String order);
 	public List<Location> searchByLocation(String SearchString);
 	public int locationSettingCount();
+	//======= Delete by Foreign Key ==========//
+	public Location getUser(int c_user,int u_user);
 }
  

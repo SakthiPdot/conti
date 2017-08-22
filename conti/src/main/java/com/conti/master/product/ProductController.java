@@ -38,6 +38,11 @@ import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
+import com.conti.settings.price.PriceSetting;
+import com.conti.settings.price.PriceSettingDao;
+import com.conti.shipment.add.ShipmentDao;
+import com.conti.shipment.add.ShipmentDetailModel;
+import com.conti.shipment.add.ShipmentHsnDetailModel;
 
 /**
  * @Project_Name conti
@@ -54,6 +59,10 @@ public class ProductController {
 
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
+	@Autowired
+	private ShipmentDao shipmentDao;
+	@Autowired
+	private PriceSettingDao psDao;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
@@ -306,16 +315,19 @@ public class ProductController {
 	//======================================delete product==========================================
 	@RequestMapping(value="/productDelete/{id}",method=RequestMethod.DELETE,
 	produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> deleteLocation(@PathVariable("id") long id,
+	public ResponseEntity<String> deleteLocation(@PathVariable("id") long id,
 	HttpServletRequest request){
 	
 
 		System.out.println("++ deleting Product "+id);
 		Product productFromDb=productDao.getProduct((int)id);
+		ShipmentDetailModel shipmentDetail = shipmentDao.getProductid((int)id);
+		ShipmentHsnDetailModel shipmentHsnDetail = shipmentDao.getProcductID((int)id);
+		PriceSetting priceSetting = psDao.getProductId((int)id);
 		
 		//check for null
 		if(productFromDb==null){
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
 		
 		//intialize		
@@ -330,12 +342,19 @@ public class ProductController {
 		
 		
 		try {
-			productDao.saveOrUpdate(productFromDb);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			if(shipmentDetail == null && shipmentHsnDetail == null && priceSetting == null)  {
+				productDao.saveOrUpdate(productFromDb);
+				return new ResponseEntity<String>(HttpStatus.OK);
+			} else {
+				System.out.println("Product else ========================");
+				return new ResponseEntity<String>("referred someone table",HttpStatus.IM_USED);
+			
+			}
+			
 		} catch (Exception e) {
 			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS,e);
 			e.printStackTrace();
-			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	//======================================display page==========================================
