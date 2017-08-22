@@ -110,7 +110,9 @@
 										<span class="text-padding">From</span> <select
 											class="form-control"
 											data-ng-options="branch.branch_id as branch.branch_name for branch in ctrl.branches"
-											data-ng-model="ctrl.from_branch" data-ng-disabled = "ctrl.fromBranch_disable == true">
+											data-trigger= "focus"data-toggle="popover" data-placement="top"
+					                        data-content="Please select from branch"
+											data-ng-model="ctrl.viewShipment.from_branch" data-ng-disabled = "ctrl.fromBranch_disable == true">
 											<option value="">--Select--</option>
 										</select>
 									</div>
@@ -118,8 +120,10 @@
 									<div class="col-lg-3 branchclass">
 										<span class="text-padding">To</span> <select
 											class="form-control"
-											data-ng-options="branch as branch.branch_name for branch in ctrl.branches"
-											data-ng-model="ctrl.to_branch">
+											data-ng-options="branch.branch_id as branch.branch_name for branch in ctrl.branches"
+											data-trigger= "focus"data-toggle="popover" data-placement="top"
+					                        data-content="Please select to branch"
+											data-ng-model="ctrl.viewShipment.to_branch">
 											<option value="">--Select--</option>
 										</select>
 									</div>
@@ -140,7 +144,9 @@
 										<div class="form-group input-group marginleftrightspace">
 
 
-											<input type="text" class="form-control datepicker" /> <span
+											<input type="text" class="form-control datepicker1" data-ng-model="ctrl.viewShipment.fromdate"
+					                           			   data-trigger= "focus"data-toggle="popover" data-placement="top"
+					                            		   data-content="Please select from date"/> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
 											</span>
 
@@ -153,7 +159,9 @@
 										<div class="form-group input-group spacemarginleftright">
 
 
-											<input type="text" class="form-control datepicker" /> <span
+											<input type="text" class="form-control datepicker2" data-ng-model="ctrl.viewShipment.todate"
+					                           			   data-trigger= "focus"data-toggle="popover" data-placement="top"
+					                            		   data-content="Please select to date"/> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
 											</span>
 
@@ -163,26 +171,50 @@
 
 								<div class="col-lg-12 noPaddingLeft subhead-padding">
 									<div class="col-lg-3 branchclass">
-										<span class="text-padding">Status</span> <select
-											class="form-control">
-											<option>--Select--</option>
-											<option>Booked</option>
+										<span class="text-padding">Status</span> 
+										<select class="form-control" data-ng-model = "ctrl.viewShipment.status"
+										data-trigger= "focus"data-toggle="popover" data-placement="top"
+					                        data-content="Please select status" 
+					                        data-ng-options = "status for status in ['Booked', 'Intransit', 'Pending', 'Return']"
+										>
+											<option value="">--Select--</option>
+											
 										</select>
 
 									</div>
 
 									<div class="col-lg-3 branchclass">
-										<span class="text-padding">Product</span> <select
-											class="form-control">
+										<span class="text-padding">Product</span> 
+										<!-- <select class="form-control" data-ng-model = "ctrl.product_name"
+											data-trigger= "focus"data-toggle="popover" data-placement="top"
+					                        data-content="Please select product" 
+										>
 											<option>--Select--</option>
-											<option>Box</option>
-											<option>Cover</option>
-										</select>
+											
+										</select> -->
+										
+										<div angucomplete-alt id="product_name" data-ng-model = "ctrl.viewShipment.product_name"
+															maxlength="5"
+															placeholder="Ex : Box (Large)" 
+															pause="0"											
+															selected-object="product_name"
+														    remote-url="getProductByStr/"
+															remote-url-data-field="Product"
+				             								title-field="product_name"
+															match-class="highlight"
+															minlength="1" 																						
+														    maxlength="50"	
+															input-class="form-control form-control-small"	
+															onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"									
+    														data-trigger="focus" data-toggle="popover" 
+			   											    data-placement="top" data-content="Please enter & select prduct"
+															
+											></div>
 
 									</div>
 
 									<div class="col-lg-3 branchclass">
-										<button class="btn btn-primary">View Shipment</button>
+										<button class="btn btn-primary" data-ng-click = "ctrl.filterShipment()">View Shipment</button>
 									</div>
 
 								</div>
@@ -357,6 +389,43 @@
 	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
 
 
+	<script>
+		$('[data-toggle="popover"]').popover();
+		$('.regSettings').click(function(e) {
+		    e.stopPropagation();
+		});
+
+   </script>
+
+
+ <script type="text/javascript">
+
+    function getDate(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        } 
+
+        if(mm<10) {
+            mm = '0'+mm
+        } 
+
+        today =  yyyy+'-'+mm+ '-'+ dd;
+        return today;
+    }
+	    $('.datepicker1').dateTimePicker({
+	        limitMax: getDate()
+	    });
+	    
+	    $('.datepicker2').dateTimePicker({
+	        limitMax: getDate()
+	    });
+	    
+    </script>
 </body>
 
 </html>

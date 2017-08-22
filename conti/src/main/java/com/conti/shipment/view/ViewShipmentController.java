@@ -1,15 +1,17 @@
 package com.conti.shipment.view;
 
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,79 +46,101 @@ public class ViewShipmentController {
 	Loggerconf loggerconf = new Loggerconf();
 	UserInformation userInformation;
 	ConstantValues constantVal = new ConstantValues();
-	
-	
-//---------------------------------------------- VIEW SHIPMENT BEGIN
-	@RequestMapping(value =  "view_shipment", method = RequestMethod.GET)
+
+	// ---------------------------------------------- VIEW SHIPMENT BEGIN
+	@RequestMapping(value = "view_shipment", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request) throws Exception {
-		
+
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
 		String userid = userInformation.getUserId();
 		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
 
 		ModelAndView model = new ModelAndView();
-		
-		
-		try
-		{
+
+		try {
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			
+
 			model.addObject("branch_id", branch_id);
 			model.addObject("title", "View Shipment");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Shipment/view shipment");
 
-			
 		} catch (Exception exception) {
-			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);
+			loggerconf.saveLogger(username, "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);
 		}
 		return model;
 
 	}
-	//---------------------------------------------- VIEW SHIPMENT END
-	
-	//---------------------------------------------- FETCH SHIPMENT WITH THE STATUS BEGIN
-	@RequestMapping( value = "/fetchshipmentforview", method = RequestMethod.GET)
-	public ResponseEntity<List<ShipmentModel>> fetchShipmentforView(HttpServletRequest request){
-		
+	// ---------------------------------------------- VIEW SHIPMENT END
+
+	// ---------------------------------------------- FETCH SHIPMENT WITH THE
+	// STATUS BEGIN
+	@RequestMapping(value = "/fetchshipmentforview", method = RequestMethod.GET)
+	public ResponseEntity<List<ShipmentModel>> fetchShipmentforView(HttpServletRequest request) {
+
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
 		String userid = userInformation.getUserId();
 		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
 		try {
-			
+
 			User user = usersDao.get(Integer.parseInt(userid));
-			
-			if (user.role.getRole_Name().equals(constantVal.ROLE_SADMIN)) { //block for SUPER ADMIN
-				List<ShipmentModel> shipment=shipmentDao.fetchshipmentforView();
-				if(shipment.isEmpty()) {
-					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, null);	
-					return new ResponseEntity <List<ShipmentModel>>(HttpStatus.NOT_FOUND);	
-				}else {
+
+			if (user.role.getRole_Name().equals(constantVal.ROLE_SADMIN)) { // block
+																			// for
+																			// SUPER
+																			// ADMIN
+				List<ShipmentModel> shipment = shipmentDao.fetchshipmentforView();
+				if (shipment.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, null);
+					return new ResponseEntity<List<ShipmentModel>>(HttpStatus.NOT_FOUND);
+				} else {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-					return new ResponseEntity <List<ShipmentModel>>(shipment, HttpStatus.OK);		
+					return new ResponseEntity<List<ShipmentModel>>(shipment, HttpStatus.OK);
 				}
-				
-			} else { //block for MANAGER AND USER
-				List<ShipmentModel> shipment=shipmentDao.fetchshipmentforView(branch_id);
-				if(shipment.isEmpty()) {
-					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, null);	
-					return new ResponseEntity <List<ShipmentModel>>(HttpStatus.NOT_FOUND);	
-				}else {
+
+			} else { // block for MANAGER AND USER
+				List<ShipmentModel> shipment = shipmentDao.fetchshipmentforView(branch_id);
+				if (shipment.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, null);
+					return new ResponseEntity<List<ShipmentModel>>(HttpStatus.NOT_FOUND);
+				} else {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-					return new ResponseEntity <List<ShipmentModel>>(shipment, HttpStatus.OK);		
+					return new ResponseEntity<List<ShipmentModel>>(shipment, HttpStatus.OK);
 				}
 			}
-			
-			
-			
-		}catch (Exception exception) {
-			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.LOGGER_STATUS_E, exception);
+
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.LOGGER_STATUS_E, exception);
 			return new ResponseEntity<List<ShipmentModel>>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-		
+
 	}
-	//---------------------------------------------- FETCH SHIPMENT WITH THE STATUS END
- 
+	// ---------------------------------------------- FETCH SHIPMENT WITH THE
+	// STATUS END
+
+	// ---------------------------------------------- FILTER SHIPMENT FOR VIEW
+	// BEGIN
+
+	@RequestMapping(value = "/filter_shipment", method = RequestMethod.POST)
+	public ResponseEntity <List<ShipmentModel>> filterShipemntforView(@RequestBody String viewShipment, HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		String user_id = userInformation.getUserId();
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		
+		JSONObject viewshipment_json = new JSONObject(viewShipment);
+		
+		List<ShipmentModel> filterShipment = shipmentDao.filterViewShipment(
+				viewshipment_json.get("from_branch").toString(), viewshipment_json.get("to_branch").toString(), 
+				viewshipment_json.get("fromdate").toString(), viewshipment_json.getString("todate").toString(), 
+				viewshipment_json.get("status").toString(), viewshipment_json.get("product_id").toString());
+		
+		return new ResponseEntity<List<ShipmentModel>> (filterShipment, HttpStatus.OK);
+	}
+
+	// ---------------------------------------------- FILTER SHIPMENT FOR VIEW
+	// END
+
 }

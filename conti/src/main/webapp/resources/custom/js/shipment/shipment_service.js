@@ -12,7 +12,8 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	var factory = {
 			createShipment : createShipment,
 			fetchMAXLRno : fetchMAXLRno,
-			fetchAllShipmentforView : fetchAllShipmentforView
+			fetchAllShipmentforView : fetchAllShipmentforView,
+			filterShipment : filterShipment
 	};
 	
 	return factory;
@@ -64,7 +65,7 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	  
 	//---------------------------------- FETCH MAXLRNO END
 	 
-	//---------------------------------- FETCH ALL SHIPMENT
+	//---------------------------------- FETCH ALL SHIPMENT BEGIN
 	 function fetchAllShipmentforView() {
 		 var deferred = $q.defer();
 		 $http.get('fetchshipmentforview/')
@@ -78,5 +79,31 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 		 		);
 		 return deferred.promise;
 	 }
+		//---------------------------------- FETCH ALL SHIPMENT END
 	 
+		//---------------------------------- VIEW SHIPMENT FILTER begin
+		
+	 function filterShipment(viewShipment) {
+	        var deferred = $q.defer();
+	        
+	    	$http({
+	    		method : 'POST',
+	    		url : 'filter_shipment',
+	    		data : viewShipment,
+	    		headers : getCsrfHeader()
+	    	})
+	    	.then(
+	    			function (response) {  
+	    				console.log(response);	
+	    				deferred.resolve(response.data);
+	    			},
+	    			function (errResponse) {
+	    				deferred.reject(errResponse);
+	    			}
+	    		);
+	    		return deferred.promise;
+	     
+	    }
+	 
+		//---------------------------------- VIEW SHIPMENT FILTER END 
 }]);
