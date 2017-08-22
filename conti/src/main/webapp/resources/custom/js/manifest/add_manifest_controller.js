@@ -99,7 +99,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 					self.manifest.branchModel2=JSON.parse(self.manifest.branchModel2);
 
 					addManifestService.saveManifest(self.manifest)
-					.then(
+					.then(	
 							function (response) {	
 
 								console.log('response');
@@ -338,6 +338,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 					function(response){
 						console.log(response);
 						if(response.length == 0){
+						    $scope.paginate(-1);
 							$scope.nextDisabled = true;
 						}else if(response.length < 10 ){
 							self.FilteredManifests = response;
