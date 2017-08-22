@@ -318,9 +318,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 																		data-ng-init="setting_date = true"
 																		data-ng-model="setting_date" /> Date
 																	</label>
-																</div>
-																
-																
+																</div>	
 														</div>
 												<!--=============== excel============== -->
 												 <a type="button" onclick="location.href='downloadExcelForAddManifest';valid = true;" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></a>											
