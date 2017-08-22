@@ -227,7 +227,7 @@ public class ManifestDaoImpl implements ManifestDao
 			public List<ManifestDetailedModel> searchShipmentLRnumber(String lr_number)
 			{
 			
-				String hql = "from ManifestDetailedModel where shipmentModel.lrno_prefix LIKE '%"+lr_number+"%' ";
+				String hql = "from ManifestDetailedModel where shipmentModel.lrno_prefix LIKE '%"+lr_number+"%' group by manifest_id";
 				Query query = sessionFactory.getCurrentSession().createQuery(hql);
 				@SuppressWarnings("unchecked")
 				List<ManifestDetailedModel> manifestDetailed= (List<ManifestDetailedModel>) query.list();

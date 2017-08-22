@@ -264,11 +264,11 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	  function manifestSearch(searchkey)
 	  {
 		  console.log(searchkey);
-		  if(self.search.manifest_regSearch.length==0)
-		  {
-		  	  self.Filtermanifests=self.manifests;
-		  }
-		  else if(self.search.manifest_regSearch.length>3)
+//		  if(self.search.manifest_regSearch.length==0)
+//		  {
+//		  	  self.Filtermanifests=self.manifests;
+//		  }
+		  if(self.search.manifest_regSearch.length>0)
 		  {
 		  	ManifestService.manifestSearch(searchkey)
 		  	.then(
