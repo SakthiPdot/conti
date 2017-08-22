@@ -25,7 +25,6 @@
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
-	
 	 <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
 	 
     <!-- Morris Chart Styles-->
