@@ -493,4 +493,36 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	}
 
 	
+	@Override
+	@Transactional
+	public List<ShipmentModel> filterViewShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status, String product)
+	{
+		StringBuilder queryString =new StringBuilder();
+		queryString.append("FROM ShipmentModel WHERE obsolete ='N' ");
+		
+		if(fromBranch!=null && !fromBranch.trim().isEmpty())
+			queryString.append(" AND sender_branch.branch_id='"+fromBranch+"' ");
+		if(toBranch!=null && !toBranch.trim().isEmpty())
+			queryString.append(" AND consignee_branch.branch_id='"+toBranch+"' ");
+		if(fromDate!=null && !fromDate.trim().isEmpty())			
+			queryString.append(" AND shipment_date >= '"+fromDate+" 00:00:00'");
+		if(toDate!=null && !toDate.trim().isEmpty())
+			queryString.append(" AND shipment_date <= '"+toDate+" 23:59:59'");
+		
+		if(product!=null && !product.trim().isEmpty())
+			queryString.append(" AND shipmentDetail.product.product_id = '"+product+"'");
+		
+		if(status!=null && !status.trim().isEmpty()){
+			queryString.append(" AND status = '"+status+"' ");
+		}else{
+			queryString.append("AND  status in ('Booked','Intransit', 'Pending', 'Return') ");
+		}
+		
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = (List<ShipmentModel>) sessionFactory.getCurrentSession()
+				.createQuery(queryString.toString()).list();
+		
+		return listShipment;
+		
+	}
 }
