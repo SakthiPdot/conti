@@ -37,7 +37,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.close=close;
 		self.deleteManifest=deleteManifest;
 		self.manifestFilter=manifestFilter;
-		self.inwardManifest=inwardManifest;
+		self.inwardManifest=inwardManifest;	
 		self.outwardManifest=outwardManifest;
 		self.manifestSearch=manifestSearch;	
 		self.shownoofRecord=shownoofRecord;
@@ -100,7 +100,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 				.then(
 						function (branches) {
 							self.branches = branches;
-							pagination();
+							
 							//console.log("get all branches "+self.branches)
 						}, 
 						function (errResponse) {
@@ -121,9 +121,11 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 						{
 							self.manifests = manifest;
 							self.Filtermanifests=self.manifests;
+							pagination();
 							console.log('fetching manifest '+self.Filtermanifests.length);
 						}, 
-						function (errResponse) {
+						function (errResponse) 
+						{
 							console.log('Error while fetching manifest');
 						}
 					);
@@ -261,11 +263,12 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    
 	  function manifestSearch(searchkey)
 	  {
-		  if(searchkey.length==0)
-		  {
-		  	  self.Filtermanifests=self.manifests;
-		  }
-		  else if(searchkey.length>3)
+		  console.log(searchkey);
+//		  if(self.search.manifest_regSearch.length==0)
+//		  {
+//		  	  self.Filtermanifests=self.manifests;
+//		  }
+		  if(self.search.manifest_regSearch.length>0)
 		  {
 		  	ManifestService.manifestSearch(searchkey)
 		  	.then(

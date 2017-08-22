@@ -201,6 +201,19 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 		}
 		return null;
 	}
+
+
+	@Override
+	@Transactional
+	public PriceSetting getUserId(int created_user, int updated_user) {
+		@SuppressWarnings("unchecked")
+		List<PriceSetting> getuserId = sessionFactory.getCurrentSession()
+				.createQuery("from PriceSetting where obsolete = 'N' and created_by="+created_user+"OR updated_by='"+updated_user+"'").list();
+		if(getuserId != null && !getuserId.isEmpty()){
+			return getuserId.get(0);
+		}
+		return null;
+	}
 		
 	
 

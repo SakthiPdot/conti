@@ -191,7 +191,21 @@
                 			       		<div class="col-lg-3 branchclass">
                 			      		 <span class="text-padding boldletter">Search</span>	                	                                       
                                             <input type="text" class="form-control searchbar" placeholder="Manifest/LR No"
-                                            data-ng-model="ctrl.manifest_regSearch" data-ng-keyup="ctrl.manifestSearch(ctrl.manifest_regSearch)">                                           
+                                            data-ng-model="ctrl.search.manifest_regSearch" data-ng-keyup="ctrl.manifestSearch(ctrl.search)">                                           
+                                        </div>
+                                        <div class="col-lg-3 branchclass">
+	                                        
+	                                        	<span class="text-padding boldletter">Search By</span>
+	                                        <select class="form-control " data-ng-model="ctrl.search.searchBy" data-ng-init="ctrl.search.searchBy='Manifest Number'"
+	                                        data-ng-options="searchBy for searchBy in ['Manifest Number','LR Number']" >
+                                     	
+	                                        </select>
+<!-- 											 <div class="col-lg-3 branchclass"> -->
+<!-- 	                                        	<input type="radio"  data-ng-model="ctrl.search.searchBy" data-ng-checked="true" value="Manifest Number"/></br>Manifest Number -->
+<!-- 	                                      	</div> -->
+<!-- 	                                        <div class="col-lg-3 branchclass"> -->
+<!-- 	                                        	<input type="radio" data-ng-model="ctrl.search.searchBy" value="LR Number"/></br>LR Number -->
+<!-- 	                                        </div>	 -->
                                         </div>
                 			      </div>
                 			</div>

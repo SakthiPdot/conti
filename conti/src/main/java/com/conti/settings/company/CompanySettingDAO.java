@@ -14,5 +14,6 @@ public interface CompanySettingDAO {
 	
 	//===== Referred Delete Process in Foreign key =========//
 	public Company getLocationId(int locationid);
+	public Company getUserId(int created_user, int updated_user);
 	
 }

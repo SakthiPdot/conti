@@ -25,4 +25,7 @@ public interface ProductDAO {
 	public List<Product> searchByProductTypeUnique(String SearchString);
 	public String checkProductName(String SearchString);
 	public int productCount();
+	
+	//====Delete By Foreign Key =====//
+	public Product getUserId(int c_user,int u_user);
 }

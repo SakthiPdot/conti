@@ -29,6 +29,7 @@ public interface BranchDao
 	
 	//===== Referred Delete Process in Foreign key =========//
 	public BranchModel getLocationbyId(int locationid);
+	public BranchModel getUserId(int c_user,int u_user);
 	
 	
 }

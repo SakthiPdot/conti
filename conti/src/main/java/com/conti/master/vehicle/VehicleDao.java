@@ -27,4 +27,5 @@ public interface VehicleDao {
 	
 	//===== Referred Delete Process in Foreign key =========//
 	public VehicleMaster getBranchId(int branch_id);
+	public VehicleMaster getUserId(int c_user,int u_user);
 }

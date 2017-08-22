@@ -119,6 +119,8 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 	
 		function manifestSearch(searchkey)
 		{
+			console.log('Manifest Search service function call successfully......');
+			console.log(searchkey);
 			var deferred=$q.defer();
 			$http({
 				method:'POST',

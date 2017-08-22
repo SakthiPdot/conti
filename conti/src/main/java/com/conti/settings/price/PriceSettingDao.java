@@ -28,5 +28,6 @@ public interface  PriceSettingDao {
 	public PriceSetting getServiceById(int serviceid);
 	public PriceSetting getBranchId(int branchid);	
 	public PriceSetting getProductId(int product_id);
+	public PriceSetting getUserId(int created_user,int updated_user);
 }
      
