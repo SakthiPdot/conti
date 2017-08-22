@@ -680,6 +680,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     
     function shownoofRecord() 
     {    
+    	self.branch_regSearch = null;
     	$scope.pageSize = $scope.shownoofrec;
     	self.Filterbranches = self.branches.slice($scope.currentPage*$scope.pageSize);
     	if( self.Filterbranches.length <= $scope.pageSize ) 

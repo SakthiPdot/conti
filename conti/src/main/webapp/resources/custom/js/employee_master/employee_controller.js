@@ -762,7 +762,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     
     function shownoofRecord() 
     {    
-    	
+    	self.emp_regSearch = null;
     	$scope.pageSize = $scope.shownoofrec;
     	self.Filteremployees = self.employees.slice($scope.currentPage*$scope.pageSize);
     	if( self.Filteremployees.length <= $scope.pageSize )

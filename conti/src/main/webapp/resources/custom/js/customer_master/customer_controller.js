@@ -671,6 +671,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     
     function shownoofRecord() 
     {    
+    	self.cust_regSearch = null;
     	$scope.pageSize = $scope.shownoofrec;
     	self.Filtercustomers=self.customers.slice($scope.currentPage*$scope.pageSize);
     	if(self.Filtercustomers.length <= $scope.pageSize)

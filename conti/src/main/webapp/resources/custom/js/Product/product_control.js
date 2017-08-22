@@ -722,6 +722,7 @@ angular
 							// page to view in
 							// register====================================
 							self.shownoofRecord = function shownoofRecord() {
+								self.product_search = null;
 								$scope.pageSize = $scope.shownoofrec;
 
 								self.FilteredProducts = self.products
