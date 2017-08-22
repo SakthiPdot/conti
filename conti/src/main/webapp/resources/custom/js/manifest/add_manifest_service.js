@@ -16,11 +16,50 @@ angular.module('contiApp').factory('addManifestService',['$http','$q',function($
 			filterManifest:filterManifest,
 			fetchAllShipment:fetchAllShipment,
 			fetchLastManifestNo:fetchLastManifestNo,
-			saveManifest:saveManifest
+			saveManifest:saveManifest,
+			paginateFirstOrLast:paginateFirstOrLast,
+			findrecord_count:findrecord_count,
+			sortBy:sortBy
+		
 	}
 	
 	return factory;
 
+	//=============================sort by name====================================
+	function sortBy(name,status){	
+		console.log(name,status);
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:"sortByManifest/"+name,
+			data:status,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("status change failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
+	//=============================find record count====================================
+	   function findrecord_count() {
+	        var deferred = $q.defer();
+	        $http.get('manifestRecordCount/')
+	            .then(
+	            function (response) {
+	                deferred.resolve(response.data);
+	            },
+	            function(errResponse){
+	                console.error('Error while fetching Users record count');
+	                deferred.reject(errResponse);
+	            }
+	        );
+	        return deferred.promise;
+	    }
+	   
 	//=============================get user Branch details====================================
 	function getUserBranchDetails(){
 		var deferred=$q.defer();
@@ -33,7 +72,27 @@ angular.module('contiApp').factory('addManifestService',['$http','$q',function($
 			);	
 		return deferred.promise;
 	}
+	//=============================paginate first or last====================================
+    function paginateFirstOrLast(page) {
+	var deferred = $q.defer();
 	
+	$http({
+		method : 'POST',
+		url : 'paginationManifest',
+		data : page,
+		headers : getCsrfHeader()
+	})
+	.then (
+		function (response) {
+			console.log(response);
+			deferred.resolve(response.data);
+		},
+		function (errResponse) {
+			deferred.reject(errResponse);
+		}
+	);
+	return deferred.promise;
+}
 	//=============================save manifest====================================
 	function saveManifest(manifest){
 		var deferred=$q.defer();

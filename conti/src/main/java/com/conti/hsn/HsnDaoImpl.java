@@ -64,4 +64,18 @@ public class HsnDaoImpl implements HsnDao {
 		return listHSN;
 	}
 
+
+//========== Delete by Foreign Key ========//
+	@Override
+	@Transactional
+	public Hsn getUserId(int c_user, int u_user) {
+		@SuppressWarnings("unchecked")
+		List<Hsn> getuser = sessionFactory.getCurrentSession()
+				.createQuery("from Hsn WHERE obsolete = 'N' and created_by="+c_user+"OR updated_by='"+u_user+"'").list();
+		if(getuser != null && !getuser.isEmpty()){
+			return getuser.get(0);
+		}
+		return null;
+	}
+
 }

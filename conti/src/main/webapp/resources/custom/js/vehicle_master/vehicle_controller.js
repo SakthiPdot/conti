@@ -136,8 +136,8 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		
 	//=================== Clear Function Begin ======================//
 	
-			function clear(clearopen) {
-				self.confirm_title = clearopen;
+			function clear() {
+				self.confirm_title ='Clear' ;
 				self.confirm_type = BootstrapDialog.TYPE_WARNING;
 				self.confirm_msg = self.confirm_title + ' the data?';
 				self.confirm_btnclass  =  'btn-warning';
@@ -507,6 +507,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			
 	//=============== Show no of Record Begin =============//
 			function shownoofRecord() {
+				self.vehicle_regSearch = null;
 				$scope.pageSize = $scope.shownoofrec;
 				/*$scope.currentPage = 0 ;*/
 				self.Filtervehicles = self.vehicles.slice($scope.currentPage*$scope.pageSize);

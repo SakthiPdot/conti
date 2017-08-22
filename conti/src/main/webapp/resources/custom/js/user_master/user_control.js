@@ -219,7 +219,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    							},5000);
 									
 								}, function(referdata) {
-									self.message =self.user.username+ " already referred some one fields..!";
+									self.message =self.user.username+ " referred in several process..!";
 									successAnimate('.failure');
 									window.setTimeout( function(){	 	        		
 										newOrClose();
@@ -991,7 +991,7 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 	    //-------------------------------- Show no of record begin ----------------------------------------//
 	    
 	    function shownoofRecord() {    
-	    	
+	    	self.user_regSearch = null;
 	    	$scope.pageSize = $scope.shownoofrec;
 	    	
 	    	self.FilterUsers = self.users.slice($scope.currentPage*$scope.pageSize);

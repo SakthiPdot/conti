@@ -52,7 +52,8 @@ public class SessionListener extends HttpSessionEventPublisher {
         HttpSessionEventPublisher service = ctx.getBean(HttpSessionEventPublisher.class);
         super.sessionCreated(event);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        
+        System.out.println(service);
+        System.out.println(auth);
         
     } 
  
@@ -65,7 +66,7 @@ public class SessionListener extends HttpSessionEventPublisher {
         SecurityContextHolder.clearContext();
         super.sessionDestroyed(event);
         
-        
+        System.out.println(service);
     }
     
 }

@@ -665,7 +665,7 @@ angular
 																	},function(referdata){
 																		self.message = "Product "
 																			+ self.product.product_name
-																			+ " already referred some one fields..!";
+																			+ "  referred in several process..!";
 																		successAnimate('.failure');
 																		window.setTimeout(function(){
 																			newOrClose();
@@ -722,6 +722,7 @@ angular
 							// page to view in
 							// register====================================
 							self.shownoofRecord = function shownoofRecord() {
+								self.product_search = null;
 								$scope.pageSize = $scope.shownoofrec;
 
 								self.FilteredProducts = self.products

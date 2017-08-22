@@ -38,7 +38,7 @@ public interface ManifestDao
 	//====================Manifest Detailed DAO declaration Start===================
 		
 		public List<ManifestDetailedModel>getAllManifestDetailes(int manifest_id);
-		//public List<ManifestDetailedModel>getManifestDetailed(int manifest_id);
+		public List<ManifestDetailedModel> searchShipmentLRnumber(String LRnumber);
 		
 	//====================Manifest Detailed DAO declaration End===================
 		
@@ -46,4 +46,5 @@ public interface ManifestDao
 		public ManifestModel getVehicleId(int vehicleid);
 		public ManifestModel getEmployeeId(int employeeid);
 		public ManifestModel getBranchId(int branch_id);
+		public ManifestModel getUserId(int c_user,int u_user);
 }

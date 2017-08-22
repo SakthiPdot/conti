@@ -83,7 +83,7 @@ public class addManifestRestController {
 		
 	
 	Loggerconf loggerconf = new Loggerconf();
-	
+	UserInformation userInformation;
 	
 	
 	//========================== to display Add Manifest Screen==========================
@@ -148,14 +148,19 @@ public class addManifestRestController {
 			UserInformation userinfo = new UserInformation(request);
 			String userid = userinfo.getUserId();
 			User user =userDao.get(Integer.parseInt(userid));
+			List<ShipmentModel> shipmentList;
 			
-			List<ShipmentModel> shipmentList=sDao.fetchShipmentByLR(searchString,user.getBranchModel().getBranch_id());	
+			if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){	
+				shipmentList=sDao.fetchShipmentByLRAdmin(searchString);
+			}else{
+				shipmentList=sDao.fetchShipmentByLR(searchString,user.getBranchModel().getBranch_id());
+			}
+				
 			
 			return new ResponseEntity<List<ShipmentModel>> (shipmentList, HttpStatus.OK);		
 	}
 	
 	//===========================To get all Employee name for Searching================================
-	
 	@RequestMapping(value="getEmployeeDriver4Search/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String,List<EmployeeMaster>>> getEmployeeDriver4Search(HttpServletRequest request,
 			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException 
@@ -166,9 +171,6 @@ public class addManifestRestController {
 		return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);
 	}
 	
-	
-	
-			
 	//=================PRINT=====================================
 	@RequestMapping(value="shipmentPrint",method=RequestMethod.POST)
 	public ModelAndView shipmentPrint(HttpServletRequest request,
@@ -275,13 +277,81 @@ public class addManifestRestController {
 			
 			System.err.println("@@$$WWWW$"+ searchStr);
 			return new ResponseEntity<Map<String,List<VehicleMaster>>> (result,HttpStatus.OK);
-			
-		
 	}
 
+	
+	
+	
+	//========================== sortByManifest==========================
+	@RequestMapping(value="sortByManifest/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ShipmentModel>> sortByManifest(@RequestBody String status,@PathVariable("name")String name,
+			HttpServletRequest request){
+		
+		
+		System.err.println("inside sorting");
+		String sortBy="";
+		switch(name.trim()){
+			case "lrno":
+				sortBy="lr_number";
+			break;
+			case "origin":
+				sortBy="sender_branch.branch_name";
+			break;
+			case "destination":
+				sortBy="consignee_branch.branch_name";
+			break;
+			case "sender":
+				sortBy="sender_customer.customer_name";
+			break;
+			case "consignee":
+				sortBy="consignee_customer.customer_name";
+			break;
+			case "totalParcel":
+				sortBy="numberof_parcel";
+			break;
+			case "weight":
+				sortBy="chargeable_weight";
+			break;
+			case "service":
+				sortBy="service.service_name";
+			break;
+			case "status":
+				sortBy="status";
+			break;
+			case "date":
+				sortBy="updated_datetime";
+			break;
+			default:
+			break;
+		}
+		
+		
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =userDao.get(Integer.parseInt(userid));
+		
+		List<ShipmentModel> shipmentList=new ArrayList<>();
+		try {
+			if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){				
+				shipmentList=shipmentDao.getShipmentBySorting100ManifestAdmin(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+			}else{
+				shipmentList=shipmentDao.getShipmentBySorting100Manifest(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC", user.getBranchModel().getBranch_id());
+			}
+			if(shipmentList.isEmpty()){
+				return new ResponseEntity<List<ShipmentModel>>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<List<ShipmentModel>>(shipmentList,HttpStatus.OK);
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS,e);
+			e.printStackTrace();
+			return new ResponseEntity<List<ShipmentModel>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}		
+	}
+	
+	
 	//========================== save Manifest==========================
 	@RequestMapping(value="manifestSave",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> manifestSave(HttpServletRequest request,@RequestBody ManifestModel manifest){
+	public ResponseEntity<String> manifestSave(HttpServletRequest request,@RequestBody ManifestModel manifest){
 
 		System.out.println("++ inside manifest save");
 		
@@ -310,19 +380,27 @@ public class addManifestRestController {
 		int lastManNo=mDao.fetchLastManifestNoWithOriginAndDestination(manifest.branchModel1.getBranch_id(), manifest.branchModel2.getBranch_id());		
 		if(lastManNo!=0 ){
 			manifest.setManifest_number(String.valueOf(lastManNo+1));
+			manifest.setManifest_prefix(manifest.branchModel1.getBranch_code()+manifest.branchModel2.getBranch_code()+
+					padManifestNumber(Integer.parseInt(manifest.getManifest_number()), 5));
 		}else{
 			manifest.setManifest_number(String.valueOf(1));
+			manifest.setManifest_prefix(manifest.branchModel1.getBranch_code()+manifest.branchModel2.getBranch_code()+
+					padManifestNumber(Integer.parseInt(manifest.getManifest_number()), 5));
 		}
 		
 		
+		JSONObject manifestNo=new JSONObject();
+		
 		try {
 			mDao.saveOrUpdate(manifest);
+			manifestNo.put("ManifestNo",manifest.getManifest_prefix());
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
-			return new ResponseEntity<Void>(HttpStatus.CREATED);
+			return new ResponseEntity<String>(manifestNo.toString(),HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
+			manifestNo.put("ManifestNo","Error Creating Manifest No");
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, e);
-			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
+			return new ResponseEntity<String>("",HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	
@@ -334,7 +412,14 @@ public class addManifestRestController {
 		String userid = userinfo.getUserId();
 		User user =userDao.get(Integer.parseInt(userid));
 		
-		List<ShipmentModel> shipment=shipmentDao.fetchAllShipment100Manifest(user.getBranchModel().getBranch_id());
+		List<ShipmentModel> shipment;
+		if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+			 shipment=shipmentDao.fetchAllShipment100Admin();
+		}else{
+			 shipment=shipmentDao.fetchAllShipment100Manifest(user.getBranchModel().getBranch_id());
+		}
+		
+		
 		if(shipment.isEmpty()){
 			return new ResponseEntity<List<ShipmentModel>>(HttpStatus.NO_CONTENT);
 		}
@@ -344,13 +429,85 @@ public class addManifestRestController {
 	
 	//=================EXCEL DOWNLOAD=====================================
 	@RequestMapping(value="downloadExcelForAddManifest",method=RequestMethod.GET)
-	public ModelAndView downloadExcelForAddManifest(){
+	public ModelAndView downloadExcelForAddManifest(HttpServletRequest request){
 		
 		//change to fetch all 
-		List<ShipmentModel>  shipmentList=sDao.fetchAllShipment();
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =userDao.get(Integer.parseInt(userid));
+		List<ShipmentModel>  shipmentList;
+		if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+			  shipmentList=sDao.fetchAllShipment();
+		}else{
+			  shipmentList=sDao.fetchAllShipmentForStaff(user.getBranchModel().getBranch_id());
+		}
+		
 		return new ModelAndView("ShipmentExcelView","shipmentList",shipmentList);		
 	}
+
+		
 	
+	
+	
+	//======================================get Record Count==========================================
+	@RequestMapping(value = "/manifestRecordCount/", method = RequestMethod.GET)
+	public ResponseEntity<String> manifestRecordCount(HttpServletRequest request) {
+		
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =userDao.get(Integer.parseInt(userid));
+		
+		try {	
+			if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+				return new ResponseEntity<String> (String.valueOf(sDao.shipmentCount()), HttpStatus.OK);	
+			}else{
+				return new ResponseEntity<String> (String.valueOf(sDao.shipmentCountStaff(user.getBranchModel().getBranch_id())), HttpStatus.OK);	
+			}
+					
+		} catch (Exception exception) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
+
+	
+	//======================================Pagination begin==========================================
+	@RequestMapping(value="paginationManifest",method=RequestMethod.POST)
+	public ResponseEntity<List<ShipmentModel>> paginationManifest(@RequestBody int page,HttpServletRequest request){
+		userInformation = new UserInformation(request);
+		System.err.println(String.valueOf(page)+"++++++++++++++++++++++++++++++++++++++++");
+		//intialize	
+		int from_limit = 0, to_limit = 0;
+		String order = "DESC";
+		if(page == 1) { // First
+			from_limit = 0;
+			to_limit = page * 100;
+		} else if ( page == 0 ) { // Last
+			order = "ASC";
+			from_limit = page;
+			to_limit = 10;
+		} else {
+			from_limit = (page * 10) + 1;
+			to_limit =  (page + 10 ) * 10;
+		}
+		
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =userDao.get(Integer.parseInt(userid));
+		
+		List<ShipmentModel> shipmentList;
+		try {	
+			if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+				shipmentList=sDao.fetchShipmentWithLimit(from_limit, to_limit, order);
+			}else{
+				shipmentList=sDao.fetchShipmentWithLimitStaff(from_limit, to_limit, order,user.getBranchModel().getBranch_id());	
+			}				
+			return new ResponseEntity<List<ShipmentModel>>(shipmentList,HttpStatus.OK);
+		} catch (Exception exception) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT);
+		}
+	}
 
 	//========================== filter Shipment==========================
 	@RequestMapping(value="/filterShipment/",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)

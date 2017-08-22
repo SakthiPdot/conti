@@ -2,7 +2,7 @@ package com.conti.receipt;
 
 import java.util.List;
 
-import com.conti.manifest.ManifestModel;
+
 
 public interface ReceiptDao 
 {
@@ -10,4 +10,6 @@ public interface ReceiptDao
 	public List<ReceiptModel>getReceiptByCondition(int frombranch,int tobranch,String fromdate,String todate);
 	public ReceiptModel getReceiptbyId(int id);
 	
+	//===== Referred Delete Process in Foreign key =========//
+	public ReceiptModel getUser(int c_user,int u_user);
 }

@@ -475,7 +475,7 @@ angular.module('contiApp').controller('locationController'
 							self.Locations.splice(index,1);
 							console.log(self.Locations);
 						},function(refdata) {
-							self.message =locationName+ " referred some one filed..!";
+							self.message =locationName+ " referred in several process..!";
 							successAnimate('.failure');	
 							window.setTimeout(function(){
 								newOrClose();
@@ -626,6 +626,7 @@ angular.module('contiApp').controller('locationController'
 			
 			//===================================change no of page to view in register====================================
 		    self.shownoofRecord=function shownoofRecord() {    
+		    	self.location_search = null;
 		    	$scope.pageSize = $scope.shownoofrec;
 		    	
 		    	self.FilteredLocations = self.Locations.slice($scope.currentPage*$scope.pageSize);

@@ -29,9 +29,13 @@ public class ManifestModel
 {
 	private int manifest_id,updated_by,created_by,manifest_origin,manifest_destination;
 	private String manifest_number,vehicle_number,driver_name,manifest_status,obsolete;
-	private String created_datetime,updated_datetime;
+	private String created_datetime,updated_datetime,manifest_prefix;
 	
 	
+	
+	
+
+
 	private List<ManifestDetailedModel> manifestDetailModel=new ArrayList<>();
 	
 	
@@ -186,6 +190,14 @@ public class ManifestModel
 	}
 	public void setUpdated_datetime(String updated_datetime) {
 		this.updated_datetime = updated_datetime;
+	}
+	
+	@Column(name = "manifest_prefix")
+	public String getManifest_prefix() {
+		return this.manifest_prefix;
+	}
+	public void setManifest_prefix(String manifest_prefix) {
+		this.manifest_prefix = manifest_prefix;
 	}
 		
 }

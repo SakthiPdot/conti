@@ -17,7 +17,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 import com.conti.manifest.ManifestModel;
-import com.conti.manifest.ManifestDetailedModel;
+
 
 /**
  * @Project_Name conti

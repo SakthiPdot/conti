@@ -14,4 +14,7 @@ public interface HsnDao {
 	public List<Hsn> searchbyHsnCode(String search_key);
 	public List<Hsn> searchbyHsnDescription(String search_key);
 	public List<Hsn> getAllHsn();
+	
+	//=====Delete by Foreign Key ======//
+	public Hsn getUserId(int c_user,int u_user);
 }

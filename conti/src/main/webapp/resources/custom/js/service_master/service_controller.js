@@ -132,8 +132,8 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	//============= Close Function End =========================//
 	
 	//============= Clear Function Begins =======================//
-		function clear (clearopen) {
-			self.confirm_title = clearopen;
+		function clear () {
+			self.confirm_title = 'Clear';
 			self.confirm_type = BootstrapDialog.TYPE_WARNING;
 			self.confirm_msg = self.confirm_title + ' the Data?';
 			self.confirm_btnclass = 'btn-warning';
@@ -305,7 +305,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 											},5000);
 																				
 										},function(pricesettting) {
-											self.message = self.service.service_name+ " referred in Price Settings or Add Shipment please check";
+											self.message = self.service.service_name+ " referred in Price Settings or Add Shipment...!";
 											successAnimate('.failure');
 											window.setTimeout(function(){
 												newOrClose();
@@ -454,7 +454,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			
 						function shownoofRecord(){
 							
-							
+							self.service_regSearch = null;
 							$scope.pageSize = $scope.shownoofrec;
 							self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
 						
@@ -463,7 +463,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 								$scope.nextDisabled = true;
 							}
 							fetchAllServices();
-							console.log("ddsss");
+							
 						}
 						
 			//================ Show no of Record Begin ============//

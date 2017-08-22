@@ -302,22 +302,43 @@ public class ManifestRestController
 				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
 				return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
 			}
-				
-				
-			
 		}
 
-		//--------------------Manifest Filter by condition End------------------------------
+	//-----------------------------------------------------------------------------------------------------------------
 	
-	//----------------------Manifest number search function start---------------------------------
+	//-----------------------------------------Manifest number search function start---------------------------------
 
 		@RequestMapping(value="manifest_search", method=RequestMethod.POST)
-		public ResponseEntity<List<ManifestModel>>manifestSearch(@RequestBody String searchkey,HttpServletRequest request)
+		public ResponseEntity<List<ManifestModel>>manifestSearch(@RequestBody String search,HttpServletRequest request)
 		{
-			List<ManifestModel> manifestModel=manifestDao.manifestSearch(searchkey);
-			return new ResponseEntity<List<ManifestModel>> (manifestModel,HttpStatus.OK);
+			JSONObject obj=new JSONObject(search);
+			 List<ManifestModel> manifestList=new ArrayList<ManifestModel>();
+			 String searchkey=(String) obj.get("manifest_regSearch");
+			 String searchby=(String) obj.get("searchBy");
+			 if(searchby.equals("Manifest Number"))
+			 {
+				 List<ManifestModel> manifestModel=manifestDao.manifestSearch(searchkey);
+				 return new ResponseEntity<List<ManifestModel>> (manifestModel,HttpStatus.OK);
+			 }
+			 else //if(searchkey.length()>3)
+			 {
+					List<ManifestDetailedModel> manifestDetailed=manifestDao.searchShipmentLRnumber(searchkey);
+				 	System.out.println("========================================== : "+manifestDetailed.size());
+					if(manifestDetailed!=null)
+					{
+						for(int i=0; i<manifestDetailed.size();i++)
+						{
+							int manifest_id=manifestDetailed.get(i).getManifestModel().getManifest_id();
+							ManifestModel manifestModel=manifestDao.getManifestbyId(manifest_id);
+							manifestList.add(i, manifestModel);
+						}
+						return new ResponseEntity<List<ManifestModel>> (manifestList,HttpStatus.OK);
+					}
+					
+			 }
+			 return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
 		}
-	//----------------------Manifest number search function End---------------------------------
+	//--------------------------------------------------------------------------------------------------------------------
 		
 	//--------------------------------------Manifest print Start------------------------------------------
 		@RequestMapping(value="/manifest_print", method=RequestMethod.POST)

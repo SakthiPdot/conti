@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
@@ -97,25 +98,24 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 
 								<div class="col-lg-12 noPaddingLeft">
 									<div class="col-lg-3 branchclass">
-										<span class="text-padding">From</span> 
-										
+										<span class="text-padding">From</span>										
 						
-										<!-- defaultBranch -->
-										
-										<fieldset data-ng-disabled="true">										
-										<input type="text" class="form-control " data-ng-model="branch_name">
-										</fieldset>
+										<!-- defaultBranch -->										
+										<sec:authorize access="hasRole('STAFF') or hasRole('MANAGER')">							
+											<input type="text" class="form-control " data-ng-disabled="true" data-ng-model="branch_name">
+										</sec:authorize>
 										
 										
 										<input type="hidden"  data-ng-model="amctrl.manifest.branchModel1">
 										
-										<!-- <select name ="fromBranch"
-											class="form-control" data-ng-model="amctrl.manifest.branchModel1">				
-											 <option value="" data-ng-disabled="true">--Select Branch Name--</option>
-											 <option data-ng-repeat="x in amctrl.branches" value="{{x}}">{{x.branch_name}}</option>
-										</select> -->
-										
-										
+										<sec:authorize access="hasRole('SUPER_ADMIN')">
+											<select name="fromBranch" class="form-control"
+												data-ng-model="amctrl.manifest.branchModel1">
+												<option value="" data-ng-disabled="true">--Select
+													Branch Name--</option>
+												<option data-ng-repeat="x in amctrl.branches" value="{{x}}">{{x.branch_name}}</option>
+											</select>
+										</sec:authorize>
 									</div>
 
 									<div class="col-lg-3 branchclass">
@@ -125,16 +125,14 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 											 <option value="" data-ng-disabled="true">--Select Branch Name--</option>
 											 <option data-ng-repeat="x in amctrl.branches" value="{{x}}">{{x.branch_name}}</option>
 										</select>
-										
-										
 									</div>
 								</div>
 
 								<div class="col-lg-12 noPaddingLeft">
 									<div class="sec-padding">Specific Period</div>
 									<div class="col-lg-3 branchclass">
-										<span class="paddingtop" >From </span>
-										<div class="form-group input-group marginleftrightspace">
+										<span class="text-padding" >From </span>
+										<div class="form-group input-group">
 											<input type="text" name="datePicker1" class="form-control datepicker1"
 											placeholder="Enter From Date"
 											 data-ng-model="amctrl.fromdate"/>
@@ -145,8 +143,8 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									</div>
 
 									<div class="col-lg-3 branchclass">
-										<span class="paddingtop">To</span>
-										<div class="form-group input-group spacemarginleftright">
+										<span class="text-padding">To</span>
+										<div class="form-group input-group ">
 											<input type="text"  name="datePicker2" class="form-control datepicker2" 
 											placeholder="Enter To Date"											
 											data-trigger="focus" data-toggle="popover"
@@ -220,14 +218,110 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<div class="col-xs-6"></div>
-
+										<div class="col-lg-6">
+                                     <div class="dataTables_length" id="dataTables-example_length">
+											<div class="row paddingtop">
+												<div class="col-md-12">
+													<select name="shownoofrec" data-ng-model="shownoofrec"
+														data-ng-options="noofrec for noofrec in [10, 15, 25, 50, 100]"
+														class="form-control"
+														data-ng-change="amctrl.shownoofRecord()">
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
 										<div class="col-xs-6 icons-button">
 											<div class="pull-right">
 												<form name="selectManifestForm" method="post" action="shipmentPrint" class="padding-button">
-												<button type="button" class="btn btn-primary">
-													<i class="fa fa-cog fa-lg"></i>
-												</button>
+							                      <a type="button" class="btn btn-primary dropdown-toggle"
+                                   				  data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
+                                   				  
+                                   				      	<div class="dropdown-menu regSettings pull-right"
+																style="padding-right: 5px;">
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_lrno == true, 'fa-times': setting_lrno == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_lrno = true"
+																		data-ng-model="setting_lrno" /> LR No
+																	</label>
+																</div>
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_origin == true, 'fa-times': setting_origin == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_origin = true"
+																		data-ng-model="setting_origin" /> Origin
+																	</label>
+																</div>
+																	<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_destination == true, 'fa-times': setting_destination == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_destination = true"
+																		data-ng-model="setting_destination" /> Destination
+																	</label>
+																</div>
+																	<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_sender == true, 'fa-times': setting_sender == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_sender = true"
+																		data-ng-model="setting_sender" /> Sender
+																	</label>
+																</div>
+																	<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_consignee == true, 'fa-times': setting_consignee == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_consignee = true"
+																		data-ng-model="setting_consignee" /> Consignee
+																	</label>
+																</div>
+																	<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_totalparcel == true, 'fa-times': setting_totalparcel == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_totalparcel= true"
+																		data-ng-model="setting_totalparcel" /> Total Parcel
+																	</label>
+																</div>
+																	<div class="checkbox" data-ng-hide="true">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_weight == true, 'fa-times': setting_weight == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_weight = true"
+																		data-ng-model="setting_weight" /> Weight
+																	</label>
+																</div>
+																		<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_sevice == true, 'fa-times': setting_sevice ==false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_sevice = true"
+																		data-ng-model="setting_sevice" /> Service
+																	</label>
+																</div>
+																	<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_status == true, 'fa-times': setting_status== false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_status = true"
+																		data-ng-model="setting_status" /> Status
+																	</label>
+																</div>
+																	<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_date == true, 'fa-times': setting_date== false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_date = true"
+																		data-ng-model="setting_date" /> Date
+																	</label>
+																</div>
+																
+																
+														</div>
 												<!--=============== excel============== -->
 												 <a type="button" onclick="location.href='downloadExcelForAddManifest';valid = true;" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></a>											
 												<!--=============== print ============== -->
@@ -249,9 +343,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									</div>
 								</div>
 
-								<div class="table-responsive">
-
-
+								<div class="table-responsive">						
 									<table class="table table-striped table-bordered table-hover"
 										id="dataTables-example">
 										<thead>
@@ -259,14 +351,58 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 												<th><input type="checkbox"
 												data-ng-model="amctrl.selectAllManifest"
 												data-ng-click="amctrl.selectAll()"></th>
-												<th>LR No</th>
-												<th>Origin</th>
-												<th>Destination</th>
-												<th>Sender</th>
-												<th>Consignee</th>
-												<th>Total Parcel</th>
-												<th>Weight</th>
-												<th>Service</th>
+												<th data-ng-show="setting_lrno"
+												data-ng-click="lrno=!lrno;sortTable('lrno',lrno);">LR No<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':lrno,'fa fa-caret-down':!lrno}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_origin"
+												data-ng-click="origin=!origin;sortTable('origin',origin);">Origin<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':origin,'fa fa-caret-down':!origin}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_destination"
+												data-ng-click="destination=!destination;sortTable('destination',destination);">Destination<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':destination,'fa fa-caret-down':!destination}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_sender"
+												data-ng-click="sender=!sender;sortTable('sender',sender);">Sender<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':sender,'fa fa-caret-down':!sender}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_consignee"
+												data-ng-click="consignee=!consignee;sortTable('consignee',consignee);">Consignee<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':consignee,'fa fa-caret-down':!consignee}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_totalparcel"
+												data-ng-click="totalParcel=!totalParcel;sortTable('totalParcel',totalParcel);">Total Parcel<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':totalParcel,'fa fa-caret-down':!totalParcel}"
+														aria-hidden="true"></i></th>
+												<th
+												data-ng-hide="true"
+												 data-ng-show="setting_weight"
+												data-ng-click="weight=!weight;sortTable('weight',weight);">Weight<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':weight,'fa fa-caret-down':!weight}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_sevice"
+												data-ng-click="service=!service;sortTable('service',service);">Service<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':service,'fa fa-caret-down':!service}"
+														aria-hidden="true"></i></th>
+																<th data-ng-show="setting_status"
+												data-ng-click="status=!status;sortTable('status',status);">Status<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':status,'fa fa-caret-down':!status}"
+														aria-hidden="true"></i></th>
+																<th data-ng-show="setting_date"
+												data-ng-click="date=!date;sortTable('date',date);">Date<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':date,'fa fa-caret-down':!date}"
+														aria-hidden="true"></i></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -275,17 +411,39 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 												<td><input type="checkbox"
 												data-ng-model="x.select"
 												data-ng-click="amctrl.selectManifest(x)"></td>
-												<td>{{x.lr_number}}</td>
-												<td>{{x.sender_branch.branch_name}}</td>
-												<td>{{x.consignee_branch.branch_name}}</td>
-												<td>{{x.sender_customer.customer_name}}</td>
-												<td>{{x.consignee_customer.customer_name}}</td>
-												<td>{{x.numberof_parcel}}</td>
-												<td>{{x.chargeable_weight}}</td>
-												<td>{{x.service.service_name}}</td>
+												<td data-ng-hide="true">{{x.sender_branch.branch_id}}</td>
+												<td data-ng-show="setting_lrno">{{x.lrno_prefix}}</td>
+												<td data-ng-show="setting_origin">{{x.sender_branch.branch_name}}</td>
+												<td data-ng-show="setting_destination">{{x.consignee_branch.branch_name}}</td>
+												<td data-ng-show="setting_sender">{{x.sender_customer.customer_name}}</td>
+												<td data-ng-show="setting_consignee">{{x.consignee_customer.customer_name}}</td>
+												<td data-ng-show="setting_totalparcel">{{x.numberof_parcel}}</td>
+												<td data-ng-show="setting_weight" data-ng-hide="true">{{x.chargeable_weight}}</td>
+												<td data-ng-show="setting_sevice">{{x.service.service_name}}</td>
+												<td data-ng-show="setting_status">{{x.status}}</td>
+												<td data-ng-show="setting_date">{{x.updated_datetime.slice(0,-2)}}</td>
 											</tr>
 										</tbody>
 									</table>
+									
+									        <!--====================pagination tab============================ -->                               		
+                                		          
+                                <div class ="col-lg-6 col-md-6 col-xs-12">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
+                                <div class="col-lg-6  col-md-6 col-xs-12 icons-button">
+                                   <div class="pull-right">
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                      											
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previous</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "paginate(1)">Next</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
+										</div>
+								</div>
+								
 								</div>
 
 							</div>
@@ -304,11 +462,16 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 								<div class="col-lg-12 noPaddingLeft">
 									<div class="col-lg-5 branchclass"></div>
 									<div class="col-lg-2 branchclass">
+										<%-- <button class="btn btn-primary btn-lg" 
+										type="button"
+										data-ng-disabled="amctrl.selectedManifest.length<1"
+										data-toggle="modal" data-ng-click="amctrl.checkOriginAndDestination()"
+											data-target="#myModal">Add Manifest</button> --%>	
 										<button class="btn btn-primary btn-lg" 
 										type="button"
 										data-ng-disabled="amctrl.selectedManifest.length<1"
-										data-toggle="modal" data-ng-click="amctrl.clearModalValue()"
-											data-target="#myModal">Add Manifest</button>
+										 data-ng-click="amctrl.checkOriginAndDestination()"
+										>Add Manifest</button>
 									</div>
 									<div class="col-lg-5 branchclass"></div>
 								</div>
@@ -410,6 +573,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 								<i class="fa fa-times"></i> Cancel
 							</button>
 							<button type="submit" 
+							data-ng-click="amctrl.submitManifest()"
 							data-ng-disabled="amctrl.manifest.driver_name==null ||  amctrl.manifest.vehicle_number==null || amctrl.manifest.vehicle_destination==null;"
 							class="btn btn-success">
 								<i class="fa fa-floppy-o"></i> Save
@@ -422,27 +586,25 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 		</div>
 	<!--================================================== Modal end==================================================== -->s	
 		<!-- /. PAGE WRAPPER  -->
-
-
 	</div>
-	
     <!-- /. WRAPPER  -->
-
-
-  
      <!-- DATA TABLE SCRIPTS -->
+      <script>$('[data-toggle="popover"]').popover();
+      $('.regSettings').click(function(e) {
+			e.stopPropagation();
+		});
+      </script>
      <script src="resources/custom/js/custom.js"></script>
      <script type="text/javascript" src="resources/custom/js/validation.js"></script>
   	<script src="resources/custom/js/session.js"></script>  	
 	<script src="resources/custom/js/confirmDialog.js"></script>
-  	<script src="resources/custom/js/manifest/add_manifest_controller.js"></script>
   	<script src="resources/custom/js/manifest/add_manifest_service.js"></script>  	
     <script src="resources/custom/js/branch_master/branch_service.js"></script>
+  	<script src="resources/custom/js/manifest/add_manifest_controller.js"></script>
+	  <script type="text/javascript" src="resources/built-in/js/lodash.js"></script>	
   	
         <script>
-        $(function () {
-            $('[data-toggle="popover"]').popover()
-        })
+            $('[data-toggle="popover"]').popover();
     </script>
     
         <script type="text/javascript">

@@ -48,6 +48,10 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.conti.config.SessionListener;
+import com.conti.hsn.Hsn;
+import com.conti.hsn.HsnDao;
+import com.conti.manifest.ManifestDao;
+import com.conti.manifest.ManifestModel;
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerDao;
@@ -67,10 +71,14 @@ import com.conti.others.DateTimeCalculation;
 import com.conti.others.Loggerconf;
 import com.conti.others.SendMailSMS;
 import com.conti.others.UserInformation;
+import com.conti.receipt.ReceiptDao;
+import com.conti.receipt.ReceiptModel;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 import com.conti.settings.price.PriceSetting;
 import com.conti.settings.price.PriceSettingDao;
+import com.conti.shipment.add.ShipmentDao;
+import com.conti.shipment.add.ShipmentModel;
 import com.conti.userlog.UserLogDao;
 import com.conti.userlog.UserLogModel;
 
@@ -120,6 +128,14 @@ public class UserRestController {
 	private ServiceDao serviceDao;
 	@Autowired
 	private VehicleDao vehicleDao;
+	@Autowired 
+	private HsnDao hsnDao;
+	@Autowired
+	private ManifestDao mDao;
+	@Autowired
+	private ReceiptDao receiptDao;
+	@Autowired
+	private ShipmentDao shipmentDao;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
@@ -407,6 +423,11 @@ public class UserRestController {
 		Product product = productDao.getUserId(id, id);
 		ServiceMaster serviceMaster = serviceDao.getUserid(id, id);
 		VehicleMaster vehicleMaster = vehicleDao.getUserId(id, id);
+		Hsn hsn = hsnDao.getUserId(id, id);
+		ManifestModel manifest = mDao.getUserId(id, id);
+		ReceiptModel receipt = receiptDao.getUser(id, id);
+		ShipmentModel shipment = shipmentDao.getUserId(id, id);
+				
 		
 		try {
 			User currentUser = usersDao.get(id);
@@ -414,7 +435,8 @@ public class UserRestController {
 				return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 			} else {
 				if(company == null && priceSetting == null && branchModel == null && customerModel == null && employeeMaster == null
-						&& location == null && product == null && serviceMaster == null && vehicleMaster == null) {
+						&& location == null && product == null && serviceMaster == null && vehicleMaster == null && hsn == null
+						&& manifest == null && receipt == null && shipment == null) {
 					usersDao.delete(id);
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
 					return new ResponseEntity<String>( HttpStatus.OK);

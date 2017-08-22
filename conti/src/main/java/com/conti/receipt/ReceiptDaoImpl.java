@@ -17,7 +17,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import com.conti.manifest.ManifestModel;
+
 
 @Repository
 public class ReceiptDaoImpl implements ReceiptDao
@@ -62,6 +62,7 @@ public class ReceiptDaoImpl implements ReceiptDao
 		String hql = "FROM ReceiptModel WHERE obsolete ='N' and receipt_id ="+ id + "";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
+		@SuppressWarnings("unchecked")
 		List<ReceiptModel> receiptlist = (List<ReceiptModel>) query.list();
 		if(receiptlist != null && !receiptlist.isEmpty()) {
 			return receiptlist.get(0);
@@ -69,6 +70,18 @@ public class ReceiptDaoImpl implements ReceiptDao
 		return null;
 	}
 	//---------------------------------------------------------------------------------
+
+	@Override
+	@Transactional
+	public ReceiptModel getUser(int c_user, int u_user) {
+		@SuppressWarnings("unchecked")
+		List<ReceiptModel> getuserid = sessionFactory.getCurrentSession()
+				.createQuery("from ReceiptModel where  obsolete ='N' and created_by= " +c_user+ " OR updated_by='" +u_user+ "'").list();
+		if (getuserid != null && !getuserid.isEmpty()){
+			return getuserid.get(0);
+		}
+		return null;
+	}
 	
 	//===================================================================================================
 }

@@ -131,9 +131,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 		}
 	}
 	
-	
-	
-  //----------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------
 	
 //---------------------Branch Master drawer close begin-----------
 	
@@ -375,7 +373,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 										
 										
 									}, function (referdata) {
-										self.message = self.branch.branch_name+ " already referred in some fields..!";
+										self.message = self.branch.branch_name+ " referred in several process..!";
 										successAnimate('.failure');
 										window.setTimeout(function(){
 											newOrClose();
@@ -682,6 +680,7 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     
     function shownoofRecord() 
     {    
+    	self.branch_regSearch = null;
     	$scope.pageSize = $scope.shownoofrec;
     	self.Filterbranches = self.branches.slice($scope.currentPage*$scope.pageSize);
     	if( self.Filterbranches.length <= $scope.pageSize ) 

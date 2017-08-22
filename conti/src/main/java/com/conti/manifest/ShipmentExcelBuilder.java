@@ -71,8 +71,9 @@ public class ShipmentExcelBuilder extends AbstractExcelView {
 		header.createCell(3).setCellValue("Sender");
 		header.createCell(4).setCellValue("Consignee");
 		header.createCell(5).setCellValue("TotalParcel");
-		header.createCell(6).setCellValue("Weight");
-		header.createCell(7).setCellValue("Service");
+		header.createCell(6).setCellValue("Service");
+		header.createCell(7).setCellValue("Status");
+		header.createCell(8).setCellValue("Date");
 		
 
 		header.getCell(0).setCellStyle(style);
@@ -83,6 +84,7 @@ public class ShipmentExcelBuilder extends AbstractExcelView {
 		header.getCell(5).setCellStyle(style);
 		header.getCell(6).setCellStyle(style);
 		header.getCell(7).setCellStyle(style);
+		header.getCell(8).setCellStyle(style);
 		
 		//decimal format
 		DecimalFormat f=new DecimalFormat("##.00");
@@ -140,7 +142,7 @@ public class ShipmentExcelBuilder extends AbstractExcelView {
 		for(ShipmentModel shipmentModel:shipmentList){
 			HSSFRow row=sheet.createRow(rowcount++);			
 			try {
-				row.createCell(0).setCellValue(shipmentModel.getLr_number());
+				row.createCell(0).setCellValue(shipmentModel.getLrno_prefix());
 				
 				if(shipmentModel.getSender_branch()!=null){
 					row.createCell(1).setCellValue(shipmentModel.getSender_branch().getBranch_name());
@@ -167,14 +169,16 @@ public class ShipmentExcelBuilder extends AbstractExcelView {
 				}
 				
 				row.createCell(5).setCellValue(shipmentModel.getNumberof_parcel());
-				row.createCell(6).setCellValue(f.format(shipmentModel.getChargeable_weight()));
+
+				//row.createCell(6).setCellValue(f.format(shipmentModel.getChargeable_weight()));
 				
 				if(shipmentModel.getService()!=null){
-					row.createCell(7).setCellValue(shipmentModel.getService().getService_name());
+					row.createCell(6).setCellValue(shipmentModel.getService().getService_name());
 				}else{
-					row.createCell(7).setCellValue("");
+					row.createCell(6).setCellValue("");
 				}
-				
+				row.createCell(7).setCellValue(shipmentModel.getStatus());
+				row.createCell(8).setCellValue(shipmentModel.getUpdated_datetime());
 				
 				//============================================Product Table =======================================================
 				try {

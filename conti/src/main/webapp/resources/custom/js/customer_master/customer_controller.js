@@ -374,7 +374,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 									
 									
 								}, function(refershipment) {
-									self.message =self.customer.customer_name+ " referred in Add Shipment please check";
+									self.message =self.customer.customer_name+ " referred in Add Shipment..!";
 									successAnimate('.failure');
 									window.setTimeout(function(){
 										newOrClose();
@@ -671,6 +671,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     
     function shownoofRecord() 
     {    
+    	self.cust_regSearch = null;
     	$scope.pageSize = $scope.shownoofrec;
     	self.Filtercustomers=self.customers.slice($scope.currentPage*$scope.pageSize);
     	if(self.Filtercustomers.length <= $scope.pageSize)
