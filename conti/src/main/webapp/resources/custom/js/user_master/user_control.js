@@ -221,9 +221,9 @@ contiApp.controller('UserController', ['$scope', 'UserService', 'EmployeeService
 								}, function(referdata) {
 									self.message =self.user.username+ " referred in several process..!";
 									successAnimate('.failure');
-									window.setTimeout( function(){	 	        		
+									/*window.setTimeout( function(){	 	        		
 										newOrClose();
-	    							},5000);
+	    							},5000);*/
 								},
 								function (errResponse) {
 					                self.message = "Error while deleting user "+self.user.username+" ";

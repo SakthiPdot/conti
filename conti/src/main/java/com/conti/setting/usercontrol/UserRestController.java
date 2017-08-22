@@ -77,6 +77,8 @@ import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 import com.conti.settings.price.PriceSetting;
 import com.conti.settings.price.PriceSettingDao;
+import com.conti.shipment.add.ShipmentDao;
+import com.conti.shipment.add.ShipmentModel;
 import com.conti.userlog.UserLogDao;
 import com.conti.userlog.UserLogModel;
 
@@ -132,6 +134,8 @@ public class UserRestController {
 	private ManifestDao mDao;
 	@Autowired
 	private ReceiptDao receiptDao;
+	@Autowired
+	private ShipmentDao shipmentDao;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	ConstantValues constantVal = new ConstantValues();
@@ -422,6 +426,22 @@ public class UserRestController {
 		Hsn hsn = hsnDao.getUserId(id, id);
 		ManifestModel manifest = mDao.getUserId(id, id);
 		ReceiptModel receipt = receiptDao.getUser(id, id);
+		ShipmentModel shipment = shipmentDao.getUserId(id, id);
+		
+		System.out.println("Company"+company);
+		System.out.println("branchModel"+branchModel);
+		System.out.println("priceSetting"+priceSetting);
+		System.out.println("customerModel"+customerModel);
+		System.out.println("employeeMaster"+employeeMaster);
+		System.out.println("location"+location);
+		System.out.println("product"+product);
+		System.out.println("serviceMaster"+serviceMaster);
+		System.out.println("Company"+company);
+		System.out.println("hsn"+hsn);
+		System.out.println("manifest"+manifest);
+		System.out.println("receipt"+receipt);
+		System.out.println("shipment"+shipment);
+		
 		
 		try {
 			User currentUser = usersDao.get(id);
@@ -430,7 +450,7 @@ public class UserRestController {
 			} else {
 				if(company == null && priceSetting == null && branchModel == null && customerModel == null && employeeMaster == null
 						&& location == null && product == null && serviceMaster == null && vehicleMaster == null && hsn == null
-						&& manifest == null && receipt == null) {
+						&& manifest == null && receipt == null && shipment == null) {
 					usersDao.delete(id);
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
 					return new ResponseEntity<String>( HttpStatus.OK);
