@@ -106,7 +106,12 @@ contiApp.controller('ViewShipmentController', [
 	//--------------------------- ANGU COMPLETE FRO PRODUCT NAME BEGIN
 	
 	$scope.product_name = function (product) {
-		self.viewShipment.product_id = product.originalObject.product_id;
+		if(product == null) {
+			self.viewShipment.product_id = "";
+		} else {
+			self.viewShipment.product_id = product.originalObject.product_id;	
+		}
+					
 	}
 	
 	//--------------------------- ANGU COMPLETE FRO PRODUCT NAME END
@@ -122,6 +127,7 @@ contiApp.controller('ViewShipmentController', [
 			self.viewShipment.todate = $('.datepicker2').val();	
 		} 
 		
+		console.log(self.viewShipment);
 				
 		ShipmentService.filterShipment(self.viewShipment)
 			.then(
@@ -131,7 +137,6 @@ contiApp.controller('ViewShipmentController', [
 						console.log(errRes);
 					}
 				);
-		console.log(self.viewShipment);
 	}
 	
 	//--------------------------- FILTER SHIPMENT END

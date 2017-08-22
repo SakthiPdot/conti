@@ -495,7 +495,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	
 	@Override
 	@Transactional
-	public List<ShipmentModel> filterViewShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status, String product)
+	public List<ShipmentModel> filterViewShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status)
 	{
 		StringBuilder queryString =new StringBuilder();
 		queryString.append("FROM ShipmentModel WHERE obsolete ='N' ");
@@ -509,8 +509,8 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		if(toDate!=null && !toDate.trim().isEmpty())
 			queryString.append(" AND shipment_date <= '"+toDate+" 23:59:59'");
 		
-		if(product!=null && !product.trim().isEmpty())
-			queryString.append(" AND shipmentDetail.product.product_id = '"+product+"'");
+		/*if(product!=null && !product.trim().isEmpty())
+			queryString.append(" AND shipmentDetail.product.product_id = '"+product+"'");*/
 		
 		if(status!=null && !status.trim().isEmpty()){
 			queryString.append(" AND status = '"+status+"' ");
@@ -525,4 +525,19 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 		
 	}
+
+
+
+	@Override
+	public List<ShipmentDetailModel> filterViewShipmentbyproduct(String product) {
+		// TODO Auto-generated method stub
+		
+		@SuppressWarnings("unchecked")
+		List<ShipmentDetailModel> listShipmentDetail = (List<ShipmentDetailModel>) sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentDetailModel where obsolete = 'N' and product.product_id="+Integer.parseInt(product)).list();
+		return listShipmentDetail;
+	}
+	
+	
+	
 }

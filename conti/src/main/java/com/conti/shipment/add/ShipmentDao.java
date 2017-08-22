@@ -66,5 +66,6 @@ public interface ShipmentDao
 	public List<ShipmentModel> fetchshipmentforView(int branch_id); // for Manager / User
 	public List<ShipmentModel> fetchshipmentforView(); // for Super Admin
 	
-	public List<ShipmentModel> filterViewShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status, String product);
+	public List<ShipmentModel> filterViewShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status);
+	public List<ShipmentDetailModel> filterViewShipmentbyproduct(String product);
 }

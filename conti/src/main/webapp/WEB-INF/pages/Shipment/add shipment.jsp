@@ -717,7 +717,7 @@
                                     </thead>
                                     <tbody>
                                         <tr data-ng-repeat = "product in ctrl.shipment.shipmentDetail track by $index">
-                                            <td><input type="checkbox" class="form-control" data-ng-model = "product.selected"  ></td>
+                                            <td><input type="checkbox" class="form-control" data-ng-model = "product.selected"  /> </td>
                                             <td>{{$index + 1}}
 	                                            <input type = "hidden" class="form-control" data-ng-model = "product.shipmentdetail_id" data-ng-value = "product_name.originalObject.product_id" /> 
                                             </td>

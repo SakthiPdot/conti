@@ -1,5 +1,6 @@
 package com.conti.shipment.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.shipment.add.ShipmentDao;
+import com.conti.shipment.add.ShipmentDetailModel;
 import com.conti.shipment.add.ShipmentModel;
 
 /**
@@ -131,13 +133,40 @@ public class ViewShipmentController {
 		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
 		
 		JSONObject viewshipment_json = new JSONObject(viewShipment);
-		
+		//, viewshipment_json.get("product_id").toString()
 		List<ShipmentModel> filterShipment = shipmentDao.filterViewShipment(
 				viewshipment_json.get("from_branch").toString(), viewshipment_json.get("to_branch").toString(), 
 				viewshipment_json.get("fromdate").toString(), viewshipment_json.getString("todate").toString(), 
-				viewshipment_json.get("status").toString(), viewshipment_json.get("product_id").toString());
+				viewshipment_json.get("status").toString() );	
+		/*List<ShipmentDetailModel> shipmentDetail = shipmentDao.filterViewShipmentbyproduct(viewshipment_json.get("product_id").toString());
 		
-		return new ResponseEntity<List<ShipmentModel>> (filterShipment, HttpStatus.OK);
+		List<ShipmentModel> filterShipment_prod = new ArrayList<ShipmentModel>();
+		if( ! shipmentDetail.isEmpty() ) {
+			
+		}*/
+		
+		String product = viewshipment_json.get("product_id").toString();
+		List<ShipmentModel> filterShip = new ArrayList<ShipmentModel>();
+		if( ! product.isEmpty() ) {
+			
+			if( ! filterShipment.isEmpty() ) {
+				for(ShipmentModel shipment : filterShipment) {
+					for(int i = 0; i < shipment.getShipmentDetail().size(); i++ ) {
+						if( shipment.getShipmentDetail().get(i).getProduct().getProduct_id() == Integer.parseInt(product) ) {
+							filterShip.add(shipment);
+						}
+					}
+				}
+			} else {
+				filterShip.addAll(filterShipment);
+			}
+		} else {
+			filterShip.addAll(filterShipment);
+		}
+		
+		
+		
+		return new ResponseEntity<List<ShipmentModel>> (filterShip, HttpStatus.OK);
 	}
 
 	// ---------------------------------------------- FILTER SHIPMENT FOR VIEW
