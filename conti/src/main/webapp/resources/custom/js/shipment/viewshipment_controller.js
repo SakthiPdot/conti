@@ -21,9 +21,10 @@ contiApp.controller('ViewShipmentController', [
 		'UserService',
 		function($http, $filter, $scope, $q, $timeout, ShipmentService, priceSettingService, BranchService, CompanySettingService, ConfirmDialogService, UserService){
 	
-	$("#screen_addshipment").addClass("active-menu");
+	$("#screen_viewshipment").addClass("active-menu");
 	var self = this;
 	self.shipments = {};
+	self.shipment = {}; // for individual view shipment
 	self.FilterShipment = {};
 	self.branches = {};
 	self.viewShipment = {
@@ -147,7 +148,7 @@ contiApp.controller('ViewShipmentController', [
 		} else if ( lrno.length > 3 ) {
 			ShipmentService.searchShipment(lrno)
 				.then(
-						function (shipemnt) {
+						function (shipment) {
 							self.FilterShipment = shipment;
 						}, function (errRes) {
 							console.log(errRes);
@@ -172,4 +173,22 @@ contiApp.controller('ViewShipmentController', [
 		return success;
 	}
 	//--------------------------- SEARCH BY LRNO END
+	
+	 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL OPEN BEGIN
+	 
+	 self.view1Shipmet = function (shipment) {
+		 self.shipment = shipment;
+		 viewShipment_Animate('.shipment_View', 'OPEN');
+	 }
+	 
+	 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL OPEN END
+	 
+	 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL CLOSE BEGIN
+	 
+	 self.viewShipemntClose = function () {
+		 viewShipment_Animate('.shipment_View', 'CLOSE');
+	 }
+	 
+	 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL CLOSE END
+	 
 }]);
