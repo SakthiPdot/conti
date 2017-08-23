@@ -68,4 +68,7 @@ public interface ShipmentDao
 	
 	public List<ShipmentModel> filterViewShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status);
 	public List<ShipmentDetailModel> filterViewShipmentbyproduct(String product);
+	
+	public List<ShipmentModel> shipment_searchbyLR4ViewAdmin(String lrno);
 }
+
