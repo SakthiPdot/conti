@@ -30,6 +30,7 @@ public interface ManifestDao
 		public List<ManifestModel>getInwardManifest(int id);
 		public List<ManifestModel>getOutwardManifest(int id);
 		public List<ManifestModel>manifestSearch(String searchkey);
+		public List<ManifestModel>getManifestbySorting100(String name,String order);
 		public void saveOrUpdate(ManifestModel manifestModel);//Save and update function
 	
 	//====================Manifest  DAO declaration End===================
@@ -38,7 +39,7 @@ public interface ManifestDao
 	//====================Manifest Detailed DAO declaration Start===================
 		
 		public List<ManifestDetailedModel>getAllManifestDetailes(int manifest_id);
-		public List<ManifestDetailedModel> searchShipmentLRnumber(String LRnumber);
+		public List<Integer> searchShipmentLRnumber(String LRnumber);
 		
 	//====================Manifest Detailed DAO declaration End===================
 		

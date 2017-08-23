@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.conti.config.SessionListener;
 import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerModel;
+import com.conti.master.product.Product;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -77,7 +79,9 @@ public class ManifestRestController
 		
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
-
+	
+	
+	private ConstantValues constantValues;
 	private UserInformation userInformation;
 
 	
@@ -260,7 +264,7 @@ public class ManifestRestController
 			
 			model.addObject("title", "Customer");
 			model.addObject("company", company);
-			model.addObject("listCust", listManifest);
+			model.addObject("listManifest", listManifest);
 			model.addObject("image",base64DataString);
 				
 			return model;
@@ -315,21 +319,23 @@ public class ManifestRestController
 			 List<ManifestModel> manifestList=new ArrayList<ManifestModel>();
 			 String searchkey=(String) obj.get("manifest_regSearch");
 			 String searchby=(String) obj.get("searchBy");
-			 if(searchby.equals("Manifest Number"))
+			 String manifest= constantValues.MANIFIEST_NUMBER;
+			 if(searchby.equals(manifest))
 			 {
 				 List<ManifestModel> manifestModel=manifestDao.manifestSearch(searchkey);
 				 return new ResponseEntity<List<ManifestModel>> (manifestModel,HttpStatus.OK);
 			 }
 			 else //if(searchkey.length()>3)
 			 {
-					List<ManifestDetailedModel> manifestDetailed=manifestDao.searchShipmentLRnumber(searchkey);
+					List<Integer> manifestDetailed=manifestDao.searchShipmentLRnumber(searchkey);
 				 	System.out.println("========================================== : "+manifestDetailed.size());
 					if(manifestDetailed!=null)
 					{
 						for(int i=0; i<manifestDetailed.size();i++)
 						{
-							int manifest_id=manifestDetailed.get(i).getManifestModel().getManifest_id();
-							ManifestModel manifestModel=manifestDao.getManifestbyId(manifest_id);
+							String manifest_id=manifestDetailed.get(i).toString();
+							System.out.println("=====================================================================: "+manifest_id);
+							ManifestModel manifestModel=manifestDao.getManifestbyId(Integer.parseInt(manifest_id));
 							manifestList.add(i, manifestModel);
 						}
 						return new ResponseEntity<List<ManifestModel>> (manifestList,HttpStatus.OK);
@@ -423,6 +429,57 @@ public class ManifestRestController
 			}
 		}
 	//----------------------------------------------------------------------------------------------------------------------
+	
+		
+	//---------------Sorting table function starting--------------------------
+		
+		@RequestMapping(value="sorting_table/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ManifestModel>>sortingTable(@RequestBody String status,@PathVariable("name") String name,HttpServletRequest request)
+		{
+			String sortBy="";
+			switch(name.trim())
+			{
+				case "manifestNumber":
+					sortBy="manifest_number";
+					break;
+				case "manifestOrigin":
+					sortBy="manifest_origin";
+					break;
+				case "manifestDestination":
+					sortBy="manifest_destination";
+					break;
+				case "manifestVehicle":
+					sortBy="vehicle_number";
+					break;
+				case "manifestDriver":
+					sortBy="driver_name";
+					break;
+				case "manifestStatus":
+					sortBy="manifest_Status";
+					break;
+				case "manifestArticles":
+					sortBy="manifestArticles";
+					break;
+			}
+			
+			List<ManifestModel> manifestModel;
+			try
+			{
+				manifestModel=manifestDao.getManifestbySorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+				if(manifestModel.isEmpty())
+				{
+					return new ResponseEntity<List<ManifestModel>>(HttpStatus.OK);
+				}
+				return new ResponseEntity<List<ManifestModel>>(manifestModel,HttpStatus.OK);
+			}
+			catch(Exception e)
+			{
+				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS , e);
+				e.printStackTrace();
+				return new ResponseEntity<List<ManifestModel>>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
 		
 	//==========================================Manifest Detailed Controller START==============================================================
 		

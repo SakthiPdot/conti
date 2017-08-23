@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.conti.master.product.Product;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
@@ -82,7 +85,7 @@ public class ManifestDaoImpl implements ManifestDao
 		
 		@SuppressWarnings("unchecked")
 		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
-				.createQuery("from ManifestModel WHERE obsolete ='N' and manifest_origin ="+manifest_origin).list();
+				.createQuery("from ManifestModel WHERE obsolete ='N' and manifest_origin ="+manifest_origin+" order by IFNULL(updated_datetime,created_datetime)  DESC ").list();
 		return listmanifest;
 		
 	}
@@ -187,7 +190,7 @@ public class ManifestDaoImpl implements ManifestDao
 			@SuppressWarnings("unchecked")
 			
 			List<ManifestModel> listManifest=(List<ManifestModel>)sessionFactory.getCurrentSession()
-			.createQuery("from ManifestModel where obsolete='N' and manifest_number LIKE '%"+searchkey+"%'").list();
+			.createQuery("from ManifestModel where obsolete='N' and manifest_prefix LIKE '%"+searchkey+"%'").list();
 			return listManifest;
 		}
 		
@@ -219,24 +222,36 @@ public class ManifestDaoImpl implements ManifestDao
 			return listmanifestdetailed;
 			
 		}
-	//------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------------------------------
 		
 	//----------------------------------------Get Shipment from manifest detailed------------------------------------------
 	
-			@Override
-			@Transactional
-			public List<ManifestDetailedModel> searchShipmentLRnumber(String lr_number)
-			{
-			
-				String hql = "from ManifestDetailedModel where shipmentModel.lrno_prefix LIKE '%"+lr_number+"%' group by manifest_id";
-				Query query = sessionFactory.getCurrentSession().createQuery(hql);
-				@SuppressWarnings("unchecked")
-				List<ManifestDetailedModel> manifestDetailed= (List<ManifestDetailedModel>) query.list();
-				return manifestDetailed;
-				
-			}
-	//----------------------------------------------------------------------------------------------------------------------
+		@Override
+		@Transactional
+		public List<Integer> searchShipmentLRnumber(String lr_number)
+		{
 		
+			String hql = "select distinct manifestModel.manifest_id from ManifestDetailedModel where shipmentModel.lrno_prefix LIKE '%"+lr_number+"%'";
+			Query query = sessionFactory.getCurrentSession().createQuery(hql);
+			@SuppressWarnings("unchecked")
+			List<Integer> manifestDetailed= (List<Integer>) query.list();
+			return manifestDetailed;
+			
+		}
+	//----------------------------------------------------------------------------------------------------------------------
+	
+	//-----------------Get Manifest Sorting table---------------------------------
+		@SuppressWarnings("unchecked")
+		@Override
+		@Transactional
+		public List<ManifestModel> getManifestbySorting100(String name,String order) {		
+			
+			return sessionFactory.getCurrentSession()
+					.createQuery("from ManifestModel where  obsolete ='N' "
+							+ "order by ("+name+")"+  order ).setMaxResults(100)
+					.list();
+		}
+	//-------------------------------------------------------------
 		//+++++++++++++++++++++++++++ MANIFEST DETAILED IMPLEMENTATION END +++++++++++++++++++++++++++++++
 		
 		
