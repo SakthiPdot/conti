@@ -529,6 +529,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 
 
 	@Override
+	@Transactional
 	public List<ShipmentDetailModel> filterViewShipmentbyproduct(String product) {
 		// TODO Auto-generated method stub
 		
@@ -537,6 +538,24 @@ public class ShipmentDaoImpl implements ShipmentDao {
 				.createQuery("from ShipmentDetailModel where obsolete = 'N' and product.product_id="+Integer.parseInt(product)).list();
 		return listShipmentDetail;
 	}
+
+
+
+	@Override
+	@Transactional
+	public List<ShipmentModel> shipment_searchbyLR4ViewAdmin(String lrno) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and  lrno_prefix LIKE '%"+lrno+ "%'"
+								+ "and  status in ('Booked','Intransit', 'Pending', 'Return') ")
+				
+				.setMaxResults(100).list();
+		
+		return listShipment;
+	}
+	
 	
 	
 	

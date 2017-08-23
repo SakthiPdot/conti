@@ -145,7 +145,14 @@ contiApp.controller('ViewShipmentController', [
 		if ( lrno.length == 0 ) {
 			self.FilterShipment = self.shipments;
 		} else if ( lrno.length > 3 ) {
-			
+			ShipmentService.searchShipment(lrno)
+				.then(
+						function (shipemnt) {
+							self.FilterShipment = shipment;
+						}, function (errRes) {
+							console.log(errRes);
+						}
+					);
 		} else {
 			self.FilterShipment = _.filter(self.shipments,
 				function(item) {

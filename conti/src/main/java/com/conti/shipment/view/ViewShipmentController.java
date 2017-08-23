@@ -133,18 +133,11 @@ public class ViewShipmentController {
 		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
 		
 		JSONObject viewshipment_json = new JSONObject(viewShipment);
-		//, viewshipment_json.get("product_id").toString()
 		List<ShipmentModel> filterShipment = shipmentDao.filterViewShipment(
 				viewshipment_json.get("from_branch").toString(), viewshipment_json.get("to_branch").toString(), 
 				viewshipment_json.get("fromdate").toString(), viewshipment_json.getString("todate").toString(), 
 				viewshipment_json.get("status").toString() );	
-		/*List<ShipmentDetailModel> shipmentDetail = shipmentDao.filterViewShipmentbyproduct(viewshipment_json.get("product_id").toString());
-		
-		List<ShipmentModel> filterShipment_prod = new ArrayList<ShipmentModel>();
-		if( ! shipmentDetail.isEmpty() ) {
-			
-		}*/
-		
+	
 		String product = viewshipment_json.get("product_id").toString();
 		List<ShipmentModel> filterShip = new ArrayList<ShipmentModel>();
 		if( ! product.isEmpty() ) {
@@ -170,6 +163,32 @@ public class ViewShipmentController {
 	}
 
 	// ---------------------------------------------- FILTER SHIPMENT FOR VIEW
+	
+	//----------------------------------------------- SEARCH BY LRNO FOR VIEW SHIPMENT BEGIN
+	
+	@RequestMapping( value = "/shipment_searchbylr", method = RequestMethod.POST)
+	public ResponseEntity <List<ShipmentModel>> shipment_searchbylr (@RequestBody String lrno, HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		String user_id = userInformation.getUserId();
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		
+		try {
+			List<ShipmentModel> shipmentList = shipmentDao.shipment_searchbyLR4ViewAdmin(lrno);
+			
+			if( shipmentList.isEmpty() ) {
+				return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NOT_FOUND);
+			} else {
+				return new ResponseEntity<List<ShipmentModel>> (shipmentList,HttpStatus.OK);			
+			}	
+		} catch (Exception e) {
+			return new ResponseEntity<List<ShipmentModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+		
+	}
+	
+	//----------------------------------------------- SEARCH BY LRNO FOR VIEW SHIPMENT END
 	// END
 
 }
