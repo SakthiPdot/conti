@@ -132,5 +132,5 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	 }
 	 
 	 //------------------------------------- SEARCH BY LR FOR VIEW SHIPEMNT END
-	 
+ 
 }]);

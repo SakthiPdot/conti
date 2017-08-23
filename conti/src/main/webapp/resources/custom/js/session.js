@@ -53,6 +53,39 @@
 	    } 
 	//------------------------- Success animate end ---------------------------------- //	
 	    
+		//------------------------- Success animate begin ---------------------------------- //    
+	    function viewShipment_Animate(element, action){
+	    	
+	    	if ( action ==  'OPEN') {
+	    		
+	    		$('body').addClass('scrollHidden');
+		    	
+		    	window.setTimeout( function(){
+		    		$('.overlay').removeClass('hideme');
+		    		animationOpenClick('.overlay','fadeIn');
+		    		$(element).removeClass('hideme');
+		    		animationOpenClick(element,'fadeInDown');
+		    	}, 200);
+		    	
+	    	} else {
+	    		$('body').removeClass('scrollHidden');
+		    	
+		    	window.setTimeout( function(){
+		    		animationOpenClick('.overlay','fadeOut');
+		    		
+		    		animationOpenClick(element,'fadeOutUp');
+		    		
+		    	}, 200);
+		    	
+		    	window.setTimeout(function(){
+		    		$('.overlay').addClass('hideme');
+		    		$(element).addClass('hideme');
+		    	}, 1000);
+	    	}
+	    	
+		
+	    } 
+	//------------------------- Success animate end ---------------------------------- //	
 	    
 	//------------------------- Success animate for forgot begin ---------------------------------- //    
 	    function successforgot_AnimateOpen(element){
