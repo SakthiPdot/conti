@@ -154,8 +154,6 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 											</span>
 										</div>
 									</div>
-							
-
 								</div>
 
 
