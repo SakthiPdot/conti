@@ -24,6 +24,7 @@ contiApp.controller('ViewShipmentController', [
 	$("#screen_addshipment").addClass("active-menu");
 	var self = this;
 	self.shipments = {};
+	self.FilterShipment = {};
 	self.branches = {};
 	self.viewShipment = {
 			"fromdate" : "",
@@ -40,7 +41,7 @@ contiApp.controller('ViewShipmentController', [
 		.then(
 				function (shipments) {
 					self.shipments = shipments;		
-					
+					pagination();
 					
 				}, function (errResponse) {
 					console.log(errResponse);
@@ -57,9 +58,6 @@ contiApp.controller('ViewShipmentController', [
 			.then(
 					function (branches) {
 						self.branches = branches;
-						
-						
-						
 						
 					}, function (errRes) {
 						console.log(errRes);
@@ -82,7 +80,7 @@ contiApp.controller('ViewShipmentController', [
 	//--------------------------- PAGINATION BEGIN
 	
 	function pagination() {
-		$scope.pageSize = $scope.shownoofrec;
+		/*$scope.pageSize = $scope.shownoofrec;
 		$scope.currentPage = 0;
 		$scope.totalPages = 0;
 		self.FilterShipment = self.shipments;
@@ -98,7 +96,9 @@ contiApp.controller('ViewShipmentController', [
 			$scope.totalnof_records = self.FilterShipment.length;
 		} else {
 			
-		}
+		}*/
+		
+		self.FilterShipment = self.shipments;
 	}
 	
 	//--------------------------- PAGINATION END
@@ -126,13 +126,11 @@ contiApp.controller('ViewShipmentController', [
 		if($('.datepicker2').val().length != 0) {
 			self.viewShipment.todate = $('.datepicker2').val();	
 		} 
-		
-		console.log(self.viewShipment);
 				
 		ShipmentService.filterShipment(self.viewShipment)
 			.then(
 					function (shipment) {
-						self.shipments = shipment
+						self.FilterShipment = shipment
 					}, function (errRes) {
 						console.log(errRes);
 					}
@@ -140,4 +138,31 @@ contiApp.controller('ViewShipmentController', [
 	}
 	
 	//--------------------------- FILTER SHIPMENT END
+	
+	//--------------------------- SEARCH BY LRNO BEGIN
+	
+	self.searchby_LR = function(lrno) {
+		if ( lrno.length == 0 ) {
+			self.FilterShipment = self.shipments;
+		} else if ( lrno.length > 3 ) {
+			
+		} else {
+			self.FilterShipment = _.filter(self.shipments,
+				function(item) {
+					return searchLRUtil(item, lrno);
+				});
+		}
+	}
+	
+	function searchLRUtil(item, toSearch) {
+		var success = false;
+		
+		if( item.lrno_prefix.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ) {
+			success = true;
+		} else {
+			success= false;
+		}
+		return success;
+	}
+	//--------------------------- SEARCH BY LRNO END
 }]);

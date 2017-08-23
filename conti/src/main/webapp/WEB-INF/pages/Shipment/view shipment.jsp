@@ -233,9 +233,10 @@
 							<div class="panel-body">
 								<div class="col-lg-12 noPaddingLeft">
 									<div class="col-lg-3 branchclass">
-										<span class="text-padding boldletter">Search</span> <input
-											type="text" class="form-control searchbar"
-											placeholder="Manifest/LR No/Receipt No">
+										<span class="text-padding boldletter">Search</span> 
+										<input type="text" class="form-control searchbar"
+											data-ng-model = "ctrl.lr_search" data-ng-keyup = "ctrl.searchby_LR(ctrl.lr_search)"
+											placeholder="LR No">
 									</div>
 								</div>
 							</div>
@@ -311,7 +312,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr data-ng-repeat="shipment in ctrl.shipments">
+											<tr data-ng-repeat="shipment in ctrl.FilterShipment">
 												<td><input type="checkbox"
 													data-ng-model="shipment.select" /></td>
 												<td>{{shipment.shipment_date}}</td>
