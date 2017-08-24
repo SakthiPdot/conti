@@ -31,10 +31,12 @@ import org.hibernate.annotations.LazyCollectionOption;
 public class ReceiptModel 
 {
 	public int receipt_id,updated_by,created_by,receipt_number,contact_number;
-	public String paymode,courier_staff,obsolete;
+	public String paymode,courier_staff,obsolete,receipt_prefix;
 	private String created_datetime,updated_datetime;
 	private float local_transport,receipt_total;
 		
+
+	
 	public List<ReceiptDetail> receiptDetailList=new ArrayList<>();
 	
 	
@@ -156,6 +158,12 @@ public class ReceiptModel
 		this.receipt_total = receipt_total;
 	}
 	
-	
+	@Column(name = "receipt_prefix")
+	public String getReceipt_prefix() {
+		return this.receipt_prefix;
+	}
+	public void setReceipt_prefix(String receipt_prefix) {
+		this.receipt_prefix = receipt_prefix;
+	}
 	
 }

@@ -38,6 +38,10 @@ public final class ConstantValues {
 	public static final String COMPLETED="Completed";
 	public static final String INCOMPLETE="Incomplete";
 	
+	//SHIPMENT (PAID/TO PAY)
+	public static final String PAID = "Sender";
+	public static final String TO_PAY = "Receiver";
+	
 	//APPLICATION_TIMEOUT
 	public static final String APPLICATION_TIMEOUT = "30";
 	
