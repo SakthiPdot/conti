@@ -140,7 +140,7 @@ contiApp.factory('EmployeeService', ['$http', '$q', function ($http, $q){
     	})
     	.then (
     		function (response) {
-    			deferred.resolve(response.data);
+    			deferred.resolve(response);
     		},
     		function (errResponse) {
     			deferred.reject(errResponse);

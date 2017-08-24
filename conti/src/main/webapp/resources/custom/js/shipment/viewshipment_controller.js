@@ -191,4 +191,42 @@ contiApp.controller('ViewShipmentController', [
 	 
 	 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL CLOSE END
 	 
+	 //------------------------------------- SHIPEMNT CANCEL BEGIN
+	 self.shipmentCancel = function (shipment) {
+		
+			self.confirm_title = 'Cancel';
+			self.confirm_type = BootstrapDialog.TYPE_DANGER;
+			self.confirm_msg = self.confirm_title+ ' the shipment?';
+			self.confirm_btnclass = 'btn-danger';
+			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+				.then(
+						function (res) {
+							
+							ShipmentService.shipment_delete(shipment.shipment_id)	
+							.then(
+									function (res) {
+										var index = self.shipments.indexOf(shipment);
+										self.shipments.splice(index,1);
+										self.message = "Selected shipment has been deleted scuccessfully..!";
+				            			successAnimate('.success'); 
+				            			self.viewShipemntClose();
+				            			
+									}, function(errRes) {
+										self.message = "Error while deleting selected shipment..!";
+				            			successAnimate('.failure');   
+				            			self.viewShipemntClose();
+									}
+								);
+							
+						}
+					);
+		 
+	 }
+	 //------------------------------------- SHIPEMNT CANCEL END
+	 
+	 //------------------------------------- SHIPEMNT PRINT BEGIN
+	 self.shipmentPrint = function (shipment) {
+		 bill_open(shipment.lr_number);
+	 }
+	 //------------------------------------- SHIPEMNT PRINT END
 }]);

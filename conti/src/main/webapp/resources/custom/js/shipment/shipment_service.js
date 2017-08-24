@@ -14,7 +14,8 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 			fetchMAXLRno : fetchMAXLRno,
 			fetchAllShipmentforView : fetchAllShipmentforView,
 			filterShipment : filterShipment,
-			searchShipment : searchShipment
+			searchShipment : searchShipment,
+			shipment_delete : shipment_delete
 	};
 	
 	return factory;
@@ -132,5 +133,27 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	 }
 	 
 	 //------------------------------------- SEARCH BY LR FOR VIEW SHIPEMNT END
- 
+
+	 //------------------------------------- SHIPEMNT DELETE BEGIN
+	 
+	 function shipment_delete(id) {
+		 var deferred = $q.defer();
+		 $http({
+			 method : 'DELETE',
+			 url : 'delete_shipment/'+id,
+			 headers : getCsrfHeader()			 
+		 })
+		 .then (
+				 function (response) {
+					 deferred.resolve(response.data);
+				 },
+				 function (errResponse) {
+					 deferred.reject(errResponse);
+				 }
+				);
+		 return deferred.promise;
+	 }
+	 
+	 //------------------------------------- SHIPEMNT DELETE END
 }]);
+

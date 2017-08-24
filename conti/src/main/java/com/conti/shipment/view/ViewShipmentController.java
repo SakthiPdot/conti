@@ -1,6 +1,9 @@
 package com.conti.shipment.view;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +27,6 @@ import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.shipment.add.ShipmentDao;
-import com.conti.shipment.add.ShipmentDetailModel;
 import com.conti.shipment.add.ShipmentModel;
 
 /**
@@ -189,6 +191,32 @@ public class ViewShipmentController {
 	}
 	
 	//----------------------------------------------- SEARCH BY LRNO FOR VIEW SHIPMENT END
+	
+	//----------------------------------------------- SHIPMENT DELETE BEGIN
+	
+	@RequestMapping(value = "delete_shipment/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity <Void> shipment_delete (@PathVariable ("id") int id, HttpServletRequest request) {
+		
+		userInformation = new UserInformation (request);
+		int user_id = Integer.parseInt(userInformation.getUserId()); 
+		ShipmentModel shipment = shipmentDao.getShipmentModelById(id);
+		
+		if (shipment != null) {
+			
+			Date date = new Date();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+			
+			shipment.setUpdated_by(user_id);
+			shipment.setUpdated_datetime(dateFormat.format(date));
+			shipment.setObsolete("Y");
+			shipment.setStatus("Cancelled");	
+			shipmentDao.saveOrUpdate(shipment);
+		}
+		
+		return new ResponseEntity<Void> (HttpStatus.OK);
+	}
+	
+	//----------------------------------------------- SHIPMENT DELETE END
 	// END
 
 }
