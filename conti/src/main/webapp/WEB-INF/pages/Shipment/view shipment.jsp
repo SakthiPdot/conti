@@ -1133,9 +1133,58 @@
 											<div class="col-xs-6 icons-button">
 												<div class="pull-right">
 													<form name="shipmentPrint" method = "POST" action = "viewshipment_print" class="padding-button">
-														<a type="button" class="btn btn-primary">
-															<i class="fa fa-cog fa-lg"></i>
-														</a>
+														
+														<a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
+														<div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
+															<div class ="checkbox">
+					                                     		<label>
+					                                     			<i class = "fa" data-ng-class="{'fa-check': setting_shipdate == true, 'fa-times': setting_shipdate == false}"></i>
+																	<input type="checkbox" data-ng-init = "setting_shipdate=true" data-ng-model="setting_shipdate" /> Date
+																</label>
+															</div>
+															<div class ="checkbox">
+					                                     		<label>
+					                                     			<i class = "fa" data-ng-class="{'fa-check': setting_shiplrno == true, 'fa-times': setting_shiplrno == false}"></i>
+																	<input type="checkbox" data-ng-init = "setting_shiplrno=true" data-ng-model="setting_shiplrno" /> LR No.
+																</label>
+															</div>
+															<div class ="checkbox">
+					                                     		<label>
+					                                     			<i class = "fa" data-ng-class="{'fa-check': setting_shipprod == true, 'fa-times': setting_shipprod == false}"></i>
+																	<input type="checkbox" data-ng-init = "setting_shipprod=true" data-ng-model="setting_shipprod" /> Product
+																</label>
+															</div>
+															<div class ="checkbox">
+					                                     		<label>
+					                                     			<i class = "fa" data-ng-class="{'fa-check': setting_shiporigin == true, 'fa-times': setting_shiporigin == false}"></i>
+																	<input type="checkbox" data-ng-init = "setting_shiporigin=true" data-ng-model="setting_shiporigin" /> Origin
+																</label>
+															</div>
+															<div class ="checkbox">
+					                                     		<label>
+					                                     			<i class = "fa" data-ng-class="{'fa-check': setting_shipdestinate == true, 'fa-times': setting_shipdestinate == false}"></i>
+																	<input type="checkbox" data-ng-init = "setting_shipdestinate=true" data-ng-model="setting_shipdestinate" /> Destination
+																</label>
+															</div>
+															<div class ="checkbox">
+					                                     		<label>
+					                                     			<i class = "fa" data-ng-class="{'fa-check': setting_shipsender == true, 'fa-times': setting_shipsender == false}"></i>
+																	<input type="checkbox" data-ng-init = "setting_shipsender=true" data-ng-model="setting_shipsender" /> Sender
+																</label>
+															</div>
+															<div class ="checkbox">
+					                                     		<label>
+					                                     			<i class = "fa" data-ng-class="{'fa-check': setting_shipconsignee == true, 'fa-times': setting_shipconsignee == false}"></i>
+																	<input type="checkbox" data-ng-init = "setting_shipconsignee=true" data-ng-model="setting_shipconsignee" /> Consignee
+																</label>
+															</div>
+															<div class ="checkbox">
+					                                     		<label>
+					                                     			<i class = "fa" data-ng-class="{'fa-check': setting_shipstatus == true, 'fa-times': setting_shipstatus == false}"></i>
+																	<input type="checkbox" data-ng-init = "setting_shipstatus=true" data-ng-model="setting_shipstatus" /> Status
+																</label>
+															</div>
+														</div>
 														<a type="button" class="btn btn-primary" onclick="location.href='downloadExcelForViewShpiment'; valid = true;">
 															<i class="fa fa-file-excel-o fa-lg"></i>
 														</a>
@@ -1158,14 +1207,14 @@
 										<thead>
 											<tr>
 												<th><input type="checkbox" data-ng-click="ctrl.shipmentSelectall()" data-ng-model = "selectall" /></th>
-												<th>Date</th>
-												<th>LR No</th>
-												<th>Product</th>
-												<th>Origin</th>
-												<th>Destination</th>
-												<th>Sender</th>
-												<th>Consignee</th>
-												<th>Status</th>
+												<th data-ng-show = "setting_shipdate">Date</th>
+												<th data-ng-show = "setting_shiplrno">LR No</th>
+												<th data-ng-show = "setting_shipprod">Product</th>
+												<th data-ng-show = "setting_shiporigin">Origin</th>
+												<th data-ng-show = "setting_shipdestinate">Destination</th>
+												<th data-ng-show = "setting_shipsender">Sender</th>
+												<th data-ng-show = "setting_shipconsignee">Consignee</th>
+												<th data-ng-show = "setting_shipstatus">Status</th>
 
 											</tr>
 										</thead>
@@ -1174,20 +1223,20 @@
 												data-ng-dblclick = "ctrl.view1Shipmet(shipment)"
 											>
 												<td><input type="checkbox" data-ng-change="ctrl.shipmentSelect(shipment)" data-ng-model = "shipment.select" /></td>
-												<td>{{shipment.shipment_date}}</td>
-												<td>{{shipment.lrno_prefix}}</td>
-												<td>
+												<td data-ng-show = "setting_shipdate">{{shipment.shipment_date}}</td>
+												<td data-ng-show = "setting_shiplrno">{{shipment.lrno_prefix}}</td>
+												<td data-ng-show = "setting_shipprod">
 													<div
 														data-ng-repeat="shipmentDet in shipment.shipmentDetail">
 														{{shipmentDet.product.product_name}}<span
 															data-ng-if="!($last)">,</span>
 													</div>
 												</td>
-												<td>{{shipment.sender_branch.branch_name}}</td>
-												<td>{{shipment.consignee_branch.branch_name}}</td>
-												<td>{{shipment.sender_customer.customer_name}}</td>
-												<td>{{shipment.consignee_customer.customer_name}}</td>
-												<td>{{shipment.status}}</td>
+												<td data-ng-show = "setting_shiporigin">{{shipment.sender_branch.branch_name}}</td>
+												<td data-ng-show = "setting_shipdestinate">{{shipment.consignee_branch.branch_name}}</td>
+												<td data-ng-show = "setting_shipsender">{{shipment.sender_customer.customer_name}}</td>
+												<td data-ng-show = "setting_shipconsignee">{{shipment.consignee_customer.customer_name}}</td>
+												<td data-ng-show = "setting_shipstatus">{{shipment.status}}</td>
 
 											</tr>
 										<tbody>
