@@ -1,6 +1,7 @@
 package com.conti.receipt;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,11 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
+import com.conti.manifest.ManifestModel;
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
+import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.CompanySettingDAO;
 import com.conti.shipment.add.ShipmentDao;
@@ -59,6 +62,9 @@ public class AddReceiptRestController
 		
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
+	
+	@Autowired
+	private UsersDao userDao;
 	
 	@Autowired
 	@Qualifier("sessionRegistry")
@@ -104,71 +110,64 @@ public class AddReceiptRestController
 		}
 		return model;
 	}
-//-----------------------------------------------------------------------------------------------------------------
 	
-	//-----------------------------------Get All Receipt  for default loaded in Add Receipt ----------------------------------
+	//=====================================Get All Receipt  for default loaded in Add Receipt===============================================
 		
 	@RequestMapping(value="add_receipt_preload", method=RequestMethod.GET)
 		public ResponseEntity<List<ShipmentModel>>fetchAllReceipt_add(HttpServletRequest request)
 		{
-			UserInformation userInformation = new UserInformation(request);
-			String username = userInformation.getUserName();
-			String branch_id=userInformation.getUserBranchId();
-			try
-			{
-				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-				List<ShipmentModel> shipmentModel=shipmentDao.fetchAllShipment4receipt(Integer.parseInt(branch_id));
-				if(shipmentModel.isEmpty()) 
-				{
-					return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT);
-				}
-				else 
-				{
-					return new ResponseEntity<List<ShipmentModel>> (shipmentModel, HttpStatus.OK);	
-				}	
-			}
-			catch(Exception exception)
-			{
-				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-				return new ResponseEntity<List<ShipmentModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
-			}
-		}
+		UserInformation userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		String branch_id = userInformation.getUserBranchId();
 		
-	//-------------------------------------------------------------------------------------------------------------------
-	
-	//-------------------------------------------Add Receipt filter function start----------------------------------------
+		User user =userDao.get(Integer.parseInt(userInformation.getUserId()));
+		
+		List<ShipmentModel> shipmentModel;
+		try {
+			if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){	
+				shipmentModel = shipmentDao.fetchAllShipment4receiptAdmin();
+			}else{
+				shipmentModel = shipmentDao.fetchAllShipment4receipt(Integer.parseInt(branch_id));
+			}
+			
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			if (shipmentModel.isEmpty()) {
+				return new ResponseEntity<List<ShipmentModel>>(HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<List<ShipmentModel>>(shipmentModel, HttpStatus.OK);
+			}
+
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<ShipmentModel>>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		}
+
+	  
+	//========================================Add Receipt filter function start==================================================
 	
 	@RequestMapping( value = "add_receipt_filter", method = RequestMethod.POST)
-	public ResponseEntity<List<ShipmentModel>> addreceiptFilterbycondition(@RequestBody String receipt,HttpServletRequest request) 
+	public ResponseEntity<List<ShipmentModel>> addreceiptFilterbycondition(@RequestBody String filter,HttpServletRequest request) 
 			throws JsonProcessingException, IOException 
 	{
 		HttpSession session = request.getSession();
 		UserInformation userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();
-		JSONObject obj=new JSONObject(receipt);
 		
-		int frombranchid=obj.getInt("frombranch");
-		int tobranchid=obj.getInt("tobranch");
 		
-		String fromdate=(String) obj.get("fromdate");
-		String todate=(String) obj.get("todate");
-		
-		String servic=(String) obj.get("service");
-		String paymod=(String) obj.get("paymode");	
+		JSONObject obj=new JSONObject(filter);
+	
 		try 
 		{
+			
+			List<ShipmentModel> shipmentModel = shipmentDao.getShipmentByCondition(obj.get("fromBranch").toString(),obj.get("toBranch").toString(),
+					obj.get("fromDate").toString(),obj.get("toDate").toString(),obj.get("service").toString(),obj.get("paymentMode").toString());
+			
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			List<ShipmentModel> shipmentModel = shipmentDao.getShipmentByCondition(frombranchid,tobranchid,fromdate,todate,servic,paymod);
-			if(shipmentModel.isEmpty()) 
-			{
-				System.out.println("=====Empty====================================="+shipmentModel);
-				return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT);
-			}
-			else 
-			{
-				System.out.println("=====Success====================================="+shipmentModel);
-				return new ResponseEntity<List<ShipmentModel>> (shipmentModel, HttpStatus.OK);	
-			}		
+			
+			return (shipmentModel.isEmpty()) ?	 new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT):	
+				 new ResponseEntity<List<ShipmentModel>> (shipmentModel, HttpStatus.OK);	
+				
 		} 
 		catch (Exception exception) 
 		{			
@@ -181,10 +180,39 @@ public class AddReceiptRestController
 	//======================LR Number search start==================================
 	
 	@RequestMapping(value="search_lrnumber", method=RequestMethod.POST)
-	public ResponseEntity<List<ShipmentModel>> receipt_search(@RequestBody String searchkey,HttpServletRequest request)
-	{
-		List<ShipmentModel> shipmentModel=shipmentDao.searchLRnumber(searchkey);
-		System.out.println("++++++++++++++++++++++++++++++++============================================================================== "+shipmentModel.toString());
-		return new ResponseEntity<List<ShipmentModel>>(shipmentModel,HttpStatus.OK);
+	public ResponseEntity<List<ShipmentModel>> receipt_search(@RequestBody String searchkey,HttpServletRequest request){
+		
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =userDao.get(Integer.parseInt(userid));
+		List<ShipmentModel> shipmentList;
+		
+		if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){	
+			shipmentList=shipmentDao.fetchShipmentByLRAdminReceipt(searchkey);
+		}else{
+			shipmentList=shipmentDao.fetchShipmentByLRReceipt(searchkey,user.getBranchModel().getBranch_id());
+		}
+			
+		
+		return new ResponseEntity<List<ShipmentModel>> (shipmentList, HttpStatus.OK);	
+	}
+	
+	//======================Get Receipt Model==================================
+	@RequestMapping(value="getReceiptModel",method=RequestMethod.GET)
+	public  ResponseEntity<ReceiptModel> shipmentModel(){
+		ReceiptModel receiptModel=new ReceiptModel();
+		
+		List<ReceiptDetail> receiptDetailList=new ArrayList<>();
+		
+		ReceiptDetail receiptDetail=new ReceiptDetail();
+		receiptDetail.setManifestModel(new ManifestModel());
+		receiptDetail.setShipmentModel(new ShipmentModel());
+		receiptDetail.setReceiptModel(new ReceiptModel());
+		
+		receiptDetailList.add(receiptDetail);
+		
+		receiptModel.setReceiptDetailList(receiptDetailList);
+		
+		return new ResponseEntity<>(receiptModel,HttpStatus.OK);		
 	}
 }

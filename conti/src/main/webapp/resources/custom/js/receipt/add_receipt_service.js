@@ -4,7 +4,7 @@
  * @File_name Receipt_controller.js
  * @author Suresh
  * @Updated_user Suresh
-  @Created_date_time August 09, 2017 11:31:53 AM
+   @Created_date_time August 09, 2017 11:31:53 AM
  * @Updated_date_time August 09, 2017 11:31:53 AM
  */
 contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
@@ -26,7 +26,6 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 				function(response)
 				{
 					def.resolve(response.data);
-					console.log(response.data);
 				},function(errResponse)
 				{
 					console.log('Error while fetching Receipt....');
@@ -37,7 +36,7 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 	//----------------------------------------------------------------------
 	
 	//--------------------Filter All Receipt by filter condition------------------
-	function viewShipment(receipt)
+	function viewShipment(filter)
 	{
 		console.log("Service Receipt filter function call");
 		var def=$q.defer();
@@ -45,7 +44,7 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 		$http({
 			method:"POST",
 			url:'add_receipt_filter',
-			data:receipt,	
+			data:filter,	
 			headers:headers
 		}).then(
 				function(response)
@@ -66,31 +65,23 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 	
 	//--------------------------Register Search--------------------------------
 	
-	function registerSearch(searchkey)
-	{
-		console.log("RECEIPT Service Register search function call success....")
-		var def=$q.defer();
-		$http({
-			method:'POST',
-			url:'search_lrnumber',
-			data:searchkey, 
-			headers:getCsrfHeader()
-		})
-		.then(
-				function(response)
-				{
-					def.resolve(response.data);
-					console.log('Service success................');
-					console.log(response.data);
-				},
-				function(errResponse)
-				{
-					def.reject(errResponse);
-					console.log('Service ERROR................');
-				}
-			);
-		return def.primise;
+	function registerSearch(searchkey){
+	var deferred = $q.defer();
+    	
+    	$http({
+    		method : 'POST',
+    		url : 'search_lrnumber',
+    		data : searchkey,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response) {
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse) {
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
 	}
-	//-------------------------------------------------------------------------
-
 }]);

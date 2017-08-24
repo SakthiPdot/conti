@@ -8,7 +8,8 @@
  * @Updated_date_time August 09, 2017 11:31:53 AM
  */
 
-contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','ReceiptService','BranchService','ConfirmDialogService',function($scope,$http,$q,$timeout,ReceiptService,BranchService,ConfirmDialogService)
+contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','ReceiptService','BranchService','ConfirmDialogService','addManifestService',
+	function($scope,$http,$q,$timeout,ReceiptService,BranchService,ConfirmDialogService,addManifestService)
 {
 	var self=this;
 	self.receipts=[];
@@ -29,9 +30,6 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	
 	self.receiptSelectAll=receiptSelectAll;
 	fetchAllReceipt_add();
-	fetchAllBranches();
-	var branch_id=$('#branchid').val();
-	fetchCurrentBranch(branch_id);
 		
 	function reset()
 	{
@@ -62,91 +60,86 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	}
 	//----------------------------------------------------------------------------
 	
-	//-------------------------- Fetch All Branch begin ---------------------//	
+	//===================================fetch ALL BRANCH====================================	
+	fetchAllBranches();	
 	
 	function fetchAllBranches() 
 	{
-		console.log("get all branches")
-		BranchService.fetchAllBranches()
+		BranchService.fetchAllBranchesForManifest()
+			.then(
+			function(response) {
+				self.branches = response;
+			},
+			function(errResponse) {
+				console.log('Error while fetching branches');
+					}
+				);
+	}
+	
+	
+	//===================================GET USER BRANCH DETAILS====================================
+	getUserBranchDetails();
+	
+	function getUserBranchDetails() {				
+		addManifestService.getUserBranchDetails()
 		.then(
-				function(branches) 
-				{
-					self.branches = branches;
-					pagination();
-					//console.log("get all branches "+self.branches)
+				function (response) {		
+					$scope.current_branch=response;	
+					$scope.tobranch_filter=String(response.branch_id);
+					$scope.tobranch_sample=response.branch_name;
 				}, 
-				function (errResponse) 
-				{
-					console.log('Error while fetching branches');
-				}
-			);
+				function (errResponse) {
+					console.log(errResponse);
+					console.log('Error while fetching user branch');
+				});
 	}
-	
-	//-------------------------- Fetch All Branch end -----------------------//
-	
-	//-----------------Get Current branch from branch Master-----------------//
-	
-	function fetchCurrentBranch(branch_id)
-	{
-		console.log("Current Branch location id : "+branch_id);
-		BranchService.fetchbyBranchid(branch_id)
-		.then(
-				function(branch)
-				{
-//					self.receipt.tobranch=branch.branch_name;
-					self.currentBranch=branch.branch_name;
-					console.log(self.currentBranch);
-					pagination();
-				},
-				function(errResponse)
-				{
-					console.log('Error while fetching current branch.....');
-				}
-			);
-	}
-	//--------------------------------------------------------------------------//
+
+
 	
 	//---------------------------Fetch All Receipt details start----------------------
 	function fetchAllReceipt_add()
 	{
 		ReceiptService.fetchAllReceipt_add()
 		.then(
-				function(receipt)
-				{
+				function(receipt){
 					self.receipts=receipt;
 					self.Filterreceipts=self.receipts;
-					console.log('fetching receipt '+self.Filterreceipts);
 				},
-				function(errResponse)
-				{
+				function(errResponse){
 					console.log('Error while fetching Receipt');
 				}
 			);
 	}
 	//-------------------------------------------------------------------------------
-
+	$scope.frombranch_filter=null;
+	$scope.tobranch_filter=null;
+	$scope.fromdate_filter=null;
+	$scope.todate_filter=null;
+	$scope.service_filter=null;
+	$scope.paymode_filter=null;
 	
 	//--------------------View shipment filter condition-------------------------------
 	
-	function viewShipment(receipt)
+	function viewShipment()
 	{
-		receipt.fromdate=$('.datepicker1').val();
-		receipt.todate=$('.datepicker2').val();
-		receipt.frombranch=receipt.frombranch.branch_id;
-		receipt.tobranch=receipt.tobranch.branch_id;
-		receipt.paymode=receipt.paymode;
-		receipt.service=receipt.service;
-		console.log(receipt);
-		ReceiptService.viewShipment(receipt)
+		
+		var filter={
+				"fromBranch":$scope.frombranch_filter,
+				"toBranch":$scope.tobranch_filter,
+				"fromDate":$(".datepicker1").val(),
+				"toDate":$(".datepicker2").val(),
+				"service":$scope.service_filter,
+				"paymentMode":$scope.paymode_filter	
+		}
+		console.log(filter);
+		ReceiptService.viewShipment(filter)
 		.then(
-				function(receipt)
-				{
+				function(receipt){
 					self.Filterreceipts=receipt;
 					console.log('Filter shipments details '+self.Filterreceipts);
 				},
-				function(errResponse)
-				{
-					console.log('Error while fetching Receipt ....');
+				function(errResponse){
+					console.log('Error while fetching Receipt.');
 				}
 			);
 	}
@@ -157,11 +150,9 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	{
 		console.log('Call select all receipt '+$scope.pageSize);
 		self.selected_receipt=[];
-		for (var i=0; i<$scope.pageSize;i++)
-			{
+		for (var i=0; i<$scope.pageSize;i++){
 				self.Filterreceipts[i].select=$scope.selectallreceipts;
-				if($scope.selectallreceipts)
-					{
+				if($scope.selectallreceipts){
 						self.selected_receipt.push(self.Filterreceipts[i]);
 					}
 			}
@@ -172,7 +163,6 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	
 	function receiptSelect(receipt)
 	{
-		console.log('Call Receipt select function ....');
 		var index=self.selected_receipt.indexOf(receipt);
 		if(receipt.select)
 		{
@@ -351,42 +341,22 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		{
 			ReceiptService.registerSearch(searchkey)
 			.then(
-					function(filterReceipt)
-					{
-						console.log('Search function successfully call');
-						self.Filterreceipts=filterReceipt;
-						console.log(filterReceipt);
-					},
-					function(errResponse)
-					{
-						console.log('Error while fetching branches ');
-					}
-					
-				);
+				function(filterReceipt) {
+					self.Filterreceipts = filterReceipt;
+				},
+				function(errResponse) {
+					console.log('Error while fetching branches ');
+				});
 		}
-		else
-		{
-			self.Filterreceipts=_.filter(self.receipts,
-					function(item)
-					{
-						return searchUtil(item,searchkey);
+		else{
+			self.Filterreceipts = _.filter(self.receipts, function(item) {
+				return String(item.lrno_prefix).indexOf(searchkey) > -1;
 					});
 		}
 	}
 	
-	function searchUtil(item,toSearch)
-	{
-		var success=false;
-		if(String(item.lr_number).indexOf(toSearch)>-1)
-		{
-			success=true;
-		}
-		else
-		{
-			success=false;
-		}
-		return success;
-	}
+
+
 	//--------------------------------------------------------------------------------------------//
 	
 	}

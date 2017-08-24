@@ -12,4 +12,5 @@ public interface ReceiptDao
 	
 	//===== Referred Delete Process in Foreign key =========//
 	public ReceiptModel getUser(int c_user,int u_user);
+	
 }

@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
@@ -9,6 +10,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/gif/png" href="resources/Image/conti_logo.png">
     <title>${title}</title>
     <!-- Bootstrap Styles-->
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
@@ -102,70 +104,93 @@
                 			<div class="panel-body">
                 			     <div class="branch-heading">Branch</div>
                 			     
-                			     <div class="col-lg-12 noPaddingLeft"> 
+                			     <div class="col-lg-12 noPaddingLeft "> 
                 			      <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">From</span>
-                			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches"
-                			      		 data-ng-model="ctrl.receipt.frombranch">
-                			      			<option value="">--Select--</option>
-                			      		</select>
-                			      </div>
-                			      <input type="hidden" value="${branch_id}" id="branchid"/>
-                			       <div class="col-lg-3 branchclass">
-                			      		<span class="text-padding">To</span>
                 			      		<select class="form-control" 
-                			      		data-ng-init="ctrl.receipt.tobranch=ctrl.currentBranch" data-ng-model="ctrl.receipt.tobranch"  
-                			      		data-ng-options ="branch.branch_name for branch in ctrl.branches">
-                			      			<option value="">--Select--</option>
-                			      			
+                			      		 data-ng-model="frombranch_filter">
+                			      			<option value="" data-ng-disabled="true">--Select Branch Name--</option>
+                			      			<option data-ng-repeat="x in ctrl.branches" value="{{x.branch_id}}">{{x.branch_name}}</option>
                 			      		</select>
                 			      </div>
-                			      </div>
-                			     <div class="col-lg-12 noPaddingLeft"> 
-                			        <div class="sec-padding">Specific Period</div>
-                			         <div class="col-lg-3 branchclass">
-	                			      		 <span class="paddingtop">From  </span>   	                                       
-	                                          <div class="form-group input-group marginleftrightspace">
-					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.fromdate"
-					                           			   data-trigger= "focus"data-toggle="popover" data-placement="top"
-					                            		   data-content="Please select from date"/>
-					                            	 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-		                                     </div>
-	                                  </div>
+                			      
+                			      
+                			      
+                			      <input type="hidden" value="${branch_id}" id="branchid"/>
                 			      
                 			       <div class="col-lg-3 branchclass">
-                			      		<span class="paddingtop">To</span>
-                			      		 <div class="form-group input-group marginleftrightspace">
-				                                <input type="text" class="form-control datepicker2" data-ng-model="ctrl.receipt.todate"
-													  data-trigger= "focus"data-toggle="popover" data-placement="top"
-					                            		data-content="Please select to date"/>
-	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
-	                                            </span>
-	                                     </div>
+                			      		<span class="text-padding">To</span>
+                			      		
+                			      		<sec:authorize access="hasRole('STAFF') or hasRole('MANAGER')">							
+											<input type="hidden" class="form-control " data-ng-model="tobranch_filter" >
+											<input type="text" class="form-control " data-ng-disabled="true" data-ng-model="tobranch_sample">
+										</sec:authorize>
+										
+                			      		<sec:authorize access="hasRole('SUPER_ADMIN')">
+                			      		<select class="form-control" 
+                			      		data-ng-model="tobranch_filter">
+                			      			<option value="" data-ng-disabled="true">--Select Branch Name--</option>                			      			
+                			      			<option data-ng-repeat="x in ctrl.branches" value="{{x.branch_id}}">{{x.branch_name}}</option>
+                			      		</select>
+                			      		</sec:authorize>
+                			      		
                 			      </div>
                 			      </div>
-                			       
-                			       <div class="col-lg-12 noPaddingLeft subhead-padding"> 
+                			      
+                			      
+
+
+
+								<div class="col-lg-12 noPaddingLeft ">
+
+									<div class="sec-padding">Specific Period</div>
+									<div class="col-lg-3 branchclass">
+										<span class="text-padding">From </span>
+										<div class=" input-group ">
+											<input type="text" class="form-control datepicker1"
+												data-ng-model="fromdate_filter" data-trigger="focus"
+												placeholder="Enter From Date"
+												data-toggle="popover" data-placement="top"
+												data-content="Please select from date" /> <span
+												class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+									</div>
+
+									<div class="col-lg-3 branchclass">
+										<span class="text-padding">To</span>
+										<div class=" input-group ">
+											<input type="text" class="form-control datepicker2"
+												data-ng-model="todate_filter" data-trigger="focus"
+												placeholder="Enter To Date"
+												data-toggle="popover" data-placement="top"
+												data-content="Please select to date" /> <span
+												class="input-group-addon"><i class="fa fa-calendar"></i>
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-12"><br></div>
+								
+								<div class="col-lg-12 noPaddingLeft subhead-padding"> 
                 			       		<div class="col-lg-3 branchclass">
                 			      		 <span class="text-padding">Service</span>	                	                                       
                                             <select class="form-control" data-ng-options= "service for service in ['Counter','Door Delivery']"
-                                            data-ng-model="ctrl.receipt.service">
-                                            	<option value=''>--Select--</option>
+                                            data-ng-model="service_filter">
+                                            	<option value='' data-ng-disabled="true">--Select Service--</option>
                                              </select>
                                          </div>
                 			            
                 			            <div class="col-lg-3 branchclass">
                 			      		 <span class="">Payment Mode</span>	                	                                       
                                             <select class="form-control" data-ng-options= "pay for pay in ['Cash','Credit','Check']"
-                                            data-ng-model="ctrl.receipt.paymode">
-                                            	<option value=''>--Select--</option>
-                                               	
+                                            data-ng-model="paymode_filter">
+                                            	<option value='' data-ng-disabled="true">--Select Payment Mode--</option>
                                             </select>
-                                           
                 			            </div>
                 			            
                 			            <div class="col-lg-4 branchclass">
-                			      		   <button class="btn btn-primary" data-ng-click="ctrl.viewShipment(ctrl.receipt)"> View Shipment</button>
+                			      		   <button class="btn btn-primary" data-ng-click="ctrl.viewShipment()"> View Shipment</button>
                                          </div>
                 			       </div>
                 			</div>
@@ -183,8 +208,8 @@
                 			       		<div class="col-lg-3 branchclass">
                 			      		 <span class="text-padding boldletter" >Search</span>	                	                                       
                                             <input type="text" class="form-control searchbar" placeholder="LR Number"
-                                            data-ng-model="ctrl.receipt.search" data-ng-keyup="ctrl.registerSearch(ctrl.receipt.search)">                                           
-                                       
+                                            data-ng-model="ctrl.search" 
+                                            data-ng-keyup="ctrl.registerSearch(ctrl.search)">  
                                         </div>
                 			      </div>
                 			</div>
@@ -216,6 +241,15 @@
                     	<a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
                     	<div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
 	                    	
+	                    		<div class="checkbox">
+											<label> <i class="fa"
+												data-ng-class="{'fa-check': setting_date == true, 'fa-times': setting_date== false}"></i>
+												<input type="checkbox"
+												data-ng-init="setting_date = true"
+												data-ng-model="setting_date" /> Date
+											</label>
+										</div>
+							
 	                    	<div class ="checkbox">
 								<label>
 									<i class = "fa" data-ng-class="{'fa-check': setting_sltnumber == true, 'fa-times': setting_sltnumber == false}"></i>										
@@ -271,8 +305,25 @@
 									<input type="checkbox" data-ng-init = "setting_receiptstatus=true" data-ng-model="setting_receiptstatus" /> Status
 								</label>
 							</div>
-                    	
-                    	</div>
+
+							<div class="checkbox" data-ng-hide="true">
+								<label> <i class="fa"
+									data-ng-class="{'fa-check': setting_sevice == true, 'fa-times': setting_sevice ==false}"></i>
+									<input type="checkbox"
+									data-ng-init="setting_sevice = true"
+									data-ng-model="setting_sevice" /> Service
+								</label>
+							</div>
+							<div class="checkbox">
+								<label> <i class="fa"
+									data-ng-class="{'fa-check': setting_paymentMode == true, 'fa-times': setting_paymentMode ==false}"></i>
+									<input type="checkbox"
+									data-ng-init="setting_paymentMode = true"
+									data-ng-model="setting_paymentMode" /> Payment Mode
+								</label>
+							</div>
+
+						</div>
                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelReceipt';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
                       	  <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_receipt.length == 0" ><i class="fa fa-print fa-lg"></i></button>
                           <input type = "hidden" name = "receipt" value = "{{ctrl.selected_receipt}}" />
@@ -291,32 +342,46 @@
                                         <tr>
                                             <th><input type="checkbox" data-ng-click="ctrl.receiptSelectAll()" data-ng-model="selectallreceipts"></th>
                                             <th data-ng-show="setting-slnumber">S.No</th>
+                                                <td data-ng-show="setting-slnumber">{{$index+1}}</td>
+												<th data-ng-show="setting_date"
+													data-ng-click="date=!date;sortTable('date',date);">Date<i
+													data-ng-hide="disableSorting"
+													data-ng-class=" {'fa fa-caret-up':date,'fa fa-caret-down':!date}"
+													aria-hidden="true"></i></th>
                                             <th data-ng-show="setting_receiptlrnumber">LR Number</th>
                                             <th data-ng-show="setting_receiptorigin">Origin</th>
                                             <th data-ng-show="setting_receiptdestination">Destination</th>
                                             <th data-ng-show="setting_receiptsender">Sender</th>
                                             <th data-ng-show="setting_receiptconsignee">Consignee</th>
                                             <th data-ng-show="setting_receiptproduct">Product</th>
-                                            <th data-ng-show="setting_receiptstatus">Status</th>
+                                            <th data-ng-show="setting_sevice"
+												data-ng-click="service=!service;sortTable('service',service);">Service<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':service,'fa fa-caret-down':!service}"
+														aria-hidden="true"></i></th>
+                                            <th data-ng-show="setting_receiptstatus" data-ng-hide="true">Status</th>                                            
+                                            <th data-ng-show="setting_paymentMode" >Payment Mode</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr data-ng-repeat="receipt in ctrl.Filterreceipts|limitTo:pageSize" data-id="{{receipt.receipt_id}}">
                                             <td><input type="checkbox" data-ng-click="ctrl.receiptSelect(receipt)" data-ng-model="receipt.select"></td>
-                                            <td data-ng-show="setting-slnumber">{{$index+1}}</td>
-                                            <td data-ng-show="setting_receiptlrnumber">${lr_prefix}{{receipt.lr_number}}</td>
+                                        	<td data-ng-show="setting_date">{{receipt.updated_datetime.slice(0,-10)}}</td>
+											<td data-ng-show="setting_receiptlrnumber">{{receipt.lrno_prefix}}</td>
                                             <td data-ng-show="setting_receiptorigin">{{receipt.sender_branch.branch_name}}</td>
                                             <td data-ng-show="setting_receiptdestination">{{receipt.consignee_branch.branch_name}}</td>
                                             <td data-ng-show="setting_receiptsender">{{receipt.sender_customer.customer_name}}</td>
                                             <td data-ng-show="setting_receiptconsignee">{{receipt.consignee_customer.customer_name}}</td>
                                             <td data-ng-show="setting_receiptproduct">{{receipt.shipmentDetail[0].product.product_name}}</td>
-                                            <td data-ng-show="setting_receiptstatus">{{receipt.status}}</td>
+                                            <td data-ng-show="setting_sevice">{{receipt.service.service_name}}</td>
+                                            <td data-ng-show="setting_receiptstatus" data-ng-hide="true">{{receipt.status}}</td>
+                                            <td data-ng-show="setting_paymentMode">{{receipt.pay_mode}}</td>
                                         </tr>
                                    </tbody>
                                 </table>
                             </div>
                           <div class ="col-lg-6">
-                    		<div class="pull-left">
+                    		<div class="pull-left" data-ng-cloak>
                    			 Showing {{(currentPage*pageSize)+1}} to 
                    			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
                    			 of {{totalnof_records}} entries
@@ -394,7 +459,8 @@
     <script src="resources/custom/js/receipt/add_receipt_service.js"></script>
     <script src="resources/custom/js/branch_master/branch_service.js"></script>
     <script src="resources/custom/js/confirmDialog.js"></script>   
-    <script type="text/javascript" src="resources/custom/js/validation.js"></script>
+    <script type="text/javascript" src="resources/custom/js/validation.js"></script>    
+  	<script src="resources/custom/js/manifest/add_manifest_service.js"></script> 
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();

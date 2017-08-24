@@ -196,6 +196,21 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 	
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchShipmentByLRReceipt(String searchString,int branch_id) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and  lrno_prefix LIKE '%"+searchString+ "%'"
+								+ "and sender_branch.branch_id='"+branch_id+"' "
+								+ "and status ='Received'")
+				
+				.setMaxResults(100).list();
+		
+		return listShipment;
+	}
+	
 	
 	@Override
 	@Transactional
@@ -214,6 +229,20 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	
 	@Override
 	@Transactional
+	public List<ShipmentModel> fetchShipmentByLRAdminReceipt(String searchString) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and  lrno_prefix LIKE '%"+searchString+ "%'"
+						+ "and status ='Received'")
+				
+				.setMaxResults(100).list();
+		
+		return listShipment;
+	}
+	
+	@Override
+	@Transactional
 	public List<ShipmentModel> filterShipment(String fromBranch, String toBranch, String fromDate,String toDate,String status)
 	{
 		StringBuilder queryString =new StringBuilder();
@@ -226,7 +255,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		if(fromDate!=null && !fromDate.trim().isEmpty())			
 			queryString.append(" AND shipment_date >= '"+fromDate+" 00:00:00'");
 		if(toDate!=null && !toDate.trim().isEmpty())
-			queryString.append(" AND shipment_date <= '"+toDate+" 00:00:00'");
+			queryString.append(" AND shipment_date <= '"+toDate+" 23:59:59'");
 		
 		if(status!=null && !status.trim().isEmpty()){
 			queryString.append(" AND status = '"+status+"' ");
@@ -324,17 +353,29 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	//----------------------------------------------Receipt Filter condition start-------------------------------------------------------
 	@Override
 	@Transactional
-	public List<ShipmentModel>getShipmentByCondition(int frombranch,int tobranch,String fromdate,String todate,String service,String paymode)
+	public List<ShipmentModel>getShipmentByCondition(String frombranch,String tobranch,String fromdate,
+			String todate,String service,String paymode)
 	{
+		
+		StringBuilder queryString =new StringBuilder();
+		queryString.append("from ShipmentModel WHERE obsolete = 'N' and status ='Received'");
+		if(frombranch!=null && frombranch!="null" &&!frombranch.trim().isEmpty())
+			queryString.append(" AND sender_branch.branch_id='"+frombranch+"' ");
+		if(tobranch!=null && tobranch!="null" && !tobranch.trim().isEmpty())
+			queryString.append(" AND consignee_branch.branch_id='"+tobranch+"' ");
+		if(fromdate!=null && fromdate!="null" && !fromdate.trim().isEmpty())
+			queryString.append(" AND shipment_date >= '"+fromdate+" 00:00:00'");
+		if(todate!=null && todate!="null" && !todate.trim().isEmpty())
+			queryString.append(" AND shipment_date <= '"+todate+" 23:59:59'");
+		if(service!=null && service!="null" && !service.trim().isEmpty())
+			queryString.append(" AND service.service_name='"+service+"' ");
+		if(paymode!=null && paymode!="null" && !paymode.trim().isEmpty())
+			queryString.append(" AND pay_mode='"+paymode+"' ");
+		
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment=(List<ShipmentModel>)sessionFactory.getCurrentSession()
-			.createQuery("from ShipmentModel where obsolete='N'"
-		+" and sender_branch.branch_id="+frombranch
-		//+" and consignee_branch.branch_id="+tobranch
-		+" and created_datetime BETWEEN '"+fromdate+" 00:00:00'"
-		+" and '"+todate+" 23:59:59'"
-		+" and pay_mode='"+paymode+"'"
-					).list(); 	 	
+			.createQuery(queryString.toString()).list();
+		
 		return listShipment;
 	}
 	//------------------------------------------------------------------------------------------------------------------------------------
@@ -347,8 +388,22 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
-				.createQuery("from ShipmentModel WHERE obsolete = 'N' and status ='Received'"
-						+ " and senderbranch_id = " + branch_id).list();
+				.createQuery("from ShipmentModel WHERE obsolete = 'N' "
+						+ "and status ='Received'"
+						+ " and consignee_branch.branch_id = " + branch_id).list();
+		return listShipment;
+	}
+	
+	//--------------------------Fetch all shipment details--------------------------------------
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchAllShipment4receiptAdmin() {
+		
+		
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N' "
+						+ "and status ='Received'").list();
 		return listShipment;
 	}
  //----------------------------------------------------------------------------

@@ -365,7 +365,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
     	
     }
     
-	//===================================Total Record Count====================================
+	//===================================GET USER BRANCH DETAILS====================================
 	getUserBranchDetails();
 	
 	function getUserBranchDetails() {				
@@ -407,7 +407,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 	}
 	
 	
-	//===================================fetch Address====================================	
+	//===================================fetch ALL BRANCH====================================	
 	fetchAllBranches();	
 	
 	function fetchAllBranches() 

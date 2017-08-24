@@ -517,10 +517,11 @@ public class addManifestRestController {
 		
 		try
 		{
-			loggerconf.saveLogger(request.getUserPrincipal().getName(),request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			
 			List<ShipmentModel> shipmentList=sDao.filterShipment(filterValueObject.get("fromBranch").toString(), filterValueObject.get("toBranch").toString(),
 					filterValueObject.get("fromDate").toString(), filterValueObject.get("toDate").toString(), filterValueObject.get("status").toString());			
+			
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			
 			return (shipmentList.isEmpty()) ? new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT) :new ResponseEntity<List<ShipmentModel>> (shipmentList, HttpStatus.OK);
 		

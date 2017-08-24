@@ -239,6 +239,14 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 																style="padding-right: 5px;">
 																<div class="checkbox">
 																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_date == true, 'fa-times': setting_date== false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_date = true"
+																		data-ng-model="setting_date" /> Date
+																	</label>
+																</div>
+																<div class="checkbox">
+																	<label> <i class="fa"
 																		data-ng-class="{'fa-check': setting_lrno == true, 'fa-times': setting_lrno == false}"></i>
 																		<input type="checkbox"
 																		data-ng-init="setting_lrno = true"
@@ -309,14 +317,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 																		data-ng-model="setting_status" /> Status
 																	</label>
 																</div>
-																	<div class="checkbox">
-																	<label> <i class="fa"
-																		data-ng-class="{'fa-check': setting_date == true, 'fa-times': setting_date== false}"></i>
-																		<input type="checkbox"
-																		data-ng-init="setting_date = true"
-																		data-ng-model="setting_date" /> Date
-																	</label>
-																</div>	
+																		
 														</div>
 												<!--=============== excel============== -->
 												 <a type="button" onclick="location.href='downloadExcelForAddManifest';valid = true;" class="btn btn-primary"><i class="fa fa-file-excel-o fa-lg"></i></a>											
@@ -347,6 +348,11 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 												<th><input type="checkbox"
 												data-ng-model="amctrl.selectAllManifest"
 												data-ng-click="amctrl.selectAll()"></th>
+												<th data-ng-show="setting_date"
+												data-ng-click="date=!date;sortTable('date',date);">Date<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':date,'fa fa-caret-down':!date}"
+														aria-hidden="true"></i></th>
 												<th data-ng-show="setting_lrno"
 												data-ng-click="lrno=!lrno;sortTable('lrno',lrno);">LR No<i
 														data-ng-hide="disableSorting"
@@ -394,11 +400,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 														data-ng-hide="disableSorting"
 														data-ng-class=" {'fa fa-caret-up':status,'fa fa-caret-down':!status}"
 														aria-hidden="true"></i></th>
-																<th data-ng-show="setting_date"
-												data-ng-click="date=!date;sortTable('date',date);">Date<i
-														data-ng-hide="disableSorting"
-														data-ng-class=" {'fa fa-caret-up':date,'fa fa-caret-down':!date}"
-														aria-hidden="true"></i></th>
+														
 											</tr>
 										</thead>
 										<tbody>
@@ -408,6 +410,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 												data-ng-model="x.select"
 												data-ng-click="amctrl.selectManifest(x)"></td>
 												<td data-ng-hide="true">{{x.sender_branch.branch_id}}</td>
+												<td data-ng-show="setting_date">{{x.updated_datetime.slice(0,-10)}}</td>
 												<td data-ng-show="setting_lrno">{{x.lrno_prefix}}</td>
 												<td data-ng-show="setting_origin">{{x.sender_branch.branch_name}}</td>
 												<td data-ng-show="setting_destination">{{x.consignee_branch.branch_name}}</td>
@@ -417,7 +420,6 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 												<td data-ng-show="setting_weight" data-ng-hide="true">{{x.chargeable_weight}}</td>
 												<td data-ng-show="setting_sevice">{{x.service.service_name}}</td>
 												<td data-ng-show="setting_status">{{x.status}}</td>
-												<td data-ng-show="setting_date">{{x.updated_datetime.slice(0,-2)}}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -580,7 +582,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 				</div>
 			</div>
 		</div>
-	<!--================================================== Modal end==================================================== -->s	
+	<!--================================================== Modal end==================================================== -->	
 		<!-- /. PAGE WRAPPER  -->
 	</div>
     <!-- /. WRAPPER  -->

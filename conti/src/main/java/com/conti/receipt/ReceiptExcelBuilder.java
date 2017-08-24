@@ -88,7 +88,7 @@ public class ReceiptExcelBuilder extends AbstractExcelView {
 		//detail
 		for(ReceiptModel receiptModel:receiptList){
 			HSSFRow row=sheet.createRow(rowcount++);
-			//row.createCell(0).setCellValue(receiptModel.shipmentModel.getCreated_datetime());
+		/*	//row.createCell(0).setCellValue(receiptModel.shipmentModel.getCreated_datetime());
 			row.createCell(1).setCellValue(receiptModel.shipmentModel.getCreated_datetime());
 			row.createCell(2).setCellValue(receiptModel.shipmentModel.getLr_number());
 			row.createCell(3).setCellValue(receiptModel.receipt_number);
@@ -99,7 +99,7 @@ public class ReceiptExcelBuilder extends AbstractExcelView {
 			row.createCell(8).setCellValue(receiptModel.shipmentModel.getSendercustomer_address2());
 			row.createCell(9).setCellValue(receiptModel.manifestModel.getManifest_number());
 			row.createCell(10).setCellValue(receiptModel.shipmentModel.getStatus());
-		}
+		*/}
 		
 	}
 }
