@@ -144,7 +144,7 @@ public class VehicleRestController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		
-		/*try {*/
+		try {
 			vehicle.setObsolete("N");
 			vehicle.setActive("Y");
 			vehicle.setCreated_by(user_id);
@@ -159,10 +159,10 @@ public class VehicleRestController {
 	        loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<Void> (headers, HttpStatus.CREATED);
 			
-		/*} catch (Exception exception) {
+		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
 			return new ResponseEntity<Void> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}*/
+		}
 		
 	}
 	
