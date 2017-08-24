@@ -9,6 +9,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/gif/png" href="resources/Image/conti_logo.png">
     <title>${title}</title>
     <!-- Bootstrap Styles-->
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
@@ -27,7 +28,7 @@
 	
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
 	  <link href="resources/custom/css/custom.css" rel="stylesheet">
-	  
+	   <link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
 	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
 	 
 	 <link href="resources/custom/css/demo.css" rel="stylesheet">
@@ -71,7 +72,7 @@
 						<div class="panel-heading">							
 						</div>
 						<div class="panel-body customer-font">
-						<b>Manifest Detailed</b>
+						<b>Manifest Detailed : ${manifest_number}</b>
 						</div>
                         </div>
                     </div>
@@ -222,10 +223,19 @@
 											Batch Action <span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu">
-											<li><a href="#">Missing</a></li>
-											<li><a href="#">Received</a></li>
+											<li><a data-ng-click="ctrl.makeMissing()">Missing</a></li>
+											<li><a data-ng-click="ctrl.makeReceived()">Received</a></li>
 										</ul>
 										</div>
+										<div class="row paddingtop">
+														<div class="col-md-12">
+															<select name="shownoofrec" data-ng-model="shownoofrec"
+																data-ng-options="noofrec for noofrec in [5,10, 15, 25, 50]"
+																class="form-control"
+																data-ng-click="ctrl.shownoofRecord()">
+															</select>
+														</div>
+													</div>
 									</div> 
                                 </div>
                               
@@ -302,10 +312,16 @@
 										</div>
 										
 									</div>
-										<a type="button" class="btn btn-primary" onclick="location.href='downloadExcelManifest';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
+<!-- 										<a type="button" class="btn btn-primary" onclick="location.href='downloadExcelManifest';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a> -->
                                       	  <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_manifest.length == 0" ><i class="fa fa-print fa-lg"></i></button>
 	                                      <input type = "hidden" name = "cust" value = "{{ctrl.selected_manifest}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                                     
+	                                      <div class = "row paddingtop">
+	                                    	<div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Driver" 
+	                                    	data-ng-model = "ctrl.manifest_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.manifest_regSearch)"/></div>
+                                     	 </div>
+                                     	 
 										</form>
                                 	</div>
                                 </div>
@@ -317,10 +333,9 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox" data-ng-click="ctrl.manifestSelectall()" 
-                                            data-ng-model="selectallmanifestdetailed"></th>
-                                            
-                                            <th data-ng-show="setting_sltnumber">SL no</th>
+                                            <th><input type="checkbox" data-ng-click="ctrl.manifestDetailedSelectAll()" 
+                                            data-ng-model="selectallmanifests"></th>
+                                            <th data-ng-show="setting_sltnumber">SL NO</th>
                                             <th data-ng-show="setting_date">Date</th>
                                             <th data-ng-show="setting_lrnumber">LR Number</th>
                                             <th data-ng-show="setting_product">Product</th>
@@ -329,24 +344,20 @@
                                             <th data-ng-show="setting_sender">Sender</th>
                                             <th data-ng-show="setting_consignee">Consignee</th>
                                             <th data-ng-show="setting_shipmentstatus">Status</th>
-                                         
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr data-ng-repeat = "manifestdetailed in ctrl.FilterManifestdetailed">
-                                        	<td><input type="checkbox" data-ng-click="ctrl.manifestDetailedSelect(manifestdetailed)"
+                                        <tr data-ng-repeat = "manifestdetailed in ctrl.Filtermanifests">
+                                        	<td><input type="checkbox" data-ng-click="ctrl.manifestSelect(manifestdetailed)"
                                         	 data-ng-model="manifestdetailed.select"></td>
                                             <td data-ng-show="setting_sltnumber" >{{$index+1}}</td>
                                             <td data-ng-show="setting_date">{{manifestdetailed.shipmentModel.created_datetime}}</td>
                                             <td data-ng-show="setting_lrnumber">{{manifestdetailed.shipmentModel.lrno_prefix}}</td>
-                                            
                                             <td data-ng-show="setting_product">
-                                          
-                                           		<div data-ng-repeat = "shipmentdet in manifestdetailed.shipmentModel.shipmentDetail">
+                                         		 <div data-ng-repeat = "shipmentdet in manifestdetailed.shipmentModel.shipmentDetail">
                                            			{{shipmentdet.product.product_name}}<span data-ng-if = !($last)>,</span>
                                            		</div>
                                             </td>
-                                            
                                             <td data-ng-show="setting_origin">{{manifestdetailed.shipmentModel.sender_branch.branch_name}}</td>
                                             <td data-ng-show="setting_destination">{{manifestdetailed.shipmentModel.consignee_branch.branch_name}}</td>
                                             <td data-ng-show="setting_sender">{{manifestdetailed.shipmentModel.sender_customer.customer_name}}</td>
@@ -365,6 +376,22 @@
                                			 of {{totalnof_records}} entries
                                		</div>
                                 </div>
+                                
+                                <div class="col-lg-6 icons-button">
+									<div class="pull-right">
+										<button class="btn btn-primary" type="button"
+											data-ng-disabled="previouseDisabled"
+											data-ng-click="firstlastPaginate(1)">First</button>
+										<button class="btn btn-primary" type="button"
+											data-ng-disabled="previouseDisabled"
+											data-ng-click="paginate(-1)">Previous</button>
+										<button class="btn btn-primary" type="button"
+											data-ng-disabled="nextDisabled" data-ng-click="paginate(1)">Next</button>
+										<button class="btn btn-primary" type="button"
+											data-ng-disabled="nextDisabled"
+											data-ng-click="firstlastPaginate(0)">Last</button>
+									</div>
+								</div>
                             
                         </div>
                     </div>
@@ -382,7 +409,7 @@
 
   
     <script src="resources/custom/js/custom.js"></script>
-    <script src="resources/custom/js/manifest/view_manifest_controller.js"></script>
+    <script src="resources/custom/js/manifest/view_manifest_detailed_controller.js"></script>
     <script src="resources/custom/js/manifest/view_manifest_service.js"></script>
     <script src="resources/custom/js/branch_master/branch_service.js"></script>
 

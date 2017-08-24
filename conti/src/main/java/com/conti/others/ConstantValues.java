@@ -31,6 +31,12 @@ public final class ConstantValues {
 	public static final String PRINT ="PRINT";
 	public static final String MANIFIEST_NUMBER ="Manifest Number";
 	public static final String LR_NUMBER ="LR Number";
+	public static final String INTRANSIT ="Intransit";
+	public static final String RECEIVED ="Received";
+	public static final String MISSING ="Missing";
+	public static final String PENDING="Pending";
+	public static final String COMPLETED="Completed";
+	public static final String INCOMPLETE="Incomplete";
 	
 	//APPLICATION_TIMEOUT
 	public static final String APPLICATION_TIMEOUT = "30";

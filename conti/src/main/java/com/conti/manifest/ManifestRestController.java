@@ -319,7 +319,7 @@ public class ManifestRestController
 			 List<ManifestModel> manifestList=new ArrayList<ManifestModel>();
 			 String searchkey=(String) obj.get("manifest_regSearch");
 			 String searchby=(String) obj.get("searchBy");
-			 String manifest= constantValues.MANIFIEST_NUMBER;
+			 String manifest= ConstantValues.MANIFIEST_NUMBER;
 			 if(searchby.equals(manifest))
 			 {
 				 List<ManifestModel> manifestModel=manifestDao.manifestSearch(searchkey);
@@ -344,7 +344,14 @@ public class ManifestRestController
 			 }
 			 return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
 		}
-	//--------------------------------------------------------------------------------------------------------------------
+	//-----------------------------------------Manifest Register search function start---------------------------------
+
+		@RequestMapping(value="manifest_register_search", method=RequestMethod.POST)
+		public ResponseEntity<List<ManifestDetailedModel>>manifest_register_search(@RequestBody String search,HttpServletRequest request)
+		{
+			List<ManifestDetailedModel> manifestDetailtedList=manifestDao.searchLRnumber(search);
+			return new ResponseEntity<List<ManifestDetailedModel>> (manifestDetailtedList,HttpStatus.OK);
+		}
 		
 	//--------------------------------------Manifest print Start------------------------------------------
 		@RequestMapping(value="/manifest_print", method=RequestMethod.POST)
@@ -491,9 +498,10 @@ public class ManifestRestController
 			userInformation = new UserInformation(request);
 			String username = userInformation.getUserName();
 			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"+id);
-			//String branch_id = userInformation.getUserBranchId();
-//			try
-//			{
+			String branch_id = userInformation.getUserBranchId();
+			int transitcount=0,receivedcount=0,missingcount=0;
+			try
+			{
 				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 				List<ManifestDetailedModel> manifestDetailedModel = manifestDao.getAllManifestDetailes(id);
 				
@@ -503,14 +511,37 @@ public class ManifestRestController
 				}
 				else 
 				{
+					for(int i=0;i<manifestDetailedModel.size();i++){
+						if(manifestDetailedModel.get(i).shipmentModel.getStatus().equals(ConstantValues.INTRANSIT)){
+							transitcount=transitcount+1;
+						}else if(manifestDetailedModel.get(i).shipmentModel.getStatus().equals(ConstantValues.RECEIVED)){
+							receivedcount=receivedcount+1;
+						}else{
+							missingcount=missingcount+1;
+						}
+							
+					}
+					System.out.println("+++++++++++++++++++++++++++++++++++++++++++transitcount+++++++++++++++++++"+transitcount);
+					System.out.println("+++++++++++++++++++++++++++++++++++++++++++receivedcount+++++++++++++++++++"+receivedcount);
+					System.out.println("+++++++++++++++++++++++++++++++++++++++++++missingcount+++++++++++++++++++"+missingcount);
+					System.out.println("+++++++++++++++++++++++++++++++++++++++++++Size+++++++++++++++++++"+manifestDetailedModel.size());
+					ManifestModel manifestModel=manifestDao.getManifestByID(id);
+					if(manifestDetailedModel.size()==transitcount){
+						manifestModel.setManifest_status(ConstantValues.INTRANSIT);
+					}else if(manifestDetailedModel.size()==receivedcount){
+						manifestModel.setManifest_status(ConstantValues.COMPLETED);
+					}else{
+						manifestModel.setManifest_status(ConstantValues.INCOMPLETE);
+					}
+					manifestDao.saveOrUpdate(manifestModel);
 					return new ResponseEntity<List<ManifestDetailedModel>> (manifestDetailedModel, HttpStatus.OK);	
 				}			
-//			} 
-//			catch (Exception exception) 
-//			{			
-//				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-//				return new ResponseEntity<List<ManifestDetailedModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
-//			}
+			} 
+			catch (Exception exception) 
+			{			
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+				return new ResponseEntity<List<ManifestDetailedModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 		}
 	//---------------------------------------------------------------------------------------------------
 		
@@ -527,12 +558,14 @@ public class ManifestRestController
 			session.setAttribute("username", username);
 			session.setAttribute("userid", userid);
 			int manifest_id=id;
+			ManifestModel manifestModel=manifestDao.getManifestbyId(manifest_id);
 			ModelAndView model = new ModelAndView();
 			try
 			{
 				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 				model.addObject("title", "View Manifest");
 				model.addObject("m_id",manifest_id);
+				model.addObject("manifest_number",manifestModel.getManifest_prefix());
 				model.addObject("message", "This page is for ROLE_ADMIN only!");
 				model.setViewName("Manifest/view_detailed_manifest");
 			} 
@@ -543,7 +576,95 @@ public class ManifestRestController
 			return model;
 		}
 	//--------------------------------------------------------------------------------------------------------------
+	
+	//------------------------Make Missing function start------------------------------------
+		@RequestMapping(value="make_Missing", method=RequestMethod.POST)
+		public ResponseEntity<Void>make_missing(@RequestBody int[] id,HttpServletRequest request){
+			userInformation = new UserInformation(request);
+			String username = userInformation.getUserName();
+			int user_id = Integer.parseInt(userInformation.getUserId());
+			
+			int active_flag = 0;
+			try 
+			{
+				System.out.println("++++++++++++++++======================++++++++++++++++"+id.length);
+				for(int i=0; i<id.length; i++) 
+				{
+					ManifestDetailedModel manifestDetailedModel = manifestDao.getAllManifestDetailesByid(id[i]);
+					System.out.println("======================++++++++++++++++"+id[i]);
+					if(manifestDetailedModel == null) 
+					{
+						System.out.println("======================++++++++++++++++ manifestDetailedModel Null");
+						loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+						active_flag = 1;
+					} 
+					else 
+					{
+						Date date = new Date();
+						DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+						
+						manifestDetailedModel.shipmentModel.setStatus("Missing");
+						manifestDetailedModel.shipmentModel.setUpdated_by(user_id);
+						manifestDetailedModel.shipmentModel.setUpdated_datetime(dateFormat.format(date));
+										
+						shipmentDao.saveOrUpdate(manifestDetailedModel.shipmentModel);
+						loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+					}
+				}
+				
+				if( active_flag == 1) {
+					return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+				} else {
+					return new ResponseEntity<Void> (HttpStatus.OK);
+				}
+			} catch (Exception exception) {
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+				return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+		/* ------------------------- Make active Branch end ------------------------------------- */
 		
+		//------------------------Make Missing function start------------------------------------
+				@RequestMapping(value="make_Received", method=RequestMethod.POST)
+				public ResponseEntity<Void>make_Received(@RequestBody int[] id,HttpServletRequest request){
+					userInformation = new UserInformation(request);
+					String username = userInformation.getUserName();
+					int user_id = Integer.parseInt(userInformation.getUserId());
+					
+					int active_flag = 0;
+					try{
+						System.out.println("++++++++++++++++Received function call success ++++++++++++++++"+id.length);
+						for(int i=0; i<id.length; i++){
+							ManifestDetailedModel manifestDetailedModel = manifestDao.getAllManifestDetailesByid(id[i]);
+							if(manifestDetailedModel == null){
+								loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+								active_flag = 1;
+							}else{
+								Date date = new Date();
+								DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+								
+								manifestDetailedModel.shipmentModel.setStatus("Received");
+								manifestDetailedModel.shipmentModel.setUpdated_by(user_id);
+								manifestDetailedModel.shipmentModel.setUpdated_datetime(dateFormat.format(date));
+												
+								shipmentDao.saveOrUpdate(manifestDetailedModel.shipmentModel);
+								loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+							}
+						}
+						
+						if( active_flag == 1) {
+							return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+						} else {
+							return new ResponseEntity<Void> (HttpStatus.OK);
+						}
+					} catch (Exception exception) {
+						loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+						return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+					}
+				}
+				/* ------------------------- Make active Branch end ------------------------------------- */
+
+
 		
 	//=====================================================================================================================================
 }

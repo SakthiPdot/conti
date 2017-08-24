@@ -18,7 +18,10 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 			outwardManifest:outwardManifest,
 			manifestSearch:manifestSearch,
 			manifestDetailed:manifestDetailed,
-			deleteManifest:deleteManifest
+			deleteManifest:deleteManifest,
+			registerSearch:registerSearch,
+			makeMissing:makeMissing,
+			makeReceived:makeReceived
 	};
 	
 	return factory;
@@ -181,10 +184,7 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 				data:manifestid,
 				headers:getCsrfHeader()
 			})
-			
-			.then(
-					function(response)
-					{
+			.then(function(response){
 						console.log(response.data);
 						deferred.resolve(response.data);
 					},
@@ -195,8 +195,67 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 				);
 			return deferred.promise;
 		}
-	//------------------------------------------------------------------------------------
+	//------------------------------Register Search Service function -------------------
+		function registerSearch(searchkey){
+			console.log('Manifest detailed Register search call');
+			var def=$q.defer();
+			$http({
+				method:'POST',
+				url:'manifest_register_search',
+				data:searchkey,
+				headers:getCsrfHeader()
+			}).then(function(response){
+				def.resolve(response.data);
+				//console.log(response.data);
+			},function(errResponse){
+				def.reject(errResponse);
+			});
+		}
 		
+		//-----------------------------Make Missing begin -----------------------------//
+	    function makeMissing(id) {
+	    	console.log('Make Missing Service call---')
+	    	var deferred = $q.defer();
+	    	$http({
+	    		method : 'POST',
+	    		url : 'make_Missing',
+	    		data : id,
+	    		headers : getCsrfHeader()
+	    	})
+	    	.then (
+	    		function (response){
+	    			deferred.resolve(response.data);
+	    		},
+	    		function (errResponse){
+	    			deferred.reject(errResponse);
+	    		}
+	    	);
+	    	return deferred.promise;
+	    }
+	     
+	    //-------------------------------Make Received begin -----------------------------//
+	    function makeReceived(id) {
+	    	console.log('Make Received Service call---')
+	    	var deferred = $q.defer();
+	    	$http({
+	    		method : 'POST',
+	    		url : 'make_Received',
+	    		data : id,
+	    		headers : getCsrfHeader()
+	    	})
+	    	.then (
+	    		function (response) {
+	    			deferred.resolve(response.data);
+	    		},
+	    		function (errResponse) {
+	    			deferred.reject(errResponse);
+	    		}
+	    	);
+	    	return deferred.promise;
+	    }
+	   
+		
+	
 	//=========================================================================================
 		
 }]);

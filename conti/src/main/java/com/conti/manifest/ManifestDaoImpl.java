@@ -223,7 +223,20 @@ public class ManifestDaoImpl implements ManifestDao
 			
 		}
 	//---------------------------------------------------------------------------------------------------------------------------
-		
+
+	//----------------------------------------------Get all Manifest detailed by id---------------------------------------------
+			@Override
+			@Transactional
+			public ManifestDetailedModel getAllManifestDetailesByid(int manifestdetailed_id) 
+			{
+				Query q= sessionFactory.getCurrentSession()
+						.createQuery("from ManifestDetailedModel WHERE manifestdetailed_id ="+manifestdetailed_id);
+				List<ManifestDetailedModel> listmanifestdetailed=(List<ManifestDetailedModel>) q.list();
+				if(listmanifestdetailed!=null){
+					return listmanifestdetailed.get(0);
+				}
+				return null;
+			}
 	//----------------------------------------Get Shipment from manifest detailed------------------------------------------
 	
 		@Override
@@ -238,7 +251,22 @@ public class ManifestDaoImpl implements ManifestDao
 			return manifestDetailed;
 			
 		}
-	//----------------------------------------------------------------------------------------------------------------------
+	//-------------------------------------------LR number Search----------------------------------
+		
+		@Override
+		@Transactional
+		public List<ManifestDetailedModel>searchLRnumber(String search_key){
+			@SuppressWarnings("unchecked")
+			List<ManifestDetailedModel> manifestDetailedList=(List<ManifestDetailedModel>)sessionFactory.getCurrentSession()
+			.createQuery("from ManifestDetailedModel WHERE shipmentModel.lrno_prefix LIKE '%" + search_key + "%'"
+					+ " OR shipmentModel.created_datetime LIKE '%" + search_key + "%'"
+					+ " OR shipmentModel.sender_branch.branch_name LIKE '%" + search_key + "%'"
+					+ " OR shipmentModel.consignee_branch.branch_name LIKE '%" + search_key + "%'"
+					+ " OR shipmentModel.sender_customer.customer_name LIKE '%" + search_key + "%'"
+					+ " OR shipmentModel.consignee_customer.customer_name LIKE '%" + search_key + "%'"
+					+ " OR shipmentModel.status LIKE '%" + search_key + "%'").list();
+			return manifestDetailedList;
+		}
 	
 	//-----------------Get Manifest Sorting table---------------------------------
 		@SuppressWarnings("unchecked")

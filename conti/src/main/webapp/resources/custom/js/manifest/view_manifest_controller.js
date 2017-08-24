@@ -13,8 +13,6 @@ function test(ele){
 	window.location.href = "detailed_manifest?id="+id;
 }
 
-
-
 contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','ManifestService','BranchService','ConfirmDialogService',function($scope,$http,$q,$timeout,ManifestService,BranchService,ConfirmDialogService)
 	{
 		var self=this;
@@ -30,9 +28,9 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.message=null;
 		self.print = print;
 		self.manifestSelectAll=manifestSelectAll;
-		self.manifestDetailedSelectAll=manifestDetailedSelectAll;
+		//self.manifestDetailedSelectAll=manifestDetailedSelectAll;
 		self.manifestSelect=manifestSelect;
-		self.manifestDetailedSelect=manifestDetailedSelect;
+		//self.manifestDetailedSelect=manifestDetailedSelect;
 		self.save='saveclose'
 		self.close=close;
 		self.deleteManifest=deleteManifest;
@@ -41,7 +39,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.outwardManifest=outwardManifest;
 		self.manifestSearch=manifestSearch;	
 		self.shownoofRecord=shownoofRecord;
-		self.manifestDetailed=manifestDetailed;
+		//self.manifestDetailed=manifestDetailed;
 		$scope.shownoofrec=10;
 		
 		
@@ -92,46 +90,43 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	//---------------------Customer Master drawer close end-----------
 		
 		
-		//-------------------------- Fetch All Branch begin ---------------------//	
+	//-------------------------- Fetch All Branch begin ---------------------//	
+	
+	function fetchAllBranches() {
+		console.log("get all branches")
+		BranchService.fetchAllBranches()
+			.then(
+					function (branches) {
+						self.branches = branches;
+						
+						//console.log("get all branches "+self.branches)
+					}, 
+					function (errResponse) {
+						console.log('Error while fetching branches');
+					}
+				);
+	}
+	//-----------------------------------------------------------------------//	
 		
-		function fetchAllBranches() {
-			console.log("get all branches")
-			BranchService.fetchAllBranches()
-				.then(
-						function (branches) {
-							self.branches = branches;
-							
-							//console.log("get all branches "+self.branches)
-						}, 
-						function (errResponse) {
-							console.log('Error while fetching branches');
-						}
-					);
-		}
-		
-		//-------------------------- Fetch All Branch end ---------------------//	
-		
-		//-------------------------- Fetch All Manifest records Start ---------------------//
-		function fetchAllManifest() 
-		{
-			console.log('Fetch all manifest call successfully........');
-			ManifestService.fetchAllManifest()
-				.then(
-						function (manifest) 
-						{
-							self.manifests = manifest;
-							self.Filtermanifests=self.manifests;
-							pagination();
-							console.log('fetching manifest '+self.Filtermanifests.length);
-						}, 
-						function (errResponse) 
-						{
-							console.log('Error while fetching manifest');
-						}
-					);
-		}
-		//-------------------------- Fetch All Manifest records end  ---------------------//
-		
+	//-------------------------- Fetch All Manifest records Start ---------------------//
+	function fetchAllManifest() 
+	{
+		console.log('Fetch all manifest call successfully........');
+		ManifestService.fetchAllManifest()
+			.then(
+					function (manifest) 
+					{
+						self.manifests = manifest;
+						self.Filtermanifests=self.manifests;
+						pagination();
+						console.log('fetching manifest '+self.Filtermanifests.length);
+					}, 
+					function (errResponse) 
+					{
+						console.log('Error while fetching manifest');
+					}
+				);
+	}
 		
 	//--------------------------------Manifest delete function -----------------------------------
 			
@@ -216,10 +211,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    			}
 	    		);
 	    }
-	    //------------------------------------------------------------------------------//       
-	    
-	    
-	    //-----------------------To get inward manifest list function Start--------------------------
+	  //-----------------------To get inward manifest list function Start--------------------------
 	    
 	    function inwardManifest()
 	    {
@@ -236,8 +228,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    			}
 	    		);
 	    }
-	  //-----------------------To get inward manifest list function End--------------------------
-	    
 	  
 	  //-----------------------To get Outward manifest list function Start--------------------------
 	    
@@ -256,13 +246,10 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    			}
 	    		);
 	    }
-	  //-----------------------To get Outward manifest list function End--------------------------
-	    
 	    
 	 //------------------------------Register Manifest Search start-------------------------------------------
 	    
-	  function manifestSearch(searchkey)
-	  {
+	  function manifestSearch(searchkey) {
 		  console.log(searchkey);
 //		  if(self.search.manifest_regSearch.length==0)
 //		  {
@@ -271,9 +258,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		  if(self.search.manifest_regSearch.length>0)
 		  {
 		  	ManifestService.manifestSearch(searchkey)
-		  	.then(
-		  			function(filtermanifest)
-		  			{
+		  	.then(function(filtermanifest){
 		  				self.Filtermanifests=filtermanifest;
 		  				console.log(filtermanifest);
 		  			},
@@ -285,12 +270,8 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		  }
 		  
 	  }
-	//---------------------------------------------------------------------------------------------------
-
-	  
 	
-	  
-	  //--------------------------Manifest Select All check box function start------------------
+  //--------------------------Manifest Select All check box function start------------------
 	  
 	  function manifestSelectAll()
 	  {
@@ -333,7 +314,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	  {
 		  $scope.pageSize=$scope.shownoofrec;
 		  self.Filtermanifests=self.manifests.slice($scope.currentPage*$scope.pageSize);
-		  if(self.Filtermanifests.length<$scope.pageSize)
+		  if(self.Filtermanifests.length<=$scope.pageSize)
 		  {
 			  $scope.previousDisabled=true;
 			  $scope.nextDisabled=true;
@@ -364,29 +345,23 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	//------------------------------------------------------------------------------------//  
 	   
 	//-------------------------------------Manifest Pagination---------------------------------  
-	  function pagination() 
-	    {
-		  
-		  	console.log('Pagination function call successfully..........');
+	  function pagination() {
+		  console.log('Pagination function call successfully..........');
 	        $scope.pageSize = $scope.shownoofrec;
 	    	console.log($scope.pageSize);
 			$scope.currentPage = 0;
 			$scope.totalPages = 0;
 			//$scope.totalItems = Math.ceil(self.Filterbranches.length/$scope.pageSize);
 			self.Filtermanifests = self.manifests;
-			
 			$scope.nextDisabled = false;
 			$scope.previouseDisabled = true;
-			if( self.Filtermanifests.length <= 10 )
-			{
+			if( self.Filtermanifests.length <= 10 ){
 				$scope.nextDisabled = true;
 			} 
-			if( self.Filtermanifests.length < 100 ) 
-			{
+			if( self.Filtermanifests.length < 100 ){
 				$scope.totalnof_records  = self.Filtermanifests.length;
 				console.log(self.Filtermanifests.length);
 				
-				//findrecord_count();
 			} else {
 				findrecord_count();
 			}
@@ -394,8 +369,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    }
 	  
 		  
-	  $scope.paginate = function(nextPrevMultiplier) 
-	    {
+	  $scope.paginate = function(nextPrevMultiplier){
 	    	$scope.selectallmanifests=false;
 	    	$scope.currentPage += (nextPrevMultiplier * 1);
 	    	self.Filtermanifests = self.manifests.slice($scope.currentPage*$scope.pageSize);
@@ -404,8 +378,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    	
 	    	if(self.Filtermanifests.length == 0) {
 	    		BranchService.pagination_byPage($scope.currentPage)
-	    		.then(
-	    				function (filterManifest) {
+	    		.then(function (filterManifest) {
 	    					
 	    					if ( filterManifest.length == 0 ) {
 	    						$scope.nextDisabled = true;
@@ -423,7 +396,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    			);
 	    	} 
 	    	
-	    	if(self.Filtermanifests.length < $scope.pageSize) {
+	    	if(self.Filtermanifests.length <=$scope.pageSize) {
 	    		$scope.nextDisabled = true;
 	    	}
 	    	console.log(nextPrevMultiplier);
@@ -437,8 +410,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    	}
 	    	
 	    }
-
-//----------------------------------------------------------------------------------------------------
 	  
 //------------------------------------First last pagination--------------------------------------------
 	  
@@ -473,74 +444,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    		}
 	    	}
 	    }
-	    
-	//----------------------------------------------------------------------------------  
-	
-	
-	  
- //=================================MANIFEST DETAILED PAGE ALL FUNCTION START===============================
 
-	  
-  //------------------------------------Open Manifest Detailed view Start----------------------------//
-  
-  function manifestDetailed(manifest_id)
-  {
-	  console.log('Contoller: Manifest detailed call....!')
-	  ManifestService.manifestDetailed(manifest_id)
-	  .then(
-			  function(manifestdetailed)
-			  {
-				  self.FilterManifestdetailed=manifestdetailed;
-				  console.log(self.FilterManifestdetailed)
-			  },
-			  function(errResponse)
-			  {
-				  console.log('Error while Manifest detailed get')
-			  }
-		 );
-  }
- //--------------------------------------------------------------------------------------------------//
-	  
-//--------------------------Manifest Detailed Select All check box function start------------------
-	  
-	  function manifestDetailedSelectAll()
-	  {
-		  console.log('Call select all Manifest Detailed'+$scope.pageSize)
-		  self.selected_manifestdetailed=[];
-		  for(var i=0; i<$scope.pageSize; i++)
-		  {
-			  self.FilterManifestdetailed[i].select=$scope.selectallmanifestdetailed;
-			  if($scope.selectallmanifestdetailed)
-			  {
-			  	 self.selected_manifestdetailed.push(self.FilterManifestdetailed[i]);
-			  }
-		  }
-	  }
-//------------------------------------------------------------------------------------------------//
-	  
-	  //---------------------Manifest Detailed Record select on Register start-----------------------
-	  
-	  function manifestDetailedSelect(manifestdetailed)
-	  {
-		  console.log('Call Manifest Detailed select all function')
-		  var index=self.selected_manifestdetailed.indexOf(manifestdetailed);
-		  if(manifestdetailed.select)
-			  {
-			  	self.selected_manifestdetailed.push(manifestdetailed);
-			  }
-		  else
-			  {
-			  	//$scope.selectallmanifests=false;
-			  	self.selected_manifestdetailed.splice(index,1);
-			  }
-	  }
-	  
-	  //--------------------------------------------------------------------------------------------
-	  
-	 
-	  
-	  
-	  
-	  //=================================MANIFEST DETAILED PAGE ALL FUNCTION END===============================
 	}
 	]);

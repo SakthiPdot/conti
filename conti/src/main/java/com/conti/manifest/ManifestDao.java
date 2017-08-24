@@ -39,7 +39,9 @@ public interface ManifestDao
 	//====================Manifest Detailed DAO declaration Start===================
 		
 		public List<ManifestDetailedModel>getAllManifestDetailes(int manifest_id);
+		public ManifestDetailedModel getAllManifestDetailesByid(int manifestdetailed_id);
 		public List<Integer> searchShipmentLRnumber(String LRnumber);
+		public List<ManifestDetailedModel> searchLRnumber(String LRnumber);
 		
 	//====================Manifest Detailed DAO declaration End===================
 		

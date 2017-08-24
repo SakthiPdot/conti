@@ -427,8 +427,6 @@
 												data-ng-repeat="manifest in ctrl.Filtermanifests| limitTo:pageSize"
 												data-id={{manifest.manifest_id}} ondblClick="test(this)">
 
-												<!-- data-ng-dblclick="ctrl.manifestDetailed(manifest.manifest_id)" > -->
-
 												<td><input type="checkbox"
 													data-ng-click="ctrl.manifestSelect(manifest)"
 													data-ng-model="manifest.select"></td>
