@@ -138,17 +138,18 @@ public class ViewReceiptRestController {
 	{
 		UserInformation userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
-		
 		try
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			List<ReceiptModel> receiptModel=receiptDao.getAllReceipt_view();
 			if(receiptModel.isEmpty()) 
 			{
+				System.out.println("==========================Null============ "+receiptModel);
 				return new ResponseEntity<List<ReceiptModel>> (HttpStatus.NO_CONTENT);
 			}
 			else 
 			{
+				System.out.println("=========================Not Null============ ");
 				return new ResponseEntity<List<ReceiptModel>> (receiptModel, HttpStatus.OK);	
 			}	
 		}
@@ -161,7 +162,7 @@ public class ViewReceiptRestController {
 	
 	//-------------------------------------------------------------------------------------------------------------------
 	
-	//-------------------------------Filter Receipt funtion start-----------------------------------------------------------
+	//-------------------------------Filter Receipt function start-----------------------------------------------------------
 	
 	
 	@RequestMapping( value = "view_receipt_filter", method = RequestMethod.POST)

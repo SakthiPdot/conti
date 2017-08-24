@@ -54,7 +54,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			
 		}	
 		
-		
 		//---------------------Branch Master drawer close begin-----------
 		
 		function close(title){
@@ -381,8 +380,8 @@ function makeReceived(){
 		} else {
 			
 			self.confirm_title = 'Received';
-			self.confirm_type = BootstrapDialog.TYPE_DANGER;
-			self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+			self.confirm_msg = self.confirm_title+ 'selected record(s)?';
 			self.confirm_btnclass = 'btn-danger';
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(

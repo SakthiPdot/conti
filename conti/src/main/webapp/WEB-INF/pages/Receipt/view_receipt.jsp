@@ -64,9 +64,9 @@
       		  <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default panelMarginBottom">                            
-						<div class="panel-heading">
+<!-- 						<div class="panel-heading"> -->
 							
-						</div>
+<!-- 						</div> -->
 						<div class="panel-body customer-font">
 						<b>Receipt</b>
 						</div>
@@ -115,8 +115,8 @@
                 			        <div class="sec-padding">Specific Period</div>
                 			         
                 			         <div class="col-lg-3 branchclass">
-	                			      		 <span class="paddingtop">From  </span>   	                                       
-	                                          <div class="form-group input-group marginleftrightspace">
+	                			      		 <span class="text-padding">From  </span>   	                                       
+	                                          <div class="form-group input-group ">
 					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.fromdate"
 					                           			   data-trigger= "focus"data-toggle="popover" data-placement="top"
 					                            		   data-content="Please select from date"/>
@@ -127,8 +127,8 @@
 	                                  </div>
                 			      
                 			       <div class="col-lg-3 branchclass">
-                			      		<span class="paddingtop">To</span>
-                			      		  <div class="form-group input-group spacemarginleftright">
+                			      		<span class="text-padding">To</span>
+                			      		  <div class="form-group input-group">
 				                               <input type="text" class="form-control datepicker2" data-ng-model="ctrl.todate"
 													  data-trigger= "focus"data-toggle="popover" data-placement="top"
 					                            		data-content="Please select to date"/>
@@ -154,12 +154,8 @@
                 			            <div class="col-lg-3 branchclass">
                 			      		   <button class="btn btn-primary"> View Receipt</button>                                         
                 			            </div>
-                			            
                 			            <div class="col-lg-4 branchclass">		      		               	                                       
-                                           
-                                           
-                			            </div>
-                			        
+                                        </div>
                 			       </div>
                 			      
                 			</div>

@@ -1,11 +1,18 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib
+    prefix="c"
+    uri="http://java.sun.com/jsp/jstl/core" 
+%>
 <%@ page isELIgnored="false"%>
 <%@page session="true"%>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+ <link rel="icon" type="image/gif/png" href="resources/Image/conti_logo.png">
 <title>${title}</title>
 <!-- Bootstrap Styles-->
 <link href="resources/built-in/assets/css/bootstrap.css"
@@ -78,7 +85,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default panelMarginBottom">
-						<div class="panel-heading"></div>
+						<!-- <div class="panel-heading"></div> -->
 						<div class="panel-body customer-font">
 							<b>Manifest</b>
 						</div>
@@ -98,32 +105,6 @@
 				</div>
 			</div>
 
-			<!--               <div class="row"> -->
-			<!--                 	<div class="col-lg-12"> -->
-			<!--                 		<div class="col-lg-12 ">                		 -->
-			<!--                 		<div class="panel panel-default"> -->
-			<!--                 			<div class="panel-body"> -->
-			<!--                 			     <div class="col-lg-12  branch-heading">                 			       	 -->
-			<!--                 			      	<input type="checkbox" data-ng-model="SearchBy" data-ng-changed="ctrl.fetchAllBranches()"> Search By<br>       	                                        -->
-			<!-- 								 </div> -->
-
-			<!--                 			     <div class="col-lg-12 noPaddingLeft" data-ng-show="SearchBy">                 			       	 -->
-			<!--         			      		    <label class="radio-inline"> -->
-			<!--                                         <input type="radio" name="optionsRadiosInline"  -->
-			<!--                                         data-ng-click="ctrl.inwardManifest()" ><b>Inward(Received Manifest)</b> -->
-			<!--                                     </label> -->
-			<!--                                     <label class="radio-inline"> -->
-			<!--                                         <input type="radio" name="optionsRadiosInline"  data-ng-checked="SearchBy" data-ng-true-value="ctrl.outwardManifest()" -->
-			<!--                                         data-ng-click="ctrl.outwardManifest()"><b>Outward(Sent Manifest)</b> -->
-			<!--                                     </label>        	                                        -->
-			<!-- 								</div> -->
-
-			<!--                 		   </div> -->
-			<!--                 		</div> -->
-			<!--                 	</div> -->
-			<!--                 </div> -->
-			<!--                 </div> -->
-
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="col-lg-12 ">
@@ -133,7 +114,8 @@
 
 								<div class="col-lg-12 noPaddingLeft">
 									<div class="col-lg-3 branchclass">
-										<span class="text-padding">From</span> <select
+										<span class="text-padding">From</span> 
+										<select
 											class="form-control"
 											data-ng-options="branch.branch_name for branch in ctrl.branches"
 											data-ng-model="ctrl.manifest.frombranch"
@@ -141,7 +123,6 @@
 											<option value="">--Select--</option>
 										</select>
 									</div>
-
 									<div class="col-lg-3 branchclass">
 										<span class="text-padding">To</span> <select
 											class="form-control"

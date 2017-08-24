@@ -69,8 +69,8 @@
       		  <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default panelMarginBottom">                            
-						<div class="panel-heading">							
-						</div>
+<!-- 						<div class="panel-heading">							 -->
+<!-- 						</div> -->
 						<div class="panel-body customer-font">
 						<b>Manifest Detailed : ${manifest_number}</b>
 						</div>
@@ -78,131 +78,7 @@
                     </div>
               </div>
               
-<!--               <div class="row"> -->
-<!--               <div class="col-md-12"> -->
-              	  
-<!--               	  <div class="GenLeftRight"> -->
-<!-- 	              <div  class="subHead"> -->
-<%-- 	              <b>${title}</b> --%>
-<!-- 	              </div> -->
-<!-- 	              </div> -->
-	              
-<!-- 	          </div> -->
-<!--               </div> -->
-              
-<!--               <div class="row"> -->
-<!--                 	<div class="col-lg-12"> -->
-<!--                 		<div class="col-lg-12 ">                		 -->
-<!--                 		<div class="panel panel-default"> -->
-<!--                 			<div class="panel-body"> -->
-<!--                 			     <div class="col-lg-12  branch-heading">                 			       	 -->
-<!--                 			      	<input type="checkbox" data-ng-model="SearchBy" data-ng-changed="ctrl.fetchAllBranches()"> Search By<br>       	                                        -->
-<!-- 								 </div> -->
-                			     
-<!--                 			     <div class="col-lg-12 noPaddingLeft" data-ng-show="SearchBy">                 			       	 -->
-<!--         			      		    <label class="radio-inline"> -->
-<!--                                         <input type="radio" name="optionsRadiosInline"  -->
-<!--                                         data-ng-click="ctrl.inwardManifest()" ><b>Inward(Received Manifest)</b> -->
-<!--                                     </label> -->
-<!--                                     <label class="radio-inline"> -->
-<!--                                         <input type="radio" name="optionsRadiosInline"  data-ng-checked="SearchBy" data-ng-true-value="ctrl.outwardManifest()" -->
-<!--                                         data-ng-click="ctrl.outwardManifest()"><b>Outward(Sent Manifest)</b> -->
-<!--                                     </label>        	                                        -->
-<!-- 								</div> -->
-                			    
-<!--                 		   </div> -->
-<!--                 		</div> -->
-<!--                 	</div> -->
-<!--                 </div> -->
-<!--                 </div> -->
-              
-<!--               <div class="row"> -->
-<!--                 <div class="col-lg-12"> -->
-<!--                 	 <div class="col-lg-12 ">                		 -->
-<!--                 		<div class="panel panel-default"> -->
-<!--                 			<div class="panel-body"> -->
-<!--                 			     <div class="branch-heading">Branch</div> -->
-                			     
-<!--                 			     <div class="col-lg-12 noPaddingLeft">  -->
-<!--                 			      <div class="col-lg-3 branchclass"> -->
-<!--                 			      		<span class="text-padding">From</span> -->
-<!--                 			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches" -->
-<!--                 			      		 data-ng-model="ctrl.manifest.frombranch" data-ng-init="ctrl.branches[0].branch_id"> -->
-<!--                 			      			<option value="">--Select--</option> -->
-<!--                 			      		</select> -->
-<!--                 			      </div> -->
-                			      
-<!--                 			       <div class="col-lg-3 branchclass"> -->
-<!--                 			      		<span class="text-padding">To</span> -->
-<!--                 			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches"  -->
-<!--                 			      		data-ng-model="ctrl.manifest.tobranch"> -->
-<!--                 			      			<option value=''>--Select--</option> -->
-                			      			
-<!--                 			      		</select> -->
-<!--                 			      </div> -->
-<!--                 			      </div> -->
-                			      
-<!--                 			      <div class="col-lg-12 noPaddingLeft">  -->
-<!--                 			        <div class="sec-padding">Specific Period</div> -->
-                			         
-<!--                 			         <div class="col-lg-3 branchclass"> -->
-<!-- 	                			      	<span class="paddingtop">From  </span>   	                                        -->
-<!-- 	                                         <div class="form-group input-group marginleftrightspace"> -->
-<!-- 					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.fromdate" -->
-<!-- 					                           			   data-trigger= "focus"data-toggle="popover" data-placement="top" -->
-<!-- 					                            		   data-content="Please select from date"/> -->
-<!-- 					                            	 <span class="input-group-addon"><i class="fa fa-calendar"></i></span> -->
-<!-- 		                                     </div> -->
-<!-- 	                                  </div> -->
-                			      
-<!--                 			         <div class="col-lg-3 branchclass"> -->
-<!--                 			      		<span class="paddingtop">To</span> -->
-<!--                 			      		  <div class="form-group input-group marginleftrightspace"> -->
-<!-- 				                                <input type="text" class="form-control datepicker2" data-ng-model="ctrl.todate" -->
-<!-- 													  data-trigger= "focus"data-toggle="popover" data-placement="top" -->
-<!-- 					                            		data-content="Please select to date"/> -->
-<!-- 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i> -->
-<!-- 	                                            </span> -->
-	                                          
-<!-- 	                                     </div> -->
-<!--                 			         </div> -->
-                			      
-<!--                 			      <div class="col-lg-2"> -->
-<!--                 			      </div> -->
-<!--                 			      <div class="col-lg-4 branchclass"> -->
-<!--                 			      		 <button class="btn btn-primary" data-ng-click="ctrl.manifestFilter(ctrl.manifest)"> View Manifest</button> -->
-<!--                                   </div> -->
-                			        
-                			        
-<!--                 			      </div> -->
-                			       
-                			                      			      
-<!--                 			</div> -->
-<!--                 		</div> -->
-<!--                 		</div> -->
-<!--                 	</div> -->
-<!--                 </div> -->
-                
-<!--                 <div class="row"> -->
-<!--                 	<div class="col-lg-12"> -->
-<!--                 		<div class="col-lg-12 ">                		 -->
-<!--                 		<div class="panel panel-default"> -->
-<!--                 			<div class="panel-body"> -->
-<!--                 			     <div class="col-lg-12 noPaddingLeft">  -->
-<!--                 			       		<div class="col-lg-3 branchclass"> -->
-<!--                 			      		 <span class="text-padding boldletter">Search</span>	                	                                        -->
-<!--                                             <input type="text" class="form-control searchbar" placeholder="Manifest/LR No" -->
-<!--                                             data-ng-model="ctrl.manifest_regSearch" data-ng-keyup="ctrl.manifestSearch(ctrl.manifest_regSearch)">                                            -->
-<!--                                         </div> -->
-<!--                 			      </div> -->
-<!--                 			</div> -->
-<!--                 		</div> -->
-<!--                 		</div> -->
-<!--                 	</div> -->
-<!--                 </div> -->
-                
-                
-                
+            
                 <div class="row">
                 <div class="col-md-12">
                 <div class="col-md-12">
@@ -230,7 +106,7 @@
 										<div class="row paddingtop">
 														<div class="col-md-12">
 															<select name="shownoofrec" data-ng-model="shownoofrec"
-																data-ng-options="noofrec for noofrec in [5,10, 15, 25, 50]"
+																data-ng-options="noofrec for noofrec in [10, 15, 25, 50]"
 																class="form-control"
 																data-ng-click="ctrl.shownoofRecord()">
 															</select>
