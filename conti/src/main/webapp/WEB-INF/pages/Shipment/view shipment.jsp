@@ -1041,15 +1041,8 @@
 
 									<div class="col-lg-3 branchclass">
 										<span class="text-padding">Product</span> 
-										<!-- <select class="form-control" data-ng-model = "ctrl.product_name"
-											data-trigger= "focus"data-toggle="popover" data-placement="top"
-					                        data-content="Please select product" 
-										>
-											<option>--Select--</option>
-											
-										</select> -->
-										
 										<div angucomplete-alt id="product_name" data-ng-model = "ctrl.viewShipment.product_name"
+										
 															maxlength="5"
 															placeholder="Ex : Box (Large)" 
 															pause="0"											
@@ -1064,7 +1057,7 @@
 															onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"									
     														data-trigger="focus" data-toggle="popover" 
 			   											    data-placement="top" data-content="Please enter & select prduct"
-															
+			   											    input-class="form-control form-control-small" style = "width: 100%"
 											></div>
 
 									</div>
@@ -1250,7 +1243,13 @@
 											</tr>
 										<tbody>
 									</table>
-
+ 								<div class ="col-lg-6">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
 									<div class="col-lg-6 icons-button"></div>
 									<div class="col-lg-6 icons-button">
 										<div class="pull-right">

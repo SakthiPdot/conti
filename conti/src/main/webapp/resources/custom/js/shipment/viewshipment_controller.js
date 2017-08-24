@@ -22,6 +22,7 @@ contiApp.controller('ViewShipmentController', [
 		function($http, $filter, $scope, $q, $timeout, ShipmentService, priceSettingService, BranchService, CompanySettingService, ConfirmDialogService, UserService){
 	
 	$("#screen_viewshipment").addClass("active-menu");
+
 	var self = this;
 	self.shipments = {};
 	self.shipment = {}; // for individual view shipment
@@ -382,5 +383,26 @@ contiApp.controller('ViewShipmentController', [
 		 }
 	 }
 	//------------------------------------- MAKE CANCEL END
+	 
+    //-------------------------------- Show no of record begin ----------------------------------------//
+    
+    self.shownoofRecord = function() 
+    {    
+    	self.ship_regSearch = null;
+    	$scope.pageSize = $scope.shownoofrec;
+    	self.FilterShipment = self.shipments.slice($scope.currentPage*$scope.pageSize);
+    	if( self.FilterShipment.length <= $scope.pageSize )
+    	{
+    		$scope.previouseDisabled = true;
+    		$scope.nextDisabled = true;
+    	}
+    	else
+    	{
+    		//$scope.previouseDisabled=false;
+    		$scope.nextDisabled=false;
+    	}
+    	fetchAllShipmentforView();
+    }
+    //-------------------------------- Show no of record end ----------------------------------------//  
 }]);
 
