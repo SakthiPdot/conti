@@ -709,7 +709,7 @@
                                     <thead>
                                         <tr>
                                             <!-- <th class = "text-center"><input type="checkbox" data-ng-model = "ctrl.selectAll_product" data-ng-click = "ctrl.product_selectAll()"></th> -->
-                                            <th class = "text-center"></th>
+                                            <th class = "text-center" style="color:#FFF;">select</th>
                                             <th class = "text-center">S.No</th>
                                             <th class = "text-center">Product</th>
                                             <th class = "text-center">Product Type</th>                                        
@@ -723,7 +723,7 @@
                                     </thead>
                                     <tbody>
                                         <tr data-ng-repeat = "product in ctrl.shipment.shipmentDetail track by $index">
-                                            <td><input type="checkbox" class="form-control" data-ng-model = "product.selected"  /> </td>
+                                            <td><input type="checkbox" style ="width:40%;" class="form-control" data-ng-model = "product.selected"  /> </td>
                                             <td>{{$index + 1}}
 	                                            <input type = "hidden" class="form-control" data-ng-model = "product.shipmentdetail_id" data-ng-value = "product_name.originalObject.product_id" /> 
                                             </td>
