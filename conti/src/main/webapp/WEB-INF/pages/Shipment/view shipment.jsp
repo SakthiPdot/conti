@@ -751,6 +751,7 @@
                             		<div class="col-md-12">
                             			<span class="text-paddingwidth">Description</span>
                             		    <textarea class="form-control" data-ng-model = "ctrl.shipment.description"
+                            		    style="height: 342px;width: 100%;"
                             		   		disabled
                             		    	 rows="8"> </textarea>                           		    
                             		    

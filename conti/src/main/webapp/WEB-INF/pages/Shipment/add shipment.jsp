@@ -979,7 +979,8 @@
                             		    <textarea class="form-control" data-ng-model = "ctrl.shipment.description"
                             		    maxlength = "100"
                             		    onkeypress="return CheckIsCharacterWithspace(event,this.value)"
-                            		    	 rows="15"> </textarea>                           		    
+                            		    	style="height: 321px;width: 100%;"
+                            		    	 rows="8"> </textarea>                           		    
                             		    
                             		</div>
                          </div>
