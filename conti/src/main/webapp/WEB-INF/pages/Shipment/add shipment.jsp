@@ -643,7 +643,7 @@
 	                            		<div class="col-md-6 branchclass">
 	                            			<span class="text-paddingwidth"> Service <span class="required">*</span></span>
 	                            		    
-	                            		    <div angucomplete-alt id="service_name" 
+	                            		     <div angucomplete-alt id="service_name" 
 															maxlength="5"
 															placeholder="Ex : Counter" 
 															pause="0"											
@@ -659,7 +659,13 @@
     														data-trigger="focus" data-toggle="popover" 
 			   											    data-placement="top" data-content="Please enter & select service"
 															style="width:100%"
-														    ></div>
+														    ></div> 
+														    
+														    <!--  <select class="form-control" data-ng-options = "status for status in ['Booked']" 
+														     		data-ng-model = "ctrl.shipment.status"
+				                             						data-trigger="focus" data-toggle="popover" data-placement="top" 
+				                             						data-content="Please select status" required>
+				                         				 	 </select> -->
 	                            		    
 	                            		</div>
 	                            		<div class=" col-md-6 branchclass">
@@ -973,7 +979,7 @@
                             		    <textarea class="form-control" data-ng-model = "ctrl.shipment.description"
                             		    maxlength = "100"
                             		    onkeypress="return CheckIsCharacterWithspace(event,this.value)"
-                            		    	 rows="8"> </textarea>                           		    
+                            		    	 rows="15"> </textarea>                           		    
                             		    
                             		</div>
                          </div>
@@ -1044,7 +1050,7 @@
                             		    
                             		</div>                           		
                             		
-                            		<div class="col-md-12">
+                            		<!-- <div class="col-md-12">
                             			<span class="text-paddingwidth">Handling Charge <span class="required">*</span></span>
                             		    <div class = "form-group input-group">
 	                            		    <input type="number" class="form-control" min = "0" max = "999999.99"
@@ -1057,7 +1063,7 @@
 	                            		    required />  
 	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
                             		    </div> 
-                            		</div>
+                            		</div> -->
                             		
                             		<div class="col-md-12">
                             			<span class="text-paddingwidth">Tax payable on Reverse Charge <span class="required">*</span></span>
@@ -1122,7 +1128,7 @@
                             	
                             	
                             		<div class="col-md-12">
-                            			<span class="text-paddingwidth">Total Charges</span> 
+                            			<span class="text-paddingwidth">Net freight Charges</span> 
                             			<div class = "form-group input-group">
                             		     <input type="text" class="form-control disabled" 
 	                            		    	data-ng-model = "ctrl.shipment.total_charges"	                            		    	
@@ -1194,6 +1200,16 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();   
 });
 </script>
+<script>
+var elements = document.querySelectorAll('input,select,textarea');
+
+for (var i = elements.length; i--;) {
+    elements[i].addEventListener('invalid', function () {
+        this.scrollIntoView(false);
+    });
+}
+</script>
+
 </body>
 
 </html>

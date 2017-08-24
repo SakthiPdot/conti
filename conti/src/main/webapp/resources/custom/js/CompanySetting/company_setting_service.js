@@ -76,7 +76,7 @@ angular.module('contiApp').factory('CompanySettingService',['$http','$q',functio
 		$http.get("company/"+id)
 		.then(
 				function(response){
-					console.error(" fetched company");
+					
 					deferred.resolve(response);
 				},
 				function(errResponse){

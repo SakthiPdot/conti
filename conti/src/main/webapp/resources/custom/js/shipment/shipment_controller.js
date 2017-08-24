@@ -493,11 +493,13 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 				"service_id" : self.shipment.service.service_id,
 				"max_weight" : self.shipment.shipmentDetail[index].weight
 		};
-
+	
 		priceSettingService.fetch_priceforShipment(self.shipment.forpricesetting)
 			.then(
 					function(res) {
-						self.shipment.handling_charge = res.handling_charges;
+						
+						//self.shipment.handling_charge = res.handling_charges;
+						self.shipment.handling_charge = 0;
 						self.shipment.shipmentDetail[index].unit_price = parseFloat(res.price);
 						
 						self.checkQuantity(index);
