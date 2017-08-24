@@ -1228,7 +1228,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr data-ng-repeat="shipment in ctrl.FilterShipment"
+											<tr data-ng-repeat="shipment in ctrl.FilterShipment | limitTo:pageSize"
 												data-ng-dblclick = "ctrl.view1Shipmet(shipment)"
 											>
 												<td><input type="checkbox" data-ng-change="ctrl.shipmentSelect(shipment)" data-ng-model = "shipment.select" /></td>

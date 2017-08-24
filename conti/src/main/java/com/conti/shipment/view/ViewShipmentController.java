@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.conti.master.employee.EmployeeMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -310,8 +311,7 @@ public class ViewShipmentController {
 	public ModelAndView downloadExcelForAddManifest(HttpServletRequest request){
 		
 		//change to fetch all 
-		UserInformation userinfo = new UserInformation(request);
-		String userid = userinfo.getUserId();
+		String userid = userInformation.getUserId();
 		User user =usersDao.get(Integer.parseInt(userid));
 		List<ShipmentModel>  shipmentList;
 		if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
@@ -323,4 +323,79 @@ public class ViewShipmentController {
 		return new ModelAndView("ShipmentExcel","shipmentList",shipmentList);		
 	}
 	//----------------------------------------------- SHIPMENT EXCEL END
+	
+	//----------------------------------------------- Find record count begin
+	@RequestMapping(value = "/shipment_record_count/", method = RequestMethod.GET)
+	public ResponseEntity<String> recordCount(HttpServletRequest request) {
+		String username = userInformation.getUserName();
+		int user_id = Integer.parseInt(userInformation.getUserId());
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		try {
+			User user = usersDao.get(user_id);
+			if(user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN)) {
+				int rec_count = shipmentDao.shipmentCount();
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				return new ResponseEntity<String>(Integer.toString(rec_count), HttpStatus.OK);
+			} else {
+				int rec_count = shipmentDao.shipmentCountStaff(branch_id);
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+				return new ResponseEntity<String>(Integer.toString(rec_count), HttpStatus.OK);
+			}
+		}catch(Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+	}
+	//----------------------------------------------- Find record count end
+	
+	//----------------------------------------------- PAGINATION BEGIN
+	@RequestMapping(value = "shipment_pagination", method = RequestMethod.POST)
+	public ResponseEntity<List<ShipmentModel>> ship_pagination(@RequestBody int page, HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		int user_id = Integer.parseInt(userInformation.getUserId());
+		try {
+			int from_limit = 0, to_limit = 0;
+			String order = "DESC";
+			if(page == 1) { // First
+				from_limit = 0;
+				to_limit = page * 100;
+			} else if ( page == 0 ) { // Last
+				order = "ASC";
+				from_limit = page;
+				to_limit = 10;
+			} else {
+				from_limit = (page * 10) + 1;
+				to_limit =  (page + 10 ) * 10;
+			}
+			User user = usersDao.get(user_id);
+			List<ShipmentModel> shipmentList = new ArrayList<ShipmentModel>();
+			if(user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN)) {
+				shipmentList = shipmentDao.fetchShipmentWithLimit(from_limit, to_limit, order);
+				if(shipmentList.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT);
+				}else{
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<ShipmentModel>> (shipmentList, HttpStatus.OK);	
+				}
+			} else {
+				shipmentList = shipmentDao.fetchShipmentWithLimitStaff(from_limit, to_limit, order, branch_id);
+				if(shipmentList.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT);
+				}else{
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<ShipmentModel>> (shipmentList, HttpStatus.OK);	
+				}
+			}
+			
+		}catch(Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<ShipmentModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
+	//----------------------------------------------- PAGINATION END
 }

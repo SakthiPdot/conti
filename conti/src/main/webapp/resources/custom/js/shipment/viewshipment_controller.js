@@ -84,27 +84,119 @@ contiApp.controller('ViewShipmentController', [
 	//--------------------------- PAGINATION BEGIN
 	
 	function pagination() {
-		/*$scope.pageSize = $scope.shownoofrec;
-		$scope.currentPage = 0;
-		$scope.totalPages = 0;
-		self.FilterShipment = self.shipments;
 		
-		$scope.nextDesabled = false;
-		$scope.previouseDisabled = true;
-		
-		if( self.FilterShipment.lengh <= 10 ) {
-			$scope.nextDisabled = true;
-		}
-		
-		if( self.FilterShipment.length < 100 ) {
-			$scope.totalnof_records = self.FilterShipment.length;
-		} else {
-			
-		}*/
 		$scope.pageSize = $scope.shownoofrec;
+		$scope.currentPage = 0;
+		$scope.currentPage = 0;
+		$scope.nextDisabled = false;
+		$scope.previouseDisabled = true;
 		self.FilterShipment = self.shipments;
+		
+		if(self.FilterShipment.length<=10){
+			$scope.nextDisabled = true;			
+		}
+
+		if(self.FilterShipment.length<100){
+			$scope.totalnof_records = self.FilterShipment.length;
+		}else{
+			findrecord_count();
+		}
 	}
 	
+	 $scope.paginate = function(nextPrevMultiplier) {
+	    	$scope.selectall = false;
+	    	$scope.currentPage += (nextPrevMultiplier * 1);
+	    	self.FilterShipment = self.shipments.slice($scope.currentPage*$scope.pageSize);
+	    	if(self.FilterShipment.length == 0) {
+	    		ShipmentService.pagination_byPage($scope.currentPage)
+	    		.then(
+	    				function (filterShip) {
+	    					if ( filterShip.length == 0 ) {
+	    						$scope.nextDisabled = true;
+	    					} else if ( filterShip.length < 10 ) {
+	    						self.FilterShipment = filterShip;
+	    						$scope.nextDisabled = true;
+	    					} else {
+	    						self.FilterShipment = filterEmp;
+	    					}
+	    					
+	    				}, 
+	    				function (errResponse) {
+	    					console.log('Error while pagination');
+	    				}
+	    			);
+	    	} 
+	    	
+	    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+	    	
+	    	/*if(self.Filteremployees.length < $scope.pageSize) {
+	    		$scope.nextDisabled = true;
+	    	}
+	*/
+	    	if($scope.currentPage == 0) {
+	    		$scope.previouseDisabled = true;
+	    	}
+	    	if(nextPrevMultiplier == -1) {    		
+	    		$scope.nextDisabled = false;
+	    	} else {
+	    		$scope.previouseDisabled = false;
+	    	}
+	    	
+	    }
+	 
+	 
+	 $scope.firstlastPaginate = function (page) {
+	    	$scope.selectall = false;
+	    	if( page == 1 ) { // first
+	    		$scope.currentPage = 0;
+	    		$scope.previouseDisabled = true;
+	    		$scope.nextDisabled = false;
+	    		self.FilterShipment = self.shipments.slice($scope.currentPage*$scope.pageSize);
+	    	/*	fetchAllEmployees();*/
+	    	} else { // last
+	    		
+	    		/*if(self.Filteremployees.length < $scope.pageSize) {
+	        		$scope.currentPage = ( (Math.ceil(self.Filteremployees.length/$scope.pageSize)) );    			
+	    		} else {
+	    			$scope.currentPage = ( (Math.ceil(self.Filteremployees.length/$scope.pageSize)) - 1 );
+	    		}*/
+	    		$scope.currentPage = ( (Math.ceil(self.FilterShipment.length/$scope.pageSize)) - 1 );
+	    		$scope.previouseDisabled = false;
+	    		$scope.nextDisabled = true;
+	    		
+	    		self.FilterShipment = self.shipments.slice($scope.currentPage*$scope.pageSize);
+	    		
+	    		if(self.FilterShipment.length == 0) {
+	    			ShipmentService.pagination_byPage(page)
+	        		.then(
+	        				function (filterShip) {
+	        					self.FilterShipment = filterShip;
+	        				}, 
+	        				function (errResponse) {
+	        					console.log('Error while fetching employees');
+	        				}
+	        			);
+	    		}
+	    		
+	    	}
+	    	
+	    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+	    	
+	    }
+	 
+	 
+	 
+    //===================================Total Record Count====================================
+	function findrecord_count() {				
+		ShipmentService.findrecord_count()
+		.then(
+				function (record_count) {
+					$scope.totalnof_records  = record_count;
+				}, 
+				function (errResponse) {
+					console.log('Error while fetching record count');
+				});
+	}
 	//--------------------------- PAGINATION END
 	
 	//--------------------------- ANGU COMPLETE FRO PRODUCT NAME BEGIN
