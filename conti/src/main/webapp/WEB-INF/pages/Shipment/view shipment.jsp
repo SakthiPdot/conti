@@ -1132,16 +1132,20 @@
 
 											<div class="col-xs-6 icons-button">
 												<div class="pull-right">
-													<form name="shipmentPrint" method = "POST" action = "shipmentReg_print" class="padding-button">
+													<form name="shipmentPrint" method = "POST" action = "viewshipment_print" class="padding-button">
 														<a type="button" class="btn btn-primary">
 															<i class="fa fa-cog fa-lg"></i>
 														</a>
 														<a type="button" class="btn btn-primary">
 															<i class="fa fa-file-excel-o fa-lg"></i>
 														</a>
+														<a type="button" class="btn btn-primary" onclick="location.href='downloadExcelForViewShpiment'; valid = true;">
+															<i class="fa fa-file-excel-o fa-lg"></i>
+														</a>
 														<button type="submit" class="btn btn-primary"  data-ng-disabled = "ctrl.selected_shipment.length == 0" >
 															<i class="fa fa-print fa-lg"></i>
 														</button>
+														
 														<input type = "hidden" name = "shipment" value = "{{ctrl.selected_shipment}}"/>
 	                                    				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 													</form>

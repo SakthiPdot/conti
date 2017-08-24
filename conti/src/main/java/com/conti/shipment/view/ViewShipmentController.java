@@ -1,5 +1,6 @@
 package com.conti.shipment.view;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.codec.binary.Base64;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +30,8 @@ import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 import com.conti.shipment.add.ShipmentDao;
 import com.conti.shipment.add.ShipmentModel;
 
@@ -48,6 +53,9 @@ public class ViewShipmentController {
 	private UsersDao usersDao;
 	@Autowired
 	private ShipmentDao shipmentDao;
+	@Autowired
+	private CompanySettingDAO companySettingDAO;
+	
 	Loggerconf loggerconf = new Loggerconf();
 	UserInformation userInformation;
 	ConstantValues constantVal = new ConstantValues();
@@ -261,12 +269,58 @@ public class ViewShipmentController {
 	//----------------------------------------------- MAKE CANCEL / DELETE MULTIPLE SHIPMENT END
 	
 	//----------------------------------------------- SHIPMENT REGISTER PRING BEGIN
-	@RequestMapping(value = "/shipment_print", method = RequestMethod.POST)
+	@RequestMapping(value = "/viewshipment_print", method = RequestMethod.POST)
 	public ModelAndView shipmentPring(@RequestParam("shipment") String shipment, HttpServletRequest request)
 	{
-		ModelAndView model = new ModelAndView("print/shipment_print");
+		JSONArray jsonArray = new JSONArray(shipment);
+		String[] shipment_id = new String[jsonArray.length()];
+		for(int i=0; i <jsonArray.length();i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			shipment_id[i] = Integer.toString(jsonObject.getInt("shipment_id"));			
+		}
+		List<ShipmentModel> listshipment = new ArrayList<ShipmentModel>();
+		for(int i=0; i<shipment_id.length; i++) {
+			ShipmentModel shipmentDB = shipmentDao.getShipmentModelById(Integer.parseInt(shipment_id[i]));
+			listshipment.add(shipmentDB);
+		}
+		Company company = companySettingDAO.getById(1);
+		String base64DataString ="";
+		if(company!=null && company.getCompany_logo()!=null){
+			byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+			try {
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+			}		
+		}else{
+			base64DataString = ConstantValues.NO_IMAGE;	
+		}
+		ModelAndView model = new ModelAndView("print/viewshipment_print");
+		model.addObject("title", "Shipment");
+		model.addObject("company", company);
+		model.addObject("listshipment", listshipment);
+		model.addObject("image",base64DataString);
 		return model;
 	}
 	//----------------------------------------------- SHIPMENT REGISTER PRING END
 
+	//----------------------------------------------- SHIPMENT EXCEL BEGIN
+	//=================EXCEL DOWNLOAD=====================================
+	@RequestMapping(value="downloadExcelForViewShpiment",method=RequestMethod.GET)
+	public ModelAndView downloadExcelForAddManifest(HttpServletRequest request){
+		
+		//change to fetch all 
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =usersDao.get(Integer.parseInt(userid));
+		List<ShipmentModel>  shipmentList;
+		if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+			  shipmentList=shipmentDao.fetchAllShipment();
+		}else{
+			  shipmentList=shipmentDao.fetchAllShipmentForStaff(user.getBranchModel().getBranch_id());
+		}
+		
+		return new ModelAndView("ShipmentExcel","shipmentList",shipmentList);		
+	}
+	//----------------------------------------------- SHIPMENT EXCEL END
 }
