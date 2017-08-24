@@ -102,6 +102,8 @@ public class AddReceiptRestController
 			model.addObject("lr_prefix",lr_prefix);
 			model.addObject("branch_id",Integer.parseInt(userinfo.getUserBranchId()));
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
+			model.addObject("paid",ConstantValues.PAID);
+			model.addObject("to_pay",ConstantValues.TO_PAY);
 			model.setViewName("Receipt/receipt_generation");
 
 			

@@ -114,7 +114,8 @@
                 			      		</select>
                 			      </div>
                 			      
-                			      
+                			       <input type="hidden" value="${paid}" id="paid"/>
+                			       <input type="hidden" value="${to_pay}" id="to_pay"/>
                 			      
                 			      <input type="hidden" value="${branch_id}" id="branchid"/>
                 			      
@@ -325,7 +326,7 @@
 
 						</div>
                      <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelReceipt';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
-                      	  <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_receipt.length == 0" ><i class="fa fa-print fa-lg"></i></button>
+                      	  <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_receipt.length <1" ><i class="fa fa-print fa-lg"></i></button>
                           <input type = "hidden" name = "receipt" value = "{{ctrl.selected_receipt}}" />
                           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				</form>
@@ -340,7 +341,11 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox" data-ng-click="ctrl.receiptSelectAll()" data-ng-model="selectallreceipts"></th>
+                                            <th><input type="checkbox" 
+                                            data-ng-click="ctrl.receiptSelectAll()" 
+                                            data-ng-model="selectallreceipts"></th>
+                                            
+                                            
                                             <th data-ng-show="setting-slnumber">S.No</th>
                                                 <td data-ng-show="setting-slnumber">{{$index+1}}</td>
 												<th data-ng-show="setting_date"
@@ -402,7 +407,9 @@
                 			       		<div class="col-lg-5 branchclass">
                 			      		 </div>
                                         <div class="col-lg-2 branchclass">
-                			      		   <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                			      		   <button class="btn btn-primary btn-lg"
+                			      		   data-ng-disabled = "ctrl.selected_receipt.length <1" 
+                			      		    data-toggle="modal" data-target="#myModal">
                                                Receipt Generate
                                             </button>                                     
                                         </div>
@@ -415,32 +422,139 @@
                 	</div>
                 </div>
                 
-                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
+                <!--================================================== Modal==================================================== -->
+                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+                 data-backdrop="static" data-keyboard="false">
+                                <div class="modal-dialog" style="width: auto ! important;height: auto ! important;">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                             <h4 class="modal-title" id="myModalLabel">Create Receipt</h4>
                                         </div>
-                                        <div class="modal-body">
-										 
-										 <div class="branchclass">
-												
-												<span class="text-padding"> Courier Staff</span>
-												<select class="form-control">
-													<option>--Select--</option>
-													<option>Murugan</option>
-												</select>
-										 </div>
-										 
-										  <div class="branchclass">	
-												<span> Contact Number</span>
-												<input type="text" class="form-control">
-											
-                                         </div>
-											
-                                        </div>
-                                        <div class="modal-footer">
+						<div class="modal-body">
+
+
+							<table  data-ng-cloak class="table table-striped table-bordered table-hover"
+								id="dataTables-example">
+								<thead>
+									<tr>
+
+										<!-- <th></th> -->
+										<th data-ng-show="setting_receiptlrnumber">LR Number</th>
+										<th data-ng-show="setting_receiptorigin">Parcel</th>
+										<th data-ng-show="setting_receiptdestination">Handling
+											Charge</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr data-ng-repeat="receipt in ctrl.selected_receipt"
+										data-id="{{receipt.receipt_id}}">
+
+
+										<!-- <td><input type="checkbox"
+											data-ng-click="ctrl.receiptSelect(receipt)"
+											data-ng-model="receipt.select"></td> -->
+
+										<td data-ng-show="setting_receiptlrnumber">{{receipt.lrno_prefix}}</td>
+
+										<td data-ng-show="setting_receiptorigin">{{receipt.numberof_parcel}}</td>
+
+										<td data-ng-show="setting_receiptdestination">
+										
+										<div class="input-group">
+											<input									
+													data-trigger="focus" data-toggle="popover"
+													data-placement="top"
+													data-content="Please Enter Handling Charge"
+													placeholder="Ex:99.99"
+												type="text" class="form-control">
+												<span class="input-group-addon" id="basic-addon2"><i class="fa fa-inr" aria-hidden="true"></i></span>
+											</div>
+										</td>
+										
+
+									</tr>
+								</tbody>
+							</table>
+							
+							
+							<div data-ng-cloak class='row'  >
+								<div class="col-lg-12 ">
+									<div class="col-lg-6">
+										<span> Freight Charge</span>
+									</div>
+									<div class="col-lg-6 ">
+									<div class="input-group Bottom" >
+										<input type="text" class="form-control"
+										data-ng-model="allLR_freight_charge"
+										placeholder="Ex:100.00">
+										<span class="input-group-addon"><i class="fa fa-inr"></i></span>
+									</div>
+									</div>
+								</div>
+							</div>
+							
+							
+							<div class='row'>
+								<div class="col-lg-12 ">
+									<div class="col-lg-6">
+										<span> Local Transport</span>
+									</div>
+									<div class="col-lg-6 ">
+									<div class="input-group">
+										<input type="text" class="form-control"
+										data-ng-model="ctrl.receipt.local_transport"
+										placeholder="Ex:72.25">
+										<span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
+									</div>
+									</div>
+									
+								</div>
+							</div>
+							
+							
+							<div data-ng-show="ctrl.receipt.local_transport.length>0 || showDoorDelivery">
+							<h4 class="text-center">Door Delivery</h4>
+							
+							<div class='row'>
+								<div class="col-lg-12 ">
+									<div class="col-lg-6">
+										<span> Courier Staff</span>
+									</div>
+									<div class="col-lg-6 ">
+										<select class="form-control"
+										data-ng-model="ctrl.receipt.courier_staff">
+											<option>--Select Staff--</option>
+											<option>Murugan</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class='row'>
+								<div class="col-lg-12">
+									<div class="col-lg-6">
+										<span> Contact Number</span>
+									</div>
+									<div class="col-lg-6 ">
+										<input type="text" class="form-control" list="contact_number"
+										data-ng-model="ctrl.receipt.contact_number" 
+										placeholder="Ex.9876543210">
+										<datalist id="contact_number">
+										  <option value="0123456789">
+										  <option value="9876543210">
+										</datalist>
+									</div>
+								</div>
+							</div>
+							</div>
+							
+							
+						</div>
+
+
+						<div class="modal-footer">
                                             <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"> <i class="fa fa-times"></i> Cancel</button>
                                             <button type="button" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</button>
                                         </div>
@@ -461,14 +575,14 @@
     <script src="resources/custom/js/confirmDialog.js"></script>   
     <script type="text/javascript" src="resources/custom/js/validation.js"></script>    
   	<script src="resources/custom/js/manifest/add_manifest_service.js"></script> 
-        <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
+    <script>
+        $('[data-toggle="popover"]').popover();
     </script>
-    
+   
+
     <script type="text/javascript">
 
+    
     function getDate()
     {
         var today = new Date();
@@ -495,7 +609,11 @@
 	        limitMax: getDate()
 	    });
         </script>
-
+   	<style>
+      .bottom {
+            	padding-bottom:5px;
+            }
+     </style>
 </body>
 
 </html>

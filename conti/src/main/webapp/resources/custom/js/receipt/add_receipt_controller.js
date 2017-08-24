@@ -46,8 +46,52 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		}
 		reset();
 	}
+
+self.receipt={
+			    "receipt_id": null,
+			    "updated_by": null,
+			    "created_by": null,
+			    "receipt_number": null,
+			    "contact_number": null,
+			    "paymode": null,
+			    "courier_staff": null,
+			    "obsolete": null,
+			    "created_datetime": null,
+			    "updated_datetime": null,
+			    "local_transport": null,
+			    "receipt_total": null,
+			    "receiptDetailList": [
+			        {
+			            "receiptdetailid": null,
+			            "handling_charge": null,
+			            "net_freight_charges": null,
+			            "shipmentModel":null,
+			            "manifestModel": null
+			        }
+			    ]
+			};
+
+	//===================================on modal open calculate freight charge====================================	
+	$("#myModal").on('shown.bs.modal', function(){
+		$timeout(function(){
+			$scope.showDoorDelivery=false;	
+			var total=0;
+			
+			for(var i=0;i<self.selected_receipt.length;i++){
+				console.log(self.selected_receipt[i].bill_to.trim());
+				if(self.selected_receipt[i].bill_to.trim()==$("#to_pay").val().trim()){
+					total = parseInt(total)+parseInt(self.selected_receipt[i].total_charges);
+				}
+				if(self.selected_receipt[i].service.service_name=="Door Delivery"){
+					$scope.showDoorDelivery=true;	
+				}
+				$scope.allLR_freight_charge=total;
+				
+			}
+		 })
+	});
 	
-	//-------------------------------------------------------------------------------
+	$scope.showDoorDelivery=true;
 	
 	function close(title)
 	{
@@ -58,7 +102,6 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 				reset();
 		});
 	}
-	//----------------------------------------------------------------------------
 	
 	//===================================fetch ALL BRANCH====================================	
 	fetchAllBranches();	
@@ -146,34 +189,39 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	//---------------------------------------------------------------------------------
 	
 	//-----------------------Receipt select all check box function start-------------------------
-	function receiptSelectAll()
-	{
-		console.log('Call select all receipt '+$scope.pageSize);
+	function receiptSelectAll(){
+		
 		self.selected_receipt=[];
-		for (var i=0; i<$scope.pageSize;i++){
+		var size;
+		
+		if($scope.pageSize>self.Filterreceipts.length){
+			size=self.Filterreceipts.length;
+		}else{
+			size=$scope.pageSize;
+		}
+		
+		//====================================================================
+		//=========================change page size===========================
+		//====================================================================
+		
+		for (var i=0; i<10;i++){
 				self.Filterreceipts[i].select=$scope.selectallreceipts;
 				if($scope.selectallreceipts){
 						self.selected_receipt.push(self.Filterreceipts[i]);
 					}
 			}
 	}
-	//--------------------------------------------------------------------------------------------
 	
-	//-----------------------------Receipt record select on Register------------------------------
-	
-	function receiptSelect(receipt)
-	{
-		var index=self.selected_receipt.indexOf(receipt);
-		if(receipt.select)
-		{
+	//-----------------------------Receipt record select on Register-----------------------------
+	function receiptSelect(receipt){
+		if (receipt.select) {
 			self.selected_receipt.push(receipt);
-		}
-		else
-		{
-			self.selected_receipt.splice(index,1);
+		} else {
+			$scope.selectallreceipts=receipt.select;
+			var index = self.selected_receipt.indexOf(receipt);
+			self.selected_receipt.splice(index, 1);
 		}
 	}
-	//-------------------------------------------------------------------------------------------------
 
 	//--------------------------------------Show number of records-------------------------------------
 	

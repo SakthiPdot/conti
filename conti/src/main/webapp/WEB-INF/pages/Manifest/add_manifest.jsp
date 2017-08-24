@@ -569,7 +569,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 							data-ng-click="amctrl.clearModalValue()"
 								data-dismiss="modal">
 								<i class="fa fa-times"></i> Cancel
-							</button>
+							</button> 
 							<button type="submit" 
 							data-ng-click="amctrl.submitManifest()"
 							data-ng-disabled="amctrl.manifest.driver_name==null ||  amctrl.manifest.vehicle_number==null || amctrl.manifest.vehicle_destination==null;"
