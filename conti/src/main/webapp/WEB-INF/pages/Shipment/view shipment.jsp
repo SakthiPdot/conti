@@ -54,7 +54,7 @@
 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
 
 <link href="resources/custom/css/demo.css" rel="stylesheet">
-
+<link rel="icon" type="image/gif/png" href="resources/Image/conti_logo.png">
 <script type="text/javascript"
 	src="resources/built-in/js/angular.min.js"></script>
 <script type="text/javascript"
@@ -1120,12 +1120,9 @@
 															type="button" data-toggle="dropdown">
 															Batch Action <span class="caret"></span>
 														</button>
-														<!-- <ul class="dropdown-menu">
-									<li><a href="#">Active</a></li>
-									<li><a href="#">InActive</a></li>
-									<li><a href="#">Archive</a></li>
-
-								</ul> -->
+														 <ul class="dropdown-menu">
+																<li><a data-ng-click="ctrl.makeCancel()">Cancel</a></li>
+														</ul> 
 
 													</div>
 
@@ -1135,15 +1132,19 @@
 
 											<div class="col-xs-6 icons-button">
 												<div class="pull-right">
-													<button type="button" class="btn btn-primary">
-														<i class="fa fa-cog fa-lg"></i>
-													</button>
-													<button type="button" class="btn btn-primary">
-														<i class="fa fa-file-excel-o fa-lg"></i>
-													</button>
-													<button type="button" class="btn btn-primary">
-														<i class="fa fa-print fa-lg"></i>
-													</button>
+													<form name="shipmentPrint" method = "POST" action = "shipmentReg_print" class="padding-button">
+														<a type="button" class="btn btn-primary">
+															<i class="fa fa-cog fa-lg"></i>
+														</a>
+														<a type="button" class="btn btn-primary">
+															<i class="fa fa-file-excel-o fa-lg"></i>
+														</a>
+														<button type="submit" class="btn btn-primary"  data-ng-disabled = "ctrl.selected_shipment.length == 0" >
+															<i class="fa fa-print fa-lg"></i>
+														</button>
+														<input type = "hidden" name = "shipment" value = "{{ctrl.selected_shipment}}"/>
+	                                    				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+													</form>
 												</div>
 											</div>
 										</div>
@@ -1155,7 +1156,7 @@
 										id="dataTables-example">
 										<thead>
 											<tr>
-												<th><input type="checkbox"></th>
+												<th><input type="checkbox" data-ng-click="ctrl.shipmentSelectall()" data-ng-model = "selectall" /></th>
 												<th>Date</th>
 												<th>LR No</th>
 												<th>Product</th>
@@ -1171,8 +1172,7 @@
 											<tr data-ng-repeat="shipment in ctrl.FilterShipment"
 												data-ng-dblclick = "ctrl.view1Shipmet(shipment)"
 											>
-												<td><input type="checkbox"
-													data-ng-model="shipment.select" /></td>
+												<td><input type="checkbox" data-ng-change="ctrl.shipmentSelect(shipment)" data-ng-model = "shipment.select" /></td>
 												<td>{{shipment.shipment_date}}</td>
 												<td>{{shipment.lrno_prefix}}</td>
 												<td>

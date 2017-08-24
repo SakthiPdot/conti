@@ -36,6 +36,9 @@ contiApp.controller('ViewShipmentController', [
 			"product_id" : ""
 	};
 	self.fromBranch_disable = false;
+	
+	$scope.shownoofrec = 10;
+	self.selected_shipment = [];
 	//---------------------------- FETCH ALL SHIPMENT BEGIN
 	function fetchAllShipmentforView() {
 		ShipmentService.fetchAllShipmentforView()
@@ -98,7 +101,7 @@ contiApp.controller('ViewShipmentController', [
 		} else {
 			
 		}*/
-		
+		$scope.pageSize = $scope.shownoofrec;
 		self.FilterShipment = self.shipments;
 	}
 	
@@ -229,4 +232,63 @@ contiApp.controller('ViewShipmentController', [
 		 bill_open(shipment.lr_number);
 	 }
 	 //------------------------------------- SHIPEMNT PRINT END
+	 
+	 //------------------------------------ REGISTER SELECT BEGIN
+	 self.shipmentSelect = function (shipment) {
+		 var index = self.selected_shipment.indexOf(shipment);
+		 if(shipment.select) {
+			 self.selected_shipment.push(shipment);
+		 } else {
+			 $scope.selectall=false;
+			 self.selected_shipment.splice(index, 1);
+		 }
+	 }
+	 //------------------------------------ REGISTER SELECT END
+	 
+	 //------------------------------------- REGISTER SELECT ALL BEGIN
+	 self.shipmentSelectall = function () {
+		 self.selected_shipment = [];
+		 for(var i=0; i<$scope.pageSize; i++) {
+			 self.FilterShipment[i].select = $scope.selectall;
+			 if($scope.selectall) {
+				 self.selected_shipment.push(self.FilterShipment[i]);
+			 }
+		}
+	} 
+	//------------------------------------- REGISTER SELECT ALL END
+	 
+	//------------------------------------- MAKE CANCEL BEGIN
+	 self.makeCancel = function () {
+		 if(self.selected_shipment.length == 0) {
+			 self.message = "Please select atleast on record..!";
+			 successAnimate('.failure');
+		 }else{
+			 	self.confirm_title = 'Cancel';
+ 				self.confirm_type = BootstrapDialog.TYPE_DANGER;
+ 				self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+ 				self.confirm_btnclass = 'btn-danger';
+ 				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+ 				.then(
+ 						function (res) {
+ 							var shipment_id = [];
+ 							for(var i=0; i<self.selected_shipment.length; i++) {
+ 								shipment_id[i] = self.selected_shipment[i].shipment_id; 								
+ 							}
+ 							ShipmentService.makeCancel(shipment_id)
+ 								.then(
+ 										function(res) {
+ 											fetchAllShipmentforView();
+ 											self.selected_shipment = [];
+ 											self.message = "Selected record(s) has cancelled..!"
+ 											successAnimate('.success');	
+ 										}, function (errRes) {
+ 											console.log(errRes);
+ 										}
+ 									);
+ 						}
+ 					);
+		 }
+	 }
+	//------------------------------------- MAKE CANCEL END
 }]);
+

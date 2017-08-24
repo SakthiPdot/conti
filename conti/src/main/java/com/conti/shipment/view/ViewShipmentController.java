@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -192,7 +193,7 @@ public class ViewShipmentController {
 	
 	//----------------------------------------------- SEARCH BY LRNO FOR VIEW SHIPMENT END
 	
-	//----------------------------------------------- SHIPMENT DELETE BEGIN
+	//----------------------------------------------- MAKE CANCEL / DELETE ONE SHIPMENT BEGIN
 	
 	@RequestMapping(value = "delete_shipment/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity <Void> shipment_delete (@PathVariable ("id") int id, HttpServletRequest request) {
@@ -216,7 +217,56 @@ public class ViewShipmentController {
 		return new ResponseEntity<Void> (HttpStatus.OK);
 	}
 	
-	//----------------------------------------------- SHIPMENT DELETE END
-	// END
+	//----------------------------------------------- MAKE CANCEL / DELETE ONE SHIPMENT END
+	//----------------------------------------------- MAKE CANCEL / DELETE MULTIPLE SHIPMENT BEGIN
+	@RequestMapping(value = "make_cancel", method = RequestMethod.POST)
+	public ResponseEntity<Void> make_cancel(@RequestBody int[] id, HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		int user_id = Integer.parseInt(userInformation.getUserId());
+		
+		int cancel_flag = 0;
+		try {
+			for(int i=0; i<id.length; i++) {
+				ShipmentModel shipmentDB = shipmentDao.getShipmentModelById(id[i]);
+				if(shipmentDB == null) {
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+					cancel_flag = 1;
+				}else {
+					Date date = new Date();
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+					
+					shipmentDB.setUpdated_by(user_id);
+					shipmentDB.setUpdated_datetime(dateFormat.format(date));
+					shipmentDB.setObsolete("Y");
+					shipmentDB.setStatus("Cancelled");	
+					shipmentDao.saveOrUpdate(shipmentDB);
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+					
+				}
+			}
+			
+			if( cancel_flag == 1 ) {
+				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			}else {
+				return new ResponseEntity<Void>(HttpStatus.OK);
+			}
+			
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+			return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+	//----------------------------------------------- MAKE CANCEL / DELETE MULTIPLE SHIPMENT END
+	
+	//----------------------------------------------- SHIPMENT REGISTER PRING BEGIN
+	@RequestMapping(value = "/shipment_print", method = RequestMethod.POST)
+	public ModelAndView shipmentPring(@RequestParam("shipment") String shipment, HttpServletRequest request)
+	{
+		ModelAndView model = new ModelAndView("print/shipment_print");
+		return model;
+	}
+	//----------------------------------------------- SHIPMENT REGISTER PRING END
 
 }

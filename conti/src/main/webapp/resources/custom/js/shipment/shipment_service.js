@@ -15,7 +15,8 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 			fetchAllShipmentforView : fetchAllShipmentforView,
 			filterShipment : filterShipment,
 			searchShipment : searchShipment,
-			shipment_delete : shipment_delete
+			shipment_delete : shipment_delete,
+			makeCancel: makeCancel
 	};
 	
 	return factory;
@@ -155,5 +156,27 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	 }
 	 
 	 //------------------------------------- SHIPEMNT DELETE END
+	 
+	//------------------------------- make active Employee begin -----------------------------//
+	    function makeCancel(id) {
+	    	var deferred = $q.defer();
+	    	
+	    	$http({
+	    		method : 'POST',
+	    		url : 'make_cancel',
+	    		data : id,
+	    		headers : getCsrfHeader()
+	    	})
+	    	.then (
+	    		function (response) {
+	    			deferred.resolve(response.data);
+	    		},
+	    		function (errResponse) {
+	    			deferred.reject(errResponse);
+	    		}
+	    	);
+	    	return deferred.promise;
+	    }
+	    //------------------------------- make active Employee end -----------------------------//
 }]);
 
