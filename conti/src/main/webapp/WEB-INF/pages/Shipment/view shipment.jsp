@@ -1136,9 +1136,6 @@
 														<a type="button" class="btn btn-primary">
 															<i class="fa fa-cog fa-lg"></i>
 														</a>
-														<a type="button" class="btn btn-primary">
-															<i class="fa fa-file-excel-o fa-lg"></i>
-														</a>
 														<a type="button" class="btn btn-primary" onclick="location.href='downloadExcelForViewShpiment'; valid = true;">
 															<i class="fa fa-file-excel-o fa-lg"></i>
 														</a>
