@@ -18,6 +18,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="icon" type="image/gif/png" href="resources/Image/conti_logo.png">
 <title>Price Setting Print</title>
 </head>
 <body>
@@ -149,4 +150,4 @@
 	</script>
 <!--====================================================== SCRIPTS END =========================================-->
 </body>
-</html>>
+</html>

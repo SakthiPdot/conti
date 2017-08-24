@@ -37,7 +37,7 @@
 	   
 	   <script src="resources/custom/js/app.js"></script>
    
-   
+   <link rel="icon" type="image/gif/png" href="resources/Image/conti_logo.png">
 	    <title>Conti - ${title} - PDF</title>
 	    <style>
        
