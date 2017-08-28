@@ -337,6 +337,13 @@
 	 .hsn-modal{
 	   height: 130px
 	   }
+	  .report_class{
+	  	padding-left: 0px !important;
+       padding-top: 5px;
+	  }
+	  .report_padding {
+	  padding-top: 25px;
+	  }
 	    .underline{
 	    text-decoration: none !important;
 	    }

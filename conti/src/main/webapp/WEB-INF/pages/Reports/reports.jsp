@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib
     prefix="c"
@@ -9,6 +10,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/gif/png" href="resources/Image/conti_logo.png">
     <title>${title}</title>
     <!-- Bootstrap Styles-->
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
@@ -41,225 +43,222 @@
 		<div id="page-wrapper">	 
       
       	    		
-      		  <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default">                            
-						<div class="panel-heading">
+   		   <div class="row">
+                 <div class="col-lg-12">
+                     <div class="panel panel-default">
+                     <div class="panel-body customer-font">
+						<b>${title}</b>
+					 </div>
+                     </div>
+                 </div>
+           </div>
+                
+                
+                
+           <div class="row">
+               <div class="col-lg-12">
+               
+               		<div class="col-lg-4">
+               		</div>
+                
+					<div class="col-lg-4">
+						<div class="panel panel-default">                            
+							<div class="panel-heading">
+								 Filter by
+							</div>
+						
+						<div class="panel-body customer-field">
+                                   
+                                   <label class="radio-inline">
+                                       <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1"> Date Wise
+                                   </label>
+                                   <label class="radio-inline">
+                                       <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2"> Branch Wise
+                                   </label>
+                                   <label class="radio-inline">
+                                       <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3"> LR No Wise
+                                   </label>
+                                   <label class="radio-inline">
+                                   	<input type="radio" name="optionsRadiosInline" id="optionsRadiosInline4" value="option4" checked> All
+                                   </label>
 							
 						</div>
-						<div class="panel-body customer-font">
-						<b>${title}</b>
-						</div>
-                        </div>
-                    </div>
-                </div>
+			            </div>  
+			        </div>
+		
+                   <div class="col-lg-4">
+                   </div>
+                   
+               </div>
+           </div>
+                
+                
                 
                 
                 
                 <div class="row">
-                    <div class="col-lg-12">
-                    <div class="col-lg-4">
-                    </div>
-                     
-					<div class="col-lg-4">
-						<div class="panel panel-default">                            
-						<div class="panel-heading">
-							 Filter by
-						</div>
-						<div class="panel-body customer-field">
-							  <span> <input type="checkbox" value="">&nbsp;Date Wise</span>
-							  <span> <input type="checkbox" value="">&nbsp;Branch Wise</span>
-							   <span> <input type="checkbox" value="">&nbsp;LR No Wise</span>
-							  <span> <input type="checkbox" value="">&nbsp;All</span>
-							
-						</div>
-                        </div>  
-				   </div>
-							
-					 <div class="col-lg-4">
-                        </div>
-                    </div>
-                </div>
-                
-                
-                
-                
-                
-                		
+                <div class="col-lg-12">
+                <div class="col-lg-12">
                 <div class="panel panel-default">                            
-						<div class="panel-heading">			
 						
+				<div class="panel-body">
+				<div class="branch-heading">Shipment</div>
+				
+				<div class="col-lg-12 noPaddingLeft">
+					<div class="col-lg-3 report_class">
+						<span>From</span>
+					       <div class="form-group input-group">
+                                  <input type="text" class="form-control">
+                                  <span class="input-group-btn">
+                                      <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i>
+                                      </button>
+                                  </span>
+                            </div>
+					</div>
+					
+					<div class="col-lg-3 report_class">
+						<span>To</span>
+					       <div class="form-group input-group">
+                                  <input type="text" class="form-control">
+                                  <span class="input-group-btn">
+                                      <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i>
+                                      </button>
+                                  </span>
+                            </div>
+					</div>
+					
+					<div class="col-lg-3 report_class report_padding">
+						<select class="form-control">
+							<option>-- Select --</option>
+							<option>And</option>
+							<option>OR</option>
+						</select>
+					</div>
+					
+					<div class="col-lg-3 report_class">
+						<span>Date Filter</span>
+					       <select class="form-control">
+					       		<option>-- Select --</option>
+					       		<option>Today</option>
+					       		<option>This Week</option>
+					       		<option>This Month</option>
+					       		<option>This Quater</option>
+					       </select>
+					</div>
+				</div>
+				
+				<div class="col-lg-12 noPaddingLeft">
+					<div class="sec-padding">Branch</div>
+					<div class="col-lg-3 branchclass">
+						<span class="text-padding">From </span>
+						<select class="form-control">
+							<option>-- Select --</option>
+							<option>Chennai</option>
+							<option>Coimbatore</option>
+							<option>Bangalore</option>
+						</select>
+					</div>
+					
+					<div class="col-lg-3 branchclass">
+						<span class="text-padding">To </span>
+						<select class="form-control">
+							<option>-- Select --</option>
+							<option>Chennai</option>
+							<option>Coimbatore</option>
+							<option>Bangalore</option>
+						</select>
+					</div>
+					
+					<div class="col-lg-3 report_class">
+						<select class="form-control">
+							<option>-- Select --</option>
+							<option>And</option>
+							<option>OR</option>
+						</select>
+					</div>
+					
+				</div>
+				
+				
+				<div class="col-lg-12 noPaddingLeft">
+					<div class="sec-padding">LR No</div>
+					<div class="col-lg-3 branchclass">
+						<span class="text-padding">From </span>
+						<select class="form-control">
+							<option>-- Select --</option>
+							<option>Chennai</option>
+							<option>Coimbatore</option>
+							<option>Bangalore</option>
+						</select>
+					</div>
+					
+					<div class="col-lg-3 branchclass">
+						<span class="text-padding">To </span>
+						<select class="form-control">
+							<option>-- Select --</option>
+							<option>Chennai</option>
+							<option>Coimbatore</option>
+							<option>Bangalore</option>
+						</select>
+					</div>
+					
+					<div class="col-lg-3 report_class">
+						<select class="form-control">
+							<option>-- Select --</option>
+							<option>And</option>
+							<option>OR</option>
+						</select>
+					</div>
+					
+				</div>
+				
+				
+				<div class="col-lg-12 noPaddingLeft report_padding">
+					
+					<div class="col-lg-3 branchclass">
+						<span class="text-padding">Product </span>
+						<select class="form-control">
+							<option>-- Select --</option>
+							<option>Document</option>
 							
-						</div>
-				<div class="panel-body customer-field">
-						<div class="row ">
-                         <div class="col-lg-12">
+						</select>
+					</div>				
+				</div>
+				
+				
+				
+				<div class="col-lg-12 noPaddingLeft report_padding">
+					
+					<div class="col-lg-3 branchclass">
+						<span class="text-padding">Payment Type </span>
+						<select class="form-control">
+							<option>-- Select --</option>
+							<option>Cash</option>
+							<option>DD</option>
+							
+						</select>
+					</div>				
+				</div>
+					
+					<div class="col-lg-12 noPaddingLeft report_padding">
+					
+					<div class="col-lg-3 branchclass">
+						<span class="text-padding">Status </span>
+						<select class="form-control">
+							<option>-- Select --</option>
+							<option>Picked Up</option>
+							
+						</select>
+					</div>				
+				</div>
 						
-						<div class="col-lg-2">
-                		<span class=" pull-right">Shipment From Date</span>
-                		</div>
-                		
-                		<div class="col-lg-1">
-                		<input type="text" class="form-control">
-                		</div>
-                		
-                		<div class="col-lg-2">
-                		<span class=" pull-right">Shipment To Date</span>
-                		</div>
-                		
-                		<div class="col-lg-1">
-                		<input type="text" class="form-control">
-                		</div>
-                		
-                		<div class="col-lg-1">
-                		<select class="form-control">
-                			<option>And</option>
-                			<option>Or</option>
-                		</select>
-                		</div>
-                		
-                		<div class="col-lg-1">
-                			<span>Date Filter</span>
-                		</div>
-                		
-                		<div class="col-lg-1">
-                		<select class="form-control">
-                			<option>Today</option>
-                			<option>This Week</option>
-                			<option>This Month</option>
-                			<option>This Quater</option>
-                		</select>
-                		</div>           		
-                		</div>
-                        </div>
-                        
-                        <br>
-                        <br>
-                        <div class="row ">
-                         <div class="col-lg-12">
-						
-						<div class="col-lg-2">
-                		<span class=" pull-right">From Branch</span>
-                		</div>
-                		
-                		<div class="col-lg-1">
-                		<select class="form-control">
-                			<option>All</option>
-                			<option>Coimbatore</option>
-                			<option>Chennai</option>
-                		</select>
-                		</div>
-                		
-                		<div class="col-lg-2">
-                		<span class=" pull-right"> To Branch</span>
-                		</div>
-                		
-                		<div class="col-lg-1">
-                		<select class="form-control">
-                			<option>All</option>
-                			<option>Coimbatore</option>
-                			<option>Chennai</option>
-                		</select>
-                		</div>
-                		
-                		<div class="col-lg-1">
-                		<select class="form-control">
-                			<option>And</option>
-                			<option>Or</option>
-                		</select>
-                		</div>
-                		
-                		<div class="col-lg-1">
-                			
-                		</div>
-                		
-                		<div class="col-lg-1">
-                		
-                		</div>           		
-                		</div>
-                        </div>
-                        
-                        
-                        <br>
-                        <br>
-                        <div class="row ">
-                         <div class="col-lg-12">
-						
-						<div class="col-lg-2">
-                		<span class=" pull-right">From LR Number</span>
-                		</div>
-                		
-                		<div class="col-lg-1">
-                		<select class="form-control">
-                			<option>LR001</option>
-                			<option>LR002</option>
-                			<option>LR003</option>
-                		</select>
-                		</div>
-                		
-                		<div class="col-lg-2">
-                		<span class=" pull-right"> To LR Number</span>
-                		</div>
-                		
-                		<div class="col-lg-1">
-                		<select class="form-control">
-                			<option>LR0011</option>
-                			<option>LR0012</option>
-                			<option>LR0013</option>
-                		</select>
-                		</div>
-                		
-                		<div class="col-lg-1">
-                		<select class="form-control">
-                			<option>And</option>
-                			<option>Or</option>
-                		</select>
-                		</div>
-                		
-                		<div class="col-lg-1">
-                			
-                		</div>
-                		
-                		<div class="col-lg-1">
-                		
-                		</div>           		
-                		</div>
-                        </div>
-                        
-                        <br>
-                        <br>
-                        
-                        <div class="row ">
-                         <div class="col-lg-12">
-						
-						<div class="col-lg-2 col-lg-offset-1">
-                		<span>Product</span>
-                		<select class="form-control ">
-                		    <option>Select</option>
-                			<option>Document</option>
-                		</select>
-                		
-                		<span>Product Mode</span>
-                		<select class="form-control ">
-                		    <option>Cash</option>
-                			<option>To Pay</option>
-                		</select>
-                		
-                		
-                		<span>Status</span>
-                		<select class="form-control ">
-                		    <option>Select</option>
-                			<option>Picked Up</option>
-                		</select>
-                		</div>
-                		
-                		
-                		</div>
-                		          		
-                		</div>
-                        </div>
+                </div>
                 		
                 </div>
+                </div>
+                </div>
+                </div>
+                
             
                 <br>
                 <div class="row">
@@ -269,11 +268,11 @@
                 	</div>
                 	
                 	<div class="col-lg-4">
-                		<button type="button" class="btn btn-info">View Report</button>
+                		<button type="button" class="btn btn-primary">View Report</button>
                 	</div>
                 	
                 	<div class="col-lg-4">
-                		<button type="button" class="btn btn-info">	<i class="fa fa-file-excel-o fa-2x "></i>Excel Report</button>
+                		<button type="button" class="btn btn-primary">	<i class="fa fa-file-excel-o"></i> Excel Report</button>
                 	</div>
                 </div>
                 </div>
@@ -282,11 +281,10 @@
              <br>
              <div class="row">
                 <div class="col-lg-12">
-                   
+                   <div class="col-lg-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                          
-                        </div>
+                        <!-- <div class="panel-heading">
+                        </div> -->
                         <div class="panel-body">
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -326,7 +324,7 @@
                             
                         </div>
                     </div>
-                 
+                 </div>
                 </div>
             </div>
              

@@ -15,7 +15,7 @@
     
   <%-- <meta name="_csrf" content="${_csrf.token}"/>
 	<meta name="_csrf_header" content="${_csrf.headerName}"/> --%>
-
+	<link rel="icon" type="image/gif/png" href="resources/Image/conti_logo.png">
    <title>Conti - Login</title>
   
 	<link rel="stylesheet" href="resources/custom/css/login.css"> 
