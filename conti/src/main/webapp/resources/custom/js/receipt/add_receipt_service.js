@@ -32,6 +32,7 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 			headers:getCsrfHeader()
 		}).then(
 				function(response){
+					console.log(response);
 					deferred.resolve(response.data);
 				},function(errResponse){
 					console.log("save failed");

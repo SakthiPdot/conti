@@ -30,7 +30,7 @@
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
 	  <link href="resources/custom/css/custom.css" rel="stylesheet">
 	   <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
-	 
+	<link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
 	 <link href="resources/custom/css/demo.css" rel="stylesheet">
 <script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 

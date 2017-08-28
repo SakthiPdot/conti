@@ -295,7 +295,7 @@ public class AddReceiptRestController
 		
 		
 			receiptDao.saveOrUpdate(receipt);			
-			receiptNo.put("Receipt NO", receipt.getReceipt_prefix());
+			receiptNo.put("Receipt_NO", receipt.getReceipt_prefix());
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<String>(receiptNo.toString(),HttpStatus.CREATED);	
 		}catch(Exception e){

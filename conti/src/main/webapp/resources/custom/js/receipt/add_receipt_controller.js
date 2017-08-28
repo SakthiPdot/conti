@@ -35,7 +35,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	self.receiptSelectAll=receiptSelectAll;
 	self.shownoofRecord=shownoofRecord;
 	self.receiptSubmit=receiptSubmit;
-
+	self.getLastReceiptNo=getLastReceiptNo;
 	$scope.shownoofrec=50;
 	
 	self.receiptSelectAll=receiptSelectAll;
@@ -82,6 +82,10 @@ self.receipt={
 			};
 
 
+		function getLastReceiptNo(){
+			
+		}
+
 		function receiptSubmit(){
 			console.log(self.receipt);
 			
@@ -113,14 +117,12 @@ self.receipt={
 						}
 						
 
-						console.log(self.receipt);
-						
 						ReceiptService.saveReceipt(self.receipt)
 						.then(
 								function(receipt){
-										console.log('response');
+										console.log(receipt);
 										console.log('save success');
-										self.message = "Receipt ( "+response.ReceiptNo+" ) Created Successfully..! ";
+										self.message = "Receipt ( "+receipt.Receipt_NO+" ) Created Successfully..! ";
 										successAnimate('.success');	
 										setTimeout(function(){afterSave();}, 4000);
 								},
@@ -131,7 +133,6 @@ self.receipt={
 									setTimeout(function(){ location.reload(); }, 4000);	
 								}
 							);
-						
 						
 						},function(errResponse){
 							$('#myModal').css('z-index','1050');
