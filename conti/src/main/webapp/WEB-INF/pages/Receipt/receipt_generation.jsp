@@ -94,7 +94,7 @@
 	              </div>
 	              
 	              <div class="col-md-3 col-sm-4 col-xs-6">	              
-	              <b>Last Receipt No : RECPT No 59202</b>	              
+	              <b>Last Receipt No :{{lastReceiptNumber}}</b>	              
 	              </div>
 	              
               </div>
@@ -235,104 +235,126 @@
                         <div class="panel-body">
                         <div class="row">
                               <div class="col-lg-12">
-                               <div class="col-xs-6">
-                                     
-                                </div>
+                              	<div class="col-lg-6">
+                                     <div class="dataTables_length" id="dataTables-example_length">
+											<div class="row paddingtop">
+												<div class="col-md-12">
+													<select name="shownoofrec" data-ng-model="shownoofrec"
+														data-ng-options="noofrec for noofrec in [10, 15, 25, 50, 100]"
+														class="form-control"
+														data-ng-change="ctrl.shownoofRecord()">
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
                                 
                                <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
                                    
-                                   <form name="receiptPrint" method="POST" action="receipt_print" class="padding-button">
+                                   <form name="receiptPrint" method="POST" action="shipmentPrint" class="padding-button">
                     	<a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
-                    	<div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
-	                    	
-	                    		<div class="checkbox">
-											<label> <i class="fa"
-												data-ng-class="{'fa-check': setting_date == true, 'fa-times': setting_date== false}"></i>
-												<input type="checkbox"
-												data-ng-init="setting_date = true"
-												data-ng-model="setting_date" /> Date
-											</label>
-										</div>
-							
-	                    	<div class ="checkbox">
-								<label>
-									<i class = "fa" data-ng-class="{'fa-check': setting_sltnumber == true, 'fa-times': setting_sltnumber == false}"></i>										
-									<input type="checkbox" data-ng-init = "setting_sltnumber=true" data-ng-model="setting_sltnumber" /> SL no
-								</label>
-							</div>
-							
-							<div class ="checkbox">
-								<label>
-									<i class = "fa" data-ng-class="{'fa-check': setting_receiptlrnumber== true, 'fa-times':setting_receiptlrnumber == false}"></i>										
-									<input type="checkbox" data-ng-init = "setting_receiptlrnumber=true" data-ng-model="setting_receiptlrnumber" /> LR No
-								</label>
-							</div>
-														
-							<div class ="checkbox">
-								<label>
-									<i class = "fa" data-ng-class="{'fa-check': setting_receiptproduct == true, 'fa-times':setting_receiptproduct == false}"></i>										
-									<input type="checkbox" data-ng-init = "setting_receiptproduct=true" data-ng-model="setting_receiptproduct" /> Product
-								</label>
-							</div>
-							
-							<div class ="checkbox">
-								<label>
-									<i class = "fa" data-ng-class="{'fa-check': setting_receiptorigin == true, 'fa-times':setting_receiptorigin == false}"></i>										
-									<input type="checkbox" data-ng-init = "setting_receiptorigin=true" data-ng-model="setting_receiptorigin" /> Origin
-								</label>
-							</div>
-							
-							<div class ="checkbox">
-								<label>
-									<i class = "fa" data-ng-class="{'fa-check':setting_receiptdestination == true, 'fa-times':setting_receiptdestination== false}"></i>										
-									<input type="checkbox" data-ng-init = "setting_receiptdestination=true" data-ng-model="setting_receiptdestination" /> Destination
-								</label>
-							</div>
-							
-							<div class ="checkbox">
-								<label>
-									<i class = "fa" data-ng-class="{'fa-check':setting_receiptsender== true, 'fa-times':setting_receiptsender== false}"></i>										
-									<input type="checkbox" data-ng-init = "setting_receiptsender=true" data-ng-model="setting_receiptsender" /> Sender
-								</label>
-							</div>
-							
-							<div class ="checkbox">
-								<label>
-									<i class = "fa" data-ng-class="{'fa-check':setting_receiptconsignee== true, 'fa-times':setting_receiptconsignee== false}"></i>										
-									<input type="checkbox" data-ng-init = "setting_receiptconsignee=true" data-ng-model="setting_receiptconsignee" /> Consignee
-								</label>
-							</div>
-							
-							<div class ="checkbox">
-								<label>
-									<i class = "fa" data-ng-class="{'fa-check':setting_receiptstatus== true, 'fa-times':setting_receiptstatus== false}"></i>										
-									<input type="checkbox" data-ng-init = "setting_receiptstatus=true" data-ng-model="setting_receiptstatus" /> Status
-								</label>
-							</div>
-
-							<div class="checkbox" data-ng-hide="true">
-								<label> <i class="fa"
-									data-ng-class="{'fa-check': setting_sevice == true, 'fa-times': setting_sevice ==false}"></i>
-									<input type="checkbox"
-									data-ng-init="setting_sevice = true"
-									data-ng-model="setting_sevice" /> Service
-								</label>
-							</div>
-							<div class="checkbox">
-								<label> <i class="fa"
-									data-ng-class="{'fa-check': setting_paymentMode == true, 'fa-times': setting_paymentMode ==false}"></i>
-									<input type="checkbox"
-									data-ng-init="setting_paymentMode = true"
-									data-ng-model="setting_paymentMode" /> Payment Mode
-								</label>
-							</div>
-
-						</div>
-                     <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelReceipt';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
-                      	  <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_receipt.length <1" ><i class="fa fa-print fa-lg"></i></button>
-                          <input type = "hidden" name = "receipt" value = "{{ctrl.selected_receipt}}" />
+                     	<div class="dropdown-menu regSettings pull-right"
+																style="padding-right: 5px;">
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_date == true, 'fa-times': setting_date== false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_date = true"
+																		data-ng-model="setting_date" /> Date
+																	</label>
+																</div>
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_lrno == true, 'fa-times': setting_lrno == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_lrno = true"
+																		data-ng-model="setting_lrno" /> LR No
+																	</label>
+																</div>
+																<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_origin == true, 'fa-times': setting_origin == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_origin = true"
+																		data-ng-model="setting_origin" /> Origin
+																	</label>
+																</div>
+																	<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_destination == true, 'fa-times': setting_destination == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_destination = true"
+																		data-ng-model="setting_destination" /> Destination
+																	</label>
+																</div>
+																	<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_sender == true, 'fa-times': setting_sender == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_sender = true"
+																		data-ng-model="setting_sender" /> Sender
+																	</label>
+																</div>
+																	<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_consignee == true, 'fa-times': setting_consignee == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_consignee = true"
+																		data-ng-model="setting_consignee" /> Consignee
+																	</label>
+																</div>
+																	<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_totalparcel == true, 'fa-times': setting_totalparcel == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_totalparcel= true"
+																		data-ng-model="setting_totalparcel" /> Total Parcel
+																	</label>
+																</div>
+																	<div class="checkbox" data-ng-hide="true">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_weight == true, 'fa-times': setting_weight == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_weight = true"
+																		data-ng-model="setting_weight" /> Weight
+																	</label>
+																</div>
+																		<div class="checkbox">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_sevice == true, 'fa-times': setting_sevice ==false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_sevice = true"
+																		data-ng-model="setting_sevice" /> Service
+																	</label>
+																</div>
+																	<div class="checkbox" data-ng-show="false">
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_status == true, 'fa-times': setting_status== false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_status = true"
+																		data-ng-model="setting_status" /> Status
+																	</label>
+																</div>
+																<div class="checkbox" >
+																	<label> <i class="fa"
+																		data-ng-class="{'fa-check': setting_pm == true, 'fa-times': setting_pm == false}"></i>
+																		<input type="checkbox"
+																		data-ng-init="setting_pm = true"
+																		data-ng-model="setting_pm" /> Payment Mode
+																	</label>
+																</div>
+																		
+														</div>
+                     <a type="button" class="btn btn-primary" onclick="location.href='downloadExcelForAddReceipt';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a>
+                      	
+                      	
+                      	  <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_receipt.length <1" >
+                      	  <i class="fa fa-print fa-lg"></i></button>
+                      	  
+                          <input type = "hidden" name = "selectedShipment" value = "{{ctrl.selected_receipt}}" />
                           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                          
 				</form>
                                     </div>
                                 </div>
@@ -343,58 +365,111 @@
                                 
                                 
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th><input type="checkbox" 
-                                            data-ng-click="ctrl.receiptSelectAll()" 
-                                            data-ng-model="selectallreceipts"></th>
-                                            
-                                            
-                                            <th data-ng-show="setting-slnumber">S.No</th>
-                                                <td data-ng-show="setting-slnumber">{{$index+1}}</td>
+                                   <thead>
+											<tr>
+												<th><input type="checkbox"
+												data-ng-model="selectallreceipts"
+												data-ng-click="ctrl.receiptSelectAll()"></th>
 												<th data-ng-show="setting_date"
-													data-ng-click="date=!date;sortTable('date',date);">Date<i
-													data-ng-hide="disableSorting"
-													data-ng-class=" {'fa fa-caret-up':date,'fa fa-caret-down':!date}"
-													aria-hidden="true"></i></th>
-                                            <th data-ng-show="setting_receiptlrnumber">LR Number</th>
-                                            <th data-ng-show="setting_receiptorigin">Origin</th>
-                                            <th data-ng-show="setting_receiptdestination">Destination</th>
-                                            <th data-ng-show="setting_receiptsender">Sender</th>
-                                            <th data-ng-show="setting_receiptconsignee">Consignee</th>
-                                            <th data-ng-show="setting_receiptproduct">Product</th>
-                                            <th data-ng-show="setting_sevice"
+												data-ng-click="date=!date;sortTable('date',date);">Date<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':date,'fa fa-caret-down':!date}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_lrno"
+												data-ng-click="lrno=!lrno;sortTable('lrno',lrno);">LR No<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':lrno,'fa fa-caret-down':!lrno}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_origin"
+												data-ng-click="origin=!origin;sortTable('origin',origin);">Origin<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':origin,'fa fa-caret-down':!origin}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_destination"
+												data-ng-click="destination=!destination;sortTable('destination',destination);">Destination<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':destination,'fa fa-caret-down':!destination}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_sender"
+												data-ng-click="sender=!sender;sortTable('sender',sender);">Sender<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':sender,'fa fa-caret-down':!sender}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_consignee"
+												data-ng-click="consignee=!consignee;sortTable('consignee',consignee);">Consignee<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':consignee,'fa fa-caret-down':!consignee}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_totalparcel"
+												data-ng-click="totalParcel=!totalParcel;sortTable('totalParcel',totalParcel);">Total Parcel<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':totalParcel,'fa fa-caret-down':!totalParcel}"
+														aria-hidden="true"></i></th>
+												<th
+												data-ng-hide="true"
+												 data-ng-show="setting_weight"
+												data-ng-click="weight=!weight;sortTable('weight',weight);">Weight<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':weight,'fa fa-caret-down':!weight}"
+														aria-hidden="true"></i></th>
+												<th data-ng-show="setting_sevice"
 												data-ng-click="service=!service;sortTable('service',service);">Service<i
 														data-ng-hide="disableSorting"
 														data-ng-class=" {'fa fa-caret-up':service,'fa fa-caret-down':!service}"
 														aria-hidden="true"></i></th>
-                                            <th data-ng-show="setting_receiptstatus" data-ng-hide="true">Status</th>                                            
-                                            <th data-ng-show="setting_paymentMode" >Payment Mode</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr data-ng-repeat="receipt in ctrl.Filterreceipts|limitTo:pageSize" data-id="{{receipt.receipt_id}}">
-                                            <td><input type="checkbox" data-ng-click="ctrl.receiptSelect(receipt)" data-ng-model="receipt.select"></td>
-                                        	<td data-ng-show="setting_date">{{receipt.updated_datetime.slice(0,-10)}}</td>
-											<td data-ng-show="setting_receiptlrnumber">{{receipt.lrno_prefix}}</td>
-                                            <td data-ng-show="setting_receiptorigin">{{receipt.sender_branch.branch_name}}</td>
-                                            <td data-ng-show="setting_receiptdestination">{{receipt.consignee_branch.branch_name}}</td>
-                                            <td data-ng-show="setting_receiptsender">{{receipt.sender_customer.customer_name}}</td>
-                                            <td data-ng-show="setting_receiptconsignee">{{receipt.consignee_customer.customer_name}}</td>
-                                            <td data-ng-show="setting_receiptproduct">{{receipt.shipmentDetail[0].product.product_name}}</td>
-                                            <td data-ng-show="setting_sevice">{{receipt.service.service_name}}</td>
-                                            <td data-ng-show="setting_receiptstatus" data-ng-hide="true">{{receipt.status}}</td>
-                                            <td data-ng-show="setting_paymentMode">{{receipt.pay_mode}}</td>
-                                        </tr>
-                                   </tbody>
+																<th data-ng-show="setting_status" data-ng-hide="true"
+												data-ng-click="status=!status;sortTable('status',status);">Status<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':status,'fa fa-caret-down':!status}"
+														aria-hidden="true"></i></th>
+														
+												<th data-ng-show="setting_pm"
+												data-ng-click="pm=!pm;sortTable('pm',pm);">Payment Mode<i
+														data-ng-hide="disableSorting"
+														data-ng-class=" {'fa fa-caret-up':pm,'fa fa-caret-down':!pm}"
+														aria-hidden="true"></i></th>	
+											</tr>
+										</thead>
+                            		<tbody>
+											<tr 
+											data-ng-repeat='x in ctrl.Filterreceipts| limitTo:pageSize track by x.shipment_id'>
+												<td><input type="checkbox"
+												data-ng-model="x.select"
+												data-ng-click="ctrl.receiptSelect(x)"></td>
+												<td data-ng-hide="true">{{x.sender_branch.branch_id}}</td>
+												<td data-ng-show="setting_date">{{x.updated_datetime.slice(0,-10)}}</td>
+												<td data-ng-show="setting_lrno">{{x.lrno_prefix}}</td>
+												<td data-ng-show="setting_origin">{{x.sender_branch.branch_name}}</td>
+												<td data-ng-show="setting_destination">{{x.consignee_branch.branch_name}}</td>
+												<td data-ng-show="setting_sender">{{x.sender_customer.customer_name}}</td>
+												<td data-ng-show="setting_consignee">{{x.consignee_customer.customer_name}}</td>
+												<td data-ng-show="setting_totalparcel">{{x.numberof_parcel}}</td>
+												<td data-ng-show="setting_weight" data-ng-hide="true">{{x.chargeable_weight}}</td>
+												<td data-ng-show="setting_sevice">{{x.service.service_name}}</td>
+												<td data-ng-show="setting_status" data-ng-hide="true">{{x.status}}</td>
+												<td data-ng-show="setting_pm">{{x.pay_mode}}</td>
+											</tr>
+										</tbody>
                                 </table>
-                            </div>
-                          <div class ="col-lg-6">
-                    		<div class="pull-left" data-ng-cloak>
-                   			 Showing {{(currentPage*pageSize)+1}} to 
-                   			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
-                   			 of {{totalnof_records}} entries
-                   			</div>
+                                			        <!--====================pagination tab============================ -->                               		
+                                		          
+                                <div class ="col-lg-6 col-md-6 col-xs-12">
+                                	<div class="pull-left" data-ng-cloak>
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
+                                <div class="col-lg-6  col-md-6 col-xs-12 icons-button">
+                                   <div class="pull-right">
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "firstlastPaginate(1)">First</button>                      											
+										<button class="btn btn-primary" type = "button" data-ng-disabled="previouseDisabled" data-ng-click = "paginate(-1)">Previous</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "paginate(1)">Next</button>
+										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
+										</div>
+								</div>
+								
+                        
                     	</div>
                          </div>
                     </div>

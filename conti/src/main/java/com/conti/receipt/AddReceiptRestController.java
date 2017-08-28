@@ -8,17 +8,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.JsonParser.Feature;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,7 +131,154 @@ public class AddReceiptRestController
 	}
 	
 	
+	//========================== sortByManifest==========================
+		@RequestMapping(value="sortByReceipt/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<ShipmentModel>> sortByManifest(@RequestBody String status,@PathVariable("name")String name,
+				HttpServletRequest request){
+			
+			
+			String sortBy="";
+			switch(name.trim()){
+				case "lrno":
+					sortBy="lr_number";
+				break;
+				case "origin":
+					sortBy="sender_branch.branch_name";
+				break;
+				case "destination":
+					sortBy="consignee_branch.branch_name";
+				break;
+				case "sender":
+					sortBy="sender_customer.customer_name";
+				break;
+				case "consignee":
+					sortBy="consignee_customer.customer_name";
+				break;
+				case "totalParcel":
+					sortBy="numberof_parcel";
+				break;
+				case "weight":
+					sortBy="chargeable_weight";
+				break;
+				case "service":
+					sortBy="service.service_name";
+				break;
+				case "status":
+					sortBy="status";
+				break;
+				case "date":
+					sortBy="updated_datetime";
+				break;
+				case "pm":
+					sortBy="pay_mode";
+				break;
+				default:
+				break;
+			}
+			
+			
+			UserInformation userinfo = new UserInformation(request);
+			String userid = userinfo.getUserId();
+			User user =userDao.get(Integer.parseInt(userid));
+			
+			List<ShipmentModel> shipmentList=new ArrayList<>();
+			try {
+				if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){				
+					shipmentList=shipmentDao.getShipmentBySorting100ReceiptAdmin(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+				}else{
+					shipmentList=shipmentDao.getShipmentBySorting100Receipt(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC", user.getBranchModel().getBranch_id());
+				}
+				if(shipmentList.isEmpty()){
+					return new ResponseEntity<List<ShipmentModel>>(HttpStatus.NO_CONTENT);
+				}
+				return new ResponseEntity<List<ShipmentModel>>(shipmentList,HttpStatus.OK);
+			} catch (Exception e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS,e);
+				e.printStackTrace();
+				return new ResponseEntity<List<ShipmentModel>>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}		
+		}
+		
+		
+		//======================================Pagination begin==========================================
+		@RequestMapping(value="paginationReceipt",method=RequestMethod.POST)
+		public ResponseEntity<List<ShipmentModel>> paginationReceipt(@RequestBody int page,HttpServletRequest request){
+			userInformation = new UserInformation(request);
+			System.err.println(String.valueOf(page)+"++++++++++++++++++++++++++++++++++++++++");
+			//intialize	
+			int from_limit = 0, to_limit = 0;
+			String order = "DESC";
+			if(page == 1) { // First
+				from_limit = 0;
+				to_limit = page * 100;
+			} else if ( page == 0 ) { // Last
+				order = "ASC";
+				from_limit = page;
+				to_limit = 10;
+			} else {
+				from_limit = (page * 10) + 1;
+				to_limit =  (page + 10 ) * 10;
+			}
+			
+			UserInformation userinfo = new UserInformation(request);
+			String userid = userinfo.getUserId();
+			User user =userDao.get(Integer.parseInt(userid));
+			
+			List<ShipmentModel> shipmentList;
+			try {	
+				if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+					shipmentList=shipmentDao.fetchShipmentWithLimitReceipt(from_limit, to_limit, order);
+				}else{
+					shipmentList=shipmentDao.fetchShipmentWithLimitStaffReceipt(from_limit, to_limit, order,user.getBranchModel().getBranch_id());	
+				}				
+				return new ResponseEntity<List<ShipmentModel>>(shipmentList,HttpStatus.OK);
+			} catch (Exception exception) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+				return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT);
+			}
+		}
+
 	
+		//======================================get Record Count==========================================
+		@RequestMapping(value = "/receiptRecordCount/", method = RequestMethod.GET)
+		public ResponseEntity<String> receiptRecordCount(HttpServletRequest request) {
+			
+			UserInformation userinfo = new UserInformation(request);
+			String userid = userinfo.getUserId();
+			User user =userDao.get(Integer.parseInt(userid));
+			
+			try {	
+				if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+					return new ResponseEntity<String> (String.valueOf(shipmentDao.shipmentCountReceipt()), HttpStatus.OK);	
+				}else{
+					return new ResponseEntity<String> (String.valueOf(shipmentDao.shipmentCountStaffReceipt(user.getBranchModel().getBranch_id())), HttpStatus.OK);	
+				}
+						
+			} catch (Exception exception) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+				return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+		}
+
+		
+	//=================EXCEL DOWNLOAD=====================================
+	@RequestMapping(value="downloadExcelForAddReceipt",method=RequestMethod.GET)
+	public ModelAndView downloadExcelForAddManifest(HttpServletRequest request){
+		
+		//change to fetch all 
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =userDao.get(Integer.parseInt(userid));
+		
+		List<ShipmentModel>  shipmentList;
+		if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+			  shipmentList=shipmentDao.fetchAllShipmentForReceipt();
+		}else{
+			  shipmentList=shipmentDao.fetchAllShipmentForStaffForReceipt(user.getBranchModel().getBranch_id());
+		}
+		
+		return new ModelAndView("ShipmentExcelView","shipmentList",shipmentList);		
+	}
 	
 	
 	
@@ -154,11 +301,19 @@ public class AddReceiptRestController
 		}else{
 			receiptList = receiptDao.searchStaff(searchStr);
 		}
+		
+		
+
 		Map result = new HashMap();	
 		result.put("staff",receiptList);
+		
 		return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);
 	}
-	
+		
+	private <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor){
+	    Map<Object, Boolean> map = new ConcurrentHashMap<>();
+	    return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+	}
 	
 	//=====================================Get All Receipt  for default loaded in Add Receipt===============================================
 		
@@ -305,6 +460,33 @@ public class AddReceiptRestController
 		}
 	}
 	//--------------------------------------------------------------------------------------------------------------------------
+	
+	
+	//========================== fetch last manifest no==========================
+	@RequestMapping(value="/getLastReceiptNo/",method=RequestMethod.GET,produces=MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> getLastReceiptNo(HttpServletRequest request){
+		
+		
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =userDao.get(Integer.parseInt(userid));
+		
+	
+		try {
+			String lastReceiptNo;
+			if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){	
+				lastReceiptNo=user.getBranchModel().getReceiptno_prefix()+
+					manifestController.padManifestNumber(receiptDao.getLastReceiptNoWithBranch(user.getBranchModel().getBranch_id()),5);
+			}else{
+				lastReceiptNo=user.getBranchModel().getReceiptno_prefix()+
+					manifestController.padManifestNumber(receiptDao.getLastReceiptNoWithBranch(user.getBranchModel().getBranch_id()),5);			
+			}			
+			return new ResponseEntity<String>(String.valueOf(lastReceiptNo),HttpStatus.CREATED);
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, e);
+			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
 	
 	
 	@RequestMapping(value="checkCourierStaffUnique", method=RequestMethod.POST)

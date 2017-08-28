@@ -21,6 +21,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	function($scope,$http,$q,$timeout,ReceiptService,BranchService,ConfirmDialogService,addManifestService)
 {
 	var self=this;
+	$scope.shownoofrec = 10;
 	self.receipts=[];
 	self.selected_receipt=[];
 	self.Filterreceipts=[];
@@ -33,12 +34,10 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	self.receiptSelect=receiptSelect;
 	self.registerSearch=registerSearch;
 	self.receiptSelectAll=receiptSelectAll;
-	self.shownoofRecord=shownoofRecord;
 	self.receiptSubmit=receiptSubmit;
 	self.getLastReceiptNo=getLastReceiptNo;
-	$scope.shownoofrec=50;
 	
-	self.receiptSelectAll=receiptSelectAll;
+
 	fetchAllReceipt_add();
 		
 	function reset()
@@ -48,6 +47,21 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		fetchAllReceipt();
 	}	
 
+	//===================================fetch Address====================================
+    self.shownoofRecord=function shownoofRecord() {    
+    	
+    	$scope.pageSize = $scope.shownoofrec;
+    	
+    	self.Filterreceipts=self.receipts.slice($scope.currentPage*$scope.pageSize);
+    	if( self.Filterreceipts.length < $scope.pageSize ) {
+    		$scope.previouseDisabled = true;
+    		$scope.nextDisabled = true;
+    	}else{
+    		$scope.nextDisabled=false;
+    	}
+    	fetchAllReceipt_add();
+    }
+    
 	//-----------------------------New and close function---------------------------	
 	function newOrClose(){
 		console.log(self.save);				
@@ -82,8 +96,55 @@ self.receipt={
 			};
 
 
+function resetSorting(){
+	$scope.lrno = false;
+	$scope.origin = false;
+	$scope.destination = false;
+	$scope.sender = false;
+	$scope.consignee = false;
+	$scope.totalParcel = false;
+	$scope.weight = false;
+	$scope.service = false;
+	$scope.date = false;
+	$scope.status = false;
+	$scope.pm = false;
+}
+
+	// ===================================sort table====================================
+$scope.sortTable=function(x,status){
+	console.log("filer by---"+x,"status---"+status);
+	if(!$scope.disableSorting){
+		$scope.lastSorted = x;	
+		resetSorting();
+		$scope[x]=status;
+		ReceiptService.sortBy(x,status?"ASC":"DESC")
+		.then(
+				function(response){
+					self.receipts=response;
+					self.Filterreceipts=response;
+				},function(errRespone){
+					console.log("error while filtering shipment in sort"+errRespone);
+				});	
+	}
+
+}
+
+
+// ===================================get Last Receipt No====================================
+
+		getLastReceiptNo();
+		
 		function getLastReceiptNo(){
-			
+			ReceiptService.getLastReceiptNo()
+			.then(
+					function (response) {					
+						$scope.lastReceiptNumber=response;
+						console.log($scope.lastReceiptNumber);
+					}, 
+					function (errResponse) {
+						console.log(errResponse);
+						console.log('Error while fetching last man no');
+					});	
 		}
 
 		function receiptSubmit(){
@@ -268,6 +329,7 @@ $scope.staff_name = function(selected) {
 				function(receipt){
 					self.receipts=receipt;
 					self.Filterreceipts=self.receipts;
+					pagination();
 				},
 				function(errResponse){
 					console.log('Error while fetching Receipt');
@@ -312,25 +374,30 @@ $scope.staff_name = function(selected) {
 	//-----------------------Receipt select all check box function start-------------------------
 	function receiptSelectAll(){
 		
+		
 		self.selected_receipt=[];
+		
 		var size;
+		
+		console.log($scope.pageSize);
 		
 		if($scope.pageSize>self.Filterreceipts.length){
 			size=self.Filterreceipts.length;
 		}else{
 			size=$scope.pageSize;
 		}
+	
 		
-		//====================================================================
-		//=========================change page size===========================
-		//====================================================================
 		
-		for (var i=0; i<10;i++){
+		for (var i=0; i<size;i++){
+			console.log($scope.selectallreceipts);
 				self.Filterreceipts[i].select=$scope.selectallreceipts;
 				if($scope.selectallreceipts){
 						self.selected_receipt.push(self.Filterreceipts[i]);
 					}
 			}
+		
+		console.log(self.selected_receipt);
 	}
 	
 	//-----------------------------Receipt record select on Register-----------------------------
@@ -342,36 +409,24 @@ $scope.staff_name = function(selected) {
 			var index = self.selected_receipt.indexOf(receipt);
 			self.selected_receipt.splice(index, 1);
 		}
+		console.log(self.selected_receipt);
 	}
 
-	//--------------------------------------Show number of records-------------------------------------
-	
-	function shownoofRecord()
-	{
-		$scope.pageSize=$scope.shownoofrec;
-		self.Filterreceipts=self.receipts.slice($scope.currentPage*$scope.pageSize);
-		if(self.Filterreceipts.length<=$scope.pageSize)
-		{
-			$scope.previousDisabled=true;
-			$scope.nextDisabled=true;
-		}
-		else
-		{
-			$scope.nextDisabled=false;
-		}
-	}
 	//------------------------------------------------------------------------------------------------
 		
 	//-----------------------------Record count begin-------------------------------------
 	
+	//=============================find record count====================================
+	
+	   
 	function findrecord_count()
 	{
-		BranchService.findrecord_count()
+		ReceiptService.findrecord_count()
 		.then(
 				function(record_count)
 				{
 					console.log(record_count);
-					$scope.totalnof_record_count;
+					$scope.totalnof_records  = record_count;
 				},
 				function(errResponse)
 				{
@@ -413,15 +468,14 @@ $scope.staff_name = function(selected) {
 		$scope.selectallreceipts=false;
 		$scope.currentPage+=(nextPrevMultiplier*1);
 		self.Filterreceipts=self.receipts.slice($scope.currentPage*$scope.pageSize);
-		console.log(self.Filterreceipts.length);
+		
 		if(self.Filterreceipts.length==0)
 		{
-			BranchService.pagination_byPage($scope.currentPage)
+			ReceiptService.paginateFirstOrLast($scope.currentPage)
 			.then(
 					function(filterReceipt)
 					{
-						if(filterReceipt.length==0)
-						{
+						if(filterReceipt.length==0){
 							$scope.nextDisabled=true;
 						}
 						else if(filterReceipt.length<10)
@@ -444,18 +498,19 @@ $scope.staff_name = function(selected) {
 		{
 			$scope.nextDisabled=true;
 		}
-		if($scope.currentPage==0)
-		{
-			$scope.previouseDisabled=true;
-		}
-		if(nextPrevMultipier==-1)
-		{
-			$scope.nextDisabled=false;
-		}
-		else
-		{
-			$scope.previouseDisabled=false;
-		}
+		
+	 	
+    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+    	
+    	if($scope.currentPage == 0) {
+    		$scope.previouseDisabled = true;
+    	}
+    	
+    	if(nextPrevMultiplier == -1) {    		
+    		$scope.nextDisabled = false;
+    	} else {
+    		$scope.previouseDisabled = false;
+    	}
 	}
 	//------------------------------------------------------------------------------------
 	
@@ -471,18 +526,17 @@ $scope.staff_name = function(selected) {
 			$scope.nextDisabled=false;
 			self.Filterreceipts=self.receipts.slice($scope.currentPage*$scope.pageSize);
 			fetchAllReceipt_add();
-			
 		}
 		else
 		{
-			$scope.currentPage=((Math.cell(self.Filterreceipts.length/$scope.pageSize))-1);
-			$scope.previouseDisabled+false;
+			$scope.currentPage=((Math.ceil(self.Filterreceipts.length/$scope.pageSize))-1);
+			$scope.previouseDisabled=false;
 			$scope.nextDisabled=true;
 			self.Filterreceipts=self.receipts.slice($scope.currentPage*$scope.pageSize)
 			console.log(self.Filterreceipts.length);
-			if(self.Filterreceipt.length==0)
+			if(self.Filterreceipts.length==0)
 			{
-				BranchService.pagination_byPage(page)
+				ReceiptService.paginateFirstOrLast(page)
 				.then(
 						function(filterReceipt)
 						{
@@ -495,6 +549,8 @@ $scope.staff_name = function(selected) {
 					);
 			}
 		}
+		
+		$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
 	}
 	//-----------------------------------------------------------------------------------------------
 

@@ -163,7 +163,7 @@ angular.module('contiApp').factory('addManifestService',['$http','$q',function($
 		return deferred.promise;
 	}
 	
-	//=============================find record count====================================
+	//=============================find last manifest no====================================
 	   function fetchLastManifestNo() {
 	    	console.log("inside last manifest fetch");
 	        var deferred = $q.defer();

@@ -15,13 +15,92 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 			registerSearch : registerSearch,
 			getContactNumber:getContactNumber,
 			checkCourierStaffUnique:checkCourierStaffUnique,
-			saveReceipt:saveReceipt
+			saveReceipt:saveReceipt,
+			getLastReceiptNo:getLastReceiptNo,
+			sortBy:sortBy,
+			findrecord_count:findrecord_count,
+			paginateFirstOrLast:paginateFirstOrLast
 	};
 	
 	return factory;
+
+	//=============================paginate first or last====================================
+    function paginateFirstOrLast(page) {
+	var deferred = $q.defer();
 	
+	$http({
+		method : 'POST',
+		url : 'paginationReceipt',
+		data : page,
+		headers : getCsrfHeader()
+	})
+	.then (
+		function (response) {
+			console.log(response);
+			deferred.resolve(response.data);
+		},
+		function (errResponse) {
+			deferred.reject(errResponse);
+		}
+	);
+	return deferred.promise;
+}
+	//=============================find record count====================================
+	   function findrecord_count() {
+	        var deferred = $q.defer();
+	        $http.get('receiptRecordCount/')
+	            .then(
+	            function (response) {
+	                deferred.resolve(response.data);
+	            },
+	            function(errResponse){
+	                console.error('Error while fetching Users record count');
+	                deferred.reject(errResponse);
+	            }
+	        );
+	        return deferred.promise;
+	    }
+	   
+	   
+	//=============================sort by name====================================
+	function sortBy(name,status){	
+		console.log(name,status);
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:"sortByReceipt/"+name,
+			data:status,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("status change failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
 	
 
+	
+	
+	//=============================find last receipt no====================================
+	   function getLastReceiptNo() {
+	        var deferred = $q.defer();
+	        $http.get('getLastReceiptNo/')
+	            .then(
+	            function (response) {
+	                deferred.resolve(response.data);
+	            },
+	            function(errResponse){
+	                console.error('Error while fetching last manifest no');
+	                deferred.reject(errResponse);
+	            }
+	        );
+	        return deferred.promise;
+	    }
+	   
 	//=============================save receipt====================================
 	function saveReceipt(receipt){
 		var deferred=$q.defer();
