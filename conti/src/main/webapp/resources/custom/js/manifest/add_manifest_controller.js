@@ -336,7 +336,6 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
     		addManifestService.paginateFirstOrLast($scope.currentPage)
 			.then(
 					function(response){
-						console.log(response);
 						if(response.length == 0){
 						    $scope.paginate(-1);
 							$scope.nextDisabled = true;
@@ -350,6 +349,11 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 						console.log("error while fetching Manifest in search"+errRespone);
 					});
     	}
+    	
+    	if(self.FilteredManifests.length<$scope.pageSize)
+		{
+			$scope.nextDisabled=true;
+		}
     	
     	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
     	
@@ -463,7 +467,6 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
     function pagination() {
     	
 
-		console.log("inside pagination");
     	$scope.pageSize = $scope.shownoofrec;
 		$scope.currentPage = 0;
 		$scope.totalPages = 0;	
@@ -471,13 +474,11 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		$scope.nextDisabled = false;	
 		
 		if(self.FilteredManifests.length<=10){
-			console.log("less than 10");
 			$scope.nextDisabled = true;			
 		}
 
 		if(self.FilteredManifests.length<100){
 			$scope.totalnof_records = self.FilteredManifests.length;
-			console.log("less than 100");
 		}else{
 			findrecord_count();
 		}

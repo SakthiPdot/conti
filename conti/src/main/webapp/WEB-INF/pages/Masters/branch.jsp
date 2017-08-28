@@ -217,8 +217,8 @@
 						</div>
 						
 						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
-							<a id="" class="btnPadding btn btn-danger"	data-ng-click="ctrl.deleteBranch()" data-ng-show="ctrl.branch.branch_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a> 
-							<a id="" class="btnPadding btn btn-primary" data-ng-click="ctrl.clear()" data-ng-show="!branchForm.$pristine&&(ctrl.branch.branch_id==null)">Clear</a>							
+							<a id="" class="btnPadding btn btn-danger"	data-ng-click="ctrl.deleteBranch()" data-ng-show="ctrl.branch.branch_id!=null"><i class="fa fa-trash"  aria-hidden="true"></i> Delete</a> 
+							<a id="" class="btnPadding btn btn-primary" data-ng-click="ctrl.clear()" data-ng-show="!branchForm.$pristine&&(ctrl.branch.branch_id==null)"><i class="fa fa-eraser"></i> Clear</a>							
 						</div>
 						
 						<div class="col-lg-4 col-xs-4 footerRight" data-ng-show="!(ctrl.branch.branch_id==null)">

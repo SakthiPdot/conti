@@ -43,7 +43,8 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@Transactional
 	public int shipmentCount(){
 		int recCount=((Long)sessionFactory.getCurrentSession().
-				createQuery("select count(*) from ShipmentModel WHERE obsolete='N'").
+				createQuery("select count(*) from ShipmentModel WHERE obsolete='N'"
+						+ "and  status in ('Booked','Missing')" ).
 				uniqueResult()).intValue();
 		return recCount;
 	}
@@ -53,6 +54,28 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	public int shipmentCountStaff(int branch_id){
 		int recCount=((Long)sessionFactory.getCurrentSession().
 				createQuery("select count(*) from ShipmentModel WHERE obsolete='N'"
+						+ "and  status in ('Booked','Missing')" 
+						+ "and sender_branch.branch_id='"+branch_id+"' ").
+				uniqueResult()).intValue();
+		return recCount;
+	}
+	
+	@Override
+	@Transactional
+	public int shipmentCountReceipt(){
+		int recCount=((Long)sessionFactory.getCurrentSession().
+				createQuery("select count(*) from ShipmentModel WHERE obsolete='N'"
+						+ "and status ='Received'" ).
+				uniqueResult()).intValue();
+		return recCount;
+	}
+	
+	@Override
+	@Transactional
+	public int shipmentCountStaffReceipt(int branch_id){
+		int recCount=((Long)sessionFactory.getCurrentSession().
+				createQuery("select count(*) from ShipmentModel WHERE obsolete='N'"
+						+ "and status ='Received'"
 						+ "and sender_branch.branch_id='"+branch_id+"' ").
 				uniqueResult()).intValue();
 		return recCount;
@@ -82,6 +105,29 @@ public class ShipmentDaoImpl implements ShipmentDao {
 					.setFirstResult(from).setMaxResults(to).list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchShipmentWithLimitReceipt(int from, int to, String order) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where obsolete ='N'"
+						+ "and status ='Received'"
+						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
+					.setFirstResult(from).setMaxResults(to).list();
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchShipmentWithLimitStaffReceipt(int from, int to, String order,int branch_id) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where obsolete ='N'"
+						+ "and sender_branch.branch_id='"+branch_id+"' "
+						+ "and status ='Received'"
+						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
+					.setFirstResult(from).setMaxResults(to).list();
+	}
 	
 	
 	@Override
@@ -125,6 +171,8 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	}
 	
 	
+
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
@@ -141,12 +189,42 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
+	public List<ShipmentModel> getShipmentBySorting100ReceiptAdmin (String name,String order) {
+		
+		return sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where  obsolete ='N' "
+							+ "and status ='Received'"
+						    + "order by ("+name+")"+  order )
+				.setMaxResults(100)
+				.list();
+	}
+	
+
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
 	public List<ShipmentModel> getShipmentBySorting100Manifest(String name,String order,int branchId) {
 		
 		return sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel where  obsolete ='N' "
 							+ "and sender_branch.branch_id='"+branchId+"' "
 							+ "and  status in ('Booked','Missing')"
+						    + "order by ("+name+")"+  order )
+				.setMaxResults(100)
+				.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<ShipmentModel> getShipmentBySorting100Receipt(String name,String order,int branchId) {
+		
+		return sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel where  obsolete ='N' "
+							+ "and sender_branch.branch_id='"+branchId+"' "
+							+ "and status ='Received'"
 						    + "order by ("+name+")"+  order )
 				.setMaxResults(100)
 				.list();
@@ -165,6 +243,20 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	}
 	
 	
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchAllShipmentForReceipt() {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and status ='Received'")
+				.list();
+		
+		return listShipment;
+	}
+	
+	
+	
 	
 	@Override
 	@Transactional
@@ -178,6 +270,19 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 	
+	
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchAllShipmentForStaffForReceipt(int branchid) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and sender_branch.branch_id='"+branchid+"' "
+						+ "and status ='Received'")
+				.list();
+		
+		return listShipment;
+	}
 	
 	
 

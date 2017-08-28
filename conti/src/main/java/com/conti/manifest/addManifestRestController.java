@@ -353,7 +353,6 @@ public class addManifestRestController {
 	@RequestMapping(value="manifestSave",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> manifestSave(HttpServletRequest request,@RequestBody ManifestModel manifest){
 
-		System.out.println("++ inside manifest save");
 		
 		//intialize	
 		String userid = request.getSession().getAttribute("userid").toString();		
@@ -370,34 +369,37 @@ public class addManifestRestController {
 		
 
 		//set shipment and manifest status (Intransit) and set manifest id manually
-		manifest.setManifest_status("Intransit");
+		manifest.setManifest_status(ConstantValues.INTRANSIT);
 		for(ManifestDetailedModel manifestDetailModel:manifest.getManifestDetailModel()){
 			manifestDetailModel.setManifestModel(manifest);
-			manifestDetailModel.getShipmentModel().setStatus("Intransit");
+			manifestDetailModel.getShipmentModel().setStatus(ConstantValues.INTRANSIT);
 		}
 		
-		//generate manifest number
-		int lastManNo=mDao.fetchLastManifestNoWithOriginAndDestination(manifest.branchModel1.getBranch_id(), manifest.branchModel2.getBranch_id());		
-		if(lastManNo!=0 ){
-			manifest.setManifest_number(String.valueOf(lastManNo+1));
-			manifest.setManifest_prefix(manifest.branchModel1.getBranch_code()+manifest.branchModel2.getBranch_code()+
-					padManifestNumber(Integer.parseInt(manifest.getManifest_number()), 5));
-		}else{
-			manifest.setManifest_number(String.valueOf(1));
-			manifest.setManifest_prefix(manifest.branchModel1.getBranch_code()+manifest.branchModel2.getBranch_code()+
-					padManifestNumber(Integer.parseInt(manifest.getManifest_number()), 5));
-		}
-		
+
 		
 		JSONObject manifestNo=new JSONObject();
 		
 		try {
+			
+			//generate manifest number
+			int lastManNo=mDao.fetchLastManifestNoWithOriginAndDestination(manifest.branchModel1.getBranch_id(), manifest.branchModel2.getBranch_id());		
+			if(lastManNo!=0 ){
+				manifest.setManifest_number(String.valueOf(lastManNo+1));
+				manifest.setManifest_prefix(manifest.branchModel1.getBranch_code()+manifest.branchModel2.getBranch_code()+
+						padManifestNumber(Integer.parseInt(manifest.getManifest_number()), 4));
+			}else{
+				manifest.setManifest_number(String.valueOf(1));
+				manifest.setManifest_prefix(manifest.branchModel1.getBranch_code()+manifest.branchModel2.getBranch_code()+
+						padManifestNumber(Integer.parseInt(manifest.getManifest_number()), 4));
+			}
+			
+			
+			
 			mDao.saveOrUpdate(manifest);
 			manifestNo.put("ManifestNo",manifest.getManifest_prefix());
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<String>(manifestNo.toString(),HttpStatus.CREATED);
 		} catch (Exception e) {
-			e.printStackTrace();
 			manifestNo.put("ManifestNo","Error Creating Manifest No");
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, e);
 			return new ResponseEntity<String>("",HttpStatus.UNPROCESSABLE_ENTITY);
