@@ -100,22 +100,22 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 									<div class="col-lg-3 branchclass">
 										<span class="text-padding">From</span>										
 						
-										<!-- defaultBranch -->										
+										<%-- <!-- defaultBranch -->										
 										<sec:authorize access="hasRole('STAFF') or hasRole('MANAGER')">							
 											<input type="text" class="form-control " data-ng-disabled="true" data-ng-model="branch_name">
-										</sec:authorize>
+										</sec:authorize> --%>
 										
 										
 										<input type="hidden"  data-ng-model="amctrl.manifest.branchModel1">
 										
-										<sec:authorize access="hasRole('SUPER_ADMIN')">
+										<%-- <sec:authorize access="hasRole('SUPER_ADMIN')"> --%>
 											<select name="fromBranch" class="form-control"
 												data-ng-model="amctrl.manifest.branchModel1">
 												<option value="" data-ng-disabled="true">--Select
 													Branch Name--</option>
 												<option data-ng-repeat="x in amctrl.branches" value="{{x}}">{{x.branch_name}}</option>
 											</select>
-										</sec:authorize>
+									<%-- 	</sec:authorize> --%>
 									</div>
 
 									<div class="col-lg-3 branchclass">

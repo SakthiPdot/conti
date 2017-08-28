@@ -1,6 +1,7 @@
 package com.conti.receipt;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.binary.Base64;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -46,6 +48,7 @@ import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
+import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 import com.conti.shipment.add.ShipmentDao;
 import com.conti.shipment.add.ShipmentModel;
@@ -560,6 +563,38 @@ public class AddReceiptRestController
 			
 		
 			
+	}
+	
+	//===========================Receipt Print
+	@RequestMapping(value = "Receipt_print/{id}", method = RequestMethod.GET)
+	public ModelAndView Receipt_print(@PathVariable ("id") int id, HttpServletRequest request){
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		
+		BranchModel branch = branchDao.getBranchbyId(branch_id);
+		
+		ReceiptModel receipt = receiptDao.getReceiptbyId(id);
+		
+		Company company = companySettingDAO.getById(1);	
+		String base64DataString ="";
+		if(company!=null && company.getCompany_logo()!=null){
+			byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+			try {
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+			}		
+		}else{
+			base64DataString = ConstantValues.NO_IMAGE;	
+		}
+		
+		ModelAndView model = new ModelAndView("receiptPrintPDF", "receipt", receipt);
+		model.addObject("company",company);
+		model.addObject("branch", branch);
+		model.addObject("logo", base64DataString);
+		return model;
+		
 	}
 	
 	//======================Get Receipt Model==================================

@@ -296,12 +296,11 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
     		$scope.previouseDisabled = true;
     		$scope.nextDisabled = false;
     		self.FilteredManifests=self.Manifests.slice($scope.currentPage*$scope.pageSize);
-		}else{
+		}else{	
 /*    		$scope.currentPage = ((Math.ceil(self.FilteredManifests.length/$scope.pageSize)) - 1);
     		$scope.previouseDisabled = false;	
     		$scope.nextDisabled = true;
 			self.FilteredManifests=self.Manifests.slice($scope.currentPage*$scope.pageSize);
-		
 			console.log(self.FilteredManifests.length);
 		if(self.FilteredManifests.length==0){
 */
