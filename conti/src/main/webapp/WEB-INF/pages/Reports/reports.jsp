@@ -10,16 +10,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <link rel="icon" type="image/gif/png" href="resources/Image/conti_logo.png">
     <title>${title}</title>
     <!-- Bootstrap Styles-->
     <link href="resources/built-in/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
-	
-	 <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
-	 
-    <!-- Morris Chart Styles-->
+	 <!-- Morris Chart Styles-->
     <link href="resources/built-in/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <!-- Custom Styles-->
     <link href="resources/built-in/assets/css/custom-styles.css" rel="stylesheet" />
@@ -27,15 +26,44 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
+	 
+	 <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+   
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
-	  <link href="resources/custom/css/custom.css" rel="stylesheet">
-	  
-	   <link href="resources/built-in/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+	 <link href="resources/built-in/assets/Drawer/animate.css" rel="stylesheet" />
+	 <link href="resources/custom/css/custom.css" rel="stylesheet">
+	  <link rel="stylesheet" href="resources/custom/css/success_failure_msg.css">
+	<link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet"> 
+	
+	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
+	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 	 
+	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
+	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
+    <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="resources/custom/js/app.js"></script>
+	   
 </head>
 
 
-<body style="overflow-x:hidden;">
+<body style="overflow-x:hidden;"data-ng-app="contiApp" data-ng-controller = "ReportController as ctrl">
  
+ <!-- ------------------  Overlay for message begin ----------- -->
+ 		<div class="overlay hideme"></div>
+ <!-- ------------------  Overlay for message end ------------- -->
+ 
+ <!-- ------------------  Success message begin --------------- -->
+ 		<div class="success hideme">
+ 			<i class="fa fa-check-circle"></i> {{ctrl.message}}
+ 			<span class="close" data-ng-click = "ctrl.forgot_animateClose()"><i class="fa fa-times"></i></span>
+ 		</div>
+ <!-- ------------------  Success message end ----------------- -->
+ 
+ <!-- -----------------  Failure message begin ---------------- -->
+ 		
+ 		<div class="failure hideme">
+ 			<i class="fa fa-check-circle"></i> {{ctrl.message}}
+ 		</div>
+ <!-- -----------------  Failure message end ------------------ -->
 	
 	<jsp:include page="../Dashboard/nav.jsp"/>
 	
@@ -70,18 +98,26 @@
 						<div class="panel-body customer-field">
                                    
                                    <label class="radio-inline">
-                                       <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1"> Date Wise
+                                       <input type="radio" data-ng-model = "filter_date" 
+                                       data-ng-click="filter_branch=false;filter_lr=false;filter_all=false;"value="filter_date"
+                                       name="optionsRadiosInline" id="optionsRadiosInline1" > Date Wise
                                    </label>
                                    <label class="radio-inline">
-                                       <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2"> Branch Wise
+                                       <input type="radio"  data-ng-model = "filter_branch" value="filter_branch"
+                                       data-ng-click="filter_date= false;filter_lr=false;filter_all=false;"
+                                       name="optionsRadiosInline" id="optionsRadiosInline2"> Branch Wise
                                    </label>
                                    <label class="radio-inline">
-                                       <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3"> LR No Wise
+                                       <input type="radio" data-ng-model="filter_lr"  value="filter_lr" 
+                                       data-ng-click="filter_branch=false;filter_date=false;filter_all=false;"
+                                        name="optionsRadiosInline" id="optionsRadiosInline3" > LR No Wise
                                    </label>
                                    <label class="radio-inline">
-                                   	<input type="radio" name="optionsRadiosInline" id="optionsRadiosInline4" value="option4" checked> All
+                                   	<input type="radio"  data-ng-model ="filter_all" data-ng-init="filter_all=true" value="filter_all" 
+                                   	 data-ng-click="filter_branch=true;filter_date=true;filter_lr=true;"
+                                   	name="optionsRadiosInline" id="optionsRadiosInline4" data-ng-checked="true"> All
                                    </label>
-							
+						
 						</div>
 			            </div>  
 			        </div>
@@ -102,15 +138,15 @@
                 <div class="panel panel-default">                            
 						
 				<div class="panel-body">
-				<div class="branch-heading">Shipment</div>
+				<div class="branch-heading" data-ng-show="filter_date || filter_all">Shipment</div>
 				
-				<div class="col-lg-12 noPaddingLeft">
+				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_date || filter_all" >
 					<div class="col-lg-3 report_class">
 						<span>From</span>
 					       <div class="form-group input-group">
-                                  <input type="text" class="form-control">
+                                  <input type="text" class="form-control datepicker1">
                                   <span class="input-group-btn">
-                                      <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i>
+                                      <button class="btn btn-default " type="button"><i class="fa fa-calendar"></i>
                                       </button>
                                   </span>
                             </div>
@@ -119,7 +155,7 @@
 					<div class="col-lg-3 report_class">
 						<span>To</span>
 					       <div class="form-group input-group">
-                                  <input type="text" class="form-control">
+                                  <input type="text" class="form-control datepicker2">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -147,25 +183,22 @@
 					</div>
 				</div>
 				
-				<div class="col-lg-12 noPaddingLeft">
+				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_all || filter_branch">
 					<div class="sec-padding">Branch</div>
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">From </span>
-						<select class="form-control">
-							<option>-- Select --</option>
-							<option>Chennai</option>
-							<option>Coimbatore</option>
-							<option>Bangalore</option>
+						<select class="form-control" data-ng-options = "branch.branch_name for branch in ctrl.branches"
+						data-ng-model = "ctrl.report.frombranch">
+							<option value="" disabled>-- Select --</option>							
 						</select>
 					</div>
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">To </span>
-						<select class="form-control">
-							<option>-- Select --</option>
-							<option>Chennai</option>
-							<option>Coimbatore</option>
-							<option>Bangalore</option>
+						<select class="form-control" data-ng-options = "branch.branch_name for branch in ctrl.branches"
+						data-ng-model="ctrl.report.tobranch">
+							<option value="" disabled>-- Select --</option>
+							
 						</select>
 					</div>
 					
@@ -180,7 +213,7 @@
 				</div>
 				
 				
-				<div class="col-lg-12 noPaddingLeft">
+				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_lr || filter_all">
 					<div class="sec-padding">LR No</div>
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">From </span>
@@ -343,16 +376,51 @@
     </div>
     <!-- /. WRAPPER  -->
     
+    <script src="resources/custom/js/custom.js"></script>
+    <script type="text/javascript" src="resources/custom/js/reports/report_controller.js"></script>
+  <!--   <script type="text/javascript" src="resources/custom/js/reports/report_service.js"></script> -->
+    <script src="resources/custom/js/branch_master/branch_service.js"></script>
+    <script src="resources/custom/js/confirmDialog.js"></script>
+	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
+   
+   	
+   	<script>
+   		$('[data-toggle= "popover"]').popover();
+   		$('.regSettings').click(function(e) {
+   			e.stopPropagation();
+   		});
+   	</script>
+   	
+   	<script type="text/javascript">
+   		function getDate() {
+   			var today = new Date();
+   			var dd = today.getDate();
+   			var mm = today.getMonth()+1;
+   			var yyyy = today.getFullYear();
+   			
+   			if(dd < 10) {
+   				dd = '0' + dd
+   			}
+   			
+   			if (mm < 10) {
+   				mm = '0' + mm
+   			}
+   			
+   			today = yyyy + '-' + mm + '-' + dd;
+   			return today;
+   		}
+   		
+   		$('.datepicker1').dateTimePicker({
+   			limitMax : getDate()
+   		});
+   		
+   		$('.datepicker2').dateTimePicker({
+   			limitMax : getDate()
+   		});
+   	</script>
+   	
 
-    <script src="resources/built-in/assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="resources/built-in/assets/js/dataTables/dataTables.bootstrap.js"></script>
-
-     <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
-    </script>
-
+   
 </body>
 
 </html>
