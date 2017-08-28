@@ -16,6 +16,7 @@ angular.module('contiApp').controller('priceSettingRegisterController',
 		['$scope','$timeout','priceSettingRegisterService','ConfirmDialogService',
 			function($scope,$timeout,priceSettingRegisterService,ConfirmDialogService){
 			
+			$("#screen_price_settings_register").addClass("active-menu");
 			
 			$scope.shownoofrec = 10;
 			
