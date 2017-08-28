@@ -14,7 +14,9 @@ package com.conti.manifest;
 import java.util.List;
 public interface ManifestDao 
 {
-	
+
+	//====================add receipt===================	
+			public ManifestModel getManifestIdByShipmentId(int shipmentid);
 	//====================add manifest===================
 			public int fetchLastManifestNo();
 			public int fetchLastManifestNoWithOriginAndDestination(int manifest_origin,int manifest_destination);

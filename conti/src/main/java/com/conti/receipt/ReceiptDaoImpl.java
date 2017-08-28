@@ -18,12 +18,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.conti.manifest.ManifestModel;
+import com.conti.master.employee.EmployeeMaster;
+
 
 @Repository
 public class ReceiptDaoImpl implements ReceiptDao
 {
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	
+	@Override
+	@Transactional
+	public void saveOrUpdate(ReceiptModel receiptModel)
+	{
+		sessionFactory.getCurrentSession().saveOrUpdate(receiptModel);
+	}
+	
 	
 	//======================================VIEW RECEIPT===============================================
 	@Override
@@ -38,6 +50,36 @@ public class ReceiptDaoImpl implements ReceiptDao
 		return listReceipt;
 		
 	}
+	
+	@Override
+	@Transactional
+	public List<ReceiptModel> searchStaff(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<ReceiptModel> receiptList = (List<ReceiptModel>) sessionFactory.getCurrentSession()
+		.createQuery("from ReceiptModel WHERE obsolete ='N'"
+				+ "and courier_staff  LIKE '%"+search_key+"%'").list();
+		
+		return receiptList;
+		
+	}
+	
+/*	@Override
+	@Transactional
+	public List<ReceiptModel> searchStaffNoNAdmin(String searchkey,int branchid) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<ReceiptModel> receiptList = (List<ReceiptModel>) sessionFactory.getCurrentSession()
+		.createQuery("from ReceiptModel WHERE obsolete ='N'"
+				+" AND manifest_origin ="+branchid
+				+ "and courier_staff  LIKE '%"+searchkey+"%'").list();
+		
+		return receiptList;
+		
+	}*/
+
 	
 	//-------------------------Get Receipts by filter condition----------------------------------------------
 	@Override
@@ -54,6 +96,37 @@ public class ReceiptDaoImpl implements ReceiptDao
 	}
 	//------------------------------------------------------------------------------------------------------
 	
+	//-------------------------Get Receipts by filter condition----------------------------------------------
+	@Override
+	@Transactional
+	public List<ReceiptModel> getContactNumberByName(String Name)
+	{
+		@SuppressWarnings("unchecked")
+		List<ReceiptModel> listreceipt = (List<ReceiptModel>) sessionFactory.getCurrentSession()
+				.createQuery("FROM ReceiptModel WHERE obsolete ='N' "
+				+" AND courier_staff ='"+Name.trim()+"'")
+				.list();
+		return listreceipt;
+	}
+
+	//-------------------------check if Courier Staff Unique----------------------------------------------
+	@Override
+	@Transactional
+	public boolean checkCourierStaffUnique(String Name)
+	{
+		@SuppressWarnings("unchecked")
+		List<ReceiptModel> listreceipt = (List<ReceiptModel>) sessionFactory.getCurrentSession()
+				.createQuery("FROM ReceiptModel WHERE obsolete ='N' "
+				+" AND courier_staff ='"+Name.trim()+"'")
+				.list();
+		
+		if(listreceipt != null && !listreceipt.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
+	
 	//------------------------------Get Receipt by id------------------------------------------
 	
 	@Override
@@ -69,6 +142,22 @@ public class ReceiptDaoImpl implements ReceiptDao
 		}
 		return null;
 	}
+	
+	
+	
+	@Override
+	@Transactional
+	public int getLastReceiptNoWithBranch(int branchid) {
+		
+		int lastReceipttNo=0;
+		
+		String hql = "select MAX(receipt_number)  FROM ReceiptModel WHERE obsolete ='N' and branchModel.branch_id ="+branchid+ "";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		return (query.uniqueResult()==null)?lastReceipttNo:Integer.parseInt(query.uniqueResult().toString());
+	}
+	
+	
 	//---------------------------------------------------------------------------------
 
 	@Override

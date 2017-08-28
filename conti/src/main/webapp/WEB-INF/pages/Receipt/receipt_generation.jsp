@@ -62,6 +62,10 @@
 	
 	<jsp:include page="../Dashboard/nav.jsp"/>
 	
+	<div class="success hideme"><i class="fa fa-check-circle" aria-hidden="true"></i> {{ctrl.message}}</div>
+	<div class="failure hideme"><i class="fa fa-times-circle" aria-hidden="true"></i> {{ctrl.message}}</div>
+	
+	
     <div id="wrapper">        	  
 		<div id="page-wrapper">	 
       		<div class="row">
@@ -408,7 +412,7 @@
                 			      		 </div>
                                         <div class="col-lg-2 branchclass">
                 			      		   <button class="btn btn-primary btn-lg"
-                			      		   data-ng-disabled = "ctrl.selected_receipt.length <1" 
+                			      		   data-ng-disabled = "ctrl.selected_receipt.length <1"
                 			      		    data-toggle="modal" data-target="#myModal">
                                                Receipt Generate
                                             </button>                                     
@@ -440,9 +444,9 @@
 									<tr>
 
 										<!-- <th></th> -->
-										<th data-ng-show="setting_receiptlrnumber">LR Number</th>
-										<th data-ng-show="setting_receiptorigin">Parcel</th>
-										<th data-ng-show="setting_receiptdestination">Handling
+										<th>LR Number</th>
+										<th>Parcel</th>
+										<th>Handling
 											Charge</th>
 
 									</tr>
@@ -456,14 +460,15 @@
 											data-ng-click="ctrl.receiptSelect(receipt)"
 											data-ng-model="receipt.select"></td> -->
 
-										<td data-ng-show="setting_receiptlrnumber">{{receipt.lrno_prefix}}</td>
+										<td>{{receipt.lrno_prefix}}</td>
 
-										<td data-ng-show="setting_receiptorigin">{{receipt.numberof_parcel}}</td>
+										<td>{{receipt.numberof_parcel}}</td>
 
-										<td data-ng-show="setting_receiptdestination">
+										<td>
 										
 										<div class="input-group">
-											<input									
+											<input	
+													data-ng-model="receipt.h_charge"																					
 													data-trigger="focus" data-toggle="popover"
 													data-placement="top"
 													data-content="Please Enter Handling Charge"
@@ -522,13 +527,26 @@
 									<div class="col-lg-6">
 										<span> Courier Staff</span>
 									</div>
+									
+									
 									<div class="col-lg-6 ">
-										<select class="form-control"
-										data-ng-model="ctrl.receipt.courier_staff">
-											<option>--Select Staff--</option>
-											<option>Murugan</option>
-										</select>
+										
+												<angucomplete-alt id="driver_name"
+												 placeholder="Ex: xyz"
+												pause="100" selected-object="staff_name"
+												remote-url="getStaffManifest4Search/"
+												override-suggestions="true"
+												remote_url-data-field="staff" search-fields="courier_staff"
+												title-field="courier_staff" match-class="highlight"
+											    minlength="1" field-required="true"
+												onKeyPress="return CheckIsCharacter(event)"
+												input-class="form-control form-control-small">
+											</angucomplete-alt>
+											
 									</div>
+									
+								
+									
 								</div>
 							</div>
 
@@ -542,8 +560,6 @@
 										data-ng-model="ctrl.receipt.contact_number" 
 										placeholder="Ex.9876543210">
 										<datalist id="contact_number">
-										  <option value="0123456789">
-										  <option value="9876543210">
 										</datalist>
 									</div>
 								</div>
@@ -556,7 +572,7 @@
 
 						<div class="modal-footer">
                                             <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"> <i class="fa fa-times"></i> Cancel</button>
-                                            <button type="button" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</button>
+                                            <button type="button" data-ng-click="ctrl.receiptSubmit()" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</button>
                                         </div>
                                     </div>
                                 </div>

@@ -37,6 +37,7 @@ public final class ConstantValues {
 	public static final String PENDING="Pending";
 	public static final String COMPLETED="Completed";
 	public static final String INCOMPLETE="Incomplete";
+	public static final String DELIVERED ="Delivered";
 	
 	//SHIPMENT (PAID/TO PAY)
 	public static final String PAID = "Sender";

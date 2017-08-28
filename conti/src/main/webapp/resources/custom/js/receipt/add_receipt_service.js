@@ -12,11 +12,76 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 	var factory={
 			fetchAllReceipt_add:fetchAllReceipt_add,
 			viewShipment:viewShipment,	
-			registerSearch : registerSearch
+			registerSearch : registerSearch,
+			getContactNumber:getContactNumber,
+			checkCourierStaffUnique:checkCourierStaffUnique,
+			saveReceipt:saveReceipt
 	};
 	
 	return factory;
 	
+	
+
+	//=============================save receipt====================================
+	function saveReceipt(receipt){
+		var deferred=$q.defer();
+		$http({
+			method:'POST',
+			url:'receiptSave',
+			data:receipt,
+			headers:getCsrfHeader()
+		}).then(
+				function(response){
+					deferred.resolve(response.data);
+				},function(errResponse){
+					console.log("save failed");
+					deferred.reject(errResponse);
+				}
+		);
+		return deferred.promise;
+	}
+	
+	//=============================save receipt====================================
+	function getContactNumber(staff){
+		var deferred = $q.defer();
+	    	
+	    	$http({
+	    		method : 'POST',
+	    		url : 'getContactNumber',
+	    		data : staff,
+	    		headers : getCsrfHeader()
+	    	})
+	    	.then (
+	    		function (response) {
+	    			deferred.resolve(response.data);
+	    		},
+	    		function (errResponse) {
+	    			deferred.reject(errResponse);
+	    		}
+	    	);
+	    	return deferred.promise;
+	}
+	
+	//--------------------------CHECK UNIQUE-------------------------
+	function checkCourierStaffUnique(staffName){
+		var deferred = $q.defer();
+	    	
+	    	$http({
+	    		method : 'POST',
+	    		url : 'checkCourierStaffUnique',
+	    		data : staffName,
+	    		headers : getCsrfHeader()
+	    	})
+	    	.then (
+	    		function (response) {
+	    			deferred.resolve(response.data);
+	    		},
+	    		function (errResponse) {
+	    			deferred.reject(errResponse);
+	    		}
+	    	);
+	    	return deferred.promise;
+	}
 	//--------------------------Fetch All add_receipt_preload-------------------------
 	function fetchAllReceipt_add()
 	{

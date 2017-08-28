@@ -56,6 +56,29 @@ public class ManifestDaoImpl implements ManifestDao
 		return listmanifest.get(0);
 		
 	}
+	
+	
+	@Override
+	@Transactional
+	public ManifestModel getManifestIdByShipmentId(int shipmentId) 
+	{
+		// TODO Auto-generated method stub
+		
+		@SuppressWarnings("unchecked")
+		List<ManifestDetailedModel> listmanifest = (List<ManifestDetailedModel>) sessionFactory.getCurrentSession()
+				.createQuery("from ManifestDetailedModel WHERE shipmentModel.shipment_id= " + shipmentId ).list();
+		
+		
+		if(listmanifest != null && !listmanifest.isEmpty()) {
+			return listmanifest.get(0).getManifestModel();
+		}
+		return null;
+		
+		
+	}
+	
+	
+	
 	@Override
 	@Transactional
 	public int fetchLastManifestNo(){

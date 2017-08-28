@@ -8,6 +8,15 @@
  * @Updated_date_time August 09, 2017 11:31:53 AM
  */
 
+
+//======================================function to do after save======================================
+	function afterSave(){
+			valid = true;
+			location.href='view_receipt';
+		}
+	
+	
+
 contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','ReceiptService','BranchService','ConfirmDialogService','addManifestService',
 	function($scope,$http,$q,$timeout,ReceiptService,BranchService,ConfirmDialogService,addManifestService)
 {
@@ -25,6 +34,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	self.registerSearch=registerSearch;
 	self.receiptSelectAll=receiptSelectAll;
 	self.shownoofRecord=shownoofRecord;
+	self.receiptSubmit=receiptSubmit;
 
 	$scope.shownoofrec=50;
 	
@@ -71,9 +81,119 @@ self.receipt={
 			    ]
 			};
 
+
+		function receiptSubmit(){
+			console.log(self.receipt);
+			
+			$('#myModal').css('z-index','1039');
+			
+			
+			ConfirmDialogService.confirmBox("Save",
+					BootstrapDialog.TYPE_SUCCESS, "Save Receipt  ..?", 'btn-success')
+			.then(
+					function(response){
+
+						
+						
+						for(var i=0;i<self.selected_receipt.length;i++){
+							
+							self.receipt.receiptDetailList[i].shipmentModel=self.selected_receipt[i];
+							self.receipt.receiptDetailList[i].handling_charge=self.selected_receipt[i].h_charge;
+							console.log("handlingcharge",self.receipt.receiptDetailList[i].shipmentModel.h_charge);
+						
+							if(i<self.selected_receipt.length-1){
+								self.receipt.receiptDetailList.push({
+						            "receiptdetailid": null,
+						            "handling_charge": null,
+						            "net_freight_charges": null,
+						            "shipmentModel":null,
+						            "manifestModel": null
+						        });
+							}
+						}
+						
+
+						console.log(self.receipt);
+						
+						ReceiptService.saveReceipt(self.receipt)
+						.then(
+								function(receipt){
+										console.log('response');
+										console.log('save success');
+										self.message = "Receipt ( "+response.ReceiptNo+" ) Created Successfully..! ";
+										successAnimate('.success');	
+										setTimeout(function(){afterSave();}, 4000);
+								},
+								function(errResponse){
+									console.log('Error while saving Receipt.');
+									self.message = "Error While Creating Manifest ..!";
+									successAnimate('.failure');
+									setTimeout(function(){ location.reload(); }, 4000);	
+								}
+							);
+						
+						
+						},function(errResponse){
+							$('#myModal').css('z-index','1050');
+						});
+			
+			
+		}
+
+// ===================================onchange of angucomplete====================================
+$scope.staff_name = function(selected) {
+	
+	
+
+	$('#contact_number').empty();
+	self.receipt.contact_number=null;
+	if (typeof selected != 'undefined' ) {	
+		console.log(selected);
+		
+		
+		if(typeof(selected.originalObject.courier_staff) == "undefined"){
+			self.receipt.courier_staff=selected.originalObject;
+		}else{
+			self.receipt.courier_staff=selected.originalObject.courier_staff;
+		}
+		
+	/*	ReceiptService.checkCourierStaffUnique(self.receipt.courier_staff)
+		.then(
+				function(response){
+					console.log(response)
+				},
+				function(errResponse){
+					console.log('Error while checking unique.');
+					$('#contact_number').empty();
+					self.receipt.contact_number=null;
+				}
+			);
+		*/
+		
+		ReceiptService.getContactNumber(selected.originalObject.courier_staff)
+		.then(
+				function(receipt){
+					for(var i=0;i<receipt.length;i++){
+						$('#contact_number').append("<option value='"+receipt[i].contact_number+"'>");
+					}
+				},
+				function(errResponse){
+					console.log('Error while fetching Receipt.');
+					$('#contact_number').empty();
+					self.receipt.contact_number=null;
+				}
+			);
+
+		console.log(self.receipt.courier_staff);
+	} else {
+		self.receipt.contact_number=null;
+		$('#contact_number').empty();
+	}
+}
 	//===================================on modal open calculate freight charge====================================	
 	$("#myModal").on('shown.bs.modal', function(){
 		$timeout(function(){
+			
 			$scope.showDoorDelivery=false;	
 			var total=0;
 			
