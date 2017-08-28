@@ -58,7 +58,7 @@
       	      <input class="form-control" data-ng-model = "ctrl.user.mobileno" placeholder="Mobileno" id="mobileno" name="mobileno" type="text" maxlength="10" onKeyPress="return CheckIsNumeric(event)" autofocus data-ng-required = "true" />      		  
       	   
      	      <button type="submit" data-ng-disabled = "!ctrl.user.mobileno">Get Username</button>
-     		   <p class="message"> << <a href="login">Go back</a></p>  
+     		   <p class="message">  <a href="login">Go back</a></p>  
      		   <!-- <a href="login" class = "goback"><< Go back</a> -->
      		  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	    </form>
