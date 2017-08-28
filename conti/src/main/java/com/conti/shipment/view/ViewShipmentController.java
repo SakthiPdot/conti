@@ -5,9 +5,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
@@ -17,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +28,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
 
-import com.conti.master.employee.EmployeeMaster;
+import com.conti.master.branch.BranchDao;
+import com.conti.master.branch.BranchModel;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -46,7 +52,7 @@ import com.conti.shipment.add.ShipmentModel;
  */
 
 @RestController
-public class ViewShipmentController {
+public class ViewShipmentController{
 
 	final Logger logger = LoggerFactory.getLogger(ViewShipmentController.class);
 
@@ -56,7 +62,8 @@ public class ViewShipmentController {
 	private ShipmentDao shipmentDao;
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
-	
+	@Autowired
+	private BranchDao branchDao;
 	Loggerconf loggerconf = new Loggerconf();
 	UserInformation userInformation;
 	ConstantValues constantVal = new ConstantValues();
@@ -398,4 +405,35 @@ public class ViewShipmentController {
 		}
 	}
 	//----------------------------------------------- PAGINATION END
+	
+	//---------------------------------------------- LR PRINT BILL GENERATE PDF BEGIN
+	@RequestMapping(value = "LR_print/{id}", method = RequestMethod.GET)
+	public ModelAndView lrprint_pdf(@PathVariable ("id") int id, HttpServletRequest request){
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		
+		BranchModel branch = branchDao.getBranchbyId(branch_id);
+		
+		ShipmentModel shipment = shipmentDao.getshipmentby_lrno(id);
+		
+		Company company = companySettingDAO.getById(1);	
+		String base64DataString ="";
+		if(company!=null && company.getCompany_logo()!=null){
+			byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+			try {
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+			}		
+		}else{
+			base64DataString = ConstantValues.NO_IMAGE;	
+		}
+		
+		ModelAndView model = new ModelAndView("shipmentLRPrintPDF", "shipment", shipment);
+		model.addObject("company",company);
+		model.addObject("branch", branch);
+		model.addObject("logo", base64DataString);
+		return model;
+	}
 }
