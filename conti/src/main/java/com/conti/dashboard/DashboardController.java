@@ -72,7 +72,7 @@ public class DashboardController {
 		session.setAttribute("userid", userid);
 		
 		User userDetails = usersDao.get(userid);
-		int branch_id = userDetails.getEmployeeMaster().getBranchModel().getBranch_id();
+		int branch_id = userDetails.branchModel.getBranch_id();
 		session.setAttribute("branch_id", branch_id);
 		
 		ModelAndView model = new ModelAndView();

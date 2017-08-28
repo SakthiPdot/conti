@@ -1,6 +1,5 @@
 package com.conti.shipment.view;
 
-import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,26 +10,26 @@ import org.springframework.web.servlet.view.document.AbstractPdfView;
 
 import com.conti.master.branch.BranchModel;
 import com.conti.others.Loggerconf;
+import com.conti.others.NumberToWord;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 import com.conti.shipment.add.ShipmentModel;
 import com.lowagie.text.Cell;
 import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
-import com.lowagie.text.ElementListener;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.Table;
-import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfWriter;
 
 public class ShipmentLRPrintPDF extends AbstractPdfView{
 
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
+	@Autowired 
+	private NumberToWord numberToWord;
 	Loggerconf loggerconf = new Loggerconf();	
 	public ShipmentLRPrintPDF() {
         setContentType("application/pdf");
@@ -62,7 +61,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 		company_tbl.setBorderWidth(1);
 		company_tbl.setPadding(4);
 		company_tbl.setSpacing(0);
-	    
+		
 	    // for company logo
 	    Image image = null;
 	    image = Image.getInstance(company.getCompany_logo());
@@ -82,7 +81,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    company_tbl.addCell(companyname_cell);
 	    
 	    //for company address
-	    Font address_font = new Font(Font.HELVETICA, 10);
+	    Font address_font = new Font(Font.COURIER, 8);
 	    Cell address_cell = new Cell(
 	    		new Phrase(
 	    		branch.getBranch_addressline1()+", "+
@@ -189,7 +188,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    desc_tbl.addCell(total);
 	    
 	    for(int i =0; i<shipment.getShipmentDetail().size();i++){
-	    	Cell count = new Cell(new Phrase(""+1+i, address_font));
+	    	Cell count = new Cell(new Phrase(Integer.toString(1+i), address_font));
 	    	count.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    	desc_tbl.addCell(count);
 	    	
@@ -200,10 +199,110 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    	desc_tbl.addCell(goods);
 	    	
 	    	Cell quantity = new Cell(new Phrase(
-	    			shipment.getShipmentDetail().get(i).getQuantity()));
+	    			Float.toString(shipment.getShipmentDetail().get(i).getQuantity()), address_font));
 	    	quantity.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    	desc_tbl.addCell(quantity);
+	    	
+	    	Cell unitprice = new Cell(new Phrase(
+	    			Float.toString(shipment.getShipmentDetail().get(i).getUnit_price()), address_font));
+	    	unitprice.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    	desc_tbl.addCell(unitprice);
+	    	
+	    	Cell totalPrice = new Cell(new Phrase(
+	    			Float.toString(shipment.getShipmentDetail().get(i).getTotal_price()), address_font));
+	    	totalPrice.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    	desc_tbl.addCell(totalPrice);
 	    }
+	    if(shipment.getCgst() != 0) {
+	    	 Cell cgst = new Cell (new Phrase ("CGST "+
+	 	    		Float.toString(company.getCGST())+"%", address_font));
+	 	    cgst.setColspan(4);
+	 	    cgst.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	    desc_tbl.addCell(cgst);
+	 	    
+	 	    Cell cgst_amt = new Cell (new Phrase (
+	 	    		Float.toString(shipment.getCgst()), address_font));
+	 	    cgst_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	    desc_tbl.addCell(cgst_amt);
+	    }
+	   
+	    if(shipment.getSgst() != 0) {
+	    	Cell sgst = new Cell (new Phrase ("SGST "+
+		    		Float.toString(company.getSGST())+"%", address_font));
+		    sgst.setColspan(4);
+		    sgst.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    desc_tbl.addCell(sgst);
+		    
+		    Cell sgst_amt = new Cell (new Phrase (
+		    		Float.toString(shipment.getSgst()), address_font));
+		    sgst_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    desc_tbl.addCell(sgst_amt);
+	    }
+	    
+	    if(shipment.getIgst() != 0) {
+	    	Cell igst = new Cell (new Phrase ("IGST "+
+		    		Float.toString(company.getIGST())+"%", address_font));
+		    igst.setColspan(4);
+		    igst.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    desc_tbl.addCell(igst);
+		    
+		    Cell igst_amt = new Cell (new Phrase (
+		    		Float.toString(shipment.getIgst()), address_font));
+		    igst_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    desc_tbl.addCell(igst_amt);
+	    }
+	    
+	    
+	    if(shipment.getDiscount_percentage() != 0) {
+	    	Cell discount = new Cell (new Phrase ("Discount "+
+		    		Float.toString(shipment.getDiscount_percentage())+"%", address_font));
+		    discount.setColspan(4);
+		    discount.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    desc_tbl.addCell(discount);
+		    
+		    Cell discount_amt = new Cell (new Phrase (
+		    		Float.toString(shipment.getDiscount_amount()), address_font));
+		    discount_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    desc_tbl.addCell(discount_amt);
+	    }
+	   
+	    
+	    String currency= (String) model.get("currency");
+	   	
+		
+	    Cell amtWord = new Cell (new Phrase ("Amounts in words : "+
+	    		currency, address_font));
+	    amtWord.setColspan(3);
+	    desc_tbl.addCell(amtWord);
+	    
+	    Cell total_amt = new Cell (new Phrase ("Net Amount", address_font));
+	    total_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    desc_tbl.addCell(total_amt);
+	    Cell total_amtno = new Cell (new Phrase (Float.toString(shipment.getTotal_charges()), address_font));
+	    total_amtno.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    desc_tbl.addCell(total_amtno);
+	    
+	    Cell sign = new Cell (new Phrase ("For Conti Cargo Service"
+	    		+ "\n\nSignature", address_font));
+	    sign.setColspan(3);
+	    
+	    desc_tbl.addCell(sign);
+	    String bill_to = null;
+	    if(shipment.getBill_to().equals("Sender")) {
+	    	bill_to = "Paid";
+	    }else {
+	    	bill_to = "To Pay";
+	    }
+	    
+	    Cell topay = new Cell (new Phrase (bill_to, address_font));
+	    topay.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    topay.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	    desc_tbl.addCell(topay);
+	    
+	    Cell payMode = new Cell (new Phrase (shipment.getPay_mode(), address_font));
+	    payMode.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    payMode.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	    desc_tbl.addCell(payMode);
 	    
 	    document.add(company_tbl);
 	    document.add(customer_tbl);

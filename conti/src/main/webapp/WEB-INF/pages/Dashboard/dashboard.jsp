@@ -1,6 +1,20 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib
+    prefix="c"
+    uri="http://java.sun.com/jsp/jstl/core" 
+%>
+<%@ page isELIgnored="false" %> 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib  prefix="c"
+    uri="http://java.sun.com/jsp/jstl/core" 
+%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
+<%@ page isELIgnored="false" %> 
+<%@page session="true"%>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,7 +48,7 @@
 		<div id="page-wrapper">	 
       
       		<div class="page-header">
-      		Dashboard
+      		Dashboard 
       		</div>
           
             

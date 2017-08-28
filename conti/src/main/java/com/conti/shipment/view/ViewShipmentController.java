@@ -34,6 +34,7 @@ import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
+import com.conti.others.NumberToWord;
 import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
@@ -64,6 +65,9 @@ public class ViewShipmentController{
 	private CompanySettingDAO companySettingDAO;
 	@Autowired
 	private BranchDao branchDao;
+	@Autowired
+	private NumberToWord numberToWord;
+	
 	Loggerconf loggerconf = new Loggerconf();
 	UserInformation userInformation;
 	ConstantValues constantVal = new ConstantValues();
@@ -430,9 +434,20 @@ public class ViewShipmentController{
 			base64DataString = ConstantValues.NO_IMAGE;	
 		}
 		
+		String total_charges = Float.toString(shipment.getTotal_charges());
+	 	String[] total_charges_split = total_charges.split("\\.");
+	 	
+	 	String currency_rs = numberToWord.convert(Integer.parseInt(total_charges_split[0]));
+	 	String currency_paise = numberToWord.convert(Integer.parseInt(total_charges_split[1]));
+	 	String currency= currency_rs + " rupees " + currency_paise + " paise.";
+	 	
+	 	System.out.println("##################################################");
+	 	System.out.println(currency);
+	 	
 		ModelAndView model = new ModelAndView("shipmentLRPrintPDF", "shipment", shipment);
 		model.addObject("company",company);
 		model.addObject("branch", branch);
+		model.addObject("currency",currency);
 		model.addObject("logo", base64DataString);
 		return model;
 	}

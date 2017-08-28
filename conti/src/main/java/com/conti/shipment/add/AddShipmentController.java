@@ -73,13 +73,15 @@ public class AddShipmentController {
 		String username = userInformation.getUserName();
 		String userid = userInformation.getUserId();
 		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		
 		ModelAndView model = new ModelAndView();
 		
 		try
 		{
 			BranchModel branch = brandhDao.getBranchbyId(branch_id);
 			int lrno = shipmentDao.fetchMAXlrno(branch_id);
-			
+			model.addObject("userid",userid);
+			model.addObject("branch_id", branch_id);
 			model.addObject("lrno", lrno);
 			model.addObject("branch", branch);
 			model.addObject("title", "Add Shipment");
