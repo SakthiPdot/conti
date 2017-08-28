@@ -126,18 +126,18 @@
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">To</span>
                 			      		
-                			      		<sec:authorize access="hasRole('STAFF') or hasRole('MANAGER')">							
+                			<%--       		<sec:authorize access="hasRole('STAFF') or hasRole('MANAGER')">							
 											<input type="hidden" class="form-control " data-ng-model="tobranch_filter" >
 											<input type="text" class="form-control " data-ng-disabled="true" data-ng-model="tobranch_sample">
-										</sec:authorize>
+										</sec:authorize> --%>
 										
-                			      		<sec:authorize access="hasRole('SUPER_ADMIN')">
+                			      		<%-- <sec:authorize access="hasRole('SUPER_ADMIN')"> --%>
                 			      		<select class="form-control" 
                 			      		data-ng-model="tobranch_filter">
                 			      			<option value="" data-ng-disabled="true">--Select Branch Name--</option>                			      			
                 			      			<option data-ng-repeat="x in ctrl.branches" value="{{x.branch_id}}">{{x.branch_name}}</option>
                 			      		</select>
-                			      		</sec:authorize>
+                			      		<%-- </sec:authorize> --%>
                 			      		
                 			      </div>
                 			      </div>
@@ -546,6 +546,8 @@
 													data-ng-model="receipt.h_charge"																					
 													data-trigger="focus" data-toggle="popover"
 													data-placement="top"
+													onKeyPress="return CheckIsNumericAnddot(event,this.value) "
+													maxlength="8"
 													data-content="Please Enter Handling Charge"
 													placeholder="Ex:99.99"
 												type="text" class="form-control">
@@ -560,6 +562,7 @@
 							
 							
 							<div data-ng-cloak class='row'  >
+							<fieldset data-ng-disabled="true">
 								<div class="col-lg-12 ">
 									<div class="col-lg-6">
 										<span> Freight Charge</span>
@@ -568,11 +571,14 @@
 									<div class="input-group Bottom" >
 										<input type="text" class="form-control"
 										data-ng-model="allLR_freight_charge"
+										onKeyPress="return CheckIsNumericAnddot(event,this.value) "
+										maxlength="10"
 										placeholder="Ex:100.00">
 										<span class="input-group-addon"><i class="fa fa-inr"></i></span>
 									</div>
 									</div>
 								</div>
+								</fieldset>
 							</div>
 							
 							
@@ -584,6 +590,8 @@
 									<div class="col-lg-6 ">
 									<div class="input-group">
 										<input type="text" class="form-control"
+										onKeyPress="return CheckIsNumericAnddot(event,this.value) "
+										maxlength="8"
 										data-ng-model="ctrl.receipt.local_transport"
 										placeholder="Ex:72.25">
 										<span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
@@ -608,6 +616,7 @@
 										
 												<angucomplete-alt id="driver_name"
 												 placeholder="Ex: xyz"
+												 onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 												pause="100" selected-object="staff_name"
 												remote-url="getStaffManifest4Search/"
 												override-suggestions="true"
@@ -632,7 +641,8 @@
 									</div>
 									<div class="col-lg-6 ">
 										<input type="text" class="form-control" list="contact_number"
-										data-ng-model="ctrl.receipt.contact_number" 
+										data-ng-model="ctrl.receipt.contact_number"
+									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
 										placeholder="Ex.9876543210">
 										<datalist id="contact_number">
 										</datalist>
