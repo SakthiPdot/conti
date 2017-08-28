@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
 import com.conti.master.employee.EmployeeDao;
 import com.conti.master.employee.EmployeeMaster;
@@ -80,7 +81,9 @@ public class addManifestRestController {
 	
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
-		
+	
+	@Autowired
+	private BranchDao branchDao;
 	
 	Loggerconf loggerconf = new Loggerconf();
 	UserInformation userInformation;
@@ -536,4 +539,37 @@ public class addManifestRestController {
 		}
 		
 	}
+	
+	
+	//---------------------------------------------- LR PRINT BILL GENERATE PDF BEGIN
+	@RequestMapping(value = "ManifestPdfPrint/{id}", method = RequestMethod.GET)
+	public ModelAndView ManifestPdfPrint(@PathVariable ("id") int id, HttpServletRequest request){
+		userInformation = new UserInformation(request);
+		String username = userInformation.getUserName();
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		
+		BranchModel branch = branchDao.getBranchbyId(branch_id);
+		
+		ManifestModel manifest = mDao.getManifestbyId(id);
+		
+		Company company = companySettingDAO.getById(1);	
+		String base64DataString ="";
+		if(company!=null && company.getCompany_logo()!=null){
+			byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+			try {
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+			}		
+		}else{
+			base64DataString = ConstantValues.NO_IMAGE;	
+		}
+		
+		ModelAndView model = new ModelAndView("manifestPrintPDF", "manifest", manifest);
+		model.addObject("company",company);
+		model.addObject("branch", branch);
+		model.addObject("logo", base64DataString);
+		return model;
+	}
+	
 }
