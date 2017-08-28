@@ -1,6 +1,9 @@
 package com.conti.master.employee;
 
+
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +19,6 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
-import com.conti.master.product.Product;
 
 /**
  * @Project_Name conti
@@ -32,7 +34,10 @@ public class EmployeeExcelBuilder extends AbstractExcelView {
 	protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 	
+		@SuppressWarnings("unchecked")
 		List<EmployeeMaster> employeeList=(List<EmployeeMaster>) model.get("employeeList");
+		
+		
 		
 		int rowcount=0;
 		
@@ -61,9 +66,9 @@ public class EmployeeExcelBuilder extends AbstractExcelView {
 		header.createCell(4).setCellValue("DOJ");
 		header.createCell(5).setCellValue("Branch");
 		header.createCell(6).setCellValue("Address");
-		header.createCell(7).setCellValue("Date of joining");
-		header.createCell(8).setCellValue("Mobileno");
-		header.createCell(9).setCellValue("Email");
+		/*header.createCell(7).setCellValue("Date of joining");*/
+		header.createCell(7).setCellValue("Mobileno");
+		header.createCell(8).setCellValue("Email");
 		
 		
 		header.getCell(0).setCellStyle(style);
@@ -75,12 +80,17 @@ public class EmployeeExcelBuilder extends AbstractExcelView {
 		header.getCell(6).setCellStyle(style);
 		header.getCell(7).setCellStyle(style);
 		header.getCell(8).setCellStyle(style);
-		header.getCell(9).setCellStyle(style);
+		/*header.getCell(9).setCellStyle(style);*/
 
 		
 		//decimal format
 		DecimalFormat f=new DecimalFormat("##.00");		
+		System.out.println(f);
 		
+		Date exdate = new Date();
+		SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-YYYY");
+		String formatDate = dateformat.format(exdate);
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"+formatDate);
 		//detail
 		for(EmployeeMaster employee:employeeList){
 			HSSFRow row=sheet.createRow(rowcount++);
@@ -95,9 +105,9 @@ public class EmployeeExcelBuilder extends AbstractExcelView {
 									+", "+employee.getLocation().getAddress().getCity()
 									/*+", "+employee.getLocation().getAddress().getDistrict()*/
 									+", "+employee.getLocation().getAddress().getState());
-			row.createCell(7).setCellValue(employee.getDoj());
-			row.createCell(8).setCellValue(employee.getEmp_phoneno());
-			row.createCell(9).setCellValue(employee.getEmp_email());
+			/*row.createCell(7).setCellValue(employee.getDoj());*/
+			row.createCell(7).setCellValue(employee.getEmp_phoneno());
+			row.createCell(8).setCellValue(employee.getEmp_email());
 		}
 		
 	}
