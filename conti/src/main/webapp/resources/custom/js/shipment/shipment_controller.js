@@ -75,7 +75,7 @@ $('#pdf').click(function () {
 
 
 
-contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout', 'ShipmentService', 'priceSettingService', 'BranchService', 'CompanySettingService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,  ShipmentService, priceSettingService, BranchService, CompanySettingService, ConfirmDialogService){
+contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout','$interval', 'ShipmentService', 'priceSettingService', 'BranchService', 'CompanySettingService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,$interval,  ShipmentService, priceSettingService, BranchService, CompanySettingService, ConfirmDialogService){
 	
 	$("#screen_addshipment").addClass("active-menu");
 	var self = this;
@@ -98,10 +98,20 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 /*	self.shipment.sender_customer = {};
 	self.shipment.consignee_customer = {};*/
-	self.shipment.shipment_date = $filter("date")(Date.now(), 'yyyy-MM-dd HH:mm:ss');
+	//------------------------ time 
+	  var tick = function() {
+		  self.shipment.shipment_date = $filter("date")(Date.now(), 'yyyy-MM-dd HH:mm:ss');
+		  }
+		  tick();
+		  $interval(tick, 1000);
+		  
+	/*self.shipment.shipment_date = $filter("date")(Date.now(), 'yyyy-MM-dd HH:mm:ss');*/
 	self.shipment.status = "Booked";
 	
 	self.changePaymentmode = changePaymentmode;
+	
+	
+
 	
 	//-------------------------------- Change Pament mode function begin 
 	function changePaymentmode(payment_mode) {

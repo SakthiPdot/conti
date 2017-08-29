@@ -440,7 +440,7 @@ public class ViewShipmentController{
 	 	String currency_rs = numberToWord.convert(Integer.parseInt(total_charges_split[0]));
 	 	String currency_paise = numberToWord.convert(Integer.parseInt(total_charges_split[1]));
 	 	String currency= currency_rs + " rupees " + currency_paise + " paise.";
-	 	
+	 	currency = currency.substring(0, 1).toUpperCase() + currency.substring(1);
 		ModelAndView model = new ModelAndView("shipmentLRPrintPDF", "shipment", shipment);
 		model.addObject("company",company);
 		model.addObject("branch", branch);

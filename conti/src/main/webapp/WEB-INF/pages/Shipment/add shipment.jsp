@@ -98,7 +98,7 @@
            
               <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
-              	  <div class="col-md-6 col-sm-6 col-xs-6 GenLeftRight">
+              	  <div class="col-md-6 col-sm-6 col-xs-6 ">
 	              <div  class="subHead">
 	               <b>Branch Name : ${branch.branch_name}</b>      
 	                 
@@ -109,11 +109,13 @@
 	              </div>
 	              </div>
 	              
-	              <div class="col-md-2">
-	              </div>
+	              <!-- <div class="col-md-5">
+	              </div> -->
 	              
-	              <div class="col-md-3 col-sm-4 col-xs-6">	              
-	               <c:if test="${ lrno > 0 }"> <b>Last LR No : {{maxlrno}}   </b></c:if>     
+	              <div class="col-md-6 col-sm-6 col-xs-6">	
+	              <div  class="subHead pull-right">              
+	               <c:if test="${ lrno > 0 }"> <b>Last LR No : <span style = "color : #0b67af;">{{maxlrno}}</span>   </b></c:if>    
+	               </div> 
 	              </div>
 	              
               </div>
@@ -130,7 +132,7 @@
               		</div>
               		
               		<div class="col-md-1 branchclass paddingtop">
-              			Shipment Date
+              			Shipment Date 
               		</div>
               		
               		<div class="col-md-3 branchclass">            			 
@@ -144,7 +146,7 @@
 				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-ng-disabled = "true" required/>
 	                                            <span class="input-group-addon" ><i class="fa fa-calendar" ></i>
 	                                            </span>
-	                                          
+	                                         
 	                                          
 	                               </div>
                         
@@ -249,7 +251,7 @@
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter company name"
 											onKeyPress="return CheckIsNumeric(event)"	
-											placeholder = "Ex: Pointdot"
+											placeholder = "Ex: Conti Cargo"
                             		    />                            		    
                             		</div>
                             	
@@ -456,7 +458,7 @@
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter company name"
 											onKeyPress="return CheckIsNumeric(event)"	
-											placeholder = "Ex: Pointdot"
+											placeholder = "Ex: Conti Cargo"
                             		    />                            		    
                             		</div>
                             	
@@ -952,7 +954,7 @@
 	                            		    	data-trigger="focus" data-toggle="popover" 
 												data-placement="top" data-content="Please enter value of shipment"
 												placeholder = "Ex: 100.50"
-												data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="1.00"
+												data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
 												aria-describedby="basic-addon1"
 	                            		    required />  
 	                            		     <span class="input-group-addon" id = "basic-addon1"><i class="fa fa-inr" aria-hidden="true"></i></span>
@@ -1034,7 +1036,7 @@
 	                            		    	data-trigger="focus" data-toggle="popover" 
 												data-placement="top" data-content="Please enter discount %"
 												placeholder = "Ex: 10.22%"
-												data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="1.00"
+												data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
 												data-ng-keyup = "ctrl.calc_discount()"
 	                            		     />  
 	                            		     <span class="input-group-addon"> % </span>

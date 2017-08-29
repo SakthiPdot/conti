@@ -48,12 +48,10 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 		Company company = (Company) model.get("company");
 		BranchModel branch = (BranchModel) model.get("branch");
 		String logo = (String) model.get("logo");
-		/*Paragraph header = new Paragraph(new Chunk("CONTI CARGO SERVICE",FontFactory.getFont(FontFactory.HELVETICA, 30)));
-		Paragraph by = new Paragraph(new Chunk("Author " + shipment.getLrno_prefix() + " " + shipment.getLr_number(),FontFactory.getFont(FontFactory.HELVETICA, 20)));*/
-		  
 		
-		/*document.add(header);
-		document.add(by);*/
+		document.setMargins(-50, -50, 20, 20);
+		document.open();
+		
 		
 		Table company_tbl = new Table(3);
 //		table.setTableFitsPage(true);
@@ -65,7 +63,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    // for company logo
 	    Image image = null;
 	    image = Image.getInstance(company.getCompany_logo());
-	    image.scaleAbsolute(80, 20);
+	    image.scaleAbsolute(150, 30);
 	    Cell logo_cell = new Cell(image);
 	    logo_cell.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT);
 	    logo_cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -103,7 +101,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	 
 	    Cell getin_cell = new Cell(
 	    		new Phrase("GSTIN Number: "+company.getGST_number()
-		+ " Tax Is Payable On Reverse Charges: " + shipment.getTaxin_payable(), address_font));
+		+ " Tax is payable on reverse charges: " + shipment.getTaxin_payable(), address_font));
 	    company_tbl.addCell(getin_cell);
 	    
 	    //for LR number
@@ -111,9 +109,8 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    		new Phrase("L.R. No: "+shipment.getLrno_prefix()
 	    		+ "\nDate: " + shipment.getShipment_date(), address_font));
 	    
-	  
-	    
 	    company_tbl.addCell(lrno_cell);
+	
 	    
 	    //customer table
 	    Table customer_tbl = new Table(2);
@@ -163,6 +160,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    
 	  //customer table
 	    Table desc_tbl = new Table(5);
+	    desc_tbl.setWidths(new int[] {1,3,1,2,2});
 	    desc_tbl.setBorderWidth(1);
 	    desc_tbl.setPadding(4);
 	    desc_tbl.setSpacing(0);
@@ -302,6 +300,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    document.add(company_tbl);
 	    document.add(customer_tbl);
 	    document.add(desc_tbl);
+
 	}
 
 }
