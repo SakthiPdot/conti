@@ -8,8 +8,8 @@ import com.conti.manifest.ManifestModel;
 
 public interface ReceiptDao 
 {
-	public List<ReceiptModel> getAllReceipt_view();
-	public List<ReceiptModel> getReceiptByCondition(int frombranch,int tobranch,String fromdate,String todate);
+	
+	public List<ReceiptDetail> getReceiptByCondition(String frombranch,String tobranch,String fromdate,String todate,String status);
 	public ReceiptModel getReceiptbyId(int id);
 	public List<ReceiptModel> searchStaff(String searchkey);
 	public List<ReceiptModel> getContactNumberByName(String Name);
@@ -23,5 +23,6 @@ public interface ReceiptDao
 	
 	//===== Referred Delete Process in Foreign key =========//
 	public ReceiptModel getUser(int c_user,int u_user);
-	
+	public List<ReceiptDetail> getAllReceipt_view();// for Super Admin
+	public List<ReceiptDetail> getAllReceipt_view(int branch_id);// for Manager / User
 }

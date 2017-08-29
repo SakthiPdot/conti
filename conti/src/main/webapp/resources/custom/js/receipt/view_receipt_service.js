@@ -45,7 +45,7 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 		var headers=getCsrfHeader();
 		$http({
 			method:"POST",
-			url:'receipt_filter',
+			url:'view_receipt_filter',
 			data:receipt,
 			headers:headers
 		}).then(
@@ -57,7 +57,7 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 				function(errResponse)
 				{
 					console.log('Error while fetching Receipt by filter')
-					deferred.reject(errResponse);
+					def.reject(errResponse);
 				}
 			);
 		return def.promise;

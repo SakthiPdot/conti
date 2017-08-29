@@ -164,12 +164,34 @@ public class ManifestDaoImpl implements ManifestDao
 	@Transactional
 	public List<ManifestModel>getManifestByCondition(int frombranch,int tobranch,String fromdate,String todate)
 	{
+		StringBuilder queryString =new StringBuilder();
+		queryString.append("FROM ManifestModel WHERE obsolete ='N' ");
+		String frombrnch=String.valueOf(frombranch);
+		String tobrnch=String.valueOf(tobranch);
+		
+		if(frombrnch!=null && !frombrnch.trim().isEmpty())
+			queryString.append(" AND manifest_origin='"+frombranch+"' ");
+		
+		if(tobrnch!=null && !tobrnch.trim().isEmpty())
+			queryString.append(" AND manifest_destination='"+tobrnch+"' ");
+		
+		if(fromdate!=null && !fromdate.trim().isEmpty())			
+			queryString.append(" AND created_datetime >= '"+fromdate+" 00:00:00'");
+		
+		if(todate!=null && !todate.trim().isEmpty())
+			queryString.append(" AND created_datetime <= '"+todate+" 23:59:59'"); 
+		else{
+			queryString.append(" AND  status in ('Received') ");
+		}
 		@SuppressWarnings("unchecked")
+//		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
+//				.createQuery("FROM ManifestModel WHERE obsolete ='N' and manifest_origin="+frombranch 
+//				+" AND manifest_destination ="+tobranch
+//				+" AND created_datetime BETWEEN '"+fromdate+" 00:00:00'"
+//				+" AND '"+todate+" 23:59:59'").list();
+//		return listmanifest;
 		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
-				.createQuery("FROM ManifestModel WHERE obsolete ='N' and manifest_origin="+frombranch 
-				+" AND manifest_destination ="+tobranch
-				+" AND created_datetime BETWEEN '"+fromdate+" 00:00:00'"
-				+" AND '"+todate+" 23:59:59'").list();
+		.createQuery(queryString.toString()).list();
 		return listmanifest;
 	}
 	

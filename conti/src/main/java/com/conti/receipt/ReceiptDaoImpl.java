@@ -40,14 +40,28 @@ public class ReceiptDaoImpl implements ReceiptDao
 	//======================================VIEW RECEIPT===============================================
 	@Override
 	@Transactional
-	public List<ReceiptModel> getAllReceipt_view() 
+	public List<ReceiptDetail> getAllReceipt_view() // View shipment for SuperAdmin
 	{
 		// TODO Auto-generated method stub
 		
 		@SuppressWarnings("unchecked")
-		List<ReceiptModel> listReceipt = (List<ReceiptModel>) sessionFactory.getCurrentSession()
-				.createQuery("from ReceiptModel WHERE obsolete ='N'  ").list();
-		return listReceipt;
+		List<ReceiptDetail> listReceiptDetail = (List<ReceiptDetail>) sessionFactory.getCurrentSession()
+				.createQuery("from ReceiptDetail WHERE shipmentModel.obsolete ='N' and shipmentModel.status in('Received') ").setMaxResults(100).list();
+		return listReceiptDetail;
+		
+	}
+	
+	@Override
+	@Transactional
+	public List<ReceiptDetail> getAllReceipt_view(int branch_id) // View Shipment for Manager and Staff
+	{
+		// TODO Auto-generated method stub
+		
+		@SuppressWarnings("unchecked")
+		List<ReceiptDetail> listReceiptDetail = (List<ReceiptDetail>) sessionFactory.getCurrentSession()
+				.createQuery("from ReceiptDetail WHERE obsolete ='N' and  shipmentModel.consignee_branch.branch_id=" + branch_id+ 
+						" and shipmentModel.status in('Received') ").setMaxResults(100).list();
+		return listReceiptDetail;
 		
 	}
 	
@@ -84,14 +98,39 @@ public class ReceiptDaoImpl implements ReceiptDao
 	//-------------------------Get Receipts by filter condition----------------------------------------------
 	@Override
 	@Transactional
-	public List<ReceiptModel>getReceiptByCondition(int frombranch,int tobranch,String fromdate,String todate)
+	public List<ReceiptDetail>getReceiptByCondition(String frombranch,String tobranch,String fromdate,String todate,String status)
 	{
-		@SuppressWarnings("unchecked")
-		List<ReceiptModel> listreceipt = (List<ReceiptModel>) sessionFactory.getCurrentSession()
-				.createQuery("FROM ReceiptModel WHERE obsolete ='N' and shipmentModel.manifest_origin="+frombranch 
-				+" AND manifest_origin ="+tobranch
-				+" AND created_datetime BETWEEN '"+fromdate+" 00:00:00'"
-				+" AND '"+todate+" 23:59:59'").list();
+		StringBuilder queryString=new StringBuilder();
+		queryString.append("FROM ReceiptDetail Where shipmentModel.obsolete='N'");
+		String frombrnch=String.valueOf(frombranch);
+		String tobrnch=String.valueOf(tobranch);
+		String stats=String.valueOf(status);
+		if(frombrnch!=null &&!frombrnch.trim().isEmpty())
+			queryString.append(" And shipmentModel.sender_branch.id='"+frombranch+"' ");
+		
+		if(tobrnch!=null &&!tobrnch.trim().isEmpty())
+			queryString.append(" And shipmentModel.consignee_branch.id='"+tobranch+"' ");
+		
+		if(fromdate!=null && !fromdate.trim().isEmpty())			
+			queryString.append(" AND created_datetime >= '"+fromdate+" 00:00:00'");
+		
+		if(todate!=null && !todate.trim().isEmpty())
+			queryString.append(" AND created_datetime <= '"+todate+" 23:59:59'");
+		
+		if(stats!=null && !stats.trim().isEmpty())
+			queryString.append(" AND shipmentModel.status='"+status+"'");
+		else{
+			queryString.append(" AND  shipmentModel.status in ('Delivered','Pending') ");
+		}
+	@SuppressWarnings("unchecked")
+//		List<ReceiptModel> listreceipt = (List<ReceiptModel>) sessionFactory.getCurrentSession()
+//				.createQuery("FROM ReceiptModel WHERE obsolete ='N' and shipmentModel.manifest_origin="+frombranch 
+//				+" AND manifest_origin ="+tobranch
+//				+" AND created_datetime BETWEEN '"+fromdate+" 00:00:00'"
+//				+" AND '"+todate+" 23:59:59'").list();
+		
+		List<ReceiptDetail> listreceipt=(List<ReceiptDetail>)sessionFactory.getCurrentSession()
+				.createQuery(queryString.toString()).list();
 		return listreceipt;
 	}
 	//------------------------------------------------------------------------------------------------------

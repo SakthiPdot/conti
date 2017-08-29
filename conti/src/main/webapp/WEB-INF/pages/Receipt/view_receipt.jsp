@@ -1,4 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
 <%@ taglib
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
@@ -95,29 +97,32 @@
                 			     <div class="col-lg-12 noPaddingLeft"> 
                 			      <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">From</span>
-                			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches"
-                			      		 data-ng-model="ctrl.receipt.frombranch" data-ng-init="ctrl.branches[0].branch_id">
-                			      			<option value="">--Select--</option>
+                			      		<select class="form-control" 
+                			      		data-ng-options ="branch.branch_id as branch.branch_name for branch in ctrl.branches"
+                			      		data-ng-model="ctrl.receipt.frombranch"
+                			      		>
+                			      			<option value='' disabled>--Select--</option>
                 			      		</select>
                 			      </div>
                 			      
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">To</span>
-                			      		<select class="form-control" data-ng-options ="branch.branch_name for branch in ctrl.branches" 
+                			      		<select class="form-control" data-ng-options ="branch.branch_id as branch.branch_name for branch in ctrl.branches" 
                 			      		data-ng-model="ctrl.receipt.tobranch">
                 			      			<option value=''>--Select--</option>
                 			      			
                 			      		</select>
                 			      </div>
                 			      </div>
-                			       
+                			      <input type="hidden" id="branch_id" value="${branch_id}" />
+									<input type = "hidden" id = "currentUserRole" value = "<sec:authentication property="principal.authorities[0]"/>" />
                 			      <div class="col-lg-12 noPaddingLeft"> 
                 			        <div class="sec-padding">Specific Period</div>
                 			         
                 			         <div class="col-lg-3 branchclass">
 	                			      		 <span class="text-padding">From  </span>   	                                       
 	                                          <div class="form-group input-group ">
-					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.fromdate"
+					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.receipt.fromdate"
 					                           			   data-trigger= "focus"data-toggle="popover" data-placement="top"
 					                            		   data-content="Please select from date"/>
 		                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
@@ -129,7 +134,7 @@
                 			       <div class="col-lg-3 branchclass">
                 			      		<span class="text-padding">To</span>
                 			      		  <div class="form-group input-group">
-				                               <input type="text" class="form-control datepicker2" data-ng-model="ctrl.todate"
+				                               <input type="text" class="form-control datepicker2" data-ng-model="ctrl.receipt.todate"
 													  data-trigger= "focus"data-toggle="popover" data-placement="top"
 					                            		data-content="Please select to date"/>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
@@ -143,8 +148,8 @@
                 			       <div class="col-lg-12 noPaddingLeft subhead-padding"> 
                 			       		<div class="col-lg-3 branchclass">
                 			      		 <span class="text-padding">Status</span>	                	                                       
-                                            <select class="form-control">
-                                            	<option>--Select--</option>
+                                            <select class="form-control" data-ng-model="ctrl.receipt.status">
+                                            	<option value=''>--Select--</option>
                                             	<option value='delivered'>Delivered</option>  
                                             	<option value='pending'>Pending</option>                                            	
                                             </select>
@@ -152,7 +157,7 @@
                 			            </div>
                 			            
                 			            <div class="col-lg-3 branchclass">
-                			      		   <button class="btn btn-primary"> View Receipt</button>                                         
+                			      		   <button class="btn btn-primary" data-ng-click="ctrl.receiptFilter()"> View Receipt</button>                                         
                 			            </div>
                 			            <div class="col-lg-4 branchclass">		      		               	                                       
                                         </div>
@@ -325,20 +330,24 @@
                                  data-id="{{receipt.receipt_id}}">
                                      <td><input type="checkbox" data-ng-click="ctrl.receiptSelect(receipt)" data-ng-model="receipt.select"></td>
                                      <td data-ng-show="setting_sltnumber" >{{$index+1}}</td>
-                                     <td data-ng-show="setting_receiptdate">{{receipt.created_datetime}}</td>
-                                     <td data-ng-show="setting_receiptlrnumber">{{receipt.shipmentModel.lr_number}}</td>
-                                     <td data-ng-show="setting_receiptnumber">{{receipt.receipt_id}}</td>
-                                     <td data-ng-show="setting_receiptproduct">{{receipt.shipmentModel.shipmentDetail[0].product.product_name}}</td>
-                                     <td data-ng-show="setting_receiptorigin">{{receipt.manifestModel.branchModel1.branch_name}}</td>
-                                     <td data-ng-show="setting_receiptdestination">{{receipt.manifestModel.branchModel2.branch_name}}</td>
+                                     <td data-ng-show="setting_receiptdate">{{receipt.shipmentModel.created_datetime}}</td>
+                                     <td data-ng-show="setting_receiptlrnumber">{{receipt.shipmentModel.lrno_prefix}}</td>
+                                     <td data-ng-show="setting_receiptnumber">{{receipt.receiptModel}}</td>
+                                     <td data-ng-show="setting_receiptproduct">
+                                     <div data-ng-repeat = "shipmentdet in receipt.shipmentModel.shipmentDetail">
+                                           			{{shipmentdet.product.product_name}}<span data-ng-if = !($last)>,</span>
+                                           		</div>
+                                     </td>
+                                     <td data-ng-show="setting_receiptorigin">{{receipt.shipmentModel.sender_branch.branch_name}}</td>
+                                     <td data-ng-show="setting_receiptdestination">{{receipt.shipmentModel.consignee_branch.branch_name}}</td>
                                      <td data-ng-show="setting_receiptsender">{{receipt.shipmentModel.sender_customer.customer_name}}</td>
                                      <td data-ng-show="setting_receiptconsignee">{{receipt.shipmentModel.consignee_customer.customer_name}}</td>
-                                     <td data-ng-show="setting_receiptmanifest">{{receipt.manifestModel.manifest_number}}</td>
+                                     <td data-ng-show="setting_receiptmanifest">{{receipt.manifestModel.manifest_prefix}}</td>
                                      <td data-ng-show="setting_receiptstatus">{{receipt.shipmentModel.status}}</td>
                                </tr>
                              </tbody>
                          </table>
-                     </div>
+                     </div>	
                      <div class ="col-lg-6">
                     	<div class="pull-left">
                    			 Showing {{(currentPage*pageSize)+1}} to 
@@ -346,6 +355,22 @@
                    			 of {{totalnof_records}} entries
                    		</div>
                     </div>
+                    
+                    <div class="col-lg-6 icons-button">
+						<div class="pull-right">
+							<button class="btn btn-primary" type="button"
+								data-ng-disabled="previouseDisabled"
+								data-ng-click="firstlastPaginate(1)">First</button>
+							<button class="btn btn-primary" type="button"
+								data-ng-disabled="previouseDisabled"
+								data-ng-click="paginate(-1)">Previous</button>
+							<button class="btn btn-primary" type="button"
+								data-ng-disabled="nextDisabled" data-ng-click="paginate(1)">Next</button>
+							<button class="btn btn-primary" type="button"
+								data-ng-disabled="nextDisabled"
+								data-ng-click="firstlastPaginate(0)">Last</button>
+						</div>
+					</div>
                  </div>
                     </div>
                     <!--End Advanced Tables -->
