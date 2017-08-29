@@ -344,10 +344,14 @@
 	  .report_padding {
 	  padding-top: 25px;
 	  }
+	  .dash_padding{
+	  	padding-top:40px !important;
+	  }
 	    .underline{
 	    text-decoration: none !important;
 	    }
 	    
+	  
 	     @media (max-width : 768px) {
 				.branchclass{
 					display:block;

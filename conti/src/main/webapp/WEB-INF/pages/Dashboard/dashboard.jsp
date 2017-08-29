@@ -39,19 +39,62 @@
 </head>
 
 
-<body>
+<body style="overflow-x:hidden;">
  
 	
 	<jsp:include page="nav.jsp"/>
 	
-    <div id="wrapper">        	  
-		<div id="page-wrapper">	 
-      
-      		<div class="page-header">
+    <div id="wrapper"> 
+       	  
+		<div id="page-wrapper" class="background-image" style="background-image:url(resources/Image/dashboard.png);background-repeat:no-repeat;background-size:100% 100%;">	 
+    
+      		<div class="page-header" >
       		Dashboard 
       		</div>
-          
-            
+            <!-- <img alt="hi" src="resources/Image/dashboard.png" style="background-repeat:no-repeat;width: 100%;height: -webkit-fill-available;"> -->    
+          <div id="page-inner">  
+             <div class="row">
+             	<div class="col-md-4 col-sm-12 col-xs-12">
+             	  <div class="panel panel-primary text-center no-boder blue">
+             		<div class="panel-left pull-left blue">
+                           <i class="fa fa-shopping-cart fa-5x"></i>                                
+                    </div>
+                    <div class="">
+						    <h3 class="dash_padding" style="font-size: xx-large;">
+						    <a href="add_shipment" class="underline">Add Shipment</a></h3>
+                             <!-- <strong>Short Links</strong> -->
+                    </div>
+                   </div>
+             	</div>
+             	
+             	<div class="col-md-4 col-sm-12 col-xs-12">
+                        <div class="panel panel-primary text-center no-boder blue">
+                              <div class="panel-left pull-left blue">
+                                <i class="fa fa-truck fa-5x"></i>
+								</div>                                
+                            <div class="">
+							<h3 class="dash_padding" style="font-size: xx-large;"><a href="add_manifest" class="underline">Add Manifest</a></h3>
+                               <!--  <strong>Short Links</strong>  -->
+                            </div>
+                        </div>
+               </div>
+               
+               
+               <div class="col-md-4 col-sm-12 col-xs-12">
+                        <div class="panel panel-primary text-center no-boder blue">
+                              <div class="panel-left pull-left blue">
+                                <i class="fa fa-money fa-5x"></i>
+								</div>                                
+                            <div class="">
+							<h3 class="dash_padding" style="font-size: xx-large;"><a href="receipt_generate" class="underline">Receipt Generation</a></h3>
+                               <!-- <strong>Short Links</strong> -->
+                            </div>
+                        </div>
+               </div>
+             	
+             </div>
+             </div>
+                     
         </div>
         <!-- /. PAGE WRAPPER  -->
 		
@@ -60,7 +103,7 @@
  <script>
  	$("#dashboard").addClass("active-menu");
  </script>
-
+<script src="resources/custom/js/session.js"></script>
 </body>
 
 </html>
