@@ -40,8 +40,9 @@ public final class ConstantValues {
 	public static final String DELIVERED ="Delivered";
 	
 	//SHIPMENT (PAID/TO PAY)
-	public static final String PAID = "Sender";
-	public static final String TO_PAY = "Receiver";
+	public static final String PAID = "Paid";
+	public static final String TO_PAY = "To Pay";
+	public static final String CREDIT = "Credit";
 	
 	//APPLICATION_TIMEOUT
 	public static final String APPLICATION_TIMEOUT = "30";

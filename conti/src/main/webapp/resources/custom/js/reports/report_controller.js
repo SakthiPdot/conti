@@ -1,13 +1,16 @@
 
 
-contiApp.controller('ReportController',['$scope','$http','$q','$timeout','BranchService','ConfirmDialogService',function($scope,$http,$q,$timeout,BranchService,ConfirmDialogService)
+contiApp.controller('ReportController',['$scope','$http','$q','$timeout','BranchService','ShipmentService','ConfirmDialogService',function($scope,$http,$q,$timeout,BranchService,ShipmentService,ConfirmDialogService)
 	{
-		var self = this;
+		
+		$("#screen_report").addClass("active-menu");
+	
+	    var self = this;
 		self.report = [];
 		self.branches = [];
 		
 		fetchAllBranches();
-		
+		fetchAllShipmentforView();
 		
 		
 		
@@ -28,5 +31,18 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 					  );
 		}
 	//=========== Fetch All Branches Function End ===========//
+		
+		function fetchAllShipmentforView() {
+			ShipmentService.fetchAllShipmentforView()
+				.then(
+						function(shipments) {
+							
+							self.shipments = shipments;	
+							console.log("hu"+self.shipments);
+						}, function (errResponse) {
+							console.log(errResponse);
+						}
+				      );
+		}
 	}
 	]);

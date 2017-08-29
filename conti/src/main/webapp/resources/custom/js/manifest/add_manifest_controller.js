@@ -9,9 +9,10 @@
  */
 
 //======================================function to do after save======================================
-	function afterSave(){
+	function afterSave(id){
 			valid = true;
-			location.href='view_manifest';
+			window.open("ManifestPdfPrint/"+id);
+			//location.href="ManifestPdfPrint/"+id;
 		}
 	
 	
@@ -102,13 +103,12 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 					.then(	
 							function (response) {	
 
-								console.log('response');
+								console.log(response);
 								console.log('save success');
 								self.message = "Manifest ( "+response.ManifestNo+" ) Created Successfully..! ";
 								successAnimate('.success');	
-								setTimeout(function(){afterSave();}, 4000);
-								
-								/*setTimeout(function(){ location.reload(); }, 4000);*/	
+								setTimeout(function(){afterSave(response.ManifestId);}, 4000);
+								setTimeout(function(){ location.reload(); }, 4000);	
 								//save and view manifest number
 							}, 
 							function (errResponse) {
@@ -159,12 +159,8 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 			if(self.selectedManifest[0].consignee_branch.branch_name !=self.selectedManifest[i].consignee_branch.branch_name){
 				destination=false;
 			}
-		}
-		
-		
-		showMessageOriginDestination(origin,destination,self.selectedManifest[0].sender_branch, self.selectedManifest[0].consignee_branch);
-		
-		
+		}	
+		showMessageOriginDestination(origin,destination,self.selectedManifest[0].sender_branch, self.selectedManifest[0].consignee_branch);	
 	}
 	
 	function showMessageOriginDestination(x,y,origin_id,destination_id){

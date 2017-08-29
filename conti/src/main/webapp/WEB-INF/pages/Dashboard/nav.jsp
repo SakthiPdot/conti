@@ -292,7 +292,7 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a class="active-menu" href="/Conti/"><i class="fa fa-dashboard"></i> Dashboard</a>
+                        <a id="dashboard" href="/Conti/"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
 					
 					 
@@ -341,7 +341,7 @@
 							</ul>
                     </li>
                     <li>
-                        <a href="report"><i class="fa fa-flag"></i> Reports </a>
+                        <a href="report" id="screen_report"><i class="fa fa-flag"></i> Reports </a>
                     </li>
                     
                      <sec:authorize access="hasRole('SUPER_ADMIN') or hasRole('MANAGER')">

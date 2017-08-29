@@ -163,7 +163,8 @@
                             </div>
 					</div>
 					
-					<div class="col-lg-3 report_class report_padding">
+					<div class="col-lg-3 report_class">
+					<span>Condition</span>
 						<select class="form-control">
 							<option>-- Select --</option>
 							<option>And</option>
@@ -214,7 +215,8 @@
 						</select>
 					</div>
 					
-					<div class="col-lg-3 report_class">
+					<div class="col-lg-3 branchclass">
+						<span class="text-padding">Condition</span>
 						<select class="form-control">
 							<option>-- Select --</option>
 							<option>And</option>
@@ -228,36 +230,41 @@
 				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_lr || filter_all">
 					<div class="sec-padding">LR No</div>
 					<div class="col-lg-3 branchclass">
-						<span class="text-padding">From </span>
-						<!-- <select class="form-control">
-							<option value="" disabled>-- Select --</option>
-							
-						</select> -->
-						<angucomplete-alt id="lr_number" data-ng-model="ctrl.report.lr_number"
-						pause="100" selected-object="lr_number"
+						<span class="text-padding">From </span>						
+						<angucomplete-alt id="lrno_prefix" data-ng-model="ctrl.report.lrno_prefix"
+						placeholder="LR No"
+						pause="100" selected-object="lrno_prefix"
 						local-data="ctrl.shipments"
-						search-fields="lr_number"
-						title-field="lr_number"
+						search-fields="lrno_prefix"
+						title-field="lrno_prefix"
 						match-class="highlight"
-						initial-value="{{ctrl.report.shipmentModel.lr_number}}"
+						initial-value="{{ctrl.report.shipmentModel.lrno_prefix}}"
 						minlength="1" field-required="true" data-trigger="focus" data-toggle="popover"
-						data-placement="top" data-content="LR No"
-						input-class="form-control form-control-small">
+						data-placement="top" data-content="Please Enter LR No"
+						input-class="form-control form-control-small" style="width:100%">
 						</angucomplete-alt>
-						<input type="text" id="lr_number" name="lr_number" value="{{lr_number.originalObject}}"/>
+						
 					</div>
 					
 					<div class="col-lg-3 branchclass">
-						<span class="text-padding">To </span>
-						<select class="form-control">
-							<option>-- Select --</option>
-							<option>LR215</option>
-							<option>LR216</option>
-							<option>LR217</option>
-						</select>
+						<span class="text-padding">To </span>						
+						<angucomplete-alt id="lrno_prefix" data-ng-model="ctrl.report.lrno_prefix"
+						placeholder="LR No" pause="100"
+						selected-object="lrno_prefix"
+						local-data="ctrl.shipments"
+						search-fields="lrno_prefix"
+						title-field="lrno_prefix"
+						match-class="highlight"
+						initial-value="{{ctrl.report.shipmentModel.lrno_prefix}}"
+						minlength="1" field-required="true"
+						data-trigger="focus" data-toggle="popover"
+						data-placement="top" data-content="Please Enter LR No"
+						input-class="form-control form-control-small" style = "width: 100%"></angucomplete-alt>
+						
 					</div>
 					
-					<div class="col-lg-3 report_class">
+					<div class="col-lg-3 branchclass">
+					<span class="text-padding">Condition </span>
 						<select class="form-control">
 							<option>-- Select --</option>
 							<option>And</option>
@@ -306,6 +313,7 @@
 						</select>
 					</div>				
 				</div>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						
                 </div>
                 		
