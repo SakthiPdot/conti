@@ -732,7 +732,7 @@ public class EmployeeRestController {
 						return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);
 					} else {
 						
-						Iterator emp_it = empCategory.iterator();
+						/*Iterator emp_it = empCategory.iterator();
 						
 						while(emp_it.hasNext()) {
 							EmployeeMaster employee = (EmployeeMaster) emp_it.next();
@@ -743,6 +743,12 @@ public class EmployeeRestController {
 							}
 							
 						}
+						result.put("EmployeeMaster", empCategory);
+						loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+						return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);*/
+						
+						empCategory = employeeDao.searchbyeyEmpCategory(searchStr);
+						
 						result.put("EmployeeMaster", empCategory);
 						loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 						return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);

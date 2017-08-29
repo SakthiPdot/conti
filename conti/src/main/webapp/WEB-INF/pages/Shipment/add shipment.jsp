@@ -101,7 +101,7 @@
               	  <div class="col-md-6 col-sm-6 col-xs-6 GenLeftRight">
 	              <div  class="subHead">
 	               <b>Branch Name : ${branch.branch_name}</b>      
-	               ${branch_id}    ${userid}  
+	                 
 	              </div>
 	              
 	              <div  class="subHead">               
