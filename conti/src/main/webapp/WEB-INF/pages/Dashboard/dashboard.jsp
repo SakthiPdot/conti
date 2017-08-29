@@ -57,7 +57,9 @@
 		
 		
     </div>
- 
+ <script>
+ 	$("#dashboard").addClass("active-menu");
+ </script>
 
 </body>
 
