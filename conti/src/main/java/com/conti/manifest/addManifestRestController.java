@@ -400,10 +400,12 @@ public class addManifestRestController {
 			
 			mDao.saveOrUpdate(manifest);
 			manifestNo.put("ManifestNo",manifest.getManifest_prefix());
+			manifestNo.put("ManifestId", manifest.getManifest_id());
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<String>(manifestNo.toString(),HttpStatus.CREATED);
 		} catch (Exception e) {
 			manifestNo.put("ManifestNo","Error Creating Manifest No");
+			manifestNo.put("ManifestId", "Error Creating Manifest Id");
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, e);
 			return new ResponseEntity<String>("",HttpStatus.UNPROCESSABLE_ENTITY);
 		}

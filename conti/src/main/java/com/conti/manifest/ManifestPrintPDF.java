@@ -11,16 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 
 import com.conti.master.branch.BranchModel;
+import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 import com.itextpdf.text.Element;
-import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.PageSize;
 import com.lowagie.text.Cell;
 import com.lowagie.text.Document;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.Phrase;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.Table;
 import com.lowagie.text.pdf.PdfWriter;
 
@@ -39,6 +41,7 @@ public class ManifestPrintPDF extends AbstractPdfView {
 	
 	public ManifestPrintPDF() {
 		setContentType("application/pdf");
+	 	
 	}
 
 	@Override
@@ -50,6 +53,15 @@ public class ManifestPrintPDF extends AbstractPdfView {
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		Rectangle one = new Rectangle(0,0);
+		document.setPageSize(one);
+		
+	 	float left = 0;
+        float right =0;
+        float top = 80;
+        float bottom = 0;
+		document.setMargins(left, right, top, bottom);
+	
 		
 		ManifestModel manifestModel=(ManifestModel)model.get("manifest");
 		Company company = (Company) model.get("company");
@@ -68,7 +80,7 @@ public class ManifestPrintPDF extends AbstractPdfView {
 	      
 	      //===== for company logo
 	      Image image = Image.getInstance(company.getCompany_logo());
-	      image.scaleAbsolute(80, 80);
+	      image.scaleAbsolute(80, 20);
 	      
 	      
 	      Cell logoCell=new Cell(image);
@@ -192,39 +204,221 @@ public class ManifestPrintPDF extends AbstractPdfView {
 		    headingTable.addCell(date);
 
 		    
-		    //customer table
-		    Table detailTable = new Table(7);
-		    headingTable.setBorderWidth(1);
-		    headingTable.setPadding(4);
-		    headingTable.setSpacing(0);
+		    //detail table
+		    Table detailTable = new Table(8);
+		    detailTable.setBorderWidth(1);
+		    detailTable.setPadding(4);
+		    detailTable.setSpacing(0);
+		    detailTable.setWidths(new float[]{1,3,3,3,2.5f,3,3,1.5f});
+		    //detailTable.setWidths(new int[]{1,3,3,3,2,3,3,2});
 		    
-/*		    //Manifest No Heading
-		    Cell manifestNoHeading = new Cell(new Phrase("Manifest No:", address_font));
-		    manifestNoHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    manifestNoHeading.setBorder(Rectangle.NO_BORDER);
-		    headingTable.addCell(manifestNoHeading);
+		    //serial No Heading
+		    Cell serialNoHeading = new Cell(new Phrase("S. No", address_font));
+		    serialNoHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    serialNoHeading.setBorder(Rectangle.RIGHT);
+		    detailTable.addCell(serialNoHeading);
 		   
-		    Cell manifestNo = new Cell(new Phrase(manifestModel.getManifest_prefix(), address_font));
-		    manifestNo.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    manifestNo.setBorder(Rectangle.NO_BORDER);
-		    headingTable.addCell(manifestNo);
+		    //LR No Heading
+		    Cell lrNoHeading = new Cell(new Phrase("L.R No", address_font));
+		    lrNoHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    lrNoHeading.setBorder(Rectangle.RIGHT);
+		    detailTable.addCell(lrNoHeading);
 		    
-		    //Manifest No Heading
-		    Cell formHeading = new Cell(new Phrase("From :", address_font));
-		    formHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    formHeading.setBorder(Rectangle.NO_BORDER);
-		    headingTable.addCell(formHeading);
-		   
-		    Cell from = new Cell(new Phrase(manifestModel.getBranchModel1().getBranch_name(), address_font));
-		    from.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    from.setBorder(Rectangle.NO_BORDER);
-		    headingTable.addCell(from);
-*/
+		    //Party from Heading
+		    Cell formPartyHeading = new Cell(new Phrase("Party\nSender    Consignee", address_font));
+		    formPartyHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    formPartyHeading.setBorder(Rectangle.RIGHT);
+		    formPartyHeading.setColspan(2);
+		    detailTable.addCell(formPartyHeading);
+		
+		  /*  //Party To Heading
+		    Cell toPartyHeading = new Cell(new Phrase("Party(To)", address_font));
+		    toPartyHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    toPartyHeading.setBorder(Rectangle.RIGHT);
+		    detailTable.addCell(toPartyHeading);*/
+		    
+		    
+		    //no of article Heading
+		    Cell noOfArticleHeading = new Cell(new Phrase("No Of Articles", address_font));
+		    noOfArticleHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    noOfArticleHeading.setBorder(Rectangle.RIGHT);		    
+		    detailTable.addCell(noOfArticleHeading);
+
+		    //Paid Heading
+		    Cell paidHeading = new Cell(new Phrase("Paid", address_font));
+		    paidHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    paidHeading.setBorder(Rectangle.RIGHT);
+		    detailTable.addCell(paidHeading);
+		    
+		    // To pay Heading
+		    Cell toPayHeading = new Cell(new Phrase("To Pay", address_font));
+		    toPayHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    toPayHeading.setBorder(Rectangle.RIGHT);
+		    detailTable.addCell(toPayHeading);
+		    
+		    //credit Heading
+		    Cell creditHeading = new Cell(new Phrase("Credit", address_font));
+		    creditHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    creditHeading.setBorder(Rectangle.NO_BORDER);
+		    detailTable.addCell(creditHeading);
+		    
 		    
 
+		  //value table
+		    Table valueTable = new Table(8);
+		    valueTable.setBorderWidth(1);
+		    valueTable.setPadding(4);
+		    valueTable.setSpacing(0);
+		    valueTable.setWidths(new float[]{1,3,3,3,2.5f,3,3,1.5f});
+		  int totalArticles=0,paid=0,toPay=0;
+		    
+		    for(int i=0;i<manifestModel.getManifestDetailModel().size();i++){
+		    	
+		        //sno 
+			    Cell sno = new Cell(new Phrase(String.valueOf(i+1), address_font));
+			    sno.setHorizontalAlignment(Element.ALIGN_CENTER);
+			    sno.setBorder(Rectangle.RIGHT);
+			    valueTable.addCell(sno);
+			    
+			    
+			     //lrno 
+			    Cell lrno = new Cell(new Phrase(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getLrno_prefix(), address_font));
+			    lrno.setHorizontalAlignment(Element.ALIGN_CENTER);
+			    lrno.setBorder(Rectangle.RIGHT);
+			    valueTable.addCell(lrno);
+			    
+			    
+			    //Customer Name From
+			    Cell customerNameFrom = new Cell(new Phrase(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getSender_customer().getCustomer_name(), address_font));
+			    customerNameFrom.setHorizontalAlignment(Element.ALIGN_CENTER);
+			    customerNameFrom.setBorder(Rectangle.RIGHT);
+			    valueTable.addCell(customerNameFrom);
+			    
+			    
+			    //Customer Name To
+			    Cell customerNameTo = new Cell(new Phrase(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getConsignee_customer().getCustomer_name(), address_font));
+			    customerNameTo.setHorizontalAlignment(Element.ALIGN_CENTER);
+			    customerNameTo.setBorder(Rectangle.RIGHT);
+			    valueTable.addCell(customerNameTo);
+
+			    
+			    //Number Of Parcel
+			    Cell noOfParcel = new Cell(new Phrase(String.valueOf(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getNumberof_parcel()), address_font));
+			    noOfParcel.setHorizontalAlignment(Element.ALIGN_CENTER);
+			    noOfParcel.setBorder(Rectangle.RIGHT);
+			    valueTable.addCell(noOfParcel);
+			    
+			    
+			    Cell billTo ;
+			   //Bill to
+			    if(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getBill_to().trim().equals(ConstantValues.PAID.trim())){
+			    	  billTo = new Cell(new Phrase(String.valueOf(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getTotal_charges()), address_font));
+			    	  paid+=manifestModel.getManifestDetailModel().get(i).getShipmentModel().getTotal_charges();
+			    }else{
+			    	  billTo = new Cell(new Phrase(" ", address_font));
+			    }
+			    billTo.setHorizontalAlignment(Element.ALIGN_CENTER);
+			    billTo.setBorder(Rectangle.RIGHT);
+			    valueTable.addCell(billTo);
+			    
+			    
+			    totalArticles+=manifestModel.getManifestDetailModel().get(i).getShipmentModel().getNumberof_parcel();
+		    	
+		    	
+		    	
+			    Cell billFrom ;
+			   //Bill from
+			    if(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getBill_to().trim().equals(ConstantValues.TO_PAY.trim())){
+			    	billFrom = new Cell(new Phrase(String.valueOf(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getTotal_charges()), address_font));
+			    	toPay+=manifestModel.getManifestDetailModel().get(i).getShipmentModel().getTotal_charges();
+			    }else{
+			    	billFrom = new Cell(new Phrase(" ", address_font));
+			    }
+			    billFrom.setHorizontalAlignment(Element.ALIGN_CENTER);
+			    billFrom.setBorder(Rectangle.RIGHT);
+			    valueTable.addCell(billFrom);
+			    
+			    
+			    Cell payMode;
+			    if(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getPay_mode().trim().equals(ConstantValues.CREDIT)){
+			    	payMode = new Cell(new Phrase("YES", address_font));
+			    }else{
+			    	payMode = new Cell(new Phrase("NO", address_font));
+			    }
+			    payMode.setHorizontalAlignment(Element.ALIGN_CENTER);
+			    payMode.setBorder(Rectangle.RIGHT);
+			    valueTable.addCell(payMode);
+			    
+		    }
+		    
+			  //value table
+		    Table footerTable = new Table(8);
+		    footerTable.setBorderWidth(1);
+		    footerTable.setPadding(4);
+		    footerTable.setSpacing(0);
+		    footerTable.setWidths(new float[]{1,3,3,3,2.5f,3,3,1.5f});
+		    
+		    // Signature
+		    Cell sign = new Cell (new Phrase ("For Conti Cargo Service"
+		    		+ "\n\n\nSignature", address_font));
+		    sign.setRowspan(3);
+		    sign.setColspan(3);
+		    sign.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    sign.setBorder(Rectangle.RIGHT);
+		    footerTable.addCell(sign);
+		    
+		    
+		    //Article Heading
+		    Cell articleHeading= new Cell(new Phrase("Total No Of Articles", address_font));
+		    articleHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    articleHeading.setBorder(Rectangle.RIGHT | Rectangle.BOTTOM);
+		    articleHeading.setColspan(3);
+		    footerTable.addCell(articleHeading);
+		    
+		  
+		    Cell totalArticle= new Cell(new Phrase(String.valueOf(totalArticles), address_font));
+		    totalArticle.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    totalArticle.setBorder(Rectangle.BOTTOM);
+		    totalArticle.setColspan(2);
+		    footerTable.addCell(totalArticle);
+		    
+		    //Paid Heading
+		    Cell totalPaidAmountHeading = new Cell(new Phrase("Total Paid Amount", address_font));
+		    totalPaidAmountHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    totalPaidAmountHeading.setBorder(Rectangle.RIGHT | Rectangle.BOTTOM);
+		    totalPaidAmountHeading.setColspan(3);
+		    footerTable.addCell(totalPaidAmountHeading);
+		    
+		    Cell totalPaidAmount = new Cell(new Phrase(String.valueOf(paid), address_font));
+		    totalPaidAmount.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    totalPaidAmount.setBorder(Rectangle.BOTTOM);
+		    totalPaidAmount.setColspan(2);
+		    footerTable.addCell(totalPaidAmount);
+		    
+		    //To Pay Heading
+		    Cell totalToPayHeading = new Cell(new Phrase("Total To Pay Amount", address_font));
+		    totalToPayHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    totalToPayHeading.setBorder(Rectangle.RIGHT);
+		    totalToPayHeading.setColspan(3);
+		    footerTable.addCell(totalToPayHeading);
+		    
+		    
+		    Cell totalToPay = new Cell(new Phrase(String.valueOf(toPay), address_font));
+		    totalToPay.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    totalToPay.setBorder(Rectangle.NO_BORDER);
+		    totalToPay.setColspan(2);
+		    footerTable.addCell(totalToPay);
+		    
 	      // Adding Table to document        
 	      document.add(companyTable);
 	      document.add(headingTable);
+	      document.add(detailTable);
+	      document.add(valueTable);
+	      document.add(footerTable);
+	      
+	      
+
+	      
 	}
 
 }
