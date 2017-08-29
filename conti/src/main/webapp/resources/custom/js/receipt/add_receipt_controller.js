@@ -253,25 +253,74 @@ $scope.staff_name = function(selected) {
 	}
 }
 	//===================================on modal open calculate freight charge====================================	
-	$("#myModal").on('shown.bs.modal', function(){
-		$timeout(function(){
+
+	
+$scope.checkSenderConsignee =function (){
+		
+		var sender=true,consignee=true;
+
+		for(var i=0;i<self.selected_receipt.length;i++){
 			
-			$scope.showDoorDelivery=false;	
-			var total=0;
+			if(self.selected_receipt[0].sender_customer.customer_id !=self.selected_receipt[i].sender_customer.customer_id){
+				sender=false;
+			}
 			
-			for(var i=0;i<self.selected_receipt.length;i++){
-				console.log(self.selected_receipt[i].bill_to.trim());
-				if(self.selected_receipt[i].bill_to.trim()==$("#to_pay").val().trim()){
-					total = parseInt(total)+parseInt(self.selected_receipt[i].total_charges);
-				}
-				if(self.selected_receipt[i].service.service_name=="Door Delivery"){
-					$scope.showDoorDelivery=true;	
-				}
-				$scope.allLR_freight_charge=total;
+			
+			if(self.selected_receipt[0].consignee_customer.customer_id !=self.selected_receipt[i].consignee_customer.customer_id){
+				consignee=false;
+			}			
+		}	
+		showMessageSenderConsignee(sender,consignee,self.selected_receipt[0].sender_customer.customer_id ,self.selected_receipt[0].consignee_customer.customer_id);
+	}
+	
+		function showMessageSenderConsignee(x,y,origin_id,destination_id){
+			var msg="";
+			
+			if(x==false && y==false){
+				msg="Both Sender And Customer Are Different." + "<br/>" +"Please Select Same Sender And Customer."
+			}else if(x==false ){
+				msg="Please Select Same Sender."
+			}else if(y==false){
+				msg="Please Select Same  Customer."
+			}else{	
+				$('#myModal').modal('show');
+				
+				$("#myModal").on('shown.bs.modal', function(){
+					
+					$timeout(function(){
+						
+						$scope.showDoorDelivery=false;	
+						var total=0;
+						
+						for(var i=0;i<self.selected_receipt.length;i++){
+							console.log(self.selected_receipt[i].bill_to.trim());
+							if(self.selected_receipt[i].bill_to.trim()==$("#to_pay").val().trim()){
+								total = parseInt(total)+parseInt(self.selected_receipt[i].total_charges);
+							}
+							if(self.selected_receipt[i].service.service_name=="Door Delivery"){
+								$scope.showDoorDelivery=true;	
+							}
+							$scope.allLR_freight_charge=total;
+							
+						}
+					 })
+				});
 				
 			}
-		 })
-	});
+			
+			if(msg.trim().length!=0){
+				BootstrapDialog.alert({	
+					title:' Receipt Alert',
+					message: msg,
+					type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+					closable: false, 
+					draggable: false});
+				
+				self.selectallreceipts=false;
+				self.receiptSelectAll()
+				
+			}
+		}
 	
 	$scope.showDoorDelivery=true;
 	

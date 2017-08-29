@@ -53,15 +53,15 @@ public class ManifestPrintPDF extends AbstractPdfView {
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		Rectangle one = new Rectangle(0,0);
+		/*Rectangle one = new Rectangle(0,0);
 		document.setPageSize(one);
-		
-	 	float left = 0;
-        float right =0;
-        float top = 80;
-        float bottom = 0;
+		*/
+	 	float left = -50;
+        float right =-50;
+        float top = 20;
+        float bottom =20;
 		document.setMargins(left, right, top, bottom);
-	
+		document.open();
 		
 		ManifestModel manifestModel=(ManifestModel)model.get("manifest");
 		Company company = (Company) model.get("company");
@@ -76,6 +76,7 @@ public class ManifestPrintPDF extends AbstractPdfView {
 	      companyTable.setBorderWidth(1);
 	      companyTable.setPadding(5);
 	      companyTable.setSpacing(0);
+	      
 	      companyTable.setWidths(new int[]{1,3});
 	      
 	      //===== for company logo
@@ -95,7 +96,7 @@ public class ManifestPrintPDF extends AbstractPdfView {
 		  
 	      Cell nameCell=new Cell(company.getCompany_name());
 	      nameCell.setBorder(Rectangle.NO_BORDER);
-	      nameCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	      nameCell.setVerticalAlignment(Element.ALIGN_TOP);
 	      nameCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 	       
 	      companyTable.addCell(nameCell);

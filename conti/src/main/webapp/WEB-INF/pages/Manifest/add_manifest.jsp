@@ -80,8 +80,8 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 	
 					<div class="col-md-2"></div>
 
-					<div class="col-md-3 col-sm-4 col-xs-6">
-						<b>Last Manifest No : {{lastManifestNumber}}</b>
+					<div class="col-md-3 col-sm-4 col-xs-6" data-ng-cloak>
+						<b>Last Manifest No :<span style = "color : #0b67af;">{{lastManifestNumber}}</span></b>
 					</div>
 
 				</div>

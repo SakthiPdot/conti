@@ -93,10 +93,9 @@
 	              <div class="col-md-2">
 	              </div>
 	              
-	              <div class="col-md-3 col-sm-4 col-xs-6">	              
-	              <b>Last Receipt No :{{lastReceiptNumber}}</b>	              
+	              <div class="col-md-3 col-sm-4 col-xs-6" data-ng-cloak>	              
+	              <b>Last Receipt No :<span style = "color : #0b67af;">{{lastReceiptNumber}}</span></b>	              
 	              </div>
-	              
               </div>
               </div>
               
@@ -486,11 +485,17 @@
                 			       		<div class="col-lg-5 branchclass">
                 			      		 </div>
                                         <div class="col-lg-2 branchclass">
-                			      		   <button class="btn btn-primary btn-lg"
+                			      		<%--    <button class="btn btn-primary btn-lg"
                 			      		   data-ng-disabled = "ctrl.selected_receipt.length <1"
                 			      		    data-toggle="modal" data-target="#myModal">
                                                Receipt Generate
-                                            </button>                                     
+                                            </button>   
+                                             --%>
+                                            <button class="btn btn-primary btn-lg" 
+										type="button"
+                			      		   data-ng-disabled = "ctrl.selected_receipt.length <1"
+										 data-ng-click="checkSenderConsignee()"
+										> Receipt Generate</button>                                  
                                         </div>
                                         <div class="col-lg-5 branchclass">
                 			      	 </div>
