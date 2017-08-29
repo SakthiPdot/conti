@@ -717,6 +717,17 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		
 		return listShipment;
 	}
+
+
+
+	@Override
+	@Transactional
+	public List<ShipmentModel> fetchAllLRNo() {
+			@SuppressWarnings("unchecked")
+			List<ShipmentModel> lrList = sessionFactory.getCurrentSession()
+					.createQuery("from ShipmentModel WHERE obsolete = N ").list();
+		return lrList;
+	}
 	
 	
 	
