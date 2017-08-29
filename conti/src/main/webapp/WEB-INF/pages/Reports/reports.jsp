@@ -232,7 +232,7 @@
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">From </span>						
 						<angucomplete-alt id="lrno_prefix" data-ng-model="ctrl.report.lrno_prefix"
-						placeholder="LR No"
+						placeholder="Ex:LR No"
 						pause="100" selected-object="lrno_prefix"
 						local-data="ctrl.shipments"
 						search-fields="lrno_prefix"
@@ -240,7 +240,7 @@
 						match-class="highlight"
 						initial-value="{{ctrl.report.shipmentModel.lrno_prefix}}"
 						minlength="1" field-required="true" data-trigger="focus" data-toggle="popover"
-						data-placement="top" data-content="Please Enter LR No"
+						data-placement="top" data-content="Please enter & select LR No"
 						input-class="form-control form-control-small" style="width:100%">
 						</angucomplete-alt>
 						
@@ -249,7 +249,7 @@
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">To </span>						
 						<angucomplete-alt id="lrno_prefix" data-ng-model="ctrl.report.lrno_prefix"
-						placeholder="LR No" pause="100"
+						placeholder="Ex:LR No" pause="100"
 						selected-object="lrno_prefix"
 						local-data="ctrl.shipments"
 						search-fields="lrno_prefix"
@@ -258,7 +258,7 @@
 						initial-value="{{ctrl.report.shipmentModel.lrno_prefix}}"
 						minlength="1" field-required="true"
 						data-trigger="focus" data-toggle="popover"
-						data-placement="top" data-content="Please Enter LR No"
+						data-placement="top" data-content="Please enter & select LR No"
 						input-class="form-control form-control-small" style = "width: 100%"></angucomplete-alt>
 						
 					</div>
@@ -279,11 +279,21 @@
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Product </span>
-						<select class="form-control">
-							<option>-- Select --</option>
-							<option>Document</option>
-							
-						</select>
+						<div angucomplete-alt id="product_name" data-ng-model="ctrl.report.product_name"
+						placeholder="Ex:Box"
+						pause="0"
+						selected-object="product_name"
+						remote-url="getProductByStr/"
+						remote-url-data-field="Product"
+						title-field="product_name"
+						match-class="highlight"
+						minlength="1"
+						maxlength="50"
+						input-class="form-control form-control-small"
+						onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
+						data-trigger="focus" data-toggle="popover"
+						data-placement="top" data-content="please enter & select product " style="width:100%"
+						></div>
 					</div>				
 				</div>
 				

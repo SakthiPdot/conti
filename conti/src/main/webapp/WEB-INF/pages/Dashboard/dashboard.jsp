@@ -39,14 +39,14 @@
 </head>
 
 
-<body style="overflow-x:hidden;">
+<body style="overflow:hidden;">
  
 	
 	<jsp:include page="nav.jsp"/>
 	
     <div id="wrapper"> 
        	  
-		<div id="page-wrapper" class="background-image" style="background-image:url(resources/Image/dashboard.png);background-repeat:no-repeat;background-size:100% 100%;">	 
+		<div id="page-wrapper" class="background-image" style="background-image:url(resources/Image/dashboard.png);background-repeat:no-repeat;background-size:100% 100%">	 
     
       		<div class="page-header" >
       		Dashboard 
@@ -83,7 +83,7 @@
                <div class="col-md-4 col-sm-12 col-xs-12">
                         <div class="panel panel-primary text-center no-boder blue">
                               <div class="panel-left pull-left blue">
-                                <i class="fa fa-money fa-5x"></i>
+                                <i class="fa fa-file-text-o fa-5x"></i>
 								</div>                                
                             <div class="">
 							<h3 class="dash_padding" style="font-size: xx-large;"><a href="receipt_generate" class="underline">Receipt Generation</a></h3>
