@@ -282,7 +282,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			.then(
 					function(branch) {
 						self.shipment.sender_branch = branch;
-						
+						console.log(self.shipment.sender_branch);
 					}, function (errres) {
 						console.log(errres);
 					}
@@ -494,6 +494,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 				"max_weight" : self.shipment.shipmentDetail[index].weight
 		};
 	
+		console.log(self.shipment);
+		
 		priceSettingService.fetch_priceforShipment(self.shipment.forpricesetting)
 			.then(
 					function(res) {
@@ -521,9 +523,9 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//----------------------------- TAX PAYABLE ON REVERSE CHARGE begin
 	
 	self.tax_payable = function() {
-		if( self.shipment.bill_to == "Sender" ) {
+		if( self.shipment.bill_to == "Paid" ) {
 			self.shipment.taxin_payable = sender_taxin_payable;
-		} else if( self.shipment.bill_to == "Consignee" ) {
+		} else if( self.shipment.bill_to == "To Pay" ) {
 			self.shipment.taxin_payable = consignee_taxin_payable;
 		} else {
 			self.shipment.taxin_payable = null;

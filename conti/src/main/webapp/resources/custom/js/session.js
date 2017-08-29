@@ -195,8 +195,8 @@
 //-------------------- SHIPMENT BILL OPEN BEGIN
 	 		function bill_open(lrno){
 	 			valid = true;
-	 			window.open("shipment_bill?lrno="+lrno, '_blank');
-	 			
+	 			/*window.open("shipment_bill?lrno="+lrno, '_blank');*/
+	 			window.open("LR_print/"+lrno, '_blank');
 	 			/*window.location.href = "shipment_bill?lrno="+lrno;*/
 	 		}
 //-------------------- SHIPMENT BILL OPEN END	 		
