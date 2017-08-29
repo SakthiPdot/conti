@@ -152,7 +152,21 @@ class UsersDaoImpl implements UsersDao {
 		
 		@Override
 		@Transactional
-		public List<User> getLocationSorting100(String name,String order) {
+		public List<User> getLocationSorting100(String name,String order, int branch_id) {
+			@SuppressWarnings("unchecked")
+			List<User> listUser = (List<User>) sessionFactory.getCurrentSession()
+					.createQuery("from User where obsolete ='N' "
+							+ "AND branchModel.branch_id =" + branch_id
+							+ "order by ("+name+")"+  order )
+					.setMaxResults(100)
+					.list();
+			
+			return listUser;
+		}
+		
+		@Override
+		@Transactional
+		public List<User> getLocationSorting1004SA(String name,String order) {
 			@SuppressWarnings("unchecked")
 			List<User> listUser = (List<User>) sessionFactory.getCurrentSession()
 					.createQuery("from User where obsolete ='N' "
@@ -204,15 +218,19 @@ class UsersDaoImpl implements UsersDao {
 		
 		@Override
 		@Transactional
-		public List<User> searchbyUser(String search_key) {
+		public List<User> searchbyUser(String search_key, int branch_id) {
 			// TODO Auto-generated method stub
 			@SuppressWarnings("unchecked")
 			
 			List<User> listemp = (List<User>) sessionFactory.getCurrentSession()
-			.createQuery("from User WHERE obsolete ='N' and employeeMaster.emp_name LIKE '%" + search_key + "%'"
+			.createQuery("from User WHERE obsolete ='N' "
+					+ " AND branchModel.branch_id = " + branch_id
+					+ " AND username LIKE '%" + search_key + "%'"
+					/*+ " OR branchModel.branch_name LIKE '%" + search_key + "%'"*/
+					+ " OR employeeMaster.emp_name LIKE '%" + search_key + "%"
+					+ " OR role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'"
 					+ " OR employeeMaster.emp_code LIKE '%" + search_key + "%'"
-					+ " OR branchModel.branch_name LIKE '%" + search_key + "%'"
-					+ " OR username LIKE '%" + search_key + "%' OR role.role_Name LIKE '%" + search_key + "%' AND role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'").list();
+					/*+ " OR role.role_Name LIKE '%" + search_key + "%'"*/).list();
 			return listemp;
 			
 		}

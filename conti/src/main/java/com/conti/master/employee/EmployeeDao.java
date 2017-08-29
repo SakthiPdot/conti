@@ -35,6 +35,7 @@ public interface EmployeeDao {
 	
 	public int find_record_countforSA();
 	public int find_record_count();
+	public List<EmployeeMaster> searchbyEmployee4SA(String searchkey);
 	public List<EmployeeMaster> searchbyEmployee(String searchkey);
 	
 	//===== Referred Delete Process in Foreign key =========//

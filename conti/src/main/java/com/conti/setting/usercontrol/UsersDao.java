@@ -28,10 +28,11 @@ public interface UsersDao {
 	public List<User> getAllUsers();
 	public List<User> getUserwithLimitbySA(int from_limit, int to_limit, String order);
 	public List<User> getUserwithLimit(int branch_id, int from_limit, int to_limit, String order);
-	public List<User> getLocationSorting100(String name,String order);
+	public List<User> getLocationSorting100(String name,String order, int branch_id);
+	public List<User> getLocationSorting1004SA(String name,String order);
 	public List<User> searchbySAUser(String search_key);
 	
-	public List<User> searchbyUser(String search_key);
+	public List<User> searchbyUser(String search_key, int branch_id);
 	
 	public int find_record_countforSA();
 	public int find_record_count();

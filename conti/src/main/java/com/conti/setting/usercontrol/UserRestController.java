@@ -147,7 +147,8 @@ public class UserRestController {
 	//======================================sort by==========================================
 	@RequestMapping(value="sortByUser/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public  ResponseEntity<List<User>>  sortByLocation(@RequestBody String status,@PathVariable("name") String name,HttpServletRequest request){
-	
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		int user_id = Integer.parseInt(userInformation.getUserId());
 		String sortBy="";
 		
 		switch(name.trim()){
@@ -172,7 +173,13 @@ public class UserRestController {
 		
 		List<User> userList=new ArrayList<>();
 		try {
-			userList = usersDao.getLocationSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+			User user = usersDao.get(user_id);
+			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+				userList = usersDao.getLocationSorting1004SA(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");	
+			} else {
+				userList = usersDao.getLocationSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC", branch_id);
+			}
+			
 			if(userList.isEmpty()) {
 				loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 				return new ResponseEntity<List<User>> (HttpStatus.NO_CONTENT);
@@ -1104,7 +1111,7 @@ public class UserRestController {
 				
 			} else {
 				
-				userList = usersDao.searchbyUser(searchkey);
+				userList = usersDao.searchbyUser(searchkey, branch_id);
 				
 				if(userList.isEmpty()) {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
@@ -1157,7 +1164,7 @@ public class UserRestController {
 	public ResponseEntity<Map<String,List<EmployeeMaster>>> getEmployee4Search(HttpServletRequest request,
 			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException 
 	{
-		List<EmployeeMaster> employees = employeeDao.searchbyEmployee(searchStr);
+		List<EmployeeMaster> employees = employeeDao.searchbyEmployee4SA(searchStr);
 		Map result = new HashMap();	
 		result.put("Employees",employees);
 		return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);

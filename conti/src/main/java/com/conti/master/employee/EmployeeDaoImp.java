@@ -269,7 +269,7 @@ public class EmployeeDaoImp implements EmployeeDao {
 	
 	@Override
 	@Transactional
-	public List<EmployeeMaster> searchbyEmployee(String search_key) {
+	public List<EmployeeMaster> searchbyEmployee4SA(String search_key) {
 		// TODO Auto-generated method stub
 		@SuppressWarnings("unchecked")
 		
@@ -279,6 +279,19 @@ public class EmployeeDaoImp implements EmployeeDao {
 		
 	}
 
+	@Override
+	@Transactional
+	public List<EmployeeMaster> searchbyEmployee(String search_key) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<EmployeeMaster> listcust = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
+		.createQuery("from EmployeeMaster WHERE obsolete ='N' "
+				+ " AND user.role.role_Name <>'" + constantVal.ROLE_SADMIN + "' "
+				+ " and emp_name  LIKE '%" + search_key + "%'").list();
+		return listcust;
+		
+	}
 	
 	/*------------------------------- Get Customer  by id End -----------------------*/
 	
