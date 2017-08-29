@@ -183,6 +183,18 @@
 					</div>
 				</div>
 				
+				<div class="col-lg-12 noPaddingLeft report_padding" data-ng-hide="filter_all || filter_branch">
+					
+					<div class="col-lg-3 branchclass">
+						<b class="text-padding">Branch </b>
+						<select class="form-control" data-ng-options = "branch.branch_name for branch in ctrl.branches"
+						data-ng-model="ctrl.report.branch">
+							<option value="" disabled>-- Select --</option>
+														
+						</select>
+					</div>				
+				</div>
+				
 				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_all || filter_branch">
 					<div class="sec-padding">Branch</div>
 					<div class="col-lg-3 branchclass">
@@ -217,21 +229,31 @@
 					<div class="sec-padding">LR No</div>
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">From </span>
-						<select class="form-control">
-							<option>-- Select --</option>
-							<option>Chennai</option>
-							<option>Coimbatore</option>
-							<option>Bangalore</option>
-						</select>
+						<!-- <select class="form-control">
+							<option value="" disabled>-- Select --</option>
+							
+						</select> -->
+						<angucomplete-alt id="lr_number" data-ng-model="ctrl.report.lr_number"
+						pause="100" selected-object="lr_number"
+						local-data="ctrl.shipments"
+						search-fields="lr_number"
+						title-field="lr_number"
+						match-class="highlight"
+						initial-value="{{ctrl.report.shipmentModel.lr_number}}"
+						minlength="1" field-required="true" data-trigger="focus" data-toggle="popover"
+						data-placement="top" data-content="LR No"
+						input-class="form-control form-control-small">
+						</angucomplete-alt>
+						<input type="text" id="lr_number" name="lr_number" value="{{lr_number.originalObject}}"/>
 					</div>
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">To </span>
 						<select class="form-control">
 							<option>-- Select --</option>
-							<option>Chennai</option>
-							<option>Coimbatore</option>
-							<option>Bangalore</option>
+							<option>LR215</option>
+							<option>LR216</option>
+							<option>LR217</option>
 						</select>
 					</div>
 					
@@ -379,6 +401,7 @@
     <script src="resources/custom/js/custom.js"></script>
     <script type="text/javascript" src="resources/custom/js/reports/report_controller.js"></script>
   <!--   <script type="text/javascript" src="resources/custom/js/reports/report_service.js"></script> -->
+    <script src="resources/custom/js/shipment/shipment_service.js"></script>
     <script src="resources/custom/js/branch_master/branch_service.js"></script>
     <script src="resources/custom/js/confirmDialog.js"></script>
 	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
