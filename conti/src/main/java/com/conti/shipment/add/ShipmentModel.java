@@ -10,12 +10,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.hibernate.annotations.IndexColumn;
 
 import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerModel;
@@ -53,7 +55,8 @@ public class ShipmentModel {
 	//------------------Sender customer
 	private CustomerModel sender_customer;
 	@JoinColumn(name = "sendercustomer_id", referencedColumnName = "customer_id")
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval= true)
+
 	public CustomerModel getSender_customer() {
 		return sender_customer;
 	}
@@ -64,7 +67,8 @@ public class ShipmentModel {
 	//------------------Consignee customer	
 	private CustomerModel consignee_customer;
 	@JoinColumn(name = "consigneecustomer_id", referencedColumnName = "customer_id")
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval= true)
+
 	public CustomerModel getConsignee_customer() {
 		return consignee_customer;
 	}

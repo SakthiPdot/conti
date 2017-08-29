@@ -8,12 +8,12 @@
  * @Updated_date_time Jun 27, 2017 03:12:17 PM
  */
 
-function bill_open(lrno){
+/*function bill_open(lrno){
 	valid = true;
 	window.open("shipment_bill?lrno="+lrno, '_blank');
 	
-	/*window.location.href = "shipment_bill?lrno="+lrno;*/
-}
+	window.location.href = "shipment_bill?lrno="+lrno;
+}*/
 
 /*var doc = new jsPDF();
 var specialElementHandlers = {
@@ -769,7 +769,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			self.shipment.sender_location = self.shipment.sender_customer.location;
 			self.shipment.consignee_location = self.shipment.consignee_customer.location;
 			
-			
+			console.log(self.shipment);
 			if( self.shipment.shipment_id == null ) {
 				
 				self.confirm_title = 'Save';
