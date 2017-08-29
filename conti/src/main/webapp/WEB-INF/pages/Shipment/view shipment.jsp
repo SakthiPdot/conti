@@ -482,10 +482,10 @@
                     		<div class="col-md-4">
                     			<span class="spanclass"><b>Bill To</b></span>
                     			<label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" data-ng-model = "ctrl.shipment.bill_to" value="Sender" data-ng-disabled = "true" ><b>Sender</b>
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" data-ng-model = "ctrl.shipment.bill_to" value="Paid" data-ng-disabled = "true" ><b>Paid</b>
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" data-ng-model = "ctrl.shipment.bill_to" value="Consignee" data-ng-disabled = "true"><b>Consignee</b>
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" data-ng-model = "ctrl.shipment.bill_to" value="To Pay" data-ng-disabled = "true"><b>To Pay</b>
                                             </label>  
                     		 </div>
 

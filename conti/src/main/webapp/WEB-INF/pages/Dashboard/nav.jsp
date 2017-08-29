@@ -59,7 +59,7 @@
                 </button>
                 <a class="navbar-brand" href="/Conti/"><strong>Conti</strong></a>
 				
-		
+		<!-- <img alt="hi" src="resources/Image/dashboard.png"> -->
             </div>
 
            <ul class="nav navbar-top-links navbar-right">

@@ -65,7 +65,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    // for company logo
 	    Image image = null;
 	    image = Image.getInstance(company.getCompany_logo());
-	    image.scaleAbsolute(80, 80);
+	    image.scaleAbsolute(80, 20);
 	    Cell logo_cell = new Cell(image);
 	    logo_cell.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT);
 	    logo_cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -130,14 +130,14 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    		new Phrase(
 	    				"Name : "+shipment.getSender_customer().getCustomer_name()+" "+
 	    				"\nAddress : "+shipment.getSender_customer().getCustomer_addressline1()+
-	    							", "+shipment.getSender_customer().getCustomer_addressline2()+
+	    							/*", "+shipment.getSender_customer().getCustomer_addressline2()+*/
 	    							", "+shipment.getSender_customer().location.getLocation_name()+
-	    							", \n"+shipment.getSender_customer().location.address.getCity()+
+	    							", "+shipment.getSender_customer().location.address.getCity()+
 	    							" - "+shipment.getSender_customer().location.getPincode()+
-	    							", \n Ph :"+shipment.getSender_customer().getCustomer_mobileno()+
-	    							", \nEmail :"+shipment.getSender_customer().getCustomer_email()+
+	    							", \nPh :"+shipment.getSender_customer().getCustomer_mobileno()+
+	    							/*", \nEmail :"+shipment.getSender_customer().getCustomer_email()+*/
 	    							", \nState :"+shipment.getSender_customer().location.address.getState()+
-	    							", \nState Code :"+shipment.getSender_customer().location.address.getStateCode()+
+	    							", State Code :"+shipment.getSender_customer().location.address.getStateCode()+
 	    							" \nGSTIN Number :"+shipment.getSender_customer().getGstin_number()
 	    							
 	    			,address_font)
@@ -146,14 +146,14 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    		new Phrase(
 	    				"Name : "+shipment.getConsignee_customer().getCustomer_name()+" "+
 	    				"\nAddress : "+shipment.getConsignee_customer().getCustomer_addressline1()+
-	    							", "+shipment.getConsignee_customer().getCustomer_addressline2()+
+	    							/*", "+shipment.getConsignee_customer().getCustomer_addressline2()+*/
 	    							", "+shipment.getConsignee_customer().location.getLocation_name()+
-	    							", \n"+shipment.getConsignee_customer().location.address.getCity()+
+	    							", "+shipment.getConsignee_customer().location.address.getCity()+
 	    							" - "+shipment.getConsignee_customer().location.getPincode()+
-	    							", \n Ph :"+shipment.getConsignee_customer().getCustomer_mobileno()+
-	    							", \nEmail :"+shipment.getConsignee_customer().getCustomer_email()+
+	    							", \nPh :"+shipment.getConsignee_customer().getCustomer_mobileno()+
+	    							/*", \nEmail :"+shipment.getConsignee_customer().getCustomer_email()+*/
 	    							", \nState :"+shipment.getConsignee_customer().location.address.getState()+
-	    							", \nState Code :"+shipment.getConsignee_customer().location.address.getStateCode()+
+	    							", State Code :"+shipment.getConsignee_customer().location.address.getStateCode()+
 	    							" \nGSTIN Number :"+shipment.getConsignee_customer().getGstin_number()
 	    							
 	    			,address_font)
@@ -199,7 +199,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    	desc_tbl.addCell(goods);
 	    	
 	    	Cell quantity = new Cell(new Phrase(
-	    			Float.toString(shipment.getShipmentDetail().get(i).getQuantity()), address_font));
+	    			Integer.toString(shipment.getShipmentDetail().get(i).getQuantity()), address_font));
 	    	quantity.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    	desc_tbl.addCell(quantity);
 	    	
@@ -288,13 +288,8 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    
 	    desc_tbl.addCell(sign);
 	    String bill_to = null;
-	    if(shipment.getBill_to().equals("Sender")) {
-	    	bill_to = "Paid";
-	    }else {
-	    	bill_to = "To Pay";
-	    }
-	    
-	    Cell topay = new Cell (new Phrase (bill_to, address_font));
+	    	    
+	    Cell topay = new Cell (new Phrase (shipment.getBill_to(), address_font));
 	    topay.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    topay.setVerticalAlignment(Element.ALIGN_MIDDLE);
 	    desc_tbl.addCell(topay);

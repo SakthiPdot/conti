@@ -101,7 +101,7 @@
               	  <div class="col-md-6 col-sm-6 col-xs-6 GenLeftRight">
 	              <div  class="subHead">
 	               <b>Branch Name : ${branch.branch_name}</b>      
-	               ${branch_id}    ${userid}  
+	                 
 	              </div>
 	              
 	              <div  class="subHead">               
@@ -302,7 +302,8 @@
 						             			  remote_url-data-field="Location"
 						             			  selected-object="sender_location_name"
 									              search-fields="location_name,pincode"
-									              title-field="location_name,pincode"
+									              title-field="location_name"
+									              description-field="pincode"
 												  match-class="highlight"
 												  minlength="3"
 	   											  data-trigger="focus" data-toggle="popover" 
@@ -506,7 +507,8 @@
 						             			  remote_url-data-field="Location"
 						             			  selected-object="consignee_location_name"
 									              search-fields="location_name,pincode"
-									              title-field="location_name,pincode"
+									              title-field="location_name"
+									              description-field="pincode"
 												  match-class="highlight"
 												  minlength="3"
 	   											  data-trigger="focus" data-toggle="popover" 
@@ -605,10 +607,10 @@
                     		<div class="col-md-4">
                     			<span class="spanclass"><b>Bill To</b></span>
                     			<label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" data-ng-model = "ctrl.shipment.bill_to" value="Sender" data-ng-required = "true" data-ng-click = "ctrl.tax_payable()"><b>Sender</b>
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" data-ng-model = "ctrl.shipment.bill_to" value="Paid" data-ng-required = "true" data-ng-click = "ctrl.tax_payable()"><b>Paid</b>
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" data-ng-model = "ctrl.shipment.bill_to" value="Consignee" data-ng-required = "true" data-ng-click = "ctrl.tax_payable()"><b>Consignee</b>
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" data-ng-model = "ctrl.shipment.bill_to" value="To Pay" data-ng-required = "true" data-ng-click = "ctrl.tax_payable()"><b>To Pay</b>
                                             </label>  
                     		 </div>
 
@@ -999,8 +1001,8 @@
                           	       <div class=" col-md-12">
                             			<span class="text-paddingwidth"> Chargeable Weight </span>
                             		    <div class = "form-group input-group">
-	                            		    <input type="text" class="form-control disabled" 
-	                            		    	data-ng-model = "ctrl.shipment.chargeable_weight" tabindex="-1"
+	                            		    <input type="text" class="form-control" 
+	                            		    	data-ng-model = "ctrl.shipment.chargeable_weight" data-ng-disabled="true"
 	                            		    required />  
 	                            		     <span class="input-group-addon">kg.</span>
                             		    </div>                           		    
@@ -1013,8 +1015,8 @@
                             			<span class="text-paddingwidth">Delivery Charge </span>
                             			
                             			 <div class = "form-group input-group">
-	                            		    <input type="text" class="form-control disabled" 
-	                            		    	data-ng-model = "ctrl.shipment.delivery_charge" tabindex="-1"
+	                            		    <input type="text" class="form-control" 
+	                            		    	data-ng-model = "ctrl.shipment.delivery_charge" data-ng-disabled="true"
 	                            		    required />  
 	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
                             		    </div>   
@@ -1044,8 +1046,8 @@
                             			<span class="text-paddingwidth">Discount amount</span>
                             		    
 	                                    <div class = "form-group input-group">
-	                            		    <input type="text" class="form-control disabled" 
-	                            		    	data-ng-model = "ctrl.shipment.discount_amount" tabindex="-1"
+	                            		    <input type="text" class="form-control" 
+	                            		    	data-ng-model = "ctrl.shipment.discount_amount" data-ng-disabled="true"
 	                            		    />  
 	                            		     <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
                             		    </div>                          		    
@@ -1081,9 +1083,9 @@
                             		
                             			<span class="text-paddingwidth discountspace">CGST</span>
                             		       <div class = "form-group input-group">
-	                            		    <input type="text" class="form-control disabled" 
+	                            		    <input type="text" class="form-control" 
 	                            		    	data-ng-model = "ctrl.shipment.cgst"	                            		    	
-												tabindex="-1"											
+												data-ng-disabled="true"											
 	                            		     />  
 	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
                             		    </div>                              		    
@@ -1094,9 +1096,9 @@
                             			<span class="text-paddingwidth">SGST</span>
                             		                         		    
 	                            		  <div class = "form-group input-group">
-	                            		    <input type="text" class="form-control disabled" 
+	                            		    <input type="text" class="form-control" 
 	                            		    	data-ng-model = "ctrl.shipment.sgst"	                            		    	
-												tabindex="-1"											
+												data-ng-disabled="true"											
 	                            		     />  
 	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
                             		    </div>
@@ -1106,9 +1108,9 @@
                             			<span class="text-paddingwidth ">IGST</span>
                             	
                             		       <div class = "form-group input-group">
-	                            		    <input type="text" class="form-control disabled" 
+	                            		    <input type="text" class="form-control" 
 	                            		    	data-ng-model = "ctrl.shipment.igst"	                            		    	
-												tabindex="-1"											
+												data-ng-disabled="true"					
 	                            		     />  
 	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
                             		    </div>                      		    
@@ -1119,9 +1121,9 @@
                             		<div class="col-md-12">
                             			<span class="text-paddingwidth">Tax</span> 
                             			<div class = "form-group input-group">
-                            		     <input type="text" class="form-control disabled" 
+                            		     <input type="text" class="form-control" 
 	                            		    	data-ng-model = "ctrl.shipment.tax"	                            		    	
-												tabindex="-1"											
+												data-ng-disabled="true"										
 	                            		     />  
 	                            		      <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>
 	                            		</div>                                		    
@@ -1132,9 +1134,9 @@
                             		<div class="col-md-12">
                             			<span class="text-paddingwidth">Net freight Charges</span> 
                             			<div class = "form-group input-group">
-                            		     <input type="text" class="form-control disabled" 
+                            		     <input type="text" class="form-control" 
 	                            		    	data-ng-model = "ctrl.shipment.total_charges"	                            		    	
-												tabindex="-1"											
+												data-ng-disabled="true"										
 	                            		     /> 
 	                            		     <span class="input-group-addon"> <i class="fa fa-inr"></i> </span>                           		    
                             		    </div>

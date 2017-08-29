@@ -97,21 +97,21 @@ public class ManifestRestController
 		
 		UserInformation userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();
-		
+		String branch_id=userinfo.getUserBranchId();
 		String userid = userinfo.getUserId();
 		
 		session.setAttribute("username", username);
 		session.setAttribute("userid", userid);
+		
 		ModelAndView model = new ModelAndView();
 		try
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			
 			model.addObject("title", "View Manifest");
+			model.addObject("branch_id", branch_id);
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Manifest/view_manifest");
-
-			
 		} 
 		catch (Exception exception) 
 		{

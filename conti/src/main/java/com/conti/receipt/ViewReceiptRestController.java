@@ -107,7 +107,7 @@ public class ViewReceiptRestController {
 		String username = userinfo.getUserName();
 		
 		String userid = userinfo.getUserId();
-		
+		String branch_id=userinfo.getUserBranchId();
 		session.setAttribute("username", username);
 		session.setAttribute("userid", userid);
 		
@@ -120,9 +120,10 @@ public class ViewReceiptRestController {
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			
 			model.addObject("title", "View Receipt");
+			model.addObject("branch_id",branch_id);
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Receipt/view_receipt");
-
+			
 			
 		} catch (Exception exception) {
 			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.LOGGER_STATUS_E, exception);
@@ -134,29 +135,48 @@ public class ViewReceiptRestController {
 	
 //-----------------------------------Get Receipt details------------------------------------------------
 	@RequestMapping(value="view_receipt_preload", method=RequestMethod.GET)
-	public ResponseEntity<List<ReceiptModel>>fetchAllReceipt_view(HttpServletRequest request)
+	public ResponseEntity<List<ReceiptDetail>>fetchAllReceipt_view(HttpServletRequest request)
 	{
 		UserInformation userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
+		String userid = userInformation.getUserId();
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
 		try
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			List<ReceiptModel> receiptModel=receiptDao.getAllReceipt_view();
-			if(receiptModel.isEmpty()) 
-			{
-				System.out.println("==========================Null============ "+receiptModel);
-				return new ResponseEntity<List<ReceiptModel>> (HttpStatus.NO_CONTENT);
+			
+			User user = usersDao.get(Integer.parseInt(userid));
+
+			if (user.role.getRole_Name().equals(ConstantValues.ROLE_SADMIN)) {
+				List<ReceiptDetail> receiptModel=receiptDao.getAllReceipt_view();
+				if(receiptModel.isEmpty()) 
+				{
+					System.out.println("==========================Null============ "+receiptModel);
+					return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.NO_CONTENT);
+				}
+				else 
+				{
+					System.out.println("=========================Not Null============ ");
+					return new ResponseEntity<List<ReceiptDetail>> (receiptModel, HttpStatus.OK);	
+				}
+			}else{
+				List<ReceiptDetail> receiptModel=receiptDao.getAllReceipt_view(branch_id);
+					if(receiptModel.isEmpty()) 
+					{
+						System.out.println("==========================Null============ "+receiptModel);
+						return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.NO_CONTENT);
+					}
+					else 
+					{
+						System.out.println("=========================Not Null============ ");
+						return new ResponseEntity<List<ReceiptDetail>> (receiptModel, HttpStatus.OK);	
+					}
 			}
-			else 
-			{
-				System.out.println("=========================Not Null============ ");
-				return new ResponseEntity<List<ReceiptModel>> (receiptModel, HttpStatus.OK);	
-			}	
 		}
 		catch(Exception exception)
 		{
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-			return new ResponseEntity<List<ReceiptModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+			return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	
@@ -166,36 +186,36 @@ public class ViewReceiptRestController {
 	
 	
 	@RequestMapping( value = "view_receipt_filter", method = RequestMethod.POST)
-	public ResponseEntity<List<ReceiptModel>> receiptFilterbycondition(@RequestBody String manifest,HttpServletRequest request) throws JsonProcessingException, IOException 
+	public ResponseEntity<List<ReceiptDetail>> receiptFilterbycondition(@RequestBody String receipt,HttpServletRequest request) throws JsonProcessingException, IOException 
 	{
 		HttpSession session = request.getSession();
 		UserInformation userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();
 		String userid = userinfo.getUserId();
 		
-		 JSONObject obj=new JSONObject(manifest);
-		 int frombranchid=(int) obj.get("frombranch");
-		 int tobranchid=(int) obj.get("tobranch");
+		 JSONObject obj=new JSONObject(receipt);
+		 String frombranchid=String.valueOf(obj.get("frombranch"));
+		 String tobranchid=String.valueOf(obj.get("tobranch")); 
 		 String fromdate=(String) obj.get("fromdate");
 		 String todate=(String) obj.get("todate");
-		
+		 String status=(String)obj.get("status");
 		try 
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			List<ReceiptModel> receiptModel = receiptDao.getReceiptByCondition(frombranchid,tobranchid,fromdate,todate);
-			if(receiptModel.isEmpty()) 
+			List<ReceiptDetail> receiptDetail = receiptDao.getReceiptByCondition(frombranchid,tobranchid,fromdate,todate,status);
+			if(receiptDetail.isEmpty()) 
 			{
-				return new ResponseEntity<List<ReceiptModel>> (HttpStatus.NO_CONTENT);
+				return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.NO_CONTENT);
 			}
 			else 
 			{
-				return new ResponseEntity<List<ReceiptModel>> (receiptModel, HttpStatus.OK);	
+				return new ResponseEntity<List<ReceiptDetail>> (receiptDetail, HttpStatus.OK);	
 			}		
 		} 
 		catch (Exception exception) 
 		{			
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-			return new ResponseEntity<List<ReceiptModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
+			return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	
@@ -204,7 +224,7 @@ public class ViewReceiptRestController {
 	public ModelAndView downloadExcelReceipt()
 	{
 		
-		List<ReceiptModel> receiptList=receiptDao.getAllReceipt_view();
+		List<ReceiptDetail> receiptList=receiptDao.getAllReceipt_view();
 		return new ModelAndView("receiptExcelView","receiptList",receiptList);
 	}
 	

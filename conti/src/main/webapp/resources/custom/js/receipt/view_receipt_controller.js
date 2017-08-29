@@ -12,6 +12,14 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 {
 	var self=this;
 	self.receipts=[];
+	self.receipt={
+			"frombranch" : "",
+			"tobranch" : "",
+			"fromdate" : "",
+			"todate" : "",
+			"status":"",
+	};
+	self.receiptFilter=receiptFilter;
 	self.selected_receipt=[];
 	self.Filterreceipts={};
 	self.receipts=[];
@@ -69,7 +77,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 				function (branches) 
 				{
 					self.branches = branches;
-					pagination();
+					
 					//console.log("get all branches "+self.branches)
 				}, 
 				function (errResponse) 
@@ -77,8 +85,16 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 					console.log('Error while fetching branches');
 				}
 			);
+//			if($('#currentUserRole').val() == "SUPER_ADMIN") {
+//				self.fromBranch_disable = false;
+//				//self.receipt.frombranch = parseInt($('#branch_id').val());
+//			} else {
+//				self.fromBranch_disable = false;
+//				self.receipt.frombranch = self.receipt.frombranch;
+//				//self.receipt.frombranch = parseInt($('#branch_id').val());
+//			}	
 	}
-	
+	 //fetchAllBranches(); 
 	//-------------------------- Fetch All Branch end ---------------------//
 	
 	//---------------------------Fetch All Receipt details start----------------------
@@ -90,7 +106,8 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 				{
 					self.receipts=receipt;
 					self.Filterreceipts=self.receipts;
-					console.log('fetching manifest '+self.Filterreceipts);
+					console.log(self.Filterreceipts);
+					pagination();
 				},
 				function(errResponse)
 				{
@@ -253,7 +270,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		{
 			$scope.previouseDisabled=true;
 		}
-		if(nextPrevMultipier==-1)
+		if(nextPrevMultiplier ==-1)
 		{
 			$scope.nextDisabled=false;
 		}
@@ -301,8 +318,32 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			}
 		}
 	}
-	//-----------------------------------------------------------------------------------------------
 	
+	
+	//-------------------------------View Receipt filter function----------------------------------
+	
+	function receiptFilter(){
+		//	self.receipt.frombranch=$('#branch_id').val();
+		if($('.datepicker1').val().length != 0) {
+			self.receipt.fromdate = $('.datepicker1').val();	
+		} 
+		if($('.datepicker2').val().length != 0) {
+			self.receipt.todate = $('.datepicker2').val();	
+		} 
+		console.log(self.receipt);
+		ReceiptService.receiptFilter(self.receipt)
+		.then(
+				function(receipt)
+				{
+					console.log(receipt);
+					self.Filterreceipts=receipt;
+				},
+				function(errResponse)
+				{
+					console.log('Error while filtering receipt records');
+				}
+			);
+	}
 	
 	}
 ]);

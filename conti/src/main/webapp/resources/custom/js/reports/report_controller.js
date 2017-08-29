@@ -11,6 +11,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		
 		
 		
+		
 	
 	//============ Fetch All Branches Function Begin =======//	
 		function fetchAllBranches() {

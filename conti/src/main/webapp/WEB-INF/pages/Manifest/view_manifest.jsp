@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+
 <%@ taglib
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
@@ -117,22 +118,24 @@
 										<span class="text-padding">From</span> 
 										<select
 											class="form-control"
-											data-ng-options="branch.branch_name for branch in ctrl.branches"
+											data-ng-options="branch.branch_id as branch.branch_name for branch in ctrl.branches"
 											data-ng-model="ctrl.manifest.frombranch"
-											data-ng-init="ctrl.branches[0].branch_id">
+											data-ng-disabled = "ctrl.fromBranch_disable == true" >
 											<option value="">--Select--</option>
 										</select>
 									</div>
 									<div class="col-lg-3 branchclass">
 										<span class="text-padding">To</span> <select
 											class="form-control"
-											data-ng-options="branch.branch_name for branch in ctrl.branches"
+											data-ng-options="branch.branch_id as branch.branch_name for branch in ctrl.branches"
 											data-ng-model="ctrl.manifest.tobranch">
 											<option value=''>--Select--</option>
 
 										</select>
 									</div>
 								</div>
+								 <input type="hidden" id="branch_id" value="${branch_id}" />
+									<input type = "hidden" id = "currentUserRole" value = "<sec:authentication property="principal.authorities[0]"/>" />
 
 								<div class="col-lg-12 noPaddingLeft">
 									<div class="sec-padding">Specific Period</div>
@@ -141,7 +144,7 @@
 										<span class="text-padding">From </span>
 										<div class="form-group input-group ">
 											<input type="text" class="form-control datepicker1"
-												data-ng-model="ctrl.fromdate" data-trigger="focus"
+												data-ng-model="ctrl.manifest.fromdate" data-trigger="focus"
 												data-toggle="popover" data-placement="top"
 												data-content="Please select from date" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -152,7 +155,7 @@
 										<span class="text-padding">To</span>
 										<div class="form-group input-group ">
 											<input type="text" class="form-control datepicker2"
-												data-ng-model="ctrl.todate" data-trigger="focus"
+												data-ng-model="ctrl.manifest.todate" data-trigger="focus"
 												data-toggle="popover" data-placement="top"
 												data-content="Please select to date" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
@@ -164,7 +167,7 @@
 									<div class="col-lg-2"></div>
 									<div class="col-lg-4 branchclass">
 										<button class="btn btn-primary"
-											data-ng-click="ctrl.manifestFilter(ctrl.manifest)">
+											data-ng-click="ctrl.manifestFilter()">
 											View Manifest</button>
 									</div>
 

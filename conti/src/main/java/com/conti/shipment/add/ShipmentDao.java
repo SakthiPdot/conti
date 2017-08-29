@@ -90,5 +90,7 @@ public interface ShipmentDao
 	public List<ShipmentDetailModel> filterViewShipmentbyproduct(String product);
 	
 	public List<ShipmentModel> shipment_searchbyLR4ViewAdmin(String lrno);
+	
+	public List<ShipmentModel> fetchAllLRNo();
 }
 

@@ -22,7 +22,12 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.branches=[];
 		self.selected_manifest=[];
 		//self.selected_manifestdetailed[];
-		self.manifest={};
+		self.manifest={
+				"frombranch" : "",
+				"tobranch" : "",
+				"fromdate" : "",
+				"todate" : "",
+		};
 		self.manifest1={};
 		self.heading="Master";
 		self.message=null;
@@ -39,15 +44,15 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.outwardManifest=outwardManifest;
 		self.manifestSearch=manifestSearch;	
 		self.shownoofRecord=shownoofRecord;
-		//self.manifestDetailed=manifestDetailed;
 		$scope.shownoofrec=10;
 		
 		
 		fetchAllManifest();
-		fetchAllBranches();
+		//fetchAllBranches();
 		
 		var manifest_id=$("#manifest_id").val();
-		
+		//self.manifest.frombranch= $('#branch_id').val();
+		self.manifest.frombranch = parseInt($('#branch_id').val());
 		//--call detailed manifest
 		if(manifest_id!=null)
 		{
@@ -61,7 +66,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			self.manifest={};
 			self.heading='Master';
 			fetchAllManifest();
-			
 		}	
 		
 	//-----------------------------New and close function---------------------------	
@@ -105,7 +109,16 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 						console.log('Error while fetching branches');
 					}
 				);
+		if($('#currentUserRole').val() == "SUPER_ADMIN") {
+			self.fromBranch_disable = false;
+			self.manifest.frombranch = parseInt($('#branch_id').val());
+		} else {
+			self.fromBranch_disable = true;
+			
+			self.manifest.frombranch = parseInt($('#branch_id').val());
+		}	
 	}
+	fetchAllBranches();
 	//-----------------------------------------------------------------------//	
 		
 	//-------------------------- Fetch All Manifest records Start ---------------------//
@@ -191,14 +204,21 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	//-------------------------------------------------------------------------------//
 	    
 	  //------------------------- View Manifest Filter function start ------------------//   
-	    function manifestFilter(manifest) 
+	    function manifestFilter() 
 	    {
-	    	manifest.fromdate = $('.datepicker1').val();
-	    	manifest.todate = $('.datepicker2').val();
-	    	manifest.frombranch=manifest.frombranch.branch_id;
-	    	manifest.tobranch=manifest.tobranch.branch_id;
-	    	console.log(manifest);
-	    	ManifestService.manifestFilter(manifest)
+//	    	manifest.fromdate = $('.datepicker1').val();
+//	    	manifest.todate = $('.datepicker2').val();
+	    	self.manifest.frombranch= $('#branch_id').val();
+	    	//manifest.tobranch=manifest.tobranch.branch_id;
+	    	if($('.datepicker1').val().length != 0) {
+				self.manifest.fromdate = $('.datepicker1').val();	
+			} 
+			if($('.datepicker2').val().length != 0) {
+				self.manifest.todate = $('.datepicker2').val();	
+			} 
+	    	
+	    	console.log(self.manifest.frombranch);
+	    	ManifestService.manifestFilter(self.manifest)
 	    	.then(
 	    			function(manifest)
 	    			{
