@@ -106,15 +106,15 @@
 			                	data-ng-model="ctrl.branch.branch_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch code">
 			                	
 			                		                	
-			                	<span>Address Line 1</span>			                	
+			                	<span>Address Line 1<span class="required">  *</span></span>			                	
 			                	<input type="text" class="form-control" maxlength="100" 
-			                	data-ng-model="ctrl.branch.branch_addressline1" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 1">
+			                	data-ng-model="ctrl.branch.branch_addressline1" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 1" required>
 			                	
 			                	<span>Address Line 2</span>			                	
 			                	<input type="text" class="form-control" maxlength="100" 
 			                	data-ng-model="ctrl.branch.branch_addressline2" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 2">
 			                	
-			                	<span>Location</span>			                	
+			                	<span>Location<span class="required">  *</span></span>			                	
 			                	<angucomplete-alt id="location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
