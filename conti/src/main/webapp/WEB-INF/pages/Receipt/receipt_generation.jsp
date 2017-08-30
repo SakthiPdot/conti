@@ -149,7 +149,10 @@
 
 									<div class="sec-padding">Specific Period</div>
 									<div class="col-lg-3 branchclass">
+									<div class="col-lg-2 branchclass">
 										<span class="text-padding">From </span>
+										</div>
+										<div class="col-lg-10">
 										<div class=" input-group ">
 											<input type="text" class="form-control datepicker1"
 												data-ng-model="fromdate_filter" data-trigger="focus"
@@ -158,10 +161,14 @@
 												data-content="Please select from date" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
+										</div>
 									</div>
 
 									<div class="col-lg-3 branchclass">
+									<div class="col-lg-2 branchclass">	
 										<span class="text-padding">To</span>
+										</div>
+										<div class="col-lg-10">
 										<div class=" input-group ">
 											<input type="text" class="form-control datepicker2"
 												data-ng-model="todate_filter" data-trigger="focus"
@@ -170,6 +177,7 @@
 												data-content="Please select to date" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
 											</span>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -509,7 +517,7 @@
                 <!--================================================== Modal==================================================== -->
                  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
                  data-backdrop="static" data-keyboard="false">
-                                <div class="modal-dialog" style="width: auto ! important;height: auto ! important;">
+                                <div class="modal-dialog" style="width: auto ! important;height: auto ! important; max-width: 550px ! important;">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
