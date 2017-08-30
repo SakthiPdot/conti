@@ -217,13 +217,14 @@ public class ManifestPrintPDF extends AbstractPdfView {
 		    headingTable.addCell(date);
 
 		    */
+		    
+		    
 		    //detail table
 		    Table detailTable = new Table(8);
 		    detailTable.setBorderWidth(1);
 		    detailTable.setPadding(4);
 		    detailTable.setSpacing(0);
 		    detailTable.setWidths(new float[]{1,3,3,3,2.5f,3,3,1.5f});
-		    //detailTable.setWidths(new int[]{1,3,3,3,2,3,3,2});
 		    
 		    //serial No Heading
 		    Cell serialNoHeading = new Cell(new Phrase("S. No", address_font));
@@ -275,15 +276,14 @@ public class ManifestPrintPDF extends AbstractPdfView {
 		    creditHeading.setBorder(Rectangle.NO_BORDER);
 		    detailTable.addCell(creditHeading);
 		    
-		    
-
+		   
 		  //value table
 		    Table valueTable = new Table(8);
 		    valueTable.setBorderWidth(1);
 		    valueTable.setPadding(4);
 		    valueTable.setSpacing(0);
 		    valueTable.setWidths(new float[]{1,3,3,3,2.5f,3,3,1.5f});
-		  int totalArticles=0,paid=0,toPay=0;
+		    int totalArticles=0,paid=0,toPay=0;
 		    
 		    for(int i=0;i<manifestModel.getManifestDetailModel().size();i++){
 		    	

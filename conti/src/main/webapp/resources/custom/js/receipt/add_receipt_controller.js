@@ -190,7 +190,7 @@ $scope.sortTable=function(x,status){
 								},
 								function(errResponse){
 									console.log('Error while saving Receipt.');
-									self.message = "Error While Creating Manifest ..!";
+									self.message = "Error While Creating Receipt ..!";
 									successAnimate('.failure');
 									setTimeout(function(){ location.reload(); }, 4000);	
 								}
