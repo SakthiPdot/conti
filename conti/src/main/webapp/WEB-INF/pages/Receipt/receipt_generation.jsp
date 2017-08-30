@@ -93,7 +93,7 @@
 	              <div class="col-md-2">
 	              </div>
 	              
-	              <div class="col-md-3 col-sm-4 col-xs-6" data-ng-cloak>	              
+	              <div class="col-md-3 col-sm-4 col-xs-6 subHead " data-ng-cloak>	              
 	              <b>Last Receipt No :<span style = "color : #0b67af;">{{lastReceiptNumber}}</span></b>	              
 	              </div>
               </div>
