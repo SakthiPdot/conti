@@ -187,7 +187,7 @@
                 			            
                 			            <div class="col-lg-3 branchclass">
                 			      		 <span class="">Payment Mode</span>	                	                                       
-                                            <select class="form-control" data-ng-options= "pay for pay in ['Cash','Credit','Check']"
+                                            <select class="form-control" data-ng-options= "pay for pay in ['Cash','Credit']"
                                             data-ng-model="paymode_filter">
                                             	<option value='' data-ng-disabled="true">--Select Payment Mode--</option>
                                             </select>
