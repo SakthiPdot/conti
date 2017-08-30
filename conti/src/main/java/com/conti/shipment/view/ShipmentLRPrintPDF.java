@@ -167,7 +167,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    customer_tbl.addCell(sender_add);
 	    customer_tbl.addCell(consignee_add);
 	    
-	  //customer table
+	  //desc table
 	    Table desc_tbl = new Table(5);
 	    desc_tbl.setWidths(new int[] {1,3,1,2,2});
 	    desc_tbl.setBorderWidth(1);

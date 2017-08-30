@@ -424,7 +424,8 @@ public class AddReceiptRestController
 			//set freight charge if to pay
 			if (shipmentModel.getPay_mode().trim().equals(ConstantValues.TO_PAY.trim())) {
 				receiptDetail.setNet_freight_charges(shipmentModel.getTotal_charges());
-				receiptTotal+=receiptDetail.getNet_freight_charges();
+			}else{
+				receiptTotal+=receiptDetail.getHandling_charge();
 			}
 			
 			//set status
@@ -454,7 +455,7 @@ public class AddReceiptRestController
 		
 			receiptDao.saveOrUpdate(receipt);			
 			receiptNo.put("Receipt_NO", receipt.getReceipt_prefix());
-			receiptNo.put("Receipt_id", receipt.getReceipt_number());
+			receiptNo.put("Receipt_id", receipt.getReceipt_id());
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<String>(receiptNo.toString(),HttpStatus.CREATED);	
 		}catch(Exception e){

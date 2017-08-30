@@ -106,7 +106,7 @@
 									<a class="btn btn-info" data-ng-click = "ctrl.shipmentPrint(ctrl.shipment)"> <i class="fa fa-print" aria-hidden="true"></i>  LR print </a>
 								</div>
 								<div class="col-lg-2 pull-right">
-									<a class="btn btn-danger" data-ng-click = "ctrl.shipmentCancel(ctrl.shipment)"> <i class="fa fa-ban" aria-hidden="true"></i> Cancel </a>
+									<a class="btn btn-danger" data-ng-click = "ctrl.shipmentCancel(ctrl.shipment)"> <i class="fa fa-ban" aria-hidden="true"></i> Delete </a>
 								</div>	  
 								
 								 
