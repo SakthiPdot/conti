@@ -47,9 +47,9 @@ public class ReceiptModel
 	public List<ReceiptDetail> receiptDetailList=new ArrayList<>();
 	
 	
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@JoinColumn(name="receipt_id",referencedColumnName="receipt_id")
-	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinColumn(name="receipt_id",referencedColumnName="receipt_id")
+	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true)
 	@JsonManagedReference
 	public List<ReceiptDetail> getReceiptDetailList() {
 		return this.receiptDetailList;
