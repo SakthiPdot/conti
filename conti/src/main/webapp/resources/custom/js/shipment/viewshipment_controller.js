@@ -322,7 +322,7 @@ contiApp.controller('ViewShipmentController', [
 	 
 	 //------------------------------------- SHIPEMNT PRINT BEGIN
 	 self.shipmentPrint = function (shipment) {
-		 bill_open(shipment.lr_number);
+		 bill_open(shipment.shipment_id);
 	 }
 	 //------------------------------------- SHIPEMNT PRINT END
 	 

@@ -454,10 +454,12 @@ public class AddReceiptRestController
 		
 			receiptDao.saveOrUpdate(receipt);			
 			receiptNo.put("Receipt_NO", receipt.getReceipt_prefix());
+			receiptNo.put("Receipt_id", receipt.getReceipt_number());
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<String>(receiptNo.toString(),HttpStatus.CREATED);	
 		}catch(Exception e){
 			receiptNo.put("Receipt NO","Error Creating Receipt No");
+			receiptNo.put("Receipt_id", "Error Creating Receipt No");
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, e);
 			return new ResponseEntity<String>("",HttpStatus.UNPROCESSABLE_ENTITY);
 		}

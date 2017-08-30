@@ -106,15 +106,15 @@
 			                	data-ng-model="ctrl.branch.branch_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch code">
 			                	
 			                		                	
-			                	<span>Address Line 1</span>			                	
+			                	<span>Address Line 1<span class="required">  *</span></span>			                	
 			                	<input type="text" class="form-control" maxlength="100" 
-			                	data-ng-model="ctrl.branch.branch_addressline1" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 1">
+			                	data-ng-model="ctrl.branch.branch_addressline1" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 1" required>
 			                	
 			                	<span>Address Line 2</span>			                	
 			                	<input type="text" class="form-control" maxlength="100" 
 			                	data-ng-model="ctrl.branch.branch_addressline2" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 2">
 			                	
-			                	<span>Location</span>			                	
+			                	<span>Location<span class="required">  *</span></span>			                	
 			                	<angucomplete-alt id="location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
@@ -200,7 +200,7 @@
 			                	<div class="input-group">
 				                	<span class="input-group-addon"><span>R</span>	</span>		                	
 				                	<input type="text" class=" form-control" maxlength = "4" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.receiptno_prefix" 
-				                  	data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Receipt number"  required/>
+				                  	data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Receipt Invoice Number Prefix"  required/>
 			                  	</div>
 			               </div>		                                
 		                </div>                 
@@ -380,7 +380,7 @@
                                       </form>
                                       
                                       <div class = "row paddingtop">
-	                                    	<div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Driver" 
+	                                    	<div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Branch Name" 
 	                                    	data-ng-model = "ctrl.branch_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.branch_regSearch)"/></div>
                                       </div>
                                       

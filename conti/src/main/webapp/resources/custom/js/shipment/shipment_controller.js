@@ -75,7 +75,7 @@ $('#pdf').click(function () {
 
 
 
-contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout','$interval', 'ShipmentService', 'priceSettingService', 'BranchService', 'CompanySettingService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,$interval,  ShipmentService, priceSettingService, BranchService, CompanySettingService, ConfirmDialogService){
+contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout','$interval', 'ShipmentService', 'priceSettingService', 'BranchService', 'CompanySettingService', 'ServiceService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,$interval,  ShipmentService, priceSettingService, BranchService, CompanySettingService, ServiceService, ConfirmDialogService){
 	
 	$("#screen_addshipment").addClass("active-menu");
 	var self = this;
@@ -149,7 +149,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		$('#sender_location_name_value').val('');
 		$('#consignee_branch_name_value').val('');
 		$('#consignee_location_name_value').val('');
-		$('#service_name_value').val('');
+		/*$('#service_name_value').val('');*/
 		$('#product_name_value').val('');
 		
 		var sender_taxin_payable = null;
@@ -361,12 +361,27 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	
 	//---------------------------------------------- Search service begin
-	$scope.service_name=function (selected){
+	/*$scope.service_name=function (selected){
 		
 		makeenable_shipmentDetail_add();  // make enable shipment detail 
 		self.shipment.service = selected.originalObject;
 		
+	}*/
+	self.statusChange = function (service) {
+		self.shipment.service = service;
+		makeenable_shipmentDetail_add();
 	}
+	function fetchAllService() {
+		ServiceService.fetchAllServices()
+			.then(
+					function (services) {
+						self.services=services;
+					}, function (errRes) {
+						console.log(errRes);
+					}
+				);
+	}
+	fetchAllService();
 	//---------------------------------------------- Search service end
 	
 	//------------------------ MAKE SAVE ENABLE BEGIN
@@ -404,7 +419,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	function makeenable_shipmentDetail_add() {
 		
 		if( self.shipment.numberof_parcel == null 
-				||  $('#service_name_value').val().length == 0 
+				/*||  $('#service_name_value').val().length == 0 */
+				|| self.shipment.service.length == 0
 				|| $('#consignee_branch_name_value').val().length == 0 ) {
 			self.disable_add_product = true;
 		} else {
@@ -504,7 +520,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 				"max_weight" : self.shipment.shipmentDetail[index].weight
 		};
 	
-		console.log(self.shipment);
 		
 		priceSettingService.fetch_priceforShipment(self.shipment.forpricesetting)
 			.then(
@@ -730,9 +745,11 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
                         self.message = " shipment created..! Shipment LR No. is "+lr_details.lrno_prefix;
             			successAnimate('.success');  
             			reset();
+            			window.setTimeout( function(){
+            				bill_open(lr_details.shipment_id);
+            	    	}, 5000);  
             			
-            			bill_open(lr_details.lrno);
-            			
+            			console.log(lr_details);
             		},
            
             function(errResponse){
@@ -753,9 +770,9 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			$("#consignee_branch_name_value").focus();
 		} else if ( $("#consignee_location_name_value").val().length == 0 ) {
 			$("#consignee_location_name_value").focus();
-		} else if ( $("#service_name_value").val().length == 0 ) {
+		} /*else if ( $("#service_name_value").val().length == 0 ) {
 			$("#service_name_value").focus();
-		} else {
+		}*/ else {
 			self.shipment.lr_number = $('#lr_number').val();
 			delete self.shipment.forpricesetting;
 			for(var i=0; i<self.shipment.shipmentDetail.length; i++ ) {
@@ -769,12 +786,12 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			self.shipment.sender_location = self.shipment.sender_customer.location;
 			self.shipment.consignee_location = self.shipment.consignee_customer.location;
 			
-			if(self.shipment.sender_customer.gstin_number == null) {
+			/*if(self.shipment.sender_customer.gstin_number == null) {
 				self.shipment.sender_customer.gstin_number = 0;
 			}
 			if(self.shipment.consignee_customer.gstin_number == null) {
 				self.shipment.consignee_customer.gstin_number = 0;
-			}
+			}*/
 			
 			console.log(self.shipment);
 			if( self.shipment.shipment_id == null ) {

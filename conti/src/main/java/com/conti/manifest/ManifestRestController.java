@@ -42,6 +42,7 @@ import com.conti.master.product.Product;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
+import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
@@ -655,8 +656,32 @@ public class ManifestRestController
 						return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
 					}
 				}
-				/* ------------------------- Make active Branch end ------------------------------------- */
-
+		/* ------------------------- Make active Branch end ------------------------------------- */
+//		@RequestMapping(value = "shipment_detail", method = RequestMethod.POST)
+//		public ResponseEntity<ShipmentModel>shipment_detail(@RequestBody int id,HttpServletRequest request) {
+//
+//			userInformation = new UserInformation(request);
+//			String username = userInformation.getUserName();
+//			String userid = userInformation.getUserId();
+//			int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+//			try {
+//
+//				User user = usersDao.get(Integer.parseInt(userid));
+//				ShipmentModel shipment = shipmentDao.getShipmentModelById(id);
+//				if (shipment==null) {
+//					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, null);
+//					return new ResponseEntity<ShipmentModel>(HttpStatus.NOT_FOUND);
+//				} else {
+//					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+//					return new ResponseEntity<ShipmentModel>(shipment, HttpStatus.OK);
+//				}
+//	
+//			} catch (Exception exception) {
+//				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.LOGGER_STATUS_E, exception);
+//				return new ResponseEntity<ShipmentModel>(HttpStatus.UNPROCESSABLE_ENTITY);
+//			}
+//
+//		}
 
 		
 	//=====================================================================================================================================

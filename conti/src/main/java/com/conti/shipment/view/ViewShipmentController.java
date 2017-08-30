@@ -419,7 +419,7 @@ public class ViewShipmentController{
 		
 		BranchModel branch = branchDao.getBranchbyId(branch_id);
 		
-		ShipmentModel shipment = shipmentDao.getshipmentby_lrno(id);
+		ShipmentModel shipment = shipmentDao.getShipmentModelById(id);
 		
 		Company company = companySettingDAO.getById(1);	
 		String base64DataString ="";

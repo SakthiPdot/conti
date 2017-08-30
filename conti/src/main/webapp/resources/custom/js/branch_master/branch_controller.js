@@ -274,49 +274,56 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
 //    	} 
 //		else 
 //    	{	
-		
+		if ($("#location_id").val() == "" || $("#location_id").val() == null || $("#location_name_value").val() == "" || $("#location_name_value").val() == null) {
+			
+			$("#location_name_value").focus();
+			
+		} else {
+			
+			if(self.branch.branch_id==null)
+			{
+				console.log("branch save call "+self.branch.branch_id)
+				self.confirm_title='Save';
+				self.confirm_type=BootstrapDialog.TYPE_SUCCESS;
+				self.confirm_msg=self.confirm_title +' '+self.branch.branch_name+' branch?';
+				self.confirm_btnclass = 'btn-success';
+				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+				.then(function(res)
+				{
+					/*self.branch.branch_id=$("#branch_id").val();*/
+					self.branch.location = JSON.parse($("#location_id").val());   
+					createBranch(self.branch);
+					reset();	
+					window.setTimeout(function()
+					{
+							newOrClose();
+					},5000);
+				});
+			}	
+			
+			else
+			{
+				console.log("branch Update function call"+self.branch.branch_id)
+				self.confirm_title='Update';
+				self.confirm_type=BootstrapDialog.TYPE_SUCCESS;
+				self.confirm_msg=self.confirm_title +' '+self.branch.branch_name +' branch?';
+				self.confirm_btnclass = 'btn-success';
+				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+				.then(function(res)
+				{
+					//self.branch.branch_id=$("#branch_id").val();
+					self.branch.location=JSON.parse($("#location_id").val());
+					
+					editBranch(self.branch);
+					reset();
+					window.setTimeout(function()
+					{
+							newOrClose();
+					},5000);
+				});
+		}
 
-		if(self.branch.branch_id==null)
-		{
-			console.log("branch save call "+self.branch.branch_id)
-			self.confirm_title='Save';
-			self.confirm_type=BootstrapDialog.TYPE_SUCCESS;
-			self.confirm_msg=self.confirm_title +' '+self.branch.branch_name+' branch?';
-			self.confirm_btnclass = 'btn-success';
-			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-			.then(function(res)
-			{
-				self.branch.branch_id=$("#branch_id").val();
-				self.branch.location = JSON.parse($("#location_id").val());   
-				createBranch(self.branch);
-				reset();	
-				window.setTimeout(function()
-				{
-						newOrClose();
-				},5000);
-			});
-		}	
 		
-		else
-		{
-			console.log("branch Update function call"+self.branch.branch_id)
-			self.confirm_title='Update';
-			self.confirm_type=BootstrapDialog.TYPE_SUCCESS;
-			self.confirm_msg=self.confirm_title +' '+self.branch.branch_name +' branch?';
-			self.confirm_btnclass = 'btn-success';
-			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-			.then(function(res)
-			{
-				//self.branch.branch_id=$("#branch_id").val();
-				self.branch.location=JSON.parse($("#location_id").val());
-				
-				editBranch(self.branch);
-				reset();
-				window.setTimeout(function()
-				{
-						newOrClose();
-				},5000);
-			});
 		}
 	}
 	

@@ -131,7 +131,7 @@
 				              	</div>
 				              	 
 				               	<div class="col-lg-6 content-body">    
-				                   <span>Branch Name</span>
+				                   <span>Branch Name<span class="required"> *</span></span>
 				                  <angucomplete-alt id="branch_name" data-ng-model="ctrl.customer.branch_name"
 						              placeholder="Ex : Coimbatore"
 						              pause="100"
@@ -160,7 +160,7 @@
 			             <div class="col-lg-12">
 			                	<div class="col-lg-6 content-body">
 			                 	   <span>Tax is Payable on Reverse Charge<span style="color:red">&nbsp;*</span> </span>	         
-				                   <select class="form-control" data-ng-model="ctrl.customer.taxin_payable" data-ng-options="payable for payable in ['Yes','No']" data-ng-required>
+				                   <select class="form-control" data-ng-init="select" data-ng-model="ctrl.customer.taxin_payable" data-ng-options="payable for payable in ['Yes','No']" required>
 				                   			<option value="" >--Please select--</option>
 <!-- 				                   		<option>Yes</option> -->
 <!-- 				                   		<option>No</option> -->
@@ -253,8 +253,8 @@
 						
 						<div class="col-lg-4 col-xs-4" style="text-align:center; !important;">
 							
-							<a id="" class="btnPadding btn btn-danger"	 data-ng-click="ctrl.deleteCustomer()"  data-ng-show="ctrl.customer.customer_id!=null" ><i class="fa fa-trash"  aria-hidden="true"></i> &nbsp;Delete</a>
-							<a id="" class="btnPadding btn btn-primary" data-ng-click = "ctrl.clear()" data-ng-show="!empForm.$pristine && (ctrl.customer.customer_id==null)">Clear</a>							
+							<a id="" class="btnPadding btn btn-danger"	 data-ng-click="ctrl.deleteCustomer()"  data-ng-show="ctrl.customer.customer_id!=null" ><i class="fa fa-trash"  aria-hidden="true"></i> Delete</a>
+							<a id="" class="btnPadding btn btn-primary" data-ng-click = "ctrl.clear()" data-ng-show="!customerForm.$pristine && (ctrl.customer.customer_id==null)"><i class="fa fa-eraser"></i> Clear</a>							
 						</div>
 						
 						<div class="col-lg-4 col-xs-4 footerRight" data-ng-show="!(ctrl.customer.customer_id== null)">
