@@ -273,51 +273,66 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 	
   //------------------------- Submit for new Customer / update Customer begin ---------------------//
     function submit() {
-    	
+    		
+    		if(self.customer.customer_addressline2 == null) {
+    			self.customer.customer_addressline2 = "";
+    		}
+    		
+    		if( $("#branch_id").val() == "" || $("#branch_id").val() == null || $("#branch_name_value").val() == "" || $("#branch_name_value").val() == null) {
+    			$("#branch_name_value").focus();
+    		
+    		} else if ($("#location_id").val() == "" || $("#location_id").val() =="" || $("#location_name_value").val() == "" || $("#location_name_value").val() == null) {
+    			$("#location_name_value").focus();
+    		} 
+    		
+    		else {
+    			
+    			if( self.customer.customer_id == null ) {
+        			
+        			self.confirm_title = 'Save';
+        			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+        			self.confirm_msg = self.confirm_title+ ' ' + self.customer.customer_name + ' Customer?';
+        			self.confirm_btnclass = 'btn-success';
+        			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+        				.then(
+        						function (res) {
+        							self.customer.branchModel = JSON.parse($("#branch_id").val());
+        			 	    		self.customer.location = JSON.parse($("#location_id").val());    	
+        			 	        	createCustomer(self.customer);  
+        			 	        	reset();
+        			 	        	window.setTimeout( function(){	 	        		
+        			 	        		newOrClose();
+        							},5000);
+        						}
+        					);
+        			
+        			
+
+        		} else {
+        			// update customer
+        					    			
+        			self.confirm_title = 'Update';
+        			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+        			self.confirm_msg = self.confirm_title+ ' ' + self.customer.customer_name + ' Customer?';
+        			self.confirm_btnclass = 'btn-success';
+        			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+        				.then(
+        						function (res) {
+        							self.customer.branchModel =JSON.parse($("#branch_id").val());
+        			 	    		//self.employee.empcategory = $("#empcategory_value").val();  
+        			 	    		self.customer.location = JSON.parse($("#location_id").val());    	
+
+        			 	    		editCustomer(self.customer);  
+        			 	        	
+        			 	        	window.setTimeout( function(){	 	        		
+        			 	        		newOrClose();
+        			 	        		reset();
+        							},5000);
+        						}
+        					);
+    		}
 		
-    		if( self.customer.customer_id == null ) {
-    			
-    			self.confirm_title = 'Save';
-    			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
-    			self.confirm_msg = self.confirm_title+ ' ' + self.customer.customer_name + ' Customer?';
-    			self.confirm_btnclass = 'btn-success';
-    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-    				.then(
-    						function (res) {
-    							self.customer.branchModel = JSON.parse($("#branch_id").val());
-    			 	    		self.customer.location = JSON.parse($("#location_id").val());    	
-    			 	        	createCustomer(self.customer);  
-    			 	        	reset();
-    			 	        	window.setTimeout( function(){	 	        		
-    			 	        		newOrClose();
-    							},5000);
-    						}
-    					);
-    			
-    			
-
-    		} else {
-    			// update customer
-    					    			
-    			self.confirm_title = 'Update';
-    			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
-    			self.confirm_msg = self.confirm_title+ ' ' + self.customer.customer_name + ' Customer?';
-    			self.confirm_btnclass = 'btn-success';
-    			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-    				.then(
-    						function (res) {
-    							self.customer.branchModel =JSON.parse($("#branch_id").val());
-    			 	    		//self.employee.empcategory = $("#empcategory_value").val();  
-    			 	    		self.customer.location = JSON.parse($("#location_id").val());    	
-
-    			 	    		editCustomer(self.customer);  
-    			 	        	
-    			 	        	window.setTimeout( function(){	 	        		
-    			 	        		newOrClose();
-    			 	        		reset();
-    							},5000);
-    						}
-    					);
+    		
     		}
     	} 
 
