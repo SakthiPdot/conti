@@ -33,6 +33,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.registerSearch=registerSearch;
 		self.makeMissing=makeMissing;
 		self.makeReceived=makeReceived;
+		self.shipment = {}; // for individual view shipment
 		$scope.shownoofrec=10;
 		
 		
@@ -53,6 +54,23 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			fetchAllManifest();
 			
 		}	
+		
+		
+		 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL OPEN BEGIN
+		 
+		 self.view1Shipmet = function (shipment) {
+			self.shipment = shipment;
+			 viewShipment_Animate('.shipment_View', 'OPEN');
+		 }
+		 
+		 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL OPEN END
+		//------------------------------------- VIEW SHIPEMNT INDUVIDUAL CLOSE BEGIN
+		 
+		 self.viewShipemntClose = function () {
+			 viewShipment_Animate('.shipment_View', 'CLOSE');
+		 }
+		 
+		 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL CLOSE END
 		
 		//---------------------Branch Master drawer close begin-----------
 		

@@ -80,7 +80,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 	
 					<div class="col-md-2"></div>
 
-					<div class="col-md-3 col-sm-4 col-xs-6" data-ng-cloak>
+					<div class="col-md-3 col-sm-4 col-xs-6 subHead" data-ng-cloak>
 						<b>Last Manifest No :<span style = "color : #0b67af;">{{lastManifestNumber}}</span></b>
 					</div>
 
@@ -131,7 +131,10 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 								<div class="col-lg-12 noPaddingLeft">
 									<div class="sec-padding">Specific Period</div>
 									<div class="col-lg-3 branchclass">
+									<div class="col-lg-2 branchclass">
 										<span class="text-padding" >From </span>
+										</div>
+										<div class="col-lg-10">
 										<div class="form-group input-group">
 											<input type="text" name="datePicker1" class="form-control datepicker1"
 											placeholder="Enter From Date"
@@ -140,10 +143,14 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 											</span>
 
 										</div>
+										</div>
 									</div>
 
 									<div class="col-lg-3 branchclass">
+									<div class="col-lg-2 branchclass">
 										<span class="text-padding">To</span>
+											</div>
+										<div class="col-lg-10">
 										<div class="form-group input-group ">
 											<input type="text"  name="datePicker2" class="form-control datepicker2" 
 											placeholder="Enter To Date"											
@@ -152,6 +159,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 											data-ng-model="amctrl.todate" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
 											</span>
+										</div>
 										</div>
 									</div>
 								</div>
