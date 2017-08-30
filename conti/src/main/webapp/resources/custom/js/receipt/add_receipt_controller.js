@@ -10,9 +10,10 @@
 
 
 //======================================function to do after save======================================
-	function afterSave(){
+	function afterSave(receipt_no){
 			valid = true;
-			location.href='view_receipt';
+			/*location.href='view_receipt';*/
+			window.open("Receipt_print/"+receipt_no, '_blank');
 		}
 	
 	
@@ -185,7 +186,7 @@ $scope.sortTable=function(x,status){
 										console.log('save success');
 										self.message = "Receipt ( "+receipt.Receipt_NO+" ) Created Successfully..! ";
 										successAnimate('.success');	
-										setTimeout(function(){afterSave();}, 4000);
+										setTimeout(function(){afterSave(receipt.Receipt_id);}, 4000);
 								},
 								function(errResponse){
 									console.log('Error while saving Receipt.');
