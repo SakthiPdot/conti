@@ -44,9 +44,9 @@ public class ReceiptDetail {
 
 	public ReceiptModel receiptModel;
 
-	
-	@JoinColumn(name="receipt_id",referencedColumnName="receipt_id")
-	@ManyToOne(cascade=CascadeType.ALL)
+
+	@JoinColumn(name="receipt_id")
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JsonBackReference
 	public ReceiptModel getReceiptModel() {
 		return this.receiptModel;

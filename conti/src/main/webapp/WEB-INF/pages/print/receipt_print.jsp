@@ -148,8 +148,8 @@
 	         <!-- - Item Category Print -->
 	            
 	
-	  <script src="resources/custom/js/customer_master/customer_controller.js"></script>
-	  <script src="resources/custom/js/customer_master/customer_service.js"></script>
+	  <script src="resources/custom/js/receipt/view_receipt_controller.js"></script>
+	  <script src="resources/custom/js/receipt/view_receipt_service.js"></script>
 	  <script src="resources/custom/js/branch_master/branch_service.js"></script>
 	  <script src="resources/custom/js/Location/location_service.js"></script>
 	  <script src="resources/custom/js/confirmDialog.js"></script>   

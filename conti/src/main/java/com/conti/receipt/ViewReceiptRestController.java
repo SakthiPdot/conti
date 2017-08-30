@@ -3,7 +3,10 @@ package com.conti.receipt;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -131,7 +134,6 @@ public class ViewReceiptRestController {
 		return model;
 
 	}
-//-------------------------------------------------------------------------------------------------------
 	
 //-----------------------------------Get Receipt details------------------------------------------------
 	@RequestMapping(value="view_receipt_preload", method=RequestMethod.GET)
@@ -147,30 +149,20 @@ public class ViewReceiptRestController {
 			
 			User user = usersDao.get(Integer.parseInt(userid));
 
-			if (user.role.getRole_Name().equals(ConstantValues.ROLE_SADMIN)) {
+			if (user.role.getRole_Name().equals(ConstantValues.ROLE_SADMIN)){
 				List<ReceiptDetail> receiptModel=receiptDao.getAllReceipt_view();
-				if(receiptModel.isEmpty()) 
-				{
-					System.out.println("==========================Null============ "+receiptModel);
+				if(receiptModel.isEmpty()) {
 					return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.NO_CONTENT);
-				}
-				else 
-				{
-					System.out.println("=========================Not Null============ ");
+				}else{
 					return new ResponseEntity<List<ReceiptDetail>> (receiptModel, HttpStatus.OK);	
 				}
 			}else{
 				List<ReceiptDetail> receiptModel=receiptDao.getAllReceipt_view(branch_id);
-					if(receiptModel.isEmpty()) 
-					{
-						System.out.println("==========================Null============ "+receiptModel);
-						return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.NO_CONTENT);
-					}
-					else 
-					{
-						System.out.println("=========================Not Null============ ");
-						return new ResponseEntity<List<ReceiptDetail>> (receiptModel, HttpStatus.OK);	
-					}
+				if(receiptModel.isEmpty()){
+					return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.NO_CONTENT);
+				}else{
+					return new ResponseEntity<List<ReceiptDetail>> (receiptModel, HttpStatus.OK);	
+				}
 			}
 		}
 		catch(Exception exception)
@@ -267,6 +259,97 @@ public class ViewReceiptRestController {
 			
 		return model;
 	}
+	
+	//------------------------------Receipt Register search-----------------------------------
+	
+	@RequestMapping(value="receipt_search",method=RequestMethod.POST)
+	public ResponseEntity<List<ReceiptDetail>>receiptSearch(@RequestBody String searchkey,HttpServletRequest request){
+//		JSONObject obj=new JSONObject(searchkey);
+//		String key=(String)obj.get("search");
+		List<ReceiptDetail> receiptList=receiptDao.receiptSearch(searchkey);
+		if(receiptList.isEmpty()){
+			return new ResponseEntity<List<ReceiptDetail>>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<ReceiptDetail>>(receiptList,HttpStatus.OK);	
+	}
+	
+	//--------------------Make Pending -------------------------
+	
+	@RequestMapping(value="make_Pending",method=RequestMethod.POST)
+	public ResponseEntity<Void>makePending(@RequestBody int[] id,HttpServletRequest request){
+		userInformation=new UserInformation(request);
+		String username= userInformation.getUserName();
+		int user_id=Integer.parseInt(userInformation.getUserId());
+		int active_flag=0;
+		try{
+			for(int i=0;i<id.length;i++){
+				ReceiptDetail receiptDetail=receiptDao.getAllReceiptDetailByid(id[i]);
+				if(receiptDetail==null){
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+					active_flag = 1;
+				}
+				else{
+					Date date=new Date();
+					DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+					receiptDetail.shipmentModel.setStatus("Pending");
+					receiptDetail.shipmentModel.setUpdated_by(user_id);
+					receiptDetail.shipmentModel.setUpdated_datetime(dateFormat.format(date));
+									
+					shipmentDao.saveOrUpdate(receiptDetail.shipmentModel);
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+				}
+			}
+			if( active_flag == 1) {
+				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			} else {
+				return new ResponseEntity<Void> (HttpStatus.OK);
+			}
+		} catch (Exception exception) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+			return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
+	
+	
+	//--------------------Make Return -------------------------
+	
+		@RequestMapping(value="make_Return",method=RequestMethod.POST)
+		public ResponseEntity<Void>makeReturn(@RequestBody int[] id,HttpServletRequest request){
+			userInformation=new UserInformation(request);
+			String username= userInformation.getUserName();
+			int user_id=Integer.parseInt(userInformation.getUserId());
+			int active_flag=0;
+			try{
+				for(int i=0;i<id.length;i++){
+					ReceiptDetail receiptDetail=receiptDao.getAllReceiptDetailByid(id[i]);
+					if(receiptDetail==null){
+						loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+						active_flag = 1;
+					}
+					else{
+						Date date=new Date();
+						DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+						receiptDetail.shipmentModel.setStatus("Return");
+						receiptDetail.shipmentModel.setUpdated_by(user_id);
+						receiptDetail.shipmentModel.setUpdated_datetime(dateFormat.format(date));
+										
+						shipmentDao.saveOrUpdate(receiptDetail.shipmentModel);
+						loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+					}
+				}
+				if( active_flag == 1) {
+					return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+				} else {
+					return new ResponseEntity<Void> (HttpStatus.OK);
+				}
+			} catch (Exception exception) {
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+				return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+		}
+	
 	//===============================================================================================
 	
 	

@@ -12,7 +12,10 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 	var factory={
 			
 			fetchAllReceipt_view:fetchAllReceipt_view,
-			receiptFilter:receiptFilter
+			receiptFilter:receiptFilter,
+			receiptSearch:receiptSearch,
+			makePending:makePending,
+			makeReturn:makeReturn
 	};
 	
 	return factory;
@@ -62,9 +65,71 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 			);
 		return def.promise;
 	}
-	//-------------------------------------------------------------------------------
 	
 	
+	//------------------------Receipt Register search service function----------------------------------
+	
+	function receiptSearch(key){
+		console.log('Receipt Search service function call successfully');
+		var def=$q.defer();
+		$http({
+			method:'POST',
+			url:'receipt_search',
+			data:key,
+			headers:getCsrfHeader()
+		})
+		.then(function(response){
+			console.log(response);
+			def.resolve(response.data);
+		},
+		function(errResponse){
+			def.reject(errResponse);
+		});
+		return def.promise;
+	}
+	
+	
+	//------------------------------Make Pending Service start -----------------------------
+	function makePending(id) {
+    	console.log('Make Pending Service call---')
+    	var deferred = $q.defer();
+    	$http({
+    		method : 'POST',
+    		url : 'make_Pending',
+    		data : id,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response){
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse){
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
+	
+//------------------------------Make Return function start--------------	
+	function makeReturn(id) {
+    	console.log('Make Return Service call---')
+    	var deferred = $q.defer();
+    	$http({
+    		method : 'POST',
+    		url : 'make_Return',
+    		data : id,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response){
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse){
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
 	//===========================================================================================
 	
 

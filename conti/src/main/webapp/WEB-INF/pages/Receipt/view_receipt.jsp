@@ -30,7 +30,7 @@
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
 	  <link href="resources/custom/css/custom.css" rel="stylesheet">
 	   <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
-	 
+	 <link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
 	 <link href="resources/custom/css/demo.css" rel="stylesheet">
 <script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
@@ -150,19 +150,16 @@
                 			      		 <span class="text-padding">Status</span>	                	                                       
                                             <select class="form-control" data-ng-model="ctrl.receipt.status">
                                             	<option value=''>--Select--</option>
-                                            	<option value='delivered'>Delivered</option>  
-                                            	<option value='pending'>Pending</option>                                            	
+                                            	<option value='Delivered'>Delivered</option>  
+                                            	<option value='Pending'>Pending</option>                                            	
                                             </select>
-                                           
-                			            </div>
-                			            
+                                        </div>
                 			            <div class="col-lg-3 branchclass">
                 			      		   <button class="btn btn-primary" data-ng-click="ctrl.receiptFilter()"> View Receipt</button>                                         
                 			            </div>
                 			            <div class="col-lg-4 branchclass">		      		               	                                       
                                         </div>
                 			       </div>
-                			      
                 			</div>
                 		</div>
                 		</div>
@@ -178,7 +175,10 @@
                 			     <div class="col-lg-12 noPaddingLeft"> 
                 			       		<div class="col-lg-3 branchclass">
                 			      		 <span class="text-padding boldletter">Search</span>	                	                                       
-                                            <input type="text" class="form-control searchbar" placeholder="Manifest/LR No/Receipt No">                                           
+                                            <input type="text" class="form-control searchbar" 
+                                            placeholder="Manifest/LR No/Receipt No"
+                                            data-ng-model="ctrl.search"
+                                            data-ng-keyup="ctrl.receiptSearch(ctrl.search)">                                           
                                         </div>
                 			      </div>
                 			</div>
@@ -208,8 +208,8 @@
 							Batch Action <span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a data-ng-click=''>Pending</a></li>
-							<li><a data-ng-click=''>Return</a></li>
+							<li><a data-ng-click="ctrl.makePending()">Pending</a></li>
+							<li><a data-ng-click="ctrl.makeReturn()">Return</a></li>
 						</ul>
 						</div>
 					</div> 
@@ -332,11 +332,11 @@
                                      <td data-ng-show="setting_sltnumber" >{{$index+1}}</td>
                                      <td data-ng-show="setting_receiptdate">{{receipt.shipmentModel.created_datetime}}</td>
                                      <td data-ng-show="setting_receiptlrnumber">{{receipt.shipmentModel.lrno_prefix}}</td>
-                                     <td data-ng-show="setting_receiptnumber">{{receipt.receiptModel}}</td>
+                                     <td data-ng-show="setting_receiptnumber">{{receipt.receiptDetaillist}}</td>
                                      <td data-ng-show="setting_receiptproduct">
-                                     <div data-ng-repeat = "shipmentdet in receipt.shipmentModel.shipmentDetail">
-                                           			{{shipmentdet.product.product_name}}<span data-ng-if = !($last)>,</span>
-                                           		</div>
+                                    	 <div data-ng-repeat = "shipmentdet in receipt.shipmentModel.shipmentDetail">
+                                           	{{shipmentdet.product.product_name}}<span data-ng-if = !($last)>,</span>
+                                         </div>
                                      </td>
                                      <td data-ng-show="setting_receiptorigin">{{receipt.shipmentModel.sender_branch.branch_name}}</td>
                                      <td data-ng-show="setting_receiptdestination">{{receipt.shipmentModel.consignee_branch.branch_name}}</td>

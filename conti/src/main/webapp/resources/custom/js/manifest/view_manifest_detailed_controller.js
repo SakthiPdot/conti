@@ -322,12 +322,10 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		if(activate_flag == 1) {
 			self.message ="Selected record(s) already in Missing status..!";
 			successAnimate('.failure');
-			
 		} else {
-			
 			self.confirm_title = 'Missing';
 			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
-			self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+			self.confirm_msg = ' make selected record(s) status as '+self.confirm_title+ '?';
 			self.confirm_btnclass = 'btn-success';
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(
@@ -357,7 +355,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	}
 	
 }
-//-------------------------- Make Missing end ----------------------//    
 
 
 //-------------------------- Make Received begin ----------------------//
@@ -381,28 +378,28 @@ function makeReceived(){
 			
 			self.confirm_title = 'Received';
 			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
-			self.confirm_msg = self.confirm_title+ 'selected record(s)?';
-			self.confirm_btnclass = 'btn-danger';
+			self.confirm_msg = ' make selected record(s) status as '+self.confirm_title+ '?';
+			self.confirm_btnclass = 'btn-success';
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
 			.then(
-						function (res) {
-							var inactive_id = [];
-			    			for(var i=0; i<self.selected_manifest.length; i++) {
-			    				inactive_id[i] = self.selected_manifest[i].manifestdetailed_id;        				
-			    			}
-							ManifestService.makeReceived(inactive_id)
-								.then(
-										function(response) {
-											manifestDetailed(manifest_id);
-											self.selected_manifest = [];
-											self.message ="Selected record(s) has in Received status..!";
-											successAnimate('.success');
-										}, function(errResponse) {
-											console.log(errResponse);    								
-										}
-									);
-						}
-					);
+				function (res) {
+					var inactive_id = [];
+	    			for(var i=0; i<self.selected_manifest.length; i++) {
+	    				inactive_id[i] = self.selected_manifest[i].manifestdetailed_id;        				
+	    			}
+					ManifestService.makeReceived(inactive_id)
+					.then(
+							function(response) {
+								manifestDetailed(manifest_id);
+								self.selected_manifest = [];
+								self.message ="Selected record(s) has in Received status..!";
+								successAnimate('.success');
+							}, function(errResponse) {
+								console.log(errResponse);    								
+							}
+						);
+				}
+			);
 			
 		}
 

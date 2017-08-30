@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.conti.master.product.Product;
+import com.conti.others.ConstantValues;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -24,7 +25,9 @@ import org.hibernate.SessionFactory;
 @Repository
 public class ManifestDaoImpl implements ManifestDao
 {
-	
+	String Intransit=ConstantValues.INTRANSIT;
+	String Incomplete=ConstantValues.INCOMPLETE;
+	String Completed=ConstantValues.COMPLETED;
 	@Autowired
 	private SessionFactory sessionFactory;
 	
@@ -99,16 +102,19 @@ public class ManifestDaoImpl implements ManifestDao
 	}
 	
 	
-	
+	//-----------------------------Get all manifest for View Manifest Preload ---------------
 	@Override
 	@Transactional
-	public List<ManifestModel> getAllManifest(int manifest_origin) 
+	public List<ManifestModel> getAllManifest(int manifest_destination) 
 	{
 		// TODO Auto-generated method stub
 		
 		@SuppressWarnings("unchecked")
 		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
-				.createQuery("from ManifestModel WHERE obsolete ='N' and manifest_origin ="+manifest_origin+" order by IFNULL(updated_datetime,created_datetime)  DESC ").list();
+				.createQuery("from ManifestModel WHERE obsolete ='N'"
+						+" AND manifest_origin ="+manifest_destination
+						+" AND manifest_status in ('"+Intransit+"','"+Incomplete+"','"+Completed+"')"
+						+" order by IFNULL(updated_datetime,created_datetime)  DESC ").list();
 		return listmanifest;
 		
 	}
@@ -162,7 +168,7 @@ public class ManifestDaoImpl implements ManifestDao
 	//------------------------Manifest Filter by Filter Condition Start---------------------------
 	@Override
 	@Transactional
-	public List<ManifestModel>getManifestByCondition(int frombranch,int tobranch,String fromdate,String todate)
+	public List<ManifestModel>getManifestByCondition(String frombranch,String tobranch,String fromdate,String todate)
 	{
 		StringBuilder queryString =new StringBuilder();
 		queryString.append("FROM ManifestModel WHERE obsolete ='N' ");
@@ -181,15 +187,9 @@ public class ManifestDaoImpl implements ManifestDao
 		if(todate!=null && !todate.trim().isEmpty())
 			queryString.append(" AND created_datetime <= '"+todate+" 23:59:59'"); 
 		else{
-			queryString.append(" AND  status in ('Received') ");
+			queryString.append(" AND manifest_status in ('"+Intransit+"','"+Incomplete+"','"+Completed+"')");
 		}
 		@SuppressWarnings("unchecked")
-//		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
-//				.createQuery("FROM ManifestModel WHERE obsolete ='N' and manifest_origin="+frombranch 
-//				+" AND manifest_destination ="+tobranch
-//				+" AND created_datetime BETWEEN '"+fromdate+" 00:00:00'"
-//				+" AND '"+todate+" 23:59:59'").list();
-//		return listmanifest;
 		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
 		.createQuery(queryString.toString()).list();
 		return listmanifest;
