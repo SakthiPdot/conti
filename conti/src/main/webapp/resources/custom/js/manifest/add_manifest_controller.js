@@ -117,6 +117,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 								successAnimate('.failure');
 								setTimeout(function(){ location.reload(); }, 4000);	
 							});
+					
 		},function(errResponse){
 			$('#myModal').css('z-index','1050');
 		});
