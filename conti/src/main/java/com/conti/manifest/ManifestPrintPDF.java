@@ -198,8 +198,13 @@ public class ManifestPrintPDF extends AbstractPdfView {
 
 
 		    //Date
-		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
-		    Cell dateHeading = new Cell(new Phrase("Date : "+dateFormat.format(new Date()), address_font));
+			DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date manifestDate=dateFormat.parse(manifestModel.getUpdated_datetime().substring(0,19));
+			
+			
+		    SimpleDateFormat printFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");		    
+		    Cell dateHeading = new Cell(new Phrase("Date : "+printFormat.format(manifestDate), address_font));
+		    
 		    dateHeading.setHorizontalAlignment(Element.ALIGN_LEFT);
 		    dateHeading.setBorder(Rectangle.NO_BORDER);
 		    headingTable.addCell(dateHeading);
@@ -325,7 +330,7 @@ public class ManifestPrintPDF extends AbstractPdfView {
 			    }else{
 			    	  billTo = new Cell(new Phrase(" ", address_font));
 			    }
-			    billTo.setHorizontalAlignment(Element.ALIGN_CENTER);
+			    billTo.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			    billTo.setBorder(Rectangle.RIGHT);
 			    valueTable.addCell(billTo);
 			    
@@ -353,7 +358,7 @@ public class ManifestPrintPDF extends AbstractPdfView {
 			    }else{
 			    	payMode = new Cell(new Phrase(" ", address_font));
 			    }
-			    payMode.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			    payMode.setHorizontalAlignment(Element.ALIGN_CENTER);
 			    payMode.setBorder(Rectangle.RIGHT);
 			    valueTable.addCell(payMode);
 			    

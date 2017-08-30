@@ -745,7 +745,7 @@ angular
 							function reset() {
 								self.product = {};
 								$scope.nameWrong = false;
-								self.product.dimension_flag = "Y";
+								self.product.dimension_flag = "N";
 								self.heading = "Master";
 								$("#selectedProductType_value").val("");
 								$scope.productForm.$setPristine();

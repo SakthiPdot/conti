@@ -154,7 +154,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 
 							<b><span>Dimension Setup <input type="radio"
 									data-ng-model="proctrl.product.dimension_flag"
-									data-ng-init="proctrl.product.dimension_flag=N"
+									data-ng-init="proctrl.product.dimension_flag=true"
 									name="optionsRadios" id="optionsRadios1" value="Y" >Yes
 									<input type="radio"
 									data-ng-model="proctrl.product.dimension_flag"
