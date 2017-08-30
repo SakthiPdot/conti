@@ -144,7 +144,7 @@
 					<div class="col-lg-3 report_class">
 						<span>From</span>
 					       <div class="form-group input-group">
-                                  <input type="text" class="form-control datepicker1">
+                                  <input type="text" id="dates"class="form-control datepicker1" data-ng-model="today">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default " type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -155,7 +155,7 @@
 					<div class="col-lg-3 report_class">
 						<span>To</span>
 					       <div class="form-group input-group">
-                                  <input type="text" class="form-control datepicker2">
+                                  <input type="text" class="form-control datepicker2" data-ng-model="today">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -165,25 +165,27 @@
 					
 					<div class="col-lg-3 report_class">
 					<span>Condition</span>
-						<select class="form-control">
-							<option>-- Select --</option>
-							<option>And</option>
-							<option>OR</option>
+						<select class="form-control" data-ng-model="ctrl.report.datecondition" data-ng-options="datecondition for datecondition in ['AND','OR']">
+							<option value="">-- Select --</option>
+							<!-- <option>And</option>
+							<option>OR</option> -->
 						</select>
 					</div>
 					
 					<div class="col-lg-3 report_class">
 						<span>Date Filter</span>
-					       <select class="form-control">
-					       		<option>-- Select --</option>
-					       		<option>Today</option>
-					       		<option>This Week</option>
-					       		<option>This Month</option>
-					       		<option>This Quater</option>
+					       <select class="form-control" data-ng-model="datefilter" data-ng-options="datefilter for datefilter in ['Today','This Week','This Month','This Quater']" 
+					       data-ng-change="ctrl.dateformat(datefilter)">
+					       		<option value="">-- Select --</option>
+					       	<!-- 	<option value="1">Today</option>
+					       		 <option value="2">This Week</option>
+					       		<option value="3">This Month</option>
+					       		<option value="4">This Quater</option> -->
 					       </select>
 					</div>
 				</div>
-				
+				<!-- {{datefilter}} {{today}} 
+				{{ firstday | date:'MM/dd/yyyy' }} -->
 				<div class="col-lg-12 noPaddingLeft report_padding" data-ng-hide="filter_all || filter_branch">
 					
 					<div class="col-lg-3 branchclass">
@@ -458,6 +460,10 @@
    		$('.datepicker2').dateTimePicker({
    			limitMax : getDate()
    		});
+   		
+   		/* $('#dates').val() = getDate(); */
+   		
+   		
    	</script>
    	
 
