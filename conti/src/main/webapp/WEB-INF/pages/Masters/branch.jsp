@@ -380,7 +380,7 @@
                                       </form>
                                       
                                       <div class = "row paddingtop">
-	                                    	<div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Driver" 
+	                                    	<div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Branch Name" 
 	                                    	data-ng-model = "ctrl.branch_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.branch_regSearch)"/></div>
                                       </div>
                                       
