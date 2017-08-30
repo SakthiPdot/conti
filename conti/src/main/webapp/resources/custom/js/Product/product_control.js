@@ -61,7 +61,7 @@ angular
 								"active" : null
 							};
 
-							function resetSorting(){
+							function resetSorting() {
 								$scope.productName = false;
 								$scope.productCode = false;
 								$scope.productType = false;
@@ -73,27 +73,33 @@ angular
 								$scope.maxlength = false;
 								$scope.settingStatus = false;
 							}
-							
-							// ===================================sort table====================================
-							$scope.sortTable=function(x,status){
-								console.log("filer by---"+x,"status---"+status);
-								if(!$scope.disableSorting){
-									$scope.lastSorted = x;	
+
+							// ===================================sort
+							// table====================================
+							$scope.sortTable = function(x, status) {
+								console.log("filer by---" + x, "status---"
+										+ status);
+								if (!$scope.disableSorting) {
+									$scope.lastSorted = x;
 									resetSorting();
-									$scope[x]=status;
-									ProductService.sortBy(x,status?"ASC":"DESC")
-									.then(
-											function(response) {
-												self.FilteredProducts=response; 
-												self.products=response;
-											},
-											function(errRespone) {
-												console.log("error sorting"+x+
-																+ errResponse);
-											});
+									$scope[x] = status;
+									ProductService
+											.sortBy(x, status ? "ASC" : "DESC")
+											.then(
+													function(response) {
+														self.FilteredProducts = response;
+														self.products = response;
+													},
+													function(errRespone) {
+														console
+																.log("error sorting"
+																		+ x
+																		+ +errResponse);
+													});
 								}
 							}
-							// ===================================check for product name====================================
+							// ===================================check for
+							// product name====================================
 							self.checkProductName = function checkProductName(
 									name) {
 
@@ -127,7 +133,7 @@ angular
 							// ===================================next and
 							// previous page====================================
 							$scope.paginate = function(nextPrevMultiplier) {
-								
+
 								console.log($scope.currentPage);
 								self.selectAllProduct = false;
 								$scope.currentPage += (nextPrevMultiplier * 1);
@@ -168,9 +174,9 @@ angular
 								 * $scope.pageSize) { $scope.nextDisabled =
 								 * true; }
 								 */
-								$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
-								
-								
+								$scope.disableSorting = ($scope.currentPage > 0) ? true
+										: false;
+
 								if ($scope.currentPage == 0) {
 									$scope.previouseDisabled = true;
 								}
@@ -184,7 +190,7 @@ angular
 							// login page====================================
 							$scope.firstlastPaginate = function(page) {
 								self.selectAllProduct = false;
-												
+
 								if (page == 1) {
 									$scope.currentPage = 0;
 									$scope.previouseDisabled = true;
@@ -218,8 +224,9 @@ angular
 														});
 									}
 								}
-								
-								$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+
+								$scope.disableSorting = ($scope.currentPage > 0) ? true
+										: false;
 							}
 
 							// ===================================SEARCH
@@ -502,10 +509,25 @@ angular
 									self.product.max_length = null;
 								}
 
+								console.log(self.product.max_height);
+								console.log(self.product.max_width);
+								console.log(self.product.max_length);
+								
 								if (!($("#selectedProductType_value").val()).length > 0) {
 									console.log("no");
 									$("#selectedProductType_value").focus();
-								} else {
+								}else if(self.product.dimension_flag == "Y" 
+									&& (self.product.max_height == null || self.product.max_height.length==0 ||self.product.max_height.trim()=="undefined" )
+									&& (self.product.max_width == null || self.product.max_width.length==0 ||self.product.max_width.trim() == "undefined")
+									&& (self.product.max_length == null|| self.product.max_length.length==0 ||self.product.max_length.trim() == "undefined")){
+								
+									BootstrapDialog.alert({	
+										title:' Product Alert',
+										message: "Please Enter Dimension Value." ,
+										type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+										closable: false, 
+										draggable: false});
+								}else {
 
 									if (self.product.product_id == null) {
 										console.log('Saving Product',
@@ -568,11 +590,14 @@ angular
 																				self.message = "Product "
 																						+ self.product.product_name
 																						+ " Updated..!";
-																				
+
 																				successAnimate('.success');
-																				window.setTimeout(function(){
-																					newOrClose();
-																				},5000);
+																				window
+																						.setTimeout(
+																								function() {
+																									newOrClose();
+																								},
+																								5000);
 																			},
 																			function(
 																					errResponse) {
@@ -657,19 +682,26 @@ angular
 																				+ " deleted..!";
 																		self.save = "saveclose";
 																		successAnimate('.success');
-																		window.setTimeout(function(){
-																			newOrClose();
-																		},5000);
-																	
-																		
-																	},function(referdata){
+																		window
+																				.setTimeout(
+																						function() {
+																							newOrClose();
+																						},
+																						5000);
+
+																	},
+																	function(
+																			referdata) {
 																		self.message = "Product "
-																			+ self.product.product_name
-																			+ "  referred in several process..!";
+																				+ self.product.product_name
+																				+ "  referred in several process..!";
 																		successAnimate('.failure');
-																		window.setTimeout(function(){
-																			newOrClose();
-																		},5000);
+																		window
+																				.setTimeout(
+																						function() {
+																							newOrClose();
+																						},
+																						5000);
 																	},
 																	function(
 																			errResponse) {
@@ -713,7 +745,7 @@ angular
 							function reset() {
 								self.product = {};
 								$scope.nameWrong = false;
-								self.product.dimension_flag = "Y";
+								self.product.dimension_flag = "N";
 								self.heading = "Master";
 								$("#selectedProductType_value").val("");
 								$scope.productForm.$setPristine();
@@ -732,11 +764,11 @@ angular
 								if (self.FilteredProducts.length < $scope.pageSize) {
 									$scope.previouseDisabled = true;
 									$scope.nextDisabled = true;
-								}else{
-						    		$scope.nextDisabled=false;
+								} else {
+									$scope.nextDisabled = false;
 								}
 								fetchProducts();
-								
+
 							}
 
 							// ===================================pagination====================================

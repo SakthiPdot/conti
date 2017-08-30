@@ -11,7 +11,7 @@
 contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','ReceiptService','BranchService','ConfirmDialogService',function($scope,$http,$q,$timeout,ReceiptService,BranchService,ConfirmDialogService)
 {
 	var self=this;
-	//self.search={};
+	self.shipment = {}; // for individual view shipment
 	self.receipts=[];
 	self.receipt={
 			"frombranch" : "",
@@ -58,7 +58,22 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	
 	//-------------------------------------------------------------------------------
 	
-	
+	 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL OPEN BEGIN
+	 
+	 self.view1Shipmet = function (shipment) {
+		 self.shipment = shipment;
+		 viewShipment_Animate('.shipment_View', 'OPEN');
+	 }
+	 
+	 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL OPEN END
+	 
+	 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL CLOSE BEGIN
+	 
+	 self.viewShipemntClose = function () {
+		 viewShipment_Animate('.shipment_View', 'CLOSE');
+	 }
+	 
+	 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL CLOSE END
 	function close(title)
 	{
 		ConfirmDialogService.confirmBox(title,

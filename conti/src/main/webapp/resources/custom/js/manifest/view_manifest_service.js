@@ -21,7 +21,8 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 			deleteManifest:deleteManifest,
 			registerSearch:registerSearch,
 			makeMissing:makeMissing,
-			makeReceived:makeReceived
+			makeReceived:makeReceived,
+			//getShipmentDetail:getShipmentDetail
 	};
 	
 	return factory;
@@ -195,6 +196,31 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 				);
 			return deferred.promise;
 		}
+	//------------------------------Register Search Service function -------------------
+		
+	//--------------------------Get Manifest detailed data begin---------------------------
+	
+//	function getShipmentDetail(shipmentid)
+//	{
+//		console.log('shipmentid id is :'+shipmentid)
+//		var deferred=$q.defer();
+//		$http({
+//			method:'POST',
+//			url:'shipment_detail',
+//			data:shipmentid,
+//			headers:getCsrfHeader()
+//		})
+//		.then(function(response){
+//					console.log(response.data);
+//					deferred.resolve(response.data);
+//				},
+//				function (errResponse)
+//				{
+//					deferred.reject(errResponse);
+//				}
+//			);
+//		return deferred.promise;
+//		}
 	//------------------------------Register Search Service function -------------------
 		function registerSearch(searchkey){
 			console.log('Manifest detailed Register search call');

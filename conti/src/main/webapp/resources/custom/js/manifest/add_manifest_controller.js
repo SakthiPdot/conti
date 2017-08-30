@@ -107,7 +107,7 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 								console.log('save success');
 								self.message = "Manifest ( "+response.ManifestNo+" ) Created Successfully..! ";
 								successAnimate('.success');	
-								setTimeout(function(){afterSave(response.ManifestId);}, 4000);
+								setTimeout(function(){afterSave(response.ManifestId);}, 3800);
 								setTimeout(function(){ location.reload(); }, 4000);	
 								//save and view manifest number
 							}, 
