@@ -209,7 +209,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Address line1 <span class="required">*</span></span>
                             		   <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.customer_addressline1"
+                            		    	data-ng-model = "ctrl.shipment.sendercustomer_address1"
                             		    	data-ng-disabled = "true"
                             		    required />                             		    
                             		    
@@ -220,7 +220,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Address line2 </span>
                             		   <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.customer_addressline2"
+                            		    	data-ng-model = "ctrl.shipment.sendercustomer_address2"
                             		    	data-ng-disabled = "true"
                             		     />                             		    
                             		    
@@ -229,7 +229,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Location <span class="required">*</span></span>
                             		    <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.location.location_name"
+                            		    	data-ng-model = "ctrl.shipment.sender_location.location_name"
                             		    	data-ng-disabled = "true"
                             		     />                       		    
                             		     
@@ -240,7 +240,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">City</span> 
                             			 <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.location.address.city"
+                            		    	data-ng-model = "ctrl.shipment.sender_location.address.city"
                             		    	data-ng-disabled = "true"
                             		     /> 
                             		    
@@ -251,7 +251,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">State</span> 
                             		     <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.location.address.state"
+                            		    	data-ng-model = "ctrl.shipment.sender_location.address.state"
                             		    	data-ng-disabled = "true"
                             		     /> 
                             		    
@@ -262,7 +262,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Country</span>
                             		     <input type="text" class="form-control" 
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.location.address.country"
+                            		    	data-ng-model = "ctrl.shipment.sender_location.address.country"
                             		    	data-ng-disabled = "true"
                             		     /> 
                             		    
@@ -273,7 +273,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Pincode</span>
                             		    <input type="text" class="form-control" 
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.location.pincode"
+                            		    	data-ng-model = "ctrl.shipment.sender_location.pincode"
                             		    	data-ng-disabled = "true"
                             		     /> 
                             		    
@@ -363,7 +363,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Address line1 <span class="required">*</span></span>
                             		   <input type="text" class="form-control" maxlength="50"
-                            		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_addressline1"
+                            		    	data-ng-model = "ctrl.shipment.consigneecustomer_address1"
                             		    	data-ng-disabled = "true"
                             		    required />                             		    
                             		    
@@ -372,7 +372,7 @@
 	                            	<div class="col-md-12 branchclass">
 	                            			<span class="text-paddingwidth">Address line2 </span>
 	                            		   <input type="text" class="form-control" maxlength="50"
-	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_addressline2"
+	                            		    	data-ng-model = "ctrl.shipment.consigneecustomer_address2"
 	                            		    	data-ng-disabled = "true"
 	                            		    />                             		    
 	                            		    
@@ -381,7 +381,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Location <span class="required">*</span></span>
                             		    <input type="text" class="form-control" maxlength="50"
-	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.location.location_name"
+	                            		    	data-ng-model = "ctrl.shipment.consignee_location.location_name"
 	                            		    	data-ng-disabled = "true"
 	                            		    />                     		    
                             		    
@@ -392,7 +392,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">City</span> 
                             			<input type="text" class="form-control" maxlength="50"
-	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.location.address.city"
+	                            		    	data-ng-model = "ctrl.shipment.consignee_location.address.city"
 	                            		    	data-ng-disabled = "true"
 	                            		    />   
                             		    
@@ -403,7 +403,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">State</span> 
                             		   <input type="text" class="form-control" maxlength="50"
-	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.location.address.state"
+	                            		    	data-ng-model = "ctrl.shipment.consignee_location.address.state"
 	                            		    	data-ng-disabled = "true"
 	                            		    /> 
                             		    
@@ -414,7 +414,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Country</span>
                             		     <input type="text" class="form-control" maxlength="50"
-	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.location.address.country"
+	                            		    	data-ng-model = "ctrl.shipment.consignee_location.address.country"
 	                            		    	data-ng-disabled = "true"
 	                            		    /> 
                             		    
@@ -425,7 +425,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Pincode</span>
                             		     <input type="text" class="form-control" maxlength="50"
-	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.location.pincode"
+	                            		    	data-ng-model = "ctrl.shipment.consignee_location.pincode"
 	                            		    	data-ng-disabled = "true"
 	                            		    /> 
                             		    
