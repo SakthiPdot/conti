@@ -814,7 +814,9 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 				|| (item.emp_address1.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.emp_address2.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
-				|| ((String(item.emp_phoneno)).indexOf(toSearch) > -1 ) ||  (item.emp_email.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || ((String(item.dob)).indexOf(toSearch) > -1 ) 
+				|| ((String(item.emp_phoneno)).indexOf(toSearch) > -1 ) 
+				/*||  (item.emp_email.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)*/ 
+				|| ((String(item.dob)).indexOf(toSearch) > -1 ) 
 				|| ((String(item.doj)).indexOf(toSearch) > -1 )) {
 			success = true;
 		} else {
