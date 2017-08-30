@@ -46,11 +46,11 @@
 	
     <div id="wrapper"> 
        	  
-		<div id="page-wrapper" class="background-image" style="background-image:url(resources/Image/dashboard.png);background-repeat:no-repeat;background-size:100% 100%">	 
+		<div id="page-wrapper" class="background-image" style="background-image:url(resources/Image/1.png);background-repeat:no-repeat;background-size:contain;">	 
     
-      		<div class="page-header" >
+      		<!-- <div class="page-header" >
       		Dashboard 
-      		</div>
+      		</div> -->
             <!-- <img alt="hi" src="resources/Image/dashboard.png" style="background-repeat:no-repeat;width: 100%;height: -webkit-fill-available;"> -->    
           <div id="page-inner">  
              <div class="row">
