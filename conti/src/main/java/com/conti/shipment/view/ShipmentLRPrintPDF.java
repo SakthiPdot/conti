@@ -137,9 +137,9 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    				"Name : "+shipment.getSender_customer().getCustomer_name()+" "+
 	    				"\nAddress : "+shipment.getSendercustomer_address1()+
 	    							/*", "+shipment.getSender_customer().getCustomer_addressline2()+*/
-	    							", "+shipment.getSender_customer().location.getLocation_name()+
-	    							", "+shipment.getSender_customer().location.address.getCity()+
-	    							" - "+shipment.getSender_customer().location.getPincode()+
+	    							", "+shipment.getSender_location().getLocation_name()+
+	    							", "+shipment.getSender_location().address.getCity()+
+	    							" - "+shipment.getSender_location().getPincode()+
 	    							", \nPh :"+shipment.getSender_customer().getCustomer_mobileno()+
 	    							/*", \nEmail :"+shipment.getSender_customer().getCustomer_email()+*/
 	    							", \nState :"+shipment.getSender_customer().location.address.getState()+
@@ -153,9 +153,9 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    				"Name : "+shipment.getConsignee_customer().getCustomer_name()+" "+
 	    				"\nAddress : "+shipment.getConsigneecustomer_address1()+
 	    							/*", "+shipment.getConsignee_customer().getCustomer_addressline2()+*/
-	    							", "+shipment.getConsignee_customer().location.getLocation_name()+
-	    							", "+shipment.getConsignee_customer().location.address.getCity()+
-	    							" - "+shipment.getConsignee_customer().location.getPincode()+
+	    							", "+shipment.getConsignee_location().getLocation_name()+
+	    							", "+shipment.getConsignee_location().address.getCity()+
+	    							" - "+shipment.getConsignee_location().getPincode()+
 	    							", \nPh :"+shipment.getConsignee_customer().getCustomer_mobileno()+
 	    							/*", \nEmail :"+shipment.getConsignee_customer().getCustomer_email()+*/
 	    							", \nState :"+shipment.getConsignee_customer().location.address.getState()+

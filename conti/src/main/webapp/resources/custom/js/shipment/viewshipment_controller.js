@@ -274,6 +274,7 @@ contiApp.controller('ViewShipmentController', [
 	 
 	 self.view1Shipmet = function (shipment) {
 		 self.shipment = shipment;
+		 console.log(shipment);
 		 viewShipment_Animate('.shipment_View', 'OPEN');
 	 }
 	 

@@ -350,7 +350,9 @@
 	    .underline{
 	    text-decoration: none !important;
 	    }
-	    
+	   a.hover:hover {
+            color: 	#707070;
+        }
 	  
 	     @media (max-width : 768px) {
 				.branchclass{

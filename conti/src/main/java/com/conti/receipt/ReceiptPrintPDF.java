@@ -152,6 +152,10 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	    			 	.shipmentModel.getSender_location().address.getCity()+
 	    			 " - "+receiptModel.getReceiptDetailList().get(0)
 	    			 	.shipmentModel.getSender_location().getPincode()+
+    			 	"\n"+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_location().address.getState()+	
+    			 	" - "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_location().address.getStateCode()+	
 	    			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
 	    			 	.shipmentModel.getSender_customer().getCustomer_mobileno()	
     			 ,address_font));
@@ -159,15 +163,19 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	    
     	 Cell consignee_add = new Cell(new Phrase(
     			 "Name : "+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getSender_customer().getCustomer_name()+
+    			 	.shipmentModel.getConsignee_customer().getCustomer_name()+
     			 "\nAddress : "+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getSendercustomer_address1().toString()+
+    			 	.shipmentModel.getConsigneecustomer_address1().toString()+
     			 ",\n"+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getSender_location().getLocation_name()+
+    			 	.shipmentModel.getConsignee_location().getLocation_name()+
     			 ", "+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getSender_location().address.getCity()+
+    			 	.shipmentModel.getConsignee_location().address.getCity()+
     			 " - "+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getSender_location().getPincode()+
+    			 	.shipmentModel.getConsignee_location().getPincode()+
+			 	"\n"+receiptModel.getReceiptDetailList().get(0)
+			 	.shipmentModel.getConsignee_location().address.getState()+	
+			 	" - "+receiptModel.getReceiptDetailList().get(0)
+			 	.shipmentModel.getConsignee_location().address.getStateCode()+		
     			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
     			 	.shipmentModel.getSender_customer().getCustomer_mobileno()	
 			 ,address_font));
