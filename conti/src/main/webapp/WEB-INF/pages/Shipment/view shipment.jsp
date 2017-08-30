@@ -127,7 +127,7 @@
 	              
 	              <div class="col-md-6">
 		              
-		               <b class = "pull-right">Shipment Date. : {{ctrl.shipment.shipment_date}}</b>            
+		               <b class = "pull-right">Shipment Date. : {{ctrl.shipment.shipment_date.slice(0,-2)}}</b>            
 		              
 	              </div>
 	              
@@ -1226,7 +1226,7 @@
 												data-ng-dblclick = "ctrl.view1Shipmet(shipment)"
 											>
 												<td><input type="checkbox" data-ng-change="ctrl.shipmentSelect(shipment)" data-ng-model = "shipment.select" /></td>
-												<td data-ng-show = "setting_shipdate">{{shipment.shipment_date}}</td>
+												<td data-ng-show = "setting_shipdate">{{shipment.shipment_date.slice(0,-2)}}</td>
 												<td data-ng-show = "setting_shiplrno">{{shipment.lrno_prefix}}</td>
 												<td data-ng-show = "setting_shipprod">
 													<div
