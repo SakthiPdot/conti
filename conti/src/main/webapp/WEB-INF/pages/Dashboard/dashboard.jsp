@@ -61,7 +61,7 @@
                     </div>
                     <div class="">
 						    <h3 class="dash_padding" style="font-size: xx-large;">
-						    <a href="add_shipment" class="underline">Add Shipment</a></h3>
+						    <a href="add_shipment" class="underline hover">Add Shipment</a></h3>
                              <!-- <strong>Short Links</strong> -->
                     </div>
                    </div>
@@ -73,7 +73,7 @@
                                 <i class="fa fa-truck fa-5x"></i>
 								</div>                                
                             <div class="">
-							<h3 class="dash_padding" style="font-size: xx-large;"><a href="add_manifest" class="underline">Add Manifest</a></h3>
+							<h3 class="dash_padding" style="font-size: xx-large;"><a href="add_manifest" class="underline hover">Add Manifest</a></h3>
                                <!--  <strong>Short Links</strong>  -->
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                                 <i class="fa fa-file-text-o fa-5x"></i>
 								</div>                                
                             <div class="">
-							<h3 class="dash_padding" style="font-size: xx-large;"><a href="receipt_generate" class="underline">Receipt Generation</a></h3>
+							<h3 class="dash_padding" style="font-size: xx-large;"><a href="receipt_generate" class="underline hover">Receipt Generation</a></h3>
                                <!-- <strong>Short Links</strong> -->
                             </div>
                         </div>
