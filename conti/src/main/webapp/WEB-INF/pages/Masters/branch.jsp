@@ -200,7 +200,7 @@
 			                	<div class="input-group">
 				                	<span class="input-group-addon"><span>R</span>	</span>		                	
 				                	<input type="text" class=" form-control" maxlength = "4" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.receiptno_prefix" 
-				                  	data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Receipt number"  required/>
+				                  	data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Receipt Invoice Number Prefix"  required/>
 			                  	</div>
 			               </div>		                                
 		                </div>                 
