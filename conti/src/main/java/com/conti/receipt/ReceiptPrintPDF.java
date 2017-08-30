@@ -52,64 +52,84 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 		ReceiptModel receiptModel=(ReceiptModel)model.get("receipt");
 		Company company = (Company) model.get("company");
 		BranchModel branch = (BranchModel) model.get("branch");
-		String logo = (String) model.get("logo");
 		
-	
-	      // Creating a table          
-	      Table companyTable = new Table(3);    
-	      
-	      // Adding cells to the table      
-	      companyTable.setBorderWidth(1);
-	      companyTable.setPadding(10);
-	      companyTable.setSpacing(0);
-	      
-	      //===== for company logo
-	      Image image = Image.getInstance(company.getCompany_logo());
-	      image.scaleAbsolute(80, 80);
-		  
-	      
-	      Cell logoCell=new Cell(image);
-		  logoCell.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT);
-	      logoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-	      logoCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-	      logoCell.setRowspan(2);
-	      
-	      companyTable.addCell(logoCell);
-	      
-	      
-	      //===== for company Name
-	      Cell nameCell=new Cell(company.getCompany_name());
-	      nameCell.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT);
-	      nameCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-	      nameCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-	       
-	      companyTable.addCell(nameCell);
-	      
-	      
-	      //=====for company address
-		    Font address_font = new Font(Font.HELVETICA, 10);
-		    Cell address_cell = new Cell(
-		    		new Phrase(
-		    		branch.getBranch_addressline1()+", "+
-					/*branch.getBranch_addressline2()+", " +*/
-					branch.location.getLocation_name()+". "+
-					branch.location.address.getCity()+", "+
-					branch.location.address.getState()+", "+
-					branch.location.getPincode()+" \nPh: "+
-					branch.getBranch_mobileno()+", \nEmail: "+
-					branch.getBranch_email()
-					,address_font)
-					);
-		   
-		    address_cell.setBorder(Rectangle.BOTTOM);
-		    address_cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		    companyTable.addCell(address_cell);
-		    
-		    
-	         
-	      
-	      // Adding Table to document        
-	      document.add(companyTable);   
+		document.setMargins(-50, -50, 20, 20);
+		document.open();
+		
+		
+		Table company_tbl = new Table(3);
+//		table.setTableFitsPage(true);
+//	    table.setCellsFitPage(true);
+		company_tbl.setBorderWidth(1);
+		company_tbl.setPadding(4);
+		company_tbl.setSpacing(0);
+		
+	    // for company logo
+	    Image image = null;
+	    image = Image.getInstance(company.getCompany_logo());
+	    image.scaleAbsolute(150, 30);
+	    Cell logo_cell = new Cell(image);
+	    logo_cell.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT);
+	    logo_cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	    logo_cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    logo_cell.setRowspan(2);
+	    company_tbl.addCell(logo_cell);
+	    
+	    //for company name
+	    Cell companyname_cell = new Cell(company.getCompany_name());
+	    companyname_cell.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT);	
+	    companyname_cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	    companyname_cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    company_tbl.addCell(companyname_cell);
+	    
+	    //for company address
+	    Font address_font = new Font(Font.COURIER, 8);
+	    Cell address_cell = new Cell(
+	    		new Phrase(
+	    		branch.getBranch_addressline1()+", "+
+				/*branch.getBranch_addressline2()+", " +*/
+				branch.location.getLocation_name()+". "+
+				branch.location.address.getCity()+", "+
+				branch.location.address.getState()+", "+
+				branch.location.getPincode()+" \nPh: "+
+				branch.getBranch_mobileno()+", \nEmail: "+
+				branch.getBranch_email()
+				,address_font)
+				);
+	   
+	    address_cell.setBorder(Rectangle.BOTTOM);
+	    address_cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	    company_tbl.addCell(address_cell);
+	 
+	  //customer table
+	    Table customer_tbl = new Table(2);
+	    customer_tbl.setBorderWidth(1);
+	    customer_tbl.setPadding(4);
+	    customer_tbl.setSpacing(0);
+	    Cell sender = new Cell(new Phrase("From", address_font));
+	    sender.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    customer_tbl.addCell(sender);
+	    Cell consignee = new Cell(new Phrase("To", address_font));
+	    consignee.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    customer_tbl.addCell(consignee);
+	   /* Cell sender_add = new Cell(
+	    		new Phrase(
+	    				"Name : "+shipment.getSender_customer().getCustomer_name()+" "+
+	    				"\nAddress : "+shipment.getSendercustomer_address1()+
+	    							", "+shipment.getSender_customer().getCustomer_addressline2()+
+	    							", "+shipment.getSender_location().getLocation_name()+
+	    							", "+shipment.getSender_location().address.getCity()+
+	    							" - "+shipment.getSender_location().getPincode()+
+	    							", \nPh :"+shipment.getSender_customer().getCustomer_mobileno()+
+	    							", \nEmail :"+shipment.getSender_customer().getCustomer_email()+
+	    							", \nState :"+shipment.getSender_customer().location.address.getState()+
+	    							", State Code :"+shipment.getSender_customer().location.address.getStateCode()+
+	    							" \nGSTIN Number :"+shipment.getSender_customer().getGstin_number()
+	    							
+	    			,address_font)
+	    		);*/
+	   
+	    document.add(company_tbl);
 	}
 
 }

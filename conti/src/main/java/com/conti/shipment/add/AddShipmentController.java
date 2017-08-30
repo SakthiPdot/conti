@@ -128,7 +128,7 @@ public class AddShipmentController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		
-		/*try {*/
+		try {
 			// LRNO CALCULATION
 			int lrno = shipmentDao.fetchMAXlrno(branch_id);
 			if( lrno == 0 ) {
@@ -147,7 +147,9 @@ public class AddShipmentController {
 				shipment.getSender_customer().setBranchModel(shipment.getSender_branch());
 				shipment.getSender_customer().setCustomer_type(shipment.getPay_mode());
 				
-				if( shipment.getSender_customer().getGstin_number().length() != 0 ) {
+				/*shipment.getSender_customer().setTaxin_payable("Yes");
+				shipment.getSender_customer().setTaxin_payable("No");*/
+				if( shipment.getSender_customer().getGstin_number() == null ) {
 					shipment.getSender_customer().setTaxin_payable("Yes");
 				} else {
 					shipment.getSender_customer().setTaxin_payable("No");
@@ -166,10 +168,13 @@ public class AddShipmentController {
 				shipment.getConsignee_customer().setUpdated_datetime(dateFormat.format(date).toString());
 				shipment.getConsignee_customer().setBranchModel(shipment.getConsignee_branch());
 				shipment.getConsignee_customer().setCustomer_type(shipment.getPay_mode());
-				if( shipment.getSender_customer().getGstin_number().length() != 0 ) {
-					shipment.getSender_customer().setTaxin_payable("Yes");
+				
+				/*shipment.getConsignee_customer().setTaxin_payable("Yes");
+				shipment.getConsignee_customer().setTaxin_payable("No");*/
+				if( shipment.getConsignee_customer().getGstin_number() == null ) {
+					shipment.getConsignee_customer().setTaxin_payable("Yes");
 				} else {
-					shipment.getSender_customer().setTaxin_payable("No");
+					shipment.getConsignee_customer().setTaxin_payable("No");
 				}
 				
 				customerDao.saveOrUpdate(shipment.getConsignee_customer());
@@ -203,16 +208,16 @@ public class AddShipmentController {
 			String sms_respone = sendMailSMS.send_SMS(mobileno, message);*/
 			JSONObject lr_details = new JSONObject();
 			lr_details.put("lrno", lrno);
-			lr_details.put("id", lrno);
+			lr_details.put("shipment_id", shipment.shipment_id);
 			lr_details.put("lrno_prefix", lrno_prefix);
 			
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<String> (lr_details.toString(),HttpStatus.CREATED);
 			
-		/*} catch ( Exception exception) {
+		} catch ( Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
 			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}*/
+		}
 		
 		
 	}

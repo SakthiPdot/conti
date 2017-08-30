@@ -648,7 +648,7 @@
 	                            		<div class="col-md-6 branchclass">
 	                            			<span class="text-paddingwidth"> Service <span class="required">*</span></span>
 	                            		    
-	                            		     <div angucomplete-alt id="service_name" 
+	                            		     <!-- <div angucomplete-alt id="service_name" 
 															maxlength="5"
 															placeholder="Ex : Counter" 
 															pause="0"											
@@ -664,13 +664,15 @@
     														data-trigger="focus" data-toggle="popover" 
 			   											    data-placement="top" data-content="Please enter & select service"
 															style="width:100%"
-														    ></div> 
+														    ></div> --> 
 														    
-														    <!--  <select class="form-control" data-ng-options = "status for status in ['Booked']" 
-														     		data-ng-model = "ctrl.shipment.status"
+														    <select class="form-control" data-ng-options = "service as service.service_name for service in ctrl.services" 
+														     		data-ng-model = "ctrl.shipment.service"
 				                             						data-trigger="focus" data-toggle="popover" data-placement="top" 
-				                             						data-content="Please select status" required>
-				                         				 	 </select> -->
+				                             						data-ng-change = "ctrl.statusChange(ctrl.shipment.service)"
+				                             						data-content="Please select service" required>
+				                             						<option value ="" disabled>--Select--</option>
+				                         				 	 </select> 
 	                            		    
 	                            		</div>
 	                            		<div class=" col-md-6 branchclass">
@@ -1194,6 +1196,7 @@
   <script src="resources/custom/js/shipment/shipment_controller.js"></script>
   <script src="resources/custom/js/shipment/shipment_service.js"></script>
   <script src="resources/custom/js/branch_master/branch_service.js"></script>
+  <script src="resources/custom/js/service_master/service_service.js"></script>
   <script src="resources/custom/js/price_setting/s_price_setting_service.js"></script>
   <script src="resources/custom/js/CompanySetting/company_setting_service.js"></script>
   <script src="resources/custom/js/custom.js"></script>
