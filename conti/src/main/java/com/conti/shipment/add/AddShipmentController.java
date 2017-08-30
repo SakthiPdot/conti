@@ -128,7 +128,7 @@ public class AddShipmentController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		
-		try {
+		/*try {*/
 			// LRNO CALCULATION
 			int lrno = shipmentDao.fetchMAXlrno(branch_id);
 			if( lrno == 0 ) {
@@ -203,15 +203,16 @@ public class AddShipmentController {
 			String sms_respone = sendMailSMS.send_SMS(mobileno, message);*/
 			JSONObject lr_details = new JSONObject();
 			lr_details.put("lrno", lrno);
+			lr_details.put("id", lrno);
 			lr_details.put("lrno_prefix", lrno_prefix);
 			
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 			return new ResponseEntity<String> (lr_details.toString(),HttpStatus.CREATED);
 			
-		} catch ( Exception exception) {
+		/*} catch ( Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
 			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		}*/
 		
 		
 	}

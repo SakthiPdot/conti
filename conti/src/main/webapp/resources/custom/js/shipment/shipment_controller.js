@@ -769,6 +769,13 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			self.shipment.sender_location = self.shipment.sender_customer.location;
 			self.shipment.consignee_location = self.shipment.consignee_customer.location;
 			
+			if(self.shipment.sender_customer.gstin_number == null) {
+				self.shipment.sender_customer.gstin_number = 0;
+			}
+			if(self.shipment.consignee_customer.gstin_number == null) {
+				self.shipment.consignee_customer.gstin_number = 0;
+			}
+			
 			console.log(self.shipment);
 			if( self.shipment.shipment_id == null ) {
 				
