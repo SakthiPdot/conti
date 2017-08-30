@@ -202,7 +202,7 @@ public class ManifestPrintPDF extends AbstractPdfView {
 			Date manifestDate=dateFormat.parse(manifestModel.getUpdated_datetime().substring(0,19));
 			
 			
-		    SimpleDateFormat printFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");		    
+		    SimpleDateFormat printFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm a");		    
 		    Cell dateHeading = new Cell(new Phrase("Date : "+printFormat.format(manifestDate), address_font));
 		    
 		    dateHeading.setHorizontalAlignment(Element.ALIGN_LEFT);
