@@ -93,7 +93,7 @@
 	              <div class="col-md-2">
 	              </div>
 	              
-	              <div class="col-md-3 col-sm-4 col-xs-6" data-ng-cloak>	              
+	              <div class="col-md-3 col-sm-4 col-xs-6 subHead " data-ng-cloak>	              
 	              <b>Last Receipt No :<span style = "color : #0b67af;">{{lastReceiptNumber}}</span></b>	              
 	              </div>
               </div>
@@ -149,7 +149,10 @@
 
 									<div class="sec-padding">Specific Period</div>
 									<div class="col-lg-3 branchclass">
+									<div class="col-lg-2 branchclass">
 										<span class="text-padding">From </span>
+										</div>
+										<div class="col-lg-10">
 										<div class=" input-group ">
 											<input type="text" class="form-control datepicker1"
 												data-ng-model="fromdate_filter" data-trigger="focus"
@@ -158,10 +161,14 @@
 												data-content="Please select from date" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
+										</div>
 									</div>
 
 									<div class="col-lg-3 branchclass">
+									<div class="col-lg-2 branchclass">	
 										<span class="text-padding">To</span>
+										</div>
+										<div class="col-lg-10">
 										<div class=" input-group ">
 											<input type="text" class="form-control datepicker2"
 												data-ng-model="todate_filter" data-trigger="focus"
@@ -170,6 +177,7 @@
 												data-content="Please select to date" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
 											</span>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -509,7 +517,7 @@
                 <!--================================================== Modal==================================================== -->
                  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
                  data-backdrop="static" data-keyboard="false">
-                                <div class="modal-dialog" style="width: auto ! important;height: auto ! important;">
+                                <div class="modal-dialog" style="width: auto ! important;height: auto ! important; max-width: 550px ! important;">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -628,10 +636,10 @@
 												remote_url-data-field="staff" search-fields="courier_staff"
 												title-field="courier_staff" match-class="highlight"
 											    minlength="1" field-required="true"
+											    maxlength="30"
 												onKeyPress="return CheckIsCharacter(event)"
 												input-class="form-control form-control-small">
 											</angucomplete-alt>
-											
 									</div>
 									
 								
@@ -647,7 +655,8 @@
 									<div class="col-lg-6 ">
 										<input type="text" class="form-control" list="contact_number"
 										data-ng-model="ctrl.receipt.contact_number"
-									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
+										maxlength="10"
+									    onKeyPress="return CheckIsNumericAnddot(event,this.value) "
 										placeholder="Ex.9876543210">
 										<datalist id="contact_number">
 										</datalist>

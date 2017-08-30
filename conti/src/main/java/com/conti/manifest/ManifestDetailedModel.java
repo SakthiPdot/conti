@@ -17,7 +17,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import com.conti.shipment.add.ShipmentModel;
 
 @Entity
-@Table(name = "t_manifestdetailes")
+@Table(name = "t_manifestdetails")
 public class ManifestDetailedModel 
 {
 	private int manifestdetailed_id,manifest_id;
