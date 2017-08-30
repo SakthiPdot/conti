@@ -442,6 +442,7 @@ public class AddReceiptRestController
 			
 			//generate receipt number
 			int lastReceiptNo=receiptDao.getLastReceiptNoWithBranch(receipt.getBranchModel().getBranch_id());
+		
 			if(lastReceiptNo!=0){
 				receipt.setReceipt_number(lastReceiptNo+1);
 			}else{
