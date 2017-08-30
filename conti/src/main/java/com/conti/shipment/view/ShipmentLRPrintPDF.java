@@ -1,5 +1,8 @@
 package com.conti.shipment.view;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -105,9 +108,15 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    company_tbl.addCell(getin_cell);
 	    
 	    //for LR number
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	    String shipment_date = shipment.getShipment_date().toString();
+	    Date date = dateFormat.parse(shipment_date.substring(0, shipment_date.length()-2));
+	    
+	    SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+	    	    //shipment.getShipment_date()
 	    Cell lrno_cell = new Cell(
 	    		new Phrase("L.R. No: "+shipment.getLrno_prefix()
-	    		+ "\nDate: " + shipment.getShipment_date(), address_font));
+	    		+ "\nDate: " + dateFormat1.format(date), address_font));
 	    
 	    company_tbl.addCell(lrno_cell);
 	
@@ -128,9 +137,9 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    				"Name : "+shipment.getSender_customer().getCustomer_name()+" "+
 	    				"\nAddress : "+shipment.getSendercustomer_address1()+
 	    							/*", "+shipment.getSender_customer().getCustomer_addressline2()+*/
-	    							", "+shipment.getSender_location().getLocation_name()+
-	    							", "+shipment.getSender_location().address.getCity()+
-	    							" - "+shipment.getSender_location().getPincode()+
+	    							", "+shipment.getSender_customer().location.getLocation_name()+
+	    							", "+shipment.getSender_customer().location.address.getCity()+
+	    							" - "+shipment.getSender_customer().location.getPincode()+
 	    							", \nPh :"+shipment.getSender_customer().getCustomer_mobileno()+
 	    							/*", \nEmail :"+shipment.getSender_customer().getCustomer_email()+*/
 	    							", \nState :"+shipment.getSender_customer().location.address.getState()+
@@ -144,9 +153,9 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    				"Name : "+shipment.getConsignee_customer().getCustomer_name()+" "+
 	    				"\nAddress : "+shipment.getConsigneecustomer_address1()+
 	    							/*", "+shipment.getConsignee_customer().getCustomer_addressline2()+*/
-	    							", "+shipment.getConsignee_location().getLocation_name()+
-	    							", "+shipment.getConsignee_location().address.getCity()+
-	    							" - "+shipment.getConsignee_location().getPincode()+
+	    							", "+shipment.getConsignee_customer().location.getLocation_name()+
+	    							", "+shipment.getConsignee_customer().location.address.getCity()+
+	    							" - "+shipment.getConsignee_customer().location.getPincode()+
 	    							", \nPh :"+shipment.getConsignee_customer().getCustomer_mobileno()+
 	    							/*", \nEmail :"+shipment.getConsignee_customer().getCustomer_email()+*/
 	    							", \nState :"+shipment.getConsignee_customer().location.address.getState()+
@@ -211,6 +220,20 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    	totalPrice.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    	desc_tbl.addCell(totalPrice);
 	    }
+	    
+	    if(shipment.getDiscount_percentage() != 0) {
+	    	Cell discount = new Cell (new Phrase ("Discount "+
+		    		Float.toString(shipment.getDiscount_percentage())+"%", address_font));
+		    discount.setColspan(4);
+		    discount.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    desc_tbl.addCell(discount);
+		    
+		    Cell discount_amt = new Cell (new Phrase (
+		    		Float.toString(shipment.getDiscount_amount()), address_font));
+		    discount_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    desc_tbl.addCell(discount_amt);
+	    }
+	    
 	    if(shipment.getCgst() != 0) {
 	    	 Cell cgst = new Cell (new Phrase ("CGST "+
 	 	    		Float.toString(company.getCGST())+"%", address_font));
@@ -251,18 +274,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    }
 	    
 	    
-	    if(shipment.getDiscount_percentage() != 0) {
-	    	Cell discount = new Cell (new Phrase ("Discount "+
-		    		Float.toString(shipment.getDiscount_percentage())+"%", address_font));
-		    discount.setColspan(4);
-		    discount.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    desc_tbl.addCell(discount);
-		    
-		    Cell discount_amt = new Cell (new Phrase (
-		    		Float.toString(shipment.getDiscount_amount()), address_font));
-		    discount_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    desc_tbl.addCell(discount_amt);
-	    }
+	   
 	   
 	    
 	    String currency= (String) model.get("currency");
