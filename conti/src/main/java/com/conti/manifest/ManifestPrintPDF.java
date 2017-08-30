@@ -402,7 +402,7 @@ public class ManifestPrintPDF extends AbstractPdfView {
 		    totalPaidAmountHeading.setColspan(3);
 		    footerTable.addCell(totalPaidAmountHeading);
 		    
-		    Cell totalPaidAmount = new Cell(new Phrase(String.valueOf(paid!=0?f.format(paid):0), address_font));
+		    Cell totalPaidAmount = new Cell(new Phrase(String.valueOf(paid!=0?f.format(paid):" "), address_font));
 		    totalPaidAmount.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    totalPaidAmount.setBorder(Rectangle.BOTTOM);
 		    totalPaidAmount.setColspan(2);
@@ -416,7 +416,7 @@ public class ManifestPrintPDF extends AbstractPdfView {
 		    footerTable.addCell(totalToPayHeading);
 		    
 		    
-		    Cell totalToPay = new Cell(new Phrase(String.valueOf(toPay!=0?f.format(toPay):0), address_font));
+		    Cell totalToPay = new Cell(new Phrase(String.valueOf(toPay!=0?f.format(toPay):" "), address_font));
 		    totalToPay.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    totalToPay.setBorder(Rectangle.NO_BORDER);
 		    totalToPay.setColspan(2);

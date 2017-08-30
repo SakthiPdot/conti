@@ -154,7 +154,6 @@ public class ShipmentDaoImpl implements ShipmentDao {
 						+ "and  status in ('Booked','Missing')" 
 						+ "order by IFNULL(sender_branch.branch_name,lr_number)  ASC ")
 				.setMaxResults(100).list();
-		
 		return listShipment;
 	}
 	
