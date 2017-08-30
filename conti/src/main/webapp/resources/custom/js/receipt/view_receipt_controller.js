@@ -11,6 +11,7 @@
 contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','ReceiptService','BranchService','ConfirmDialogService',function($scope,$http,$q,$timeout,ReceiptService,BranchService,ConfirmDialogService)
 {
 	var self=this;
+	//self.search={};
 	self.receipts=[];
 	self.receipt={
 			"frombranch" : "",
@@ -26,7 +27,10 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	self.heading="Master"
 	self.message=null;
 	self.print=print;
+	self.receiptSearch=receiptSearch;
 	self.receiptSelect=receiptSelect;
+	self.makeReturn=makeReturn;
+	self.makePending=makePending;
 	self.receiptSelectAll=receiptSelectAll;
 	self.shownoofRecord=shownoofRecord;
 	$scope.shownoofrec=10;
@@ -239,28 +243,26 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		if(self.Filterreceipts.length==0)
 		{
 			BranchService.pagination_byPage($scope.currentPage)
-			.then(
-					function(filterReceipt)
+			.then(function(filterReceipt){
+					if(filterReceipt.length==0)
 					{
-						if(filterReceipt.length==0)
-						{
-							$scope.nextDisabled=true;
-						}
-						else if(filterReceipt.length<10)
-						{
-							self.Filterreceipts=filterReceipt;
-							$scope.nextDisabled=true;
-						}
-						else
-						{
-							self.Filterreceipts=filterReceipt;
-						}
-					},
-					function(errResponse)
-					{
-						console.log('Error while pagination...');
+						$scope.nextDisabled=true;
 					}
-				);
+					else if(filterReceipt.length<10)
+					{
+						self.Filterreceipts=filterReceipt;
+						$scope.nextDisabled=true;
+					}
+					else
+					{
+						self.Filterreceipts=filterReceipt;
+					}
+				},
+				function(errResponse)
+				{
+					console.log('Error while pagination...');
+				}
+			);
 		}
 		if(self.Filterreceipts.length<$scope.pageSize)
 		{
@@ -279,7 +281,6 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			$scope.previouseDisabled=false;
 		}
 	}
-	//------------------------------------------------------------------------------------
 	
 	//-----------------------------First and Last Pagination------------------------------------
 	
@@ -292,7 +293,6 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			$scope.previouseDisabled=true;
 			$scope.nextDisabled=false;
 			self.Filterreceipts=self.receipts.slice($scope.currentPage*$scope.pageSize);
-			//fetchAllReceipt_add();
 			fetchAllReceipt_view();
 		}
 		else
@@ -319,7 +319,6 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		}
 	}
 	
-	
 	//-------------------------------View Receipt filter function----------------------------------
 	
 	function receiptFilter(){
@@ -332,17 +331,154 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		} 
 		console.log(self.receipt);
 		ReceiptService.receiptFilter(self.receipt)
-		.then(
-				function(receipt)
-				{
+		.then(function(receipt){
 					console.log(receipt);
 					self.Filterreceipts=receipt;
 				},
-				function(errResponse)
-				{
+				function(errResponse){
 					console.log('Error while filtering receipt records');
 				}
 			);
+	}
+	
+	//-------------------------------Receipt register search-------------------------
+	
+	function receiptSearch(key){
+		console.log('');
+		if (self.search.length==0) {
+			self.Filterreceipts = self.receipts;
+    	}else if(self.search.length>3){
+			ReceiptService.receiptSearch(key)
+			.then(function(filterreceipt){
+				self.Filterreceipts=filterreceipt;
+				console.log(filterreceipt);
+			},
+			function(errResponse){
+				console.log('Error while searching receipt');
+			});
+			
+		}
+			
+	}
+	
+	//-------------------------------------- Print begin -----------------------------//
+	function print() {
+	    	if(self.selected_receipt.length == 0 ) {
+		   		self.message ="Please select atleast one record..!";
+				successAnimate('.failure');
+	    	} else {
+	    			
+	    		console.log(self.selected_receipt);
+	    		$http.get('http://localhost:8080/Conti/listprint');
+	    	}
+	    }
+	    
+//-------------------Make Pending function start---------------------------------//
+	
+	function makePending(){
+		console.log(self.selected_receipt.length);
+		if(self.selected_receipt.length == 0 ) {
+	   		self.message ="Please select atleast one record..!";
+			successAnimate('.failure');
+		} else {
+			var activate_flag = 0;
+			angular.forEach(self.selected_receipt, function(receipt){
+				if(receipt.shipmentModel.status == 'Pending') {
+					activate_flag = 1;
+					
+				} 
+			});
+			if(activate_flag == 1) {
+				self.message ="Selected record(s) already in Pending status..!";
+				successAnimate('.failure');
+				
+			} else {
+				self.confirm_title = 'Pending';
+				self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+				self.confirm_msg =' make selected record(s) status as '+self.confirm_title+' ?';
+				self.confirm_btnclass = 'btn-success';
+				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+				.then(
+						function (res) {
+							var active_id = [];
+			    			for(var i=0; i<self.selected_receipt.length; i++) {
+			    				 console.log("id "+i);
+			    				active_id[i] = self.selected_receipt[i].receiptdetailid; 
+			    				console.log(active_id[i] );
+			    			}
+							ReceiptService.makePending(active_id)
+							.then(
+									function(response) {
+										fetchAllReceipt_view();
+										self.selected_receipt = [];
+										self.message ="Selected record(s) has in Pending status..!";
+										successAnimate('.success');
+									}, function(errResponse) {
+										console.log(errResponse);    								
+									}
+								);
+						}
+					);
+				
+			}
+
+
+		}
+		
+	}
+	
+	
+//--------------------- Make Return function start---------------------------------	
+	function makeReturn(){
+		 console.log('call make Return function....');
+		 console.log(self.selected_receipt);
+		if(self.selected_receipt.length == 0 ) {
+	   		self.message ="Please select atleast one record..!";
+			successAnimate('.failure');
+		} else {
+			var activate_flag = 0;
+			angular.forEach(self.selected_receipt, function(receipt){
+				if(receipt.shipmentModel.status== 'Return') {
+					activate_flag = 1;
+				} 
+			});
+			if(activate_flag == 1) {
+				self.message ="Selected record(s) already in Return status..!";
+				successAnimate('.failure');
+				
+			} else {
+				self.confirm_title = 'Return';
+				self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+				self.confirm_msg =' make selected record(s) status as '+self.confirm_title+' ?';
+				self.confirm_btnclass = 'btn-success';
+				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+				.then(
+						function (res) {
+							var active_id = [];
+			    			for(var i=0; i<self.selected_receipt.length; i++) {
+			    				//console.log('the id is: '+)
+			    				active_id[i] = self.selected_receipt[i].receiptdetailid; 
+			    				console.log(active_id[i] );
+			    			}
+							ReceiptService.makeReturn(active_id)
+							.then(
+									function(response) {
+										fetchAllReceipt_view();
+										self.selected_receipt = [];
+										self.message ="Selected record(s) has in Return status..!";
+										successAnimate('.success');
+									}, function(errResponse) {
+										console.log(errResponse);    								
+									}
+								);
+						}
+					);
+				
+			}
+
+
+		}
+		
 	}
 	
 	}

@@ -283,8 +283,8 @@ public class ManifestRestController
 			
 			 JSONObject obj=new JSONObject(manifest);
 			 
-			 int frombranch=obj.getInt("frombranch");
-			 int tobranch=obj.getInt("tobranch");
+			 String frombranch=String.valueOf(obj.get("frombranch"));
+			 String tobranch=String.valueOf(obj.get("tobranch"));
 					 
 			 String fromdate=(String) obj.get("fromdate");
 			 String todate=(String) obj.get("todate");
@@ -521,10 +521,6 @@ public class ManifestRestController
 						}
 							
 					}
-					System.out.println("+++++++++++++++++++++++++++++++++++++++++++transitcount+++++++++++++++++++"+transitcount);
-					System.out.println("+++++++++++++++++++++++++++++++++++++++++++receivedcount+++++++++++++++++++"+receivedcount);
-					System.out.println("+++++++++++++++++++++++++++++++++++++++++++missingcount+++++++++++++++++++"+missingcount);
-					System.out.println("+++++++++++++++++++++++++++++++++++++++++++Size+++++++++++++++++++"+manifestDetailedModel.size());
 					ManifestModel manifestModel=manifestDao.getManifestByID(id);
 					if(manifestDetailedModel.size()==transitcount){
 						manifestModel.setManifest_status(ConstantValues.INTRANSIT);
@@ -587,14 +583,11 @@ public class ManifestRestController
 			int active_flag = 0;
 			try 
 			{
-				System.out.println("++++++++++++++++======================++++++++++++++++"+id.length);
 				for(int i=0; i<id.length; i++) 
 				{
 					ManifestDetailedModel manifestDetailedModel = manifestDao.getAllManifestDetailesByid(id[i]);
-					System.out.println("======================++++++++++++++++"+id[i]);
 					if(manifestDetailedModel == null) 
 					{
-						System.out.println("======================++++++++++++++++ manifestDetailedModel Null");
 						loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
 						active_flag = 1;
 					} 

@@ -18,8 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.conti.manifest.ManifestDetailedModel;
 import com.conti.manifest.ManifestModel;
 import com.conti.master.employee.EmployeeMaster;
+import com.conti.others.ConstantValues;
 
 
 @Repository
@@ -28,6 +30,9 @@ public class ReceiptDaoImpl implements ReceiptDao
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	String Delivered=ConstantValues.DELIVERED;
+	String Pending=ConstantValues.PENDING;
+	String Received=ConstantValues.RECEIVED;
 	
 	@Override
 	@Transactional
@@ -46,7 +51,7 @@ public class ReceiptDaoImpl implements ReceiptDao
 		
 		@SuppressWarnings("unchecked")
 		List<ReceiptDetail> listReceiptDetail = (List<ReceiptDetail>) sessionFactory.getCurrentSession()
-				.createQuery("from ReceiptDetail WHERE shipmentModel.obsolete ='N' and shipmentModel.status in('Received') ").setMaxResults(100).list();
+				.createQuery("from ReceiptDetail WHERE shipmentModel.obsolete ='N' and shipmentModel.status in('"+Received+"','"+Pending+"') ").setMaxResults(100).list();
 		return listReceiptDetail;
 		
 	}
@@ -60,7 +65,7 @@ public class ReceiptDaoImpl implements ReceiptDao
 		@SuppressWarnings("unchecked")
 		List<ReceiptDetail> listReceiptDetail = (List<ReceiptDetail>) sessionFactory.getCurrentSession()
 				.createQuery("from ReceiptDetail WHERE obsolete ='N' and  shipmentModel.consignee_branch.branch_id=" + branch_id+ 
-						" and shipmentModel.status in('Received') ").setMaxResults(100).list();
+						" and shipmentModel.status in('"+Received+"','"+Pending+"') ").setMaxResults(100).list();
 		return listReceiptDetail;
 		
 	}
@@ -106,10 +111,10 @@ public class ReceiptDaoImpl implements ReceiptDao
 		String tobrnch=String.valueOf(tobranch);
 		String stats=String.valueOf(status);
 		if(frombrnch!=null &&!frombrnch.trim().isEmpty())
-			queryString.append(" And shipmentModel.sender_branch.id='"+frombranch+"' ");
+			queryString.append(" AND shipmentModel.sender_branch.id='"+frombranch+"' ");
 		
 		if(tobrnch!=null &&!tobrnch.trim().isEmpty())
-			queryString.append(" And shipmentModel.consignee_branch.id='"+tobranch+"' ");
+			queryString.append(" AND shipmentModel.consignee_branch.id='"+tobranch+"' ");
 		
 		if(fromdate!=null && !fromdate.trim().isEmpty())			
 			queryString.append(" AND created_datetime >= '"+fromdate+" 00:00:00'");
@@ -120,7 +125,7 @@ public class ReceiptDaoImpl implements ReceiptDao
 		if(stats!=null && !stats.trim().isEmpty())
 			queryString.append(" AND shipmentModel.status='"+status+"'");
 		else{
-			queryString.append(" AND  shipmentModel.status in ('Delivered','Pending') ");
+			queryString.append(" AND  shipmentModel.status in ('"+Delivered+"','"+Pending+"') ");
 		}
 	@SuppressWarnings("unchecked")
 //		List<ReceiptModel> listreceipt = (List<ReceiptModel>) sessionFactory.getCurrentSession()
@@ -211,5 +216,36 @@ public class ReceiptDaoImpl implements ReceiptDao
 		return null;
 	}
 	
+	
+	//-------------------------------------Get Receipt Search by Start----------------------------------------------
+	
+		@Override
+		@Transactional
+		public List<ReceiptDetail>receiptSearch(String searchkey)
+		{
+			@SuppressWarnings("unchecked")
+			
+			List<ReceiptDetail> listReceipt=(List<ReceiptDetail>)sessionFactory.getCurrentSession()
+			.createQuery("from ReceiptDetail where shipmentModel.obsolete='N' and shipmentModel.lrno_prefix LIKE '%"+searchkey+"%'"
+					+ " OR manifestModel.manifest_prefix LIKE '"+searchkey+"%'"
+					+" AND shipmentModel.status in ('"+Received+"','"+Pending+"')"
+					).list();
+			return listReceipt;
+		}
+			
+	//----------------------------------------------Get Receipt detailed by id---------------------------------------------
+		@Override
+		@Transactional
+		public ReceiptDetail getAllReceiptDetailByid(int receiptdetailed_id) 
+		{
+			Query q= sessionFactory.getCurrentSession()
+					.createQuery("from ReceiptDetail WHERE receiptdetailid ="+receiptdetailed_id);
+			List<ReceiptDetail> receiptDetail=(List<ReceiptDetail>) q.list();
+			if(receiptDetail!=null){
+				return receiptDetail.get(0);
+			}
+			return null;
+		}
+			
 	//===================================================================================================
 }

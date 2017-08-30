@@ -33,7 +33,7 @@ public class ReceiptExcelBuilder extends AbstractExcelView {
 	protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 	
-		List<ReceiptModel> receiptList=(List<ReceiptModel>) model.get("receiptList");
+		List<ReceiptDetail> receiptList=(List<ReceiptDetail>) model.get("receiptList");
 		
 		int rowcount=0;
 		
@@ -86,20 +86,20 @@ public class ReceiptExcelBuilder extends AbstractExcelView {
 		DecimalFormat f=new DecimalFormat("##.00");		
 		
 		//detail
-		for(ReceiptModel receiptModel:receiptList){
+		for(ReceiptDetail receiptModel:receiptList){
 			HSSFRow row=sheet.createRow(rowcount++);
-		/*	//row.createCell(0).setCellValue(receiptModel.shipmentModel.getCreated_datetime());
+			row.createCell(0).setCellValue(receiptModel.shipmentModel.getCreated_datetime());
 			row.createCell(1).setCellValue(receiptModel.shipmentModel.getCreated_datetime());
 			row.createCell(2).setCellValue(receiptModel.shipmentModel.getLr_number());
-			row.createCell(3).setCellValue(receiptModel.receipt_number);
+			row.createCell(3).setCellValue(receiptModel.getReceiptModel().getReceipt_prefix());
 			row.createCell(4).setCellValue(receiptModel.shipmentModel.getLr_number());
-			row.createCell(5).setCellValue(receiptModel.manifestModel.branchModel1.getBranch_name());
-			row.createCell(6).setCellValue(receiptModel.manifestModel.branchModel2.getBranch_name());
+		//	row.createCell(5).setCellValue(receiptModel.manifestModel.branchModel1.getBranch_name());
+			//row.createCell(6).setCellValue(receiptModel.manifestModel.branchModel2.getBranch_name());
 			row.createCell(7).setCellValue(receiptModel.shipmentModel.getSendercustomer_address1());
 			row.createCell(8).setCellValue(receiptModel.shipmentModel.getSendercustomer_address2());
-			row.createCell(9).setCellValue(receiptModel.manifestModel.getManifest_number());
+		//	row.createCell(9).setCellValue(receiptModel.manifestModel.getManifest_number());
 			row.createCell(10).setCellValue(receiptModel.shipmentModel.getStatus());
-		*/}
+		}
 		
 	}
 }

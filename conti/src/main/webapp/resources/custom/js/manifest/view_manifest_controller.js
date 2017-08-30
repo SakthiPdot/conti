@@ -21,7 +21,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.FilterManifestdetailed=[];//for store detailed manifest based on manifest id
 		self.branches=[];
 		self.selected_manifest=[];
-		//self.selected_manifestdetailed[];
 		self.manifest={
 				"frombranch" : "",
 				"tobranch" : "",
@@ -33,9 +32,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.message=null;
 		self.print = print;
 		self.manifestSelectAll=manifestSelectAll;
-		//self.manifestDetailedSelectAll=manifestDetailedSelectAll;
 		self.manifestSelect=manifestSelect;
-		//self.manifestDetailedSelect=manifestDetailedSelect;
 		self.save='saveclose'
 		self.close=close;
 		self.deleteManifest=deleteManifest;
@@ -45,14 +42,10 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.manifestSearch=manifestSearch;	
 		self.shownoofRecord=shownoofRecord;
 		$scope.shownoofrec=10;
-		
-		
 		fetchAllManifest();
-		//fetchAllBranches();
-		
 		var manifest_id=$("#manifest_id").val();
 		//self.manifest.frombranch= $('#branch_id').val();
-		self.manifest.frombranch = parseInt($('#branch_id').val());
+		//self.manifest.frombranch = parseInt($('#branch_id').val());
 		//--call detailed manifest
 		if(manifest_id!=null)
 		{
@@ -77,7 +70,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			reset();
 		}
 	
-	//-------------------------------------------------------------------------------
 	
 	//---------------------Customer Master drawer close begin-----------
 		
@@ -90,9 +82,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 				reset();
 		});
 	}
-		
-	//---------------------Customer Master drawer close end-----------
-		
 		
 	//-------------------------- Fetch All Branch begin ---------------------//	
 	
@@ -109,17 +98,16 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 						console.log('Error while fetching branches');
 					}
 				);
-		if($('#currentUserRole').val() == "SUPER_ADMIN") {
-			self.fromBranch_disable = false;
-			self.manifest.frombranch = parseInt($('#branch_id').val());
-		} else {
-			self.fromBranch_disable = true;
-			
-			self.manifest.frombranch = parseInt($('#branch_id').val());
-		}	
+//		if($('#currentUserRole').val() == "SUPER_ADMIN") {
+//			self.fromBranch_disable = false;
+//			self.manifest.frombranch = parseInt($('#branch_id').val());
+//		} else {
+//			self.fromBranch_disable = true;
+//			
+//			self.manifest.frombranch = parseInt($('#branch_id').val());
+//		}	
 	}
 	fetchAllBranches();
-	//-----------------------------------------------------------------------//	
 		
 	//-------------------------- Fetch All Manifest records Start ---------------------//
 	function fetchAllManifest() 
@@ -208,7 +196,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    {
 //	    	manifest.fromdate = $('.datepicker1').val();
 //	    	manifest.todate = $('.datepicker2').val();
-	    	self.manifest.frombranch= $('#branch_id').val();
+	   // 	self.manifest.frombranch= $('#branch_id').val();
 	    	//manifest.tobranch=manifest.tobranch.branch_id;
 	    	if($('.datepicker1').val().length != 0) {
 				self.manifest.fromdate = $('.datepicker1').val();	
@@ -217,13 +205,15 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 				self.manifest.todate = $('.datepicker2').val();	
 			} 
 	    	
-	    	console.log(self.manifest.frombranch);
+	    	console.log(self.manifest);
 	    	ManifestService.manifestFilter(self.manifest)
 	    	.then(
 	    			function(manifest)
 	    			{
 	    				console.log(manifest);
-	    				self.Filtermanifests=manifest;
+	    				self.manifests=manifest
+	    				self.Filtermanifests=self.manifests;
+	    				pagination();
 	    			},
 	    			function(errResponse)
 	    			{ 

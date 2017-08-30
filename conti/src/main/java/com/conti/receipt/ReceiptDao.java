@@ -2,6 +2,7 @@ package com.conti.receipt;
 
 import java.util.List;
 
+import com.conti.manifest.ManifestDetailedModel;
 import com.conti.manifest.ManifestModel;
 
 
@@ -25,4 +26,6 @@ public interface ReceiptDao
 	public ReceiptModel getUser(int c_user,int u_user);
 	public List<ReceiptDetail> getAllReceipt_view();// for Super Admin
 	public List<ReceiptDetail> getAllReceipt_view(int branch_id);// for Manager / User
+	public List<ReceiptDetail>receiptSearch(String searchkey);
+	public ReceiptDetail getAllReceiptDetailByid(int manifestdetailed_id);
 }

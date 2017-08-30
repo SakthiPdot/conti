@@ -102,7 +102,7 @@
 			                	<span class="makeRed" data-ng-show="branchnamewrong">Branch name Already Existing..!<br><br></span>
 			                	
 			                	<span>Branch Code<span style="color:red">&nbsp;*</span></span>			                	
-			                	<input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsAlphaNumeric(event)" required
+			                	<input type="text" class="form-control" minlength="4" maxlength="4" onKeyPress="return CheckIsAlphaNumeric(event)" required
 			                	data-ng-model="ctrl.branch.branch_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch code">
 			                	
 			                		                	
