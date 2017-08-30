@@ -1,6 +1,8 @@
 package com.conti.manifest;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -16,7 +18,6 @@ import com.conti.others.Loggerconf;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 import com.itextpdf.text.Element;
-import com.itextpdf.text.PageSize;
 import com.lowagie.text.Cell;
 import com.lowagie.text.Document;
 import com.lowagie.text.Font;
@@ -63,6 +64,9 @@ public class ManifestPrintPDF extends AbstractPdfView {
 		document.setMargins(left, right, top, bottom);
 		document.open();
 		
+		
+		//decimal format
+		DecimalFormat f=new DecimalFormat("##.00");
 		ManifestModel manifestModel=(ManifestModel)model.get("manifest");
 		Company company = (Company) model.get("company");
 		BranchModel branch = (BranchModel) model.get("branch");
@@ -96,9 +100,9 @@ public class ManifestPrintPDF extends AbstractPdfView {
 		  
 	      Cell nameCell=new Cell(company.getCompany_name());
 	      nameCell.setBorder(Rectangle.NO_BORDER);
-	      nameCell.setVerticalAlignment(Element.ALIGN_TOP);
+	      nameCell.setVerticalAlignment(Element.ALIGN_BOTTOM);
 	      nameCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-	       
+	      
 	      companyTable.addCell(nameCell);
 	      
 	      
@@ -118,93 +122,96 @@ public class ManifestPrintPDF extends AbstractPdfView {
 					,address_font)
 					);
 		    
-		    address_cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		   
+		    address_cell.setVerticalAlignment(Element.ALIGN_TOP);
 		    address_cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    address_cell.setBorder(Rectangle.BOTTOM);
-		    address_cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		    address_cell.setLeading(5);
 		    companyTable.addCell(address_cell);
 		   
 		    
 		    //customer table
-		    Table headingTable = new Table(6);
+		    Table headingTable = new Table(3);
 		    headingTable.setBorderWidth(1);
 		    headingTable.setPadding(4);
 		    headingTable.setSpacing(0);
 		    
 		    //Manifest No Heading
-		    Cell manifestNoHeading = new Cell(new Phrase("Manifest No:", address_font));
-		    manifestNoHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    manifestNoHeading.setBorder(Rectangle.BOTTOM );
+		    Cell manifestNoHeading = new Cell(new Phrase("Manifest No : "+manifestModel.getManifest_prefix(), address_font));
+		    manifestNoHeading.setHorizontalAlignment(Element.ALIGN_LEFT);
 		    headingTable.addCell(manifestNoHeading);
 		   
-		    Cell manifestNo = new Cell(new Phrase(manifestModel.getManifest_prefix(), address_font));
+/*		    Cell manifestNo = new Cell(new Phrase(, address_font));
 		    manifestNo.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    manifestNo.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT);
-		    headingTable.addCell(manifestNo);
+		    headingTable.addCell(manifestNo);*/
 		    
 		    //From branch
-		    Cell formHeading = new Cell(new Phrase("From :", address_font));
-		    formHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    formHeading.setBorder(Rectangle.BOTTOM );
+		    Cell formHeading = new Cell(new Phrase("From : "+manifestModel.getBranchModel1().getBranch_name(), address_font));
+		    formHeading.setHorizontalAlignment(Element.ALIGN_LEFT);
+		    formHeading.setBorder(Rectangle.BOTTOM| Rectangle.RIGHT );
 		    headingTable.addCell(formHeading);
 		   
-		    Cell from = new Cell(new Phrase(manifestModel.getBranchModel1().getBranch_name(), address_font));
+		/*    Cell from = new Cell(new Phrase(manifestModel.getBranchModel1().getBranch_name(), address_font));
 		    from.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    from.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT);
 		    headingTable.addCell(from);
-
+*/
 		    //To Branch
-		    Cell toHeading = new Cell(new Phrase("To :", address_font));
-		    toHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    Cell toHeading = new Cell(new Phrase("To : "+manifestModel.getBranchModel2().getBranch_name(), address_font));
+		    toHeading.setHorizontalAlignment(Element.ALIGN_LEFT);
 		    toHeading.setBorder(Rectangle.BOTTOM);
 		    headingTable.addCell(toHeading);
 		   
-		    Cell to = new Cell(new Phrase(manifestModel.getBranchModel2().getBranch_name(), address_font));
+	/*	    Cell to = new Cell(new Phrase(manifestModel.getBranchModel2().getBranch_name(), address_font));
 		    to.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    to.setBorder(Rectangle.BOTTOM );
-		    headingTable.addCell(to);
+		    headingTable.addCell(to);*/
 
 
 
 		    //Vehicle No
-		    Cell vehicleNoHeader = new Cell(new Phrase("Vehicle No :", address_font));
-		    vehicleNoHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    vehicleNoHeader.setBorder(Rectangle.NO_BORDER);
+		    Cell vehicleNoHeader = new Cell(new Phrase("Vehicle No : "+manifestModel.getVehicleMaster().getVehicle_regno(), address_font));
+		    vehicleNoHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+		    vehicleNoHeader.setBorder(Rectangle.NO_BORDER| Rectangle.RIGHT);
 		    headingTable.addCell(vehicleNoHeader);
 		   
-		    Cell vehicleNo = new Cell(new Phrase(manifestModel.getVehicleMaster().getVehicle_regno(), address_font));
+		 /*   Cell vehicleNo = new Cell(new Phrase(manifestModel.getVehicleMaster().getVehicle_regno(), address_font));
 		    vehicleNo.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    vehicleNo.setBorder(Rectangle.RIGHT);
-		    headingTable.addCell(vehicleNo);
+		    headingTable.addCell(vehicleNo);*/
 
 
 		    
 
 		    //Driver
-		    Cell driverHeading = new Cell(new Phrase("Driver :", address_font));
-		    driverHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    driverHeading.setBorder(Rectangle.NO_BORDER);
+		    Cell driverHeading = new Cell(new Phrase("Driver : "+manifestModel.getEmployeeDriver().getEmp_name(), address_font));
+		    driverHeading.setHorizontalAlignment(Element.ALIGN_LEFT);
+		    driverHeading.setBorder(Rectangle.NO_BORDER | Rectangle.RIGHT);
 		    headingTable.addCell(driverHeading);
 		   
-		    Cell driver = new Cell(new Phrase(manifestModel.getEmployeeDriver().getEmp_name(), address_font));
+/*		    Cell driver = new Cell(new Phrase(manifestModel.getEmployeeDriver().getEmp_name(), address_font));
 		    driver.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    driver.setBorder(Rectangle.RIGHT);
-		    headingTable.addCell(driver);
+		    headingTable.addCell(driver);*/
 
 
 
 		    //Date
-		    Cell dateHeading = new Cell(new Phrase("Date :", address_font));
-		    dateHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+		    Cell dateHeading = new Cell(new Phrase("Date : "+dateFormat.format(new Date()), address_font));
+		    dateHeading.setHorizontalAlignment(Element.ALIGN_LEFT);
 		    dateHeading.setBorder(Rectangle.NO_BORDER);
 		    headingTable.addCell(dateHeading);
 		   
-		    Cell date = new Cell(new Phrase(DateFormat.getTimeInstance().format(new Date()), address_font));
+		    
+		/*   
+		    Cell date = new Cell(new Phrase(dateFormat.format(new Date()), address_font));
 		    date.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    date.setBorder(Rectangle.NO_BORDER);
 		    headingTable.addCell(date);
 
-		    
+		    */
 		    //detail table
 		    Table detailTable = new Table(8);
 		    detailTable.setBorderWidth(1);
@@ -313,7 +320,7 @@ public class ManifestPrintPDF extends AbstractPdfView {
 			    Cell billTo ;
 			   //Bill to
 			    if(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getBill_to().trim().equals(ConstantValues.PAID.trim())){
-			    	  billTo = new Cell(new Phrase(String.valueOf(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getTotal_charges()), address_font));
+			    	  billTo = new Cell(new Phrase(String.valueOf( f.format(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getTotal_charges())), address_font));
 			    	  paid+=manifestModel.getManifestDetailModel().get(i).getShipmentModel().getTotal_charges();
 			    }else{
 			    	  billTo = new Cell(new Phrase(" ", address_font));
@@ -330,12 +337,12 @@ public class ManifestPrintPDF extends AbstractPdfView {
 			    Cell billFrom ;
 			   //Bill from
 			    if(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getBill_to().trim().equals(ConstantValues.TO_PAY.trim())){
-			    	billFrom = new Cell(new Phrase(String.valueOf(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getTotal_charges()), address_font));
+			    	billFrom = new Cell(new Phrase(String.valueOf(f.format(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getTotal_charges())), address_font));
 			    	toPay+=manifestModel.getManifestDetailModel().get(i).getShipmentModel().getTotal_charges();
 			    }else{
 			    	billFrom = new Cell(new Phrase(" ", address_font));
 			    }
-			    billFrom.setHorizontalAlignment(Element.ALIGN_CENTER);
+			    billFrom.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			    billFrom.setBorder(Rectangle.RIGHT);
 			    valueTable.addCell(billFrom);
 			    
@@ -344,9 +351,9 @@ public class ManifestPrintPDF extends AbstractPdfView {
 			    if(manifestModel.getManifestDetailModel().get(i).getShipmentModel().getPay_mode().trim().equals(ConstantValues.CREDIT)){
 			    	payMode = new Cell(new Phrase("YES", address_font));
 			    }else{
-			    	payMode = new Cell(new Phrase("NO", address_font));
+			    	payMode = new Cell(new Phrase(" ", address_font));
 			    }
-			    payMode.setHorizontalAlignment(Element.ALIGN_CENTER);
+			    payMode.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			    payMode.setBorder(Rectangle.RIGHT);
 			    valueTable.addCell(payMode);
 			    
@@ -390,7 +397,7 @@ public class ManifestPrintPDF extends AbstractPdfView {
 		    totalPaidAmountHeading.setColspan(3);
 		    footerTable.addCell(totalPaidAmountHeading);
 		    
-		    Cell totalPaidAmount = new Cell(new Phrase(String.valueOf(paid), address_font));
+		    Cell totalPaidAmount = new Cell(new Phrase(String.valueOf(paid!=0?f.format(paid):0), address_font));
 		    totalPaidAmount.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    totalPaidAmount.setBorder(Rectangle.BOTTOM);
 		    totalPaidAmount.setColspan(2);
@@ -404,7 +411,7 @@ public class ManifestPrintPDF extends AbstractPdfView {
 		    footerTable.addCell(totalToPayHeading);
 		    
 		    
-		    Cell totalToPay = new Cell(new Phrase(String.valueOf(toPay), address_font));
+		    Cell totalToPay = new Cell(new Phrase(String.valueOf(toPay!=0?f.format(toPay):0), address_font));
 		    totalToPay.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    totalToPay.setBorder(Rectangle.NO_BORDER);
 		    totalToPay.setColspan(2);
