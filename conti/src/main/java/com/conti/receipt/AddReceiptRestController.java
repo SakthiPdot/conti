@@ -305,19 +305,23 @@ public class AddReceiptRestController
 			receiptList = receiptDao.searchStaff(searchStr);
 		}
 		
-		
+		receiptList=receiptList.stream()
+					.filter(distinctByKey(ReceiptModel :: getCourier_staff))
+					.collect(Collectors.toList());
 
 		Map result = new HashMap();	
 		result.put("staff",receiptList);
 		
 		return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);
 	}
-		
-	private <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor){
-	    Map<Object, Boolean> map = new ConcurrentHashMap<>();
-	    return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
-	}
 	
+	
+	public static <T> Predicate<T> distinctByKey(Function<? super T,Object> keyExtractor) {
+	    Map<Object,String> seen = new ConcurrentHashMap<>();
+	    return t -> seen.put(keyExtractor.apply(t), "") == null;
+	}
+		
+
 	//=====================================Get All Receipt  for default loaded in Add Receipt===============================================
 		
 	@RequestMapping(value="add_receipt_preload", method=RequestMethod.GET)
@@ -422,7 +426,7 @@ public class AddReceiptRestController
 			//receiptDetail.setManifestModel(mDao.getManifestIdByShipmentId(shipmentModel.getShipment_id()));
 
 			//set freight charge if to pay
-			if (shipmentModel.getPay_mode().trim().equals(ConstantValues.TO_PAY.trim())) {
+			if (shipmentModel.getBill_to().trim().equals(ConstantValues.TO_PAY.trim())) {
 				receiptDetail.setNet_freight_charges(shipmentModel.getTotal_charges());
 			}else{
 				receiptTotal+=receiptDetail.getHandling_charge();
