@@ -3,6 +3,7 @@ package com.conti.receipt;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Project_Name conti
@@ -44,7 +45,7 @@ public class ReceiptModel
 	
 
 	
-	public List<ReceiptDetail> receiptDetailList=new ArrayList<>();
+	public List<ReceiptDetail> receiptDetailList;
 	
 	
 	@LazyCollection(LazyCollectionOption.FALSE)

@@ -15,7 +15,8 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 			receiptFilter:receiptFilter,
 			receiptSearch:receiptSearch,
 			makePending:makePending,
-			makeReturn:makeReturn
+			makeReturn:makeReturn,
+			makeDelete:makeDelete
 	};
 	
 	return factory;
@@ -117,6 +118,27 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
     	$http({
     		method : 'POST',
     		url : 'make_Return',
+    		data : id,
+    		headers : getCsrfHeader()
+    	})
+    	.then (
+    		function (response){
+    			deferred.resolve(response.data);
+    		},
+    		function (errResponse){
+    			deferred.reject(errResponse);
+    		}
+    	);
+    	return deferred.promise;
+    }
+	
+	//--------------------------Make Delete function start--------------	
+	function makeDelete(id) {
+    	console.log('Make Delete Service call---')
+    	var deferred = $q.defer();
+    	$http({
+    		method : 'POST',
+    		url : 'make_Delete',
     		data : id,
     		headers : getCsrfHeader()
     	})

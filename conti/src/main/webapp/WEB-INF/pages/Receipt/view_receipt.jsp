@@ -70,18 +70,18 @@
                         <div class="panel panel-default panelMarginBottom">                            
 						
 						<div class="panel-body customer-font">
-							<div class = "col-lg-6"> <b>Shipment details</b> </div>
-							<div class = "col-lg-6">
-								<div class="col-lg-2 pull-right">
+							<div class = "col-lg-4"> <b>Shipment details</b> </div>
+							<div class = "col-lg-8">
+								<div class="col-lg-1 pull-right">
 									<a class="pull-right" data-ng-click = "ctrl.viewShipemntClose()"><i class="fa fa-times" aria-hidden="true"></i></a>
 								</div>
-<!-- 								<div class="col-lg-2 pull-right"> -->
-<!-- 									<a class="btn btn-info" data-ng-click = "ctrl.shipmentPrint(ctrl.shipment)"> <i class="fa fa-print" aria-hidden="true"></i>  LR print </a> -->
-<!-- 								</div> -->
-<!-- 								<div class="col-lg-2 pull-right"> -->
-<!-- 									<a class="btn btn-danger" data-ng-click = "ctrl.shipmentCancel(ctrl.shipment)"> <i class="fa fa-ban" aria-hidden="true"></i> Cancel </a> -->
-<!-- 								</div>	   -->
 								
+								<div class="col-lg-3 pull-right">
+									<a class="btn btn-info" data-ng-click = "ctrl.receiptPrint(ctrl.receiptPr_id)"> <i class="fa fa-print" aria-hidden="true"></i> Receipt Print </a>
+								</div>	  
+								<div class="col-lg-3 pull-right">
+									<a class="btn btn-info" data-ng-click = "ctrl.shipmentPrint(ctrl.shipment)"> <i class="fa fa-print" aria-hidden="true"></i>  LR Print </a>
+								</div>
 								 
 							</div>
 						</div>
@@ -100,10 +100,18 @@
 	              
 	              <div class="col-md-6">
 		              
-		               <b class = "pull-right">Shipment Date. : {{ctrl.shipment.shipment_date}}</b>            
+		               <b class = "pull-right">Shipment Date. : {{ctrl.shipment.shipment_date.slice(0,-2)}}</b>            
 		              
 	              </div>
 	              
+              </div>
+              
+              <div class="col-md-12">
+              		<div class="col-md-6">
+		              
+		               <b>Receipt No. : {{ctrl.receipt_number}}</b>            
+		              
+	              </div>
               </div>
               </div>
               
@@ -182,7 +190,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Address line1 <span class="required">*</span></span>
                             		   <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.customer_addressline1"
+                            		    	data-ng-model = "ctrl.shipment.sendercustomer_address1"
                             		    	data-ng-disabled = "true"
                             		    required />                             		    
                             		    
@@ -193,7 +201,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Address line2 </span>
                             		   <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.customer_addressline2"
+                            		    	data-ng-model = "ctrl.shipment.sendercustomer_address2"
                             		    	data-ng-disabled = "true"
                             		     />                             		    
                             		    
@@ -202,7 +210,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Location <span class="required">*</span></span>
                             		    <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.location.location_name"
+                            		    	data-ng-model = "ctrl.shipment.sender_location.location_name"
                             		    	data-ng-disabled = "true"
                             		     />                       		    
                             		     
@@ -213,7 +221,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">City</span> 
                             			 <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.location.address.city"
+                            		    	data-ng-model = "ctrl.shipment.sender_location.address.city"
                             		    	data-ng-disabled = "true"
                             		     /> 
                             		    
@@ -224,7 +232,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">State</span> 
                             		     <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.location.address.state"
+                            		    	data-ng-model = "ctrl.shipment.sender_location.address.state"
                             		    	data-ng-disabled = "true"
                             		     /> 
                             		    
@@ -235,7 +243,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Country</span>
                             		     <input type="text" class="form-control" 
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.location.address.country"
+                            		    	data-ng-model = "ctrl.shipment.sender_location.address.country"
                             		    	data-ng-disabled = "true"
                             		     /> 
                             		    
@@ -246,7 +254,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Pincode</span>
                             		    <input type="text" class="form-control" 
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.location.pincode"
+                            		    	data-ng-model = "ctrl.shipment.sender_location.pincode"
                             		    	data-ng-disabled = "true"
                             		     /> 
                             		    
@@ -336,7 +344,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Address line1 <span class="required">*</span></span>
                             		   <input type="text" class="form-control" maxlength="50"
-                            		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_addressline1"
+                            		    	data-ng-model = "ctrl.shipment.consigneecustomer_address1"
                             		    	data-ng-disabled = "true"
                             		    required />                             		    
                             		    
@@ -345,7 +353,7 @@
 	                            	<div class="col-md-12 branchclass">
 	                            			<span class="text-paddingwidth">Address line2 </span>
 	                            		   <input type="text" class="form-control" maxlength="50"
-	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_addressline2"
+	                            		    	data-ng-model = "ctrl.shipment.consigneecustomer_address2"
 	                            		    	data-ng-disabled = "true"
 	                            		    />                             		    
 	                            		    
@@ -354,7 +362,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Location <span class="required">*</span></span>
                             		    <input type="text" class="form-control" maxlength="50"
-	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.location.location_name"
+	                            		    	data-ng-model = "ctrl.shipment.consignee_location.location_name"
 	                            		    	data-ng-disabled = "true"
 	                            		    />                     		    
                             		    
@@ -365,7 +373,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">City</span> 
                             			<input type="text" class="form-control" maxlength="50"
-	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.location.address.city"
+	                            		    	data-ng-model = "ctrl.shipment.consignee_location.address.city"
 	                            		    	data-ng-disabled = "true"
 	                            		    />   
                             		    
@@ -376,7 +384,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">State</span> 
                             		   <input type="text" class="form-control" maxlength="50"
-	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.location.address.state"
+	                            		    	data-ng-model = "ctrl.shipment.consignee_location.address.state"
 	                            		    	data-ng-disabled = "true"
 	                            		    /> 
                             		    
@@ -387,7 +395,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Country</span>
                             		     <input type="text" class="form-control" maxlength="50"
-	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.location.address.country"
+	                            		    	data-ng-model = "ctrl.shipment.consignee_location.address.country"
 	                            		    	data-ng-disabled = "true"
 	                            		    /> 
                             		    
@@ -398,7 +406,7 @@
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Pincode</span>
                             		     <input type="text" class="form-control" maxlength="50"
-	                            		    	data-ng-model = "ctrl.shipment.consignee_customer.location.pincode"
+	                            		    	data-ng-model = "ctrl.shipment.consignee_location.pincode"
 	                            		    	data-ng-disabled = "true"
 	                            		    /> 
                             		    
@@ -502,7 +510,7 @@
 	                            		</div>
 	                            		<div class=" col-md-6 branchclass">
 	                            			<span class="text-paddingwidth"> Status <span class="required">*</span></span>
-	                            		   <select class="form-control" data-ng-options = "status for status in ['Booked', 'Intransit', 'Pending', 'Return']" 
+	                            		   <select class="form-control" data-ng-options = "status for status in ['Pending','Delivered']" 
 	                            		   		data-ng-model = "ctrl.shipment.status"
 	                            		   		data-ng-disabled = "true"
 				                              required>
@@ -1051,6 +1059,7 @@
 						<ul class="dropdown-menu">
 							<li><a data-ng-click="ctrl.makePending()">Pending</a></li>
 							<li><a data-ng-click="ctrl.makeReturn()">Return</a></li>
+							<li><a data-ng-click="ctrl.makeDelete()">Delete</a></li>
 						</ul>
 						</div>
 					</div> 
@@ -1162,18 +1171,18 @@
                                      <th data-ng-show="setting_receiptdestination">Destination</th>
                                      <th data-ng-show="setting_receiptsender">Sender</th>
                                      <th data-ng-show="setting_receiptconsignee">Consignee</th>
-                                     <th data-ng-show="setting_receiptmanifest">Manifest</th>
+<!--                                      <th data-ng-show="setting_receiptmanifest">Manifest</th> -->
                                      <th data-ng-show="setting_receiptstatus">Status</th>
                              	</tr>
                              </thead>
                              <tbody>
                                  <tr data-ng-repeat="receipt in ctrl.Filterreceipts|limitTo:pageSize"
-                                 data-id="{{receipt.receipt_id}}" data-ng-dblclick = "ctrl.view1Shipmet(receipt.shipmentModel)">
+                                 data-id="{{receipt.receipt_id}}" data-ng-dblclick = "ctrl.view1Shipmet(receipt)">
                                      <td><input type="checkbox" data-ng-click="ctrl.receiptSelect(receipt)" data-ng-model="receipt.select"></td>
                                      <td data-ng-show="setting_sltnumber" >{{$index+1}}</td>
-                                     <td data-ng-show="setting_receiptdate">{{receipt.shipmentModel.created_datetime}}</td>
+                                     <td data-ng-show="setting_receiptdate">{{receipt.temp_date.slice(0,-10)}}</td>
                                      <td data-ng-show="setting_receiptlrnumber">{{receipt.shipmentModel.lrno_prefix}}</td>
-                                     <td data-ng-show="setting_receiptnumber">{{receipt.receiptDetaillist}}</td>
+                                     <td data-ng-show="setting_receiptnumber">{{receipt.temp_receiptno}}</td>
                                      <td data-ng-show="setting_receiptproduct">
                                     	 <div data-ng-repeat = "shipmentdet in receipt.shipmentModel.shipmentDetail">
                                            	{{shipmentdet.product.product_name}}<span data-ng-if = !($last)>,</span>
@@ -1183,7 +1192,7 @@
                                      <td data-ng-show="setting_receiptdestination">{{receipt.shipmentModel.consignee_branch.branch_name}}</td>
                                      <td data-ng-show="setting_receiptsender">{{receipt.shipmentModel.sender_customer.customer_name}}</td>
                                      <td data-ng-show="setting_receiptconsignee">{{receipt.shipmentModel.consignee_customer.customer_name}}</td>
-                                     <td data-ng-show="setting_receiptmanifest">{{receipt.manifestModel.manifest_prefix}}</td>
+<!--                                      <td data-ng-show="setting_receiptmanifest">{{receipt.manifestModel.manifest_prefix}}</td> -->
                                      <td data-ng-show="setting_receiptstatus">{{receipt.shipmentModel.status}}</td>
                                </tr>
                              </tbody>

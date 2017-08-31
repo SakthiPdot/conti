@@ -36,7 +36,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.shipment = {}; // for individual view shipment
 		$scope.shownoofrec=10;
 		
-		
+		self.manifestId = $('#manifest_id').val(); 
 		var manifest_id=$("#manifest_id").val();
 		
 		//--call detailed manifest
@@ -60,6 +60,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		 
 		 self.view1Shipmet = function (shipment) {
 			self.shipment = shipment;
+			
 			 viewShipment_Animate('.shipment_View', 'OPEN');
 		 }
 		 
@@ -71,6 +72,24 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		 }
 		 
 		 //------------------------------------- VIEW SHIPEMNT INDUVIDUAL CLOSE END
+		 
+		//------------------------------------- SHIPEMNT PRINT BEGIN
+		 self.shipmentPrint = function (shipment) {
+			 bill_open(shipment.shipment_id);
+		 }
+		 //------------------------------------- SHIPEMNT PRINT END
+		
+		//------------------------------------- SHIPEMNT PRINT BEGIN
+		 self.manifestPrint = function (manifest_id) {
+			 afterManifestSave(manifest_id);
+		 }
+		 //------------------------------------- SHIPEMNT PRINT END
+		 
+		//------------------------------------- SHIPEMNT PRINT BEGIN
+		 self.shipmentPrint = function (manifest_id) {
+			 afterManifestSave(manifest_id);
+		 }
+		 //------------------------------------- SHIPEMNT PRINT END
 		
 		//---------------------Branch Master drawer close begin-----------
 		
