@@ -114,7 +114,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	    
 	    //for Receipt number
 	    
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	    String receipt_date = receiptModel.getUpdated_datetime() .toString();
 	    Date date = dateFormat.parse(receipt_date.substring(0, receipt_date.length()-2));
 	    
