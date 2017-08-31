@@ -143,14 +143,20 @@ public class ViewReceiptRestController {
 		String username = userInformation.getUserName();
 		String userid = userInformation.getUserId();
 		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
-		try
-		{
+//		try
+//		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			
 			User user = usersDao.get(Integer.parseInt(userid));
 
 			if (user.role.getRole_Name().equals(ConstantValues.ROLE_SADMIN)){
 				List<ReceiptDetail> receiptModel=receiptDao.getAllReceipt_view();
+				for(int i=0; i<receiptModel.size();i++){
+					ReceiptModel receipt=receiptDao.getReceiptbyId(receiptModel.get(i).getReceiptModel().receipt_id);
+					receiptModel.get(i).setReceipt_id(receipt.receipt_id);
+					receiptModel.get(i).setTemp_receiptno(receipt.getReceipt_prefix());
+					receiptModel.get(i).setTemp_date(receipt.getUpdated_datetime());
+				}
 				if(receiptModel.isEmpty()) {
 					return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.NO_CONTENT);
 				}else{
@@ -164,12 +170,12 @@ public class ViewReceiptRestController {
 					return new ResponseEntity<List<ReceiptDetail>> (receiptModel, HttpStatus.OK);	
 				}
 			}
-		}
-		catch(Exception exception)
-		{
-			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-			return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		//}
+//		catch(Exception exception)
+//		{
+//			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+//			return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.UNPROCESSABLE_ENTITY);
+//		}
 	}
 	
 	//-------------------------------------------------------------------------------------------------------------------
@@ -276,13 +282,13 @@ public class ViewReceiptRestController {
 	//--------------------Make Pending -------------------------
 	
 	@RequestMapping(value="make_Pending",method=RequestMethod.POST)
-	public ResponseEntity<Void>makePending(@RequestBody int[] id,HttpServletRequest request){
+	public ResponseEntity<Void>makePending(@RequestBody int id,HttpServletRequest request){
 		userInformation=new UserInformation(request);
 		String username= userInformation.getUserName();
 		int user_id=Integer.parseInt(userInformation.getUserId());
 		int active_flag=0;
-		try{
-			for(int i=0;i<id.length;i++){
+		/*try{*/
+			/*for(int i=0;i<id.length;i++){
 				ReceiptDetail receiptDetail=receiptDao.getAllReceiptDetailByid(id[i]);
 				if(receiptDetail==null){
 					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
@@ -291,7 +297,7 @@ public class ViewReceiptRestController {
 				else{
 					Date date=new Date();
 					DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
-					receiptDetail.shipmentModel.setStatus("Pending");
+					receiptDetail.shipmentModel.setStatus(ConstantValues.PENDING);
 					receiptDetail.shipmentModel.setUpdated_by(user_id);
 					receiptDetail.shipmentModel.setUpdated_datetime(dateFormat.format(date));
 									
@@ -303,11 +309,14 @@ public class ViewReceiptRestController {
 				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 			} else {
 				return new ResponseEntity<Void> (HttpStatus.OK);
-			}
-		} catch (Exception exception) {
+			}*/
+			
+			receiptDao.makePending(id);
+			return new ResponseEntity<Void> (HttpStatus.OK);
+		/*} catch (Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
 			return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		}*/
 		
 	}
 	
@@ -315,40 +324,86 @@ public class ViewReceiptRestController {
 	//--------------------Make Return -------------------------
 	
 		@RequestMapping(value="make_Return",method=RequestMethod.POST)
-		public ResponseEntity<Void>makeReturn(@RequestBody int[] id,HttpServletRequest request){
+		public ResponseEntity<Void>makeReturn(@RequestBody int id,HttpServletRequest request){
 			userInformation=new UserInformation(request);
 			String username= userInformation.getUserName();
 			int user_id=Integer.parseInt(userInformation.getUserId());
 			int active_flag=0;
-			try{
-				for(int i=0;i<id.length;i++){
-					ReceiptDetail receiptDetail=receiptDao.getAllReceiptDetailByid(id[i]);
-					if(receiptDetail==null){
-						loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
-						active_flag = 1;
-					}
-					else{
-						Date date=new Date();
-						DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
-						receiptDetail.shipmentModel.setStatus("Return");
-						receiptDetail.shipmentModel.setUpdated_by(user_id);
-						receiptDetail.shipmentModel.setUpdated_datetime(dateFormat.format(date));
-										
-						shipmentDao.saveOrUpdate(receiptDetail.shipmentModel);
-						loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
-					}
-				}
-				if( active_flag == 1) {
-					return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-				} else {
-					return new ResponseEntity<Void> (HttpStatus.OK);
-				}
-			} catch (Exception exception) {
-				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
-				return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
-			}
+//			try{
+//				for(int i=0;i<id.length;i++){
+//					ReceiptDetail receiptDetail=receiptDao.getAllReceiptDetailByid(id[i]);
+//					if(receiptDetail==null){
+//						loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+//						active_flag = 1;
+//					}
+//					else{
+//						Date date=new Date();
+//						DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+//						receiptDetail.shipmentModel.setStatus(ConstantValues.RETURN);
+//						receiptDetail.shipmentModel.setUpdated_by(user_id);
+//						receiptDetail.shipmentModel.setUpdated_datetime(dateFormat.format(date));
+//										
+//						shipmentDao.saveOrUpdate(receiptDetail.shipmentModel);
+//						loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+//					}
+//				}
+//				if( active_flag == 1) {
+//					return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+//				} else {
+//					return new ResponseEntity<Void> (HttpStatus.OK);
+//				}
+//			} 
+			receiptDao.makeReturn(id);
+			return new ResponseEntity<Void> (HttpStatus.OK);
+//			catch (Exception exception) {
+//				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+//				return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+//			}
 			
 		}
+		
+		
+		//--------------------Make Return -------------------------
+		
+			@RequestMapping(value="make_Delete",method=RequestMethod.POST)
+			public ResponseEntity<Void>makeDelete(@RequestBody int id,HttpServletRequest request){
+				userInformation=new UserInformation(request);
+				String username= userInformation.getUserName();
+				int user_id=Integer.parseInt(userInformation.getUserId());
+				int active_flag=0;
+//				try{
+//					for(int i=0;i<id.length;i++){
+//						ReceiptDetail receiptDetail=receiptDao.getAllReceiptDetailByid(id[i]);
+//						if(receiptDetail==null){
+//							loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+//							active_flag = 1;
+//						}
+//						else{
+//							Date date=new Date();
+//							DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+//							receiptDetail.shipmentModel.setStatus(ConstantValues.RECEIVED);
+//							receiptDetail.shipmentModel.setUpdated_by(user_id);
+//							receiptDetail.shipmentModel.setUpdated_datetime(dateFormat.format(date));
+//											
+//							shipmentDao.saveOrUpdate(receiptDetail.shipmentModel);
+//							loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
+//						}
+//					}
+//					if( active_flag == 1) {
+//						return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+//					} else {
+//						return new ResponseEntity<Void> (HttpStatus.OK);
+//					}
+//				}
+				receiptDao.makeDelete(id);
+				return new ResponseEntity<Void> (HttpStatus.OK);
+//				catch (Exception exception) {
+//					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
+//					return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+//				}
+				
+			}
+		
 	
 	//===============================================================================================
 	

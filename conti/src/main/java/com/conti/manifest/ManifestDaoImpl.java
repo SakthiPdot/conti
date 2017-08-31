@@ -112,7 +112,7 @@ public class ManifestDaoImpl implements ManifestDao
 		@SuppressWarnings("unchecked")
 		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
 				.createQuery("from ManifestModel WHERE obsolete ='N'"
-						+" AND manifest_origin ="+manifest_destination
+						+" AND manifest_destination="+manifest_destination
 						+" AND manifest_status in ('"+Intransit+"','"+Incomplete+"','"+Completed+"')"
 						+" order by IFNULL(updated_datetime,created_datetime)  DESC ").list();
 		return listmanifest;

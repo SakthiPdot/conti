@@ -1,5 +1,6 @@
 package com.conti.receipt;
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
 
@@ -29,8 +31,10 @@ import com.conti.shipment.add.ShipmentModel;
 public class ReceiptDetail {
 
 	public int receiptdetailid;
-	public float handling_charge,net_freight_charges; 
+	public float handling_charge,net_freight_charges;
 	
+	private int receipt_id;
+	private String temp_date,temp_receiptno;
 
 	@Id
 	@GeneratedValue
@@ -38,15 +42,51 @@ public class ReceiptDetail {
 	public int getReceiptdetailid() {
 		return this.receiptdetailid;
 	}
+		
+	
+	@Transient
+	public String getTemp_date() {
+		return temp_date;
+	}
+
+
+
+	public void setTemp_date(String temp_date) {
+		this.temp_date = temp_date;
+	}
+
+
+	@Transient
+	public String getTemp_receiptno() {
+		return temp_receiptno;
+	}
+
+
+	@Transient
+	public int getReceipt_id() {
+		return receipt_id;
+	}
+
+
+	public void setReceipt_id(int receipt_id) {
+		this.receipt_id = receipt_id;
+	}
+
+
+	public void setTemp_receiptno(String temp_receiptno) {
+		this.temp_receiptno = temp_receiptno;
+	}
+
 	public void setReceiptdetailid(int receiptdetailid) {
 		this.receiptdetailid = receiptdetailid;
 	}
 
 	public ReceiptModel receiptModel;
 
-
+	
+	
 	@JoinColumn(name="receipt_id")
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.ALL)  
 	@JsonBackReference
 	public ReceiptModel getReceiptModel() {
 		return this.receiptModel;

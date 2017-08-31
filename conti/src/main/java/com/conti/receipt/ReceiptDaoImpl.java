@@ -30,9 +30,9 @@ public class ReceiptDaoImpl implements ReceiptDao
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	String Delivered=ConstantValues.DELIVERED;
-	String Pending=ConstantValues.PENDING;
-	String Received=ConstantValues.RECEIVED;
+//	String Delivered=ConstantValues.DELIVERED;
+//	String Pending=ConstantValues.PENDING;
+//	String Received=ConstantValues.RECEIVED;
 	
 	@Override
 	@Transactional
@@ -51,7 +51,8 @@ public class ReceiptDaoImpl implements ReceiptDao
 		
 		@SuppressWarnings("unchecked")
 		List<ReceiptDetail> listReceiptDetail = (List<ReceiptDetail>) sessionFactory.getCurrentSession()
-				.createQuery("from ReceiptDetail WHERE shipmentModel.obsolete ='N' and shipmentModel.status in('"+Received+"','"+Pending+"') ").setMaxResults(100).list();
+				.createQuery("from ReceiptDetail where shipmentModel.obsolete='N'"
+						+ " and shipmentModel.status in('"+ConstantValues.DELIVERED+"','"+ConstantValues.PENDING+"')").setMaxResults(100).list();
 		return listReceiptDetail;
 		
 	}
@@ -64,8 +65,8 @@ public class ReceiptDaoImpl implements ReceiptDao
 		
 		@SuppressWarnings("unchecked")
 		List<ReceiptDetail> listReceiptDetail = (List<ReceiptDetail>) sessionFactory.getCurrentSession()
-				.createQuery("from ReceiptDetail WHERE obsolete ='N' and  shipmentModel.consignee_branch.branch_id=" + branch_id+ 
-						" and shipmentModel.status in('"+Received+"','"+Pending+"') ").setMaxResults(100).list();
+				.createQuery("from ReceiptDetail WHERE shipmentModel.consignee_branch.branch_id=" + branch_id+ 
+						" and shipmentModel.status in('"+ConstantValues.DELIVERED+"','"+ConstantValues.PENDING+"') ").setMaxResults(100).list();
 		return listReceiptDetail;
 		
 	}
@@ -125,7 +126,7 @@ public class ReceiptDaoImpl implements ReceiptDao
 		if(stats!=null && !stats.trim().isEmpty())
 			queryString.append(" AND shipmentModel.status='"+status+"'");
 		else{
-			queryString.append(" AND  shipmentModel.status in ('"+Delivered+"','"+Pending+"') ");
+			queryString.append(" AND  shipmentModel.status in ('"+ConstantValues.DELIVERED+"','"+ConstantValues.PENDING+"') ");
 		}
 	@SuppressWarnings("unchecked")
 //		List<ReceiptModel> listreceipt = (List<ReceiptModel>) sessionFactory.getCurrentSession()
@@ -228,7 +229,7 @@ public class ReceiptDaoImpl implements ReceiptDao
 			List<ReceiptDetail> listReceipt=(List<ReceiptDetail>)sessionFactory.getCurrentSession()
 			.createQuery("from ReceiptDetail where shipmentModel.obsolete='N' and shipmentModel.lrno_prefix LIKE '%"+searchkey+"%'"
 					+ " OR manifestModel.manifest_prefix LIKE '"+searchkey+"%'"
-					+" AND shipmentModel.status in ('"+Received+"','"+Pending+"')"
+					+" AND shipmentModel.status in ('"+ConstantValues.RECEIVED+"','"+ConstantValues.PENDING+"')"
 					).list();
 			return listReceipt;
 		}
@@ -246,6 +247,37 @@ public class ReceiptDaoImpl implements ReceiptDao
 			}
 			return null;
 		}
+
+
+		@Override
+		@Transactional
+		public void makePending(int receipt_id) {
+			// TODO Auto-generated method stub
+			
+			String hql = "UPDATE ReceiptDetail SET shipmentModel.status = 'Pending' WHERE obsolete ='N' and receiptModel.receipt_id = " + receipt_id;
+			Query query = sessionFactory.getCurrentSession().createQuery(hql);
+			
+		}
+		@Override
+		@Transactional
+		public void makeReturn(int receipt_id) {
+			// TODO Auto-generated method stub
+			
+			String hql = "UPDATE ReceiptDetail SET shipmentModel.status = 'Return' WHERE obsolete ='N' and receiptModel.receipt_id = " + receipt_id;
+			Query query = sessionFactory.getCurrentSession().createQuery(hql);
+			
+		}
+		@Override
+		@Transactional
+		public void makeDelete(int receipt_id) {
+			// TODO Auto-generated method stub
+			
+			String hql = "UPDATE ReceiptDetail SET shipmentModel.status = 'Received' WHERE obsolete ='N' and receiptModel.receipt_id = " + receipt_id;
+			Query query = sessionFactory.getCurrentSession().createQuery(hql);
+			
+		}
+		
+		
 			
 	//===================================================================================================
 }

@@ -199,4 +199,16 @@
 	 			window.open("LR_print/"+shipment_id, '_blank');
 	 			/*window.location.href = "shipment_bill?lrno="+lrno;*/
 	 		}
-//-------------------- SHIPMENT BILL OPEN END	 		
+//-------------------- SHIPMENT BILL OPEN END	 	
+	 		function afterSave(receipt_no){
+				valid = true;
+				/*location.href='view_receipt';*/
+				window.open("Receipt_print/"+receipt_no, '_blank');
+			}
+	 		
+	 		
+	 		function afterManifestSave(id){
+				valid = true;
+				window.open("ManifestPdfPrint/"+id);
+				//location.href="ManifestPdfPrint/"+id;
+			}
