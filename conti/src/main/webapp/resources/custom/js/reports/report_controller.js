@@ -45,14 +45,20 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 				      );
 		}
 		
+		//========== Select Date Filter ========//
 		 function dateformat()
 		{
-			/* $scope.today = new Date();*/
 			 
-			    var today = new Date();
-	   			var dd = today.getDate();
-	   			var mm = today.getMonth()+1;
-	   			var yyyy = today.getFullYear();
+			
+						 		
+			//====== If Select Today =====//
+			 if($scope.datefilter == "Today") {
+				
+				//===== from today date ======// 
+			    var fromtoday = new Date();
+	   			var dd = fromtoday.getDate();
+	   			var mm = fromtoday.getMonth()+1;
+	   			var yyyy = fromtoday.getFullYear();
 	   			
 	   			if(dd < 10) {
 	   				dd = '0' + dd
@@ -62,29 +68,121 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 	   				mm = '0' + mm
 	   			}
 	   			
-	   			$scope.today = yyyy + '-' + mm + '-' + dd;
+	   			$scope.fromtoday = yyyy + '-' + mm + '-' + dd;			
 	   			
 	   			
-	   			/*var curr = new Date;	   			
-	   			var first = curr.getDate() - curr.getDay(); 	   			
-	   			var last = first + 6; 	   			
-	   			$scope.firstday = new Date(curr.setDate(first)).toUTCString();
-	   			var lastday = new Date(curr.setDate(last));
-	   			
-	   			console.log("start date======"+$scope.firstday)
-
-			 
-			      console.log("your select  "+$scope.datefilter);*/
-			 $scope.t = "r";
-			if($scope.datefilter == "Today") {
-				console.log($scope.today)				
+	   			//========== to date ========//
+				var todate = new Date();
+				var dd = todate.getDate();
+				var mm = todate.getMonth()+1;
+				var yyyy = todate.getFullYear();
 				
+				if(dd < 10 ) {
+					dd = '0' + dd
+				}
+				
+				if(mm < 10) {
+					mm = '0' + mm
+				}
+				
+				$scope.todate = yyyy + '-' + mm + '-' + dd;
+				
+				//======= if select this week ======//
 			} else if ($scope.datefilter == "This Week") {
-				console.log($scope.t)
+			
+				
+				//===== from date week ====//
+				
+				var fromtoday = new Date;	   			
+	   			var first = fromtoday.getDate() - fromtoday.getDay(); 
+	   			var mm = fromtoday.getMonth()+1;
+	   			var yyyy = fromtoday.getFullYear();
+	   			
+	   			var last = first + 6;
+	   		
+	   			if(last < 10) {
+	   				last = '0' +last
+	   			}
+	   			
+	   			if(first < 10) {
+	   				first = '0' + first
+	   			} 
+	   			
+	   			if (mm < 10) {
+	   				mm = '0' + mm
+	   			}
+	   			
+	   			$scope.fromtoday = yyyy + '-' + mm + '-' + first;
+	   			
+	   			//======== to date week ===========//
+	   			
+	   			var todate = new Date;	   			
+	   			var first = todate.getDate() - fromtoday.getDay(); 
+	   			var mm = todate.getMonth()+1;
+	   			var yyyy = todate.getFullYear();
+	   			
+	   			var last = first + 6;
+	   		
+	   			if(last < 10) {
+	   				last = '0' +last
+	   			}
+	   			
+	   			if(first < 10) {
+	   				first = '0' + first
+	   			} 
+	   			
+	   			if (mm < 10) {
+	   				mm = '0' + mm
+	   			}
+	   			
+	   			
+	   			$scope.todate = yyyy + '-' + mm + '-' + last;  			
+	   			$scope.todate1 = $scope.todate;
+	   			console.log($scope.todate1)	;
+	   			//===== if select this month =========//
+	   			
+				
 			} else if ($scope.datefilter == "This Month") {
-				console.log("3");
+				
+				//====== from date this month =======//
+				 var date = new Date();
+				 var d = "1";
+				 var y = date.getFullYear();
+				 var m = date.getMonth()+1;
+				
+				 if (m < 10 ) {
+					 m = '0' + m
+				 }
+				 
+				 if(d < 10) {
+					 d = '0'+d
+				 }
+				 $scope.fromtoday = y + '-' + m + '-' + d;				 
+	
+				 
+				 //===== to date this month =======//
+				 $scope.todate1 = new Date(y, m, 0);				
+				 
+				 $scope.todate =  $scope.todate1.format('yyyy-MM-dd');
+				 
+				
+				 
+		   		   		
+		   			
 			} else if($scope.datefilter == "This Quater") {
-				console.log("4");
+			
+				   var currentMonth=(new Date()).getMonth()
+				   var yyyy=(new Date()).getFullYear()
+				   var start= (Math.floor(currentMonth/3)*3)+1,
+				   end= start+3;
+				   $scope.from =new Date(start+'-01-'+ yyyy);
+				   $scope.to= end>12?new Date('01-01-'+ (yyyy+1)):new Date(end+'-01-'+ (yyyy));
+				   $scope.to=new Date(($scope.to.getTime())-1);
+				   
+				   $scope.fromtoday = $scope.from.format('yyyy-MM-dd');
+				   $scope.todate = $scope.to.format('yyyy-MM-dd');				   
+				   
+				  
 			} else {
 				console.log("your select wrong");
 			}

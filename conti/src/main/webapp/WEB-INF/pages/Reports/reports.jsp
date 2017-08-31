@@ -144,7 +144,7 @@
 					<div class="col-lg-3 report_class">
 						<span>From</span>
 					       <div class="form-group input-group">
-                                  <input type="text" id="dates"class="form-control datepicker1" data-ng-model="today">
+                                  <input type="text" id="dates"class="form-control datepicker1" data-ng-model="fromtoday">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default " type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -155,7 +155,7 @@
 					<div class="col-lg-3 report_class">
 						<span>To</span>
 					       <div class="form-group input-group">
-                                  <input type="text" class="form-control datepicker2" data-ng-model="today">
+                                  <input type="text" class="form-control datepicker2" data-ng-model="todate | date : 'yyyy-MM-dd' ">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -166,9 +166,7 @@
 					<div class="col-lg-3 report_class">
 					<span>Condition</span>
 						<select class="form-control" data-ng-model="ctrl.report.datecondition" data-ng-options="datecondition for datecondition in ['AND','OR']">
-							<option value="">-- Select --</option>
-							<!-- <option>And</option>
-							<option>OR</option> -->
+							<option value="">-- Select --</option>							
 						</select>
 					</div>
 					
@@ -176,16 +174,15 @@
 						<span>Date Filter</span>
 					       <select class="form-control" data-ng-model="datefilter" data-ng-options="datefilter for datefilter in ['Today','This Week','This Month','This Quater']" 
 					       data-ng-change="ctrl.dateformat(datefilter)">
-					       		<option value="">-- Select --</option>
-					       	<!-- 	<option value="1">Today</option>
-					       		 <option value="2">This Week</option>
-					       		<option value="3">This Month</option>
-					       		<option value="4">This Quater</option> -->
+					       		<option value="" >-- Select --</option>					      
 					       </select>
 					</div>
 				</div>
-				<!-- {{datefilter}} {{today}} 
-				{{ firstday | date:'MM/dd/yyyy' }} -->
+				<!-- Selected : {{datefilter}}<br>
+				From Date  :  {{fromtoday}} <br>
+				To Date : {{todate |date:'yyyy-MM-dd' }}<br> -->
+				
+				<!-- End Date : {{ curr2 | date:'yyyy-MM-dd' }}  -->
 				<div class="col-lg-12 noPaddingLeft report_padding" data-ng-hide="filter_all || filter_branch">
 					
 					<div class="col-lg-3 branchclass">
@@ -219,10 +216,9 @@
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Condition</span>
-						<select class="form-control">
-							<option>-- Select --</option>
-							<option>And</option>
-							<option>OR</option>
+						<select class="form-control" data-ng-model = "ctrl.report.branchcondition" data-ng-options="branchcondition for branchcondition in ['AND','OR']">
+							<option value="">-- Select --</option>
+							
 						</select>
 					</div>
 					
@@ -267,10 +263,9 @@
 					
 					<div class="col-lg-3 branchclass">
 					<span class="text-padding">Condition </span>
-						<select class="form-control">
-							<option>-- Select --</option>
-							<option>And</option>
-							<option>OR</option>
+						<select class="form-control" data-ng-model="ctrl.report.lrcondition" data-ng-options="lrcondition for lrcondition in ['AND','OR']">
+							<option value="">-- Select --</option>
+							
 						</select>
 					</div>
 					
@@ -305,10 +300,9 @@
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Payment Type </span>
-						<select class="form-control">
-							<option>-- Select --</option>
-							<option>Cash</option>
-							<option>DD</option>
+						<select class="form-control" data-ng-model="ctrl.report.paymentmode" data-ng-options="paymentmode for paymentmode in ['Cash','Credit']">
+							<option value="">-- Select --</option>
+							
 							
 						</select>
 					</div>				
