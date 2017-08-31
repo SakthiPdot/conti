@@ -736,7 +736,7 @@
                                             </td>
                                             <td> 
                                             	
-                                            	<div angucomplete-alt id="product_name" data-ng-model = "product.product_name"
+                                            	<div angucomplete-alt id="product_name{{$index}}" data-ng-model = "product.product_name"
 															maxlength="5"
 															placeholder="Ex : Box (Large)" 
 															pause="0"											
