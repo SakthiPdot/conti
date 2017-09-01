@@ -160,14 +160,19 @@ public class ViewReceiptRestController {
 				List<ReceiptDetail> receiptDetail=receiptDao.getAllReceipt_view();
 				
 				for(int i=0; i<receiptDetail.size();i++){
-					ReceiptModel receipt=receiptDao.getReceiptbyId(receiptDetail.get(i).getReceiptModel().receipt_id);
-					
-					manifestDetailedModel=manifestDao.getManifestByShipmentID(receiptDetail.get(i).shipmentModel.getShipment_id());//for manifest_prefix
-					
-					receiptDetail.get(i).setReceipt_id(receipt.receipt_id);
-					receiptDetail.get(i).setTemp_receiptno(receipt.getReceipt_prefix());
-					receiptDetail.get(i).setTemp_date(receipt.getUpdated_datetime());
-					receiptDetail.get(i).setTemp_manifestno(manifestDetailedModel.getManifest_prefix());
+					try {
+						ReceiptModel receipt=receiptDao.getReceiptbyId(receiptDetail.get(i).getReceiptModel().receipt_id);
+						
+						manifestDetailedModel=manifestDao.getManifestByShipmentID(receiptDetail.get(i).shipmentModel.getShipment_id());//for manifest_prefix
+						
+						receiptDetail.get(i).setReceipt_id(receipt.receipt_id);
+						receiptDetail.get(i).setTemp_receiptno(receipt.getReceipt_prefix());
+						receiptDetail.get(i).setTemp_date(receipt.getUpdated_datetime());
+						receiptDetail.get(i).setTemp_manifestno(manifestDetailedModel.getManifest_prefix());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					
 					
 				}

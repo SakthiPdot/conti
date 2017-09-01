@@ -45,6 +45,7 @@ public interface ManifestDao
 		public List<Integer> searchShipmentLRnumber(String LRnumber);
 		public List<ManifestDetailedModel> searchLRnumber(String LRnumber);
 		public ManifestModel getManifestByShipmentID(int shipment_id);
+		//public String getManifestNumber(int shipment_id);
 	//====================Manifest Detailed DAO declaration End===================
 		
 		//===== Referred Delete Process in Foreign key =========//

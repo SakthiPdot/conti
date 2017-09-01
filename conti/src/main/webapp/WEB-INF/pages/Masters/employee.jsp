@@ -564,8 +564,8 @@
                                            	</td>
                                             <td data-ng-show = "setting_empmobileno">{{emp.emp_phoneno}}</td>
                                             <td data-ng-show = "setting_empemail">{{emp.emp_email}}</td>
-                                            <td data-ng-show = "setting_empdob">{{emp.dob}}</td>
-                                            <td data-ng-show = "setting_empdoj">{{emp.doj}}</td>
+                                            <td data-ng-show = "setting_empdob">{{emp.dob | date:'dd-MM-yyyy'}}</td>
+                                            <td data-ng-show = "setting_empdoj">{{emp.doj | date:'dd-MM-yyyy'}}</td>
                                             <td data-ng-show = "setting_empstatus" data-ng-class="{'makeGreen': emp.active=='Y', 'makeRed': emp.active=='N'}">{{emp.active == 'Y' ? 'ACTIVE' : 'INACTIVE'}}</td>
                                        </tr>
                                        

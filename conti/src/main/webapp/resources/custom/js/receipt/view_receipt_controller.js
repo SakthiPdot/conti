@@ -329,12 +329,12 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		}
 		else
 		{
-			$scope.currentPage=((Math.cell(self.Filterreceipts.length/$scope.pageSize))-1);
+			$scope.currentPage=((Math.ceil(self.Filterreceipts.length/$scope.pageSize))-1);
 			$scope.previouseDisabled+false;
 			$scope.nextDisabled=true;
 			self.Filterreceipts=self.receipts.slice($scope.currentPage*$scope.pageSize)
 			console.log(self.Filterreceipts.length);
-			if(self.Filterreceipt.length==0)
+			if(self.Filterreceipts.length==0)
 			{
 				BranchService.pagination_byPage(page)
 				.then(

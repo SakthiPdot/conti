@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.conti.master.product.Product;
 import com.conti.others.ConstantValues;
+import com.conti.receipt.ReceiptDetail;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -89,8 +90,7 @@ public class ManifestDaoImpl implements ManifestDao
 			return listmanifest.get(0).getManifestModel();
 		}
 		return null;
-		
-		
+
 	}
 	
 	
