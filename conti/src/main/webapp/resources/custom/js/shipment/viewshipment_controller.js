@@ -353,34 +353,56 @@ contiApp.controller('ViewShipmentController', [
 	 
 	//------------------------------------- MAKE CANCEL BEGIN
 	 self.makeCancel = function () {
+		 
+		
 		 if(self.selected_shipment.length == 0) {
-			 self.message = "Please select atleast on record..!";
+			 self.message = "Please select atleast one record..!";
 			 successAnimate('.failure');
 		 }else{
-			 	self.confirm_title = 'Cancel';
- 				self.confirm_type = BootstrapDialog.TYPE_DANGER;
- 				self.confirm_msg = self.confirm_title+ ' selected record(s)?';
- 				self.confirm_btnclass = 'btn-danger';
- 				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
- 				.then(
- 						function (res) {
- 							var shipment_id = [];
- 							for(var i=0; i<self.selected_shipment.length; i++) {
- 								shipment_id[i] = self.selected_shipment[i].shipment_id; 								
- 							}
- 							ShipmentService.makeCancel(shipment_id)
- 								.then(
- 										function(res) {
- 											fetchAllShipmentforView();
- 											self.selected_shipment = [];
- 											self.message = "Selected record(s) has cancelled..!"
- 											successAnimate('.success');	
- 										}, function (errRes) {
- 											console.log(errRes);
- 										}
- 									);
- 						}
- 					);
+			 var cancel_flag = 0;
+			 if($('#currentUserRole').val() != 'SUPER_ADMIN'){
+				 
+				 for(var i=0; i<self.selected_shipment.length; i++) {
+					 if(self.viewShipment.from_branch != self.selected_shipment[i].sender_branch.branch_id) {
+						 cancel_flag = 1;
+					 } 
+				 }
+				 
+			 }
+			 
+			 if(cancel_flag == 0) {
+				 
+				 self.confirm_title = 'Delete';
+	 				self.confirm_type = BootstrapDialog.TYPE_DANGER;
+	 				self.confirm_msg = self.confirm_title+ ' selected record(s)?';
+	 				self.confirm_btnclass = 'btn-danger';
+	 				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+	 				.then(
+	 						function (res) {
+	 							var shipment_id = [];
+	 							for(var i=0; i<self.selected_shipment.length; i++) {
+	 								shipment_id[i] = self.selected_shipment[i].shipment_id; 								
+	 							}
+	 							ShipmentService.makeCancel(shipment_id)
+	 								.then(
+	 										function(res) {
+	 											fetchAllShipmentforView();
+	 											self.selected_shipment = [];
+	 											self.message = "Selected record(s) has been deleted successfully..!"
+	 											successAnimate('.success');	
+	 										}, function (errRes) {
+	 											self.message = "Sorry.. Error while deleting record(s)..!"
+		 										successAnimate('.failure');	
+	 										}
+	 									);
+	 						}
+	 					);
+				 	
+			 } else {
+				 self.message = "Sorry.. You only have permission to delete your own branch record(s)..!"
+				 successAnimate('.failure');	
+			 }
+			 	
 		 }
 	 }
 	//------------------------------------- MAKE CANCEL END
