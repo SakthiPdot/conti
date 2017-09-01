@@ -105,11 +105,17 @@
 								<div class="col-lg-2 pull-right">
 									<a class="btn btn-info" data-ng-click = "ctrl.shipmentPrint(ctrl.shipment)"> <i class="fa fa-print" aria-hidden="true"></i>  LR print </a>
 								</div>
-								<div class="col-lg-2 pull-right">
-									<a class="btn btn-danger" data-ng-click = "ctrl.shipmentCancel(ctrl.shipment)"> <i class="fa fa-ban" aria-hidden="true"></i> Delete </a>
-								</div>	  
-								
-								 
+								<sec:authorize access="hasRole('SUPER_ADMIN')">
+									<div class="col-lg-2 pull-right">
+										<a class="btn btn-danger" data-ng-click = "ctrl.shipmentCancel(ctrl.shipment)"> <i class="fa fa-ban" aria-hidden="true"></i> Delete </a>
+									</div>	  
+								</sec:authorize>	
+								<sec:authorize access="hasAnyRole('STAFF', 'MANAGER')">
+									<div class="col-lg-2 pull-right" data-ng-show = "(ctrl.viewShipment.from_branch == ctrl.shipment.sender_branch.branch_id)">
+										<a class="btn btn-danger" data-ng-click = "ctrl.shipmentCancel(ctrl.shipment)"> <i class="fa fa-ban" aria-hidden="true"></i> Delete </a>
+									</div>	  
+								</sec:authorize>	
+														 
 							</div>
 						</div>
                         </div>
@@ -986,7 +992,7 @@
 									</div>
 
 									<input type="hidden" id="branch_id" value="${branch_id}" />
-									<input type = "hidden" id = "currentUserRole" value = "<sec:authentication property="principal.authorities[0]"/>" />
+									<input type = "text" id = "currentUserRole" value = "<sec:authentication property="principal.authorities[0]"/>" />
 								</div>
 
 
@@ -1114,11 +1120,10 @@
 															type="button" data-toggle="dropdown">
 															Batch Action <span class="caret"></span>
 														</button>
-														 <ul class="dropdown-menu">
-																<li><a data-ng-click="ctrl.makeCancel()">Cancel</a></li>
-														</ul> 
-
-													</div>
+															 <ul class="dropdown-menu">
+																	<li><a data-ng-click="ctrl.makeCancel()">Delete</a></li>
+															</ul> 
+													 </div>
 
 													<div class = "row paddingtop">
 					                                    <div class = "col-md-12"> 
@@ -1129,8 +1134,6 @@
 				                            		 </div>
 												</div>
 												
-												
-                             
 											</div>
 
 											<div class="col-xs-6 icons-button">
