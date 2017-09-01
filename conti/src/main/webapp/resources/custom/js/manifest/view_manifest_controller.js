@@ -133,12 +133,40 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			
 	function deleteManifest()
 	{
-		console.log('selected manifest length :'+self.selected_manifest.length);
+		console.log(self.Filtermanifests);
+		var branch=$('#branch_id').val();
+		console.log(branch);
+		
+		var deleteflag=0;
+		var branchflag=0;
+		for(var i=0; i<self.selected_manifest.length; i++)
+		{
+			if(self.selected_manifest[i].manifest_status =='Incomplete')
+				{deleteflag=1;}
+			
+			if(self.selected_manifest[i].branchModel1.branch_id!=branch)
+				{branchflag=1;	}	
+			console.log(self.selected_manifest[i].branchModel1.branch_id);
+			console.log('******************deleteflag '+deleteflag+' &&&&&&&&&&&&&&&&&&branchflag '+branchflag);
+		}
+		
+		
+		
 		if(self.selected_manifest.length == 0 ) 
 		{
 	   		self.message ="Please select atleast one record for delete..!";
 			successAnimate('.failure');
     	} 
+		else if(branchflag=='1')
+		{
+			self.message ="Origin branch user only can allow to Delete...!";
+			successAnimate('.failure');
+		}
+		else if(deleteflag=='1')
+		{
+			self.message ="Receipt already created for selected record(s) so can not make Delele..!";
+			successAnimate('.failure');
+		}
 		else
 		{
 			self.confirm_title='Delete';

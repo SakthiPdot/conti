@@ -79,18 +79,18 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		 }
 		 //------------------------------------- SHIPEMNT PRINT END
 		
-		//------------------------------------- SHIPEMNT PRINT BEGIN
+		//------------------------------------- Manifest PRINT BEGIN
 		 self.manifestPrint = function (manifest_id) {
 			 afterManifestSave(manifest_id);
 		 }
-		 //------------------------------------- SHIPEMNT PRINT END
+		 //------------------------------------- Manifest PRINT END
 		 
-		//------------------------------------- SHIPEMNT PRINT BEGIN
+		//------------------------------------- Manifest(LR Print) PRINT BEGIN
 		 self.shipmentPrint = function (manifest_id) {
 			 afterManifestSave(manifest_id);
 		 }
-		 //------------------------------------- SHIPEMNT PRINT END
-		
+		 //------------------------------------- 
+		 
 		//---------------------Branch Master drawer close begin-----------
 		
 		function close(title){

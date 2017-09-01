@@ -108,7 +108,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    company_tbl.addCell(getin_cell);
 	    
 	    //for LR number
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	    String shipment_date = shipment.getShipment_date().toString();
 	    Date date = dateFormat.parse(shipment_date.substring(0, shipment_date.length()-2));
 	    
@@ -132,38 +132,62 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    Cell consignee = new Cell(new Phrase("To", address_font));
 	    consignee.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    customer_tbl.addCell(consignee);
+	    String send_cus = null, consignee_cus = null;
+	    if(shipment.getSender_customer().getGstin_number() != null) {
+	    	
+	    	send_cus = "Name : "+shipment.getSender_customer().getCustomer_name()+" "+
+    				"\nAddress : "+shipment.getSendercustomer_address1()+
+					/*", "+shipment.getSender_customer().getCustomer_addressline2()+*/
+					", "+shipment.getSender_location().getLocation_name()+
+					",\n"+shipment.getSender_location().address.getCity()+
+					" - "+shipment.getSender_location().getPincode()+
+					", \nPh :"+shipment.getSender_customer().getCustomer_mobileno()+
+					/*", \nEmail :"+shipment.getSender_customer().getCustomer_email()+*/
+					", \nState :"+shipment.getSender_customer().location.address.getState()+
+					", State Code :"+shipment.getSender_customer().location.address.getStateCode()+
+					"\nGSTIN Number :"+shipment.getSender_customer().getGstin_number();
+	    } else {
+	    	send_cus = "Name : "+shipment.getSender_customer().getCustomer_name()+" "+
+    				"\nAddress : "+shipment.getSendercustomer_address1()+
+					/*", "+shipment.getSender_customer().getCustomer_addressline2()+*/
+					", "+shipment.getSender_location().getLocation_name()+
+					",\n"+shipment.getSender_location().address.getCity()+
+					" - "+shipment.getSender_location().getPincode()+
+					", \nPh :"+shipment.getSender_customer().getCustomer_mobileno()+
+					/*", \nEmail :"+shipment.getSender_customer().getCustomer_email()+*/
+					", \nState :"+shipment.getSender_customer().location.address.getState()+
+					", State Code :"+shipment.getSender_customer().location.address.getStateCode();
+	    }
 	    Cell sender_add = new Cell(
-	    		new Phrase(
-	    				"Name : "+shipment.getSender_customer().getCustomer_name()+" "+
-	    				"\nAddress : "+shipment.getSendercustomer_address1()+
-	    							/*", "+shipment.getSender_customer().getCustomer_addressline2()+*/
-	    							", "+shipment.getSender_location().getLocation_name()+
-	    							", "+shipment.getSender_location().address.getCity()+
-	    							" - "+shipment.getSender_location().getPincode()+
-	    							", \nPh :"+shipment.getSender_customer().getCustomer_mobileno()+
-	    							/*", \nEmail :"+shipment.getSender_customer().getCustomer_email()+*/
-	    							", \nState :"+shipment.getSender_customer().location.address.getState()+
-	    							", State Code :"+shipment.getSender_customer().location.address.getStateCode()+
-	    							" \nGSTIN Number :"+shipment.getSender_customer().getGstin_number()
-	    							
-	    			,address_font)
+	    		new Phrase(send_cus ,address_font)
 	    		);
+	    
+	    if(shipment.getConsignee_customer().getGstin_number() != null) {
+	    	consignee_cus = "Name : "+shipment.getConsignee_customer().getCustomer_name()+" "+
+    				"\nAddress : "+shipment.getConsigneecustomer_address1()+
+					/*", "+shipment.getConsignee_customer().getCustomer_addressline2()+*/
+					", "+shipment.getConsignee_location().getLocation_name()+
+					",\n"+shipment.getConsignee_location().address.getCity()+
+					" - "+shipment.getConsignee_location().getPincode()+
+					", \nPh :"+shipment.getConsignee_customer().getCustomer_mobileno()+
+					/*", \nEmail :"+shipment.getConsignee_customer().getCustomer_email()+*/
+					", \nState :"+shipment.getConsignee_customer().location.address.getState()+
+					", State Code :"+shipment.getConsignee_customer().location.address.getStateCode()+
+					"\nGSTIN Number :"+shipment.getConsignee_customer().getGstin_number();
+	    } else {
+	    	consignee_cus = "Name : "+shipment.getConsignee_customer().getCustomer_name()+" "+
+    				"\nAddress : "+shipment.getConsigneecustomer_address1()+
+					/*", "+shipment.getConsignee_customer().getCustomer_addressline2()+*/
+					", "+shipment.getConsignee_location().getLocation_name()+
+					",\n"+shipment.getConsignee_location().address.getCity()+
+					" - "+shipment.getConsignee_location().getPincode()+
+					", \nPh :"+shipment.getConsignee_customer().getCustomer_mobileno()+
+					/*", \nEmail :"+shipment.getConsignee_customer().getCustomer_email()+*/
+					", \nState :"+shipment.getConsignee_customer().location.address.getState()+
+					", State Code :"+shipment.getConsignee_customer().location.address.getStateCode();
+	    }
 	    Cell consignee_add = new Cell(
-	    		new Phrase(
-	    				"Name : "+shipment.getConsignee_customer().getCustomer_name()+" "+
-	    				"\nAddress : "+shipment.getConsigneecustomer_address1()+
-	    							/*", "+shipment.getConsignee_customer().getCustomer_addressline2()+*/
-	    							", "+shipment.getConsignee_location().getLocation_name()+
-	    							", "+shipment.getConsignee_location().address.getCity()+
-	    							" - "+shipment.getConsignee_location().getPincode()+
-	    							", \nPh :"+shipment.getConsignee_customer().getCustomer_mobileno()+
-	    							/*", \nEmail :"+shipment.getConsignee_customer().getCustomer_email()+*/
-	    							", \nState :"+shipment.getConsignee_customer().location.address.getState()+
-	    							", State Code :"+shipment.getConsignee_customer().location.address.getStateCode()+
-	    							" \nGSTIN Number :"+shipment.getConsignee_customer().getGstin_number()
-	    							
-	    			,address_font)
-	    		);
+	    		new Phrase(consignee_cus,address_font));
 	    customer_tbl.addCell(sender_add);
 	    customer_tbl.addCell(consignee_add);
 	    
