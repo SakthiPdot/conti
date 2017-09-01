@@ -935,7 +935,7 @@
                             <div class="table-responsive">
                             <div class="row">
                               <div class="col-lg-12">
-                               <div class="col-xs-6">
+                               <div class="col-xs-5">
                                    <div class="dataTables_length" id="dataTables-example_length">
 										<div class="dropdown">
 										<button class="btn btn-primary dropdown-toggle"
@@ -947,9 +947,7 @@
 											<li><a data-ng-click="ctrl.makeReceived()">Received</a></li>
 										</ul>
 										</div>
-										<div class="col-lg-2 pull-right">
-										<a class="btn btn-info" data-ng-click = "ctrl.manifestPrint(ctrl.manifestId)"> <i class="fa fa-print" aria-hidden="true"></i> Manifest Print </a>
-										</div>	  
+											  
 										<div class="row paddingtop">
 														<div class="col-md-12">
 															<select name="shownoofrec" data-ng-model="shownoofrec"
@@ -961,8 +959,10 @@
 													</div>
 									</div> 
                                 </div>
-                              
-                                <div class="col-xs-6 icons-button">
+                              	<div class="col-lg-2 ">
+											<a class="btn btn-primary" data-ng-click = "ctrl.manifestPrint(ctrl.manifestId)"> <i class="fa fa-print" aria-hidden="true"></i> Manifest Print </a>
+										</div>
+                                <div class="col-xs-5 icons-button">
                                    <div class="pull-right">
                                    
                                    <form name="manifestPrint" method="POST" action="manifest_print" class="padding-button">

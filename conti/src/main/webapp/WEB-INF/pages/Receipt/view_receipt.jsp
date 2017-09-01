@@ -71,16 +71,16 @@
 						
 						<div class="panel-body customer-font">
 							<div class = "col-lg-4"> <b>Shipment details</b> </div>
-							<div class = "col-lg-8">
-								<div class="col-lg-1 pull-right">
+							<div class = "col-lg-8 ">
+								<div>
 									<a class="pull-right" data-ng-click = "ctrl.viewShipemntClose()"><i class="fa fa-times" aria-hidden="true"></i></a>
 								</div>
 								
-								<div class="col-lg-3 pull-right">
-									<a class="btn btn-info" data-ng-click = "ctrl.receiptPrint(ctrl.receiptPr_id)"> <i class="fa fa-print" aria-hidden="true"></i> Receipt Print </a>
+								<div class="pull-right">
+									<a class="btn btn-info pull-right" data-ng-click = "ctrl.receiptPrint(ctrl.receiptPr_id)"> <i class="fa fa-print" aria-hidden="true"></i> Receipt Print </a>
 								</div>	  
-								<div class="col-lg-3 pull-right">
-									<a class="btn btn-info" data-ng-click = "ctrl.shipmentPrint(ctrl.shipment)"> <i class="fa fa-print" aria-hidden="true"></i>  LR Print </a>
+								<div class="col-lg-2 pull-right">
+									<a class="btn btn-info pull-right" data-ng-click = "ctrl.shipmentPrint(ctrl.shipment)"> <i class="fa fa-print" aria-hidden="true"></i>  LR Print </a>
 								</div>
 								 
 							</div>
@@ -93,30 +93,25 @@
               <div class="row">
               <div class="col-md-12">
               	  <div class="col-md-6">
-		              
-		               <b>L.R. No. : {{ctrl.shipment.lrno_prefix}}</b>            
-		              
-	              </div>
+		             <b>L.R. No. : {{ctrl.shipment.lrno_prefix}}</b>            
+		          </div>
 	              
 	              <div class="col-md-6">
-		              
 		               <b class = "pull-right">Shipment Date. : {{ctrl.shipment.shipment_date.slice(0,-2)}}</b>            
-		              
-	              </div>
-	              
-              </div>
+		          </div>
+	           </div>
               
               <div class="col-md-12">
               		<div class="col-md-6">
-		              
 		               <b>Receipt No. : {{ctrl.receipt_number}}</b>            
-		              
-	              </div>
+		          </div>
+	              <div class="col-md-6">
+		               <b class = "pull-right">Receipt Date. : {{ctrl.receipt_date.slice(0,-2)}}</b>            
+		          </div>
               </div>
               </div>
               
               <div class="row">
-              	 
               	<div class="col-md-12">
               		<div class="col-md-6">
               			<b>Payment mode : {{ctrl.shipment.pay_mode}}</b>  
@@ -124,24 +119,16 @@
               		 <div class="col-md-6">         
               		</div>
               	</div>
-              	
-              	
               </div>
          
               <div class="row">
-              	
               	<div class="col-md-12">
-              		
-              		
               		<div class="col-md-12 GenLeftRight">
               			<div class="subhead">
               			Sender &amp; Consignee Info
               			</div>
               		</div>
               	</div>
-              	
-              	
-              	
               	
               	<div class="col-lg-12 col-md-12">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -151,149 +138,123 @@
                         </div>
                         <div class="panel-body">
                             	                            
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">From Branch</span>
-                            		    <input type="text" class="form-control" tabindex = "-1" id = "sender_branch_name" 
-                            		    	data-ng-model = "ctrl.shipment.sender_branch.branch_name" 
-                            		    	data-ng-disabled = "true"/>                        		    
-                            		    
-                            		</div>
-                            		
-                            		<div class=" col-md-12 branchclass">
-                            			<span class="text-paddingwidth"> Name <span class="required">*</span></span>
-                            		    <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.customer_name"
-                            		    	data-ng-disabled = "true"
-                            		    required />                            		    
-                            		</div>
-                            		
-                       			    <div class=" col-md-12 branchclass">
-                            			<span class="text-paddingwidth"> Company Name </span>
-                            		    <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.company_name"
-                            		    	data-ng-disabled = "true"
-                            		    />                            		    
-                            		</div>
-                            	
-                            	
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Mobile Number <span class="required">*</span></span>
-                            		    <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.customer_mobileno"
-                            		    	data-ng-disabled = "true"
-                            		    required />  
-                            		    
-                            		</div>
-                            	
-                            	
-                            	
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Address line1 <span class="required">*</span></span>
-                            		   <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sendercustomer_address1"
-                            		    	data-ng-disabled = "true"
-                            		    required />                             		    
-                            		    
-                            		</div>
-                            	
-                            	
-                            	
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Address line2 </span>
-                            		   <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sendercustomer_address2"
-                            		    	data-ng-disabled = "true"
-                            		     />                             		    
-                            		    
-                            		</div>
-                            		
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Location <span class="required">*</span></span>
-                            		    <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_location.location_name"
-                            		    	data-ng-disabled = "true"
-                            		     />                       		    
-                            		     
-                            		</div>
-                            	
-                            	
-                            	
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">City</span> 
-                            			 <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_location.address.city"
-                            		    	data-ng-disabled = "true"
-                            		     /> 
-                            		    
-                            		</div>
-                            	
-                            	
-                            	
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">State</span> 
-                            		     <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_location.address.state"
-                            		    	data-ng-disabled = "true"
-                            		     /> 
-                            		    
-                            		</div>
-                            	
-                            	
-                            	
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Country</span>
-                            		     <input type="text" class="form-control" 
-                            		    	data-ng-model = "ctrl.shipment.sender_location.address.country"
-                            		    	data-ng-disabled = "true"
-                            		     /> 
-                            		    
-                            		</div>
-                            	
-                            	
-                            	
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Pincode</span>
-                            		    <input type="text" class="form-control" 
-                            		    	data-ng-model = "ctrl.shipment.sender_location.pincode"
-                            		    	data-ng-disabled = "true"
-                            		     /> 
-                            		    
-                            		</div>
-                            		
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Email</span>
-                            		   <input type="text" class="form-control" 
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.customer_email"
-                            		    	data-ng-disabled = "true"
-                            		     /> 
-                            		    
-                            		</div>
-                            		
-                            		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">GSTIN Number</span>
-                            		    <input type="text" class="form-control"
-                            		    	data-ng-model = "ctrl.shipment.sender_customer.gstin_number"
-                            		    	data-ng-disabled = "true"
-                            		    	
-                            		    />                               		    
-                            		    
-                            		</div>
-                            		
-                    		      <!--  <div class="col-md-12 col-sm-12 col-xs-12">
-                    		        	<div class="col-md-6">
-                    		        	
-                    		        	</div>	
-                    		        	
-                    		        	<div class="col-md-6">
-	                    		            <label class="checkbox-inline">
-		                                        <input type="checkbox">Save Address
-		                                    </label>
-                    		        	</div>	
-                    		        	                    		       
-                                    </div> -->
-                                    
-                            	
-                        </div>
+                       		<div class="col-md-12 branchclass">
+                       			<span class="text-paddingwidth">From Branch</span>
+                       		    <input type="text" class="form-control" tabindex = "-1" id = "sender_branch_name" 
+                       		    	data-ng-model = "ctrl.shipment.sender_branch.branch_name" 
+                       		    	data-ng-disabled = "true"/>                        		    
+                       		</div>
+                       		
+                       		<div class=" col-md-12 branchclass">
+                       			<span class="text-paddingwidth"> Name <span class="required">*</span></span>
+                       		    <input type="text" class="form-control"
+                       		    	data-ng-model = "ctrl.shipment.sender_customer.customer_name"
+                       		    	data-ng-disabled = "true"
+                       		    required />                            		    
+                       		</div>
+                       		
+                  			<div class=" col-md-12 branchclass">
+                       			<span class="text-paddingwidth"> Company Name </span>
+                       		    <input type="text" class="form-control"
+                       		    	data-ng-model = "ctrl.shipment.sender_customer.company_name"
+                       		    	data-ng-disabled = "true"/>                            		    
+                       		</div>
+                       	
+                       		<div class="col-md-12 branchclass">
+                       			<span class="text-paddingwidth">Mobile Number <span class="required">*</span></span>
+                       		    <input type="text" class="form-control"
+                       		    	data-ng-model = "ctrl.shipment.sender_customer.customer_mobileno"
+                       		    	data-ng-disabled = "true"
+                       		    required />  
+                       		</div>
+                       	
+                       		<div class="col-md-12 branchclass">
+                       			<span class="text-paddingwidth">Address line1 <span class="required">*</span></span>
+                       		   <input type="text" class="form-control"
+                       		    	data-ng-model = "ctrl.shipment.sendercustomer_address1"
+                       		    	data-ng-disabled = "true"
+                       		    required />                             		    
+                       		    
+                       		</div>
+                       	
+                       		<div class="col-md-12 branchclass">
+                       			<span class="text-paddingwidth">Address line2 </span>
+                       		   <input type="text" class="form-control"
+                       		    	data-ng-model = "ctrl.shipment.sendercustomer_address2"
+                       		    	data-ng-disabled = "true"
+                       		     />                             		    
+                       		    
+                       		</div>
+                       		
+                       		<div class="col-md-12 branchclass">
+                       			<span class="text-paddingwidth">Location <span class="required">*</span></span>
+                       		    <input type="text" class="form-control"
+                       		    	data-ng-model = "ctrl.shipment.sender_location.location_name"
+                       		    	data-ng-disabled = "true"
+                       		     />                       		    
+                       		     
+                       		</div>
+                       	
+                       	
+                       	
+                       		<div class="col-md-12 branchclass">
+                       			<span class="text-paddingwidth">City</span> 
+                       			 <input type="text" class="form-control"
+                       		    	data-ng-model = "ctrl.shipment.sender_location.address.city"
+                       		    	data-ng-disabled = "true"
+                       		     /> 
+                       		    
+                       		</div>
+                       	
+                       	
+                       	
+                       		<div class="col-md-12 branchclass">
+                       			<span class="text-paddingwidth">State</span> 
+                       		     <input type="text" class="form-control"
+                       		    	data-ng-model = "ctrl.shipment.sender_location.address.state"
+                       		    	data-ng-disabled = "true"
+                       		     /> 
+                       		    
+                       		</div>
+                       	
+                       	
+                       	
+                       		<div class="col-md-12 branchclass">
+                       			<span class="text-paddingwidth">Country</span>
+                       		     <input type="text" class="form-control" 
+                       		    	data-ng-model = "ctrl.shipment.sender_location.address.country"
+                       		    	data-ng-disabled = "true"
+                       		     /> 
+                       		    
+                       		</div>
+                       	
+                       	
+                       	
+                       		<div class="col-md-12 branchclass">
+                       			<span class="text-paddingwidth">Pincode</span>
+                       		    <input type="text" class="form-control" 
+                       		    	data-ng-model = "ctrl.shipment.sender_location.pincode"
+                       		    	data-ng-disabled = "true"
+                       		     /> 
+                       		    
+                       		</div>
+                       		
+                       		<div class="col-md-12 branchclass">
+                       			<span class="text-paddingwidth">Email</span>
+                       		   <input type="text" class="form-control" 
+                       		    	data-ng-model = "ctrl.shipment.sender_customer.customer_email"
+                       		    	data-ng-disabled = "true"
+                       		     /> 
+                       		    
+                       		</div>
+                       		
+                       		<div class="col-md-12 branchclass">
+                       			<span class="text-paddingwidth">GSTIN Number</span>
+                       		    <input type="text" class="form-control"
+                       		    	data-ng-model = "ctrl.shipment.sender_customer.gstin_number"
+                       		    	data-ng-disabled = "true"/>                               		    
+                       		</div>
+                     </div>
                       
                     </div>
                 </div>

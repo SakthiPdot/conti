@@ -28,9 +28,20 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 	@Override
 	@Transactional
 	public int priceSettingCount() {
-		int rec_count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from PriceSetting WHERE obsolete = 'N'").uniqueResult()).intValue();
+		int rec_count = ((Long)sessionFactory.getCurrentSession()
+				.createQuery("select count(*) from PriceSetting WHERE obsolete = 'N'").uniqueResult()).intValue();
 		return rec_count;
 	}
+	
+	@Override
+	@Transactional
+	public int priceSettingCountstaff(int branch_id) {
+		int rec_count = ((Long)sessionFactory.getCurrentSession()
+				.createQuery("select count(*) from PriceSetting WHERE obsolete = 'N'  and branch.branch_id='"+branch_id+"' ")
+				.uniqueResult()).intValue();
+		return rec_count;
+	}
+	
 	
 	@Override
 	@Transactional
@@ -52,6 +63,17 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
+	public List<PriceSetting> getPriceSettingStaff(int branch_id) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from PriceSetting where  obsolete ='N' "
+						+ "and branch.branch_id='"+branch_id+"' "
+						+ "order by IFNULL(updated_datetime,created_datetime)  DESC ")
+				.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
 	public List<PriceSetting> getPriceSettingBy100() {
 		return sessionFactory.getCurrentSession()
 				.createQuery("from PriceSetting where  obsolete ='N' "
@@ -59,13 +81,39 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 				.setMaxResults(100)
 				.list();
 	}
-
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<PriceSetting> getPriceSettingBy100staff(int branch_id) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from PriceSetting where  obsolete ='N' "
+						+ "and branch.branch_id='"+branch_id+"' "
+						+ "order by IFNULL(updated_datetime,created_datetime)  DESC ")
+				.setMaxResults(100)
+				.list();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
 	public List<PriceSetting> gePriceSettingSorting100(String name,String order) {
 		return sessionFactory.getCurrentSession()
 				.createQuery("from PriceSetting where  obsolete ='N' "
+						  + "order by ("+name+")"+  order )
+				.setMaxResults(100)
+				.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<PriceSetting> gePriceSettingSorting100Staff(String name,String order,int branch_id) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from PriceSetting where  obsolete ='N' "
+						+ "and branch.branch_id='"+branch_id+"' "
 						  + "order by ("+name+")"+  order )
 				.setMaxResults(100)
 				.list();
@@ -126,7 +174,18 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
 					.setFirstResult(from).setMaxResults(to).list();
 	}
-
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<PriceSetting> getPriceSettingWithLimitStaff(int from, int to, String order,int branch_id) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from PriceSetting where obsolete ='N'"
+						+ "and branch.branch_id='"+branch_id+"' "
+						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
+					.setFirstResult(from).setMaxResults(to).list();
+	}
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
@@ -141,8 +200,24 @@ public class PriceSettingDaoImpl implements PriceSettingDao {
 						+ "OR defaulthandling_charge LIKE '%"+searchString+ "%'"
 						).list();
 	}
+	
 
-
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<PriceSetting> searchByPriceSettingStaff(String searchString,int branch_id) {
+		return sessionFactory.getCurrentSession()
+				.createQuery("from PriceSetting where obsolete ='N'"
+						+ "and branch.branch_id='"+branch_id+"' "
+						+ "and branch.branch_name  LIKE '%"+searchString + "%'"
+						+ "OR service.service_name LIKE '%"+searchString+ "%'"
+						+ "OR product.product_name LIKE '%"+searchString+ "%'"
+						+ "OR product.product_Type LIKE '%"+searchString+ "%'"
+						+ "OR default_price LIKE '%"+searchString+ "%'"
+						+ "OR defaulthandling_charge LIKE '%"+searchString+ "%'"
+						).list();
+	}
+	
 	//---------------------------------------- FETCH PRICE BY from branch & product & service for add shipment by sankar
 	@Override
 	@Transactional

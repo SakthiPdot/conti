@@ -65,6 +65,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		 self.shipment = receipt.shipmentModel;
 		 self.receiptPr_id =  receipt.receipt_id;
 		 self.receipt_number =  receipt.temp_receiptno;
+		 self.receipt_date =  receipt.temp_date;
 		 viewShipment_Animate('.shipment_View', 'OPEN');
 	 }
 	 
