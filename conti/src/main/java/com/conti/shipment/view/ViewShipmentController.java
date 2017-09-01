@@ -5,12 +5,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
@@ -19,8 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,14 +25,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
 
+import com.conti.manifest.ManifestDao;
+import com.conti.manifest.ManifestModel;
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.NumberToWord;
 import com.conti.others.UserInformation;
+import com.conti.receipt.ReceiptDao;
+import com.conti.receipt.ReceiptDetail;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
@@ -67,7 +67,10 @@ public class ViewShipmentController{
 	private BranchDao branchDao;
 	@Autowired
 	private NumberToWord numberToWord;
-	
+	@Autowired
+	private ManifestDao manifestDao;
+	@Autowired
+	private ReceiptDao receiptDao;
 	Loggerconf loggerconf = new Loggerconf();
 	UserInformation userInformation;
 	ConstantValues constantVal = new ConstantValues();
@@ -215,44 +218,97 @@ public class ViewShipmentController{
 	
 	//----------------------------------------------- MAKE CANCEL / DELETE ONE SHIPMENT BEGIN
 	
-	@RequestMapping(value = "delete_shipment/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity <Void> shipment_delete (@PathVariable ("id") int id, HttpServletRequest request) {
+	@RequestMapping(value = "delete_shipment/{id}", method = RequestMethod.DELETE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity <String> shipment_delete (@PathVariable ("id") int id, HttpServletRequest request) {
 		
 		userInformation = new UserInformation (request);
 		int user_id = Integer.parseInt(userInformation.getUserId()); 
+		String username = userInformation.getUserName();
 		ShipmentModel shipment = shipmentDao.getShipmentModelById(id);
+		int can_flag = 0;
 		
-		if (shipment != null) {
+		try {
+			ManifestModel manifest = manifestDao.getManifestIdByShipmentId(id);
+			ReceiptDetail receiptDetail = receiptDao.getReceiptbyShipment(id);
 			
-			Date date = new Date();
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+			if(manifest != null) {
+				can_flag = 1;
+			}
+			if(receiptDetail != null) {
+				can_flag = 2;
+			}
+			if( manifest != null && receiptDetail != null ) {
+				can_flag = 3;
+			}
+			if(can_flag == 0) {
+				if (shipment != null) {
+					
+					Date date = new Date();
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+					
+					shipment.setUpdated_by(user_id);
+					shipment.setUpdated_datetime(dateFormat.format(date));
+					shipment.setObsolete("Y");
+					shipment.setStatus("Cancelled");	
+					shipmentDao.saveOrUpdate(shipment);
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
+					
+					return new ResponseEntity<String>(HttpStatus.OK);
+				} else {
+					 
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS + " record not found", null);
+					return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+				}
+			} else {
+				
+				String referred = null;
+				if(can_flag == 1) {
+					referred = "Manifest";
+				} else if(can_flag == 2) {
+					referred = "Receipt";
+				} else {
+					referred = "Manifest & Receipt";
+				}
+				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS+" Referred in "+referred, null);
+				return new ResponseEntity<String>(referred, HttpStatus.OK);
+			}
 			
-			shipment.setUpdated_by(user_id);
-			shipment.setUpdated_datetime(dateFormat.format(date));
-			shipment.setObsolete("Y");
-			shipment.setStatus("Cancelled");	
-			shipmentDao.saveOrUpdate(shipment);
+			
+		} catch(Exception exception ) {
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, exception);
+			return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		
-		return new ResponseEntity<Void> (HttpStatus.OK);
+		
 	}
 	
 	//----------------------------------------------- MAKE CANCEL / DELETE ONE SHIPMENT END
 	//----------------------------------------------- MAKE CANCEL / DELETE MULTIPLE SHIPMENT BEGIN
-	@RequestMapping(value = "make_cancel", method = RequestMethod.POST)
-	public ResponseEntity<Void> make_cancel(@RequestBody int[] id, HttpServletRequest request) {
+	@RequestMapping(value = "make_cancel", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> make_cancel(@RequestBody int[] id, HttpServletRequest request) {
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
 		int user_id = Integer.parseInt(userInformation.getUserId());
-		
+		String referred = "referred in Manifest or Receipt";
 		int cancel_flag = 0;
 		try {
 			for(int i=0; i<id.length; i++) {
 				ShipmentModel shipmentDB = shipmentDao.getShipmentModelById(id[i]);
-				if(shipmentDB == null) {
-					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+				ManifestModel manifest = manifestDao.getManifestIdByShipmentId(id[i]);
+				ReceiptDetail receiptDetail = receiptDao.getReceiptbyShipment(id[i]);
+				if(manifest == null && receiptDetail == null) {
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
+				} else {
+					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS+" "+referred , null);
 					cancel_flag = 1;
-				}else {
+				}
+			}
+			
+			if( cancel_flag == 1 ) {
+				return new ResponseEntity<String>(referred,HttpStatus.OK);
+			} else {
+				for(int i=0; i<id.length; i++) {
+					ShipmentModel shipmentDB = shipmentDao.getShipmentModelById(id[i]);
 					Date date = new Date();
 					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
 					
@@ -261,20 +317,14 @@ public class ViewShipmentController{
 					shipmentDB.setObsolete("Y");
 					shipmentDB.setStatus("Cancelled");	
 					shipmentDao.saveOrUpdate(shipmentDB);
-					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
-					
 				}
-			}
-			
-			if( cancel_flag == 1 ) {
-				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-			}else {
-				return new ResponseEntity<Void>(HttpStatus.OK);
+				
+				return new ResponseEntity<String>(HttpStatus.OK);
 			}
 			
 		} catch (Exception exception) {
-			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
-			return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_NOT_SUCCESS, exception);
+			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 
 	}

@@ -292,6 +292,18 @@ public class ReceiptDaoImpl implements ReceiptDao
 		}
 		
 		
+		@Override
+		@Transactional
+		public ReceiptDetail getReceiptbyShipment(int shipment_id) 
+		{
+			@SuppressWarnings("unchecked")
+			List<ReceiptDetail> receiptDetail = sessionFactory.getCurrentSession()
+					.createQuery("from ReceiptDetail where shipmentModel.shipment_id =" +shipment_id).list();
+			if(receiptDetail!=null && !receiptDetail.isEmpty()){
+				return receiptDetail.get(0);
+			}
+			return null;
+		}
 			
 	//===================================================================================================
 }
