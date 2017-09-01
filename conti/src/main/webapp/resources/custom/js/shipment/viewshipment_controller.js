@@ -416,7 +416,7 @@ contiApp.controller('ViewShipmentController', [
 	 					);
 				 	
 			 } else {
-				 self.message = "Sorry.. You only have permission to delete your own branch record(s)..!"
+				 self.message = "Sorry.. You don't have permission to delete other branch record(s)..!"
 				 successAnimate('.failure');	
 			 }
 			 	
