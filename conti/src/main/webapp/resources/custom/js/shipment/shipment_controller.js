@@ -22,13 +22,13 @@ var specialElementHandlers = {
     }
 };*/
 
-$('#pdf').click(function () {
+/*$('#pdf').click(function () {
 	console.log("pdf details");
-/*    doc.fromHTML($('#wrapper').html(), 15, 15, {
+    doc.fromHTML($('#wrapper').html(), 15, 15, {
         'width': 170,
             'elementHandlers': specialElementHandlers
     });
-    doc.save('sample-file.pdf');*/
+    doc.save('sample-file.pdf');
 	
 	   var pdf = new jsPDF('p', 'pt', 'letter');
 	    // source can be HTML-formatted string, or a reference
@@ -71,10 +71,7 @@ $('#pdf').click(function () {
 	    
 	    
 
-});
-
-
-
+});*/
 contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout','$interval', 'ShipmentService', 'priceSettingService', 'BranchService', 'CompanySettingService', 'ServiceService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,$interval,  ShipmentService, priceSettingService, BranchService, CompanySettingService, ServiceService, ConfirmDialogService){
 	
 	$("#screen_addshipment").addClass("active-menu");
@@ -134,10 +131,11 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 				"sender_branch" : {},
 				"consignee_branch" : {},
 				"service" : {},
-				"shipmentDetail" : [{
+				/*"shipmentDetail" : [{
 					"product" : {},
 					
-				}]
+				}]*/
+				"shipmentDetail" : []
 				
 		};
 		
@@ -150,7 +148,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		$('#consignee_branch_name_value').val('');
 		$('#consignee_location_name_value').val('');
 		/*$('#service_name_value').val('');*/
-		$('#product_name_value').val('');
+		$('#product_name0_value').val('');
 		
 		var sender_taxin_payable = null;
 		var consignee_taxin_payable = null;
@@ -353,7 +351,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
             }
         }); 
         self.shipment.shipmentDetail = selectedProductList;
-        self.checkQuantity(-1); // Call CheckQuantity method for check whethere noofparcel == qunatity
+        
+        self.checkQuantity(self.shipment.shipmentDetail.length - 1); // Call CheckQuantity method for check whethere noofparcel == qunatity
 	}
 	//--------------------------------------------- remove Product end
 	
@@ -391,10 +390,10 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		
 		if(index != -1) {
 
-			if (self.shipment.shipmentDetail[index].shipmentHsnDetail[0].hsn == null ) {
+			/*if (self.shipment.shipmentDetail[index].shipmentHsnDetail[0].hsn == null ) {
 				console.log(index);
 				self.disable_save = true;
-			} else {
+			} else {*/
 				var quantity = 0;
 				for(var i=0; i<self.shipment.shipmentDetail.length; i++) {
 					selected_quantity = self.shipment.shipmentDetail[i].quantity;
@@ -408,7 +407,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 					self.disable_save = true;
 				}
 				
-			}
+			/*}*/
 		} 
 			
 	}
@@ -484,26 +483,44 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//---------------------------------------------- Search Product name begin
 	$scope.product_name=function (selected){
 		
+		
 		var index = this.$parent.$index;
 		
-		//-- assign object
-		self.shipment.shipmentDetail[index].product = selected.originalObject;
+		if(selected == null) {
+			/*if($('#product_name'+index+'_value').val().length == 0) {
+				console.log("null..!");
+			}*/
+			
+			self.shipment.shipmentDetail[index].product_type = null;
+			self.shipment.shipmentDetail[index].height = null;
+			self.shipment.shipmentDetail[index].width = null;
+			self.shipment.shipmentDetail[index].length = null;
+			self.shipment.shipmentDetail[index].weight = null;
+			self.shipment.shipmentDetail[index].quantity = null;
+			self.shipment.shipmentDetail[index].unit_price = null;
+			
+			
+		}  else {
+			//-- assign object
+			self.shipment.shipmentDetail[index].product = selected.originalObject;
+			
+			self.shipment.shipmentDetail[index].shipmentHsnDetail = [{"hsn" : null, "product" : null}];
+			//self.shipment.shipmentDetail[index].shipmentHsnDetail = [];
+			//-- assign to dynamic table in product
+			/*self.shipment.shipmentDetail[index].product_id = selected.originalObject.product_id;*/
+			self.shipment.shipmentDetail[index].product_type = selected.originalObject.product_Type;
+			self.shipment.shipmentDetail[index].height = selected.originalObject.max_height;
+			self.shipment.shipmentDetail[index].width = selected.originalObject.max_width;
+			self.shipment.shipmentDetail[index].length = selected.originalObject.max_length;
+			self.shipment.shipmentDetail[index].weight = selected.originalObject.max_weight;
+			
+			fetch_price(index);		//----- fetch price from price settings
+		}
 		
-		self.shipment.shipmentDetail[index].shipmentHsnDetail = [{"hsn" : null, "product" : null}];
-		//self.shipment.shipmentDetail[index].shipmentHsnDetail = [];
-		//-- assign to dynamic table in product
-		/*self.shipment.shipmentDetail[index].product_id = selected.originalObject.product_id;*/
-		self.shipment.shipmentDetail[index].product_type = selected.originalObject.product_Type;
-		self.shipment.shipmentDetail[index].height = selected.originalObject.max_height;
-		self.shipment.shipmentDetail[index].width = selected.originalObject.max_width;
-		self.shipment.shipmentDetail[index].length = selected.originalObject.max_length;
-		self.shipment.shipmentDetail[index].weight = selected.originalObject.max_weight;
-		
-		
-		
-		fetch_price(index);		//----- fetch price from price settings
+		self.checkQuantity(index);
 		
 		make_enable_save(index) // make enable save
+		
 	}
 	
 	
@@ -646,12 +663,14 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 								console.log("inside else");
 								self.shipment.cgst = ( parseFloat(0) );
 								self.shipment.sgst = ( parseFloat(0) );
+								self.shipment.igst = ( parseFloat(0) );
 								self.shipment.tax = ( parseFloat(0) );
 								self.shipment.total_charges = parseFloat(self.shipment.total_amount);
 							}
 						} else {
 							self.shipment.cgst = ( parseFloat(0) );
 							self.shipment.sgst = ( parseFloat(0) );
+							self.shipment.igst = ( parseFloat(0) );
 							self.shipment.tax = ( parseFloat(0) );
 							self.shipment.total_charges = parseFloat(self.shipment.total_amount);
 						}
