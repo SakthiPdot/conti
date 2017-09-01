@@ -32,8 +32,11 @@
 	 <link href="resources/built-in/assets/Drawer/trouserDrawer.css" rel="stylesheet" />
 	  <link href="resources/custom/css/custom.css" rel="stylesheet">
 	   <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
-	 <link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
+	 
 	 <link href="resources/custom/css/demo.css" rel="stylesheet">
+	 <link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
+	 
+	 
 <script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
 	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
@@ -1132,7 +1135,7 @@
                                      <th data-ng-show="setting_receiptdestination">Destination</th>
                                      <th data-ng-show="setting_receiptsender">Sender</th>
                                      <th data-ng-show="setting_receiptconsignee">Consignee</th>
-<!--                                      <th data-ng-show="setting_receiptmanifest">Manifest</th> -->
+                                     <th data-ng-show="setting_receiptmanifest">Manifest</th>
                                      <th data-ng-show="setting_receiptstatus">Status</th>
                              	</tr>
                              </thead>
@@ -1153,7 +1156,7 @@
                                      <td data-ng-show="setting_receiptdestination">{{receipt.shipmentModel.consignee_branch.branch_name}}</td>
                                      <td data-ng-show="setting_receiptsender">{{receipt.shipmentModel.sender_customer.customer_name}}</td>
                                      <td data-ng-show="setting_receiptconsignee">{{receipt.shipmentModel.consignee_customer.customer_name}}</td>
-<!--                                      <td data-ng-show="setting_receiptmanifest">{{receipt.manifestModel.manifest_prefix}}</td> -->
+                                     <td data-ng-show="setting_receiptmanifest">{{receipt.temp_manifestno}}</td>
                                      <td data-ng-show="setting_receiptstatus">{{receipt.shipmentModel.status}}</td>
                                </tr>
                              </tbody>

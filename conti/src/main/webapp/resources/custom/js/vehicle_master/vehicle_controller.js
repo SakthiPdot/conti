@@ -552,7 +552,8 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			{
 				var success = false;
 				
-				if( ( item.vehicle_regno.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.vehicle_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 )
+				if( ( item.vehicle_regno.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+						/*|| (item.vehicle_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 )*/
 						|| (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
 						|| (item.vehicle_modelno.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
 						|| (item.vehicle_type.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)) {

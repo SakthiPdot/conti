@@ -613,7 +613,7 @@ public class AddReceiptRestController
 		List<ReceiptDetail> receiptDetailList=new ArrayList<>();
 		
 		ReceiptDetail receiptDetail=new ReceiptDetail();
-		receiptDetail.setManifestModel(new ManifestModel());
+		//receiptDetail.setManifestModel(new ManifestModel());
 		receiptDetail.setShipmentModel(new ShipmentModel());
 		receiptDetail.setReceiptModel(new ReceiptModel());
 		

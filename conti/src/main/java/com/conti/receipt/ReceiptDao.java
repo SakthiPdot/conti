@@ -28,6 +28,7 @@ public interface ReceiptDao
 	public List<ReceiptDetail> getAllReceipt_view(int branch_id);// for Manager / User
 	public List<ReceiptDetail>receiptSearch(String searchkey);
 	public ReceiptDetail getAllReceiptDetailByid(int manifestdetailed_id);
+	public ReceiptDetail getReceiptDetailbyId(int id);
 	
 	public void makePending(int receipt_id);
 	public void makeReturn(int receipt_id);

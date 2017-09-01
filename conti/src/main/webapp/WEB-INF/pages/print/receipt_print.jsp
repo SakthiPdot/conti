@@ -32,8 +32,13 @@
 	   
   	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
-  	<script src="resources/custom/js/custom.js"></script>
-	<script src="resources/custom/js/app.js"></script>
+  	
+	       
+	   <script src="resources/custom/js/custom.js"></script>
+	   
+	   <script src="resources/custom/js/app.js"></script>
+	   
+	   <link rel="icon" type="image/gif/png" href="resources/Image/conti_logo.png"> 
     <title>Conti - ${title} - PDF</title>
 	    <style>
        
@@ -70,17 +75,13 @@
 								
 							</div>
 							<div class="col-lg-8">					
-								<h2 style="color:blue; font-family: verdana;font-weight:bold;" align="center">comapny name</h2>
+								<h2 style="color:blue; font-family: verdana;font-weight:bold;" align="center">company name</h2>
 								<h4 align="center">area, &nbsp;street,</h4>
 								<h4 align="center">city. &nbsp; phoneno.</h4>
 								<h4 align="center">title Details</h4>
 							</div>
 						</div>
-						
-						
 						</div>
-					
-					
 						</div>
 					</div>
 				
@@ -93,53 +94,42 @@
 				<div id="phoneno">${company.company_landlineno}</div>
 				<div id="title">${title} Master</div>
 				<div id="logo">${image}</div>
-			
-			
-	            
-	            
-	            
-	            
-	                <!-- - Item Category Print -->
+			           <!-- - Item Category Print -->
 	         		<%-- <c:if test="${title == 'Item Category' }"> --%>
+	         		   <input type = "input" name = "receipt" value = {{listReceipt}} />
 	        	<table id="basic-table">
-	        	 
-
-	               <thead>	    
+	        	 	<thead>	    
 	        				 <tr>
 	                            <th>S.No</th>
 	                            <th>Date</th>
 	                            <th>LR Number</th>	                                 
 	                            <th>Receipt</th>
-	                            <td>Product </td>
+
 	                            <td>Origin </td>
 	                            <td>Destination </td>
 	                            <td>Sender </td>
 	                            <td>Consignee </td>
-	                            <td>Manifest </td>    
+
 	                            <td>Status </td> 
-<!-- 	                            <th>Branch Name</th> -->
-	                            <th>Company Name</th>
 	                        </tr>	                        
 	                    </thead>
 	                    <tbody>
 	                    
 	                    <c:forEach var="receipt" items="${listReceipt}" varStatus="loop">	                    
 	                        <tr>
+	                      
                               	<td><c:out value="${loop.count}" />
-                                <td>${receipt.created_datetime}</td>                   
-                               <td>${receipt.shipmentModel.lr_number}</td> 
-                               <td>${receipt.receipt_number}</td> 
-                               <td>${receipt.shipmentModel.shipmentDetail[0].product.product_name}</td> 
-                               <td>${receipt.manifestModel.branchModel1.branch_name}</td> 
-                               <td>${receipt.manifestModel.branchModel2.branch_name}</td> 
+                                <td>${receipt.temp_date}</td>                   
+                               <td>${receipt.shipmentModel.lrno_prefix}</td> 
+                               <td>${receipt.temp_receiptno}</td> 
+
+                               <td>${receipt.shipmentModel.sender_branch.branch_name}</td> 
+                               <td>${receipt.shipmentModel.consignee_branch.branch_name}</td> 
                                <td>${receipt.shipmentModel.sender_customer.customer_name}</td> 
                                <td>${receipt.shipmentModel.consignee_customer.customer_name}</td> 
-                               <td>${receipt.manifestModel.manifest_number}</td> 
+
                                <td>${receipt.shipmentModel.status}</td> 
-                                 
-<%--                                <td>${cust.customer_type}</td> --%>
-                               <td>${cust.company_name}</td>                      
-                            </tr>                           
+                           </tr>                           
 	                      </c:forEach> 
 	                      
 	                    </tbody>

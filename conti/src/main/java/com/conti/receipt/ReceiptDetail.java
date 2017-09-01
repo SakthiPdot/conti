@@ -34,7 +34,7 @@ public class ReceiptDetail {
 	public float handling_charge,net_freight_charges;
 	
 	private int receipt_id;
-	private String temp_date,temp_receiptno;
+	private String temp_date,temp_receiptno,temp_manifestno;
 
 	@Id
 	@GeneratedValue
@@ -43,13 +43,19 @@ public class ReceiptDetail {
 		return this.receiptdetailid;
 	}
 		
-	
+	@Transient
+	public String getTemp_manifestno() {
+		return temp_manifestno;
+	}
+	public void setTemp_manifestno(String temp_manifestno) {
+		this.temp_manifestno = temp_manifestno;
+	}
+
+
 	@Transient
 	public String getTemp_date() {
 		return temp_date;
 	}
-
-
 
 	public void setTemp_date(String temp_date) {
 		this.temp_date = temp_date;
@@ -113,17 +119,17 @@ public class ReceiptDetail {
 		this.shipmentModel = shipmentModel;
 	}
 	
-	public ManifestModel  manifestModel;
-	
-	
-	@JoinColumn(name="manifest_id",referencedColumnName="manifest_id")
-	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-	public ManifestModel getManifestModel() {
-		return this.manifestModel;
-	}
-	public void setManifestModel(ManifestModel manifestModel) {
-		this.manifestModel = manifestModel;
-	}
+//	public ManifestModel  manifestModel;
+//	
+//	
+//	@JoinColumn(name="manifest_id",referencedColumnName="manifest_id")
+//	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+//	public ManifestModel getManifestModel() {
+//		return this.manifestModel;
+//	}
+//	public void setManifestModel(ManifestModel manifestModel) {
+//		this.manifestModel = manifestModel;
+//	}
 	
 	
 	@Column(name="handling_charge")

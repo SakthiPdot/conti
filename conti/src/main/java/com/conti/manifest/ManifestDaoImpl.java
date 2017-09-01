@@ -60,6 +60,19 @@ public class ManifestDaoImpl implements ManifestDao
 		
 	}
 	
+	@Override
+	@Transactional
+	public ManifestModel getManifestByShipmentID(int shipment_id) 
+	{
+		// TODO Auto-generated method stub
+		
+		@SuppressWarnings("unchecked")
+		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
+				.createQuery("from ManifestDetailedModel WHERE shipmentModel.shipment_id = " + shipment_id ).list();
+		
+		return listmanifest.get(0);
+		
+	}
 	
 	@Override
 	@Transactional

@@ -43,6 +43,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
+import com.conti.manifest.ManifestDao;
+import com.conti.manifest.ManifestDetailedModel;
 import com.conti.manifest.ManifestModel;
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
@@ -85,6 +87,9 @@ public class ViewReceiptRestController {
 	
 	@Autowired
 	private ShipmentDao shipmentDao;
+	
+	@Autowired
+	private ManifestDao manifestDao;
 		
 	@Autowired
 	private CompanySettingDAO companySettingDAO;
@@ -143,6 +148,8 @@ public class ViewReceiptRestController {
 		String username = userInformation.getUserName();
 		String userid = userInformation.getUserId();
 		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		int shipment_id=0;
+		ManifestModel manifestDetailedModel;
 //		try
 //		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
@@ -150,17 +157,24 @@ public class ViewReceiptRestController {
 			User user = usersDao.get(Integer.parseInt(userid));
 
 			if (user.role.getRole_Name().equals(ConstantValues.ROLE_SADMIN)){
-				List<ReceiptDetail> receiptModel=receiptDao.getAllReceipt_view();
-				for(int i=0; i<receiptModel.size();i++){
-					ReceiptModel receipt=receiptDao.getReceiptbyId(receiptModel.get(i).getReceiptModel().receipt_id);
-					receiptModel.get(i).setReceipt_id(receipt.receipt_id);
-					receiptModel.get(i).setTemp_receiptno(receipt.getReceipt_prefix());
-					receiptModel.get(i).setTemp_date(receipt.getUpdated_datetime());
+				List<ReceiptDetail> receiptDetail=receiptDao.getAllReceipt_view();
+				
+				for(int i=0; i<receiptDetail.size();i++){
+					ReceiptModel receipt=receiptDao.getReceiptbyId(receiptDetail.get(i).getReceiptModel().receipt_id);
+					
+					manifestDetailedModel=manifestDao.getManifestByShipmentID(receiptDetail.get(i).shipmentModel.getShipment_id());//for manifest_prefix
+					
+					receiptDetail.get(i).setReceipt_id(receipt.receipt_id);
+					receiptDetail.get(i).setTemp_receiptno(receipt.getReceipt_prefix());
+					receiptDetail.get(i).setTemp_date(receipt.getUpdated_datetime());
+					receiptDetail.get(i).setTemp_manifestno(manifestDetailedModel.getManifest_prefix());
+					
+					
 				}
-				if(receiptModel.isEmpty()) {
+				if(receiptDetail.isEmpty()) {
 					return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.NO_CONTENT);
 				}else{
-					return new ResponseEntity<List<ReceiptDetail>> (receiptModel, HttpStatus.OK);	
+					return new ResponseEntity<List<ReceiptDetail>> (receiptDetail, HttpStatus.OK);	
 				}
 			}else{
 				List<ReceiptDetail> receiptModel=receiptDao.getAllReceipt_view(branch_id);
@@ -235,14 +249,23 @@ public class ViewReceiptRestController {
 		String[] receiptid = new String[jsonArray.length()];
 		for(int i=0; i <jsonArray.length();i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
-			receiptid[i] = Integer.toString(jsonObject.getInt("receipt_id"));			
+			receiptid[i] = Integer.toString(jsonObject.getInt("receipt_id"));	
+		//	System.out.println("=============================================   "+ receiptid[i]  );
 		}
 		
-		List<ReceiptModel> listReceipt = new ArrayList<ReceiptModel> ();
+		List<ReceiptDetail> listReceipt = new ArrayList<ReceiptDetail> ();
 		for(int i=0; i<receiptid.length;i++) {
+			
 			ReceiptModel receiptModel = receiptDao.getReceiptbyId(Integer.parseInt(receiptid[i]));
-			listReceipt.add(receiptModel);
+			ReceiptDetail receiptDetail = receiptDao.getReceiptDetailbyId(Integer.parseInt(receiptid[i]));
+			receiptDetail.setReceipt_id(receiptModel.receipt_id);
+			receiptDetail.setTemp_receiptno(receiptModel.getReceipt_prefix());
+			receiptDetail.setTemp_date(receiptModel.getUpdated_datetime());
+		
+			listReceipt.add(receiptDetail);
+			System.out.println("=============================================   "+ receiptid[i]  +"   Model  "+ listReceipt);
 		}
+		
 		Company company = companySettingDAO.getById(1);
 		ModelAndView model = new ModelAndView("print/receipt_print");
 
@@ -260,7 +283,7 @@ public class ViewReceiptRestController {
 		
 		model.addObject("title", "Receipt");
 		model.addObject("company", company);
-		model.addObject("listCust", listReceipt);
+		model.addObject("listReceipt", listReceipt);
 		model.addObject("image",base64DataString);
 			
 		return model;

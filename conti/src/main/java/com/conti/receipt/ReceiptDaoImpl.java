@@ -188,6 +188,20 @@ public class ReceiptDaoImpl implements ReceiptDao
 		return null;
 	}
 	
+	@Override
+	@Transactional
+	public ReceiptDetail getReceiptDetailbyId(int id) {
+		String hql = "FROM ReceiptDetail WHERE receipt_id ="+ id;
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		@SuppressWarnings("unchecked")
+		List<ReceiptDetail> receiptlist = (List<ReceiptDetail>) query.list();
+		if(receiptlist != null && !receiptlist.isEmpty()) {
+			return receiptlist.get(0);
+		}
+		return null;
+	}
+	
 	
 	
 	@Override
