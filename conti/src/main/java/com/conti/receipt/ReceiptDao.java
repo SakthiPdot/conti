@@ -33,4 +33,6 @@ public interface ReceiptDao
 	public void makePending(int receipt_id);
 	public void makeReturn(int receipt_id);
 	public void makeDelete(int receipt_id);
+	
+	public ReceiptDetail getReceiptbyShipment(int shipment_id);
 }

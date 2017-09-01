@@ -992,7 +992,7 @@
 									</div>
 
 									<input type="hidden" id="branch_id" value="${branch_id}" />
-									<input type = "text" id = "currentUserRole" value = "<sec:authentication property="principal.authorities[0]"/>" />
+									<input type = "hidden" id = "currentUserRole" value = "<sec:authentication property="principal.authorities[0]"/>" />
 								</div>
 
 

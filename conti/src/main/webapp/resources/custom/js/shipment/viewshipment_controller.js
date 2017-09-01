@@ -302,15 +302,24 @@ contiApp.controller('ViewShipmentController', [
 							ShipmentService.shipment_delete(shipment.shipment_id)	
 							.then(
 									function (res) {
-										var index = self.shipments.indexOf(shipment);
-										self.shipments.splice(index,1);
-										self.message = "Selected shipment has been deleted scuccessfully..!";
-				            			successAnimate('.success'); 
-				            			self.viewShipemntClose();
+										
+										if(res == null) {
+											var index = self.shipments.indexOf(shipment);
+											self.shipments.splice(index,1);
+											self.message = "Selected shipment has been deleted scuccessfully..!";
+					            			successAnimate('.success'); 
+					            			self.lr_search = null;
+					            			fetchAllShipmentforView();
+					            			self.viewShipemntClose();
+										} else {
+											self.message = "Sorry..! Selected shipment referred in "+res;
+											successAnimate('.failure');   
+										}
+										
 				            			
 									}, function(errRes) {
 										self.message = "Error while deleting selected shipment..!";
-				            			successAnimate('.failure');   
+										successAnimate('.failure');   
 				            			self.viewShipemntClose();
 									}
 								);
@@ -386,10 +395,18 @@ contiApp.controller('ViewShipmentController', [
 	 							ShipmentService.makeCancel(shipment_id)
 	 								.then(
 	 										function(res) {
-	 											fetchAllShipmentforView();
-	 											self.selected_shipment = [];
-	 											self.message = "Selected record(s) has been deleted successfully..!"
-	 											successAnimate('.success');	
+	 											console.log(res+"===");
+	 											if(res.length == 0) {
+	 												self.selected_shipment = [];
+		 											self.message = "Selected record(s) has been deleted successfully..!"
+		 											successAnimate('.success');
+		 											fetchAllShipmentforView();
+	 												self.lr_search = null;
+	 											} else {
+	 												self.message = "Sorry..! Selected shipment(s) "+res;
+	 												successAnimate('.failure'); 
+	 											}
+	 												
 	 										}, function (errRes) {
 	 											self.message = "Sorry.. Error while deleting record(s)..!"
 		 										successAnimate('.failure');	
@@ -399,7 +416,7 @@ contiApp.controller('ViewShipmentController', [
 	 					);
 				 	
 			 } else {
-				 self.message = "Sorry.. You only have permission to delete your own branch record(s)..!"
+				 self.message = "Sorry.. You don't have permission to delete other branch record(s)..!"
 				 successAnimate('.failure');	
 			 }
 			 	
