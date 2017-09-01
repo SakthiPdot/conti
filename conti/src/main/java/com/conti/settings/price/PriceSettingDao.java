@@ -11,15 +11,36 @@ import java.util.List;
 public interface  PriceSettingDao {
 
 	public void saveOrUpdate(PriceSetting priceSetting);
+	
 	public List<PriceSetting> getPriceSetting();
+	public List<PriceSetting> getPriceSettingStaff(int branch_id);
+	
 	public List<PriceSetting> getPriceSettingBy100();
+	public List<PriceSetting> getPriceSettingBy100staff(int branch_id);
+
+	public int priceSettingCount();
+	public int priceSettingCountstaff(int branch_id);
+	
+	public List<PriceSetting> gePriceSettingSorting100(String name,String order);
+	public List<PriceSetting> gePriceSettingSorting100Staff(String name,String order,int branch_id);
+	
+	public List<PriceSetting> searchByPriceSetting(String searchString);
+	public List<PriceSetting> searchByPriceSettingStaff(String searchString,int branch_id);
+	
+	public List<PriceSetting> getPriceSettingWithLimit(int from ,int to ,String order);
+	public List<PriceSetting> getPriceSettingWithLimitStaff(int from ,int to ,String order,int branch_id);
+	
+	
 	public PriceSetting getPriceSettingById(int priceSettingId);
 	public PriceSetting getPriceSettingByBSPID(int branchid,int serviceid,int productid);	
 	public void deletePriceSettingById(int priceSettingId);
-	public List<PriceSetting> getPriceSettingWithLimit(int from ,int to ,String order);
-	public List<PriceSetting> searchByPriceSetting(String searchString);
-	public int priceSettingCount();
-	public List<PriceSetting> gePriceSettingSorting100(String name,String order);
+	
+	
+
+	
+
+	
+	
 	
 	//---------------------------------------- FETCH PRICE BY from branch & product & service for add shipment by sankar
 	public PriceSetting fetchprice(int from_branch, int product, int service);

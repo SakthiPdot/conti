@@ -37,6 +37,7 @@ import com.conti.master.location.Location;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
+import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
@@ -81,6 +82,12 @@ public class PriceSettingsRegisterController {
 	//======================================sort by==========================================
 	@RequestMapping(value="sortByPS/{name}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public  ResponseEntity<List<PriceSetting>>  sortByPS(@RequestBody String status,@PathVariable("name") String name,HttpServletRequest request){
+		
+
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =usersDao.get(Integer.parseInt(userid));
+		
 		String sortBy="";		
 		
 		switch(name.trim()){
@@ -109,9 +116,14 @@ public class PriceSettingsRegisterController {
 			break;
 		}
 		
-		try{
-			List<PriceSetting> priceSettingList=new ArrayList<>();
-			priceSettingList=psDao.gePriceSettingSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+		List<PriceSetting> priceSettingList=new ArrayList<>();
+		try{		
+			if (user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())) {
+				priceSettingList=psDao.gePriceSettingSorting100(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC");
+			}else{
+				priceSettingList=psDao.gePriceSettingSorting100Staff(sortBy.trim(),status.trim().equals("ASC")?"ASC":"DESC",user.getBranchModel().getBranch_id());
+			}
+			
 			if(priceSettingList.isEmpty()){
 				return new ResponseEntity<List<PriceSetting>>(HttpStatus.NO_CONTENT);
 			}
@@ -124,16 +136,7 @@ public class PriceSettingsRegisterController {
 	
 		
 	}
-	//======================================get Record Count==========================================
-	@RequestMapping(value = "/priceSettingRecordCount/", method = RequestMethod.GET)
-	public ResponseEntity<String> priceSettingRecordCount(HttpServletRequest request) {
-		try {	
-			return new ResponseEntity<String> (String.valueOf(psDao.priceSettingCount()), HttpStatus.OK);			
-		} catch (Exception exception) {
-			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}
-	}
+
 	//======================================Pagination begin==========================================
 	@RequestMapping(value = "paginationPriceSetting", method=RequestMethod.POST)
 	public ResponseEntity<List<PriceSetting>> paginationPriceSetting(@RequestBody int page, HttpServletRequest request) {
@@ -141,6 +144,10 @@ public class PriceSettingsRegisterController {
 		//intialize	
 		int from_limit = 0, to_limit = 0;
 		String order = "DESC";
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =usersDao.get(Integer.parseInt(userid));
+		List<PriceSetting> priceSettinglist;
 		
 		if(page == 1) { // First
 			from_limit = 0;
@@ -153,21 +160,68 @@ public class PriceSettingsRegisterController {
 			from_limit = (page * 10) + 1;
 			to_limit =  (page + 10 ) * 10;
 		}	
-		List<PriceSetting> priceSettinglist=psDao.getPriceSettingWithLimit(from_limit, to_limit, order); 
-		return new ResponseEntity<List<PriceSetting>>(priceSettinglist,HttpStatus.OK);
+	
+		try {
+			if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+				priceSettinglist=psDao.getPriceSettingWithLimit(from_limit, to_limit, order); 
+			}else{
+				priceSettinglist=psDao.getPriceSettingWithLimitStaff(from_limit, to_limit, order,user.getBranchModel().getBranch_id());
+			}
+			return new ResponseEntity<List<PriceSetting>>(priceSettinglist,HttpStatus.OK);
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, e);
+			return new ResponseEntity<List<PriceSetting>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 	}
 	//======================================search priceSetting by 4 strings==========================================
 	@RequestMapping(value = "searchPriceSetting4String", method=RequestMethod.POST)
 	public ResponseEntity<List<PriceSetting>> searchPriceSetting4String(@RequestBody String SearchString, HttpServletRequest request) {	
-		System.out.println(SearchString+"123");
-			List<PriceSetting> psList=psDao.searchByPriceSetting(SearchString) ;		
-			return new ResponseEntity<List<PriceSetting>> (psList, HttpStatus.OK);		
+		
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =usersDao.get(Integer.parseInt(userid));
+		List<PriceSetting> psList;
+		
+			try {
+				
+				if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+					psList=psDao.searchByPriceSetting(SearchString) ;	
+				}else{
+					psList=psDao.searchByPriceSetting(SearchString) ;
+				}
+						
+				return new ResponseEntity<List<PriceSetting>> (psList, HttpStatus.OK);
+			} catch (Exception e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, e);
+				return new ResponseEntity<List<PriceSetting>> (HttpStatus.UNPROCESSABLE_ENTITY);
+			}	
+			
 	}
 	//=================EXCEL DOWNLOAD=====================================
 	@RequestMapping(value="downloadExcelPriceSetting",method=RequestMethod.GET)
-	public ModelAndView downloadExcelProduct(){
-		List<PriceSetting> priceSettingList=psDao.getPriceSetting(); 
+	public ModelAndView downloadExcelProduct(HttpServletRequest request){
+	
+	//intitialize	
+	UserInformation userinfo = new UserInformation(request);
+	String userid = userinfo.getUserId();
+	User user =usersDao.get(Integer.parseInt(userid));
+	List<PriceSetting> priceSettingList=null;
+	
+	try{
+		
+		if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+			priceSettingList=psDao.getPriceSetting(); 
+		}else{
+			priceSettingList=psDao.getPriceSettingStaff(user.getBranchModel().getBranch_id()); 
+		}
+		
 		return new ModelAndView("priceSettingExcelView","priceSettingList",priceSettingList);
+	} catch (Exception e) {
+		loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, e);
+		return new ModelAndView("priceSettingExcelView","priceSettingList",priceSettingList);
+	}
+	
+		
 	}
 	//=================PRINT=====================================
 	@RequestMapping(value="priceSetting_Print",method=RequestMethod.POST)
@@ -189,7 +243,6 @@ public class PriceSettingsRegisterController {
 			
 		} catch (Exception e1) {
 			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Json parse error", e1);
-			e1.printStackTrace();
 		}
 		
 		Company company = companySettingDAO.getById(1);
@@ -216,19 +269,58 @@ public class PriceSettingsRegisterController {
 	
 	//=================FETCH ALL PRICE SETTING=====================================	
 	@RequestMapping(value="fetchAllPriceSetting",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PriceSetting>>  fetchAllPriceSetting(){
-		List<PriceSetting> priceSettingList=psDao.getPriceSettingBy100();
-		if(priceSettingList.isEmpty()){
-			return new ResponseEntity<List<PriceSetting>>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<List<PriceSetting>>  fetchAllPriceSetting(HttpServletRequest request){
+		
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =usersDao.get(Integer.parseInt(userid));
+		
+		
+		try {
+			List<PriceSetting> priceSettingList;
+			if (user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())) {
+				priceSettingList = psDao.getPriceSettingBy100();
+			} else {
+				priceSettingList = psDao.getPriceSettingBy100staff(user.getBranchModel().getBranch_id());
+			}
+			if (priceSettingList.isEmpty()) {
+				return new ResponseEntity<List<PriceSetting>>(HttpStatus.NO_CONTENT);
+			}
+
+			return new ResponseEntity<List<PriceSetting>>(priceSettingList, HttpStatus.OK);
+		} catch (Exception e) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(),
+					ConstantValues.SAVE_NOT_SUCCESS, e);
+			return new ResponseEntity<List<PriceSetting>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<List<PriceSetting>>(priceSettingList,HttpStatus.OK);
+		
 	}
 	
+	//======================================get Record Count==========================================
+	@RequestMapping(value = "/priceSettingRecordCount/", method = RequestMethod.GET)
+	public ResponseEntity<String> priceSettingRecordCount(HttpServletRequest request) {
+		
+		
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =usersDao.get(Integer.parseInt(userid));
+		
+		try {
+			if (user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())) {
+				return new ResponseEntity<String> (String.valueOf(psDao.priceSettingCount()), HttpStatus.OK);
+			}else{
+				return new ResponseEntity<String> (String.valueOf(psDao.priceSettingCount()), HttpStatus.OK);
+			}
+		} catch (Exception exception) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<String> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
 	//=================CHANGE ACTIVE STATUS=====================================
 	@RequestMapping (value="PriceSettingStaus/{status}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void>  PriceSettingStaus(@RequestBody int[] idArray,@PathVariable("status") String status,HttpServletRequest request){
 		
-		System.out.println(status+"******status******");		
+				
 		//intialize		
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
