@@ -47,6 +47,7 @@
 	src="resources/built-in/js/angular.min.js"></script>
 <script type="text/javascript"
 	src="resources/built-in/js/angucomplete-alt.js"></script>
+<link href="resources/custom/css/success_failure_msg.css" rel="stylesheet">
 <script type="text/javascript" src="resources/built-in/js/lodash.js"></script>
 <script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
 <script
