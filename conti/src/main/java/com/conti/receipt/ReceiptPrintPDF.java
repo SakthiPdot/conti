@@ -140,45 +140,90 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	    consignee.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    customer_tbl.addCell(consignee);
 	    
+	    String send_cus = null, consignee_cus = null; 
 	    
-    	 Cell sender_add = new Cell(new Phrase(
-	    			 "Name : "+receiptModel.getReceiptDetailList().get(0)
-	    			 	.shipmentModel.getSender_customer().getCustomer_name()+
-	    			 "\nAddress : "+receiptModel.getReceiptDetailList().get(0)
-	    			 	.shipmentModel.getSendercustomer_address1().toString()+
-	    			 ",\n"+receiptModel.getReceiptDetailList().get(0)
-	    			 	.shipmentModel.getSender_location().getLocation_name()+
-	    			 ", "+receiptModel.getReceiptDetailList().get(0)
-	    			 	.shipmentModel.getSender_location().address.getCity()+
-	    			 " - "+receiptModel.getReceiptDetailList().get(0)
-	    			 	.shipmentModel.getSender_location().getPincode()+
-    			 	"\n"+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getSender_location().address.getState()+	
-    			 	" - "+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getSender_location().address.getStateCode()+	
-	    			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
-	    			 	.shipmentModel.getSender_customer().getCustomer_mobileno()	
-    			 ,address_font));
+	    if(receiptModel.getReceiptDetailList().get(0)
+	    		.shipmentModel.getSender_customer().getGstin_number() != null) {
+	    	send_cus = "Name : "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_customer().getCustomer_name()+
+    			 "\nAddress : "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSendercustomer_address1().toString()+
+    			 ",\n"+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_location().getLocation_name()+
+    			 ", "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_location().address.getCity()+
+    			 " - "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_location().getPincode()+
+			 	"\n"+receiptModel.getReceiptDetailList().get(0)
+			 	.shipmentModel.getSender_location().address.getState()+	
+			 	" - "+receiptModel.getReceiptDetailList().get(0)
+			 	.shipmentModel.getSender_location().address.getStateCode()+	
+    			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_customer().getCustomer_mobileno()+	
+    			 "\nGSTIN Number :"+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_customer().getGstin_number();
+	    } else {
+	    	send_cus = "Name : "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_customer().getCustomer_name()+
+    			 "\nAddress : "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSendercustomer_address1().toString()+
+    			 ",\n"+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_location().getLocation_name()+
+    			 ", "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_location().address.getCity()+
+    			 " - "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_location().getPincode()+
+			 	"\n"+receiptModel.getReceiptDetailList().get(0)
+			 	.shipmentModel.getSender_location().address.getState()+	
+			 	" - "+receiptModel.getReceiptDetailList().get(0)
+			 	.shipmentModel.getSender_location().address.getStateCode()+	
+    			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_customer().getCustomer_mobileno();
+	    }
+	    
+    	 Cell sender_add = new Cell(new Phrase(send_cus,address_font));
     	 customer_tbl.addCell(sender_add);
 	    
-    	 Cell consignee_add = new Cell(new Phrase(
-    			 "Name : "+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getConsignee_customer().getCustomer_name()+
-    			 "\nAddress : "+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getConsigneecustomer_address1().toString()+
-    			 ",\n"+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getConsignee_location().getLocation_name()+
-    			 ", "+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getConsignee_location().address.getCity()+
-    			 " - "+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getConsignee_location().getPincode()+
-			 	"\n"+receiptModel.getReceiptDetailList().get(0)
-			 	.shipmentModel.getConsignee_location().address.getState()+	
-			 	" - "+receiptModel.getReceiptDetailList().get(0)
-			 	.shipmentModel.getConsignee_location().address.getStateCode()+		
-    			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getSender_customer().getCustomer_mobileno()	
-			 ,address_font));
+    	 if(receiptModel.getReceiptDetailList().get(0)
+ 			 	.shipmentModel.getConsignee_customer().getGstin_number() !=  null){
+    		 consignee_cus = "Name : "+receiptModel.getReceiptDetailList().get(0)
+     			 	.shipmentModel.getConsignee_customer().getCustomer_name()+
+       			 "\nAddress : "+receiptModel.getReceiptDetailList().get(0)
+       			 	.shipmentModel.getConsigneecustomer_address1().toString()+
+       			 ",\n"+receiptModel.getReceiptDetailList().get(0)
+       			 	.shipmentModel.getConsignee_location().getLocation_name()+
+       			 ", "+receiptModel.getReceiptDetailList().get(0)
+       			 	.shipmentModel.getConsignee_location().address.getCity()+
+       			 " - "+receiptModel.getReceiptDetailList().get(0)
+       			 	.shipmentModel.getConsignee_location().getPincode()+
+   			 	"\n"+receiptModel.getReceiptDetailList().get(0)
+   			 	.shipmentModel.getConsignee_location().address.getState()+	
+   			 	" - "+receiptModel.getReceiptDetailList().get(0)
+   			 	.shipmentModel.getConsignee_location().address.getStateCode()+		
+       			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
+       			 	.shipmentModel.getSender_customer().getCustomer_mobileno()+	
+       			 "\nGSTIN Number :"+receiptModel.getReceiptDetailList().get(0)
+       			 	.shipmentModel.getConsignee_customer().getGstin_number();
+    	 } else {
+    		 consignee_cus = "Name : "+receiptModel.getReceiptDetailList().get(0)
+      			 	.shipmentModel.getConsignee_customer().getCustomer_name()+
+        			 "\nAddress : "+receiptModel.getReceiptDetailList().get(0)
+        			 	.shipmentModel.getConsigneecustomer_address1().toString()+
+        			 ",\n"+receiptModel.getReceiptDetailList().get(0)
+        			 	.shipmentModel.getConsignee_location().getLocation_name()+
+        			 ", "+receiptModel.getReceiptDetailList().get(0)
+        			 	.shipmentModel.getConsignee_location().address.getCity()+
+        			 " - "+receiptModel.getReceiptDetailList().get(0)
+        			 	.shipmentModel.getConsignee_location().getPincode()+
+    			 	"\n"+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getConsignee_location().address.getState()+	
+    			 	" - "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getConsignee_location().address.getStateCode()+		
+        			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
+        			 	.shipmentModel.getSender_customer().getCustomer_mobileno();
+    	 }
+    	 
+    	 Cell consignee_add = new Cell(new Phrase(consignee_cus,address_font));
     	 customer_tbl.addCell(consignee_add);
 	    
     	//desc table
