@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * Servlet implementation class AddressModel
  */
 @Entity 
-@Table(name="m_address")
+@Table(name="m_city")
 public class AddressModel  implements Serializable {
 
 	private int id;
