@@ -162,14 +162,14 @@ $scope.sortTable=function(x,status){
 							self.receipt.receiptDetailList[i].shipmentModel=self.selected_receipt[i];
 							self.receipt.receiptDetailList[i].handling_charge=self.selected_receipt[i].h_charge;
 							console.log("handlingcharge",self.receipt.receiptDetailList[i].shipmentModel.h_charge);
-						
+							delete self.receipt.receiptDetailList[i].manifestModel;
 							if(i<self.selected_receipt.length-1){
 								self.receipt.receiptDetailList.push({
 						            "receiptdetailid": null,
 						            "handling_charge": null,
 						            "net_freight_charges": null,
 						            "shipmentModel":null,
-						            "manifestModel": null
+						            //"manifestModel": null
 						        });
 							}
 						}
