@@ -18,7 +18,8 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 			shipment_delete : shipment_delete,
 			makeCancel: makeCancel,
 			findrecord_count : findrecord_count,
-			pagination_byPage : pagination_byPage
+			pagination_byPage : pagination_byPage,
+			sortBy: sortBy
 	};
 	
 	return factory;
@@ -220,5 +221,22 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	    }
 	    // --------------------------- Pagination end ------------------------------//    
 
+		//=============================sort by name====================================
+		function sortBy(name,status){	
+			var deferred=$q.defer();
+			$http({
+				method:'POST',
+				url:"sortShipment/"+name,
+				data:status,
+				headers:getCsrfHeader()
+			}).then(
+					function(response){
+						deferred.resolve(response.data);
+					},function(errResponse){
+						deferred.reject(errResponse);
+					}
+			);
+			return deferred.promise;
+		}
 }]);
 

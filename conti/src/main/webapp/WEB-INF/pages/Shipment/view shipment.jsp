@@ -1207,14 +1207,46 @@
 										<thead>
 											<tr>
 												<th><input type="checkbox" data-ng-click="ctrl.shipmentSelectall()" data-ng-model = "selectall" /></th>
-												<th data-ng-show = "setting_shipdate">Date</th>
-												<th data-ng-show = "setting_shiplrno">LR No</th>
-												<th data-ng-show = "setting_shipprod">Product</th>
-												<th data-ng-show = "setting_shiporigin">Origin</th>
-												<th data-ng-show = "setting_shipdestinate">Destination</th>
-												<th data-ng-show = "setting_shipsender">Sender</th>
-												<th data-ng-show = "setting_shipconsignee">Consignee</th>
-												<th data-ng-show = "setting_shipstatus">Status</th>
+												<th data-ng-show = "setting_shipdate"
+													data-ng-click = "date=!date;sortTable('date',date);">Date <i
+													data-ng-hide="disableSorting"
+													data-ng-class=" {'fa fa-caret-up':date,'fa fa-caret-down':!date}"
+													aria-hidden="true"></i></th>
+												<th data-ng-show = "setting_shiplrno"
+													data-ng-click = "lrno=!lrno;sortTable('lrno',lrno);">LR No <i
+													data-ng-hide="disableSorting"
+													data-ng-class=" {'fa fa-caret-up':lrno,'fa fa-caret-down':!lrno}"
+													aria-hidden="true"></i></th>
+												<th data-ng-show = "setting_shipprod"
+													data-ng-click = "product=!product;sortTable('product',product);">Product <i
+													data-ng-hide="disableSorting"
+													data-ng-class=" {'fa fa-caret-up':product,'fa fa-caret-down':!product}"
+													aria-hidden="true"></i></th>
+												<th data-ng-show = "setting_shiporigin"
+													data-ng-click = "origin=!origin;sortTable('origin',origin);">Origin <i
+													data-ng-hide="disableSorting"
+													data-ng-class=" {'fa fa-caret-up':origin,'fa fa-caret-down':!origin}"
+													aria-hidden="true"></i></th>
+												<th data-ng-show = "setting_shipdestinate"
+													data-ng-click = "destination=!destination;sortTable('destination',destination);">Destination <i
+													data-ng-hide="disableSorting"
+													data-ng-class=" {'fa fa-caret-up':destination,'fa fa-caret-down':!destination}"
+													aria-hidden="true"></i></th>
+												<th data-ng-show = "setting_shipsender"
+													data-ng-click = "sender=!sender;sortTable('sender',sender);">Sender <i
+													data-ng-hide="disableSorting"
+													data-ng-class=" {'fa fa-caret-up':sender,'fa fa-caret-down':!sender}"
+													aria-hidden="true"></i></th>
+												<th data-ng-show = "setting_shipconsignee"
+													data-ng-click = "consignee=!consignee;sortTable('consignee',consignee);">Consignee <i
+													data-ng-hide="disableSorting"
+													data-ng-class=" {'fa fa-caret-up':consignee,'fa fa-caret-down':!consignee}"
+													aria-hidden="true"></i></th>
+												<th data-ng-show = "setting_shipstatus"
+													data-ng-click = "status=!status;sortTable('status',status);">Status <i
+													data-ng-hide="disableSorting"
+													data-ng-class=" {'fa fa-caret-up':status,'fa fa-caret-down':!status}"
+													aria-hidden="true"></i></th>
 
 											</tr>
 										</thead>

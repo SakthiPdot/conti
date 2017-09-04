@@ -30,6 +30,7 @@ import com.conti.manifest.ManifestDao;
 import com.conti.manifest.ManifestModel;
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
+import com.conti.master.employee.EmployeeMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.NumberToWord;
@@ -497,5 +498,50 @@ public class ViewShipmentController{
 		model.addObject("currency",currency);
 		model.addObject("logo", base64DataString);
 		return model;
+	}
+	
+	//-------- Sort by column
+	@RequestMapping(value = "sortShipment/{name}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ShipmentModel>> sortShipment(@RequestBody String status, @PathVariable("name") String name, HttpServletRequest request) {
+		userInformation = new UserInformation(request);
+		int user_id = Integer.parseInt(userInformation.getUserId());
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		String sortBy ="";
+		switch(name.trim()){
+			case "date" : sortBy = "shipment_date"; break;
+			case "lrno" : sortBy = "lrno_prefix"; break;
+			case "product" : sortBy = ""; break;
+			case "origin" : sortBy = "sender_branch.branch_name"; break;
+			case "destination" : sortBy = "consignee_branch.branch_name"; break;
+			case "status" : sortBy = "status"; break;
+		}
+		List<ShipmentModel> shipment = new ArrayList<>();
+		try{
+			User user = usersDao.get(user_id);
+			if(user.role.getRole_Name().equals(constantVal.ROLE_SADMIN)) {
+				shipment = shipmentDao.getShipemntSorting1004SA(sortBy.trim(), status.trim().equals("ASC")?"ASC":"DESC");
+				if(shipment.isEmpty()){
+					loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, null);
+					return new ResponseEntity<List<ShipmentModel>>(HttpStatus.NO_CONTENT);
+				}else {
+					loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<ShipmentModel>>(shipment,HttpStatus.OK);
+				}
+			}else{
+				shipment = shipmentDao.getShipemntSorting1004MS(sortBy.trim(), status.trim().equals("ASC")?"ASC":"DESC", branch_id);
+				if(shipment.isEmpty()){
+					loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, null);
+					return new ResponseEntity<List<ShipmentModel>>(HttpStatus.NO_CONTENT);
+				}else {
+					loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<ShipmentModel>>(shipment,HttpStatus.OK);
+				}
+				
+			}
+			
+		}catch(Exception exception) {
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<ShipmentModel>> (HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }
