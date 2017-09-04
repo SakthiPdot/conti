@@ -7,71 +7,6 @@
  * @Created_date_time Jun 27, 2017 03:12:17 PM
  * @Updated_date_time Jun 27, 2017 03:12:17 PM
  */
-
-/*function bill_open(lrno){
-	valid = true;
-	window.open("shipment_bill?lrno="+lrno, '_blank');
-	
-	window.location.href = "shipment_bill?lrno="+lrno;
-}*/
-
-/*var doc = new jsPDF();
-var specialElementHandlers = {
-    '#editor': function (element, renderer) {
-        return true;
-    }
-};*/
-
-/*$('#pdf').click(function () {
-	console.log("pdf details");
-    doc.fromHTML($('#wrapper').html(), 15, 15, {
-        'width': 170,
-            'elementHandlers': specialElementHandlers
-    });
-    doc.save('sample-file.pdf');
-	
-	   var pdf = new jsPDF('p', 'pt', 'letter');
-	    // source can be HTML-formatted string, or a reference
-	    // to an actual DOM element from which the text will be scraped.
-	    source = $('#wrapper')[0];
-
-	    // we support special element handlers. Register them with jQuery-style 
-	    // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-	    // There is no support for any other type of selectors 
-	    // (class, of compound) at this time.
-	    specialElementHandlers = {
-	        // element with id of "bypass" - jQuery style selector
-	        '#bypassme': function (element, renderer) {
-	            // true = "handled elsewhere, bypass text extraction"
-	            return true
-	        }
-	    };
-	    
-	   
-	    margins = {
-	        top: 80,
-	        bottom: 60,
-	        left: 10,
-	        width: 700
-	    };
-	    // all coords and widths are in jsPDF instance's declared units
-	    // 'inches' in this case
-	    pdf.fromHTML(
-	    source, // HTML string or DOM elem ref.
-	    margins.left, // x coord
-	    margins.top, { // y coord
-	        'width': margins.width, // max width of content on PDF
-	        'elementHandlers': specialElementHandlers
-	    },
-
-	    function (dispose) {
-	        pdf.save('shipment.pdf');
-	    }, margins);
-	    
-	    
-	    
-
-});*/
 contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$timeout','$interval', 'ShipmentService', 'priceSettingService', 'BranchService', 'CompanySettingService', 'ServiceService', 'ConfirmDialogService', function($http, $filter, $scope, $q, $timeout,$interval,  ShipmentService, priceSettingService, BranchService, CompanySettingService, ServiceService, ConfirmDialogService){
 	
 	$("#screen_addshipment").addClass("active-menu");
@@ -761,7 +696,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
             .then(
             		function (lr_details) {
             			
-                        self.message = " shipment created..! Shipment LR No. is "+lr_details.lrno_prefix;
+                        self.message = " Shipment(L.R. No."+ lr_details.lrno_prefix +") created. ";
             			successAnimate('.success');  
             			reset();
             			window.setTimeout( function(){

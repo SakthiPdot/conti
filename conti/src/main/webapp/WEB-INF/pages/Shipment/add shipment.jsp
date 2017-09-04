@@ -44,7 +44,7 @@
 	 <link href="resources/custom/css/angucomplete-alt.css" rel="stylesheet">
 	 
 	 <link href="resources/custom/css/demo.css" rel="stylesheet">
-
+ <link rel="icon" type="image/gif/png" href="resources/Image/conti_logo.png">
 	<script type="text/javascript" src="resources/built-in/js/angular.min.js"></script>
 	<script type="text/javascript" src="resources/built-in/js/angucomplete-alt.js"></script> 
 	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 
