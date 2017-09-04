@@ -444,5 +444,34 @@ contiApp.controller('ViewShipmentController', [
     	fetchAllShipmentforView();
     }
     //-------------------------------- Show no of record end ----------------------------------------//  
+    
+    //------------------------------- Sorting begin
+    function resetSorting() {
+    	$scope.date = false;
+    	$scope.lrno = false;
+    	$scope.product = false;
+    	$scope.origin = false;
+    	$scope.destination = false;
+    	$scope.sender = false;
+    	$scope.consignee = false;
+    	$scope.status = false;
+    }
+    
+    $scope.sortTable = function (column, status) {
+    	if(!$scope.disableSorting){
+    		$scope.lastSorted = column;
+    		resetSorting();
+    		$scope[column]=status;
+    		ShipmentService.sortBy(column, status?"ASC":"DESC")
+    			.then(
+    					function (shipment) {
+    						self.shipments = shipment;
+    						self.FilterShipment = shipment;
+    					}
+    				);
+    	}
+    }
+    //------------------------------- Sorting end
 }]);
+
 

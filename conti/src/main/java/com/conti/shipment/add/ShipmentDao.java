@@ -93,5 +93,7 @@ public interface ShipmentDao
 	
 	public List<ShipmentModel> fetchAllLRNo();
 
+	public List<ShipmentModel> getShipemntSorting1004SA(String name, String order);
+	public List<ShipmentModel> getShipemntSorting1004MS(String name, String order, int branch_id);
 }
 

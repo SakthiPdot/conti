@@ -727,6 +727,33 @@ public class ShipmentDaoImpl implements ShipmentDao {
 					.createQuery("from ShipmentModel WHERE obsolete = N ").list();
 		return lrList;
 	}
+
+
+
+	@Override
+	@Transactional
+	public List<ShipmentModel> getShipemntSorting1004SA(String name, String order) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("FROM ShipmentModel WHERE obsolete = 'N' "
+						+ "ORDER BY ("+name+")"+ order).setMaxResults(100).list();
+		return listShipment;
+	}
+
+
+
+	@Override
+	@Transactional
+	public List<ShipmentModel> getShipemntSorting1004MS(String name, String order, int branch_id) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("FROM ShipmentModel WHERE obsolete = 'N' AND sender_branch.branch_id = " + branch_id
+						+ " ORDER BY ("+name+")"+ order).setMaxResults(100).list();
+		return listShipment;
+		
+	}
 	
 	
 }

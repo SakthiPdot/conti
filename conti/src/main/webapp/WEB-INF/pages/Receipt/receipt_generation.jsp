@@ -71,9 +71,7 @@
       		<div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default panelMarginBottom">                            
-						<div class="panel-heading">
-							
-						</div>
+						
 						<div class="panel-body customer-font">
 						<b>Receipt</b>
 						</div>
