@@ -1,6 +1,7 @@
 package com.conti.shipment.view;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -51,6 +52,8 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 		Company company = (Company) model.get("company");
 		BranchModel branch = (BranchModel) model.get("branch");
 		String logo = (String) model.get("logo");
+		
+		DecimalFormat df = new DecimalFormat("####0.00");
 		
 		document.setMargins(-50, -50, 20, 20);
 		document.open();
@@ -193,7 +196,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    
 	  //desc table
 	    Table desc_tbl = new Table(5);
-	    desc_tbl.setWidths(new int[] {1,3,1,2,2});
+	    desc_tbl.setWidths(new int[] {1,3,1,2,1});
 	    desc_tbl.setBorderWidth(1);
 	    desc_tbl.setPadding(4);
 	    desc_tbl.setSpacing(0);
@@ -235,13 +238,13 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    	desc_tbl.addCell(quantity);
 	    	
 	    	Cell unitprice = new Cell(new Phrase(
-	    			Float.toString(shipment.getShipmentDetail().get(i).getUnit_price()), address_font));
+	    			df.format(shipment.getShipmentDetail().get(i).getUnit_price()), address_font));
 	    	unitprice.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    	desc_tbl.addCell(unitprice);
 	    	
 	    	Cell totalPrice = new Cell(new Phrase(
-	    			Float.toString(shipment.getShipmentDetail().get(i).getTotal_price()), address_font));
-	    	totalPrice.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    			df.format(shipment.getShipmentDetail().get(i).getTotal_price()), address_font));
+	    	totalPrice.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	    	desc_tbl.addCell(totalPrice);
 	    }
 	    
@@ -253,47 +256,47 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 		    desc_tbl.addCell(discount);
 		    
 		    Cell discount_amt = new Cell (new Phrase (
-		    		Float.toString(shipment.getDiscount_amount()), address_font));
-		    discount_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    		df.format(shipment.getDiscount_amount()), address_font));
+		    discount_amt.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		    desc_tbl.addCell(discount_amt);
 	    }
 	    
 	    if(shipment.getCgst() != 0) {
 	    	 Cell cgst = new Cell (new Phrase ("CGST "+
-	 	    		Float.toString(company.getCGST())+"%", address_font));
+	 	    		df.format(company.getCGST())+"%", address_font));
 	 	    cgst.setColspan(4);
 	 	    cgst.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	    desc_tbl.addCell(cgst);
 	 	    
 	 	    Cell cgst_amt = new Cell (new Phrase (
-	 	    		Float.toString(shipment.getCgst()), address_font));
-	 	    cgst_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	    		df.format(shipment.getCgst()), address_font));
+	 	    cgst_amt.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	 	    desc_tbl.addCell(cgst_amt);
 	    }
 	   
 	    if(shipment.getSgst() != 0) {
 	    	Cell sgst = new Cell (new Phrase ("SGST "+
-		    		Float.toString(company.getSGST())+"%", address_font));
+	    			df.format(company.getSGST())+"%", address_font));
 		    sgst.setColspan(4);
 		    sgst.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    desc_tbl.addCell(sgst);
 		    
 		    Cell sgst_amt = new Cell (new Phrase (
-		    		Float.toString(shipment.getSgst()), address_font));
-		    sgst_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    		df.format(shipment.getSgst()), address_font));
+		    sgst_amt.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		    desc_tbl.addCell(sgst_amt);
 	    }
 	    
 	    if(shipment.getIgst() != 0) {
 	    	Cell igst = new Cell (new Phrase ("IGST "+
-		    		Float.toString(company.getIGST())+"%", address_font));
+	    			df.format(company.getIGST())+"%", address_font));
 		    igst.setColspan(4);
 		    igst.setHorizontalAlignment(Element.ALIGN_CENTER);
 		    desc_tbl.addCell(igst);
 		    
 		    Cell igst_amt = new Cell (new Phrase (
-		    		Float.toString(shipment.getIgst()), address_font));
-		    igst_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+		    		df.format(shipment.getIgst()), address_font));
+		    igst_amt.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		    desc_tbl.addCell(igst_amt);
 	    }
 	    
@@ -312,8 +315,8 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    Cell total_amt = new Cell (new Phrase ("Net Amount", address_font));
 	    total_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    desc_tbl.addCell(total_amt);
-	    Cell total_amtno = new Cell (new Phrase (Float.toString(shipment.getTotal_charges()), address_font));
-	    total_amtno.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    Cell total_amtno = new Cell (new Phrase (df.format(shipment.getTotal_charges()), address_font));
+	    total_amtno.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	    desc_tbl.addCell(total_amtno);
 	    
 	    Cell sign = new Cell (new Phrase ("For Conti Cargo Service"

@@ -228,7 +228,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	    
     	//desc table
  	    Table desc_tbl = new Table(6);
- 	    desc_tbl.setWidths(new int[] {1,3,1,2,2,2});
+ 	    desc_tbl.setWidths(new int[] {1,3,1,2,1,1});
  	    desc_tbl.setBorderWidth(1);
  	    desc_tbl.setPadding(4);
  	    desc_tbl.setSpacing(0);
@@ -290,7 +290,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	  	    		df.format( (receiptModel.receiptDetailList.get(i).getNet_freight_charges()) + 
 	    					 (receiptModel.receiptDetailList.get(i).getHandling_charge()) )
 	    			 , address_font));
-	  	  	total_charge.setHorizontalAlignment(Element.ALIGN_CENTER);
+	  	  	total_charge.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	  	    desc_tbl.addCell(total_charge);
 	  	    
 	  	  grand_total = (grand_total) + (receiptModel.receiptDetailList.get(i).getNet_freight_charges()) + 
@@ -298,20 +298,22 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	  	    
  	    }
  	    
- 	   Cell total_blank = new Cell(new Phrase("",address_font));
+ 	   /*Cell total_blank = new Cell(new Phrase("",address_font));
  	   total_blank.setHorizontalAlignment(Element.ALIGN_CENTER);
  	   total_blank.setColspan(4);
  	   total_blank.setRowspan(3);
-	   desc_tbl.addCell(total_blank);
+	   desc_tbl.addCell(total_blank);*/
 	    
 	   Cell total_charge = new Cell(new Phrase("Total",address_font));
+	   total_charge.setColspan(5);
 	   total_charge.setHorizontalAlignment(Element.ALIGN_CENTER);
 	   desc_tbl.addCell(total_charge);
-	    
+	   
 	   Cell total_amt = new Cell(new Phrase(
 			   df.format(grand_total)
 			   ,address_font));
-	   total_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+	   
+	   total_amt.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	   desc_tbl.addCell(total_amt);
 	   
 	  /* Cell trans_blank = new Cell(new Phrase("",address_font));
@@ -320,6 +322,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	   desc_tbl.addCell(trans_blank);*/
 	   
 	   Cell trans_charge = new Cell(new Phrase("Local Transport Charge ",address_font));
+	   trans_charge.setColspan(5);
 	   trans_charge.setHorizontalAlignment(Element.ALIGN_CENTER);
 	   desc_tbl.addCell(trans_charge);
 	   
@@ -327,7 +330,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 			   /*Float.toString(receiptModel.getLocal_transport())*/
 			   df.format(receiptModel.getLocal_transport())
 			   ,address_font));
-	   trans_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+	   trans_amt.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	   desc_tbl.addCell(trans_amt);
 	   
 	  /* Cell net_blank = new Cell(new Phrase("",address_font));
@@ -336,6 +339,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	   desc_tbl.addCell(net_blank);*/
 	   
 	   Cell net_charge = new Cell(new Phrase("Net Charge ",address_font));
+	   net_charge.setColspan(5);
 	   net_charge.setHorizontalAlignment(Element.ALIGN_CENTER);
 	   desc_tbl.addCell(net_charge);
 	   
@@ -345,7 +349,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 			   /*Float.toString(receiptModel.getReceipt_total())*/
 			   df.format(receiptModel.getReceipt_total())
 			   ,address_font));
-	   net_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
+	   net_amt.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	   desc_tbl.addCell(net_amt);
 	   
 	    document.add(company_tbl);
