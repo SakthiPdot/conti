@@ -97,7 +97,7 @@
 	              
 	              <div class="col-md-6">
 		              
-		               <b class = "pull-right">Shipment Date. : {{ctrl.shipment.shipment_date.slice(0,-2)}}</b>            
+		               <b class = "pull-right">Shipment Date : {{ctrl.shipment.shipment_date.slice(0,-2)}}</b>            
 		              
 	              </div>
 	              
@@ -106,6 +106,11 @@
               		<div class="col-md-6">
 		              
 		               <b>Manifest No. : ${manifest_number}</b>            
+		              
+	              </div>
+	               <div class="col-md-6">
+		              
+		               <b class = "pull-right">Manifest Date : ${manifest_date}</b>            
 		              
 	              </div>
               </div>
@@ -135,9 +140,6 @@
               			</div>
               		</div>
               	</div>
-              	
-              	
-              	
               	
               	<div class="col-lg-12 col-md-12">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -1053,6 +1055,7 @@
                           	
                             
                             <input type="hidden" id="manifest_id" value="${m_id}" >
+                          
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>

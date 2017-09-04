@@ -318,6 +318,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			  self.Filtermanifests=_.filter(self.manifests,
 			  function(item){
 			  return searchUtil(item,searchkey);
+			  
 			  });
 		  }
 	  }
@@ -328,7 +329,8 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			
 			if ( (item.shipmentModel.created_datetime.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.shipmentModel.sender_branch.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 			      || (item.shipmentModel.consignee_branch.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.shipmentModel.sender_customer.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
-				  || (item.shipmentModel.consignee_customer.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.shipmentModel.status.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) )
+				  || (item.shipmentModel.consignee_customer.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.shipmentModel.status.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				  || (item.shipmentModel.lrno_prefix.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) )
 					
 			{
 				success = true;

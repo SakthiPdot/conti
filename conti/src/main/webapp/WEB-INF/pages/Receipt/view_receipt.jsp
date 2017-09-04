@@ -112,6 +112,16 @@
 		               <b class = "pull-right">Receipt Date. : {{ctrl.receipt_date.slice(0,-2)}}</b>            
 		          </div>
               </div>
+              
+              <div class="col-md-12">
+              		<div class="col-md-6">
+		               <b>Manifest No. : {{ctrl.manifest_number}}</b>            
+		          </div>
+<!-- 	              <div class="col-md-6"> -->
+<!-- 		               <b class = "pull-right">Receipt Date. : {{ctrl.receipt_date.slice(0,-2)}}</b>             -->
+<!-- 		          </div> -->
+              </div>
+              
               </div>
               
               <div class="row">
@@ -1126,7 +1136,7 @@
                              <thead>
                                  <tr>
                                      <th><input type="checkbox" data-ng-click="ctrl.receiptSelectAll()" data-ng-model="selectallreceipts"></th>
-                                     <th data-ng-show="setting_sltnumber">SL no</th>
+<!--                                      <th data-ng-show="setting_sltnumber">SL no</th> -->
                                      <th data-ng-show="setting_receiptdate">Date</th>
                                      <th data-ng-show="setting_receiptlrnumber">LR Number</th>
                                      <th data-ng-show="setting_receiptnumber">Receipt</th>
@@ -1143,7 +1153,7 @@
                                  <tr data-ng-repeat="receipt in ctrl.Filterreceipts|limitTo:pageSize"
                                  data-id="{{receipt.receipt_id}}" data-ng-dblclick = "ctrl.view1Shipmet(receipt)">
                                      <td><input type="checkbox" data-ng-click="ctrl.receiptSelect(receipt)" data-ng-model="receipt.select"></td>
-                                     <td data-ng-show="setting_sltnumber" >{{$index+1}}</td>
+<!--                                      <td data-ng-show="setting_sltnumber" >{{$index+1}}</td> -->
                                      <td data-ng-show="setting_receiptdate">{{receipt.temp_date.slice(0,-10)}}</td>
                                      <td data-ng-show="setting_receiptlrnumber">{{receipt.shipmentModel.lrno_prefix}}</td>
                                      <td data-ng-show="setting_receiptnumber">{{receipt.temp_receiptno}}</td>

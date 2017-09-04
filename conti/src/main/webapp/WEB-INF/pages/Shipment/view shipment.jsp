@@ -126,27 +126,21 @@
               <div class="row">
               <div class="col-md-12">
               	  <div class="col-md-6">
-		              
-		               <b>L.R. No. : {{ctrl.shipment.lrno_prefix}}</b>            
-		              
-	              </div>
-	              
+		                <b>L.R. No. : {{ctrl.shipment.lrno_prefix}}</b>            
+		          </div>
 	              <div class="col-md-6">
-		              
-		               <b class = "pull-right">Shipment Date. : {{ctrl.shipment.shipment_date.slice(0,-2)}}</b>            
-		              
-	              </div>
-	              
-              </div>
+		              <b class = "pull-right">Shipment Date. : {{ctrl.shipment.shipment_date.slice(0,-2)}}</b>            
+		          </div>
+	           </div>
               </div>
               
               <div class="row">
-              	 
               	<div class="col-md-12">
               		<div class="col-md-6">
               			<b>Payment mode : {{ctrl.shipment.pay_mode}}</b>  
               		</div>
-              		 <div class="col-md-6">         
+              		 <div class="col-md-6"> 
+              		 	<b class = "pull-right">Manifest Date. : {{}}</b>        
               		</div>
               	</div>
               	

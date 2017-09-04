@@ -66,6 +66,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		 self.receiptPr_id =  receipt.receipt_id;
 		 self.receipt_number =  receipt.temp_receiptno;
 		 self.receipt_date =  receipt.temp_date;
+		 self.manifest_number=receipt.temp_manifestno;
 		 viewShipment_Animate('.shipment_View', 'OPEN');
 	 }
 	 
@@ -377,7 +378,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	
 	function receiptSearch(key){
 		console.log('');
-		if (self.search.length==0) {
+		if (key.length==0) {
 			self.Filterreceipts = self.receipts;
     	}else if(self.search.length>3){
 			ReceiptService.receiptSearch(key)
@@ -389,6 +390,10 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 				console.log('Error while searching receipt');
 			});
 			
+		}else{
+			self.Filterreceipts=_.filter(self.receipts,function(item){
+				return String(item.shipmentModel.lrno_prefix).indexOf(key) > -1;
+			});
 		}
 			
 	}

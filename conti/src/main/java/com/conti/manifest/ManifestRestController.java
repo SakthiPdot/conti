@@ -562,6 +562,9 @@ public class ManifestRestController
 				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 				model.addObject("title", "View Manifest");
 				model.addObject("m_id",manifest_id);
+				manifestModel.getCreated_datetime().subSequence(0, manifestModel.getCreated_datetime().length()-2);
+				
+				model.addObject("manifest_date", manifestModel.getCreated_datetime().subSequence(0, manifestModel.getCreated_datetime().length()-2));
 				model.addObject("manifest_number",manifestModel.getManifest_prefix());
 				model.addObject("message", "This page is for ROLE_ADMIN only!");
 				model.setViewName("Manifest/view_detailed_manifest");

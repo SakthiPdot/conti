@@ -52,7 +52,8 @@ public class ReceiptDaoImpl implements ReceiptDao
 		@SuppressWarnings("unchecked")
 		List<ReceiptDetail> listReceiptDetail = (List<ReceiptDetail>) sessionFactory.getCurrentSession()
 				.createQuery("from ReceiptDetail where shipmentModel.obsolete='N'"
-						+ " and shipmentModel.status in('"+ConstantValues.DELIVERED+"','"+ConstantValues.PENDING+"')").setMaxResults(100).list();
+						+ " and shipmentModel.status in('"+ConstantValues.DELIVERED+"','"+ConstantValues.PENDING+"')"
+						+" ORDER BY shipmentModel.consignee_branch.branch_name,shipmentModel.created_datetime DESC").setMaxResults(100).list();
 		return listReceiptDetail;
 		
 	}
@@ -230,20 +231,42 @@ public class ReceiptDaoImpl implements ReceiptDao
 		}
 		return null;
 	}
-	
+		
 	
 	//-------------------------------------Get Receipt Search by Start----------------------------------------------
 	
 		@Override
 		@Transactional
-		public List<ReceiptDetail>receiptSearch(String searchkey)
+		public List<ReceiptDetail>receiptSearchAdmin(String searchkey)
 		{
 			@SuppressWarnings("unchecked")
 			
 			List<ReceiptDetail> listReceipt=(List<ReceiptDetail>)sessionFactory.getCurrentSession()
-			.createQuery("from ReceiptDetail where shipmentModel.obsolete='N' and shipmentModel.lrno_prefix LIKE '%"+searchkey+"%'"
-					+ " OR manifestModel.manifest_prefix LIKE '"+searchkey+"%'"
+			.createQuery("from ReceiptDetail where shipmentModel.obsolete='N'"
+					+ " AND shipmentModel.lrno_prefix LIKE '%"+searchkey+"%'"
+				//	+ " OR manifest_prefix from ManifestModel LIKE '%"+searchkey+"%'"
+					//+ " OR ReceiptModel.receipt_prefix LIKE '%"+searchkey+"%'"
 					+" AND shipmentModel.status in ('"+ConstantValues.RECEIVED+"','"+ConstantValues.PENDING+"')"
+					).list();
+			return listReceipt;
+		}
+		
+		
+	//-------------------------------------Get Receipt Search by Start----------------------------------------------
+		
+		@Override
+		@Transactional
+		public List<ReceiptDetail>receiptSearch(String searchkey,int branchid)
+		{
+			@SuppressWarnings("unchecked")
+			
+			List<ReceiptDetail> listReceipt=(List<ReceiptDetail>)sessionFactory.getCurrentSession()
+			.createQuery("from ReceiptDetail where shipmentModel.obsolete='N'"
+					+ " AND shipmentModel.lrno_prefix LIKE '%"+searchkey+"%'"
+					+ " OR  manifest_prefix from ManifestModel LIKE '%"+searchkey+"%'"
+					+ " OR ReceiptModel.receipt_prefix LIKE '%"+searchkey+"%'"
+					+ " AND shipmentModel.consignee_branch.branch_id="+branchid
+					+ " AND shipmentModel.status in ('"+ConstantValues.RECEIVED+"','"+ConstantValues.PENDING+"')"
 					).list();
 			return listReceipt;
 		}

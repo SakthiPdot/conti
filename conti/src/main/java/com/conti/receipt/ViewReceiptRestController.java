@@ -149,7 +149,7 @@ public class ViewReceiptRestController {
 		String userid = userInformation.getUserId();
 		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
 		int shipment_id=0;
-		ManifestModel manifestDetailedModel;
+		ManifestModel manifestModel;
 //		try
 //		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
@@ -163,12 +163,12 @@ public class ViewReceiptRestController {
 					try {
 						ReceiptModel receipt=receiptDao.getReceiptbyId(receiptDetail.get(i).getReceiptModel().receipt_id);
 						
-						manifestDetailedModel=manifestDao.getManifestByShipmentID(receiptDetail.get(i).shipmentModel.getShipment_id());//for manifest_prefix
+						manifestModel=manifestDao.getManifestByShipmentID(receiptDetail.get(i).shipmentModel.getShipment_id());//for manifest_prefix
 						
 						receiptDetail.get(i).setReceipt_id(receipt.receipt_id);
 						receiptDetail.get(i).setTemp_receiptno(receipt.getReceipt_prefix());
 						receiptDetail.get(i).setTemp_date(receipt.getUpdated_datetime());
-						receiptDetail.get(i).setTemp_manifestno(manifestDetailedModel.getManifest_prefix());
+						receiptDetail.get(i).setTemp_manifestno(manifestModel.getManifest_prefix());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -300,12 +300,24 @@ public class ViewReceiptRestController {
 	public ResponseEntity<List<ReceiptDetail>>receiptSearch(@RequestBody String searchkey,HttpServletRequest request){
 //		JSONObject obj=new JSONObject(searchkey);
 //		String key=(String)obj.get("search");
-		List<ReceiptDetail> receiptList=receiptDao.receiptSearch(searchkey);
-		if(receiptList.isEmpty()){
-			return new ResponseEntity<List<ReceiptDetail>>(HttpStatus.NO_CONTENT);
+		UserInformation userinfo = new UserInformation(request);
+		String userid = userinfo.getUserId();
+		User user =usersDao.get(Integer.parseInt(userid));
+		List<ReceiptDetail> receiptList;
+		if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
+			receiptList=receiptDao.receiptSearchAdmin(searchkey);
+			if(receiptList.isEmpty()){
+				return new ResponseEntity<List<ReceiptDetail>>(HttpStatus.NO_CONTENT);
+			}
+		}else{
+			receiptList=receiptDao.receiptSearch(searchkey,user.getBranchModel().getBranch_id());
+			if(receiptList.isEmpty()){
+				return new ResponseEntity<List<ReceiptDetail>>(HttpStatus.NO_CONTENT);
+			}
 		}
-		return new ResponseEntity<List<ReceiptDetail>>(receiptList,HttpStatus.OK);	
-	}
+			return new ResponseEntity<List<ReceiptDetail>>(receiptList,HttpStatus.OK);
+		}
+	
 	
 	//--------------------Make Pending -------------------------
 	

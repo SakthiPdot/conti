@@ -289,11 +289,11 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    
 	  function manifestSearch(searchkey) {
 		  console.log(searchkey);
-//		  if(self.search.manifest_regSearch.length==0)
-//		  {
-//		  	  self.Filtermanifests=self.manifests;
-//		  }
-		  if(self.search.manifest_regSearch.length>0)
+		  if(self.search.manifest_regSearch.length==0)
+		  {
+		  	  self.Filtermanifests=self.manifests;
+		  }
+		  if(self.search.manifest_regSearch.length>3)
 		  {
 		  	ManifestService.manifestSearch(searchkey)
 		  	.then(function(filtermanifest){
@@ -305,7 +305,11 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		  				console.log('Error while Searching Manifest number')
 		  			}
 		  		);
-		  }
+		  }else{
+				self.Filtermanifests=_.filter(self.manifests,function(item){
+					return String(item.manifest_prefix).indexOf(key) > -1;
+				});
+			}
 		  
 	  }
 	

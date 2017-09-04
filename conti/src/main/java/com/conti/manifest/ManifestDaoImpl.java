@@ -68,11 +68,12 @@ public class ManifestDaoImpl implements ManifestDao
 		// TODO Auto-generated method stub
 		
 		@SuppressWarnings("unchecked")
-		List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
-				.createQuery("from ManifestDetailedModel WHERE shipmentModel.shipment_id = " + shipment_id ).list();
-		
-		return listmanifest.get(0);
-		
+		List<ManifestDetailedModel> listmanifest = (List<ManifestDetailedModel>) sessionFactory.getCurrentSession()
+				.createQuery("from ManifestDetailedModel WHERE shipmentModel.shipment_id = " + shipment_id).list();
+		if(listmanifest != null && !listmanifest.isEmpty()) {
+			return listmanifest.get(0).getManifestModel();
+		}
+		return null;
 	}
 	
 	@Override
