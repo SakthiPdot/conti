@@ -68,7 +68,7 @@ data-ng-controller="priceSettingController as psctrl">
 											Branch<span style="color: red">&nbsp;*</span>
 										</span>
 
-										<fieldset data-ng-disabled="disableBSP">
+									<!-- 	<fieldset data-ng-disabled="disableBSP">
 										<div angucomplete-alt id="selectedBranch"
 											placeholder="Ex : Coimbatore" pause="0"
 											selected-object="branch_name" remote-url="getBranchByStr/"
@@ -79,12 +79,24 @@ data-ng-controller="priceSettingController as psctrl">
 											initial-value="{{psctrl.priceSetting.branch.branch_name}}"
 											data-trigger="focus" data-toggle="popover"
 											data-placement="top" data-content="Please Enter Branch Name"></div>
-										</fieldset>
+										</fieldset> -->
 										
 										<input type=hidden id="fromBranch"
 											data-ng-model="psctrl.priceSetting.branch" />
 										<!-- description-field="branch_code" -->
 
+										<fieldset data-ng-disabled="disableBSP">
+											<select name="fromBranch" class="form-control"
+											data-ng-change="changeSelectedBranch(psctrl.selectedBranch)"
+												data-ng-model="psctrl.selectedBranch ">
+												<option value="" data-ng-disabled="true">--Select
+													Branch Name--</option>
+												<option data-ng-repeat="x in psctrl.branches" value="{{x}}">{{x.branch_name}}</option>
+											</select>
+										</fieldset>
+										
+											
+											
 										<span>Service<span style="color: red">&nbsp;*</span></span>
 										<fieldset data-ng-disabled="disableBSP">
 										<div angucomplete-alt id="selectedService"
@@ -368,6 +380,7 @@ data-ng-controller="priceSettingController as psctrl">
 	<script type="text/javascript" src="resources/custom/js/validation.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Location/location_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/Address/address_service.js"></script>
+    <script src="resources/custom/js/branch_master/branch_service.js"></script>
 	<script type="text/javascript" src="resources/custom/js/price_setting/s_price_setting_service.js"></script>
 	<script src="resources/custom/js/confirmDialog.js"></script>	 
  	<script type="text/javascript" src="resources/built-in/js/lodash.js"></script> 

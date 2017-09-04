@@ -20,9 +20,10 @@
 	
 	
 angular.module('contiApp').controller('priceSettingController',
-		['$scope','$timeout','priceSettingService','ConfirmDialogService',
-			function($scope,$timeout,priceSettingService,ConfirmDialogService){
+		['$scope','$timeout','priceSettingService','ConfirmDialogService','BranchService',
+			function($scope,$timeout,priceSettingService,ConfirmDialogService,BranchService){
 	
+			
 	
 	$("#screen_price_settings_register").addClass("active-menu");	
 	$scope.defaultPrice=defaultPrice;
@@ -35,6 +36,23 @@ angular.module('contiApp').controller('priceSettingController',
 	self.submit=submit;
 	self.deletePriceSetting=deletePriceSetting;
 	self.formReset=formReset;
+	
+	//===================================fetch ALL BRANCH====================================	
+	fetchAllBranches();	
+	
+	function fetchAllBranches() {
+		BranchService.fetchAllBranchesForManifest()
+			.then(
+					function (response) {
+						console.log(response);
+						self.branches = response;
+					}, 
+					function (errResponse) {
+						console.log('Error while fetching branches');
+					}
+				);
+	}
+	
 	
 
 	$scope.CheckIsLessThanMaxValue=function(event,str,index){
@@ -455,6 +473,12 @@ angular.module('contiApp').controller('priceSettingController',
 		 checkAvailabilityForBranchServiceProduct();
 	}
 	
+	
+	//================on branch select================
+	$scope.changeSelectedBranch=function (selected){
+		self.priceSetting.branch=JSON.parse(selected);
+	}
+	
 	$scope.product_name=function (selected){
 	if(typeof selected!="undefined"){
 			self.priceSetting.product=selected.originalObject;
@@ -471,6 +495,7 @@ angular.module('contiApp').controller('priceSettingController',
 	
 	function checkAvailabilityForBranchServiceProduct(){
 		var id=[];
+		console.log(self.priceSetting.branch);
 		console.log(self.priceSetting.branch.branch_id);
 		console.log(self.priceSetting.service.service_id);
 		console.log(self.priceSetting.product.product_id);
