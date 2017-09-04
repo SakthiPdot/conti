@@ -425,9 +425,10 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			var receiptid=self.selected_receipt[0].receipt_id;
 			var activate_flag = 0;
 			angular.forEach(self.selected_receipt, function(receipt){
-				if(receipt.receipt_id!= receiptid) {
+				if(receipt.shipmentModel.status== 'Pending') {
 					flag = 1;
 				}
+				
 			});
 			if(flag == 1) {
 				//self.message ="Selected record(s) already in Pending status..!";
@@ -444,15 +445,12 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 						function (res) {
 							var active_id = [];
 			    			for(var i=0; i<self.selected_receipt.length; i++) {
-			    				 console.log("id "+i);
-			    				/*active_id[i] = self.selected_receipt[i].receiptdetailid;*/
-			    				 active_id[i] = self.selected_receipt[i].receipt_id;
-			    				
+			    				 console.log("id "+i  +" Value: "+self.selected_receipt[i].receipt_id);
+			    				 active_id[i] = self.selected_receipt[i].receiptdetailid;
+//			    				 active_id[i] = self.selected_receipt[i].receipt_id;
 			    			}
-			    			
-							ReceiptService.makePending(self.selected_receipt[0].receipt_id)
-							.then(
-									function(response) {
+			    			ReceiptService.makePending(active_id)
+							.then(function(response) {
 										fetchAllReceipt_view();
 										self.selected_receipt = [];
 										self.message ="Selected record(s) has in Pending status..!";
@@ -485,26 +483,14 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		
 			var receiptid=self.selected_receipt[0].receipt_id;
 			angular.forEach(self.selected_receipt, function(receipt){
-				if(receipt.receipt_id != receiptid) {
+				if(receipt.shipmentModel.status== 'Return'){
 					flag = 1;
 				} 
 			});
 			
-			
-//			angular.forEach(self.selected_receipt, function(receipt){
-//				if(receipt.shipmentModel.status== 'Return') {
-//					activate_flag = 1;
-//				} 
-//			});
 			if(flag == 1) {
 				self.message ="Please Select same receipt detail..!";
 				successAnimate('.failure');
-				
-			//}
-//			if(activate_flag == 1) {
-//				self.message ="Selected record(s) already in Return status..!";
-//				successAnimate('.failure');
-//				
 			} else {
 				self.confirm_title = 'Return';
 				self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
@@ -515,11 +501,10 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 						function (res) {
 							var active_id = [];
 			    			for(var i=0; i<self.selected_receipt.length; i++) {
-			    				//console.log('the id is: '+)
 			    				active_id[i] = self.selected_receipt[i].receiptdetailid; 
 			    				console.log(active_id[i] );
 			    			}
-							ReceiptService.makeReturn(self.selected_receipt[0].receipt_id)
+							ReceiptService.makeReturn(active_id)
 							.then(
 									function(response) {
 										fetchAllReceipt_view();
@@ -552,11 +537,11 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			var receiptid=self.selected_receipt[0].receipt_id;
 			var flag = 0;
 			angular.forEach(self.selected_receipt, function(receipt){
-				if(receipt.receipt_id!= receiptid) {
+				if(receipt.shipmentModel.status!= 'Received') {
 					flag = 1;
 				}
 			});
-			if(activate_flag == 1) {
+			if(flag == 0) {
 				self.message ="Selected record(s) already in Return status..!";
 				successAnimate('.failure');
 				
@@ -566,17 +551,14 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 				self.confirm_msg =' make selected record(s) as '+self.confirm_title+' ?';
 				self.confirm_btnclass = 'btn-danger';
 				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-				.then(
-						function (res) {
+				.then(function (res) {
 							var active_id = [];
 			    			for(var i=0; i<self.selected_receipt.length; i++) {
-			    				//console.log('the id is: '+)
 			    				active_id[i] = self.selected_receipt[i].receiptdetailid; 
 			    				console.log(active_id[i] );
 			    			}
-							ReceiptService.makeDelete(self.selected_receipt[0].receipt_id)
-							.then(
-									function(response) {
+							ReceiptService.makeDelete(active_id)
+							.then(function(response) {
 										fetchAllReceipt_view();
 										self.selected_receipt = [];
 										self.message ="Selected record(s) has in Received status..!";

@@ -145,7 +145,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 				{deleteflag=1;}
 			
 			if(self.selected_manifest[i].branchModel1.branch_id!=branch)
-				{branchflag=1;	}	
+				{branchflag=1;}	
 			console.log(self.selected_manifest[i].branchModel1.branch_id);
 			console.log('******************deleteflag '+deleteflag+' &&&&&&&&&&&&&&&&&&branchflag '+branchflag);
 		}
@@ -188,7 +188,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 					{
 						var index = self.manifests.indexOf(manifest);
 						self.manifests.splice(index,1);
-						self.message =manifest.manifest_number+ " Manifest Deleted...!";
+						self.message = " Manifest Deleted...!";
 						self.selected_manifest=[];
 						successAnimate('.success');
 						newOrClose();
