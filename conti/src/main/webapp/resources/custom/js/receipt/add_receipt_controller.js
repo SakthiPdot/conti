@@ -182,8 +182,8 @@ $scope.sortTable=function(x,status){
 										console.log('save success');
 										self.message = "Receipt ( "+receipt.Receipt_NO+" ) Created Successfully..! ";
 										successAnimate('.success');	
-										setTimeout(function(){afterSave(receipt.Receipt_id);}, 3800);
-										setTimeout(function(){ location.reload(); }, 4000);
+										setTimeout(function(){afterSave(receipt.Receipt_id);}, 3000);
+										setTimeout(function(){ location.reload(); }, 5000);
 								},
 								function(errResponse){
 									console.log('Error while saving Receipt.' );
