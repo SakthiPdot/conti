@@ -129,7 +129,7 @@
 		                <b>L.R. No. : {{ctrl.shipment.lrno_prefix}}</b>            
 		          </div>
 	              <div class="col-md-6">
-		              <b class = "pull-right">Shipment Date. : {{ctrl.shipment.shipment_date.slice(0,-2)}}</b>            
+		              <b class = "pull-right">Shipment Date : {{ctrl.shipment.shipment_date.slice(0,-2)}}</b>            
 		          </div>
 	           </div>
               </div>
