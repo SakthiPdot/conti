@@ -24,7 +24,7 @@
     <!-- Custom Styles-->
     <link href="resources/built-in/assets/css/custom-styles.css" rel="stylesheet" />
     <!-- Google Fonts-->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+     <!--<link href='http://fonts.googleapis.com/css\?family=Open+Sans' rel='stylesheet' type='text/css' />--> 
     <link rel="stylesheet" href="resources/built-in/assets/js/Lightweight-Chart/cssCharts.css"> 
 	
 	
@@ -41,7 +41,7 @@
 	<script src="resources/built-in/js/uibootstrap/ui-bootstrap.js"></script>
     <script src="resources/built-in/js/uibootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="resources/custom/js/app.js"></script>
-     <link href="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.min.css">
+    <!--  <link href="resources/custom/css/ng-table.min.css"> -->
 </head>
 
 
@@ -383,7 +383,7 @@
      <script src="resources/custom/js/service_master/service_service.js"></script>
     <script src="resources/custom/js/confirmDialog.js"></script>   
     <script type="text/javascript" src="resources/custom/js/validation.js"></script>
-     <script type="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.min.js"></script> 
+<!--      <script type="resources/custom/js/ng-table.min.js"></script> --> 
 
     
 
