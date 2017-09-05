@@ -182,11 +182,35 @@ public class ViewReceiptRestController {
 					return new ResponseEntity<List<ReceiptDetail>> (receiptDetail, HttpStatus.OK);	
 				}
 			}else{
-				List<ReceiptDetail> receiptModel=receiptDao.getAllReceipt_view(branch_id);
+				/*List<ReceiptDetail> receiptModel=receiptDao.getAllReceipt_view(branch_id);
 				if(receiptModel.isEmpty()){
 					return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.NO_CONTENT);
 				}else{
 					return new ResponseEntity<List<ReceiptDetail>> (receiptModel, HttpStatus.OK);	
+				}*/
+				List<ReceiptDetail> receiptDetail=receiptDao.getAllReceipt_view(branch_id);
+				
+				for(int i=0; i<receiptDetail.size();i++){
+					try {
+						ReceiptModel receipt=receiptDao.getReceiptbyId(receiptDetail.get(i).getReceiptModel().receipt_id);
+						
+						manifestModel=manifestDao.getManifestByShipmentID(receiptDetail.get(i).shipmentModel.getShipment_id());//for manifest_prefix
+						
+						receiptDetail.get(i).setReceipt_id(receipt.receipt_id);
+						receiptDetail.get(i).setTemp_receiptno(receipt.getReceipt_prefix());
+						receiptDetail.get(i).setTemp_date(receipt.getUpdated_datetime());
+						receiptDetail.get(i).setTemp_manifestno(manifestModel.getManifest_prefix());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
+				}
+				if(receiptDetail.isEmpty()) {
+					return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.NO_CONTENT);
+				}else{
+					return new ResponseEntity<List<ReceiptDetail>> (receiptDetail, HttpStatus.OK);	
 				}
 			}
 		//}
