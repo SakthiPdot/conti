@@ -784,7 +784,7 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
     function registerSearch(searchkey) {
     	if ( searchkey.length == 0 ) {
     		self.Filteremployees = self.employees;
-    	}else if( searchkey.length > 3 ) {
+    	}else /*if( searchkey.length > 3 )*/ {
     		EmployeeService.registerSearch(searchkey)
 	    		.then(
 						function (filterEmp) {
@@ -794,14 +794,14 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 							console.log('Error while fetching employees');
 						}
 					);
-    	} else {
+    	} /*else {
     		
     		self.Filteremployees = _.filter(self.employees,
 					 function(item){  
 						 return searchUtil(item,searchkey); 
 					 });
 				
-    		}
+    		}*/
     	
     }
     
@@ -809,9 +809,10 @@ contiApp.controller('EmployeeController', ['$http', '$scope','$q','$timeout', '$
 	{
 		var success = false;
 		
-		if ( (item.emp_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.emp_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+		if ( (item.emp_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				/*|| (item.emp_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) */
 				|| (item.empcategory.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
-				|| (item.emp_address1.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.emp_address2.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.emp_address1.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) /*|| (item.emp_address2.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)*/ 
 				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
 				|| ((String(item.emp_phoneno)).indexOf(toSearch) > -1 ) 

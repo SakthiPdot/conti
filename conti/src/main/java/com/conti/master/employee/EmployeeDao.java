@@ -23,7 +23,7 @@ public interface EmployeeDao {
 	public void saveOrUpdate(EmployeeMaster employee);
 	public EmployeeMaster findByMobileno(long mobileno);
 	public EmployeeMaster getEmployeebyId(int id);
-	public List<EmployeeMaster> searchbyeyEmployee(String searchkey);
+	public List<EmployeeMaster> searchbyeyEmployee(String searchkey, int brach_id);
 	public List<EmployeeMaster> searchbyeyEmployeeforSA(String searchkey);
 	public List<EmployeeMaster> getEmployeeswithLimit(int branch_id, int from_limit, int to_limit, String order);
 	public List<EmployeeMaster> getEmployeeswithLimitforSA( int from_limit, int to_limit, String order);

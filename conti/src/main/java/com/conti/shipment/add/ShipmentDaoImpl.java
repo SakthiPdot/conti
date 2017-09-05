@@ -385,8 +385,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		
 		String lrno = null;
 		Query query = sessionFactory.getCurrentSession()
-				.createQuery("Select lrno_prefix from ShipmentModel WHERE " 
-						+ " lr_number = (SELECT MAX(lr_number) FROM ShipmentModel WHERE sender_branch.branch_id= "+ branch_id + ")");
+				.createQuery("SELECT MAX(lrno_prefix) FROM ShipmentModel WHERE sender_branch.branch_id= "+ branch_id);
 		if(query.uniqueResult() == null) {
 			return lrno;
 		} else {

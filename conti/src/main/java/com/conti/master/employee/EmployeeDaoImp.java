@@ -138,18 +138,25 @@ public class EmployeeDaoImp implements EmployeeDao {
 	
 	@Override
 	@Transactional
-	public List<EmployeeMaster> searchbyeyEmployee(String search_key) {
+	public List<EmployeeMaster> searchbyeyEmployee(String search_key, int branch_id) {
 		// TODO Auto-generated method stub
 		@SuppressWarnings("unchecked")
 		
 		List<EmployeeMaster> listemp = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
-		.createQuery("from EmployeeMaster WHERE obsolete ='N' and emp_name LIKE '%" + search_key + "%'"
-				+ " OR empcategory LIKE '%" + search_key + "%' OR emp_code LIKE '%" + search_key + "%'"
-				+ " OR branchModel.branch_name LIKE '%" + search_key + "%' OR emp_address1 LIKE '%" + search_key + "%'"
-				+ " OR emp_address2 LIKE '%" + search_key + "%' OR location.location_name LIKE '%" + search_key + "%'"
-				+ " OR location.address.city LIKE '%" + search_key + "%' OR location.address.district LIKE '%" + search_key + "%'"
-				+ " OR location.address.state LIKE '%" + search_key + "%' OR emp_phoneno LIKE '%" + search_key + "%' OR emp_email LIKE '%" + search_key + "%' OR dob LIKE '%"+ search_key + "%'"
-				+ " OR doj LIKE '%" + search_key + "%' AND user.role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'").list();
+		.createQuery("from EmployeeMaster WHERE"
+				+" branchModel.branch_id = "+ branch_id
+				+" and obsolete ='N'"
+				+" and emp_name LIKE '%" + search_key + "%'"
+				+" OR empcategory LIKE '%" + search_key + "%'"
+				+" OR emp_address1 LIKE '%" + search_key + "%'"
+				+" OR location.location_name LIKE '%" + search_key + "%'"
+				+" OR location.address.city LIKE '%" + search_key + "%'"
+				+" OR location.address.district LIKE '%" + search_key + "%'"
+				+" OR location.address.state LIKE '%" + search_key + "%'"
+				+" OR emp_phoneno LIKE '%" + search_key + "%'"
+				/*+" OR emp_email LIKE '%" + search_key + "%'"
+				+" OR dob LIKE '%"+ search_key + "%'"
+				+" OR doj LIKE '%" + search_key + "%' AND user.role.role_Name <> '"+ constantVal.ROLE_SADMIN +"'"*/).list();
 		return listemp;
 		
 	}

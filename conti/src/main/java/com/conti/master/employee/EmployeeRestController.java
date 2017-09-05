@@ -163,34 +163,27 @@ public class EmployeeRestController {
 		try {
 			
 			User user = usersDao.get(userid);
-			
 			List<EmployeeMaster> employees = new ArrayList<EmployeeMaster>();
-			employees = employeeDao.getAllEmployeesforSA();
-			if(employees.isEmpty()) {
-				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-				return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
-			} else {
-				if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+			if( user.getRole().getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
+				employees = employeeDao.getAllEmployeesforSA();
+				if(employees.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
+				} else {
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 					return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
+				}
+			}else {
+				employees = employeeDao.getAllEmployees(branch_id);
+				if(employees.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
 				} else {
-					
-					Iterator emp_it = employees.iterator();
-					
-					while(emp_it.hasNext()) {
-						EmployeeMaster employee = (EmployeeMaster) emp_it.next();
-						if(employee.getUser() != null) {
-							if( employee.getUser().role.getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
-								emp_it.remove();
-							}	
-						}
-						
-					}
-										
 					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 					return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
 				}
 			}
+			
 						
 		} catch (Exception exception) 
 		{			
@@ -556,7 +549,7 @@ public class EmployeeRestController {
 		String username = userInformation.getUserName();
 		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
 		int userid = Integer.parseInt(userInformation.getUserId());
-		try {
+		/*try {*/
 			User user = usersDao.get(userid);
 			List<EmployeeMaster> employees = new ArrayList<EmployeeMaster>();
 			
@@ -573,29 +566,23 @@ public class EmployeeRestController {
 				
 			} else {
 				
-				Iterator emp_it = employees.iterator();
-				
-				while(emp_it.hasNext()) {
-					EmployeeMaster employee = (EmployeeMaster) emp_it.next();
-					if(employee.getUser() != null) {
-						if( employee.getUser().role.getRole_Name().equals(constantVal.ROLE_SADMIN) ) {
-							emp_it.remove();
-						}	
-					}
-					
+				employees = employeeDao.searchbyeyEmployee(searchkey,branch_id);
+				if(employees.isEmpty()) {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.NO_CONTENT);
+				} else {
+					loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+					return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
 				}
-				
-				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-				return new ResponseEntity<List<EmployeeMaster>> (employees, HttpStatus.OK);	
 				
 			}
 			
 			
 			
-		}catch (Exception exception) {
+		/*}catch (Exception exception) {
 			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
 			return new ResponseEntity<List<EmployeeMaster>> (HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		}*/
 		
 	}
 	//======================================Excel end==========================================
