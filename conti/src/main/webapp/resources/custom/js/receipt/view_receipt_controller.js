@@ -414,9 +414,6 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	
 	function makePending(){
 		console.log(self.selected_receipt.length);
-		
-		
-		
 		if(self.selected_receipt.length == 0 ) {
 	   		self.message ="Please select atleast one record..!";
 			successAnimate('.failure');
@@ -428,6 +425,7 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 				if(receipt.shipmentModel.status== 'Pending') {
 					flag = 1;
 				}
+				
 				
 			});
 			if(flag == 1) {
