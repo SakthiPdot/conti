@@ -140,7 +140,7 @@
               			<b>Payment mode : {{ctrl.shipment.pay_mode}}</b>  
               		</div>
               		 <div class="col-md-6"> 
-              		 	<b class = "pull-right">Manifest Date. : {{}}</b>        
+              		 	<b class = "pull-right"></b>        
               		</div>
               	</div>
               	
