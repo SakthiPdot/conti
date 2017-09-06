@@ -240,10 +240,28 @@ public class ViewReceiptRestController {
 		 String fromdate=(String) obj.get("fromdate");
 		 String todate=(String) obj.get("todate");
 		 String status=(String)obj.get("status");
+		 ManifestModel manifestModel;
 		try 
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			List<ReceiptDetail> receiptDetail = receiptDao.getReceiptByCondition(frombranchid,tobranchid,fromdate,todate,status);
+			for(int i=0; i<receiptDetail.size();i++){
+				try {
+					ReceiptModel receiptModel=receiptDao.getReceiptbyId(receiptDetail.get(i).getReceiptModel().receipt_id);
+					
+					manifestModel=manifestDao.getManifestByShipmentID(receiptDetail.get(i).shipmentModel.getShipment_id());//for manifest_prefix
+					
+					receiptDetail.get(i).setReceipt_id(receiptModel.receipt_id);
+					receiptDetail.get(i).setTemp_receiptno(receiptModel.getReceipt_prefix());
+					receiptDetail.get(i).setTemp_date(receiptModel.getUpdated_datetime());
+					receiptDetail.get(i).setTemp_manifestno(manifestModel.getManifest_prefix());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+			}
 			if(receiptDetail.isEmpty()) 
 			{
 				return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.NO_CONTENT);

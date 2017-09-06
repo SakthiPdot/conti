@@ -375,8 +375,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		    				console.log(active_id[i] );
 		    			}
 						ManifestService.makeMissing(active_id)
-							.then(
-									function(response) {
+							.then(function(response) {
 										manifestDetailed(manifest_id);
 										self.selected_manifest = [];
 										self.message ="Selected record(s) has in Missing status..!";
