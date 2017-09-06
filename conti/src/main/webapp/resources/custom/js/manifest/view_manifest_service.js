@@ -238,7 +238,7 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 			});
 		}
 		
-		//-----------------------------Make Missing begin -----------------------------//
+	//-----------------------------Make Missing begin -----------------------------//
 	    function makeMissing(id) {
 	    	console.log('Make Missing Service call---')
 	    	var deferred = $q.defer();
@@ -248,8 +248,7 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 	    		data : id,
 	    		headers : getCsrfHeader()
 	    	})
-	    	.then (
-	    		function (response){
+	    	.then(function (response){
 	    			deferred.resolve(response.data);
 	    		},
 	    		function (errResponse){
@@ -259,7 +258,7 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 	    	return deferred.promise;
 	    }
 	     
-	    //-------------------------------Make Received begin -----------------------------//
+	//-------------------------------Make Received begin --------------------------//
 	    function makeReceived(id) {
 	    	console.log('Make Received Service call---')
 	    	var deferred = $q.defer();

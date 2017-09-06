@@ -508,7 +508,7 @@
 	                            		</div>
 	                            		<div class=" col-md-6 branchclass">
 	                            			<span class="text-paddingwidth"> Status <span class="required">*</span></span>
-	                            		   <select class="form-control" data-ng-options = "status for status in ['Booked', 'Intransit', 'Pending', 'Return']" 
+	                            		   <select class="form-control" data-ng-options = "status for status in ['Booked', 'Received','Pending','Return','Delivered','Intransit','Missing']" 
 	                            		   		data-ng-model = "ctrl.shipment.status"
 	                            		   		data-ng-disabled = "true"
 				                              required>
