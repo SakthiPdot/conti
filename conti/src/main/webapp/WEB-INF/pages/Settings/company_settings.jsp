@@ -555,7 +555,7 @@
 					<div class="col-lg-6">
 						<div class="form-group">
 							<label for="email">No.of.days for Delivery<span style="color:red">&nbsp;*</span></label>
-							 <input type="number"
+							 <input type="text"
 							 data-ng-required="true" 
     		  			     data-trigger="focus" data-toggle="popover"
 	 					     data-placement="top" data-content="Please Enter No.of.days"
