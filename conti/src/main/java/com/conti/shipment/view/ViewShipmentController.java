@@ -204,7 +204,7 @@ public class ViewShipmentController{
 			List<ShipmentModel> shipmentList = shipmentDao.shipment_searchbyLR4ViewAdmin(lrno);
 			
 			if( shipmentList.isEmpty() ) {
-				return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NOT_FOUND);
+				return new ResponseEntity<List<ShipmentModel>> (HttpStatus.NO_CONTENT);
 			} else {
 				return new ResponseEntity<List<ShipmentModel>> (shipmentList,HttpStatus.OK);			
 			}	

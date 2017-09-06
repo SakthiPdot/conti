@@ -708,8 +708,8 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
-						+ "and  lrno_prefix LIKE '%"+lrno+ "%'"
-								+ "and  status in ('Booked','Intransit', 'Pending', 'Return') ")
+						+ " and  lrno_prefix LIKE '%"+lrno+ "%'"
+						+ "and  status in ('Booked','Intransit', 'Pending', 'Return') ")
 				
 				.setMaxResults(100).list();
 		
