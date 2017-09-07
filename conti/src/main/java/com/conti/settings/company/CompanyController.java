@@ -59,16 +59,16 @@ public class CompanyController {
 	@RequestMapping(value =  "company_settings", method = RequestMethod.GET)
 	public ModelAndView adminPage(HttpServletRequest request)  {
 
-		String username =request.getUserPrincipal().getName();				
+					
 		ModelAndView model = new ModelAndView();		
 		try{
-			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);			
+			loggerconf.saveLogger(request.getUserPrincipal().getName(), request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);			
 			model.addObject("title", "Company Settings");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Settings/company_settings");		
 			model.addObject("homePage",request.getContextPath());
 		} catch (Exception exception) {
-			loggerconf.saveLogger(username,  "Admin/ ", ConstantValues.LOGGER_STATUS_E, exception);
+			loggerconf.saveLogger(request.getUserPrincipal().getName(),  "Admin/ ", ConstantValues.LOGGER_STATUS_E, exception);
 		}		
 		return model;
 	}
