@@ -73,8 +73,13 @@ contiApp.controller('ForgotUserController', ['$scope', 'UserService', function($
 		    						self.message = "Password reset link sent to your E-mail : " + response.data.employeeMaster.emp_email;
 		    						successforgot_AnimateOpen('.success-forgot');
 		    					} else {
-		    						self.message = "Kindly contact your manager..! Manager contact no is "+ response.data.active;
-		    						successforgot_AnimateOpen('.success-forgot');
+		    						if(response.data.active != 'Y') {
+		    							self.message = "Kindly contact your manager..! Manager contact no is "+ response.data.active;
+			    						successforgot_AnimateOpen('.success-forgot');		
+		    						} else {
+		    							self.message = "Kindly contact your manager..!";
+			    						successforgot_AnimateOpen('.success-forgot');
+		    						}
 		    					}
 		    				} else {
 		    					self.message = "User name does not match..!";

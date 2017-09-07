@@ -468,7 +468,7 @@ public class UserRestController {
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = new Date();
 
-			try {
+			/*try {*/
 				
 			
 			if(currentUser == null) {
@@ -480,11 +480,19 @@ public class UserRestController {
 				} else {
 					currentUser.setObsolete(userRole.getRole_Name());
 				
-					if(userRole.getRole_Name().equals(constantVal.ROLE_CUSER)) {	
-						List<EmployeeMaster> listemp = employeeDao.getEmployee(currentUser.getBranchModel().getBranch_id(), constantVal.ROLE_ADMIN);
-						currentUser.setActive(String.valueOf(listemp.get(0).getEmp_phoneno()));
+					if(currentUser.role.getRole_Name().equals(constantVal.ROLE_CUSER)) {	
+						List<User> userlist = usersDao.getUserbyRole(currentUser.getBranchModel().getBranch_id(), constantVal.ROLE_ADMIN);
+						/*List<EmployeeMaster> listemp = employeeDao.getEmployee(currentUser.getBranchModel().getBranch_id(), constantVal.ROLE_ADMIN);*/
+						if(! userlist.isEmpty()) {
+							EmployeeMaster employee = employeeDao.getEmployeebyId(userlist.get(0).getUser_id());
+							currentUser.setActive(String.valueOf(employee.getEmp_phoneno()));
+						} else {
+							
+						}
+						
+						
 					} 
-					if(userRole.getRole_Name().equals(constantVal.ROLE_ADMIN)){
+					if(currentUser.role.getRole_Name().equals(constantVal.ROLE_ADMIN)){
 						
 						List<UserLogModel> userlog_list = userLogDao.getUserlogListbyId(currentUser.getUser_id());
 						int noofDays = 0;
@@ -493,14 +501,14 @@ public class UserRestController {
 							
 							if( lastUserlog.getPassword_request() != null ) {
 								
-								String password_req_date = lastUserlog.getPassword_request().substring(0, lastUserlog.getPassword_request().length() - 2);
+								/*String password_req_date = lastUserlog.getPassword_request().substring(0, lastUserlog.getPassword_request().length() - 2);
 								Date req_date =  dateFormat.parse(password_req_date);
 								String current_date = dateFormat.format(date);
 								Date curr_date =  dateFormat.parse(current_date);
 								
 								// calculate days 					
 								long diff = curr_date.getTime() - req_date.getTime();
-							    noofDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+							    noofDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);*/
 							} else {
 								noofDays = 3;
 							}
@@ -512,7 +520,7 @@ public class UserRestController {
 								
 							} else {
 								
-								MessageDigest md = MessageDigest.getInstance("MD5");
+								/*MessageDigest md = MessageDigest.getInstance("MD5");
 								String hashable = Integer.toString(currentUser.getUser_id()) + " " + dateFormat.format(date);
 								md.update(hashable.getBytes());
 							    byte[] digest = md.digest();
@@ -523,7 +531,7 @@ public class UserRestController {
 								UriComponents uri = UriComponentsBuilder
 					                    .fromHttpUrl("http://localhost:8080/Conti/resetPassword/"+ currentUser.getUser_id() +"/{hashedPassword}")
 					                    .buildAndExpand(hashed);
-								String urlString = uri.toUriString();
+								String urlString = uri.toUriString();*/
 								String[] mail_id = {currentUser.getEmployeeMaster().getEmp_email()};
 								String mail_subject = "Conti - Password Reset";
 								
@@ -532,12 +540,12 @@ public class UserRestController {
 								c.add(Calendar.DATE, 3); // Adding 3 days
 								String expired_date = dateFormat.format(c.getTime());
 								
-								String mail_msg = "Hello " + currentUser.getEmployeeMaster().getEmp_name() + ",<br/>"
+								/*String mail_msg = "Hello " + currentUser.getEmployeeMaster().getEmp_name() + ",<br/>"
 										+ "We have received new password request for your account " + currentUser.getEmployeeMaster().getEmp_email() + ".<br/>"
 										+ "If this request was initiated by you, please click To reset your password click here or copy URL " + urlString +" to your browser and change your password.<br/>"
 										+ "This request is valid until " + expired_date + "<br/>"
 										+ "Sincerely,<br/> Conti<br/>";
-								sendMailSMS.send_Mail(mail_id, mail_subject, mail_msg);
+								sendMailSMS.send_Mail(mail_id, mail_subject, mail_msg);*/
 								
 								userLogModel.setUser_id(currentUser.getUser_id());
 								//userLogModel.setLoggedin_date(dateFormat.format(date));
@@ -555,9 +563,9 @@ public class UserRestController {
 					return new ResponseEntity<User>(currentUser, HttpStatus.OK);
 				}			
 			}
-		}	catch(Exception exception) {
+		/*}	catch(Exception exception) {
 			return new ResponseEntity<User>(HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		}*/
 	}
 	
 	/* --------------------------- Retrieve a User by username end ------------------------ */

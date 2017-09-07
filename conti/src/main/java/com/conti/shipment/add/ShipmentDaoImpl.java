@@ -708,8 +708,8 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
-						+ "and  lrno_prefix LIKE '%"+lrno+ "%'"
-								+ "and  status in ('Booked','Intransit', 'Pending', 'Return') ")
+						+ " and  lrno_prefix LIKE '%"+lrno+ "%'"
+						+ "and  status in ('Booked','Intransit', 'Pending', 'Return') ")
 				
 				.setMaxResults(100).list();
 		
@@ -753,6 +753,19 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 		
 	}
+
+
+
+/*	@Override
+	public List<ShipmentModel> getShipment4Report(String query) {
+		// TODO Auto-generated method stub
+		
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("FROM ShipmentModel WHERE obsolete = 'N' AND " + query).setMaxResults(100).list();
+		return listShipment;
+	}*/
+	
 	
 	
 }

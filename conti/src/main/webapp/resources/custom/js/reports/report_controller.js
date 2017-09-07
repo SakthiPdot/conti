@@ -68,7 +68,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 	   				mm = '0' + mm
 	   			}
 	   			
-	   			$scope.fromtoday = yyyy + '-' + mm + '-' + dd;			
+	   			self.report.fromtoday = yyyy + '-' + mm + '-' + dd;			
 	   			
 	   			
 	   			//========== to date ========//
@@ -85,7 +85,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 					mm = '0' + mm
 				}
 				
-				$scope.todate = yyyy + '-' + mm + '-' + dd;
+				self.report.todate = yyyy + '-' + mm + '-' + dd;
 				
 				//======= if select this week ======//
 			} else if ($scope.datefilter == "This Week") {
@@ -112,7 +112,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 	   				mm = '0' + mm
 	   			}
 	   			
-	   			$scope.fromtoday = yyyy + '-' + mm + '-' + first;
+	   			self.report.fromtoday = yyyy + '-' + mm + '-' + first;
 	   			
 	   			//======== to date week ===========//
 	   			
@@ -136,9 +136,8 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 	   			}
 	   			
 	   			
-	   			$scope.todate = yyyy + '-' + mm + '-' + last;  			
-	   			$scope.todate1 = $scope.todate;
-	   			console.log($scope.todate1)	;
+	   			self.report.todate = yyyy + '-' + mm + '-' + last;  			
+	   			
 	   			//===== if select this month =========//
 	   			
 				
@@ -157,17 +156,12 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 				 if(d < 10) {
 					 d = '0'+d
 				 }
-				 $scope.fromtoday = y + '-' + m + '-' + d;				 
+				 self.report.fromtoday = y + '-' + m + '-' + d;				 
 	
 				 
 				 //===== to date this month =======//
-				 $scope.todate1 = new Date(y, m, 0);				
-				 
-				 $scope.todate =  $scope.todate1.format('yyyy-MM-dd');
-				 
-				
-				 
-		   		   		
+				 self.report.todate = new Date(y, m, 0);				
+				    		
 		   			
 			} else if($scope.datefilter == "This Quater") {
 			
@@ -179,8 +173,8 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 				   $scope.to= end>12?new Date('01-01-'+ (yyyy+1)):new Date(end+'-01-'+ (yyyy));
 				   $scope.to=new Date(($scope.to.getTime())-1);
 				   
-				   $scope.fromtoday = $scope.from.format('yyyy-MM-dd');
-				   $scope.todate = $scope.to.format('yyyy-MM-dd');				   
+				   self.report.fromtoday = $scope.from.format('yyyy-MM-dd');
+				   self.report.todate = $scope.to.format('yyyy-MM-dd');				   
 				   
 				  
 			} else {
@@ -188,7 +182,17 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			}
 			
 		}
-		
-		
+		 $scope.product_name = function (product) {
+			 self.report.product_id = product.originalObject.product_id;
+		 }
+		//---- Report 
+		 self.submit = function (){
+			 self.report.fromtoday = $('.datepicker1').val();
+			 self.report.todate = $('.datepicker2').val();
+			 self.report.from_lrno = $('#from_lrno_value').val();
+			 self.report.to_lrno = $('#to_lrno_value').val();
+			  
+			 console.log(self.report);
+		 }
 	}
 	]);

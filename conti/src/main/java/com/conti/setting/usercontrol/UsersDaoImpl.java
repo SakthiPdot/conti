@@ -293,5 +293,18 @@ class UsersDaoImpl implements UsersDao {
 			}
 			return null;
 		}
+
+		@Override
+		@Transactional
+		public List<User> getUserbyRole(int branch_id, String role) {
+			// TODO Auto-generated method stub
+			@SuppressWarnings("unchecked")
+			List<User> getUser = sessionFactory.getCurrentSession()
+					.createQuery("from User where obsolete = 'N' and branch_id="+branch_id+" and role.role_Name='"+role+"'").list();
+			
+			return getUser;
+		}
+		
+		
 }
 	
