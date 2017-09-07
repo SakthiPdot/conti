@@ -80,7 +80,7 @@ contiApp.factory('ReceiptService',['$http','$q',function($http,$q)
 			headers:getCsrfHeader()
 		})
 		.then(function(response){
-			console.log(response);
+			console.log(response.data);
 			def.resolve(response.data);
 		},
 		function(errResponse){

@@ -36,9 +36,10 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.shipment = {}; // for individual view shipment
 		$scope.shownoofrec=10;
 		
-		self.manifestId = $('#manifest_id').val(); 
-		var manifest_id=$("#manifest_id").val();
-		
+		self.manifestId=$('#manifest_id').val(); 
+		var manifest_id=$('#manifest_id').val();
+		var branch_flag=$('#branch_flag').val();
+		var authen_flag=$('#authen_flag').val();//for identify the Manager and Staff role
 		//--call detailed manifest
 		if(manifest_id!=null)
 		{
@@ -308,6 +309,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			  ManifestService.registerSearch(searchkey)
 			  .then(function(filtermanifest){
 					  self.Filtermanifests=filtermanifest;
+					  console.log(filtermanifest);
 			  },
 			  function (errRes){
 				  console.log('Error while Searching LR Number....');
@@ -345,7 +347,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 
 //-------------------------- Batch action Missing Process begin ----------------------//
  function makeMissing(){
-	 console.log('call makeMissing function....');
+	 console.log('call makeMissing function....' +authen_flag);
 	 console.log(self.selected_manifest);
 	if(self.selected_manifest.length == 0 ) {
    		self.message ="Please select atleast one record..!";
@@ -356,9 +358,13 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			if(manifest.shipmentModel.status== 'Missing') {
 				activate_flag = 1;
 			} 
-			
 		});
-		if(activate_flag == 1) {
+		if(branch_flag=='false' && authen_flag=='MANAGER_OR_STAFF')
+		{
+			self.message ="Origin branch only perform Missing action..!";
+			successAnimate('.failure');
+		}
+		else if(activate_flag == 1) {
 			self.message ="Selected record(s) already in Missing status..!";
 			successAnimate('.failure');
 		} else {
@@ -367,37 +373,33 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			self.confirm_msg = ' make selected record(s) status as '+self.confirm_title+ '?';
 			self.confirm_btnclass = 'btn-success';
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-			.then(
-					function (res) {
+			.then(function (res) {
 						var active_id = [];
 		    			for(var i=0; i<self.selected_manifest.length; i++) {
 		    				active_id[i] = self.selected_manifest[i].manifestdetailed_id; 
 		    				console.log(active_id[i] );
 		    			}
 						ManifestService.makeMissing(active_id)
-							.then(function(response) {
-										manifestDetailed(manifest_id);
-										self.selected_manifest = [];
-										self.message ="Selected record(s) has in Missing status..!";
-										successAnimate('.success');
-									}, function(errResponse) {
-										console.log(errResponse);    								
-									}
-								);
+						.then(function(response) 
+							{
+								manifestDetailed(manifest_id);
+								self.selected_manifest = [];
+								self.message ="Selected record(s) has in Missing status..!";
+								successAnimate('.success');
+							}, function(errResponse) {
+								console.log(errResponse);    								
+							}
+						);
 					}
 				);
-			
-		}
-
-
+		 }
 	}
-	
 }
 
 
 //-------------------------- Make Received begin ----------------------//
 function makeReceived(){
-	console.log("inside Received");
+	//var authen_flag=$('#authen_flag').val();
 	if(self.selected_manifest.length == 0 ) {
    		self.message ="Please select atleast one record..!";
 		successAnimate('.failure');
@@ -407,9 +409,14 @@ function makeReceived(){
 			if(manifest.shipmentModel.status== 'Received') {
 				inactivate_flag = 1;
 			} 
-			
 		});
-		if(inactivate_flag == 1) {
+		
+		if(branch_flag=='false' && authen_flag=='MANAGER_OR_STAFF')
+		{
+			self.message ="Origin branch only perform Received action..!";
+			successAnimate('.failure');
+		}
+		else if(inactivate_flag == 1) {
 			self.message ="Selected record(s) already in Received status..!";
 			successAnimate('.failure');
 		} else {

@@ -113,22 +113,32 @@ public class ViewReceiptRestController {
 		
 		UserInformation userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();
-		
-		String userid = userinfo.getUserId();
+		//String current_branch_id=userinfo.getUserBranchId();
 		String branch_id=userinfo.getUserBranchId();
+		
+		BranchModel branchModel=branchDao.getBranchbyId(Integer.parseInt(branch_id));
+		String branch_name=branchModel.getBranch_name();
+		String userid = userinfo.getUserId();
+		
 		session.setAttribute("username", username);
 		session.setAttribute("userid", userid);
-		
+		String flag="true";
 		
 		ModelAndView model = new ModelAndView();
-		
+		List<ReceiptDetail> receiptDetail=receiptDao.getAllReceipt_view(Integer.parseInt(branch_id));
+		int id=receiptDetail.get(0).getShipmentModel().getConsignee_branch().getBranch_id();
+		if (id!=Integer.parseInt(branch_id))
+		{
+			flag="false";
+		}
 		
 		try
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			
 			model.addObject("title", "View Receipt");
 			model.addObject("branch_id",branch_id);
+			model.addObject("branch_name",branch_name);
+			model.addObject("flag", flag);
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Receipt/view_receipt");
 			
@@ -150,6 +160,8 @@ public class ViewReceiptRestController {
 		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
 		int shipment_id=0;
 		ManifestModel manifestModel;
+		//ReceiptModel receipt;
+//		String flag="true";
 //		try
 //		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
@@ -158,7 +170,11 @@ public class ViewReceiptRestController {
 
 			if (user.role.getRole_Name().equals(ConstantValues.ROLE_SADMIN)){
 				List<ReceiptDetail> receiptDetail=receiptDao.getAllReceipt_view();
-				
+//				int id=receiptDetail.get(0).getShipmentModel().getConsignee_branch().getBranch_id();
+//				if (id!=branch_id)
+//				{
+//					flag="false";
+//				}
 				for(int i=0; i<receiptDetail.size();i++){
 					try {
 						ReceiptModel receipt=receiptDao.getReceiptbyId(receiptDetail.get(i).getReceiptModel().receipt_id);
@@ -348,12 +364,30 @@ public class ViewReceiptRestController {
 		List<ReceiptDetail> receiptList;
 		if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){
 			receiptList=receiptDao.receiptSearchAdmin(searchkey);
+			ManifestModel manifestModel;
+			for(int i=0; i<receiptList.size();i++){
+				try {
+					ReceiptModel receiptModel=receiptDao.getReceiptbyId(receiptList.get(i).getReceiptModel().receipt_id);
+					
+					manifestModel=manifestDao.getManifestByShipmentID(receiptList.get(i).shipmentModel.getShipment_id());//for manifest_prefix
+					
+					receiptList.get(i).setReceipt_id(receiptModel.receipt_id);
+					receiptList.get(i).setTemp_receiptno(receiptModel.getReceipt_prefix());
+					receiptList.get(i).setTemp_date(receiptModel.getUpdated_datetime());
+					receiptList.get(i).setTemp_manifestno(manifestModel.getManifest_prefix());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			if(receiptList.isEmpty()){
+				System.out.print("==============jjjjjjjjjjjj====================== "+receiptList.size());
 				return new ResponseEntity<List<ReceiptDetail>>(HttpStatus.NO_CONTENT);
 			}
 		}else{
 			receiptList=receiptDao.receiptSearch(searchkey,user.getBranchModel().getBranch_id());
 			if(receiptList.isEmpty()){
+				System.out.print("==================================== "+receiptList.size());
 				return new ResponseEntity<List<ReceiptDetail>>(HttpStatus.NO_CONTENT);
 			}
 		}

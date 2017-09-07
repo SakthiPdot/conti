@@ -350,7 +350,9 @@ public class ManifestRestController
 		@RequestMapping(value="manifest_register_search", method=RequestMethod.POST)
 		public ResponseEntity<List<ManifestDetailedModel>>manifest_register_search(@RequestBody String search,HttpServletRequest request)
 		{
+			System.out.println("=================================== call");
 			List<ManifestDetailedModel> manifestDetailtedList=manifestDao.searchLRnumber(search);
+			System.out.println("=================================== call:"+manifestDetailtedList);
 			return new ResponseEntity<List<ManifestDetailedModel>> (manifestDetailtedList,HttpStatus.OK);
 		}
 		
@@ -549,6 +551,8 @@ public class ManifestRestController
 		{
 			HttpSession session = request.getSession();
 			UserInformation userinfo = new UserInformation(request);
+			String current_branch=userinfo.getUserBranchId();
+			String flag="true";
 			String username = userinfo.getUserName();
 			String userid = userinfo.getUserId();
 			
@@ -556,6 +560,12 @@ public class ManifestRestController
 			session.setAttribute("userid", userid);
 			int manifest_id=id;
 			ManifestModel manifestModel=manifestDao.getManifestbyId(manifest_id);
+			int branch_id=manifestModel.branchModel2.getBranch_id();
+			if(branch_id!=Integer.parseInt(current_branch))
+			{
+				flag="false";
+			}
+			
 			ModelAndView model = new ModelAndView();
 			try
 			{
@@ -563,9 +573,9 @@ public class ManifestRestController
 				model.addObject("title", "View Manifest");
 				model.addObject("m_id",manifest_id);
 				manifestModel.getCreated_datetime().subSequence(0, manifestModel.getCreated_datetime().length()-2);
-				
 				model.addObject("manifest_date", manifestModel.getCreated_datetime().subSequence(0, manifestModel.getCreated_datetime().length()-2));
 				model.addObject("manifest_number",manifestModel.getManifest_prefix());
+				model.addObject("flag", flag);
 				model.addObject("message", "This page is for ROLE_ADMIN only!");
 				model.setViewName("Manifest/view_detailed_manifest");
 			} 

@@ -35,12 +35,17 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	self.receiptSelectAll=receiptSelectAll;
 	self.shownoofRecord=shownoofRecord;
 	$scope.shownoofrec=10;
-	
+
 	self.receiptSelectAll=receiptSelectAll;
 	
 	fetchAllReceipt_view();
 	fetchAllBranches();
-		
+	
+	var branch_id=$('#branch_id').val();
+//	var branch_flag=$('#branch_flag').val();
+	var authen_flag=$('#authen_flag').val();//for identify the Manager and Staff role
+	self.receipt.tobranch=parseInt(branch_id);//for default assigning the to branch name in receipt filter
+	
 	function reset()
 	{
 		self.manifest={};
@@ -366,7 +371,9 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		ReceiptService.receiptFilter(self.receipt)
 		.then(function(receipt){
 					console.log(receipt);
-					self.Filterreceipts=receipt;
+					self.receipts=receipt;
+					self.Filterreceipts=self.receipts;
+					pagination();
 				},
 				function(errResponse){
 					console.log('Error while filtering receipt records');
@@ -413,40 +420,51 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 //-------------------Make Pending function start---------------------------------//
 	
 	function makePending(){
-		console.log(self.selected_receipt.length);
 		if(self.selected_receipt.length == 0 ) {
 	   		self.message ="Please select atleast one record..!";
 			successAnimate('.failure');
 		} else {
 			var flag = 0;
+			var b_flag = 'false';
 			var receiptid=self.selected_receipt[0].receipt_id;
 			var activate_flag = 0;
 			angular.forEach(self.selected_receipt, function(receipt){
 				if(receipt.shipmentModel.status== 'Pending') {
 					flag = 1;
 				}
-				
-				
 			});
-			if(flag == 1) {
-				//self.message ="Selected record(s) already in Pending status..!";
-				self.message ="Selected record(s) already in Pending Status..!";
+			for(var i=0; i<self.selected_receipt.length;i++)
+			{
+				if(self.selected_receipt[0].shipmentModel.consignee_branch.branch_id!=self.selected_receipt[i].shipmentModel.consignee_branch.branch_id)
+				{
+					b_flag='true';
+				}
+			}
+			if(self.receipt.tobranch!=branch_id && authen_flag=='MANAGER_OR_STAFF')
+			{
+				self.message ="Origin branch user only can allow to perform Pending action...!";
 				successAnimate('.failure');
-				
+			}
+			else if(b_flag=='true')
+			{
+				self.message ="Please select same consignee branch detail...!";
+				successAnimate('.failure');
+			}
+			else if(flag == 1) {
+				self.message ="Selected record(s) already in Pending Status...!";
+				successAnimate('.failure');
 			} else {
 				self.confirm_title = 'Pending';
 				self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
 				self.confirm_msg =' make selected record(s) status as '+self.confirm_title+' ?';
 				self.confirm_btnclass = 'btn-success';
 				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-				.then(
-						function (res) {
+				.then(function (res) {
 							var active_id = [];
 			    			for(var i=0; i<self.selected_receipt.length; i++) {
 			    				 console.log("id "+i  +" Value: "+self.selected_receipt[i].receipt_id);
 			    				 active_id[i] = self.selected_receipt[i].receiptdetailid;
-//			    				 active_id[i] = self.selected_receipt[i].receipt_id;
-			    			}
+		    				}
 			    			ReceiptService.makePending(active_id)
 							.then(function(response) {
 										fetchAllReceipt_view();
@@ -455,38 +473,49 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 										successAnimate('.success');
 									}, function(errResponse) {
 										console.log(errResponse);    								
-									}
-								);
+								}
+							);
 						}
 					);
-				
 			}
-
-
 		}
-		
 	}
 	
 	
 //--------------------- Make Return function start---------------------------------	
 	function makeReturn(){
 		 console.log('call make Return function....');
-		 console.log(self.selected_receipt);
 		if(self.selected_receipt.length == 0 ) {
 	   		self.message ="Please select atleast one record..!";
 			successAnimate('.failure');
 		} else {
 			var activate_flag = 0;
 			var flag = 0;
-		
+			var b_flag = 'false';
 			var receiptid=self.selected_receipt[0].receipt_id;
 			angular.forEach(self.selected_receipt, function(receipt){
 				if(receipt.shipmentModel.status== 'Return'){
 					flag = 1;
 				} 
 			});
-			
-			if(flag == 1) {
+			for(var i=0; i<self.selected_receipt.length;i++)
+			{
+				if(self.selected_receipt[0].shipmentModel.consignee_branch.branch_id!=self.selected_receipt[i].shipmentModel.consignee_branch.branch_id)
+				{
+					b_flag='true';
+				}
+			}
+			if(self.receipt.tobranch!=branch_id && authen_flag=='MANAGER_OR_STAFF')
+			{
+				self.message ="Origin branch user only can allow to perform Return action...!";
+				successAnimate('.failure');
+			}
+			else if(b_flag=='true')
+			{
+				self.message ="Please select same consignee branch detail...!";
+				successAnimate('.failure');
+			}
+			else if(flag == 1) {
 				self.message ="Please Select same receipt detail..!";
 				successAnimate('.failure');
 			} else {
@@ -534,13 +563,31 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			var activate_flag = 0;
 			var receiptid=self.selected_receipt[0].receipt_id;
 			var flag = 0;
+			var b_flag = 'false';
 			angular.forEach(self.selected_receipt, function(receipt){
 				if(receipt.shipmentModel.status!= 'Received') {
 					flag = 1;
 				}
 			});
-			if(flag == 0) {
-				self.message ="Selected record(s) already in Return status..!";
+			for(var i=0; i<self.selected_receipt.length;i++)
+			{
+				if(self.selected_receipt[0].shipmentModel.consignee_branch.branch_id!=self.selected_receipt[i].shipmentModel.consignee_branch.branch_id)
+				{
+					b_flag='true';
+				}
+			}
+			if(self.receipt.tobranch!=branch_id && authen_flag=='MANAGER_OR_STAFF')
+			{
+				self.message ="Origin branch user only can allow to Delete...!";
+				successAnimate('.failure');
+			}
+			else if(b_flag=='true')
+			{
+				self.message ="Please select same consignee branch detail...!";
+				successAnimate('.failure');
+			}
+			else if(flag == 0) {
+				self.message ="Selected record(s) already in Received status..!";
 				successAnimate('.failure');
 				
 			} else {

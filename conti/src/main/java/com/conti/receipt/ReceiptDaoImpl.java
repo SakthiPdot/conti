@@ -244,9 +244,10 @@ public class ReceiptDaoImpl implements ReceiptDao
 			List<ReceiptDetail> listReceipt=(List<ReceiptDetail>)sessionFactory.getCurrentSession()
 			.createQuery("from ReceiptDetail where shipmentModel.obsolete='N'"
 					+ " AND shipmentModel.lrno_prefix LIKE '%"+searchkey+"%'"
-				//	+ " OR manifest_prefix from ManifestModel LIKE '%"+searchkey+"%'"
-					//+ " OR ReceiptModel.receipt_prefix LIKE '%"+searchkey+"%'"
-					+" AND shipmentModel.status in ('"+ConstantValues.RECEIVED+"','"+ConstantValues.PENDING+"')"
+					//+ " OR select manifestModel.manifest_prefix from manifestModel where manifest_prefix LIKE '%"+searchkey+"%' and shipmentModel.shipment_id=manifestModel.manifestDetailModel.shipment_id"
+					+ " OR receiptModel.receipt_prefix LIKE '%"+searchkey+"%'"
+					+ " AND shipmentModel.status in ('"+ConstantValues.DELIVERED+"','"+ConstantValues.PENDING+"')"
+					
 					).list();
 			return listReceipt;
 		}
@@ -263,10 +264,10 @@ public class ReceiptDaoImpl implements ReceiptDao
 			List<ReceiptDetail> listReceipt=(List<ReceiptDetail>)sessionFactory.getCurrentSession()
 			.createQuery("from ReceiptDetail where shipmentModel.obsolete='N'"
 					+ " AND shipmentModel.lrno_prefix LIKE '%"+searchkey+"%'"
-					+ " OR  manifest_prefix from ManifestModel LIKE '%"+searchkey+"%'"
-					+ " OR ReceiptModel.receipt_prefix LIKE '%"+searchkey+"%'"
+//					+ " OR  manifest_prefix from ManifestModel LIKE '%"+searchkey+"%'"
+//					+ " OR ReceiptModel.receipt_prefix LIKE '%"+searchkey+"%'"
 					+ " AND shipmentModel.consignee_branch.branch_id="+branchid
-					+ " AND shipmentModel.status in ('"+ConstantValues.RECEIVED+"','"+ConstantValues.PENDING+"')"
+					+ " AND shipmentModel.status in ('"+ConstantValues.DELIVERED+"','"+ConstantValues.PENDING+"')"
 					).list();
 			return listReceipt;
 		}

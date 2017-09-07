@@ -3,6 +3,7 @@
     prefix="c"
     uri="http://java.sun.com/jsp/jstl/core" 
 %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page isELIgnored="false" %> 
 <%@page session="true"%>
 <html lang="en">
@@ -939,26 +940,32 @@
                               <div class="col-lg-12">
                                <div class="col-xs-5">
                                    <div class="dataTables_length" id="dataTables-example_length">
+                                 <input type=hidden id="branch_flag" value="${flag}"/>
+                                  <sec:authorize access="hasRole('MANAGER') OR hasRole('STAFF')">  
+                                   <input type=hidden id="authen_flag" value="MANAGER_OR_STAFF"/>
+                                 </sec:authorize>
 										<div class="dropdown">
 										<button class="btn btn-primary dropdown-toggle"
 											type="button" data-toggle="dropdown">
 											Batch Action <span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu">
-											<li><a data-ng-click="ctrl.makeMissing()">Missing</a></li>
 											<li><a data-ng-click="ctrl.makeReceived()">Received</a></li>
+											<li><a data-ng-click="ctrl.makeMissing()">Missing</a></li>
 										</ul>
 										</div>
-											  
+									
+
+																		
 										<div class="row paddingtop">
-														<div class="col-md-12">
-															<select name="shownoofrec" data-ng-model="shownoofrec"
-																data-ng-options="noofrec for noofrec in [10, 15, 25, 50]"
-																class="form-control"
-																data-ng-click="ctrl.shownoofRecord()">
-															</select>
-														</div>
-													</div>
+											<div class="col-md-12">
+												<select name="shownoofrec" data-ng-model="shownoofrec"
+													data-ng-options="noofrec for noofrec in [10, 15, 25, 50]"
+													class="form-control"
+													data-ng-click="ctrl.shownoofRecord()">
+												</select>
+											</div>
+										</div>
 									</div> 
                                 </div>
                               	<div class="col-lg-2 ">
@@ -1038,7 +1045,7 @@
 										
 									</div>
 <!-- 										<a type="button" class="btn btn-primary" onclick="location.href='downloadExcelManifest';valid = true;"><i class="fa fa-file-excel-o fa-lg"></i></a> -->
-                                      	  <button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.selected_manifest.length == 0" ><i class="fa fa-print fa-lg"></i></button>
+                                      	  <button type="submit" class="btn btn-primary" data-ng-disabled = true ><i class="fa fa-print fa-lg"></i></button>
 	                                      <input type = "hidden" name = "cust" value = "{{ctrl.selected_manifest}}" />
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                                     

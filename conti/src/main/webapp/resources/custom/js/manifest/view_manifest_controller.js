@@ -44,8 +44,8 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		$scope.shownoofrec=10;
 		fetchAllManifest();
 		var manifest_id=$("#manifest_id").val();
-		//self.manifest.frombranch= $('#branch_id').val();
-		//self.manifest.frombranch = parseInt($('#branch_id').val());
+		//self.manifest.tobranch= $('#branch_id').val();
+		self.manifest.tobranch = parseInt($('#branch_id').val());
 		//--call detailed manifest
 		if(manifest_id!=null)
 		{
@@ -144,7 +144,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			if(self.selected_manifest[i].manifest_status =='Incomplete')
 				{deleteflag=1;}
 			
-			if(self.selected_manifest[i].branchModel1.branch_id!=branch)
+			if(self.selected_manifest[i].branchModel2.branch_id!=parseInt(branch))
 				{branchflag=1;}	
 			console.log(self.selected_manifest[i].branchModel1.branch_id);
 			console.log('******************deleteflag '+deleteflag+' &&&&&&&&&&&&&&&&&&branchflag '+branchflag);

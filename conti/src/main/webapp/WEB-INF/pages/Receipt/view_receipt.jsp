@@ -923,7 +923,7 @@
                 			      		<select class="form-control" 
                 			      		data-ng-options ="branch.branch_id as branch.branch_name for branch in ctrl.branches"
                 			      		data-ng-model="ctrl.receipt.frombranch"
-                			      		>
+                			      		data-ng-init="${branch_id}">
                 			      			<option value='' disabled>--Select--</option>
                 			      		</select>
                 			      </div>
@@ -999,7 +999,7 @@
                 			       		<div class="col-lg-3 branchclass">
                 			      		 <span class="text-padding boldletter">Search</span>	                	                                       
                                             <input type="text" class="form-control searchbar" 
-                                            placeholder="Manifest/LR No/Receipt No"
+                                            placeholder="LR No/Receipt No"
                                             data-ng-model="ctrl.search"
                                             data-ng-keyup="ctrl.receiptSearch(ctrl.search)">                                           
                                         </div>
@@ -1036,6 +1036,10 @@
 							<li><a data-ng-click="ctrl.makeDelete()">Delete</a></li>
 						</ul>
 						</div>
+<%-- 						<input type=text id="branch_flag" value="${flag}"/> --%>
+						<sec:authorize access="hasRole('MANAGER') OR hasRole('STAFF')">  
+                            <input type=hidden id="authen_flag" value="MANAGER_OR_STAFF"/>
+                        </sec:authorize>
 					</div> 
                          </div>
                          

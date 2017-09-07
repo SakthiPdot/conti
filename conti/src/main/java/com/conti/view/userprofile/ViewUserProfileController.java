@@ -50,7 +50,7 @@ public class ViewUserProfileController {
 	public ModelAndView adminPage( HttpServletRequest request) throws Exception {
 		
 		HttpSession session = request.getSession();
-		
+		System.out.println(session);
 		userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();
 		int user_id = Integer.parseInt(userinfo.getUserId());

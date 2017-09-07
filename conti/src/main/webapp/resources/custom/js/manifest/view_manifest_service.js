@@ -232,10 +232,11 @@ contiApp.factory('ManifestService',['$http','$q',function($http,$q)
 				headers:getCsrfHeader()
 			}).then(function(response){
 				def.resolve(response.data);
-				//console.log(response.data);
+				console.log(response.data);
 			},function(errResponse){
 				def.reject(errResponse);
 			});
+			return def.promise;
 		}
 		
 	//-----------------------------Make Missing begin -----------------------------//
