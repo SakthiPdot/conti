@@ -131,20 +131,21 @@
                 
                 
                 
-                
+                <form name = "report" data-ng-submit = "ctrl.submit()" >
                 <div class="row">
                 <div class="col-lg-12">
                 <div class="col-lg-12">
                 <div class="panel panel-default">                            
 						
 				<div class="panel-body">
+				
 				<div class="branch-heading" data-ng-show="filter_date || filter_all">Shipment</div>
 				
 				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_date || filter_all" >
 					<div class="col-lg-3 report_class">
 						<span>From</span>
 					       <div class="form-group input-group">
-                                  <input type="text" id="dates"class="form-control datepicker1" data-ng-model="fromtoday">
+                                  <input type="text" id="dates" class="form-control datepicker1" data-ng-model="ctrl.report.fromtoday">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default " type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -155,7 +156,7 @@
 					<div class="col-lg-3 report_class">
 						<span>To</span>
 					       <div class="form-group input-group">
-                                  <input type="text" class="form-control datepicker2" data-ng-model="todate | date : 'yyyy-MM-dd' ">
+                                  <input type="text" class="form-control datepicker2" data-ng-model="ctrl.report.todate | date : 'yyyy-MM-dd' ">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -187,7 +188,7 @@
 					
 					<div class="col-lg-3 branchclass">
 						<b class="text-padding">Branch </b>
-						<select class="form-control" data-ng-options = "branch.branch_name for branch in ctrl.branches"
+						<select class="form-control" data-ng-options = "branch.branch_id as branch.branch_name for branch in ctrl.branches"
 						data-ng-model="ctrl.report.branch">
 							<option value="" disabled>-- Select --</option>
 														
@@ -199,7 +200,7 @@
 					<div class="sec-padding">Branch</div>
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">From </span>
-						<select class="form-control" data-ng-options = "branch.branch_name for branch in ctrl.branches"
+						<select class="form-control" data-ng-options = "branch.branch_id as branch.branch_name for branch in ctrl.branches"
 						data-ng-model = "ctrl.report.frombranch">
 							<option value="" disabled>-- Select --</option>							
 						</select>
@@ -207,7 +208,7 @@
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">To </span>
-						<select class="form-control" data-ng-options = "branch.branch_name for branch in ctrl.branches"
+						<select class="form-control" data-ng-options = "branch.branch_id as branch.branch_name for branch in ctrl.branches"
 						data-ng-model="ctrl.report.tobranch">
 							<option value="" disabled>-- Select --</option>
 							
@@ -229,9 +230,9 @@
 					<div class="sec-padding">LR No</div>
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">From </span>						
-						<angucomplete-alt id="lrno_prefix" data-ng-model="ctrl.report.lrno_prefix"
+						<angucomplete-alt id="from_lrno" data-ng-model="ctrl.report.from_lrno"
 						placeholder="Ex:LR No"
-						pause="100" selected-object="lrno_prefix"
+						pause="100" selected-object="from_lrno"
 						local-data="ctrl.shipments"
 						search-fields="lrno_prefix"
 						title-field="lrno_prefix"
@@ -246,9 +247,9 @@
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">To </span>						
-						<angucomplete-alt id="lrno_prefix" data-ng-model="ctrl.report.lrno_prefix"
+						<angucomplete-alt id="to_lrno" data-ng-model="ctrl.report.from_lrno"
 						placeholder="Ex:LR No" pause="100"
-						selected-object="lrno_prefix"
+						selected-object="to_lrno"
 						local-data="ctrl.shipments"
 						search-fields="lrno_prefix"
 						title-field="lrno_prefix"
@@ -312,23 +313,21 @@
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Status </span>
-						<select class="form-control">
-							<option>-- Select --</option>
-							<option>Picked Up</option>
+						<select class="form-control" data-ng-model="ctrl.report.status" data-ng-options = "status for status in ['Booked', 'Intransit', 'Delivered', 'Return', 'Received', 'Pending']">
+							<option value = "">-- Select --</option>
+							
 							
 						</select>
 					</div>				
 				</div>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						
+				
                 </div>
                 		
                 </div>
                 </div>
                 </div>
                 </div>
-                
-            
                 <br>
                 <div class="row">
                 <div class="col-lg-12">
@@ -337,14 +336,17 @@
                 	</div>
                 	
                 	<div class="col-lg-4">
-                		<button type="button" class="btn btn-primary">View Report</button>
+                		<button type="submit" class="btn btn-primary" >View Report</button>
                 	</div>
                 	
                 	<div class="col-lg-4">
-                		<button type="button" class="btn btn-primary">	<i class="fa fa-file-excel-o"></i> Excel Report</button>
+                		<a class="btn btn-primary" data-ng-click = "">	<i class="fa fa-file-excel-o"></i> Excel Report</a>
                 	</div>
                 </div>
                 </div>
+               </form> 
+            
+                
                 
              
              <br>

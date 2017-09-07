@@ -39,6 +39,7 @@ public interface UsersDao {
 	
 	public List<User> getUser100();
 	
+	public List<User> getUserbyRole(int branch_id, String role);
 	//===== Referred Delete Process in Foreign key =========//
 	public User getEmployeeId(int emp_id);
 	public User getBranchId(int branch_id);
