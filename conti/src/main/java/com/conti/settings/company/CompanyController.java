@@ -29,7 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.conti.config.SessionListener;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
-import com.conti.setting.usercontrol.UsersDao;
+
 
 /**
  * @Project_Name conti
@@ -46,8 +46,7 @@ public class CompanyController {
 	@Autowired
 	private CompanySettingDAO companyDao;
 
-	@Autowired
-	private UsersDao uDao;
+	
 
 	
 	Loggerconf loggerconf = new Loggerconf();

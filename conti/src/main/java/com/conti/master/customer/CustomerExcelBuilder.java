@@ -16,7 +16,6 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
-import com.conti.master.employee.EmployeeMaster;
 
 /**
  * @Project_Name conti
@@ -32,6 +31,7 @@ public class CustomerExcelBuilder extends AbstractExcelView {
 	protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 	
+		@SuppressWarnings("unchecked")
 		List<CustomerModel> customerList=(List<CustomerModel>) model.get("customerList");
 		
 		int rowcount=0;
@@ -72,7 +72,8 @@ public class CustomerExcelBuilder extends AbstractExcelView {
 
 		
 		//decimal format
-		DecimalFormat f=new DecimalFormat("##.00");		
+		DecimalFormat f=new DecimalFormat("##.00");	
+		System.out.println(f);
 		
 		//detail
 		for(CustomerModel customerModel:customerList){

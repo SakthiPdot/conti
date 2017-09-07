@@ -32,6 +32,7 @@ public class UserExcelBuilder extends AbstractExcelView {
 	protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 	
+		@SuppressWarnings("unchecked")
 		List<User> userList=(List<User>) model.get("userList");
 		
 		int rowcount=0;

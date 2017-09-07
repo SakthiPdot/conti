@@ -33,6 +33,7 @@ public class LocationExcelBuilder extends AbstractExcelView	 {
 			HttpServletResponse response) throws Exception {
 		
 		System.out.println("++ inside excel product");		
+		@SuppressWarnings("unchecked")
 		List<Location> locationList=(List<Location>) model.get("locationList");
 		
 		int rowcount=0;

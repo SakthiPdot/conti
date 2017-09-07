@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.conti.setting.usercontrol.User;
 
 /**
  * @Project_Name conti
@@ -45,6 +44,7 @@ public class UserLogDaoImpl implements UserLogDao {
 		String hql = "FROM UserLogModel WHERE user_id ="+ user_id + " AND link ='"+ link +"'";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
+		@SuppressWarnings("unchecked")
 		List<UserLogModel> userloglist = (List<UserLogModel>) query.list();
 		if(userloglist != null && !userloglist.isEmpty()) {
 			return userloglist.get(0);

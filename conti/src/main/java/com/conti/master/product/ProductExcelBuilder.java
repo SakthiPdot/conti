@@ -31,6 +31,7 @@ public class ProductExcelBuilder extends AbstractExcelView {
 			HttpServletResponse response) throws Exception {
 	
 		System.out.println("++ inside excel product");		
+		@SuppressWarnings("unchecked")
 		List<Product> productList=(List<Product>) model.get("ProductList");
 		
 		int rowcount=0;
