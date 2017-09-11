@@ -95,6 +95,9 @@ public interface ShipmentDao
 
 	public List<ShipmentModel> getShipemntSorting1004SA(String name, String order);
 	public List<ShipmentModel> getShipemntSorting1004MS(String name, String order, int branch_id);
+	public List<ShipmentModel> getShipment4Report(String fromtoday, String todate, String datecondition, String frombranch,
+			String tobranch, String branchcondition, String from_lrno, String to_lrno, String lrcondition, String product_id, String paymentmode,
+			String status);
 	
 }
 

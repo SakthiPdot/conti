@@ -1,6 +1,6 @@
 
 
-contiApp.controller('ReportController',['$scope','$http','$q','$timeout','BranchService','ShipmentService','ConfirmDialogService',function($scope,$http,$q,$timeout,BranchService,ShipmentService,ConfirmDialogService)
+contiApp.controller('ReportController',['$scope','$http','$q','$timeout','BranchService','ReportService','ShipmentService','ConfirmDialogService',function($scope,$http,$q,$timeout,BranchService,ReportService,ShipmentService,ConfirmDialogService)
 	{
 		
 		$("#screen_report").addClass("active-menu");
@@ -13,9 +13,22 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		fetchAllShipmentforView();
 		
 		
+		self.report = {
+				datecondition : 'AND',
+				frombranch : '',
+				tobranch : '',
+				branchcondition : 'AND',
+				from_lrno : '',
+				to_lrno : '',
+				lrcondition : 'AND',
+				product_id : '',
+				paymentmode : '',
+				status : ''
+				
+		};
 		
 		
-	
+	self.filterReport = {};
 	//============ Fetch All Branches Function Begin =======//	
 		function fetchAllBranches() {
 			
@@ -191,7 +204,14 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 self.report.todate = $('.datepicker2').val();
 			 self.report.from_lrno = $('#from_lrno_value').val();
 			 self.report.to_lrno = $('#to_lrno_value').val();
-			  
+			 ReportService.fetch4All(self.report)
+			 	.then(
+			 			function(shipment){
+			 				self.filterReport = shipment;
+			 			},function(errResponse){
+			 				console.log(errResponse);
+			 			}
+			 		);
 			 console.log(self.report);
 		 }
 	}

@@ -143,9 +143,9 @@
 				
 				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_date || filter_all" >
 					<div class="col-lg-3 report_class">
-						<span>From</span>
+						<span>From</span>  <span class="required">*</span>
 					       <div class="form-group input-group">
-                                  <input type="text" id="dates" class="form-control datepicker1" data-ng-model="ctrl.report.fromtoday">
+                                  <input type="text" id="dates" class="form-control datepicker1" data-ng-model="ctrl.report.fromtoday" required>
                                   <span class="input-group-btn">
                                       <button class="btn btn-default " type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -154,9 +154,9 @@
 					</div>
 					
 					<div class="col-lg-3 report_class">
-						<span>To</span>
+						<span>To</span> <span class="required">*</span>
 					       <div class="form-group input-group">
-                                  <input type="text" class="form-control datepicker2" data-ng-model="ctrl.report.todate | date : 'yyyy-MM-dd' ">
+                                  <input type="text" class="form-control datepicker2" data-ng-model="ctrl.report.todate | date : 'yyyy-MM-dd' " required>
                                   <span class="input-group-btn">
                                       <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -166,9 +166,11 @@
 					
 					<div class="col-lg-3 report_class">
 					<span>Condition</span>
-						<select class="form-control" data-ng-model="ctrl.report.datecondition" data-ng-options="datecondition for datecondition in ['AND','OR']">
-							<option value="">-- Select --</option>							
+						<select class="form-control" data-ng-model="ctrl.report.datecondition"
+						 data-ng-options="datecondition for datecondition in ['AND','OR']">
+												
 						</select>
+						
 					</div>
 					
 					<div class="col-lg-3 report_class">
@@ -300,7 +302,7 @@
 				<div class="col-lg-12 noPaddingLeft report_padding">
 					
 					<div class="col-lg-3 branchclass">
-						<span class="text-padding">Payment Type </span>
+						<span class="text-padding">Payment Mode </span>
 						<select class="form-control" data-ng-model="ctrl.report.paymentmode" data-ng-options="paymentmode for paymentmode in ['Cash','Credit']">
 							<option value="">-- Select --</option>
 							
@@ -361,7 +363,7 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>S.No</th>
+                                            
                                             <th>LR No</th>
                                             <th>Product</th>
                                             <th>Origin</th>
@@ -375,18 +377,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="odd gradeX">
-                                            <td>1</td>
-                                            <td>LR 0025</td>
-                                            <td>Product</td>
-                                            <td>Coimbatore</td>
-                                            <td>Chennai</td>
-                                            <td>Kali</td>
-                                            <td>Durai</td>
-                                            <td>2</td>
-                                            <td>100Kg</td>
-                                            <td>Parcel</td>
-                                            <td>Delivered</td>
+                                        <tr class="odd gradeX" data-ng-repeat = "report in ctrl.filterReport">
+                                            
+                                            <td>{{report.lrno_prefix}}</td>
+                                            <td>
+                                            		<div data-ng-repeat="shipmentDet in report.shipmentDetail">
+														{{shipmentDet.product.product_name}}<span
+															data-ng-if="!($last)">,</span>
+													</div>
+											</td>
+                                            <td>{{report.sender_branch.branch_name}}</td>
+                                            <td>{{report.consignee_branch.branch_name}}</td>
+                                            <td>{{report.sender_customer.customer_name}}</td>
+                                            <td>{{report.consignee_customer.customer_name}}</td>
+                                            <td>{{report.numberof_parcel}}</td>
+                                            <td>{{report.chargeable_weight}} Kg.</td>
+                                            <td>{{report.service.service_name}}</td>
+                                            <td>{{report.status}}</td>
                                         </tr>
                                  
                                     </tbody>
@@ -416,7 +423,7 @@
     
     <script src="resources/custom/js/custom.js"></script>
     <script type="text/javascript" src="resources/custom/js/reports/report_controller.js"></script>
-  <!--   <script type="text/javascript" src="resources/custom/js/reports/report_service.js"></script> -->
+    <script type="text/javascript" src="resources/custom/js/reports/report_service.js"></script> 
     <script src="resources/custom/js/shipment/shipment_service.js"></script>
     <script src="resources/custom/js/branch_master/branch_service.js"></script>
     <script src="resources/custom/js/confirmDialog.js"></script>
