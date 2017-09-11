@@ -76,7 +76,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		int recCount=((Long)sessionFactory.getCurrentSession().
 				createQuery("select count(*) from ShipmentModel WHERE obsolete='N'"
 						+ "and status ='Received'"
-						+ "and sender_branch.branch_id='"+branch_id+"' ").
+						+ "and consignee_branch.branch_id='"+branch_id+"' ").
 				uniqueResult()).intValue();
 		return recCount;
 	}
@@ -123,7 +123,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	public List<ShipmentModel> fetchShipmentWithLimitStaffReceipt(int from, int to, String order,int branch_id) {
 		return sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel where obsolete ='N'"
-						+ "and sender_branch.branch_id='"+branch_id+"' "
+						+ "and consignee_branch.branch_id='"+branch_id+"' "
 						+ "and status ='Received'"
 						+ "order by IFNULL(updated_datetime,created_datetime) "+order)
 					.setFirstResult(from).setMaxResults(to).list();
@@ -224,7 +224,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		
 		return sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel where  obsolete ='N' "
-							+ "and sender_branch.branch_id='"+branchId+"' "
+							+ "and consignee_branch.branch_id='"+branchId+"' "
 							+ "and status ='Received'"
 						    + "order by ("+name+")"+  order )
 				.setMaxResults(100)
@@ -278,7 +278,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
-						+ "and sender_branch.branch_id='"+branchid+"' "
+						+ "and consignee_branch.branch_id='"+branchid+"' "
 						+ "and status ='Received'")
 				.list();
 		
@@ -309,7 +309,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
 						+ "and  lrno_prefix LIKE '%"+searchString+ "%'"
-								+ "and sender_branch.branch_id='"+branch_id+"' "
+								+ "and consignee_branch.branch_id='"+branch_id+"' "
 								+ "and status ='Received'")
 				
 				.setMaxResults(100).list();
@@ -477,6 +477,38 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		if(paymode!=null && paymode!="null" && !paymode.trim().isEmpty())
 			queryString.append(" AND pay_mode='"+paymode+"' ");
 		
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment=(List<ShipmentModel>)sessionFactory.getCurrentSession()
+			.createQuery(queryString.toString()).list();
+		
+		return listShipment;
+	}
+	
+	
+	//----------------------------------------------Receipt Filter condition start-------------------------------------------------------
+	@Override
+	@Transactional
+	public List<ShipmentModel>getShipmentByConditionStaff(int branch_id,String frombranch,String tobranch,String fromdate,
+			String todate,String service,String paymode)
+	{
+		
+		StringBuilder queryString =new StringBuilder();
+		queryString.append("from ShipmentModel WHERE obsolete = 'N' and status ='Received'");
+		if(frombranch!=null && frombranch!="null" &&!frombranch.trim().isEmpty())
+			queryString.append(" AND sender_branch.branch_id='"+frombranch+"' ");
+		if(tobranch!=null && tobranch!="null" && !tobranch.trim().isEmpty())
+			queryString.append(" AND consignee_branch.branch_id='"+tobranch+"' ");
+		if(fromdate!=null && fromdate!="null" && !fromdate.trim().isEmpty())
+			queryString.append(" AND shipment_date >= '"+fromdate+" 00:00:00'");
+		if(todate!=null && todate!="null" && !todate.trim().isEmpty())
+			queryString.append(" AND shipment_date <= '"+todate+" 23:59:59'");
+		if(service!=null && service!="null" && !service.trim().isEmpty())
+			queryString.append(" AND service.service_name='"+service+"' ");
+		if(paymode!=null && paymode!="null" && !paymode.trim().isEmpty())
+			queryString.append(" AND pay_mode='"+paymode+"' ");
+		
+			queryString.append(" AND consignee_branch.branch_id =" + branch_id+"' ");
+			
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment=(List<ShipmentModel>)sessionFactory.getCurrentSession()
 			.createQuery(queryString.toString()).list();
