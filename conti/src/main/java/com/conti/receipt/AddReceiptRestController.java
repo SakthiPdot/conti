@@ -364,7 +364,6 @@ public class AddReceiptRestController
 		HttpSession session = request.getSession();
 		UserInformation userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();
-		String branch_id = userInformation.getUserBranchId();
 		
 		User user =userDao.get(Integer.parseInt(userInformation.getUserId()));
 		
