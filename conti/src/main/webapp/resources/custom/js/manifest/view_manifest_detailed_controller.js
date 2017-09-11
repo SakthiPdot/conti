@@ -121,12 +121,10 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			self.confirm_msg = self.confirm_title+ ' the data?';
 			self.confirm_btnclass = 'btn-warning';
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-				.then(
-						function (res) {
+				.then(function (res) {
 			 	        	reset();
-			 	        	
-						}
-					);
+			 	        }
+				);
 		}
 	//---------------------Customer Master drawer close begin-----------
 	function manifestDetailed(manifest_id){
@@ -310,6 +308,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			  .then(function(filtermanifest){
 					  self.Filtermanifests=filtermanifest;
 					  console.log(filtermanifest);
+					  //pagination();
 			  },
 			  function (errRes){
 				  console.log('Error while Searching LR Number....');

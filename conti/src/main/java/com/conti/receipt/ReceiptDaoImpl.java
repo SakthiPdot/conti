@@ -67,7 +67,8 @@ public class ReceiptDaoImpl implements ReceiptDao
 		@SuppressWarnings("unchecked")
 		List<ReceiptDetail> listReceiptDetail = (List<ReceiptDetail>) sessionFactory.getCurrentSession()
 				.createQuery("from ReceiptDetail WHERE shipmentModel.consignee_branch.branch_id=" + branch_id+ 
-						" and shipmentModel.status in('"+ConstantValues.DELIVERED+"','"+ConstantValues.PENDING+"') ").setMaxResults(100).list();
+						" and shipmentModel.status in('"+ConstantValues.DELIVERED+"','"+ConstantValues.PENDING+"')" 
+						+" ORDER BY shipmentModel.consignee_branch.branch_name,shipmentModel.created_datetime DESC").setMaxResults(100).list();
 		return listReceiptDetail;
 		
 	}

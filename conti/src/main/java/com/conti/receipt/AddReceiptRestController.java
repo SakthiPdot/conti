@@ -364,15 +364,27 @@ public class AddReceiptRestController
 		HttpSession session = request.getSession();
 		UserInformation userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();
-		
+	
 		
 		JSONObject obj=new JSONObject(filter);
-	
+
+		List<ShipmentModel> shipmentModel ;
 		try 
 		{
 			
-			List<ShipmentModel> shipmentModel = shipmentDao.getShipmentByCondition(obj.get("fromBranch").toString(),obj.get("toBranch").toString(),
-					obj.get("fromDate").toString(),obj.get("toDate").toString(),obj.get("service").toString(),obj.get("paymentMode").toString());
+			
+			/*if(user.getRole().getRole_Name().trim().equals(ConstantValues.ROLE_SADMIN.trim())){	*/
+				shipmentModel =  shipmentDao.getShipmentByCondition(obj.get("fromBranch").toString(),obj.get("toBranch").toString(),
+						obj.get("fromDate").toString(),obj.get("toDate").toString(),obj.get("service").toString(),obj.get("paymentMode").toString());
+				
+			/*}else{
+				shipmentModel = 
+				 shipmentDao.getShipmentByConditionStaff(Integer.parseInt(branch_id),obj.get("fromBranch").toString(),obj.get("toBranch").toString(),
+							obj.get("fromDate").toString(),obj.get("toDate").toString(),obj.get("service").toString(),obj.get("paymentMode").toString());
+					
+			}
+			*/
+			
 			
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			

@@ -13,7 +13,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 	$("#screen_customer").addClass("active-menu");
 	var self=this;
 	self.customers=[];
-	self.Filtercustomer = [];
+	self.Filtercustomers = [];
 	self.customer={};
 	
 	self.heading = "Master";
@@ -58,16 +58,6 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 
 	}
 	
-	/*customerName  customer_controller.js:62:3
-	customerCode  customer_controller.js:62:3
-	customerType  customer_controller.js:62:3
-	custBranch  customer_controller.js:62:3
-	custCompanyName  customer_controller.js:62:3
-	custAddress  customer_controller.js:62:3
-	custPhoneNumber  customer_controller.js:62:3
-	custEmail  customer_controller.js:62:3
-	custStatus  customer_controller.js:62:3*/
-	
 	function resetSorting(){
 		$scope.customerName  =false;
 		$scope.customerCode  =false;
@@ -97,20 +87,6 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 					});
 		}
 	}
-//	function close() {
-//		self.confirm_title = 'Cancel';
-//		self.confirm_type = BootstrapDialog.TYPE_WARNING;
-//		self.confirm_msg = self.confirm_title+ ' without saving data?';
-//		self.confirm_btnclass = 'btn-warning';
-//		ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-//			.then(
-//					function (res) {
-//		 	        	reset();
-//		 	        	newOrClose();
-//					}
-//				);
-//	}
-
 	
 //---------------------Customer Master drawer close begin-----------
 	
@@ -147,6 +123,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 			.then(
 					function (customer) {
 						self.customers = customer;
+						self.Filtercustomers=self.customers;
 						/*fetchAllBranches();
 						fetchAllLocations();	*/	
 						pagination();
@@ -517,24 +494,23 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     			self.confirm_msg = self.confirm_title+ ' selected record(s)?';
     			self.confirm_btnclass = 'btn-danger';
     			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-    			.then(
-    						function (res) {
-    							var inactive_id = [];
-    			    			for(var i=0; i<self.selected_customer.length; i++) {
-    			    				inactive_id[i] = self.selected_customer[i].customer_id;        				
-    			    			}
-    			    			CustomerService.makeinActive(inactive_id)
-    								.then(function(response) {
-    											fetchAllCustomers();
-    											self.selected_customer = [];
-    											self.message ="Selected record(s) has in inactive status..!";
-    											successAnimate('.success');
-    										}, function(errResponse) {
-    											console.log(errResponse);    								
-    										}
-    									);
-    						}
-    					);
+    			.then(function (res) {
+						var inactive_id = [];
+		    			for(var i=0; i<self.selected_customer.length; i++) {
+		    				inactive_id[i] = self.selected_customer[i].customer_id;        				
+		    			}
+		    			CustomerService.makeinActive(inactive_id)
+						.then(function(response) {
+									fetchAllCustomers();
+									self.selected_customer = [];
+									self.message ="Selected record(s) has in inactive status..!";
+									successAnimate('.success');
+								}, function(errResponse) {
+									console.log(errResponse);    								
+								}
+							);
+						}
+				);
     		}
     	}
     }
@@ -727,39 +703,35 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     
   //---------------------------- Register search begin ---------------------------------------//
     function registerSearch(searchkey) {
-    	
     	if ( searchkey.length == 0 ) {
     		self.Filtercustomers = self.customers;
-    	}else if( searchkey.length > 3 ) {
+    	}else if( searchkey.length > 2 ) {
     		CustomerService.registerSearch(searchkey)
-	    		.then(
-						function (filterCust) {
-							self.FilterCustomer = filterCust;
-							console.log(filterCust);
-						}, 
-						function (errResponse) {
-							console.log('Error while fetching Customers');
-						}
-					);
+	    		.then(function (filterCust) {
+					self.Filtercustomers =filterCust;
+					console.log(self.Filtercustomers);
+					}, 
+					function (errResponse) {
+						console.log('Error while fetching Customers');
+					}
+	    		);
     	} else {
-    		
-    		console.log(searchkey);
-    		
-    		self.Filtercustomers = _.filter(self.customers,
-					 function(item){  
-						 return searchUtil(item,searchkey); 
-					 });
-			}
-    	
-    }
+    		self.Filtercustomers = _.filter(self.customers,function(item){  
+				 return searchUtil(item,searchkey); 
+			 });
+		}
+   }
     
     function searchUtil(item,toSearch)
 	{
     	var success = false;
-		if ((item.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.customer_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+		if ((item.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+//				|| (item.customer_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
-				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
-				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
+				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
 			//	|| (item.customer_email.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)) {
 				||((String(item.customer_mobileno)).indexOf(toSearch) > -1 ))
 			

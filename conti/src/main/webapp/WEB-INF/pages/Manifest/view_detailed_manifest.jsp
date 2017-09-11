@@ -159,7 +159,7 @@
                             		</div>
                             		
                             		<div class=" col-md-12 branchclass">
-                            			<span class="text-paddingwidth"> Name <span class="required">*</span></span>
+                            			<span class="text-paddingwidth"> Name </span>
                             		    <input type="text" class="form-control"
                             		    	data-ng-model = "ctrl.shipment.sender_customer.customer_name"
                             		    	data-ng-disabled = "true"
@@ -176,7 +176,7 @@
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Mobile Number <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Mobile Number </span>
                             		    <input type="text" class="form-control"
                             		    	data-ng-model = "ctrl.shipment.sender_customer.customer_mobileno"
                             		    	data-ng-disabled = "true"
@@ -187,7 +187,7 @@
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Address line1 <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Address line1 </span>
                             		   <input type="text" class="form-control"
                             		    	data-ng-model = "ctrl.shipment.sendercustomer_address1"
                             		    	data-ng-disabled = "true"
@@ -207,7 +207,7 @@
                             		</div>
                             		
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Location <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Location </span>
                             		    <input type="text" class="form-control"
                             		    	data-ng-model = "ctrl.shipment.sender_location.location_name"
                             		    	data-ng-disabled = "true"
@@ -304,7 +304,7 @@
                         <div class="panel-body">
                           	
                           		   <div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">To Branch <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">To Branch </span>
                             		    
                             		    <input type="text" class="form-control" maxlength="50"
                             		    	data-ng-model = "ctrl.shipment.consignee_branch.branch_name"
@@ -313,7 +313,7 @@
                             		</div>
                           	
                           	      <div class=" col-md-12 branchclass">
-                            			<span class="text-paddingwidth"> Name <span class="required">*</span></span>
+                            			<span class="text-paddingwidth"> Name </span>
                             		    <input type="text" class="form-control" maxlength="50"
                             		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_name"
                             		    	data-ng-disabled = "true"
@@ -330,7 +330,7 @@
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Mobile Number <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Mobile Number </span>
                             		    <input type="text" class="form-control" maxlength="10"
                             		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_mobileno"
                             		    	data-ng-disabled = "true"
@@ -341,7 +341,7 @@
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Address line1 <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Address line1 </span>
                             		   <input type="text" class="form-control" maxlength="50"
                             		    	data-ng-model = "ctrl.shipment.consigneecustomer_address1"
                             		    	data-ng-disabled = "true"
@@ -359,7 +359,7 @@
 	                            		</div>
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Location <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Location </span>
                             		    <input type="text" class="form-control" maxlength="50"
 	                            		    	data-ng-model = "ctrl.shipment.consignee_location.location_name"
 	                            		    	data-ng-disabled = "true"
@@ -499,7 +499,7 @@
                                     <div class="col-md-12">
                                     	
 	                            		<div class="col-md-6 branchclass">
-	                            			<span class="text-paddingwidth"> Service <span class="required">*</span></span>
+	                            			<span class="text-paddingwidth"> Service </span>
 	                            		    			    
 											 <input type="text" class="form-control" maxlength="15"
                             		    	data-ng-model = "ctrl.shipment.service.service_name"
@@ -508,7 +508,7 @@
 	                            		    
 	                            		</div>
 	                            		<div class=" col-md-6 branchclass">
-	                            			<span class="text-paddingwidth"> Status <span class="required">*</span></span>
+	                            			<span class="text-paddingwidth"> Status </span>
 	                            		   <select class="form-control" data-ng-options = "status for status in ['Booked', 'Received','Pending','Return','Delivered','Intransit','Missing']" 
 	                            		   		data-ng-model = "ctrl.shipment.status"
 	                            		   		data-ng-disabled = "true"
@@ -520,7 +520,7 @@
                             		
                                     <div class="col-md-12">
                                     	<div class=" col-md-6 branchclass">
-                            		    <span class="text-paddingwidth">No.of Parcel <span class="required">*</span></span>
+                            		    <span class="text-paddingwidth">No.of Parcel </span>
 	                            		    <input type="text" class="form-control" maxlength="4"
 	                            		    	data-ng-model = "ctrl.shipment.numberof_parcel"
 	                            		    	data-ng-disabled = "true"
@@ -707,7 +707,7 @@
                         <div class="panel-body">
                             		 		
                             		<div class="col-md-12">
-                            			<span class="text-paddingwidth">Shipment Value <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Shipment Value </span>
                             			
                             			<div class = "form-group input-group">
 	                            		    <input type="text" class="form-control" min = "1" max="999999.99"
@@ -804,7 +804,7 @@
                             		</div>                           		
                             		
                             		<!-- <div class="col-md-12">
-                            			<span class="text-paddingwidth">Handling Charge <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Handling Charge </span>
                             		    <div class = "form-group input-group">
 	                            		    <input type="text" class="form-control"
 	                            		    	data-ng-model = "ctrl.shipment.handling_charge"
@@ -815,7 +815,7 @@
                             		</div> -->
                             		
                             		<div class="col-md-12">
-                            			<span class="text-paddingwidth">Tax payable on Reverse Charge <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Tax payable on Reverse Charge </span>
                             			     <select class="form-control" data-ng-options = "tax_payable for tax_payable in ['Yes', 'No']" 
                             			     	data-ng-model = "ctrl.shipment.taxin_payable"
 					                            data-ng-disabled = "true" required>
@@ -1085,7 +1085,7 @@
                                         	 data-ng-model="manifestdetailed.select"
                                         	 ></td>
                                             <td data-ng-show="setting_sltnumber" >{{$index+1}}</td>
-                                            <td data-ng-show="setting_date">{{manifestdetailed.shipmentModel.created_datetime}}</td>
+                                            <td data-ng-show="setting_date">{{manifestdetailed.shipmentModel.created_datetime.slice(0,-10)}}</td>
                                             <td data-ng-show="setting_lrnumber">{{manifestdetailed.shipmentModel.lrno_prefix}}</td>
                                             <td data-ng-show="setting_product">
                                          		 <div data-ng-repeat = "shipmentdet in manifestdetailed.shipmentModel.shipmentDetail">

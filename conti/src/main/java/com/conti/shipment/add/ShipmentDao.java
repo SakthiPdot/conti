@@ -61,6 +61,7 @@ public interface ShipmentDao
 	
 //===========================Add Receipt======================================
 	public List<ShipmentModel>getShipmentByCondition(String from,String to,String frombranch,String tobranch,String service,String paymode);
+	public List<ShipmentModel>getShipmentByConditionStaff(int branch_id,String from,String to,String frombranch,String tobranch,String service,String paymode);
 	
 	public List<ShipmentModel>searchLRnumber(String searchkey);
 	

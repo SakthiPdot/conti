@@ -180,7 +180,7 @@ public class BranchDaoImpl implements BranchDao
 	public List<BranchModel> getBranchBy100() {
 		@SuppressWarnings("unchecked")
 		List<BranchModel> listget = (List<BranchModel>) sessionFactory.getCurrentSession()
-				.createQuery("from BranchModel where obsolete = 'N'"+" ORDER BY IFNULL(created_datetime,created_datetime) DESC").setMaxResults(100).list();
+				.createQuery("from BranchModel where obsolete = 'N' ORDER BY IFNULL(created_datetime,created_datetime) DESC").setMaxResults(100).list();
 		return listget;
 	}
 

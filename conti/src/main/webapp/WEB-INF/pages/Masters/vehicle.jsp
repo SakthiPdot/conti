@@ -137,7 +137,7 @@
 			           		<input type="hidden" id = "branch_id" name ="branch_id" value = "{{branch_name.originalObject}}" />
 			                  
 			                  <span>Vehicle Model No<span class="required"> *</span></span>
-			                 <input type="text" class="form-control" maxlength="30" data-ng-model="ctrl.vehicle.vehicle_modelno" data-trigger="focus" 
+			                 <input type="text" class="form-control" maxlength="25" data-ng-model="ctrl.vehicle.vehicle_modelno" data-trigger="focus" 
 			                 onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Model No" required />
 			                  
 			                  <span> Vehicle Type<span class="required"> *</span></span>

@@ -120,7 +120,7 @@
 						              minlength="3"
 						              field-required="true"
 						              data-trigger="focus" data-toggle="popover" 
-						              data-placement="top" data-content="Please enter branch name"
+						              data-placement="top" data-content="Please Enter Branch Name"
 						              onKeyPress="return CheckIsCharacter(event)"
 						              input-class="form-control form-control-small" tabindex = "-1" data-ng-class = "{'disabled' : ctrl.user.user_id != null}">
               				</angucomplete-alt>

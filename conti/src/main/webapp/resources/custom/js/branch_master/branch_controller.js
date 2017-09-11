@@ -714,23 +714,19 @@ contiApp.controller('BranchController', ['$scope','$timeout','BranchService','Lo
     		self.Filterbranches = self.branches;
     	}else if( searchkey.length > 3 ) {
     		BranchService.registerSearch(searchkey)
-	    		.then(
-						function (filterBranch) {
-							self.Filterbranches = filterBranch;
-						}, 
-						function (errResponse) {
-							console.log('Error while fetching branches');
-						}
-					);
+	    		.then(function (filterBranch) {
+						self.Filterbranches = filterBranch;
+					}, 
+					function (errResponse) {
+						console.log('Error while fetching branches');
+					}
+				);
     	} else {
-    		
-    		self.Filterbranches = _.filter(self.branches,
-					 function(item){  
-						 return searchUtil(item,searchkey); 
-					 });
-				
-    		}
-    	
+		self.Filterbranches = _.filter(self.branches,
+			 function(item){  
+				 return searchUtil(item,searchkey); 
+			 });
+		}
     }
     
     function searchUtil(item,toSearch)

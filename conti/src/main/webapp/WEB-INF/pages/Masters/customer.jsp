@@ -418,7 +418,8 @@
 	                                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										</form>
 									<div class = "row paddingtop">
-	                                    <div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Customer name" data-ng-model = "ctrl.cust_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.cust_regSearch)"/></div>
+	                                    <div class = "col-md-12"><input type = "text" class="form-control" name = "search" placeholder = "Ex: Customer name" 
+	                                    data-ng-model = "ctrl.cust_regSearch" data-ng-keyup = "ctrl.registerSearch(ctrl.cust_regSearch)"/></div>
                                       </div>
                                 </div>
                               </div>

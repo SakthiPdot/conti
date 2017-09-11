@@ -102,17 +102,19 @@
 			                	<span class="makeRed" data-ng-show="branchnamewrong">Branch name Already Existing..!<br><br></span>
 			                	
 			                	<span>Branch Code<span style="color:red">&nbsp;*</span></span>			                	
-			                	<input type="text" class="form-control" minlength="4" maxlength="4" onKeyPress="return CheckIsAlphaNumeric(event)" required
+			                	<input type="text" class="form-control" minlength="4" maxlength="4" onKeyPress = "return CheckIsAlphaNumeric(event)" required
 			                	data-ng-model="ctrl.branch.branch_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch code">
 			                	
 			                		                	
 			                	<span>Address Line 1<span class="required">  *</span></span>			                	
 			                	<input type="text" class="form-control" maxlength="100" 
-			                	data-ng-model="ctrl.branch.branch_addressline1" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 1" required>
+			                	data-ng-model="ctrl.branch.branch_addressline1" data-trigger="focus" data-toggle="popover" 
+			                	data-placement="top" data-content="Please Enter Address line 1" required>
 			                	
 			                	<span>Address Line 2</span>			                	
 			                	<input type="text" class="form-control" maxlength="100" 
-			                	data-ng-model="ctrl.branch.branch_addressline2" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Address line 2">
+			                	data-ng-model="ctrl.branch.branch_addressline2" data-trigger="focus" data-toggle="popover"
+			                	data-placement="top" data-content="Please Enter Address line 2">
 			                	
 			                	<span>Location<span class="required">  *</span></span>			                	
 			                	<angucomplete-alt id="location_name"

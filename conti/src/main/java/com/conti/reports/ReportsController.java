@@ -1,7 +1,10 @@
 package com.conti.reports;
 
 
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+>>>>>>> branch 'master' of https://github.com/Pointdot2017/conti.git
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,6 +82,7 @@ public class ReportsController {
 	public ResponseEntity<List<ShipmentModel>> fetch4all(@RequestBody String shipment, HttpServletRequest request){
 		userInformation = new UserInformation(request);
 		/*try{*/
+<<<<<<< HEAD
 		JSONObject json = new JSONObject(shipment);
 			List<ShipmentModel> filterShip = new ArrayList<ShipmentModel>();
 			List<ShipmentModel> shipmentList = shipmentDao.getShipment4Report(json.get("fromtoday").toString(), json.get("todate").toString(), 
@@ -103,6 +107,17 @@ public class ReportsController {
 				filterShip.addAll(shipmentList);
 			}
 			return new ResponseEntity<List<ShipmentModel>> (shipmentList, HttpStatus.OK);
+=======
+			JSONArray jsonarraya = new JSONArray(shipment);
+			JSONObject json = new JSONObject(jsonarraya);
+			System.out.println("####################################################");
+			System.out.println(json.toString());
+			List<ShipmentModel> shipmentList = shipmentDao.getShipment4Report(json.get("fromtoday").toString(), json.get("todate").toString(), 
+					json.get("datecondition").toString(), json.get("frombranch").toString(), json.get("tobranch").toString(), json.get("branchcondition").toString(), 
+					json.get("from_lrno").toString(), json.get("to_lrno").toString(), json.get("lrcondition").toString(), json.get("product_id").toString(), 
+					json.get("paymentmode").toString(), json.get("status").toString());
+			return new ResponseEntity<List<ShipmentModel>> (shipmentList,HttpStatus.OK);
+>>>>>>> branch 'master' of https://github.com/Pointdot2017/conti.git
 		/*}catch(Exception e){
 			return new ResponseEntity<List<ShipmentModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}*/
