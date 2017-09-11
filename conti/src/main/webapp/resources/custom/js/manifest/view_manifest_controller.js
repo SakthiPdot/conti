@@ -151,7 +151,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		}
 		
 		
-		
 		if(self.selected_manifest.length == 0 ) 
 		{
 	   		self.message ="Please select atleast one record for delete..!";

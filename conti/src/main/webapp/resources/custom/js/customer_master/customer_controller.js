@@ -756,7 +756,8 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     function searchUtil(item,toSearch)
 	{
     	var success = false;
-		if ((item.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.customer_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+		if ((item.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+//				|| (item.customer_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
 				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)

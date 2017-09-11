@@ -126,11 +126,12 @@ public class ViewReceiptRestController {
 		
 		ModelAndView model = new ModelAndView();
 		List<ReceiptDetail> receiptDetail=receiptDao.getAllReceipt_view(Integer.parseInt(branch_id));
-		int id=receiptDetail.get(0).getShipmentModel().getConsignee_branch().getBranch_id();
-		if (id!=Integer.parseInt(branch_id))
-		{
-			flag="false";
-		}
+		System.out.println("++++++++++++++++++++++++++++"+receiptDetail);
+//		int id=receiptDetail.get(0).getShipmentModel().getConsignee_branch().getBranch_id();
+//		if (id!=Integer.parseInt(branch_id))
+//		{
+//			flag="false";
+//		}
 		
 		try
 		{
