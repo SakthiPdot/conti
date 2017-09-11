@@ -206,7 +206,7 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
   //--------------------------- Register search begin -----------------------------//
     function registerSearch(searchkey) {
     	var deferred = $q.defer();
-    	
+    	console.log('call customer register search service')
     	$http({
     		method : 'POST',
     		url : 'register_search_customer',

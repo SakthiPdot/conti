@@ -95,17 +95,21 @@ public class CustomerRestController
 	{
 		userInformation = new UserInformation(request);
 		String username = userInformation.getUserName();
+		String userid = userInformation.getUserId();
 		String branch_id = userInformation.getUserBranchId();
+		List<CustomerModel> customers;
 		try 
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
-			List<CustomerModel> customers = customerDao.getAllCustomers(Integer.parseInt(branch_id));
-			if(customers.isEmpty())                      
-			{
-				return new ResponseEntity<List<CustomerModel>> (HttpStatus.NO_CONTENT);
+			User user = usersDao.get(Integer.parseInt(userid));
+			if (user.role.getRole_Name().equals(ConstantValues.ROLE_SADMIN)){
+				 customers = customerDao.getAllCustomers();
+			}else{
+			 customers = customerDao.getAllCustomers(Integer.parseInt(branch_id));
 			}
-			else 
-			{
+			if(customers.isEmpty()){
+				return new ResponseEntity<List<CustomerModel>> (HttpStatus.NO_CONTENT);
+			}else{
 				return new ResponseEntity<List<CustomerModel>> (customers, HttpStatus.OK);	
 			}			
 		} 
@@ -471,7 +475,6 @@ public class CustomerRestController
 		@RequestMapping(value = "register_search_customer", method=RequestMethod.POST)
 		public ResponseEntity<List<CustomerModel>> register_search_customer(@RequestBody String searchkey, HttpServletRequest request) 
 		{
-			
 			List<CustomerModel> customerList = customerDao.searchbyeyCustomer(searchkey);
 			return new ResponseEntity<List<CustomerModel>> (customerList, HttpStatus.OK);
 		}
