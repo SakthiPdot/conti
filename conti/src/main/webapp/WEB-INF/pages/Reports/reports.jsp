@@ -416,7 +416,7 @@
     
     <script src="resources/custom/js/custom.js"></script>
     <script type="text/javascript" src="resources/custom/js/reports/report_controller.js"></script>
-  <!--   <script type="text/javascript" src="resources/custom/js/reports/report_service.js"></script> -->
+    <script type="text/javascript" src="resources/custom/js/reports/report_service.js"></script> 
     <script src="resources/custom/js/shipment/shipment_service.js"></script>
     <script src="resources/custom/js/branch_master/branch_service.js"></script>
     <script src="resources/custom/js/confirmDialog.js"></script>

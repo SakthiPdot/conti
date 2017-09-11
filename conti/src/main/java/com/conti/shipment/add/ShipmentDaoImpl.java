@@ -756,15 +756,22 @@ public class ShipmentDaoImpl implements ShipmentDao {
 
 
 
-/*	@Override
-	public List<ShipmentModel> getShipment4Report(String query) {
+	@Override
+	public List<ShipmentModel> getShipment4Report(String fromtoday, String todate, String datecondition, String frombranch,
+			String tobranch, String branchcondition, String from_lrno, String to_lrno, String lrcondition, String product_id, String paymentmode,
+			String status) {
 		// TODO Auto-generated method stub
-		
 		@SuppressWarnings("unchecked")
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
-				.createQuery("FROM ShipmentModel WHERE obsolete = 'N' AND " + query).setMaxResults(100).list();
-		return listShipment;
-	}*/
+				.createQuery("FROM ShipmentModel WHERE obsolete = 'N' AND "
+						+ "shipment_date BETWEEN " + fromtoday + " AND " + todate + " " + datecondition
+						+ " sender_branch.branch_id BETWEEN " + frombranch + " AND " + tobranch + " " + branchcondition
+						+ " lr_number BETWEEN " + from_lrno + " AND " + to_lrno + " " + lrcondition
+						+ " product.product_id=" + product_id + " AND " + "pay_mode=" + paymentmode
+						+ " status=" + status).setMaxResults(100).list();
+		return null;
+	}
+
 	
 	
 	
