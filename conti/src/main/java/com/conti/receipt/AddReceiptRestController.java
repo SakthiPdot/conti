@@ -364,8 +364,7 @@ public class AddReceiptRestController
 		HttpSession session = request.getSession();
 		UserInformation userinfo = new UserInformation(request);
 		String username = userinfo.getUserName();
-		
-		User user =userDao.get(Integer.parseInt(userInformation.getUserId()));
+	
 		
 		JSONObject obj=new JSONObject(filter);
 
