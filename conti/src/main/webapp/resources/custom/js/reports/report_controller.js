@@ -207,11 +207,11 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 ReportService.fetch4All(self.report)
 			 	.then(
 			 			function(shipment){
-<<<<<<< HEAD
+
 			 				self.filterReport = shipment;
-=======
+
 			 				console.log(shipment);
->>>>>>> branch 'master' of https://github.com/Pointdot2017/conti.git
+
 			 			},function(errResponse){
 			 				console.log(errResponse);
 			 			}
