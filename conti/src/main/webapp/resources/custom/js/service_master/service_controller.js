@@ -499,7 +499,9 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 								var success = false;
 								
 								
-								if( (item.service_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) || (item.service_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)) {
+								if( (item.service_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)) 
+									/*	|| (item.service_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1))*/
+								{
 									success = true;
 								} else {
 									success = false ;
