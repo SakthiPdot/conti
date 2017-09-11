@@ -350,9 +350,16 @@ public class ManifestRestController
 		@RequestMapping(value="manifest_register_search", method=RequestMethod.POST)
 		public ResponseEntity<List<ManifestDetailedModel>>manifest_register_search(@RequestBody String search,HttpServletRequest request)
 		{
-			System.out.println("=================================== call");
-			List<ManifestDetailedModel> manifestDetailtedList=manifestDao.searchLRnumber(search);
-			System.out.println("=================================== call:"+manifestDetailtedList);
+			String userid = userInformation.getUserId();
+			User user = usersDao.get(Integer.parseInt(userid));
+			String branch_id = userInformation.getUserBranchId();
+			List<ManifestDetailedModel> manifestDetailtedList;
+			if (user.role.getRole_Name().equals(ConstantValues.ROLE_SADMIN)){
+				manifestDetailtedList=manifestDao.searchLRnumber(search);
+			}else{
+				manifestDetailtedList=manifestDao.searchLRnumber(search,Integer.parseInt(branch_id));
+			}
+			//System.out.println("=================================== call:"+manifestDetailtedList);
 			return new ResponseEntity<List<ManifestDetailedModel>> (manifestDetailtedList,HttpStatus.OK);
 		}
 		

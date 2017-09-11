@@ -18,6 +18,7 @@ public interface CustomerDao
 {
 	public List<CustomerModel> getCustomer(int branch_id, String customercategory);
 	public List<CustomerModel> getAllCustomers(int branch_id);
+	public List<CustomerModel> getAllCustomers();
 	public void saveOrUpdate(CustomerModel customer);
 	public CustomerModel findByMobileno(long mobileno);
 	public CustomerModel getCustomerbyId(int id);

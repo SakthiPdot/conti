@@ -42,12 +42,24 @@ public class CustomerDaoImpl implements CustomerDao
 		
 	}
 	
+	
+	@Override
+	@Transactional
+	public List<CustomerModel> getAllCustomers() {
+		@SuppressWarnings("unchecked")
+		List<CustomerModel> listCustomer = (List<CustomerModel>) sessionFactory.getCurrentSession()
+				.createQuery("from CustomerModel where obsolete ='N'"
+						+" ORDER BY IFNULL(created_datetime, updated_datetime) DESC").setMaxResults(100).list();
+		return listCustomer;
+	}
+	
+	
 	@Override
 	@Transactional
 	public List<CustomerModel> getAllCustomers(int branch_id) {
 		@SuppressWarnings("unchecked")
 		List<CustomerModel> listCustomer = (List<CustomerModel>) sessionFactory.getCurrentSession()
-				.createQuery("from CustomerModel where obsolete ='N'AND branchModel.branch_id =" + branch_id + " "
+				.createQuery("from CustomerModel where obsolete ='N'AND branchModel.branch_id =" + branch_id 
 						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC").setMaxResults(100).list();
 		return listCustomer;
 	}
@@ -109,12 +121,12 @@ public class CustomerDaoImpl implements CustomerDao
 		@SuppressWarnings("unchecked")
 		
 		List<CustomerModel> listcust = (List<CustomerModel>) sessionFactory.getCurrentSession()
-		.createQuery("from CustomerModel WHERE obsolete ='N' and customer_name LIKE '%" + search_key + "%'"
+		.createQuery("from CustomerModel WHERE obsolete ='N' and customer_name LIKE '%"+search_key+"%'"
 				+ " OR customer_code LIKE '%" + search_key + "%'"
 				+ " OR branchModel.branch_name LIKE '%" + search_key + "%' OR customer_addressline1 LIKE '%" + search_key + "%'"
 				+ " OR customer_addressline2 LIKE '%" + search_key + "%' OR location.location_name LIKE '%" + search_key + "%'"
 				+ " OR location.address.city LIKE '%" + search_key + "%' OR location.address.district LIKE '%" + search_key + "%'"
-				+ " OR location.address.state LIKE '%" + search_key + "%' OR customer_email LIKE '%" + "%'").list();
+				+ " OR location.address.state LIKE '%" + search_key + "%' OR customer_email LIKE '%" + search_key + "%'").list();
 		return listcust;
 		
 	}
