@@ -352,66 +352,176 @@
                 		<button type="submit" class="btn btn-primary" >View Report</button>
                 	</div>
                 	
-                	<!-- <div class="col-lg-4">
-                		<a class="btn btn-primary" data-ng-click = "ctrl.excelReport();" data-ng-disabled = "ctrl.excelFlag">	<i class="fa fa-file-excel-o"></i> Excel Report</a>
-                	</div> -->
                 </div>
                 </div>
                </form> 
-           			 <div class="col-lg-4">
-	           			 <form name="shipmentPrint" method = "POST" action = "downloadExcelForReport" class="padding-button">
-	           			 	<input type="hidden" name="filterShip" value = "{{ctrl.filterReport}}" />
-	           			 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                		<button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.excelFlag">	<i class="fa fa-file-excel-o"></i> Excel Report</button>
-	                	 </form>
-                	</div>
+           			
              <br>
              <div class="row">
                 <div class="col-lg-12">
+                	<div class="col-lg-6">
+                		<div class="pull-left">
+	                		<select name ="shownoofrec" data-ng-model="shownoofrec" 
+	                			data-ng-options = "noofrec for noofrec in [10, 15, 25, 50, 100]" class ="form-control" 
+	                			data-ng-change="ctrl.shownoofRecord()">
+						     </select>
+					     </div>
+                	</div>
+	                	
+		                	 <div class="col-xs-6 icons-button">
+		                	 	<div class="pull-right">
+			           			 <form name="shipmentPrint" method = "POST" action = "downloadExcelForReport" class="padding-button">
+			           			 	<input type="hidden" name="filterShip" value = "{{ctrl.filterReport}}" />
+			           			 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			           			 	<a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
+			           			 	<div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
+			           			 		<div class ="checkbox">
+                                     		<label>
+                                     			<i class = "fa" data-ng-class="{'fa-check': setting_lrno == true, 'fa-times': setting_lrno == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_lrno=true" data-ng-model="setting_lrno" /> L.R.No.												
+											</label>											
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_product == true, 'fa-times': setting_product == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_product=true" data-ng-model="setting_product" /> Product
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_origin == true, 'fa-times': setting_origin == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_origin=true" data-ng-model="setting_origin" /> Origin
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_destination == true, 'fa-times': setting_destination == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_destination=true" data-ng-model="setting_destination" /> Destination
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_sender == true, 'fa-times': setting_sender == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_sender=true" data-ng-model="setting_sender" /> Sender
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_consignee == true, 'fa-times': setting_consignee == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_consignee=true" data-ng-model="setting_consignee" /> Consignee
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_totparcel == true, 'fa-times': setting_totparcel == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_totparcel=true" data-ng-model="setting_totparcel" /> Total Parcel
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_weight == true, 'fa-times': setting_weight == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_weight=true" data-ng-model="setting_weight" /> Weight
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_service == true, 'fa-times': setting_service == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_service=true" data-ng-model="setting_service" /> Service
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_status == true, 'fa-times': setting_status == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_status=true" data-ng-model="setting_status" /> Status
+											</label>
+										</div>
+			           			 	</div>
+			           			 	<button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.excelFlag">	<i class="fa fa-file-excel-o"></i></button>
+			                		
+			                	 </form>
+			                	 </div>
+			                </div>
+	                	
+                	
                    <div class="col-lg-12">
                     <div class="panel panel-default">
                         <!-- <div class="panel-heading">
                         </div> -->
+                        
                         <div class="panel-body">
+                        
+                        
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             
-                                            <th>LR No</th>
-                                            <th>Product</th>
-                                            <th>Origin</th>
-                                            <th>Destination</th>
-                                            <th>Sender</th>
-                                            <th>Consignee</th>
-                                            <th>Total Parcel</th>
-                                            <th>Weight</th>
-                                            <th>Service</th>
-                                            <th>Status</th>
+                                            <th data-ng-show = "setting_lrno">L.R.No.</th>
+                                            <th data-ng-show = "setting_product">Product</th>
+                                            <th data-ng-show = "setting_origin">Origin</th>
+                                            <th data-ng-show = "setting_destination">Destination</th>
+                                            <th data-ng-show = "setting_sender">Sender</th>
+                                            <th data-ng-show = "setting_consignee">Consignee</th>
+                                            <th data-ng-show = "setting_totparcel">Total Parcel</th>
+                                            <th data-ng-show = "setting_weight">Weight</th>
+                                            <th data-ng-show = "setting_service">Service</th>
+                                            <th data-ng-show = "setting_status">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="odd gradeX" data-ng-repeat = "report in ctrl.filterReport">
+                                        <tr class="odd gradeX" data-ng-repeat = "report in ctrl.filterReport | limitTo:pageSize">
                                             
-                                            <td>{{report.lrno_prefix}}</td>
-                                            <td>
+                                            <td data-ng-show = "setting_lrno">{{report.lrno_prefix}}</td>
+                                            <td data-ng-show = "setting_product">
                                             		<div data-ng-repeat="shipmentDet in report.shipmentDetail">
 														{{shipmentDet.product.product_name}}<span
 															data-ng-if="!($last)">,</span>
 													</div>
 											</td>
-                                            <td>{{report.sender_branch.branch_name}}</td>
-                                            <td>{{report.consignee_branch.branch_name}}</td>
-                                            <td>{{report.sender_customer.customer_name}}</td>
-                                            <td>{{report.consignee_customer.customer_name}}</td>
-                                            <td>{{report.numberof_parcel}}</td>
-                                            <td>{{report.chargeable_weight}} Kg.</td>
-                                            <td>{{report.service.service_name}}</td>
-                                            <td>{{report.status}}</td>
+                                            <td data-ng-show = "setting_origin">{{report.sender_branch.branch_name}}</td>
+                                            <td data-ng-show = "setting_destination">{{report.consignee_branch.branch_name}}</td>
+                                            <td data-ng-show = "setting_sender">{{report.sender_customer.customer_name}}</td>
+                                            <td data-ng-show = "setting_consignee">{{report.consignee_customer.customer_name}}</td>
+                                            <td data-ng-show = "setting_totparcel">{{report.numberof_parcel}}</td>
+                                            <td data-ng-show = "setting_weight">{{report.chargeable_weight}} Kg.</td>
+                                            <td data-ng-show = "setting_service">{{report.service.service_name}}</td>
+                                            <td data-ng-show = "setting_status">{{report.status}}</td>
                                         </tr>
                                  
                                     </tbody>
                                 </table>
+                                
+                                <div class ="col-lg-6">
+                                	<div class="pull-left">
+                               			 Showing {{(currentPage*pageSize)+1}} to 
+                               			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
+                               			 of {{totalnof_records}} entries
+                               		</div>
+                                </div>
+									<div class="col-lg-6 icons-button"></div>
+									<div class="col-lg-6 icons-button">
+										<div class="pull-right">
+											<!-- <ul>
+                                   			<li class="btn btn-primary" data-ng-click = "paginatebyno($index+1)" data-ng-repeat = "i in counter(noofpages) track by $index"> {{$index+1}}</li>
+                                   		</ul>  -->
+											<!-- <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage"></pagination>  -->
+											<button class="btn btn-primary" type="button"
+												data-ng-disabled="previouseDisabled"
+												data-ng-click="firstlastPaginate(1)">First</button>
+
+											<button class="btn btn-primary" type="button"
+												data-ng-disabled="previouseDisabled"
+												data-ng-click="paginate(-1)">Previouse</button>
+											<button class="btn btn-primary" type="button"
+												data-ng-disabled="nextDisabled" data-ng-click="paginate(1)">Next</button>
+
+											<button class="btn btn-primary" type="button"
+												data-ng-disabled="nextDisabled"
+												data-ng-click="firstlastPaginate(0)">Last</button>
+										</div>
+									</div>
+                                
+                                
                             </div>
                             
                         </div>

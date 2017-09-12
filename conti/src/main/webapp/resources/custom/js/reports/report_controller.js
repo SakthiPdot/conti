@@ -32,9 +32,12 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 				
 		};
 		
-		
+	$scope.shownoofrec = 10;	
 	self.filterReport = {};
+	self.shipmentReport = {};
 	self.excelFlag = true;
+	$scope.nextDisabled = false;
+	$scope.previouseDisabled = true;
 	//============ Fetch All Branches Function Begin =======//	
 		function fetchAllBranches() {
 			
@@ -231,7 +234,9 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 			function(shipment){
 			 				if(shipment.length!=0) {
 			 					self.filterReport = shipment;
+			 					self.shipmentReport = shipment;
 				 				self.excelFlag = false;	
+				 				pagination();
 			 				}
 			 				console.log(shipment);
 			 			},function(errResponse){
@@ -253,5 +258,79 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 $('.datepicker1').val('');
 			 $('.datepicker2').val('');
 		 }
+		 
+			//--------------------------- PAGINATION BEGIN
+			
+			function pagination() {
+				
+				$scope.pageSize = $scope.shownoofrec;
+				$scope.currentPage = 0;
+				$scope.nextDisabled = false;
+				$scope.previouseDisabled = true;
+			//	self.FilterShipment = self.shipmentReport;
+				
+				if(self.filterReport.length<=10){
+					$scope.nextDisabled = true;			
+				}
+
+				if(self.filterReport.length<100){
+					$scope.totalnof_records = self.filterReport.length;
+				}/*else{
+					findrecord_count();
+				}*/
+			}
+			 $scope.firstlastPaginate = function (page) {
+			    	$scope.selectall = false;
+			    	if( page == 1 ) { // first
+			    		$scope.currentPage = 0;
+			    		$scope.previouseDisabled = true;
+			    		$scope.nextDisabled = false;
+			    		self.filterReport = self.shipmentReport.slice($scope.currentPage*$scope.pageSize);
+			    	} else { // last
+			    		
+			    		$scope.currentPage = ( (Math.ceil(self.filterReport.length/$scope.pageSize)) - 1 );
+			    		$scope.previouseDisabled = false;
+			    		$scope.nextDisabled = true;
+			    		
+			    		self.filterReport = self.shipmentReport.slice($scope.currentPage*$scope.pageSize);
+			    		
+			    		/*if(self.filterReport.length == 0) {
+			    			ShipmentService.pagination_byPage(page)
+			        		.then(
+			        				function (filterShip) {
+			        					self.filterReport = filterShip;
+			        				}, 
+			        				function (errResponse) {
+			        					console.log('Error while fetching employees');
+			        				}
+			        			);
+			    		}*/
+			    		
+			    	}
+			    	
+			    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
+			    	
+			    }
+			
+			    //-------------------------------- Show no of record begin ----------------------------------------//
+			    
+			    self.shownoofRecord = function() 
+			    {    
+			    	$scope.pageSize = $scope.shownoofrec;
+			    	self.filterReport = self.shipmentReport.slice($scope.currentPage*$scope.pageSize);
+			    	if( self.filterReport.length <= $scope.pageSize )
+			    	{
+			    		$scope.previouseDisabled = true;
+			    		$scope.nextDisabled = true;
+			    	}
+			    	else
+			    	{
+			    		//$scope.previouseDisabled=false;
+			    		$scope.nextDisabled=false;
+			    	}
+			    	
+			    }
+			    //-------------------------------- Show no of record end ----------------------------------------//  
+
 	}
 	]);
