@@ -99,22 +99,22 @@
                                    
                                    <label class="radio-inline">
                                        <input type="radio" data-ng-model = "filter_date" 
-                                       data-ng-click="filter_branch=false;filter_lr=false;filter_all=false;ctrl.date_required=true;"value="filter_date"
+                                       data-ng-click="filter_branch=false;filter_lr=false;filter_all=false;ctrl.date_required=true;ctrl.filterReset();"value="filter_date"
                                        name="optionsRadiosInline" id="optionsRadiosInline1" > Date Wise
                                    </label>
                                    <label class="radio-inline">
                                        <input type="radio"  data-ng-model = "filter_branch" value="filter_branch"
-                                       data-ng-click="filter_date= false;filter_lr=false;filter_all=false;ctrl.date_required=false;"
+                                       data-ng-click="filter_date= false;filter_lr=false;filter_all=false;ctrl.date_required=false;ctrl.filterReset();ctrl.resetDate();"
                                        name="optionsRadiosInline" id="optionsRadiosInline2"> Branch Wise
                                    </label>
                                    <label class="radio-inline">
                                        <input type="radio" data-ng-model="filter_lr"  value="filter_lr" 
-                                       data-ng-click="filter_branch=false;filter_date=false;filter_all=false;ctrl.date_required=false;"
+                                       data-ng-click="filter_branch=false;filter_date=false;filter_all=false;ctrl.date_required=false;ctrl.filterReset();ctrl.resetDate();"
                                         name="optionsRadiosInline" id="optionsRadiosInline3" > LR No Wise
                                    </label>
                                    <label class="radio-inline">
                                    	<input type="radio"  data-ng-model ="filter_all" data-ng-init="filter_all=true" value="filter_all" 
-                                   	 data-ng-click="filter_branch=true;filter_date=true;filter_lr=true;ctrl.date_required=true;"
+                                   	 data-ng-click="filter_branch=true;filter_date=true;filter_lr=true;ctrl.date_required=true;ctrl.filterReset();"
                                    	name="optionsRadiosInline" id="optionsRadiosInline4" data-ng-checked="true"> All
                                    </label>
 						
@@ -145,7 +145,7 @@
 					<div class="col-lg-3 report_class">
 						<span>From</span>  <span class="required">*</span>
 					       <div class="form-group input-group">
-                                  <input type="text" id="dates" class="form-control datepicker1" data-ng-model="ctrl.report.fromtoday" data-ng-required = "ctrl.date_required">
+                                  <input type="text" id="datepicker1" class="form-control datepicker1" data-ng-model="ctrl.report.fromtoday" data-ng-required = "ctrl.date_required">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default " type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -156,7 +156,7 @@
 					<div class="col-lg-3 report_class">
 						<span>To</span> <span class="required">*</span>
 					       <div class="form-group input-group">
-                                  <input type="text" class="form-control datepicker2" data-ng-model="ctrl.report.todate | date : 'yyyy-MM-dd' " data-ng-required = "ctrl.date_required">
+                                  <input type="text" id="datepicker2" class="form-control datepicker2" data-ng-model="ctrl.report.todate | date : 'yyyy-MM-dd' " data-ng-required = "ctrl.date_required">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -167,6 +167,7 @@
 					<div class="col-lg-3 report_class">
 					<span>Condition</span>
 						<select class="form-control" data-ng-model="ctrl.report.datecondition"
+						 data-ng-change = "ctrl.filterReset()"
 						 data-ng-options="datecondition for datecondition in ['AND','OR']">
 												
 						</select>
@@ -191,9 +192,9 @@
 					<div class="col-lg-3 branchclass">
 						<b class="text-padding">Branch </b>
 						<select class="form-control" data-ng-options = "branch.branch_id as branch.branch_name for branch in ctrl.branches"
+						data-ng-change = "ctrl.filterReset()"
 						data-ng-model="ctrl.report.branch">
-							<option value="" disabled>-- Select --</option>
-														
+							<option value="" disabled>-- Select --</option>														
 						</select>
 					</div>				
 				</div>
@@ -203,6 +204,7 @@
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">From </span>
 						<select class="form-control" data-ng-options = "branch.branch_id as branch.branch_name for branch in ctrl.branches"
+						data-ng-change = "ctrl.filterReset()"
 						data-ng-model = "ctrl.report.frombranch">
 							<option value="" disabled>-- Select --</option>							
 						</select>
@@ -211,6 +213,7 @@
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">To </span>
 						<select class="form-control" data-ng-options = "branch.branch_id as branch.branch_name for branch in ctrl.branches"
+						data-ng-change = "ctrl.filterReset()"
 						data-ng-model="ctrl.report.tobranch">
 							<option value="" disabled>-- Select --</option>
 							
@@ -219,7 +222,9 @@
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Condition</span>
-						<select class="form-control" data-ng-model = "ctrl.report.branchcondition" data-ng-options="branchcondition for branchcondition in ['AND','OR']">
+						<select class="form-control" data-ng-model = "ctrl.report.branchcondition"
+						data-ng-change = "ctrl.filterReset()" 
+						data-ng-options="branchcondition for branchcondition in ['AND','OR']">
 							<option value="">-- Select --</option>
 							
 						</select>
@@ -266,7 +271,9 @@
 					
 					<div class="col-lg-3 branchclass">
 					<span class="text-padding">Condition </span>
-						<select class="form-control" data-ng-model="ctrl.report.lrcondition" data-ng-options="lrcondition for lrcondition in ['AND','OR']">
+						<select class="form-control" data-ng-model="ctrl.report.lrcondition"
+						data-ng-change = "ctrl.filterReset()"  
+						data-ng-options="lrcondition for lrcondition in ['AND','OR']">
 							<option value="">-- Select --</option>
 							
 						</select>
@@ -303,7 +310,9 @@
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Payment Mode </span>
-						<select class="form-control" data-ng-model="ctrl.report.paymentmode" data-ng-options="paymentmode for paymentmode in ['Cash','Credit']">
+						<select class="form-control" data-ng-model="ctrl.report.paymentmode"
+						data-ng-change = "ctrl.filterReset()" 
+						data-ng-options="paymentmode for paymentmode in ['Cash','Credit']">
 							<option value="">-- Select --</option>
 							
 							
@@ -315,7 +324,9 @@
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Status </span>
-						<select class="form-control" data-ng-model="ctrl.report.status" data-ng-options = "status for status in ['Booked', 'Intransit', 'Delivered', 'Return', 'Received', 'Pending']">
+						<select class="form-control" data-ng-model="ctrl.report.status"
+						data-ng-change = "ctrl.filterReset()" 
+						data-ng-options = "status for status in ['Booked', 'Intransit', 'Delivered', 'Return', 'Received', 'Pending']">
 							<option value = "">-- Select --</option>
 							
 							
@@ -341,16 +352,19 @@
                 		<button type="submit" class="btn btn-primary" >View Report</button>
                 	</div>
                 	
-                	<div class="col-lg-4">
-                		<a class="btn btn-primary" data-ng-click = "">	<i class="fa fa-file-excel-o"></i> Excel Report</a>
-                	</div>
+                	<!-- <div class="col-lg-4">
+                		<a class="btn btn-primary" data-ng-click = "ctrl.excelReport();" data-ng-disabled = "ctrl.excelFlag">	<i class="fa fa-file-excel-o"></i> Excel Report</a>
+                	</div> -->
                 </div>
                 </div>
                </form> 
-            
-                
-                
-             
+           			 <div class="col-lg-4">
+	           			 <form name="shipmentPrint" method = "POST" action = "downloadExcelForReport" class="padding-button">
+	           			 	<input type="hidden" name="filterShip" value = "{{ctrl.filterReport}}" />
+	           			 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                		<button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.excelFlag">	<i class="fa fa-file-excel-o"></i> Excel Report</button>
+	                	 </form>
+                	</div>
              <br>
              <div class="row">
                 <div class="col-lg-12">

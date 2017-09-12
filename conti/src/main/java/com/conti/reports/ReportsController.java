@@ -1,11 +1,16 @@
 package com.conti.reports;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -18,6 +23,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +31,7 @@ import com.conti.config.SessionListener;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
+import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.shipment.add.ShipmentDao;
 import com.conti.shipment.add.ShipmentModel;
@@ -103,11 +110,25 @@ public class ReportsController {
 			} else {
 				filterShip.addAll(shipmentList);
 			}
-			return new ResponseEntity<List<ShipmentModel>> (shipmentList, HttpStatus.OK);
+			return new ResponseEntity<List<ShipmentModel>> (filterShip, HttpStatus.OK);
 
 		/*}catch(Exception e){
 			return new ResponseEntity<List<ShipmentModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
 		}*/
 	}
+	
+	//=================EXCEL DOWNLOAD=====================================
+	@RequestMapping(value="downloadExcelForReport",method=RequestMethod.POST)
+	public ModelAndView downloadExcelForAddManifest(@RequestParam("filterShip") String shipment,HttpServletRequest request) throws JsonParseException, JsonMappingException, IOException{
+		
+		//change to fetch all 
+		String userid = userInformation.getUserId();
+		User user =usersDao.get(Integer.parseInt(userid));
+		ObjectMapper mapper = new ObjectMapper();
+		List<ShipmentModel>  shipmentList = mapper.readValue(shipment, new TypeReference<List<ShipmentModel>>(){});
+		
+		return new ModelAndView("ShipmentExcel","shipmentList",shipmentList);		
+	}
+	//----------------------------------------------- SHIPMENT EXCEL END
 
 }

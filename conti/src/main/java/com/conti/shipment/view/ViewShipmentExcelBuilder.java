@@ -183,7 +183,7 @@ public class ViewShipmentExcelBuilder extends AbstractExcelView {
 					for(ShipmentDetailModel shipmentDetailModel:shipmentModel.getShipmentDetail()){
 						if(shipmentDetailModel!=null){
 							HSSFRow rowProduct=detailSheet.createRow(rowCountProduct++);
-							rowProduct.createCell(0).setCellValue(shipmentModel.getLr_number());
+							rowProduct.createCell(0).setCellValue(shipmentModel.getLrno_prefix());
 							if(shipmentDetailModel.getProduct()!=null){
 								rowProduct.createCell(1).setCellValue(shipmentDetailModel.getProduct().getProduct_name());	
 							}else{
@@ -205,7 +205,7 @@ public class ViewShipmentExcelBuilder extends AbstractExcelView {
 									if(shipmentHsnDetailModel!=null){
 										HSSFRow rowHSN=hsnDetailSheet.createRow(rowCountHsn++);
 
-										rowHSN.createCell(0).setCellValue(shipmentModel.getLr_number());
+										rowHSN.createCell(0).setCellValue(shipmentModel.getLrno_prefix());
 										
 										if(shipmentDetailModel.getProduct()!=null){
 											rowHSN.createCell(1).setCellValue(shipmentDetailModel.getProduct().getProduct_name());	

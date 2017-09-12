@@ -1,5 +1,9 @@
 
-
+		 //fromdate chage
+		 $('#datepicker1').click(function(){
+			 angular.element(document.getElementById('datepicker1')).scope().fRest(); 
+		 })
+			 
 contiApp.controller('ReportController',['$scope','$http','$q','$timeout','BranchService','ReportService','ShipmentService','ConfirmDialogService',function($scope,$http,$q,$timeout,BranchService,ReportService,ShipmentService,ConfirmDialogService)
 	{
 		
@@ -30,6 +34,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		
 		
 	self.filterReport = {};
+	self.excelFlag = true;
 	//============ Fetch All Branches Function Begin =======//	
 		function fetchAllBranches() {
 			
@@ -63,7 +68,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		 function dateformat()
 		{
 			 
-			
+			 self.filterReset();
 						 		
 			//====== If Select Today =====//
 			 if($scope.datefilter == "Today") {
@@ -196,8 +201,19 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			}
 			
 		}
+		
+		 //--- Prodcut change
 		 $scope.product_name = function (product) {
 			 self.report.product_id = product.originalObject.product_id;
+			 self.filterReset();
+		 }
+		//--- fromlrno change
+		 $scope.from_lrno = function (from_lrno) {
+			 self.filterReset();
+		 }
+		//--- tolrno change
+		 $scope.to_lrno = function (to_lrno) {
+			 self.filterReset();
 		 }
 		//---- Report 
 		 self.submit = function (){
@@ -205,18 +221,37 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 self.report.todate = $('.datepicker2').val();
 			 self.report.from_lrno = $('#from_lrno_value').val();
 			 self.report.to_lrno = $('#to_lrno_value').val();
+			 
+			 if(self.report.branch != null){
+				 self.report.frombranch = self.report.branch;
+			 }
+			 
 			 ReportService.fetch4All(self.report)
 			 	.then(
 			 			function(shipment){
-
-			 				self.filterReport = shipment;
-
+			 				if(shipment.length!=0) {
+			 					self.filterReport = shipment;
+				 				self.excelFlag = false;	
+			 				}
 			 				console.log(shipment);
-
 			 			},function(errResponse){
 			 				console.log(errResponse);
 			 			}
 			 		);
+		 }
+		 
+		 //--reset
+		 self.filterReset = function(){
+			 self.filterReport = {};
+			 self.excelFlag = true;
+		 }
+		 $scope.fRest = function(){
+			 self.filterReset();
+		 }
+		 //reset date
+		 self.resetDate = function(){
+			 $('.datepicker1').val('');
+			 $('.datepicker2').val('');
 		 }
 	}
 	]);

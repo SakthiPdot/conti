@@ -1,7 +1,7 @@
 contiApp.factory('ReportService',['$http','$q',function($http,$q)
 	{
 		var factory = {
-			fetch4All : fetch4All	
+			fetch4All : fetch4All
 		};
 		return factory;
 		
@@ -22,5 +22,6 @@ contiApp.factory('ReportService',['$http','$q',function($http,$q)
 				);
 			return deferred.promise;
 		}
+
 	}
 	]);
