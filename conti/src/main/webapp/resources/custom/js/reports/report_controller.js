@@ -12,6 +12,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		fetchAllBranches();
 		fetchAllShipmentforView();
 		
+		self.date_required = true;
 		
 		self.report = {
 				datecondition : 'AND',
@@ -216,7 +217,6 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 				console.log(errResponse);
 			 			}
 			 		);
-			 console.log(self.report);
 		 }
 	}
 	]);

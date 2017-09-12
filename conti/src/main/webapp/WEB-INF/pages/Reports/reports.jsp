@@ -99,22 +99,22 @@
                                    
                                    <label class="radio-inline">
                                        <input type="radio" data-ng-model = "filter_date" 
-                                       data-ng-click="filter_branch=false;filter_lr=false;filter_all=false;"value="filter_date"
+                                       data-ng-click="filter_branch=false;filter_lr=false;filter_all=false;ctrl.date_required=true;"value="filter_date"
                                        name="optionsRadiosInline" id="optionsRadiosInline1" > Date Wise
                                    </label>
                                    <label class="radio-inline">
                                        <input type="radio"  data-ng-model = "filter_branch" value="filter_branch"
-                                       data-ng-click="filter_date= false;filter_lr=false;filter_all=false;"
+                                       data-ng-click="filter_date= false;filter_lr=false;filter_all=false;ctrl.date_required=false;"
                                        name="optionsRadiosInline" id="optionsRadiosInline2"> Branch Wise
                                    </label>
                                    <label class="radio-inline">
                                        <input type="radio" data-ng-model="filter_lr"  value="filter_lr" 
-                                       data-ng-click="filter_branch=false;filter_date=false;filter_all=false;"
+                                       data-ng-click="filter_branch=false;filter_date=false;filter_all=false;ctrl.date_required=false;"
                                         name="optionsRadiosInline" id="optionsRadiosInline3" > LR No Wise
                                    </label>
                                    <label class="radio-inline">
                                    	<input type="radio"  data-ng-model ="filter_all" data-ng-init="filter_all=true" value="filter_all" 
-                                   	 data-ng-click="filter_branch=true;filter_date=true;filter_lr=true;"
+                                   	 data-ng-click="filter_branch=true;filter_date=true;filter_lr=true;ctrl.date_required=true;"
                                    	name="optionsRadiosInline" id="optionsRadiosInline4" data-ng-checked="true"> All
                                    </label>
 						
@@ -145,7 +145,7 @@
 					<div class="col-lg-3 report_class">
 						<span>From</span>  <span class="required">*</span>
 					       <div class="form-group input-group">
-                                  <input type="text" id="dates" class="form-control datepicker1" data-ng-model="ctrl.report.fromtoday" required>
+                                  <input type="text" id="dates" class="form-control datepicker1" data-ng-model="ctrl.report.fromtoday" data-ng-required = "ctrl.date_required">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default " type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -156,7 +156,7 @@
 					<div class="col-lg-3 report_class">
 						<span>To</span> <span class="required">*</span>
 					       <div class="form-group input-group">
-                                  <input type="text" class="form-control datepicker2" data-ng-model="ctrl.report.todate | date : 'yyyy-MM-dd' " required>
+                                  <input type="text" class="form-control datepicker2" data-ng-model="ctrl.report.todate | date : 'yyyy-MM-dd' " data-ng-required = "ctrl.date_required">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i>
                                       </button>
