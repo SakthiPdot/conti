@@ -95,8 +95,8 @@
 				
 				Company master<div id="companyname">${company.company_name}</div>
 				<div id="area">${company.company_address1}</div>
-				<div id="street">${company.company_address2}</div>
-				<div id="city">${company.location.location_name},${company.location.address.city}</div>
+				<c:if test="${not empty company.company_address2 }"><div id="street">${company.company_address2}</div></c:if>
+				<div id="city">${company.location.location_name},${company.location.address.city},${company.location.address.state},${company.location.pincode }</div>
 				<div id="phoneno">${company.company_landlineno}</div>
 				<div id="title">${title} Master</div>
 				<div id="logo">${image}</div>
@@ -170,12 +170,12 @@
 		        var doc = examples[funcStr]();
 		
 		        doc.setProperties({
-		            title: 'Conti: Employee',
+		            title: 'Conti: User',
 		            subject: 'Broman Master (' + funcStr + ')'
 		        });
 		
 		        if (shouldDownload) {
-		            doc.save('conti_employee.pdf');
+		            doc.save('Conti - User.pdf');
 		        } else {
 		            document.getElementById("output").src = doc.output('datauristring');
 		        }

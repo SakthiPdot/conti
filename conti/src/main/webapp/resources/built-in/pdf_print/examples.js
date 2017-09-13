@@ -9,7 +9,10 @@ examples.broman = function () {
    // doc.text("From HTML", 40, 50);
     var companyname = document.getElementById('companyname').innerHTML;
     var area = document.getElementById('area').innerHTML;
-    var street = document.getElementById('street').innerHTML;
+    if(document.getElementById('street') != null){
+    	var street = document.getElementById('street').innerHTML;
+    }
+    
     var city = document.getElementById('city').innerHTML;
     var phoneno = document.getElementById('phoneno').innerHTML;
     var logo = document.getElementById('logo').innerHTML;
@@ -18,10 +21,19 @@ examples.broman = function () {
     
     doc.text(companyname, 160, 50);
     doc.text(area, 160, 70);
-    doc.text(street, 160, 90);
-    doc.text(city, 160, 110);
-    doc.text(phoneno, 160, 130);
-    doc.text(title,160,150);
+    if(document.getElementById('street') == null){
+    	doc.text(city, 160, 90);
+    	doc.text(phoneno, 160, 110);
+    	doc.text(title,160,130);
+    	
+    }else {
+    	doc.text(street, 160, 90);
+        doc.text(city, 160, 110);
+        doc.text(phoneno, 160, 130);
+        doc.text(title,160,150);
+    }
+    
+   
    
     try {
     	var headerImgData = 'data:image/jpg;base64,';

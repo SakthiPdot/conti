@@ -303,7 +303,7 @@ contiApp.controller('ViewShipmentController', [
 							.then(
 									function (res) {
 										
-										if(res == null) {
+										if(res == null || res=='') {
 											var index = self.shipments.indexOf(shipment);
 											self.shipments.splice(index,1);
 											self.message = "Selected shipment has been deleted scuccessfully..!";
@@ -395,7 +395,6 @@ contiApp.controller('ViewShipmentController', [
 	 							ShipmentService.makeCancel(shipment_id)
 	 								.then(
 	 										function(res) {
-	 											console.log(res+"===");
 	 											if(res.length == 0) {
 	 												self.selected_shipment = [];
 		 											self.message = "Selected record(s) has been deleted successfully..!"

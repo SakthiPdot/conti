@@ -786,25 +786,48 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		
 	}
 
-
-
+	
 	@Override
+	@Transactional
 	public List<ShipmentModel> getShipment4Report(String fromtoday, String todate, String datecondition, String frombranch,
 			String tobranch, String branchcondition, String from_lrno, String to_lrno, String lrcondition, String product_id, String paymentmode,
 			String status) {
 		// TODO Auto-generated method stub
+		
+		StringBuilder queryString =new StringBuilder();
+		queryString.append("FROM ShipmentModel WHERE obsolete ='N' ");
+		if(fromtoday!=null && !fromtoday.trim().isEmpty() || todate!=null && !todate.trim().isEmpty())
+			queryString.append(" AND shipment_date BETWEEN '" + fromtoday + " 00:00:00' AND '" + todate +" 23:59:59' ");
+		if((frombranch!=null && !frombranch.trim().isEmpty()) && (tobranch!=null && !tobranch.trim().isEmpty())){
+			queryString.append(datecondition + " sender_branch.branch_id=" + frombranch);
+			queryString.append(" AND consignee_branch.branch_id=" + tobranch + " ");
+		} else {
+			if((frombranch!=null && !frombranch.trim().isEmpty())) {
+				queryString.append(datecondition + " sender_branch.branch_id=" + frombranch + " ");
+			} 
+			if((tobranch!=null && !tobranch.trim().isEmpty())) {
+				queryString.append(datecondition + " consignee_branch.branch_id=" + tobranch + " ");
+			}
+		}
+				
+		if((from_lrno!=null && !from_lrno.trim().isEmpty()) && (to_lrno!=null && !to_lrno.trim().isEmpty())) {
+			queryString.append( branchcondition +" lrno_prefix BETWEEN '" + from_lrno + "' AND '"+ to_lrno +"' ");
+		} else {
+			if((from_lrno!=null && !from_lrno.trim().isEmpty())) {
+				queryString.append( branchcondition + " lrno_prefix LIKE '%" + from_lrno + "%' ");
+			} 
+			if((to_lrno!=null && !to_lrno.trim().isEmpty())) {
+				queryString.append( branchcondition + " lrno_prefix LIKE '%" + to_lrno + "%' ");
+			}
+		}
+		if(paymentmode!=null && !paymentmode.trim().isEmpty()){
+			queryString.append( lrcondition + " pay_mode='" + paymentmode+"'");
+		}
+		if(status!=null && !status.trim().isEmpty())
+			queryString.append(" AND status='" + status + "'");
 		@SuppressWarnings("unchecked")
-		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
-				.createQuery("FROM ShipmentModel WHERE obsolete = 'N' AND "
-						+ "shipment_date BETWEEN " + fromtoday + " AND " + todate + " " + datecondition
-						+ " sender_branch.branch_id BETWEEN " + frombranch + " AND " + tobranch + " " + branchcondition
-						+ " lr_number BETWEEN " + from_lrno + " AND " + to_lrno + " " + lrcondition
-						+ " product.product_id=" + product_id + " AND " + "pay_mode=" + paymentmode
-						+ " status=" + status).setMaxResults(100).list();
-		return null;
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession().createQuery(queryString.toString()).setMaxResults(100).list();
+		return listShipment;
 	}
-
-	
-	
 	
 }

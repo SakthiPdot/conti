@@ -114,7 +114,7 @@
 			                  <span class="makeRed" data-ng-show = "nameWrong"> Vehicle RegNo Already Existing..!<br></span>
 			                  
 			                  <span>Vehicle Code</span>
-			                 <input type="text" class="form-control" maxlength="6" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.vehicle.vehicle_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle code"/>
+			                 <input type="text" class="form-control" maxlength="6" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.vehicle.vehicle_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Code"/>
 			                  
 			                   <span>Branch Name <span class="required"> *</span></span>
 			                   <angucomplete-alt id="branch_name" data-ng-model="ctrl.vehicle.branch_name"

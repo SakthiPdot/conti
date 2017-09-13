@@ -267,6 +267,8 @@ public class ViewReceiptRestController {
 					ReceiptModel receiptModel=receiptDao.getReceiptbyId(receiptDetail.get(i).getReceiptModel().receipt_id);
 					
 					manifestModel=manifestDao.getManifestByShipmentID(receiptDetail.get(i).shipmentModel.getShipment_id());//for manifest_prefix
+//					if(receiptModel==null){
+//						receiptDetail.remove(i);}
 					
 					receiptDetail.get(i).setReceipt_id(receiptModel.receipt_id);
 					receiptDetail.get(i).setTemp_receiptno(receiptModel.getReceipt_prefix());
@@ -501,6 +503,7 @@ public class ViewReceiptRestController {
 							receiptDetail.receiptModel.setObsolete("Y");		
 							receiptDao.saveOrUpdate(receiptDetail.receiptModel);
 							shipmentDao.saveOrUpdate(receiptDetail.shipmentModel);
+							receiptDao.delete(receiptDetail);
 							loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 						}
 					}

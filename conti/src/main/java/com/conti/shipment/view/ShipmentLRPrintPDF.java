@@ -23,9 +23,11 @@ import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
+import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.Table;
+import com.lowagie.text.pdf.CMYKColor;
 import com.lowagie.text.pdf.PdfWriter;
 
 public class ShipmentLRPrintPDF extends AbstractPdfView{
@@ -71,6 +73,9 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    image = Image.getInstance(company.getCompany_logo());
 	    image.scaleAbsolute(150, 30);
 	    Cell logo_cell = new Cell(image);
+	    Font company_font = new Font(Font.HELVETICA, 12, Font.BOLD,new CMYKColor(255, 0, 0, 0));
+	    Paragraph p = new Paragraph(company.getCompany_name(), company_font);
+	    logo_cell.addElement(p);
 	    logo_cell.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT);
 	    logo_cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 	    logo_cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -78,11 +83,11 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    company_tbl.addCell(logo_cell);
 	    
 	    //for company name
-	    Cell companyname_cell = new Cell(company.getCompany_name());
+	   /* Cell companyname_cell = new Cell(company.getCompany_name());
 	    companyname_cell.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT);	
 	    companyname_cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 	    companyname_cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-	    company_tbl.addCell(companyname_cell);
+	    company_tbl.addCell(companyname_cell);*/
 	    
 	    //for company address
 	    Font address_font = new Font(Font.COURIER, 8);
@@ -98,10 +103,24 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 				branch.getBranch_email()
 				,address_font)
 				);
-	   
-	    address_cell.setBorder(Rectangle.BOTTOM);
+	    address_cell.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT);
+	    
 	    address_cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 	    company_tbl.addCell(address_cell);
+	    
+	  //for company mobile
+	    Font companymob_font = new Font(Font.COURIER, 8);
+	    Cell companymob_cell = new Cell(
+	    		new Phrase(
+	    		"Coimbatore: Peelamedu\n875400783 / 9244433609\n"+
+	    		"Chennai: Egmore\n044 - 28553205 / 43521322\n"+		
+	    		"Bangalore: Richmond road\n080 - 22211632 / 40988922"
+				,companymob_font)
+				);
+	   
+	    companymob_cell.setBorder(Rectangle.BOTTOM);
+	    companymob_cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	    company_tbl.addCell(companymob_cell);
 	    
 	  //for GSTIN number
 	 
