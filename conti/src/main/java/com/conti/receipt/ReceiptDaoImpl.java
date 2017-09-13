@@ -41,6 +41,12 @@ public class ReceiptDaoImpl implements ReceiptDao
 		sessionFactory.getCurrentSession().saveOrUpdate(receiptModel);
 	}
 	
+	@Override
+	@Transactional
+	public void delete(ReceiptDetail receiptDetail)
+	{
+		sessionFactory.getCurrentSession().delete(receiptDetail);
+	}
 	
 	//======================================VIEW RECEIPT===============================================
 	@Override
@@ -131,12 +137,6 @@ public class ReceiptDaoImpl implements ReceiptDao
 			queryString.append(" AND  shipmentModel.status in ('"+ConstantValues.DELIVERED+"','"+ConstantValues.PENDING+"') ");
 		}
 	@SuppressWarnings("unchecked")
-//		List<ReceiptModel> listreceipt = (List<ReceiptModel>) sessionFactory.getCurrentSession()
-//				.createQuery("FROM ReceiptModel WHERE obsolete ='N' and shipmentModel.manifest_origin="+frombranch 
-//				+" AND manifest_origin ="+tobranch
-//				+" AND created_datetime BETWEEN '"+fromdate+" 00:00:00'"
-//				+" AND '"+todate+" 23:59:59'").list();
-		
 		List<ReceiptDetail> listreceipt=(List<ReceiptDetail>)sessionFactory.getCurrentSession()
 				.createQuery(queryString.toString()).list();
 		return listreceipt;
@@ -179,7 +179,7 @@ public class ReceiptDaoImpl implements ReceiptDao
 	@Override
 	@Transactional
 	public ReceiptModel getReceiptbyId(int id) {
-		String hql = "FROM ReceiptModel WHERE obsolete ='N' and receipt_id ="+ id + "";
+		String hql = "FROM ReceiptModel WHERE obsolete ='N' and receipt_id ="+id;
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
 		@SuppressWarnings("unchecked")

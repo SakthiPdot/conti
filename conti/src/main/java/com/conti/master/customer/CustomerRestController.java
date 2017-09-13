@@ -93,7 +93,8 @@ public class CustomerRestController
 	@RequestMapping( value = "/customers/", method = RequestMethod.GET)
 	public ResponseEntity<List<CustomerModel>> fetchAllCustomers(HttpServletRequest request) 
 	{
-		userInformation = new UserInformation(request);
+		userInformation = new UserInformation(request);  
+		
 		String username = userInformation.getUserName();
 		String userid = userInformation.getUserId();
 		String branch_id = userInformation.getUserBranchId();

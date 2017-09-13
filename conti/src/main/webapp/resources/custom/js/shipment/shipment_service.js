@@ -80,7 +80,7 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 		 				deferred.resolve(response.data);
 		 			},
 		 			function (errResponse) {
-		 				deferrend.reject(errResponse);
+		 				deferred.reject(errResponse);
 		 			}
 		 		);
 		 return deferred.promise;
@@ -182,7 +182,7 @@ contiApp.factory('ShipmentService', ['$http', '$q', function ($http, $q){
 	    }
 	    //------------------------------- make active Employee end -----------------------------//
 	    
-	    //----------------------  Recourd count users begin ----------------------------- //
+	    //----------------------  Recount count users begin ----------------------------- //
 	    function findrecord_count() {
 	    	
 	        var deferred = $q.defer();

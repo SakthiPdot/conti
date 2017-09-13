@@ -59,8 +59,8 @@ public class CustomerDaoImpl implements CustomerDao
 	public List<CustomerModel> getAllCustomers(int branch_id) {
 		@SuppressWarnings("unchecked")
 		List<CustomerModel> listCustomer = (List<CustomerModel>) sessionFactory.getCurrentSession()
-				.createQuery("from CustomerModel where obsolete ='N'AND branchModel.branch_id =" + branch_id 
-						+ "ORDER BY IFNULL(created_datetime, updated_datetime) DESC").setMaxResults(100).list();
+				.createQuery("from CustomerModel where obsolete ='N' AND branchModel.branch_id =" + branch_id 
+						+ " ORDER BY IFNULL(created_datetime, updated_datetime) DESC").setMaxResults(100).list();
 		return listCustomer;
 	}
 
@@ -69,7 +69,6 @@ public class CustomerDaoImpl implements CustomerDao
 	@Transactional
 	public void saveOrUpdate(CustomerModel customerModel) 
 	{
-
 		sessionFactory.getCurrentSession().saveOrUpdate(customerModel);
 	}
 	

@@ -17,7 +17,7 @@ public interface ReceiptDao
 	public boolean checkCourierStaffUnique(String Name);
 	public int getLastReceiptNoWithBranch(int branchid);
 	public void saveOrUpdate(ReceiptModel receiptModel);
-	
+	public void delete(ReceiptDetail receiptDetail);
 	
 	/*public List<ReceiptModel> searchStaffNoNAdmin(String searchkey,int branchid);*/
 	
