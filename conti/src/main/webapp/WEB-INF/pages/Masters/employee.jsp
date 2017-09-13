@@ -104,10 +104,10 @@
 		                <div class="col-lg-12 content-body">
 		                 	   <span>Employee Name <span class="required">*</span></span>	         
 			                   <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.employee.emp_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee name"
-			                    required />
+			                    placeholder = "Ex : Siva" required />
 			                   
 			                   <span>Employee Code</span>
-			                   <input type="text" class="form-control" maxlength="6" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee code" />
+			                   <input type="text" class="form-control" maxlength="6" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee code" placeholder = "Ex : Em001"/>
 			                
 			           
 			             </div>         	
@@ -177,11 +177,11 @@
 			             <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
 		                 	   <span>Address Line 1 <span class="required">*</span></span>	         
-			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address1" maxlength = "50"
+			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address1" maxlength = "50" placeholder="Ex : No : 10, 2nd Street, Anna Nagar"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee addressline 1" required>
 			                   
 			                   <span>Address Line 2</span>
-			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address2" maxlength = "50"
+			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address2" maxlength = "50" placeholder = "Ex : Opposite Annapoorna"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee addressline 2"
 			                    >
 			                   
@@ -242,12 +242,12 @@
 		                <div class="col-lg-6 content-body">
 		                 	   <span>Phone No <span class="required">*</span></span>	         
 			                  <input type="text" class="form-control" minlength = "10" maxlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.employee.emp_phoneno" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee mobile number" required />
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee mobile number" placeholder =" Ex : 9876543210" required />
 			               
 			              </div> 
 			               <div class="col-lg-6 content-body">    
 			                   <span>Email </span>
-			                   <input type="email" class="form-control" data-ng-model="ctrl.employee.emp_email" 
+			                   <input type="email" class="form-control" data-ng-model="ctrl.employee.emp_email" placeholder = "Ex : siva@gmail.com"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" maxlength = "30" data-content="Please enter employee email id" />
 			                 
 			                
