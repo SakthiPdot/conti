@@ -312,6 +312,44 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			    	
 			    }
 			
+			 $scope.paginate = function(nextPrevMultiplier) {
+			    	$scope.selectall = false;
+			    	$scope.currentPage += (nextPrevMultiplier * 1);
+			    	self.filterReport = self.shipmentReport.slice($scope.currentPage*$scope.pageSize);
+			    	/*if(self.FilterShipment.length == 0) {
+			    		ShipmentService.pagination_byPage($scope.currentPage)
+			    		.then(
+			    				function (filterShip) {
+			    					if ( filterShip.length == 0 ) {
+			    						$scope.nextDisabled = true;
+			    					} else if ( filterShip.length < 10 ) {
+			    						self.FilterShipment = filterShip;
+			    						$scope.nextDisabled = true;
+			    					} else {
+			    						self.FilterShipment = filterEmp;
+			    					}
+			    					
+			    				}, 
+			    				function (errResponse) {
+			    					console.log('Error while pagination');
+			    				}
+			    			);
+			    	}*/ 
+			    	
+			    	/*if(self.Filteremployees.length < $scope.pageSize) {
+			    		$scope.nextDisabled = true;
+			    	}
+			*/
+			    	if($scope.currentPage == 0) {
+			    		$scope.previouseDisabled = true;
+			    	}
+			    	if(nextPrevMultiplier == -1) {    		
+			    		$scope.nextDisabled = false;
+			    	} else {
+			    		$scope.previouseDisabled = false;
+			    	}
+			    	
+			    }
 			    //-------------------------------- Show no of record begin ----------------------------------------//
 			    
 			    self.shownoofRecord = function() 
