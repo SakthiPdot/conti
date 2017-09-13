@@ -1001,7 +1001,9 @@
 										<div class="form-group input-group marginleftrightspace">
 
 
-											<input type="text" class="form-control datepicker1" data-ng-model="ctrl.viewShipment.fromdate"
+											<input type="text" class="form-control datepicker1"
+															  placeholder="Enter or select from date"
+															data-ng-model="ctrl.viewShipment.fromdate"
 					                           			   data-trigger= "focus"data-toggle="popover" data-placement="top"
 					                            		   data-content="Please select from date"/> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
@@ -1017,6 +1019,7 @@
 
 
 											<input type="text" class="form-control datepicker2" data-ng-model="ctrl.viewShipment.todate"
+														placeholder="Enter or select to date"
 					                           			   data-trigger= "focus"data-toggle="popover" data-placement="top"
 					                            		   data-content="Please select to date"/> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
@@ -1271,7 +1274,10 @@
 												<td data-ng-show = "setting_shipstatus">{{shipment.status}}</td>
 
 											</tr>
-										<tbody>
+										</tbody>
+										<tfoot data-ng-show="ctrl.tbl_nodata">
+											<tr><td colspan="9" align="center">No data found</td></tr>
+										</tfoot>										
 									</table>
  								<div class ="col-lg-6">
                                 	<div class="pull-left">

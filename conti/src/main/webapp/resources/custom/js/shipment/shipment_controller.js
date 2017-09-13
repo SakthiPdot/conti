@@ -503,6 +503,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		if( self.shipment.bill_to == "Paid" ) {
 			self.shipment.taxin_payable = sender_taxin_payable;
 		} else if( self.shipment.bill_to == "To Pay" ) {
+			console.log(consignee_taxin_payable);
 			self.shipment.taxin_payable = consignee_taxin_payable;
 		} else {
 			self.shipment.taxin_payable = null;

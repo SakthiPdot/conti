@@ -601,7 +601,7 @@
                                                 <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" data-ng-model = "ctrl.shipment.bill_to" value="Paid" data-ng-required = "true" data-ng-click = "ctrl.tax_payable()"><b>Paid</b>
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" data-ng-model = "ctrl.shipment.bill_to" value="To Pay" data-ng-required = "true" data-ng-click = "ctrl.tax_payable()"><b>To Pay</b>
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" data-ng-model = "ctrl.shipment.bill_to" value="To Pay" data-ng-checked = "ctrl.shipment.pay_mode == 'Credit'" data-ng-required = "true" data-ng-click = "ctrl.tax_payable()"><b>To Pay</b>
                                             </label>  
                     		 </div>
 
@@ -838,42 +838,72 @@
                                             <td> 
                                             	<input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.product_type"/> 
                                             </td>
-                                            <td> <input type = "number" placeholder="Product height"  class="form-control" 
-
+                                            <td> <!-- <input type = "number" placeholder="Product height"  class="form-control" 
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product height"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
-													data-ng-model = "product.height" /> 
+													data-ng-model = "product.height" />  -->
+													<input type = "text" placeholder="Product height"  class="form-control" 
+	                                            		data-trigger="focus" data-toggle="popover" 
+				   										data-placement="top" data-content="Please enter product height"
+														maxlength="5" onKeyPress="return CheckIsNumericAnddot(event,this.value)"
+														data-ng-model = "product.height" /> 	
+													
 											</td>
-                                            <td> <input type = "number" placeholder="Product width" class="form-control" 
+                                            <td> <!-- <input type = "number" placeholder="Product width" class="form-control" 
 
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product width"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+                                            		data-ng-model = "product.width" /> -->
+                                            		<input type = "text" placeholder="Product width" class="form-control" 
+
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product width"
+													maxlength="5" onKeyPress="return CheckIsNumericAnddot(event,this.value)"
                                             		data-ng-model = "product.width" /> </td>
-                                            <td> <input type = "number" placeholder="Product length" class="form-control" 
+                                            <td> <!-- <input type = "number" placeholder="Product length" class="form-control" 
 
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product length"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
-                                            		data-ng-model = "product.length" /> </td>
-                                            <td> <input type = "number" placeholder="Product weight" class="form-control" 
+                                            		data-ng-model = "product.length" /> --> 
+                                            		<input type = "text" placeholder="Product length" class="form-control" 
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product length"
+													maxlength="5" onKeyPress="return CheckIsNumericAnddot(event,this.value)"
+                                            		data-ng-model = "product.length" /></td>
+                                            <td> <!-- <input type = "number" placeholder="Product weight" class="form-control" 
 
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product weight"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+                                            		data-ng-model = "product.weight" data-ng-keyup = "ctrl.priceby_weight($index)" required/> -->
+                                            		<input type = "text" placeholder="Product weight" class="form-control" 
+
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product weight"
+													maxlength="5" onKeyPress="return CheckIsNumericAnddot(event,this.value)"
                                             		data-ng-model = "product.weight" data-ng-keyup = "ctrl.priceby_weight($index)" required/> </td>
                                             <td> <input type = "text" placeholder="Product weight" class="form-control" 
                                           			onkeypress="return CheckIsNumeric(event)"
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product quantity"
-													data-ng-model = "product.quantity" data-ng-keyup = "ctrl.checkQuantity($index)" required/> </td>
-                                            <td> <input type = "number" placeholder="unit price" class="form-control" 
+													data-ng-model = "product.quantity" data-ng-keyup = "ctrl.checkQuantity($index)" required/>
+													 </td>
+                                            <td> <!-- <input type = "number" placeholder="unit price" class="form-control" 
                                             
                                             		data-trigger="focus" data-toggle="popover" 
 			   										data-placement="top" data-content="Please enter product price"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
-                                            		data-ng-model = "product.unit_price" data-ng-keyup = "ctrl.calc_totalprice($index)" required/> </td>
+                                            		data-ng-model = "product.unit_price" data-ng-keyup = "ctrl.calc_totalprice($index)" required/> -->
+                                            		<input type = "text" placeholder="unit price" class="form-control" 
+                                            
+                                            		data-trigger="focus" data-toggle="popover" 
+			   										data-placement="top" data-content="Please enter product price"
+													maxlength="10" onKeyPress="return CheckIsNumericAnddot(event,this.value)"
+                                            		data-ng-model = "product.unit_price" data-ng-keyup = "ctrl.calc_totalprice($index)" required/>
+                                            		 </td>
                                             <td> <input type = "text" class="form-control" data-ng-model = "product.total_price" data-ng-disabled = "true"/> </td>
                                      
                                         </tr>
@@ -937,17 +967,27 @@
                            
                             		
                             		<div class="col-md-12">
-                            			<span class="text-paddingwidth">Shipment Value <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Shipment Value </span>
                             			
                             			<div class = "form-group input-group">
-	                            		    <input type="number" class="form-control" min = "1" max="999999.99"
+	                            		    <!-- <input type="number" class="form-control" min = "1" max="999999.99"
 	                            		    	data-ng-model = "ctrl.shipment.shipment_value"
 	                            		    	data-trigger="focus" data-toggle="popover" 
 												data-placement="top" data-content="Please enter value of shipment"
 												placeholder = "Ex: 100.50"
 												data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
 												aria-describedby="basic-addon1"
-	                            		    required />  
+												onKeyPress="return CheckIsNumericAnddot(event,this.value)"
+	                            		     />  --> 
+	                            		     <input type="text" class="form-control" 
+	                            		    	data-ng-model = "ctrl.shipment.shipment_value"
+	                            		    	data-trigger="focus" data-toggle="popover" 
+												data-placement="top" data-content="Please enter value of shipment"
+												placeholder = "Ex: 100.50"												
+												aria-describedby="basic-addon1"
+												maxlength="10"
+												onKeyPress="return CheckIsNumericAnddot(event,this.value)"
+	                            		     /> 
 	                            		     <span class="input-group-addon" id = "basic-addon1"><i class="fa fa-inr" aria-hidden="true"></i></span>
                             		    </div>
                             		  

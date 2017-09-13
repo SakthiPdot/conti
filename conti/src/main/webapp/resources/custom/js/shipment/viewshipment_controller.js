@@ -102,6 +102,7 @@ contiApp.controller('ViewShipmentController', [
 		}else{
 			findrecord_count();
 		}
+		
 	}
 	
 	 $scope.paginate = function(nextPrevMultiplier) {
@@ -113,7 +114,7 @@ contiApp.controller('ViewShipmentController', [
 	    		.then(
 	    				function (filterShip) {
 	    					if ( filterShip.length == 0 ) {
-	    						$scope.nextDisabled = true;
+	    						$scope.nextDisabled = true;	    						
 	    					} else if ( filterShip.length < 10 ) {
 	    						self.FilterShipment = filterShip;
 	    						$scope.nextDisabled = true;
@@ -185,7 +186,13 @@ contiApp.controller('ViewShipmentController', [
 	    	
 	    }
 	 
-	 
+	function no_data(){
+		if(self.FilterShipment.length==0){
+			self.tbl_nodata = true;			
+		}else{
+			self.tbl_nodata = false;
+		}
+	}
 	 
     //===================================Total Record Count====================================
 	function findrecord_count() {				
@@ -241,11 +248,14 @@ contiApp.controller('ViewShipmentController', [
 	self.searchby_LR = function(lrno) {
 		if ( lrno.length == 0 ) {
 			self.FilterShipment = self.shipments;
+			no_data();
 		} else if ( lrno.length > 3 ) {
 			ShipmentService.searchShipment(lrno)
 				.then(
 						function (shipment) {
-							self.FilterShipment = shipment;
+							self.FilterShipment = shipment;	
+							no_data();
+							
 						}, function (errRes) {
 							console.log(errRes);
 						}
@@ -263,8 +273,10 @@ contiApp.controller('ViewShipmentController', [
 		
 		if( item.lrno_prefix.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ) {
 			success = true;
+			self.tbl_nodata = false;
 		} else {
 			success= false;
+			self.tbl_nodata = true;
 		}
 		return success;
 	}
