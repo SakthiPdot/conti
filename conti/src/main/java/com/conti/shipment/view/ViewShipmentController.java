@@ -321,6 +321,10 @@ public class ViewShipmentController{
 					Date date = new Date();
 					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
 					
+					List<ShipmentDetailModel> shipmentDetail = shipmentDB.getShipmentDetail();
+					for(ShipmentDetailModel shipmentDe : shipmentDetail){
+						shipmentDe.setObsolete("Y");
+					}
 					shipmentDB.setUpdated_by(user_id);
 					shipmentDB.setUpdated_datetime(dateFormat.format(date));
 					shipmentDB.setObsolete("Y");
