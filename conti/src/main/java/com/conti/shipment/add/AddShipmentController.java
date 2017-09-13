@@ -191,6 +191,7 @@ public class AddShipmentController {
 		
 			List<ShipmentDetailModel> shipmentDetailList = shipment.getShipmentDetail();
 			for(ShipmentDetailModel shipmentDetail : shipmentDetailList) {
+				shipmentDetail.setObsolete("N");
 				shipmentDetail.setShipment(shipment);
 			}
 			

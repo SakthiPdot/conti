@@ -874,7 +874,7 @@
 			   										data-placement="top" data-content="Please enter product price"
 													data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
                                             		data-ng-model = "product.unit_price" data-ng-keyup = "ctrl.calc_totalprice($index)" required/> </td>
-                                            <td> <input type = "text" class="form-control disabled" tabindex = "-1" data-ng-model = "product.total_price" /> </td>
+                                            <td> <input type = "text" class="form-control" data-ng-model = "product.total_price" data-ng-disabled = "true"/> </td>
                                      
                                         </tr>
                                             

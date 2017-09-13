@@ -30,7 +30,6 @@ import com.conti.manifest.ManifestDao;
 import com.conti.manifest.ManifestModel;
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
-import com.conti.master.employee.EmployeeMaster;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.NumberToWord;
@@ -42,6 +41,7 @@ import com.conti.setting.usercontrol.UsersDao;
 import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 import com.conti.shipment.add.ShipmentDao;
+import com.conti.shipment.add.ShipmentDetailModel;
 import com.conti.shipment.add.ShipmentModel;
 
 /**
@@ -247,11 +247,19 @@ public class ViewShipmentController{
 					Date date = new Date();
 					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
 					
+					List<ShipmentDetailModel> shipmentDetail = shipment.getShipmentDetail();
+					
+					for(ShipmentDetailModel shipDetail : shipmentDetail){
+						shipDetail.setObsolete("Y");
+					}
+					
 					shipment.setUpdated_by(user_id);
 					shipment.setUpdated_datetime(dateFormat.format(date));
 					shipment.setObsolete("Y");
 					shipment.setStatus("Cancelled");	
 					shipmentDao.saveOrUpdate(shipment);
+					
+					
 					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.DELETE_SUCCESS, null);
 					
 					return new ResponseEntity<String>(HttpStatus.OK);

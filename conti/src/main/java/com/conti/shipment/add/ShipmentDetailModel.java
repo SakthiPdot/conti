@@ -39,7 +39,7 @@ public class ShipmentDetailModel {
 	public ShipmentDetailModel (){}
 	int shipmentdetail_id, quantity;
 	float length, width, height, weight, unit_price, total_price;
-		
+	String obsolete;	
 	//------------shipmentmodel 
 		private ShipmentModel shipment;
 		@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
@@ -149,6 +149,11 @@ public class ShipmentDetailModel {
 	public void setTotal_price(float total_price) {
 		this.total_price = total_price;
 	}
-	
-	
+	@Column(name="obsolete")
+	public String getObsolete() {
+		return obsolete;
+	}
+	public void setObsolete(String obsolete) {
+		this.obsolete = obsolete;
+	}
 }
