@@ -103,11 +103,11 @@
 		                <div class="col-lg-12">
 		                <div class="col-lg-12 content-body">
 		                 	   <span>Employee Name <span class="required">*</span></span>	         
-			                   <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.employee.emp_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee Name"
+			                   <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.employee.emp_name" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee name"
 			                    required />
 			                   
 			                   <span>Employee Code</span>
-			                   <input type="text" class="form-control" maxlength="6" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee Code" />
+			                   <input type="text" class="form-control" maxlength="6" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.employee.emp_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee code" />
 			                
 			           
 			             </div>         	
@@ -135,7 +135,7 @@
 									              minlength="3"
 									              field-required="true"
 												  data-trigger="focus" data-toggle="popover" 
-												  data-placement="top" data-content="Please Enter Employee Category"
+												  data-placement="top" data-content="Please enter employee category"
 												  initial-value="{{ctrl.employee.empcategory}}"
 												  
 									              input-class="form-control form-control-small">
@@ -165,7 +165,7 @@
 						              minlength="3"
 						              field-required="true"
 						              data-trigger="focus" data-toggle="popover" 
-						              data-placement="top" data-content="Please Enter Employee Branch Name"
+						              data-placement="top" data-content="Please enter employee branch name"
 						              onKeyPress="return CheckIsCharacter(event)"
 						              input-class="form-control form-control-small">
               				</angucomplete-alt>
@@ -178,11 +178,11 @@
 		                <div class="col-lg-12 content-body">
 		                 	   <span>Address Line 1 <span class="required">*</span></span>	         
 			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address1" maxlength = "50"
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee Address Line1" required>
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee addressline 1" required>
 			                   
 			                   <span>Address Line 2</span>
 			                   <input type="text" class="form-control" data-ng-model="ctrl.employee.emp_address2" maxlength = "50"
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee Address Line2"
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee addressline 2"
 			                    >
 			                   
 			                   <span>Location <span class="required">*</span></span>
@@ -209,7 +209,7 @@
 												 
 									              minlength="3"
 	   											  data-trigger="focus" data-toggle="popover" 
-	   											  data-placement="top" data-content="Please Enter Employee Location"
+	   											  data-placement="top" data-content="Please enter employee location"
 	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
 									              input-class="form-control form-control-small">
               						</angucomplete-alt>
@@ -242,13 +242,13 @@
 		                <div class="col-lg-6 content-body">
 		                 	   <span>Phone No <span class="required">*</span></span>	         
 			                  <input type="text" class="form-control" minlength = "10" maxlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.employee.emp_phoneno" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee Mobile Number" required />
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee mobile number" required />
 			               
 			              </div> 
 			               <div class="col-lg-6 content-body">    
 			                   <span>Email </span>
 			                   <input type="email" class="form-control" data-ng-model="ctrl.employee.emp_email" 
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" maxlength = "30" data-content="Please Enter Employee Email Id" />
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" maxlength = "30" data-content="Please enter employee email id" />
 			                 
 			                
 			           
@@ -261,7 +261,7 @@
 			                 	   <span>Date of Birth </span> 
 								   <div class=" input-group">
 				                  	  <input type="text" class="form-control datepicker1" data-ng-model="ctrl.employee.dob"
-			                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee Date Of Birth" />
+			                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee date of birth" />
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i>
                                             </span>
 	                                          
@@ -275,7 +275,7 @@
 				           
 				                  <div class=" input-group">
 				                               <input type="text" class="form-control datepicker2" data-ng-model="ctrl.employee.doj" 
-				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Employee Date Of Joining">
+				                               data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter employee date of joining">
 				                             
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                            </span>

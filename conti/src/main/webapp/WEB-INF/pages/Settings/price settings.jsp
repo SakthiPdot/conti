@@ -88,7 +88,7 @@ data-ng-controller="priceSettingController as psctrl">
 										<fieldset data-ng-disabled="disableBSP">
 											<select name="fromBranch" class="form-control"
 											data-ng-change="changeSelectedBranch(psctrl.selectedBranch)"
-												data-ng-model="psctrl.selectedBranch ">
+												data-ng-model="psctrl.selectedBranch " required>
 												<option value="" data-ng-disabled="true">--Select
 													Branch Name--</option>
 												<option data-ng-repeat="x in psctrl.branches" value="{{x}}">{{x.branch_name}}</option>
@@ -108,7 +108,7 @@ data-ng-controller="priceSettingController as psctrl">
 											onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 											initial-value="{{psctrl.priceSetting.service.service_name}}"
 											data-trigger="focus" data-toggle="popover"
-											data-placement="top" data-content="Please Enter Service Name"></div>
+											data-placement="top" data-content="Please enter service name"></div>
 										</fieldset>
 
 										<input type="hidden" id="service"
@@ -124,7 +124,7 @@ data-ng-controller="priceSettingController as psctrl">
 											onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 											data-trigger="focus" data-toggle="popover"
 											initial-value="{{psctrl.priceSetting.product.product_name}}"
-											data-placement="top" data-content="Please Enter Product Name"></div>
+											data-placement="top" data-content="Please enter product name"></div>
 										</fieldset>
 
 										<input type="hidden" id="product"
@@ -145,7 +145,7 @@ data-ng-controller="priceSettingController as psctrl">
 											onKeyPress="return CheckIsNumericAnddot(event,this.value)"
 											data-trigger="focus" data-toggle="popover" id="defaultPrice"
 											maxlength="10" data-placement="top"
-											data-content="Please Enter Default Price"
+											data-content="Please enter default price"
 											data-ng-model="psctrl.priceSetting.default_price"
 											class="form-control"> 
 											
@@ -157,7 +157,7 @@ data-ng-controller="priceSettingController as psctrl">
 											onKeyPress="return CheckIsNumericAnddot(event,this.value)"
 											maxlength="10" data-trigger="focus" data-toggle="popover"
 											data-placement="top"
-											data-content="Please Enter Handling Charge"
+											data-content="Please enter handling charge"
 											data-ng-model="psctrl.priceSetting.defaulthandling_charge"
 											class="form-control">
 

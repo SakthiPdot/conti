@@ -108,12 +108,12 @@
 			                   data-ng-blur = "ctrl.checkServiceName(ctrl.service.service_name)"
 			                   data-ng-model = "ctrl.service.service_name" 
 			                   data-trigger = "focus" data-toggle ="popover" data-placement="top"
-			                   data-content ="Please Enter Service Name" required/>
+			                   data-content ="Please enter service name" required/>
 			                   <span class="makeRed" data-ng-show ="nameWrong">Service Name Already Existing..!</span><br>
 			                  
 			                   <span>Service Code</span>
 			                  <input type="text" class="form-control" maxlength="6" onKeyPress = "return CheckIsAlphaNumeric(event)" data-ng-model = "ctrl.service.service_code" data-trigger = "focus"
-			                  data-toggle="popover" data-placement="top" data-content = "Please Enter Service Code">
+			                  data-toggle="popover" data-placement="top" data-content = "Please enter service code">
 			               
 			                </div>  
 			             

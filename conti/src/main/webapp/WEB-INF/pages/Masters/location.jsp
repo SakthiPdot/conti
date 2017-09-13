@@ -93,7 +93,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 			                  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value) "
 			                  data-ng-required="true"
 			                  data-trigger="focus" data-toggle="popover"
-							  data-placement="top" data-content="Please Enter Location Name"
+							  data-placement="top" data-content="Please enter location name"
 			                  data-ng-model="locctrl.Location.location_name" 
 			                  data-ng-blur="locctrl.checkLocationName(locctrl.Location.location_name)"
 			                  maxlength="50"
@@ -104,7 +104,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 			                  <span>Location Code</span>
 			                  <input type="text"
 			                  data-trigger="focus" data-toggle="popover"
-							  data-placement="top" data-content="Please Enter Location Code"							  
+							  data-placement="top" data-content="Please enter location code"							  
 			                  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value) "
 							  maxlength="10"
 			                  data-ng-model="locctrl.Location.location_code"
@@ -114,7 +114,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 			                  <input type="text"			                  
 			                  data-trigger="focus" data-toggle="popover"		              
 							  onKeyPress="return CheckIsCharacterWithspace(event,this.value) "
-							  data-placement="top" data-content="Please Enter Abbreviation"
+							  data-placement="top" data-content="Please enter abbreviation"
 			                  data-ng-model="locctrl.Location.abbreviation"
 			                    maxlength="50"
 			                   class="form-control">  
@@ -137,7 +137,7 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 									              placeholder="Ex : Coimbatore"
 									              pause="0"		 data-ng-required="true"
 		                  						 data-trigger="focus" data-toggle="popover"
-							 					  data-placement="top" data-content="Please Enter city"	
+							 					  data-placement="top" data-content="Please enter city"	
 									              selected-object="city_name"								              
 										    	  remote-url="getAddressTypeByStr/"
 												  remote-url-data-field="Address"
@@ -190,8 +190,8 @@ data-ng-app="contiApp" data-ng-controller="locationController as locctrl">
 			                    data-trigger="focus" data-toggle="popover"
 			                    maxlength="8"
 			                    minlength="6"
-							 	data-placement="top" data-content="Please Enter Pincode"	
-							   onKeyPress="return CheckIsNumericAndHyphen(event,this.value) "           
+							 	data-placement="top" data-content="Please enter pincode"	
+							   onKeyPress="return CheckIsNumeric(event) "           
 			                  data-ng-model="locctrl.Location.pincode">
 			                  
 	                		</div>

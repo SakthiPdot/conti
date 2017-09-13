@@ -120,7 +120,7 @@
 						              minlength="3"
 						              field-required="true"
 						              data-trigger="focus" data-toggle="popover" 
-						              data-placement="top" data-content="Please Enter Branch Name"
+						              data-placement="top" data-content="Please enter branch name"
 						              onKeyPress="return CheckIsCharacter(event)"
 						              input-class="form-control form-control-small" tabindex = "-1" data-ng-class = "{'disabled' : ctrl.user.user_id != null}">
               				</angucomplete-alt>
@@ -140,7 +140,7 @@
 			                  minlength="1"
 			                  field-required="true"
 			                  data-trigger = "focus" data-toggle="popover"
-			                  data-placement="top" data-content="Please Enter Employee Name"
+			                  data-placement="top" data-content="Please enter employee name"
 			                  onKeyPress = "return CheckIsCharacter(event)"
 			                  input-class="form-control form-control-small" data-ng-class = "{'disabled' : ctrl.user.user_id != null}">
 			                  </angucomplete-alt>
@@ -154,16 +154,16 @@
 			                  
 			                   <span>User Name <span class="required">*</span></span>
 			                  <input type="text" class="form-control" onKeyPress="return CheckIsAlphaNumeric(event)" minlength="5" maxlength= "20" data-ng-model="ctrl.user.username" data-trigger="focus"
-			                  data-toggle="popover" data-placement="top" data-content="Please Enter Username" data-ng-blur="ctrl.checkUsername(ctrl.user.username)" required >
+			                  data-toggle="popover" data-placement="top" data-content="Please enter username" data-ng-blur="ctrl.checkUsername(ctrl.user.username)" required >
 			                  <div data-ng-show = "ctrl.errorUsername" class ="makeRed">This username is not available</div>
 			                    <span>Password <span class="required">*</span></span>
 			                  <input type="password" class="form-control" min= "8" data-ng-model="ctrl.user.userpassword" data-trigger="focus"
-			                  data-toggle="popover" data-placement="top" data-content="Please Enter Password" data-ng-keyup = "ctrl.getPassword(ctrl.user.userpassword)" required>
+			                  data-toggle="popover" data-placement="top" data-content="Please enter password" data-ng-keyup = "ctrl.getPassword(ctrl.user.userpassword)" required>
 			                  
 			                  
 			                    <span>Confirm Password <span class="required">*</span></span>
 			                   <input type="password" class="form-control" min= "8" data-ng-model="ctrl.user.confpassword" data-trigger="focus"
-			                  data-toggle="popover" data-placement="top" data-content="Please Enter ConfirmPassword" data-ng-keyup = "ctrl.checkPassword(ctrl.user.userpassword, ctrl.user.confpassword)" required>
+			                  data-toggle="popover" data-placement="top" data-content="Please enter confirm password" data-ng-keyup = "ctrl.checkPassword(ctrl.user.userpassword, ctrl.user.confpassword)" required>
 			                  
 		                  	<span data-ng-show = "!ctrl.checkPWD" class ="makeRed">Password doesn't match</span>
 			               
