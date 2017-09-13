@@ -51,16 +51,14 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
 	function fetchAllCustomers() {
 		var deferred = $q.defer();
 		$http.get('customers/')
-			.then(
-					function (response) {
-						deferred.resolve(response.data);
-						console.log(response.data);
-					},
-					function (errResponse) {
-						console.log("Error while fetching Customers");
-						deferred.reject(errResponse);
-					}
-				);
+			.then(function (response) {
+					deferred.resolve(response.data);
+				},
+				function (errResponse) {
+					console.log("Error while fetching Customers");
+					deferred.reject(errResponse);
+				}
+			);
 		return deferred.promise;
 	}
 	//-------------------------- Fetch All Customers end ---------------------//	
@@ -101,18 +99,6 @@ contiApp.factory('CustomerService', ['$http', '$q', function ($http, $q){
     			}
     		);
     		return deferred.promise;
-    		
-       /* $http.post(REST_SERVICE_URI, employee)
-            .then(
-            function (response) {
-                deferred.resolve(response.data);
-            },
-            function(errResponse){
-                console.error('Error while creating User');
-                deferred.reject(errResponse);
-            }
-        );
-        return deferred.promise;*/
     }
  
     //------------------------------- Delete Customer begin -----------------------------//
