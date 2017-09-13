@@ -489,6 +489,9 @@
                                         </tr>
                                  
                                     </tbody>
+                                    <tfoot data-ng-show="ctrl.tbl_nodata">
+                                    	<tr><td colspan="10" align="center">No data found</td></tr>
+                                    </tfoot>
                                 </table>
                                 
                                 <div class ="col-lg-6">

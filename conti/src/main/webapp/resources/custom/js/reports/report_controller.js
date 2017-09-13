@@ -218,6 +218,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		 $scope.to_lrno = function (to_lrno) {
 			 self.filterReset();
 		 }
+		 
 		//---- Report 
 		 self.submit = function (){
 			 self.report.fromtoday = $('.datepicker1').val();
@@ -237,7 +238,8 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 					self.shipmentReport = shipment;
 				 				self.excelFlag = false;	
 				 				pagination();
-			 				}
+				 			}
+			 				no_data();
 			 			},function(errResponse){
 			 				console.log(errResponse);
 			 			}
@@ -248,6 +250,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		 self.filterReset = function(){
 			 self.filterReport = {};
 			 self.excelFlag = true;
+			 self.tbl_nodata = false;
 		 }
 		 $scope.fRest = function(){
 			 self.filterReset();
@@ -256,8 +259,18 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		 self.resetDate = function(){
 			 $('.datepicker1').val('');
 			 $('.datepicker2').val('');
+			 
 		 }
 		 
+		//---no data after filter
+		 function no_data(){
+			if(self.filterReport.length==undefined){
+				self.tbl_nodata = true;			
+			}else{
+				self.tbl_nodata = false;
+			}
+			console.log(self.filterReport.length);
+		}
 			//--------------------------- PAGINATION BEGIN
 			
 			function pagination() {
