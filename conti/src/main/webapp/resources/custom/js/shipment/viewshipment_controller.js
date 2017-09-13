@@ -234,7 +234,8 @@ contiApp.controller('ViewShipmentController', [
 		ShipmentService.filterShipment(self.viewShipment)
 			.then(
 					function (shipment) {
-						self.FilterShipment = shipment
+						self.FilterShipment = shipment;
+						no_data();
 					}, function (errRes) {
 						console.log(errRes);
 					}

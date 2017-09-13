@@ -238,7 +238,6 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 				 				self.excelFlag = false;	
 				 				pagination();
 			 				}
-			 				console.log(shipment);
 			 			},function(errResponse){
 			 				console.log(errResponse);
 			 			}
@@ -294,52 +293,18 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			    		
 			    		self.filterReport = self.shipmentReport.slice($scope.currentPage*$scope.pageSize);
 			    		
-			    		/*if(self.filterReport.length == 0) {
-			    			ShipmentService.pagination_byPage(page)
-			        		.then(
-			        				function (filterShip) {
-			        					self.filterReport = filterShip;
-			        				}, 
-			        				function (errResponse) {
-			        					console.log('Error while fetching employees');
-			        				}
-			        			);
-			    		}*/
-			    		
 			    	}
-			    	
-			    	$scope.disableSorting=  ($scope.currentPage > 0) ?true:false;
 			    	
 			    }
 			
 			 $scope.paginate = function(nextPrevMultiplier) {
-			    	$scope.selectall = false;
 			    	$scope.currentPage += (nextPrevMultiplier * 1);
 			    	self.filterReport = self.shipmentReport.slice($scope.currentPage*$scope.pageSize);
-			    	/*if(self.FilterShipment.length == 0) {
-			    		ShipmentService.pagination_byPage($scope.currentPage)
-			    		.then(
-			    				function (filterShip) {
-			    					if ( filterShip.length == 0 ) {
-			    						$scope.nextDisabled = true;
-			    					} else if ( filterShip.length < 10 ) {
-			    						self.FilterShipment = filterShip;
-			    						$scope.nextDisabled = true;
-			    					} else {
-			    						self.FilterShipment = filterEmp;
-			    					}
-			    					
-			    				}, 
-			    				function (errResponse) {
-			    					console.log('Error while pagination');
-			    				}
-			    			);
-			    	}*/ 
 			    	
-			    	/*if(self.Filteremployees.length < $scope.pageSize) {
+			    	if(self.filterReport.length < $scope.pageSize) {
 			    		$scope.nextDisabled = true;
 			    	}
-			*/
+			    	
 			    	if($scope.currentPage == 0) {
 			    		$scope.previouseDisabled = true;
 			    	}

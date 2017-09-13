@@ -826,7 +826,8 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		if(status!=null && !status.trim().isEmpty())
 			queryString.append(" AND status='" + status + "'");
 		@SuppressWarnings("unchecked")
-		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession().createQuery(queryString.toString()).setMaxResults(100).list();
+		/*List<ShipmentModel> listShipment = sessionFactory.getCurrentSession().createQuery(queryString.toString()).setMaxResults(100).list();*/
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession().createQuery(queryString.toString()).list();
 		return listShipment;
 	}
 	
