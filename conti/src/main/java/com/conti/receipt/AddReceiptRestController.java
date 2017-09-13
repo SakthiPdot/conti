@@ -434,8 +434,14 @@ public class AddReceiptRestController
 			//set receipt id
 			receiptDetail.setReceiptModel(receipt);
 
+			
 			//set manifest id for shipment id
-			//receiptDetail.setManifestModel(mDao.getManifestIdByShipmentId(shipmentModel.getShipment_id()));
+			try {
+				ManifestModel manifestModel=mDao.getManifestIdByShipmentId(shipmentModel.getShipment_id());
+				receiptDetail.setManifest_id(manifestModel.getManifest_id());
+			} catch (Exception e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Manifest id not available for shipment id"+shipmentModel.getShipment_id(), e);
+			}
 
 			//set freight charge if to pay
 			if (shipmentModel.getBill_to().trim().equals(ConstantValues.TO_PAY.trim())) {

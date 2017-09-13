@@ -30,7 +30,7 @@ import com.conti.shipment.add.ShipmentModel;
 @Table(name="t_receiptdetail")
 public class ReceiptDetail {
 
-	public int receiptdetailid;
+	public int receiptdetailid,manifest_id;
 	public float handling_charge,net_freight_charges;
 	
 	private int receipt_id;
@@ -43,6 +43,9 @@ public class ReceiptDetail {
 		return this.receiptdetailid;
 	}
 		
+	
+
+
 	@Transient
 	public String getTemp_manifestno() {
 		return temp_manifestno;
@@ -150,5 +153,14 @@ public class ReceiptDetail {
 	}
 
 
+	@Column(name="manifest_id")
+	public int getManifest_id() {
+		return this.manifest_id;
+	}
+	public void setManifest_id(int manifest_id) {
+		this.manifest_id = manifest_id;
+	}
+
+	
 	
 }
