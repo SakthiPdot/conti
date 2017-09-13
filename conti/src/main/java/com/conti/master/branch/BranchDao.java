@@ -31,5 +31,5 @@ public interface BranchDao
 	public BranchModel getLocationbyId(int locationid);
 	public BranchModel getUserId(int c_user,int u_user);
 	
-	
+	public List<BranchModel> searchBranch4shipment(String search_key, int branch_id);
 }

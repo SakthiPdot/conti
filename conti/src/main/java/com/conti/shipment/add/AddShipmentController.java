@@ -1,15 +1,21 @@
 package com.conti.shipment.add;
 
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -289,4 +295,17 @@ public class AddShipmentController {
 
 	}
 
+	@RequestMapping(value="getBranch4shipment/{str}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String,List<BranchModel>>> fetchAllBranches4Employee(HttpServletRequest request,
+			@PathVariable("str") String searchStr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+		userInformation = new UserInformation(request);		
+		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
+		List<BranchModel> branches = branchDao.searchBranch4shipment(searchStr,branch_id);
+
+		 Map result = new HashMap();
+		 result.put("Branch", branches);
+		
+		System.err.println(searchStr+"464644");
+		return new ResponseEntity<Map<String,List<BranchModel>>> (result,HttpStatus.OK);
+	}
 }

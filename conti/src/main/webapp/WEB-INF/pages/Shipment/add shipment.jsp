@@ -413,7 +413,7 @@
 								              placeholder="Ex : Coimbatore"
 								              pause="0"
 								              selected-object="consignee_branch_name"
-								              remote-url="getBranch4Employee/"
+								              remote-url="getBranch4shipment/"
 								              remote_url-data-field="Branch"
 								              search-fields="branch_name"
 								              title-field="branch_name"

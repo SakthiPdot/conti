@@ -210,6 +210,18 @@ public class BranchDaoImpl implements BranchDao
 		return null;
 	}
 
+	@Override
+	@Transactional
+	public List<BranchModel> searchBranch4shipment(String search_key, int branch_id) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		
+		List<BranchModel> listbranch = (List<BranchModel>) sessionFactory.getCurrentSession()
+		.createQuery("from BranchModel WHERE obsolete ='N' and active ='Y' and branch_name LIKE '%" + search_key + "%' and branch_id <> "+branch_id).list();
+		return listbranch;
+	}
+
+	
 	
 }
 
