@@ -95,7 +95,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 							<span>Product Name<span style="color: red">&nbsp;*</span></span>
 							<input type="text" class="form-control" maxlength="50"
 								onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
-								data-ng-required="true" placeholder="Eg. Name"
+								data-ng-required="true" placeholder="Ex : Name"
 								data-ng-blur="proctrl.checkProductName(proctrl.product.product_name)"
 								data-trigger="focus" data-toggle="popover" data-placement="top"
 								data-content="Please enter product name"
@@ -107,7 +107,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 								class="form-control" maxlength="10"
 								onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 								data-trigger="focus" data-toggle="popover"
-								placeholder="Eg. XYZ01" data-placement="top"
+								placeholder="Ex : XYZ01" data-placement="top"
 								data-content="Please enter product code"
 								data-ng-model="proctrl.product.product_code"> <span>Product
 								Type<span style="color: red">&nbsp;*</span>
@@ -119,7 +119,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 							    remote-url="getProductTypeByStr/"
 								remote-url-data-field="Product"											
 								selected-object="product_type" 
-								override-suggestions="true" placeholder="Eg.Box"
+								override-suggestions="true" placeholder="Ex : Box"
 								search-fields="product_Type" title-field="product_Type"
 								match-class="highlight"
 								initial-value="{{proctrl.product.product_Type}}" minlength="1"
@@ -136,7 +136,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 							<div class="input-group">
 								<input type="text" class="form-control" data-ng-required="true"
 									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
-									maxlength="8" placeholder="Eg.10.01" data-trigger="focus"
+									maxlength="8" placeholder="Ex : 10.01" data-trigger="focus"
 									data-toggle="popover" data-placement="top"
 									data-content="Please enter maximum weight"
 									data-ng-model="proctrl.product.max_weight"> <span
@@ -175,7 +175,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 							<div class="input-group">
 								<input type="text" class="form-control"
 									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
-									maxlength="8" placeholder="Eg.10.01" data-trigger="focus"
+									maxlength="8" placeholder="Ex : 10.01" data-trigger="focus"
 									data-toggle="popover" data-placement="top"
 									data-content="Please enter maximum height"
 									data-ng-model="proctrl.product.max_height"> <span
@@ -186,7 +186,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 							<div class="input-group">
 								<input type="text" class="form-control"
 									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
-									maxlength="8" placeholder="Eg.10.01" data-trigger="focus"
+									maxlength="8" placeholder="Ex : 10.01" data-trigger="focus"
 									data-toggle="popover" data-placement="top"
 									data-content="Please enter maximum width"
 									data-ng-model="proctrl.product.max_width"> <span
@@ -197,7 +197,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 							<div class="input-group">
 								<input type="text" class="form-control"
 									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
-									maxlength="8" placeholder="Eg.10.01" data-trigger="focus"
+									maxlength="8" placeholder="Ex : 10.01" data-trigger="focus"
 									data-toggle="popover" data-placement="top"
 									data-content="Please enter maximum length"
 									data-ng-model="proctrl.product.max_length"> <span
