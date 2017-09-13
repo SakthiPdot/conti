@@ -98,7 +98,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 								data-ng-required="true" placeholder="Eg. Name"
 								data-ng-blur="proctrl.checkProductName(proctrl.product.product_name)"
 								data-trigger="focus" data-toggle="popover" data-placement="top"
-								data-content="Please Enter Product Name"
+								data-content="Please enter product name"
 								data-ng-model="proctrl.product.product_name"> <span
 								class="makeRed" data-ng-show="nameWrong">Product Name
 								Already Existing..!<br>
@@ -106,16 +106,16 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 							</span> <span>Product Code</span> <input type="text"
 								class="form-control" maxlength="10"
 								onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
-								data-trigger="focus" data-toggle="pop	over"
+								data-trigger="focus" data-toggle="popover"
 								placeholder="Eg. XYZ01" data-placement="top"
-								data-content="Please Enter Product Code"
+								data-content="Please enter product code"
 								data-ng-model="proctrl.product.product_code"> <span>Product
 								Type<span style="color: red">&nbsp;*</span>
 							</span>
 
 							<div angucomplete-alt id="selectedProductType" pause="0"
 								data-trigger="focus" data-toggle="popover" data-placement="top"
-								data-content="Please Enter Product Type"								
+								data-content="Please enter product type"								
 							    remote-url="getProductTypeByStr/"
 								remote-url-data-field="Product"											
 								selected-object="product_type" 
@@ -129,7 +129,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 							<input type="hidden" class="form-control" maxlength="30"
 								onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)"
 								data-trigger="focus" data-toggle="popover" data-placement="top"
-								data-content="Please Enter Product Type"
+								data-content="Please enter product type"
 								data-ng-model="proctrl.product.product_Type"> <span>Maximum
 								Weight<span style="color: red">&nbsp;*</span>
 							</span>
@@ -138,7 +138,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
 									maxlength="8" placeholder="Eg.10.01" data-trigger="focus"
 									data-toggle="popover" data-placement="top"
-									data-content="Please Enter Maximum Weight"
+									data-content="Please enter maximum weight"
 									data-ng-model="proctrl.product.max_weight"> <span
 									class="input-group-addon" id="basic-addon1"><label>kg</label></span>
 							</div>
@@ -177,7 +177,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
 									maxlength="8" placeholder="Eg.10.01" data-trigger="focus"
 									data-toggle="popover" data-placement="top"
-									data-content="Please Enter Maximum Height"
+									data-content="Please enter maximum height"
 									data-ng-model="proctrl.product.max_height"> <span
 									class="input-group-addon" id="basic-addon1"><label>cm</label></span>
 							</div>
@@ -188,7 +188,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
 									maxlength="8" placeholder="Eg.10.01" data-trigger="focus"
 									data-toggle="popover" data-placement="top"
-									data-content="Please Enter Maximum Width"
+									data-content="Please enter maximum width"
 									data-ng-model="proctrl.product.max_width"> <span
 									class="input-group-addon" id="basic-addon1"><label>cm</label></span>
 							</div>
@@ -199,7 +199,7 @@ data-ng-app="contiApp" data-ng-controller="productController as proctrl">
 									onKeyPress="return CheckIsNumericAnddot(event,this.value) "
 									maxlength="8" placeholder="Eg.10.01" data-trigger="focus"
 									data-toggle="popover" data-placement="top"
-									data-content="Please Enter Maximum Length"
+									data-content="Please enter maximum length"
 									data-ng-model="proctrl.product.max_length"> <span
 									class="input-group-addon" id="basic-addon1"><label>cm</label></span>
 							</div>

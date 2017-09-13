@@ -110,11 +110,11 @@
 			                  data-ng-blur = "ctrl.checkVehicleRegno(ctrl.vehicle.vehicle_regno)"
 			                   data-ng-model= "ctrl.vehicle.vehicle_regno"
 			                   data-trigger="focus" data-toggle="popover" data-placement="top" 
-			                   data-content="Please Enter Vehicle Reg No" required>
+			                   data-content="Please enter vehicle reg no" placeholder = "Ex : TN 38 P 7854" required>
 			                  <span class="makeRed" data-ng-show = "nameWrong"> Vehicle RegNo Already Existing..!<br></span>
 			                  
 			                  <span>Vehicle Code</span>
-			                 <input type="text" class="form-control" maxlength="6" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.vehicle.vehicle_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Code"/>
+			                 <input type="text" class="form-control" maxlength="6" onKeyPress="return CheckIsAlphaNumeric(event)" data-ng-model="ctrl.vehicle.vehicle_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter vehicle code" placeholder="Ex : V001"/>
 			                  
 			                   <span>Branch Name <span class="required"> *</span></span>
 			                   <angucomplete-alt id="branch_name" data-ng-model="ctrl.vehicle.branch_name"
@@ -129,7 +129,7 @@
 						              minlength="1"
 						              field-required="true"
 						              data-trigger="focus" data-toggle="popover" 
-						              data-placement="top" data-content="Please Enter Vehicle Branch Name"
+						              data-placement="top" data-content="Please enter vehicle branch name"
 						              onKeyPress="return CheckIsCharacter(event)"
 						              input-class="form-control form-control-small">
               				</angucomplete-alt>
@@ -138,7 +138,7 @@
 			                  
 			                  <span>Vehicle Model No<span class="required"> *</span></span>
 			                 <input type="text" class="form-control" maxlength="25" data-ng-model="ctrl.vehicle.vehicle_modelno" data-trigger="focus" 
-			                 onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Model No" required />
+			                 onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-toggle="popover" data-placement="top" data-content="Please enter vehicle model no" placeholder = "Ex : VOLVO SEMI" required />
 			                  
 			                  <span> Vehicle Type<span class="required"> *</span></span>
 			              <!--    <input type="text" class="form-control" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Vehicle Type" -->
@@ -156,9 +156,9 @@
 						              minlength="1"
 						              field-required="true"
 						              data-trigger="focus" data-toggle="popover" 
-						              data-placement="top" data-content="Please Enter Vehicle Type"
+						              data-placement="top" data-content="Please enter vehicle type"
 						              onKeyPress="return CheckIsCharacter(event)"
-						              input-class="form-control form-control-small">
+						              input-class="form-control form-control-small" placeholder = "Ex : Bus">
               				</angucomplete-alt>
 			                    
 			                    
