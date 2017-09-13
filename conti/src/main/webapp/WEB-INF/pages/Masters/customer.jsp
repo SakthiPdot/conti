@@ -106,11 +106,11 @@
 			                   
 			                   <span>Customer Code<span style="color:red">&nbsp;*</span></span>
 			                   <input type="text" class="form-control" maxlength="10" onKeyPress="return CheckIsAlphaNumeric(event,this.value)" data-ng-model="ctrl.customer.customer_code" 
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer code" required>
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Code" required>
 			                   
 			                    <span>Phone Number<span style="color:red">&nbsp;*</span></span>
 			                   <input type="text" class="form-control" maxlength="10" data-ng-minlength="10" onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.customer.customer_mobileno" 
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer phone number" required>
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Phone Number" required>
 			                
 			           
 			             </div>         	
@@ -146,7 +146,7 @@
 						              minlength="1"
 						              field-required="true"
 						              data-trigger="focus" data-toggle="popover" 
-						              data-placement="top" data-content="Please Enter Customer branch name"
+						              data-placement="top" data-content="Please Enter Customer Branch Name"
 						              onKeyPress="return CheckIsCharacter(event)"
 						              input-class="form-control form-control-small">
               				</angucomplete-alt>
@@ -181,7 +181,7 @@
 		                
 		                       <span>Company Name </span>	         
 			                   <input type="text" class="form-control" data-ng-model="ctrl.customer.company_name" maxlength="50" onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Company name" data-ng-required="ctrl.customer.gstin_number">
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Company Name" data-ng-required="ctrl.customer.gstin_number">
 			                   
 		                 	   <span>Address Line 1 <span style="color:red">&nbsp;*</span></span>	         
 			                   <input type="text" class="form-control"  data-ng-model="ctrl.customer.customer_addressline1"  maxlength="100" 
@@ -210,7 +210,7 @@
 												   
 									              minlength="3"
 	   											  data-trigger="focus" data-toggle="popover" 
-	   											  data-placement="top" data-content="Please Enter Customer location"
+	   											  data-placement="top" data-content="Please Enter Customer Location"
 	   											  
 									              input-class="form-control form-control-small" required>
               						</angucomplete-alt>
@@ -231,7 +231,7 @@
 			                    <input type="text" id="pincode" class="form-control disabled locations" tabindex="-1" maxlength="6" onKeyPress="return CheckIsNumeric(event)" value="{{location_name.originalObject.pincode}}">
 			                     <span>Email</span>
 			                   <input type="email" class="form-control" data-ng-model="ctrl.customer.customer_email" maxlength="30"
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer email id"  />
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Customer Email Id"  />
 			                 
 			           
 			             </div>         	

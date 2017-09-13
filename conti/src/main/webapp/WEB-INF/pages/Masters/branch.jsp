@@ -103,18 +103,18 @@
 			                	
 			                	<span>Branch Code<span style="color:red">&nbsp;*</span></span>			                	
 			                	<input type="text" class="form-control" minlength="4" maxlength="4" onKeyPress = "return CheckIsAlphaNumeric(event)" required
-			                	data-ng-model="ctrl.branch.branch_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch code">
+			                	data-ng-model="ctrl.branch.branch_code" data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Code">
 			                	
 			                		                	
 			                	<span>Address Line 1<span class="required">  *</span></span>			                	
 			                	<input type="text" class="form-control" maxlength="100" 
 			                	data-ng-model="ctrl.branch.branch_addressline1" data-trigger="focus" data-toggle="popover" 
-			                	data-placement="top" data-content="Please Enter Address line 1" required>
+			                	data-placement="top" data-content="Please Enter Address Line1" required>
 			                	
 			                	<span>Address Line 2</span>			                	
 			                	<input type="text" class="form-control" maxlength="100" 
 			                	data-ng-model="ctrl.branch.branch_addressline2" data-trigger="focus" data-toggle="popover"
-			                	data-placement="top" data-content="Please Enter Address line 2">
+			                	data-placement="top" data-content="Please Enter Address Line2">
 			                	
 			                	<span>Location<span class="required">  *</span></span>			                	
 			                	<angucomplete-alt id="location_name"
@@ -131,7 +131,7 @@
 												  
 									              minlength="3"
 	   											  data-trigger="focus" data-toggle="popover" 
-	   											  data-placement="top" data-content="Please Enter branch location"
+	   											  data-placement="top" data-content="Please Enter Branch Location"
 	   											  
 									              input-class="form-control form-control-small">
               					</angucomplete-alt>
@@ -164,13 +164,13 @@
 			                	<span>Contact  Person<span style="color:red">&nbsp;*</span></span>			                	
 			                	
 			                	<input type="text" class="form-control" maxlength = "30" onKeyPress="return CheckIsCharacterWithspace(event,this.value)" data-ng-model="ctrl.branch.branch_contactperson" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact person"  required/>
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Contact Person"  required/>
 			               </div>	
 			               
 			               <div class="col-lg-6 content-body">
 			                	<span>Contact Number<span style="color:red">&nbsp;*</span></span>			                	
 			                	<input type="text" class="form-control"  maxlength="15"  onKeyPress="return CheckIsNumeric(event)" data-ng-model="ctrl.branch.branch_mobileno" 
-			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch contact Number"  required/>
+			                   data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Contact Number"  required/>
 			              
 			               </div>		                                
 		                </div>
@@ -180,7 +180,7 @@
 			                <div class="col-lg-12 content-body">
 			                	 <span>Contact Mail<span style="color:red">&nbsp;*</span></span>			                	
 			                	<input type="email" class="form-control" maxlength = "30"  data-ng-model="ctrl.branch.branch_email" 
-			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Email id" required />
+			                  data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Email Id" required />
 			               </div>		                                
 		                </div>
 		                
@@ -191,7 +191,7 @@
 			                	<div class="input-group">
 			                	<span class="input-group-addon"><span>L</span>	</span>		                	
 				                	<input type="text" class="form-control" maxlength = "4" onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" data-ng-model="ctrl.branch.lrno_prefix" 
-				                 	 data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch Invoice no prefix" required />
+				                 	 data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please Enter Branch LR Invoice Number Prefix" required />
 			                	</div>
 			                	
 			              
