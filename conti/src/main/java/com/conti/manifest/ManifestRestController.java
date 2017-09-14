@@ -524,13 +524,15 @@ public class ManifestRestController
 					for(int i=0;i<manifestDetailedModel.size();i++){
 						if(manifestDetailedModel.get(i).shipmentModel.getStatus().equals(ConstantValues.INTRANSIT)){
 							transitcount=transitcount+1;
-						}else if(manifestDetailedModel.get(i).shipmentModel.getStatus().equals(ConstantValues.RECEIVED)){
+						}else if(manifestDetailedModel.get(i).shipmentModel.getStatus().equals(ConstantValues.RECEIVED) ||
+								manifestDetailedModel.get(i).shipmentModel.getStatus().equals(ConstantValues.DELIVERED)){
 							receivedcount=receivedcount+1;
 						}else{
 							missingcount=missingcount+1;
 						}
 							
 					}
+					//System.out.println("------"+missingcount+"---------"+receivedcount+"--------"+deliveredcount+"--------"+manifestDetailedModel.size());
 					ManifestModel manifestModel=manifestDao.getManifestByID(id);
 					if(manifestDetailedModel.size()==transitcount){
 						manifestModel.setManifest_status(ConstantValues.INTRANSIT);

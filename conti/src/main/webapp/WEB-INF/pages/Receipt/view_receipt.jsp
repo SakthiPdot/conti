@@ -924,7 +924,7 @@
                 			      		data-ng-options ="branch.branch_id as branch.branch_name for branch in ctrl.branches"
                 			      		data-ng-model="ctrl.receipt.frombranch"
                 			      		data-ng-init="${branch_id}">
-                			      			<option value='' disabled>--Select--</option>
+                			      			<option value='' disabled>--Select Branch Name--</option>
                 			      		</select>
                 			      </div>
                 			      
@@ -932,7 +932,7 @@
                 			      		<span class="text-padding">To</span>
                 			      		<select class="form-control" data-ng-options ="branch.branch_id as branch.branch_name for branch in ctrl.branches" 
                 			      		data-ng-model="ctrl.receipt.tobranch">
-                			      			<option value=''>--Select--</option>
+                			      			<option value=''>--Select --</option>
                 			      			
                 			      		</select>
                 			      </div>
@@ -947,6 +947,7 @@
 	                                          <div class="form-group input-group marginleftrightspace">
 					                                <input type="text" class="form-control datepicker1" data-ng-model="ctrl.receipt.fromdate"
 					                           			   data-trigger= "focus"data-toggle="popover" data-placement="top"
+					                           			   placeholder="Select From Date"
 					                            		   data-content="Please select from date"/>
 		                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 		                                            </span>
@@ -959,7 +960,8 @@
                 			      		  <div class="form-group input-group spacemarginleftright">
 				                               <input type="text" class="form-control datepicker2" data-ng-model="ctrl.receipt.todate"
 													  data-trigger= "focus"data-toggle="popover" data-placement="top"
-					                            		data-content="Please select to date"/>
+													  placeholder="Select To Date"
+					                            	  data-content="Please select to date"/>
 	                                            <span class="input-group-addon"><i class="fa fa-calendar"></i>
 	                                            </span>
 	                                          
@@ -972,7 +974,7 @@
                 			       		<div class="col-lg-3 branchclass">
                 			      		 <span class="text-padding">Status</span>	                	                                       
                                             <select class="form-control" data-ng-model="ctrl.receipt.status">
-                                            	<option value=''>--Select--</option>
+                                            	<option value=''>--Select Status--</option>
                                             	<option value='Delivered'>Delivered</option>  
                                             	<option value='Pending'>Pending</option>                                            	
                                             </select>

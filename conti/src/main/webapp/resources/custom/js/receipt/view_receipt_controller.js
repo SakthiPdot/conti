@@ -384,13 +384,13 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	//-------------------------------Receipt register search-------------------------
 	
 	function receiptSearch(key){
-		console.log('');
+		console.log(self.Filterreceipts);
 		if (key.length==0) {
 			self.Filterreceipts = self.receipts;
     	}else if(self.search.length>3){
 			ReceiptService.receiptSearch(key)
 			.then(function(filterreceipt){
-				self.Filterreceipts=filterreceipt;
+				self.Filterreceipts=filterreceipt;	
 				console.log(filterreceipt);
 			},
 			function(errResponse){
@@ -399,7 +399,9 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			
 		}else{
 			self.Filterreceipts=_.filter(self.receipts,function(item){
-				return String(item.shipmentModel.lrno_prefix).indexOf(key) > -1;
+				console.log("call ")
+				return String((item.shipmentModel.lrno_prefix.toLowerCase()).indexOf(key.toLowerCase()) > -1  
+						);
 			});
 		}
 			
