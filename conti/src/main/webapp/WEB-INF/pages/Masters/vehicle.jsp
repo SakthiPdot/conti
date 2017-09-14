@@ -495,6 +495,14 @@
 		    e.stopPropagation();
 		});
 	</script>
+	
+	 <!-- Space Remove Process -->
+	 
+	<script type="text/javascript">
+		$('input[type=text]').blur(function(){ 
+		    $(this).val($.trim($(this).val()));
+		});
+	</script>
 
 </body>
 

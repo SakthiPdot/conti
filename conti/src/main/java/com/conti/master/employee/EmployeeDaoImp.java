@@ -170,8 +170,8 @@ public class EmployeeDaoImp implements EmployeeDao {
 		
 		List<EmployeeMaster> listemp = (List<EmployeeMaster>) sessionFactory.getCurrentSession()
 		.createQuery("from EmployeeMaster WHERE obsolete ='N'"
-				+ " AND empcategory LIKE '%" + search_key + "%'"				
-				+ " AND user.role.role_Name <> '"+ constantVal.ROLE_SADMIN +"' GROUP BY empcategory").list();
+				+ " AND empcategory LIKE '%" + search_key + "%'  GROUP BY empcategory").list();				
+				/*+ " AND user.role.role_Name <> '"+ constantVal.ROLE_SADMIN +"' GROUP BY empcategory").list();*/
 		return listemp;
 		
 	}

@@ -10,14 +10,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonManagedReference;
-import org.hibernate.annotations.IndexColumn;
 
 import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerModel;
@@ -47,7 +46,55 @@ public class ShipmentModel {
 	float shipment_value, chargeable_weight, delivery_charge, handling_charge,
 	total_charges, cgst, igst, sgst, discount_amount, discount_percentage, tax;
 	
+	//---for report begin
+	String receipt_date, receipt_no;
+	float freight_charge, receipt_charge, receipt_handling, receipt_transport;
 	
+	@Transient
+	public String getReceipt_date() {
+		return receipt_date;
+	}
+	public void setReceipt_date(String receipt_date) {
+		this.receipt_date = receipt_date;
+	}
+	@Transient
+	public String getReceipt_no() {
+		return receipt_no;
+	}
+	public void setReceipt_no(String receipt_no) {
+		this.receipt_no = receipt_no;
+	}
+	
+	@Transient
+	public float getReceipt_charge() {
+		return receipt_charge;
+	}
+	public void setReceipt_charge(float receipt_charge) {
+		this.receipt_charge = receipt_charge;
+	}
+	
+	@Transient
+	public float getFreight_charge() {
+		return freight_charge;
+	}
+	public void setFreight_charge(float freight_charge) {
+		this.freight_charge = freight_charge;
+	}
+	@Transient
+	public float getReceipt_handling() {
+		return receipt_handling;
+	}
+	public void setReceipt_handling(float receipt_handling) {
+		this.receipt_handling = receipt_handling;
+	}
+	@Transient
+	public float getReceipt_transport() {
+		return receipt_transport;
+	}
+	public void setReceipt_transport(float receipt_transport) {
+		this.receipt_transport = receipt_transport;
+	}
+	//---for report end
 	public ShipmentModel() {
 		
 	}
@@ -384,7 +431,6 @@ public class ShipmentModel {
 	public void setLrno_prefix(String lrno_prefix) {
 		this.lrno_prefix = lrno_prefix;
 	}
-	
 	
 	 
 	
