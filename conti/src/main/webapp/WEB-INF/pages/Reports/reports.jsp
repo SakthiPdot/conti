@@ -429,7 +429,7 @@
 										<div class="checkbox">
 											<label>
 												<i class = "fa" data-ng-class="{'fa-check': setting_totparcel == true, 'fa-times': setting_totparcel == false}"></i>
-												<input type="checkbox" data-ng-init = "setting_totparcel=true" data-ng-model="setting_totparcel" /> Total Parcel
+												<input type="checkbox" data-ng-init = "setting_totparcel=true" data-ng-model="setting_totparcel" /> No. of Parcel
 											</label>
 										</div>
 										<div class="checkbox">

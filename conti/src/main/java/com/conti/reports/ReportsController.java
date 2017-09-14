@@ -137,6 +137,8 @@ public class ReportsController {
 						filterShip.get(i).setReceipt_date("Nil");
 						filterShip.get(i).setReceipt_no("Nil");
 						filterShip.get(i).setReceipt_charge(0);
+						filterShip.get(i).setHandling_charge(0);
+						filterShip.get(i).setReceipt_transport(0);
 					}
 				}
 				

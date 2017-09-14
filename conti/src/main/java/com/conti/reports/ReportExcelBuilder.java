@@ -1,6 +1,8 @@
 package com.conti.reports;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -140,9 +142,19 @@ public class ReportExcelBuilder extends AbstractExcelView {
 		for(ShipmentModel shipmentModel:shipmentList){
 			HSSFRow row=sheet.createRow(rowcount++);			
 			try {
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+			    /*String shipment_date = shipment.getShipment_date().toString();
+			    Date date = dateFormat.parse(shipment_date.substring(0, shipment_date.length()-2));
+			    
+			    SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy HH:mm a");*/
+			    
+			    
 				row.createCell(0).setCellValue(rowcount-1);
 				String[] shipment_date = shipmentModel.getShipment_date().split("\\.");
-				row.createCell(1).setCellValue(shipment_date[0]);
+				Date date = dateFormat.parse(shipment_date[0]);
+				row.createCell(1).setCellValue(dateFormat1.format(date));
+				
 				row.createCell(2).setCellValue(shipmentModel.getLrno_prefix());
 				StringBuilder sb_product = new StringBuilder();
 				for(int i=0;i<shipmentModel.getShipmentDetail().size();i++){
@@ -161,7 +173,8 @@ public class ReportExcelBuilder extends AbstractExcelView {
 				row.createCell(9).setCellValue(shipmentModel.getService().getService_name());
 				
 				String[] receipt_date = shipmentModel.getReceipt_date().split("\\.");
-				row.createCell(10).setCellValue(receipt_date[0]);
+				Date dateRecpt = dateFormat.parse(receipt_date[0]);
+				row.createCell(10).setCellValue(dateFormat1.format(dateRecpt));
 				row.createCell(11).setCellValue(shipmentModel.getReceipt_no());
 				row.createCell(12).setCellValue(shipmentModel.getPay_mode());
 				row.createCell(13).setCellValue(shipmentModel.getBill_to());
