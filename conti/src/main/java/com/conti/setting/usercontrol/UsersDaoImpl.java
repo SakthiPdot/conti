@@ -238,7 +238,8 @@ class UsersDaoImpl implements UsersDao {
 		public List<User> getUsersbyBranchIdwihoutSA(int branch_id) {
 			@SuppressWarnings("unchecked")
 			List<User> listuser = (List<User>) sessionFactory.getCurrentSession()
-					.createQuery("from User WHERE obsolete = 'N' and branchModel.branch_id = '"+ branch_id+"' and role.role_Name <> '" + constantVal.ROLE_SADMIN + "'").list();
+					.createQuery("from User WHERE obsolete = 'N' and branchModel.branch_id = '"+ branch_id+"' "
+							+ "and role.role_Name <> '" + constantVal.ROLE_SADMIN + "'ORDER BY IFNULL (created_datetime, updated_datetime) DESC").list();
 			
 			return listuser;
 		}
