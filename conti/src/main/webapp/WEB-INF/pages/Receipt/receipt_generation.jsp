@@ -154,7 +154,7 @@
 										<div class=" input-group ">
 											<input type="text" class="form-control datepicker1"
 												data-ng-model="fromdate_filter" data-trigger="focus"
-												placeholder="Enter From Date"
+												placeholder="Select From Date"
 												data-toggle="popover" data-placement="top"
 												data-content="Please select from date" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -170,7 +170,7 @@
 										<div class=" input-group ">
 											<input type="text" class="form-control datepicker2"
 												data-ng-model="todate_filter" data-trigger="focus"
-												placeholder="Enter To Date"
+												placeholder="Select To Date"
 												data-toggle="popover" data-placement="top"
 												data-content="Please select to date" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
@@ -192,7 +192,7 @@
                                          </div>
                 			            
                 			            <div class="col-lg-3 branchclass">
-                			      		 <span class="">Payment Mode</span>	                	                                       
+                			      		 <span class="text-padding">Payment Mode</span>	                	                                       
                                             <select class="form-control" data-ng-options= "pay for pay in ['Cash','Credit']"
                                             data-ng-model="paymode_filter">
                                             	<option value='' data-ng-disabled="true">--Select Payment Mode--</option>

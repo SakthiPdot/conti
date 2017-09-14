@@ -145,6 +145,7 @@
 										<div class="form-group input-group marginleftrightspace">
 											<input type="text" class="form-control datepicker1"
 												data-ng-model="ctrl.manifest.fromdate" data-trigger="focus"
+												placeholder="Select From date"
 												data-toggle="popover" data-placement="top"
 												data-content="Please select from date" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -156,6 +157,7 @@
 										<div class="form-group input-group spacemarginleftright">
 											<input type="text" class="form-control datepicker2"
 												data-ng-model="ctrl.manifest.todate" data-trigger="focus"
+												placeholder="Select To date"
 												data-toggle="popover" data-placement="top"
 												data-content="Please select to date" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>

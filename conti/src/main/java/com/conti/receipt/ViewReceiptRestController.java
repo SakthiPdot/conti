@@ -267,19 +267,18 @@ public class ViewReceiptRestController {
 					ReceiptModel receiptModel=receiptDao.getReceiptbyId(receiptDetail.get(i).getReceiptModel().receipt_id);
 					
 					manifestModel=manifestDao.getManifestByShipmentID(receiptDetail.get(i).shipmentModel.getShipment_id());//for manifest_prefix
-//					if(receiptModel==null){
-//						receiptDetail.remove(i);}
-					
+					if(receiptModel!=null){
+						receiptDetail.remove(i);}
+					else{
 					receiptDetail.get(i).setReceipt_id(receiptModel.receipt_id);
 					receiptDetail.get(i).setTemp_receiptno(receiptModel.getReceipt_prefix());
 					receiptDetail.get(i).setTemp_date(receiptModel.getUpdated_datetime());
 					receiptDetail.get(i).setTemp_manifestno(manifestModel.getManifest_prefix());
+					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				
 			}
 			if(receiptDetail.isEmpty()) 
 			{

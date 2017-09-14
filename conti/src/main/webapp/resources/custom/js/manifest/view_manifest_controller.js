@@ -153,7 +153,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		
 		if(self.selected_manifest.length == 0 ) 
 		{
-	   		self.message ="Please select atleast one record for delete..!";
+	   		self.message ="Please select atleast one record for Delete..!";
 			successAnimate('.failure');
     	} 
 		else if(branchflag=='1')
@@ -163,7 +163,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		}
 		else if(deleteflag=='1')
 		{
-			self.message ="Receipt already created for selected record(s) so can not make Delele..!";
+			self.message ="Receipt already created for selected record(s) so can not make Delele...!";
 			successAnimate('.failure');
 		}
 		else
@@ -210,7 +210,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		   		self.message ="Please select atleast one record..!";
 				successAnimate('.failure');
 	    	} else {
-	    			
 	    		console.log(self.selected_manifest);
 	    		$http.get('http://localhost:8080/Conti/listprint');
 	    	}

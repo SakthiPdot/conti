@@ -137,12 +137,14 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										<div class="col-lg-10">
 										<div class="form-group input-group">
 											<input type="text" name="datePicker1" class="form-control datepicker1"
-											placeholder="Enter From Date"
+											 data-trigger="focus" data-toggle="popover"
+											 placeholder="Select From Date"		
+											 data-placement="top" data-content="Please Select From Date"
 											 data-ng-model="amctrl.fromdate"/>
 											 <span class="input-group-addon"><i class="fa fa-calendar"></i>
 											</span>
 
-										</div>
+										</div>	
 										</div>
 									</div>
 
@@ -153,9 +155,9 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										<div class="col-lg-10">
 										<div class="form-group input-group ">
 											<input type="text"  name="datePicker2" class="form-control datepicker2" 
-											placeholder="Enter To Date"											
+											placeholder="Select To Date"											
 											data-trigger="focus" data-toggle="popover"
-											data-placement="top" data-content="Please Select To Branch"
+											data-placement="top" data-content="Please Select To Date"
 											data-ng-model="amctrl.todate" /> <span
 												class="input-group-addon"><i class="fa fa-calendar"></i>
 											</span>

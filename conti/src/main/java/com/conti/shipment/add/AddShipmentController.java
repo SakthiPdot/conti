@@ -205,14 +205,14 @@ public class AddShipmentController {
 			
 			
 			//SMS FOR SENDER 
-//			String message = "Your parcel have been booked successfully at Conti Courier Service. "
-//					+ "LR Number: " + lrno + " "
-//					+ "From city " + shipment.getSender_branch().getBranch_name() +" to "
-//									+ shipment.getConsignee_branch().getBranch_name() + " " 
-//					+ "No.of Parcel " + shipment.getNumberof_parcel() + " "
-//					+ "Delivery Charge " + shipment.getTotal_charges();
-//			String mobileno = Long.toString(shipment.getSender_customer().getCustomer_mobileno());
-//			String sms_respone = sendMailSMS.send_SMS(mobileno, message);
+			String message = "Your parcel have been booked successfully at Conti Courier Service. "
+					+ "LR Number: " + lrno + " "
+					+ "From city " + shipment.getSender_branch().getBranch_name() +" to "
+									+ shipment.getConsignee_branch().getBranch_name() + " " 
+					+ "No.of Parcel " + shipment.getNumberof_parcel() + " "
+					+ "Delivery Charge " + shipment.getTotal_charges();
+			String mobileno = Long.toString(shipment.getSender_customer().getCustomer_mobileno());
+			String sms_respone = sendMailSMS.send_SMS(mobileno, message);
 			JSONObject lr_details = new JSONObject();
 			lr_details.put("lrno", lrno);
 			lr_details.put("shipment_id", shipment.shipment_id);
