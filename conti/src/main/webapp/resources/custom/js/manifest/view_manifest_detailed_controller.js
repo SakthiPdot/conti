@@ -353,10 +353,14 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		successAnimate('.failure');
 	} else {
 		var activate_flag = 0;
+		var Missing_flag=0;
 		angular.forEach(self.selected_manifest, function(manifest){
 			if(manifest.shipmentModel.status== 'Missing') {
 				activate_flag = 1;
 			} 
+			if(manifest.shipmentModel.status=='Intransit' || manifest.shipmentModel.status=='Missing'){
+				Missing_flag=1;
+			}
 		});
 		if(branch_flag=='false' && authen_flag=='MANAGER_OR_STAFF')
 		{
@@ -366,7 +370,11 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		else if(activate_flag == 1) {
 			self.message ="Selected record(s) already in Missing status..!";
 			successAnimate('.failure');
-		} else {
+		} 
+		else if(Missing_flag == 0) {
+			self.message ="Allowed only Intransit or Missing status LR(s)...!";
+			successAnimate('.failure');
+		}else {
 			self.confirm_title = 'Missing';
 			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
 			self.confirm_msg = ' make selected record(s) status as '+self.confirm_title+ '?';
@@ -404,10 +412,14 @@ function makeReceived(){
 		successAnimate('.failure');
 	} else {
 		var inactivate_flag = 0;
+		var received_flag=0;
 		angular.forEach(self.selected_manifest, function(manifest){
 			if(manifest.shipmentModel.status== 'Received') {
 				inactivate_flag = 1;
 			} 
+			if(manifest.shipmentModel.status=='Intransit' || manifest.shipmentModel.status=='Missing'){
+				received_flag=1;
+			}
 		});
 		
 		if(branch_flag=='false' && authen_flag=='MANAGER_OR_STAFF')
@@ -418,7 +430,12 @@ function makeReceived(){
 		else if(inactivate_flag == 1) {
 			self.message ="Selected record(s) already in Received status..!";
 			successAnimate('.failure');
-		} else {
+		}
+		else if(received_flag==0) {
+			self.message ="Allowed only Intransit or Missing status LR(s)...!";
+			successAnimate('.failure');
+		}
+		else {
 			
 			self.confirm_title = 'Received';
 			self.confirm_type = BootstrapDialog.TYPE_SUCCESS;

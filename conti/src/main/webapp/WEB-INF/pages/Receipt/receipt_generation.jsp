@@ -138,12 +138,8 @@
                 			      		
                 			      </div>
                 			      </div>
-                			      
-                			      
-
-
-
-								<div class="col-lg-12 noPaddingLeft ">
+                			 
+                			 	<div class="col-lg-12 noPaddingLeft ">
 
 									<div class="sec-padding">Specific Period</div>
 									<div class="col-lg-3 branchclass">
