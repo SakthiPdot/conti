@@ -332,6 +332,16 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		return listShipment;
 	}
 	
+	@Override
+	@Transactional
+	public List<ShipmentModel> getShipment4ReportByLRAdmin(String searchString) {
+		@SuppressWarnings("unchecked")
+		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
+				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
+						+ "and  lrno_prefix LIKE '%"+searchString+ "%'").list();
+		
+		return listShipment;
+	}
 	
 	@Override
 	@Transactional

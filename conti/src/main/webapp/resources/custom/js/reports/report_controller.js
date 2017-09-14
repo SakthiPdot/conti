@@ -207,7 +207,11 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		
 		 //--- Prodcut change
 		 $scope.product_name = function (product) {
-			 self.report.product_id = product.originalObject.product_id;
+			 if(product == null) {
+				 self.report.product_id = "";
+			 }else{
+				 self.report.product_id = product.originalObject.product_id;
+			}
 			 self.filterReset();
 		 }
 		//--- fromlrno change
@@ -251,6 +255,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 self.filterReport = {};
 			 self.excelFlag = true;
 			 self.tbl_nodata = false;
+			 no_data();
 		 }
 		 $scope.fRest = function(){
 			 self.filterReset();
@@ -259,17 +264,25 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		 self.resetDate = function(){
 			 $('.datepicker1').val('');
 			 $('.datepicker2').val('');
-			 
+			 no_data();
 		 }
 		 
 		//---no data after filter
 		 function no_data(){
 			if(self.filterReport.length==undefined){
-				self.tbl_nodata = true;			
+				self.tbl_nodata = true;		
+				
+				
+				
+				$scope.currentPage = null;
+				$scope.nextDisabled = true;
+				$scope.previouseDisabled = true;
+				$scope.pageSize = null;
+				$scope.totalnof_records = null;
 			}else{
 				self.tbl_nodata = false;
 			}
-			console.log(self.filterReport.length);
+			
 		}
 			//--------------------------- PAGINATION BEGIN
 			

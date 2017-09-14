@@ -240,7 +240,8 @@
 						<angucomplete-alt id="from_lrno" data-ng-model="ctrl.report.from_lrno"
 						placeholder="Ex:LR No"
 						pause="100" selected-object="from_lrno"
-						local-data="ctrl.shipments"
+						 remote-url="getshipment4report/"
+						 remote_url-data-field="shipment"
 						search-fields="lrno_prefix"
 						title-field="lrno_prefix"
 						match-class="highlight"
@@ -257,7 +258,8 @@
 						<angucomplete-alt id="to_lrno" data-ng-model="ctrl.report.from_lrno"
 						placeholder="Ex:LR No" pause="100"
 						selected-object="to_lrno"
-						local-data="ctrl.shipments"
+						remote-url="getshipment4report/"
+						 remote_url-data-field="shipment"
 						search-fields="lrno_prefix"
 						title-field="lrno_prefix"
 						match-class="highlight"
@@ -375,6 +377,19 @@
 			           			 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			           			 	<a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
 			           			 	<div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
+			           			 		<!-- <div class ="checkbox">
+                                     		<label>
+                                     			<i class = "fa" data-ng-class="{'fa-check': setting_sno == true, 'fa-times': setting_sno == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_sno=true" data-ng-model="setting_sno" /> S.No.												
+											</label>											
+										</div> -->
+										<div class ="checkbox">
+                                     		<label>
+                                     			<i class = "fa" data-ng-class="{'fa-check': setting_shipmentdate == true, 'fa-times': setting_shipmentdate == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_shipmentdate=true" data-ng-model="setting_shipmentdate" /> Shipment Date												
+											</label>											
+										</div>
+										
 			           			 		<div class ="checkbox">
                                      		<label>
                                      			<i class = "fa" data-ng-class="{'fa-check': setting_lrno == true, 'fa-times': setting_lrno == false}"></i>
@@ -419,14 +434,45 @@
 										</div>
 										<div class="checkbox">
 											<label>
-												<i class = "fa" data-ng-class="{'fa-check': setting_weight == true, 'fa-times': setting_weight == false}"></i>
-												<input type="checkbox" data-ng-init = "setting_weight=true" data-ng-model="setting_weight" /> Weight
+												<i class = "fa" data-ng-class="{'fa-check': setting_service == true, 'fa-times': setting_service == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_service=true" data-ng-model="setting_service" /> Service
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<i class = "fa" data-ng-class="{'fa-check': setting_service == true, 'fa-times': setting_service == false}"></i>
-												<input type="checkbox" data-ng-init = "setting_service=true" data-ng-model="setting_service" /> Service
+												<i class = "fa" data-ng-class="{'fa-check': setting_receiptdate == true, 'fa-times': setting_receiptdate == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_receiptdate=true" data-ng-model="setting_receiptdate" /> Receipt date
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_receiptno == true, 'fa-times': setting_receiptno == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_receiptno=true" data-ng-model="setting_receiptno" /> Receipt No.
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_billto == true, 'fa-times': setting_billto == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_billto=true" data-ng-model="setting_billto" /> Bill To
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_paymode == true, 'fa-times': setting_paymode == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_paymode=true" data-ng-model="setting_paymode" /> Pay mode
+											</label>
+										</div>
+										
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_freightcharge == true, 'fa-times': setting_freightcharge == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_freightcharge=true" data-ng-model="setting_freightcharge" /> L.R. Freight Charge
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<i class = "fa" data-ng-class="{'fa-check': setting_receiptcharge == true, 'fa-times': setting_receiptcharge == false}"></i>
+												<input type="checkbox" data-ng-init = "setting_receiptcharge=true" data-ng-model="setting_receiptcharge" /> Receipt Charge
 											</label>
 										</div>
 										<div class="checkbox">
@@ -435,6 +481,7 @@
 												<input type="checkbox" data-ng-init = "setting_status=true" data-ng-model="setting_status" /> Status
 											</label>
 										</div>
+										
 			           			 	</div>
 			           			 	<button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.excelFlag">	<i class="fa fa-file-excel-o"></i></button>
 			                		
@@ -455,22 +502,27 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            
+                                            <th data-ng-show = "setting_shipmentdate">Shipment Date</th>
                                             <th data-ng-show = "setting_lrno">L.R.No.</th>
                                             <th data-ng-show = "setting_product">Product</th>
                                             <th data-ng-show = "setting_origin">Origin</th>
                                             <th data-ng-show = "setting_destination">Destination</th>
                                             <th data-ng-show = "setting_sender">Sender</th>
                                             <th data-ng-show = "setting_consignee">Consignee</th>
-                                            <th data-ng-show = "setting_totparcel">Total Parcel</th>
-                                            <th data-ng-show = "setting_weight">Weight</th>
+                                            <th data-ng-show = "setting_totparcel">No. of Parcel</th>
                                             <th data-ng-show = "setting_service">Service</th>
+                                            <th data-ng-show = "setting_receiptdate">Receipt date</th>
+                                            <th data-ng-show = "setting_receiptno">Receipt No.</th>
+                                            <th data-ng-show = "setting_billto">Bill To</th>
+                                            <th data-ng-show = "setting_paymode">Pay mode</th>
+                                            <th data-ng-show = "setting_freightcharge">L.R. Freight Charge</th>
+                                            <th data-ng-show = "setting_receiptcharge">Receipt Charge</th>
                                             <th data-ng-show = "setting_status">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr class="odd gradeX" data-ng-repeat = "report in ctrl.filterReport | limitTo:pageSize">
-                                            
+                                            <td data-ng-show = "setting_shipmentdate">{{report.shipment_date.slice(0,-10)}}</td>
                                             <td data-ng-show = "setting_lrno">{{report.lrno_prefix}}</td>
                                             <td data-ng-show = "setting_product">
                                             		<div data-ng-repeat="shipmentDet in report.shipmentDetail">
@@ -482,23 +534,31 @@
                                             <td data-ng-show = "setting_destination">{{report.consignee_branch.branch_name}}</td>
                                             <td data-ng-show = "setting_sender">{{report.sender_customer.customer_name}}</td>
                                             <td data-ng-show = "setting_consignee">{{report.consignee_customer.customer_name}}</td>
-                                            <td data-ng-show = "setting_totparcel">{{report.numberof_parcel}}</td>
-                                            <td data-ng-show = "setting_weight">{{report.chargeable_weight}} Kg.</td>
+                                            <td data-ng-show = "setting_totparcel">{{report.numberof_parcel}}</td>                                           
                                             <td data-ng-show = "setting_service">{{report.service.service_name}}</td>
+                                            <td data-ng-show = "setting_receiptdate">{{report.receipt_date}}</td>
+                                            <td data-ng-show = "setting_receiptno">{{report.receipt_no}}</td>
+                                            <td data-ng-show = "setting_billto">{{report.bill_to}}</td>
+                                            <td data-ng-show = "setting_paymode">{{report.pay_mode}}</td>
+                                            <td data-ng-show = "setting_freightcharge">{{report.total_charges}}</td>
+                                            <td data-ng-show = "setting_receiptcharge">{{report.receipt_charge}}</td>
                                             <td data-ng-show = "setting_status">{{report.status}}</td>
                                         </tr>
                                  
                                     </tbody>
                                     <tfoot data-ng-show="ctrl.tbl_nodata">
-                                    	<tr><td colspan="10" align="center">No data found</td></tr>
+                                    	<tr><td colspan="17" align="center">No data found</td></tr>
                                     </tfoot>
                                 </table>
                                 
                                 <div class ="col-lg-6">
-                                	<div class="pull-left">
+                                	<div class="pull-left" data-ng-show="!ctrl.tbl_nodata">
                                			 Showing {{(currentPage*pageSize)+1}} to 
                                			 {{ (totalnof_records - (((currentPage+1)*pageSize))) > 0 ? (currentPage+1)*pageSize : totalnof_records }}
                                			 of {{totalnof_records}} entries
+                               		</div>
+                               		<div class="pull-left" data-ng-show="ctrl.tbl_nodata">
+                               			 Showing NaN to of entries
                                		</div>
                                 </div>
 									<div class="col-lg-6 icons-button"></div>

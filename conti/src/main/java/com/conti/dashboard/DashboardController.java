@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -176,6 +178,22 @@ public class DashboardController {
 		}
 
 		model.setViewName("Dashboard/restriction");
+		return model;
+
+	}
+	
+	@RequestMapping(value = "/login?logout", method = RequestMethod.GET)
+	public ModelAndView logOut(HttpServletRequest request, HttpServletResponse response) {
+
+		ModelAndView model = new ModelAndView();
+		// check if user is login
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			new SecurityContextLogoutHandler().logout(request, response, auth);	         
+		}
+		model.addObject("msg", "adai you logged out da.");
+		model.setViewName("/login");
+			
 		return model;
 
 	}

@@ -3,23 +3,28 @@ package com.conti.reports;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,9 +33,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
+import com.conti.master.location.Location;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
+import com.conti.receipt.ReceiptDao;
+import com.conti.receipt.ReceiptDetail;
+import com.conti.receipt.ReceiptModel;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.shipment.add.ShipmentDao;
@@ -58,6 +67,8 @@ public class ReportsController {
 	private SessionRegistry sessionRegistry;
 	@Autowired
 	private ShipmentDao shipmentDao;
+	@Autowired
+	private ReceiptDao receiptDao;
 	UserInformation userInformation;
 	ConstantValues constantVal = new ConstantValues();	
 	Loggerconf loggerconf = new Loggerconf();
@@ -110,6 +121,26 @@ public class ReportsController {
 			} else {
 				filterShip.addAll(shipmentList);
 			}
+			
+			if(filterShip.size() != 0){
+				for(int i=0;i<filterShip.size();i++){
+					ReceiptDetail receiptDetail = receiptDao.getReceiptbyShipment(filterShip.get(i).getShipment_id());
+					if(receiptDetail!=null){
+						
+						ReceiptModel receipt = receiptDao.getReceiptbyId(receiptDetail.receiptModel.receipt_id);
+						filterShip.get(i).setReceipt_date(receipt.getCreated_datetime());
+						filterShip.get(i).setReceipt_no(receipt.getReceipt_prefix());
+						filterShip.get(i).setReceipt_charge(receiptDetail.net_freight_charges);
+						filterShip.get(i).setReceipt_handling(receiptDetail.getHandling_charge());
+						filterShip.get(i).setReceipt_transport(receipt.getLocal_transport());
+					}else {
+						filterShip.get(i).setReceipt_date("Nil");
+						filterShip.get(i).setReceipt_no("Nil");
+						filterShip.get(i).setReceipt_charge(0);
+					}
+				}
+				
+			}
 			return new ResponseEntity<List<ShipmentModel>> (filterShip, HttpStatus.OK);
 
 		/*}catch(Exception e){
@@ -127,8 +158,20 @@ public class ReportsController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<ShipmentModel>  shipmentList = mapper.readValue(shipment, new TypeReference<List<ShipmentModel>>(){});
 		
-		return new ModelAndView("ShipmentExcel","shipmentList",shipmentList);		
+		return new ModelAndView("ReportExcel","shipmentList",shipmentList);		
 	}
 	//----------------------------------------------- SHIPMENT EXCEL END
+	
+	@RequestMapping(value="getshipment4report/{lr}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String,List<ShipmentModel>>> getshipment4report(HttpServletRequest request,
+			@PathVariable("lr") String lr) throws JsonGenerationException, JsonMappingException, JSONException, IOException {
+		
+		List<ShipmentModel> shipment = shipmentDao.getShipment4ReportByLRAdmin(lr);
+
+		 Map result = new HashMap();
+		 result.put("shipment", shipment);
+		 
+		return new ResponseEntity<Map<String,List<ShipmentModel>>> (result,HttpStatus.OK);
+	}
 
 }
