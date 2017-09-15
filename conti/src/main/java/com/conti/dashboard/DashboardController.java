@@ -2,8 +2,12 @@ package com.conti.dashboard;
 
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +34,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
 import com.conti.others.ConstantValues;
+import com.conti.others.DateTimeCalculation;
 import com.conti.others.Loggerconf;
+import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
 import com.conti.userlog.UserLogDao;
@@ -58,7 +64,8 @@ public class DashboardController {
 	@Autowired
 	@Qualifier("sessionRegistry")
 	private SessionRegistry sessionRegistry;
-		
+	@Autowired
+	private DateTimeCalculation datetimeCalc;
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
 
@@ -152,6 +159,7 @@ public class DashboardController {
 			error = exception.getMessage();
 		} else if (exception instanceof SessionAuthenticationException) {
 			error = " Already the session is open...!";
+			/*error = exception.toString();*/
 		}
 
 		else {
@@ -182,18 +190,32 @@ public class DashboardController {
 
 	}
 	
-	@RequestMapping(value = "/login?logout", method = RequestMethod.GET)
+	@RequestMapping(value = "/clogout", method = RequestMethod.GET)
 	public ModelAndView logOut(HttpServletRequest request, HttpServletResponse response) {
-
-		ModelAndView model = new ModelAndView();
+		UserInformation userInformation = new UserInformation(request);
+		int user_id = Integer.parseInt(userInformation.getUserId());
+		List<UserLogModel> userlog_list = userLogDao.getUserlogListbyId(user_id);
+		UserLogModel lastUserlog = Collections.max(userlog_list, Comparator.comparing(c -> c.getLog_id()));
+		String[] hour = null;
+		try {
+			hour = datetimeCalc.calculateDateDiff(lastUserlog.getLoggedin_date());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		lastUserlog.setLast_loginhours(Integer.parseInt(hour[2]));
+		userLogDao.saveorupdate(lastUserlog);
 		// check if user is login
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			new SecurityContextLogoutHandler().logout(request, response, auth);	         
 		}
-		model.addObject("msg", "adai you logged out da.");
-		model.setViewName("/login");
-			
+		
+		ModelAndView model = new ModelAndView("redirect:" + "/login?logout");
+		/*model.setViewName("/login");*/
+		/*response.setHeader("Location", "/login");*/
+		
 		return model;
 
 	}

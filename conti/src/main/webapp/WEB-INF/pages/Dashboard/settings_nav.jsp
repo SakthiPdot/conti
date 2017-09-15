@@ -267,7 +267,7 @@
                     </ul>
                    
                 </li>
-              <c:url value="/logout" var="logoutUrl" />
+              <c:url value="/clogout" var="logoutUrl" />
 	<form action="${logoutUrl}" method="post" id="logoutForm">
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
