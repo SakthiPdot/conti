@@ -57,6 +57,37 @@ public class ReportExcelBuilder extends AbstractExcelView {
 		style.setFillForegroundColor(HSSFColor.BLUE.index);
 		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		
+		/*HSSFRow filter_header=sheet.createRow(rowcount++);
+		filter_header.createCell(0).setCellValue("Filter Conditions");*/
+		
+		HSSFRow filter_date=sheet.createRow(rowcount++);
+		filter_date.createCell(0).setCellValue("Date");
+		
+		SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat dateFmt1 = new SimpleDateFormat("dd/MM/yyyy");
+		Date fildate = dateFmt.parse(shipmentList.get(0).getFilter_frmDate());
+		Date fildate1 = dateFmt.parse(shipmentList.get(0).getFilter_toDate());
+		filter_date.createCell(1).setCellValue(dateFmt1.format(fildate)+" To "+dateFmt1.format(fildate1));
+		
+		HSSFRow filter_branch=sheet.createRow(rowcount++);
+		filter_branch.createCell(0).setCellValue("Branch");
+		filter_branch.createCell(1).setCellValue(shipmentList.get(0).getFilter_frmBranch()+" To "+shipmentList.get(0).getFilter_toBranch());
+		
+		HSSFRow filter_lr=sheet.createRow(rowcount++);
+		filter_lr.createCell(0).setCellValue("L.R.No.");
+		filter_lr.createCell(1).setCellValue(shipmentList.get(0).getFilter_frmlr()+" To "+shipmentList.get(0).getFilter_tolr());
+		
+		HSSFRow filter_product=sheet.createRow(rowcount++);
+		filter_product.createCell(0).setCellValue("Product");
+		filter_product.createCell(1).setCellValue(shipmentList.get(0).getFilter_product());
+		
+		HSSFRow filter_paymode=sheet.createRow(rowcount++);
+		filter_paymode.createCell(0).setCellValue("Paymode");
+		filter_paymode.createCell(1).setCellValue(shipmentList.get(0).getFilter_paymode());
+		
+		HSSFRow filter_status=sheet.createRow(rowcount++);
+		filter_status.createCell(0).setCellValue("Status");
+		filter_status.createCell(1).setCellValue(shipmentList.get(0).getFilter_status());
 		
 		//header
 		HSSFRow header=sheet.createRow(rowcount++);
@@ -149,7 +180,6 @@ public class ReportExcelBuilder extends AbstractExcelView {
 			    
 			    SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy HH:mm a");*/
 			    
-			    
 				row.createCell(0).setCellValue(rowcount-1);
 				String[] shipment_date = shipmentModel.getShipment_date().split("\\.");
 				Date date = dateFormat.parse(shipment_date[0]);
@@ -167,14 +197,21 @@ public class ReportExcelBuilder extends AbstractExcelView {
 				row.createCell(3).setCellValue(sb_product.toString());
 				row.createCell(4).setCellValue(shipmentModel.getSender_branch().getBranch_name());
 				row.createCell(5).setCellValue(shipmentModel.getConsignee_branch().getBranch_name());
+				
 				row.createCell(6).setCellValue(shipmentModel.getSender_customer().getCustomer_name());
 				row.createCell(7).setCellValue(shipmentModel.getConsignee_customer().getCustomer_name());
 				row.createCell(8).setCellValue(shipmentModel.getNumberof_parcel());
 				row.createCell(9).setCellValue(shipmentModel.getService().getService_name());
 				
-				String[] receipt_date = shipmentModel.getReceipt_date().split("\\.");
-				Date dateRecpt = dateFormat.parse(receipt_date[0]);
-				row.createCell(10).setCellValue(dateFormat1.format(dateRecpt));
+				String[] receipt_date = null;
+				if(!shipmentModel.getReceipt_date().equals("Nil")){
+					receipt_date = shipmentModel.getReceipt_date().split("\\.");	
+					Date dateRecpt = dateFormat.parse(receipt_date[0]);
+					row.createCell(10).setCellValue(dateFormat1.format(dateRecpt));
+				}else {
+					row.createCell(10).setCellValue(shipmentModel.getReceipt_date());
+				}
+				
 				row.createCell(11).setCellValue(shipmentModel.getReceipt_no());
 				row.createCell(12).setCellValue(shipmentModel.getPay_mode());
 				row.createCell(13).setCellValue(shipmentModel.getBill_to());

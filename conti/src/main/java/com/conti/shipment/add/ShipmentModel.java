@@ -49,6 +49,9 @@ public class ShipmentModel {
 	//---for report begin
 	String receipt_date, receipt_no;
 	float freight_charge, receipt_charge, receipt_handling, receipt_transport;
+	String filter_frmDate, filter_toDate, filter_frmBranch, filter_toBranch, 
+			filter_frmlr, filter_tolr, filter_product, filter_paymode, filter_status;
+	
 	
 	@Transient
 	public String getReceipt_date() {
@@ -93,6 +96,70 @@ public class ShipmentModel {
 	}
 	public void setReceipt_transport(float receipt_transport) {
 		this.receipt_transport = receipt_transport;
+	}
+	
+	@Transient
+	public String getFilter_frmDate() {
+		return filter_frmDate;
+	}
+	public void setFilter_frmDate(String filter_frmDate) {
+		this.filter_frmDate = filter_frmDate;
+	}
+	@Transient
+	public String getFilter_toDate() {
+		return filter_toDate;
+	}
+	public void setFilter_toDate(String filter_toDate) {
+		this.filter_toDate = filter_toDate;
+	}
+	@Transient
+	public String getFilter_frmBranch() {
+		return filter_frmBranch;
+	}
+	public void setFilter_frmBranch(String filter_frmBranch) {
+		this.filter_frmBranch = filter_frmBranch;
+	}
+	@Transient
+	public String getFilter_toBranch() {
+		return filter_toBranch;
+	}
+	public void setFilter_toBranch(String filter_toBranch) {
+		this.filter_toBranch = filter_toBranch;
+	}
+	@Transient
+	public String getFilter_frmlr() {
+		return filter_frmlr;
+	}
+	public void setFilter_frmlr(String filter_frmlr) {
+		this.filter_frmlr = filter_frmlr;
+	}
+	@Transient
+	public String getFilter_tolr() {
+		return filter_tolr;
+	}
+	public void setFilter_tolr(String filter_tolr) {
+		this.filter_tolr = filter_tolr;
+	}
+	@Transient
+	public String getFilter_product() {
+		return filter_product;
+	}
+	public void setFilter_product(String filter_product) {
+		this.filter_product = filter_product;
+	}
+	@Transient
+	public String getFilter_paymode() {
+		return filter_paymode;
+	}
+	public void setFilter_paymode(String filter_paymode) {
+		this.filter_paymode = filter_paymode;
+	}
+	@Transient
+	public String getFilter_status() {
+		return filter_status;
+	}
+	public void setFilter_status(String filter_status) {
+		this.filter_status = filter_status;
 	}
 	//---for report end
 	public ShipmentModel() {

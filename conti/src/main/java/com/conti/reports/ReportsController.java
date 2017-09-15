@@ -34,6 +34,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
 import com.conti.master.location.Location;
+import com.conti.master.product.Product;
+import com.conti.master.product.ProductDAO;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
@@ -69,6 +71,8 @@ public class ReportsController {
 	private ShipmentDao shipmentDao;
 	@Autowired
 	private ReceiptDao receiptDao;
+	@Autowired
+	private ProductDAO productDao;
 	UserInformation userInformation;
 	ConstantValues constantVal = new ConstantValues();	
 	Loggerconf loggerconf = new Loggerconf();
@@ -128,11 +132,20 @@ public class ReportsController {
 					if(receiptDetail!=null){
 						
 						ReceiptModel receipt = receiptDao.getReceiptbyId(receiptDetail.receiptModel.receipt_id);
-						filterShip.get(i).setReceipt_date(receipt.getCreated_datetime());
-						filterShip.get(i).setReceipt_no(receipt.getReceipt_prefix());
-						filterShip.get(i).setReceipt_charge(receiptDetail.net_freight_charges);
-						filterShip.get(i).setReceipt_handling(receiptDetail.getHandling_charge());
-						filterShip.get(i).setReceipt_transport(receipt.getLocal_transport());
+						if(receipt!=null){
+							filterShip.get(i).setReceipt_date(receipt.getCreated_datetime());
+							filterShip.get(i).setReceipt_no(receipt.getReceipt_prefix());
+							filterShip.get(i).setReceipt_charge(receiptDetail.net_freight_charges);
+							filterShip.get(i).setReceipt_handling(receiptDetail.getHandling_charge());
+							filterShip.get(i).setReceipt_transport(receipt.getLocal_transport());
+						}else{
+							filterShip.get(i).setReceipt_date("Nil");
+							filterShip.get(i).setReceipt_no("Nil");
+							filterShip.get(i).setReceipt_charge(0);
+							filterShip.get(i).setHandling_charge(0);
+							filterShip.get(i).setReceipt_transport(0);
+						}
+						
 					}else {
 						filterShip.get(i).setReceipt_date("Nil");
 						filterShip.get(i).setReceipt_no("Nil");
@@ -142,6 +155,53 @@ public class ReportsController {
 					}
 				}
 				
+			}
+			
+			if(json.get("fromtoday").toString().isEmpty()){
+				filterShip.get(0).setFilter_frmDate("All");	
+			}else{
+				filterShip.get(0).setFilter_frmDate(json.get("fromtoday").toString());
+			}
+			if(json.get("todate").toString().isEmpty()){
+				filterShip.get(0).setFilter_toDate("All");
+			}else{
+				filterShip.get(0).setFilter_toDate(json.get("todate").toString());
+			}
+			if(json.get("frombranch").toString().isEmpty()){
+				filterShip.get(0).setFilter_frmBranch("All");
+			}else{
+				filterShip.get(0).setFilter_frmBranch(json.get("frombranch").toString());
+			}
+			if(json.get("tobranch").toString().isEmpty()){
+				filterShip.get(0).setFilter_toBranch("All");
+			}else{
+				filterShip.get(0).setFilter_toBranch(json.get("tobranch").toString());
+			}
+			if(json.get("from_lrno").toString().isEmpty()){
+				filterShip.get(0).setFilter_frmlr("All");
+			}else{
+				filterShip.get(0).setFilter_frmlr(json.get("from_lrno").toString());
+			}
+			if(json.get("to_lrno").toString().isEmpty()){
+				filterShip.get(0).setFilter_tolr("All");
+			}else{
+				filterShip.get(0).setFilter_frmlr(json.get("to_lrno").toString());
+			}
+			if(json.get("product_id").toString().isEmpty()){
+				filterShip.get(0).setFilter_product("All");
+			}else{
+				Product product = productDao.getProduct(Integer.parseInt(json.get("product_id").toString()));
+				filterShip.get(0).setFilter_product(product.getProduct_name());
+			}
+			if(json.get("paymentmode").toString().isEmpty()){
+				filterShip.get(0).setFilter_paymode("All");
+			}else{
+				filterShip.get(0).setFilter_paymode(json.get("paymentmode").toString());
+			}
+			if(json.get("status").toString().isEmpty()){
+				filterShip.get(0).setFilter_status("All");
+			}else{
+				filterShip.get(0).setFilter_status(json.get("status").toString());
 			}
 			return new ResponseEntity<List<ShipmentModel>> (filterShip, HttpStatus.OK);
 
