@@ -142,7 +142,7 @@
 	 		             xhr.setRequestHeader(header, token);
 	 		        },
 	 		        success : function(data) { 
-	 		        	window.location ="http://localhost:8080/Conti/login?logout";    
+	 		        	window.location ="/login?logout";    
 	 		        }, 
 	 		        error : function(data) {
 	 		            console.log(data);
