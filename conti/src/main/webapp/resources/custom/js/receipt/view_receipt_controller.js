@@ -400,13 +400,24 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		}else{
 			self.Filterreceipts=_.filter(self.receipts,function(item){
 				console.log("call ")
-				return String((item.shipmentModel.lrno_prefix.toLowerCase()).indexOf(key.toLowerCase()) > -1  
-						);
+				return searchUtil(item,key)
+				//return String((item.shipmentModel.lrno_prefix.toLowerCase()).indexOf(key.toLowerCase()) > -1);
 			});
 		}
 			
 	}
 	
+	
+	function searchUtil(item,key){
+		var success=false;
+		if((item.shipmentModel.lrno_prefix.toLowerCase()).indexOf(key.LowerCase())>-1 ||
+				(item.receiptModel.receipt_prefix.toLowerCase()).indexOf(key.LowerCase())>-1 ){
+			success=true;
+		}else{
+			success=false;
+		}
+		return success
+	}
 	//-------------------------------------- Print begin -----------------------------//
 	function print() {
 	    	if(self.selected_receipt.length == 0 ) {
