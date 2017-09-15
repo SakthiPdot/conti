@@ -1,6 +1,5 @@
 package com.conti.config;
 
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 
 //import org.apache.log4j.Logger;
@@ -14,17 +13,17 @@ import org.springframework.context.annotation.Scope;
 
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.conti.others.ConstantValues;
 import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.UsersDao;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 import com.conti.userlog.UserLogDao;
-import com.conti.userlog.UserLogModel;
 
 /**
  * @Project_Name conti
@@ -47,14 +46,24 @@ public class SessionListener extends HttpSessionEventPublisher {
 	private UsersDao usersDao;
 	@Autowired
 	private UserLogDao userLogDao;
-
+	@Autowired
+	private CompanySettingDAO companySettingDao;
 	UserInformation userInformation;
-	
+	ConstantValues constantVal;
     @Override
     public void sessionCreated(HttpSessionEvent event) {
 
+        Company company = companySettingDao.getById(1);
+        if(company!=null){
+        	if(company.getCompany_apptimeout() != 0){
+        		event.getSession().setMaxInactiveInterval(company.getCompany_apptimeout()*60);		
+        	} else {
+        		event.getSession().setMaxInactiveInterval(Integer.parseInt(constantVal.APPLICATION_TIMEOUT)*60);
+        	}
+        }else{
+        	event.getSession().setMaxInactiveInterval(Integer.parseInt(constantVal.APPLICATION_TIMEOUT)*60);
+        }
         
-        event.getSession().setMaxInactiveInterval(50*60);
         
         ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(event.getSession().getServletContext());
         HttpSessionEventPublisher service = ctx.getBean(HttpSessionEventPublisher.class);
