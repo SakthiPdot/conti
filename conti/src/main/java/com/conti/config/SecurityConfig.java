@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception 
 	{
 		http.
-		
+			
 		            authorizeRequests()
 
 							
@@ -92,6 +92,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 							    	.maxSessionsPreventsLogin(true)
 							    	.expiredUrl("/login?expired")							    	
 							    	.sessionRegistry(sessionRegistry());
+		
 	}
 	
 

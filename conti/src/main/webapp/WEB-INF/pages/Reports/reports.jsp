@@ -145,7 +145,9 @@
 					<div class="col-lg-3 report_class">
 						<span>From</span>  <span class="required">*</span>
 					       <div class="form-group input-group">
-                                  <input type="text" id="datepicker1" class="form-control datepicker1" data-ng-model="ctrl.report.fromtoday" data-ng-required = "ctrl.date_required">
+                                  <input type="text" id="datepicker1" class="form-control datepicker1"
+                                  placeholder="Select or Enter from date" 
+                                  data-ng-model="ctrl.report.fromtoday" data-ng-required = "ctrl.date_required">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default " type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -156,7 +158,9 @@
 					<div class="col-lg-3 report_class">
 						<span>To</span> <span class="required">*</span>
 					       <div class="form-group input-group">
-                                  <input type="text" id="datepicker2" class="form-control datepicker2" data-ng-model="ctrl.report.todate | date : 'yyyy-MM-dd' " data-ng-required = "ctrl.date_required">
+                                  <input type="text" id="datepicker2" class="form-control datepicker2"
+                                  placeholder="Select or Enter to date" 
+                                  data-ng-model="ctrl.report.todate | date : 'yyyy-MM-dd' " data-ng-required = "ctrl.date_required">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i>
                                       </button>

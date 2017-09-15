@@ -230,10 +230,38 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 self.report.from_lrno = $('#from_lrno_value').val();
 			 self.report.to_lrno = $('#to_lrno_value').val();
 			 
-			 if(self.report.branch != null){
+			 /*if(self.report.branch != null){
 				 self.report.frombranch = self.report.branch;
+				 self.report.tobranch = self.report.branch;
+			 }*/
+			 if(self.report.from_lrno==null){
+				 self.report.from_lrno = "";
 			 }
-			 
+			 if(self.report.to_lrno==null){
+				 self.report.to_lrno = "";
+			 }
+			 if(self.report.frombranch==null){
+				 self.report.frombranch = "";
+			 }
+			 if(self.report.tobranch==null){
+				 self.report.tobranch = "";
+			 }
+			 if(self.report.fromtoday==null){
+				 self.report.fromtoday = "";
+			 }
+			 if(self.report.paymentmode==null){
+				 self.report.paymentmode = "";
+			 }
+			 if(self.report.product_id==null){
+				 self.report.product_id = "";
+			 }
+			 if(self.report.status==null){
+				 self.report.status = "";
+			 }
+			 if(self.report.todate==null){
+				 self.report.todate = "";
+			 }
+			 console.log(self.report);
 			 ReportService.fetch4All(self.report)
 			 	.then(
 			 			function(shipment){

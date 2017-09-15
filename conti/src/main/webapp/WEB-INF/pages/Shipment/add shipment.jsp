@@ -339,7 +339,7 @@
                             		
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Email</span>
-                            		    <input type="text" class="form-control" maxlength="30"
+                            		    <input type="email" class="form-control" maxlength="30"
                             		    	data-ng-model = "ctrl.shipment.sender_customer.customer_email"
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer email address"
@@ -544,7 +544,7 @@
                             		
                             		<div class="col-md-12 branchclass">
                             			<span class="text-paddingwidth">Email</span>
-                            		    <input type="text" class="form-control" maxlength="30"
+                            		    <input type="email" class="form-control" maxlength="30"
                             		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_email"
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer email address"
