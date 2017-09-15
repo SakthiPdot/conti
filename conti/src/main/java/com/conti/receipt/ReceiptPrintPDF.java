@@ -220,7 +220,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
    			 	" - "+receiptModel.getReceiptDetailList().get(0)
    			 	.shipmentModel.getConsignee_location().address.getStateCode()+		
        			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
-       			 	.shipmentModel.getSender_customer().getCustomer_mobileno()+	
+       			 	.shipmentModel.getConsignee_customer().getCustomer_mobileno()+	
        			 "\nGSTIN Number :"+receiptModel.getReceiptDetailList().get(0)
        			 	.shipmentModel.getConsignee_customer().getGstin_number();
     	 } else {
@@ -239,7 +239,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
     			 	" - "+receiptModel.getReceiptDetailList().get(0)
     			 	.shipmentModel.getConsignee_location().address.getStateCode()+		
         			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
-        			 	.shipmentModel.getSender_customer().getCustomer_mobileno();
+        			 	.shipmentModel.getConsignee_customer().getCustomer_mobileno();
     	 }
     	 
     	 Cell consignee_add = new Cell(new Phrase(consignee_cus,address_font));

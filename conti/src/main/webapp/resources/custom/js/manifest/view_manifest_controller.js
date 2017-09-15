@@ -305,10 +305,9 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		  		);
 		  }else{
 				self.Filtermanifests=_.filter(self.manifests,function(item){
-					return String(item.manifest_prefix).indexOf(searchkey	) > -1;
+					return String((item.manifest_prefix.toLowerCase()).indexOf(toString(searchkey).toLowerCase()) > -1);
 				});
 			}
-		  
 	  }
 	
   //--------------------------Manifest Select All check box function start------------------
