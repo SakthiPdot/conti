@@ -69,10 +69,16 @@ contiApp.controller('ForgotUserController', ['$scope', 'UserService', function($
 		    						self.message = "Kindly contact your technical person..!";
 		    						successforgot_AnimateOpen('.success-forgot');
 	    				    		
-		    					} else if (response.data.obsolete == "MANGAER") {
-		    						self.message = "Password reset link sent to your E-mail : " + response.data.employeeMaster.emp_email;
+		    					} else if (response.data.obsolete == "MANAGER") {
+		    						if(response.data.employeeMaster.emp_email==null){
+		    							self.message = "Password reset link sent to your E-mail";
+		    						}else{
+		    							self.message = "Password reset link sent to your E-mail : " + response.data.employeeMaster.emp_email;
+		    						}
+		    						
 		    						successforgot_AnimateOpen('.success-forgot');
 		    					} else {
+		    						console.log(response.data.obsolete);
 		    						if(response.data.active != 'Y') {
 		    							self.message = "Kindly contact your manager..! Manager contact no is "+ response.data.active;
 			    						successforgot_AnimateOpen('.success-forgot');		
