@@ -53,11 +53,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="${homePage}"><strong>Conti</strong></a>
-<<<<<<< HEAD
-=======
-				
-		
->>>>>>> branch 'master' of https://github.com/Pointdot2017/conti.git
+
             </div>
            <ul class="nav navbar-top-links navbar-right">
               <!--  <li class="dropdown">
