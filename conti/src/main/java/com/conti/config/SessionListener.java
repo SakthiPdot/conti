@@ -53,7 +53,7 @@ public class SessionListener extends HttpSessionEventPublisher {
     @Override
     public void sessionCreated(HttpSessionEvent event) {
 
-        Company company = companySettingDao.getById(1);
+    	/*Company company = companySettingDao.getById(1);
         if(company!=null){
         	if(company.getCompany_apptimeout() != 0){
         		event.getSession().setMaxInactiveInterval(company.getCompany_apptimeout()*60);		
@@ -62,7 +62,7 @@ public class SessionListener extends HttpSessionEventPublisher {
         	}
         }else{
         	event.getSession().setMaxInactiveInterval(Integer.parseInt(constantVal.APPLICATION_TIMEOUT)*60);
-        }
+        }*/
         
         
         ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(event.getSession().getServletContext());

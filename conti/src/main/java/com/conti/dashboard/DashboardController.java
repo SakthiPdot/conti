@@ -39,6 +39,8 @@ import com.conti.others.Loggerconf;
 import com.conti.others.UserInformation;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 import com.conti.userlog.UserLogDao;
 import com.conti.userlog.UserLogModel;
 
@@ -66,6 +68,9 @@ public class DashboardController {
 	private SessionRegistry sessionRegistry;
 	@Autowired
 	private DateTimeCalculation datetimeCalc;
+	@Autowired 
+	private CompanySettingDAO companySettingDao;
+	ConstantValues constantVal = new ConstantValues();
 	Loggerconf loggerconf = new Loggerconf();
 	SessionListener sessionListener = new SessionListener();
 
@@ -83,6 +88,18 @@ public class DashboardController {
 		User userDetails = usersDao.get(userid);
 		int branch_id = userDetails.branchModel.getBranch_id();
 		session.setAttribute("branch_id", branch_id);
+		
+		
+		Company company = companySettingDao.getById(1);
+        if(company!=null){
+        	if(company.getCompany_apptimeout() != 0){
+        		session.setMaxInactiveInterval(company.getCompany_apptimeout()*60);		
+        	} else {
+        		session.setMaxInactiveInterval(Integer.parseInt(constantVal.APPLICATION_TIMEOUT)*60);
+        	}
+        }else{
+        	session.setMaxInactiveInterval(Integer.parseInt(constantVal.APPLICATION_TIMEOUT)*60);
+        }
 		
 		ModelAndView model = new ModelAndView();
 		
