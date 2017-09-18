@@ -47,11 +47,11 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//-------------------------------- Change Pament mode function begin 
 	function changePaymentmode(payment_mode) {
-		/*if( payment_mode == 'Credit' ) {
-			self.shipment.bill_to = 'Sender';	
+		if( payment_mode == 'Credit' ) {
+			self.shipment.bill_to = 'To Pay';	
 		} else {
 			self.shipment.bill_to = '';
-		}*/
+		}
 		self.tax_payable(); // Tax payable on Reverse Charge 
 	}
 	//-------------------------------- Change Pament mode function end
@@ -159,13 +159,21 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//------------------------ Sender address begin
     $scope.sender_location_name = function (sender_location_name) {
- 	    
-    	self.shipment.sender_customer.location = sender_location_name.originalObject;
+ 	    if(sender_location_name == undefined){
+ 	    	self.shipment.sender_customer.location = null;
+ 	    	$("#sender_city").val('');
+ 	    	$("#sender_state").val('');
+ 	    	$("#sender_country").val('');
+ 	    	$("#sender_pincode").val('');
+ 	    } else{
+ 	    	self.shipment.sender_customer.location = sender_location_name.originalObject;
+ 	    	
+ 	    	$("#sender_city").val(sender_location_name.originalObject.address.city);
+ 	    	$("#sender_state").val(sender_location_name.originalObject.address.state);
+ 	    	$("#sender_country").val(sender_location_name.originalObject.address.country);
+ 	    	$("#sender_pincode").val(sender_location_name.originalObject.pincode);	
+ 	    }
     	
-    	$("#sender_city").val(sender_location_name.originalObject.address.city);
-    	$("#sender_state").val(sender_location_name.originalObject.address.state);
-    	$("#sender_country").val(sender_location_name.originalObject.address.country);
-    	$("#sender_pincode").val(sender_location_name.originalObject.pincode);
     	
 	};	
 	//------------------------ Sender address end
@@ -198,15 +206,21 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//------------------------ Consignee address begin
     $scope.consignee_location_name = function (consignee_location_name) {
- 	    
-    	self.shipment.consignee_customer.location = consignee_location_name.originalObject;
+ 	    if(consignee_location_name == undefined){
+ 	    	self.shipment.consignee_customer.location = null;
+ 	    	$("#consignee_city").val('');
+ 	    	$("#consignee_state").val('');
+ 	    	$("#consignee_country").val('');
+ 	    	$("#consignee_pincode").val('');
+ 	    }else{
+ 	    	self.shipment.consignee_customer.location = consignee_location_name.originalObject;
+ 	    	
+ 	    	$("#consignee_city").val(consignee_location_name.originalObject.address.city);
+ 	    	$("#consignee_state").val(consignee_location_name.originalObject.address.state);
+ 	    	$("#consignee_country").val(consignee_location_name.originalObject.address.country);
+ 	    	$("#consignee_pincode").val(consignee_location_name.originalObject.pincode);
+ 	    }
     	
-    	console.log(consignee_location_name);
-    	
-    	$("#consignee_city").val(consignee_location_name.originalObject.address.city);
-    	$("#consignee_state").val(consignee_location_name.originalObject.address.state);
-    	$("#consignee_country").val(consignee_location_name.originalObject.address.country);
-    	$("#consignee_pincode").val(consignee_location_name.originalObject.pincode);
     	
 	};	
 	//------------------------ Consignee address end
@@ -719,11 +733,12 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	self.submit = function () {
 		
 		
-		if ( $('#sender_location_name_value').val().length == 0 ) {
+		if ( $('#sender_location_name_value').val().length == 0 || self.shipment.sender_customer.location == null) {
+			console.log(self.shipment.sender_location);
 			$("#sender_location_name_value").focus();
-		} else if ( $('#consignee_branch_name_value').val().length == 0 ) {
+		} else if ( $('#consignee_branch_name_value').val().length == 0) {
 			$("#consignee_branch_name_value").focus();
-		} else if ( $("#consignee_location_name_value").val().length == 0 ) {
+		} else if ( $("#consignee_location_name_value").val().length == 0 || self.shipment.consignee_customer.location == null) {
 			$("#consignee_location_name_value").focus();
 		} /*else if ( $("#service_name_value").val().length == 0 ) {
 			$("#service_name_value").focus();
@@ -748,7 +763,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 				self.shipment.consignee_customer.gstin_number = 0;
 			}*/
 			
-			console.log(self.shipment);
 			if( self.shipment.shipment_id == null ) {
 				
 				self.confirm_title = 'Save';
