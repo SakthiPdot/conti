@@ -170,6 +170,8 @@ public class ReportExcelBuilder extends AbstractExcelView {
 		}
 		*/
 		//============================================ Initialization End=======================================================
+		int xl_row =0;
+		float tot_lr_freight =0, tot_handling=0, tot_transport=0, tot_receipt=0; 
 		for(ShipmentModel shipmentModel:shipmentList){
 			HSSFRow row=sheet.createRow(rowcount++);			
 			try {
@@ -180,7 +182,8 @@ public class ReportExcelBuilder extends AbstractExcelView {
 			    
 			    SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy HH:mm a");*/
 			    
-				row.createCell(0).setCellValue(rowcount-1);
+				row.createCell(0).setCellValue(xl_row+1);
+				xl_row++;
 				String[] shipment_date = shipmentModel.getShipment_date().split("\\.");
 				Date date = dateFormat.parse(shipment_date[0]);
 				row.createCell(1).setCellValue(dateFormat1.format(date));
@@ -221,8 +224,10 @@ public class ReportExcelBuilder extends AbstractExcelView {
 				row.createCell(17).setCellValue(f.format(shipmentModel.getReceipt_charge()));
 				row.createCell(18).setCellValue(shipmentModel.getStatus());
 
-				
-				
+				tot_lr_freight = tot_lr_freight + shipmentModel.getTotal_charges();
+				tot_handling = tot_handling +  shipmentModel.getHandling_charge();
+				tot_transport = tot_transport + shipmentModel.getReceipt_transport(); 
+				tot_receipt = tot_receipt + shipmentModel.getReceipt_charge(); 
 				//============================================Product Table =======================================================
 				/*try {
 					for(ShipmentDetailModel shipmentDetailModel:shipmentModel.getShipmentDetail()){
@@ -291,12 +296,34 @@ public class ReportExcelBuilder extends AbstractExcelView {
 				e.printStackTrace();
 			}
 			
+			
 		}
 		
-
+		CellStyle tot_style=workbook.createCellStyle();
+		Font tot_font=workbook.createFont();
+		tot_font.setFontName("Arial");
+		tot_font.setBold(true);
+		tot_font.setFontHeight((short)(10.5*20));
+		tot_font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		tot_font.setColor(HSSFColor.WHITE.index);
+		tot_style.setFont(tot_font);
+		
+		tot_style.setFillForegroundColor(HSSFColor.BLUE.index);
+		tot_style.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		
 		
+		rowcount = rowcount + 1;
+		HSSFRow total_row=sheet.createRow(rowcount);
 		
+		total_row.createCell(14).setCellValue(f.format(tot_lr_freight));
+		total_row.createCell(15).setCellValue(f.format(tot_handling));
+		total_row.createCell(16).setCellValue(f.format(tot_transport));
+		total_row.createCell(17).setCellValue(f.format(tot_receipt));
+		
+		total_row.getCell(14).setCellStyle(tot_style);
+		total_row.getCell(15).setCellStyle(tot_style);	
+		total_row.getCell(16).setCellStyle(tot_style);	
+		total_row.getCell(17).setCellStyle(tot_style);	
 	}
 
 }

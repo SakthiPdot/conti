@@ -170,12 +170,12 @@ public class ReportsController {
 				if(json.get("frombranch").toString().isEmpty()){
 					filterShip.get(0).setFilter_frmBranch("All");
 				}else{
-					filterShip.get(0).setFilter_frmBranch(json.get("frombranch").toString());
+					filterShip.get(0).setFilter_frmBranch(filterShip.get(0).getSender_branch().getBranch_name());
 				}
 				if(json.get("tobranch").toString().isEmpty()){
 					filterShip.get(0).setFilter_toBranch("All");
 				}else{
-					filterShip.get(0).setFilter_toBranch(json.get("tobranch").toString());
+					filterShip.get(0).setFilter_toBranch(filterShip.get(0).getConsignee_branch().getBranch_name());
 				}
 				if(json.get("from_lrno").toString().isEmpty()){
 					filterShip.get(0).setFilter_frmlr("All");
