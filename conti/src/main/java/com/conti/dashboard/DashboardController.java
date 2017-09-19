@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -26,9 +27,12 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -93,7 +97,8 @@ public class DashboardController {
 		Company company = companySettingDao.getById(1);
         if(company!=null){
         	if(company.getCompany_apptimeout() != 0){
-        		session.setMaxInactiveInterval(company.getCompany_apptimeout()*60);		
+        		session.setMaxInactiveInterval(company.getCompany_apptimeout()*60);
+        		/*session.setMaxInactiveInterval(1*60);*/
         	} else {
         		session.setMaxInactiveInterval(Integer.parseInt(constantVal.APPLICATION_TIMEOUT)*60);
         	}
@@ -175,6 +180,7 @@ public class DashboardController {
 		} else if (exception instanceof LockedException) {
 			error = exception.getMessage();
 		} else if (exception instanceof SessionAuthenticationException) {
+			/*error = request.getSession().getAttribute(key).toString();*/
 			error = " Already the session is open...!";
 			/*error = exception.toString();*/
 		}
@@ -237,5 +243,11 @@ public class DashboardController {
 
 	}
 	
+/*	@ExceptionHandler(Exception.class)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public String handleException(Exception e) {
+	    return "return error object instead";
+	}*/
 
 }

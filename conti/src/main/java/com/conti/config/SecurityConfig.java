@@ -76,7 +76,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 							.and()				
 							.formLogin().loginPage("/login").failureUrl("/login?error").successHandler(customAuthenticatonSuccessHandler)			
 							.usernameParameter("username")
-							.passwordParameter("password")				
+							.passwordParameter("password")	
+							.and().rememberMe().key("uniqueAndSecret")
 							.and().logout().logoutSuccessUrl("/login?logout").invalidateHttpSession(true)			
 						    .deleteCookies("JSESSIONID")
 						    .permitAll()
@@ -85,13 +86,41 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 							  .and().exceptionHandling().accessDeniedPage("/403")		
 							  .and()
 							  .sessionManagement()
-
-							  .sessionFixation().changeSessionId()
-							  	.invalidSessionUrl("/login?invalid")					  	
+							 /* .sessionFixation().changeSessionId()
+							  	.invalidSessionUrl("/login?invalid")*/					  	
 							    .maximumSessions(1)				    				    				    
-							    	.maxSessionsPreventsLogin(true)
+							    	/*.maxSessionsPreventsLogin(true)	*/		//not allow same user twice				    	
 							    	.expiredUrl("/login?expired")							    	
-							    	.sessionRegistry(sessionRegistry());
+							    	/*.sessionRegistry(sessionRegistry());*/	//allow same user with different instance
+									.sessionRegistry(sessionRegistry);			//not allow same user with different instance
+		            
+		            /*.antMatchers("/","/admin/**").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')or hasRole('STAFF')")
+					.antMatchers("/employee").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')")
+					.antMatchers("/company_settings/").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')")
+					.antMatchers("/user").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')")
+					.antMatchers("/product").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')")
+					.antMatchers("/location").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')")
+					.antMatchers("/branch").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')")
+					.antMatchers("/service").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')")
+					.antMatchers("/vehicle").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')")
+					.antMatchers("/price_settings_register").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')")
+					.antMatchers("/price_settings").access("hasRole('SUPER_ADMIN') or hasRole('MANAGER')or hasRole('STAFF')")
+					.and()				
+					.formLogin().loginPage("/login").failureUrl("/login?error").successHandler(customAuthenticatonSuccessHandler)			
+					.usernameParameter("username")
+					.passwordParameter("password")	
+					.and().rememberMe().key("uniqueAndSecret")
+					.and().logout().logoutSuccessUrl("/login?logout").invalidateHttpSession(true)			
+				    .deleteCookies("JSESSIONID")
+				    .permitAll()
+				  
+					.and().csrf()	
+					  .and().exceptionHandling().accessDeniedPage("/403")		
+					  .and()
+					  .sessionManagement()
+					    .maximumSessions(1) // How many session the same user can have? This can be any number you pick
+					    .expiredUrl("/login?expired")
+					    .sessionRegistry(sessionRegistry);*/
 		
 	}
 	

@@ -114,8 +114,13 @@
                                    </label>
                                    <label class="radio-inline">
                                    	<input type="radio"  data-ng-model ="filter_all" data-ng-init="filter_all=true" value="filter_all" 
-                                   	 data-ng-click="filter_branch=true;filter_date=true;filter_lr=true;ctrl.date_required=true;ctrl.filterReset();"
+                                   	 data-ng-click="filter_branch=true;filter_date=true;filter_lr=true;filter_billto = false;ctrl.date_required=true;ctrl.filterReset();"
                                    	name="optionsRadiosInline" id="optionsRadiosInline4" data-ng-checked="true"> All
+                                   </label>
+                                   <label class="radio-inline">
+                                   	<input type="radio"  data-ng-model ="filter_billto"  value="filter_billto" 
+                                   	 data-ng-click="filter_branch=true;filter_date=false;filter_lr=false;filter_all=false;ctrl.date_required=false;ctrl.filterReset();"
+                                   	name="optionsRadiosInline" id="optionsRadiosInline5"> Daily Hand over
                                    </label>
 						
 						</div>
@@ -138,6 +143,29 @@
                 <div class="panel panel-default">                            
 						
 				<div class="panel-body">
+				
+				
+								
+				
+				<div class="col-lg-12 noPaddingLeft report_padding" data-ng-show="filter_billto">
+					
+					<div class="col-lg-3 branchclass">
+						<span class="text-padding"> Date </span>
+						
+						<div class="form-group input-group">
+                                  <input type="text" id="datepicker3" class="form-control datepicker3"
+                                  placeholder="Select or Enter  date" 
+                                  data-ng-model="ctrl.report.fromtoday" data-ng-required = "ctrl.date_required">
+                                  <span class="input-group-btn">
+                                      <button class="btn btn-default " type="button"><i class="fa fa-calendar"></i>
+                                      </button>
+                                  </span>
+                            </div>
+						
+					</div>				
+				</div>
+				
+				
 				
 				<div class="branch-heading" data-ng-show="filter_date || filter_all">Shipment</div>
 				
@@ -288,7 +316,7 @@
 				</div>
 				
 				
-				<div class="col-lg-12 noPaddingLeft report_padding">
+				<div class="col-lg-12 noPaddingLeft report_padding" data-ng-hide="filter_billto">
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Product </span>
@@ -312,7 +340,7 @@
 				
 				
 				
-				<div class="col-lg-12 noPaddingLeft report_padding">
+				<div class="col-lg-12 noPaddingLeft report_padding" data-ng-hide="filter_billto">
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Payment Mode </span>
@@ -326,7 +354,7 @@
 					</div>				
 				</div>
 					
-					<div class="col-lg-12 noPaddingLeft report_padding">
+					<div class="col-lg-12 noPaddingLeft report_padding" data-ng-hide="filter_billto">
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Status </span>
@@ -339,6 +367,36 @@
 						</select>
 					</div>				
 				</div>
+				
+				<div class="col-lg-12 noPaddingLeft report_padding" data-ng-show="filter_billto">
+					
+					<div class="col-lg-3 branchclass">
+						<span class="text-padding">Bill To </span>
+						<select class="form-control" data-ng-model="ctrl.report.billto"
+						data-ng-change = "ctrl.filterReset()" 
+						data-ng-options = "billto for billto in ['Paid', 'To Pay']">
+							<option value = "">-- Select --</option>
+							
+							
+						</select>
+					</div>				
+				</div>
+				
+				
+				<div class="col-lg-12 noPaddingLeft report_padding" data-ng-show="filter_billto">
+					
+					<div class="col-lg-3 branchclass">
+						<span class="text-padding">Username </span>
+						<select class="form-control" data-ng-model="ctrl.report.user"
+						data-ng-change = "ctrl.filterReset()" 
+						data-ng-options = "user for user in ['Kumar', 'Raja']">
+							<option value = "">-- Select --</option>
+							
+							
+						</select>
+					</div>				
+				</div>
+				
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				
                 </div>
@@ -655,6 +713,9 @@
    			limitMax : getDate()
    		});
    		
+   		$('.datepicker3').dateTimePicker({
+   			limitMax : getDate()
+   		});
    		/* $('#dates').val() = getDate(); */
    		
    		

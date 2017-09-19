@@ -225,10 +225,17 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		 
 		//---- Report 
 		 self.submit = function (){
-			 self.report.fromtoday = $('.datepicker1').val();
-			 self.report.todate = $('.datepicker2').val();
-			 self.report.from_lrno = $('#from_lrno_value').val();
-			 self.report.to_lrno = $('#to_lrno_value').val();
+			 console.log($scope.filter_billto);
+			 if($scope.filter_billto == true) {
+				 self.report.fromtoday = $('.datepicker1').val();
+				 self.report.todate = $('.datepicker1').val();
+			 }else{
+				 self.report.fromtoday = $('.datepicker1').val();
+				 self.report.todate = $('.datepicker2').val();
+				 self.report.from_lrno = $('#from_lrno_value').val();
+				 self.report.to_lrno = $('#to_lrno_value').val();	 
+			 }
+			 
 			 
 			 /*if(self.report.branch != null){
 				 self.report.frombranch = self.report.branch;
@@ -261,10 +268,15 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 if(self.report.todate==null){
 				 self.report.todate = "";
 			 }
+			 if(self.report.billto==null){
+				 self.report.billto = "";
+			 }
+			 
 			 console.log(self.report);
 			 ReportService.fetch4All(self.report)
 			 	.then(
 			 			function(shipment){
+			 				console.log(shipment);
 			 				if(shipment.length!=0) {
 			 					self.filterReport = shipment;
 			 					self.shipmentReport = shipment;

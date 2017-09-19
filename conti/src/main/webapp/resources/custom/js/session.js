@@ -142,8 +142,10 @@
 	 		             xhr.setRequestHeader(header, token);
 	 		        },
 	 		        success : function(data) { 
-	 		        	/*window.location ="login?logout";*/
-	 		        	window.location ="/clogout";
+	 		        
+	 		        	window.location ="login?logout";
+	 		        	
+	 		        	/*window.location ="clogout";*/
 	 		        	
 	 		        }, 
 	 		        error : function(data) {
