@@ -512,12 +512,14 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		
 		
 		
+
 		console.log(filter);
 		
 		addManifestService.filterManifest(filter)
 		.then(
 				function(response){
 					self.FilteredManifests=response;
+					$scope.totalnof_records  =self.FilteredManifests.length;
 					console.log(response);
 				},function(errResponse){
 					console.log("error while fetching manifest in filter"+errResponse);
