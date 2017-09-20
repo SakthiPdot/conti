@@ -20,7 +20,7 @@ import javax.persistence.Table;
 public class UserLogModel {
 	
 	private int log_id, user_id, last_loginhours, password_reset_flag,forgotusernme_count;
-	private String loggedin_date, username_request, password_request, link;
+	private String loggedin_date, username_request, password_request, link/*, ip*/;
 	
 	@Id
 	@GeneratedValue
@@ -88,6 +88,13 @@ public class UserLogModel {
 	public void setForgotusernme_count(int forgotusernme_count) {
 		this.forgotusernme_count = forgotusernme_count;
 	}
+/*	@Column(name="ip")
+	public String getIp() {
+		return ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}*/
 	
 	
 	

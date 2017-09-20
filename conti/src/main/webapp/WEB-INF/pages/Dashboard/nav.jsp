@@ -57,7 +57,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/Conti/"><strong>Conti</strong></a>
+                <a class="navbar-brand" href="/Conti/"><!-- <strong>Conti</strong> -->
+                <img style ="width: 80% !important;
+			    height: 140%;
+			    padding-bottom: 7px;
+			    padding-left: 20px;" src="resources/Image/conti.png"></a>
 				
 		<!-- <img alt="hi" src="resources/Image/dashboard.png"> -->
             </div>

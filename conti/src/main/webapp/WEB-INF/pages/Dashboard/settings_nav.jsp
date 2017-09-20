@@ -52,7 +52,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="${homePage}"><strong>Conti</strong></a>
+                <a class="navbar-brand" href="${homePage}"><!-- <strong>Conti</strong> -->
+                <img style ="width: 80% !important;
+			    height: 140%;
+			    padding-bottom: 7px;
+			    padding-left: 20px;" src="resources/Image/conti.png">
+                </a>
 
             </div>
            <ul class="nav navbar-top-links navbar-right">

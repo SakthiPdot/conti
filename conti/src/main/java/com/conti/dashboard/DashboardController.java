@@ -1,6 +1,7 @@
 package com.conti.dashboard;
 
 
+import java.net.InetAddress;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -27,12 +27,9 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -123,7 +120,14 @@ public class DashboardController {
 			userLogModel.setUser_id(userid);
 			userLogModel.setLoggedin_date(dateFormat.format(date));
 			userLogModel.setForgotusernme_count(0);
+			
+			/*System.out.println("#########################################");
+			InetAddress ipAddr = InetAddress.getLocalHost();
+            System.out.println(ipAddr.getHostAddress());
+			System.out.println(request.getLocalAddr());
+			userLogModel.setIp(ipAddr.getHostAddress());*/
 			userLogDao.saveorupdate(userLogModel);
+			
 			loggerconf.saveLogger(username,  "Admin / ", ConstantValues.SAVE_SUCCESS, null);
 			if (principal instanceof UserDetails) {
 				String user1 = ((UserDetails) principal).getUsername();
