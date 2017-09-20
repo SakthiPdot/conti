@@ -110,7 +110,7 @@
                 			      		<span class="text-padding">From</span>
                 			      		<select class="form-control" 
                 			      		 data-ng-model="frombranch_filter">
-                			      			<option value="" data-ng-disabled="true">--Select Branch Name--</option>
+                			      			<option value="" >--Select Branch Name--</option>
                 			      			<option data-ng-repeat="x in ctrl.branches" value="{{x.branch_id}}">{{x.branch_name}}</option>
                 			      		</select>
                 			      </div>
@@ -131,7 +131,7 @@
                 			      		<%-- <sec:authorize access="hasRole('SUPER_ADMIN')"> --%>
                 			      		<select class="form-control" 
                 			      		data-ng-model="tobranch_filter">
-                			      			<option value="" data-ng-disabled="true">--Select Branch Name--</option>                			      			
+                			      			<option value="" >--Select Branch Name--</option>                			      			
                 			      			<option data-ng-repeat="x in ctrl.branches" value="{{x.branch_id}}">{{x.branch_name}}</option>
                 			      		</select>
                 			      		<%-- </sec:authorize> --%>

@@ -501,10 +501,11 @@ angular.module('contiApp').controller('addManifestController',['$scope','BranchS
 		console.log(self.manifest.manifest_status==null);
 		if(self.manifest.manifest_status==null || typeof self.manifest.manifest_status == undefined)
 		self.manifest.manifest_status="";
+
 		
 		var filter={
-				"fromBranch":JSON.parse(self.manifest.branchModel1).branch_id,
-				"toBranch":(self.manifest.branchModel2!=null)? JSON.parse(self.manifest.branchModel2).branch_id : "",
+				"fromBranch":(self.manifest.branchModel1!=null && self.manifest.branchModel1.trim().length!=0 )? JSON.parse(self.manifest.branchModel1).branch_id:"",
+				"toBranch":(self.manifest.branchModel2!=null && self.manifest.branchModel2.trim().length!=0)? JSON.parse(self.manifest.branchModel2).branch_id:"" ,
 				"fromDate":$(".datepicker1").val(),
 				"toDate":$(".datepicker2").val(),
 				"status":self.manifest.manifest_status
