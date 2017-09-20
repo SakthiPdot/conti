@@ -111,7 +111,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										<%-- <sec:authorize access="hasRole('SUPER_ADMIN')"> --%>
 											<select name="fromBranch" class="form-control"
 												data-ng-model="amctrl.manifest.branchModel1">
-												<option value="" data-ng-disabled="true">--Select
+												<option value="" >--Select
 													Branch Name--</option>
 												<option data-ng-repeat="x in amctrl.branches" value="{{x}}">{{x.branch_name}}</option>
 											</select>
@@ -122,7 +122,7 @@ data-ng-app="contiApp" data-ng-controller="addManifestController as amctrl">
 										<span class="text-padding">To</span> 
 										<select name ="toBranch"
 											class="form-control" data-ng-model="amctrl.manifest.branchModel2">														
-											 <option value="" data-ng-disabled="true">--Select Branch Name--</option>
+											 <option value="">--Select Branch Name--</option>
 											 <option data-ng-repeat="x in amctrl.branches" value="{{x}}">{{x.branch_name}}</option>
 										</select>
 									</div>
