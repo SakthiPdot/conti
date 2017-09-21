@@ -16,7 +16,7 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
         findUserbyName : findUserbyName,
         changePassword : changePassword,
         findUserbyMbl :findUserbyMbl,
-        
+        fetchUserbybranch:fetchUserbybranch,
         makeActive : makeActive,
         makeinActive : makeinActive,
         
@@ -80,10 +80,30 @@ contiApp.factory('UserService', ['$http', '$q', function($http, $q){
     }
     //----------------------  Fetch All users end ----------------------------- //
     
+    //fetch user by branch
+    
+    function fetchUserbybranch() {
+    	var deferred = $q.defer();
+        $http.get('users/')
+            .then(
+            function (response) {
+                deferred.resolve(response.data);
+            },
+            function(errResponse){
+                deferred.reject(errResponse);
+            }
+        );
+        return deferred.promise;
+    }
     //----------------------  Find user by user id with PUT begin ----------------------------- //    
     function findUser(user, id) {
         var deferred = $q.defer();
-        $http.put('users/'+id, user)
+        $http({
+    		method : 'POST',
+    		url : 'userbyBranch',
+    		data : username,
+    		headers : getCsrfHeader()
+    	})
             .then(
             function (response) {
                 deferred.resolve(response.data);

@@ -1,10 +1,14 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib
-    prefix="c"
-    uri="http://java.sun.com/jsp/jstl/core" 
-%>
-<%@ page isELIgnored="false" %> 
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<%@ page isELIgnored="false"%>
 <%@page session="true"%>
 <html lang="en">
 <head>
@@ -64,7 +68,8 @@
  			<i class="fa fa-check-circle"></i> {{ctrl.message}}
  		</div>
  <!-- -----------------  Failure message end ------------------ -->
-	
+	<input type = "hidden" id = "currentuserid" value = "${userid}" />
+	<input type = "hidden" id = "currentUserRole" value = "<sec:authentication property="principal.authorities[0]"/>" />
 	<jsp:include page="../Dashboard/nav.jsp"/>
 	
     <div id="wrapper">        	  
@@ -99,7 +104,7 @@
                                    
                                    <label class="radio-inline">
                                        <input type="radio" data-ng-model = "filter_date" 
-                                       data-ng-click="filter_branch=false;filter_lr=false;filter_all=false;ctrl.date_required=true;ctrl.filterReset();"value="filter_date"
+                                       data-ng-click="filter_branch=false;filter_lr=false;filter_billto=false;filter_all=false;ctrl.date_required=true;ctrl.filterReset();"value="filter_date"
                                        name="optionsRadiosInline" id="optionsRadiosInline1" > Date Wise
                                    </label>
                                    <label class="radio-inline">
@@ -149,13 +154,13 @@
 				
 				<div class="col-lg-12 noPaddingLeft report_padding" data-ng-show="filter_billto">
 					
-					<div class="col-lg-3 branchclass">
-						<span class="text-padding"> Date </span>
+					<div class="col-lg-3 report_class">
+						<span class="text-padding"> Date <span class="required">*</span></span>
 						
 						<div class="form-group input-group">
                                   <input type="text" id="datepicker3" class="form-control datepicker3"
                                   placeholder="Select or Enter  date" 
-                                  data-ng-model="ctrl.report.fromtoday" data-ng-required = "ctrl.date_required">
+                                  data-ng-model="ctrl.report.today" data-ng-required = "filter_billto">
                                   <span class="input-group-btn">
                                       <button class="btn btn-default " type="button"><i class="fa fa-calendar"></i>
                                       </button>
@@ -238,7 +243,7 @@
 						<select class="form-control" data-ng-options = "branch.branch_id as branch.branch_name for branch in ctrl.branches"
 						data-ng-change = "ctrl.filterReset()"
 						data-ng-model = "ctrl.report.frombranch">
-							<option value="" disabled>-- Select --</option>							
+							<option value="">-- Select --</option>							
 						</select>
 					</div>
 					
@@ -247,7 +252,7 @@
 						<select class="form-control" data-ng-options = "branch.branch_id as branch.branch_name for branch in ctrl.branches"
 						data-ng-change = "ctrl.filterReset()"
 						data-ng-model="ctrl.report.tobranch">
-							<option value="" disabled>-- Select --</option>
+							<option value="">-- Select --</option>
 							
 						</select>
 					</div>
@@ -387,9 +392,9 @@
 					
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Username </span>
-						<select class="form-control" data-ng-model="ctrl.report.user"
-						data-ng-change = "ctrl.filterReset()" 
-						data-ng-options = "user for user in ['Kumar', 'Raja']">
+						<select class="form-control" data-ng-model="ctrl.report.username"
+						data-ng-change = "ctrl.filterReset()" data-ng-disabled="user_disable"
+						data-ng-options = "user.user_id as user.username for user in ctrl.users">
 							<option value = "">-- Select --</option>
 							
 							
@@ -672,6 +677,7 @@
     
     <script src="resources/custom/js/custom.js"></script>
     <script type="text/javascript" src="resources/custom/js/reports/report_controller.js"></script>
+    <script src="resources/custom/js/user_master/user_service.js"></script>
     <script type="text/javascript" src="resources/custom/js/reports/report_service.js"></script> 
     <script src="resources/custom/js/shipment/shipment_service.js"></script>
     <script src="resources/custom/js/branch_master/branch_service.js"></script>

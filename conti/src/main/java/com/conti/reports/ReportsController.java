@@ -87,6 +87,7 @@ public class ReportsController {
 		try
 		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
+			model.addObject("userid",userid);
 			model.addObject("title", "Reports");
 			model.addObject("message", "This page is for ROLE_ADMIN only!");
 			model.setViewName("Reports/reports");
@@ -107,7 +108,7 @@ public class ReportsController {
 			List<ShipmentModel> shipmentList = shipmentDao.getShipment4Report(json.get("fromtoday").toString(), json.get("todate").toString(), 
 					json.get("datecondition").toString(), json.get("frombranch").toString(), json.get("tobranch").toString(), json.get("branchcondition").toString(), 
 					json.get("from_lrno").toString(), json.get("to_lrno").toString(), json.get("lrcondition").toString(), json.get("product_id").toString(), 
-					json.get("paymentmode").toString(), json.get("status").toString());
+					json.get("paymentmode").toString(), json.get("status").toString(), json.get("billto").toString(), json.get("username").toString());
 			
 			if(!json.get("product_id").toString().isEmpty()){
 				if(!shipmentList.isEmpty()){

@@ -1178,6 +1178,13 @@ public class UserRestController {
 		return new ResponseEntity<Map<String,List<EmployeeMaster>>> (result,HttpStatus.OK);
 	}
 	
+	//---fetch by branch
+	@RequestMapping(value="userbyBranch", method=RequestMethod.POST)
+	public ResponseEntity<List<User>> fetchuserbyBranch(@RequestBody int branch_id){
+		List<User> users = usersDao.getUsersbyBranchId(branch_id);
+		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+	}
+	
 }
 
 

@@ -4,7 +4,7 @@
 			 angular.element(document.getElementById('datepicker1')).scope().fRest(); 
 		 })
 			 
-contiApp.controller('ReportController',['$scope','$http','$q','$timeout','BranchService','ReportService','ShipmentService','ConfirmDialogService',function($scope,$http,$q,$timeout,BranchService,ReportService,ShipmentService,ConfirmDialogService)
+contiApp.controller('ReportController',['$scope','$http','$q','$timeout','BranchService','UserService','ReportService','ShipmentService','ConfirmDialogService',function($scope,$http,$q,$timeout,BranchService,UserService,ReportService,ShipmentService,ConfirmDialogService)
 	{
 		
 		$("#screen_report").addClass("active-menu");
@@ -15,7 +15,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		self.dateformat = dateformat;
 		fetchAllBranches();
 		fetchAllShipmentforView();
-		
+		self.users=[];
 		self.date_required = true;
 		
 		self.report = {
@@ -38,6 +38,8 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 	self.excelFlag = true;
 	$scope.nextDisabled = false;
 	$scope.previouseDisabled = true;
+	
+	$scope.user_disable = false;
 	//============ Fetch All Branches Function Begin =======//	
 		function fetchAllBranches() {
 			
@@ -226,16 +228,17 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		//---- Report 
 		 self.submit = function (){
 			 console.log($scope.filter_billto);
-			 if($scope.filter_billto == true) {
-				 self.report.fromtoday = $('.datepicker1').val();
-				 self.report.todate = $('.datepicker1').val();
+			 if($scope.filter_billto == 'filter_billto') {
+
+				 self.report.fromtoday = $('.datepicker3').val();
+				 self.report.todate = $('.datepicker3').val();
 			 }else{
+
 				 self.report.fromtoday = $('.datepicker1').val();
 				 self.report.todate = $('.datepicker2').val();
 				 self.report.from_lrno = $('#from_lrno_value').val();
 				 self.report.to_lrno = $('#to_lrno_value').val();	 
 			 }
-			 
 			 
 			 /*if(self.report.branch != null){
 				 self.report.frombranch = self.report.branch;
@@ -271,8 +274,10 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 if(self.report.billto==null){
 				 self.report.billto = "";
 			 }
+			 if(self.report.username==null){
+				 self.report.username= "";
+			 }
 			 
-			 console.log(self.report);
 			 ReportService.fetch4All(self.report)
 			 	.then(
 			 			function(shipment){
@@ -296,6 +301,10 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 self.excelFlag = true;
 			 self.tbl_nodata = false;
 			 no_data();
+			 if($scope.filter_billto == 'filter_billto') {
+				 fetch_user(self.report.frombranch);
+			 }
+			 
 		 }
 		 $scope.fRest = function(){
 			 self.filterReset();
@@ -401,5 +410,41 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			    }
 			    //-------------------------------- Show no of record end ----------------------------------------//  
 
+			    //----fetch username
+			    function fetch_user(from_branch){
+			    	
+			    	//for SA
+			    	if($('#currentUserRole').val() == 'SUPER_ADMIN') {
+			    		UserService.fetchAllUsers()
+			    		.then(
+			    				function(users){
+			    					self.users = users;
+			    				},function(errRes){
+			    					console.log(errRes);
+			    				}
+			    			);
+			    	}
+			    	//for manager / user
+			    	if($('#currentUserRole').val() == 'MANAGER' || $('#currentUserRole').val() == 'STAFF') {
+			    		UserService.fetchUserbybranch()
+			    		.then(
+			    				function(users){
+			    					self.users = users;
+			    					if($('#currentUserRole').val() == 'STAFF'){
+			    						self.report.user = parseInt($('#currentuserid').val());
+			    						console.log($('#currentuserid').val());
+			    						console.log(self.report.user);
+			    						//$scope.user_disable = true;
+			    					}
+			    					
+			    				},function(errRes){
+			    					console.log(errRes);
+			    				}
+			    			);
+			    	}
+			    	
+			    	
+			    }
+			    
 	}
 	]);

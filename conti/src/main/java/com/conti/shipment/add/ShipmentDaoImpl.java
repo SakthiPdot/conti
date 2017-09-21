@@ -801,7 +801,7 @@ public class ShipmentDaoImpl implements ShipmentDao {
 	@Transactional
 	public List<ShipmentModel> getShipment4Report(String fromtoday, String todate, String datecondition, String frombranch,
 			String tobranch, String branchcondition, String from_lrno, String to_lrno, String lrcondition, String product_id, String paymentmode,
-			String status) {
+			String status, String billto, String username) {
 		// TODO Auto-generated method stub
 		
 		StringBuilder queryString =new StringBuilder();
@@ -833,6 +833,10 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		if(paymentmode!=null && !paymentmode.trim().isEmpty()){
 			queryString.append( lrcondition + " pay_mode='" + paymentmode+"'");
 		}
+		if(billto!=null && !billto.trim().isEmpty())
+			queryString.append(" AND bill_to='" + billto + "'");
+		if(username!=null && !username.trim().isEmpty())
+			queryString.append(" AND created_by=" + username + "");
 		if(status!=null && !status.trim().isEmpty())
 			queryString.append(" AND status='" + status + "'");
 		@SuppressWarnings("unchecked")
