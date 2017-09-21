@@ -50,7 +50,7 @@ public class ShipmentModel {
 	String receipt_date, receipt_no;
 	float freight_charge, receipt_charge, receipt_handling, receipt_transport;
 	String filter_frmDate, filter_toDate, filter_frmBranch, filter_toBranch, 
-			filter_frmlr, filter_tolr, filter_product, filter_paymode, filter_status;
+			filter_frmlr, filter_tolr, filter_product, filter_paymode, filter_status, filter_user, filter_pay;
 	
 	
 	@Transient
@@ -160,6 +160,20 @@ public class ShipmentModel {
 	}
 	public void setFilter_status(String filter_status) {
 		this.filter_status = filter_status;
+	}
+	@Transient
+	public String getFilter_user() {
+		return filter_user;
+	}
+	public void setFilter_user(String filter_user) {
+		this.filter_user = filter_user;
+	}
+	@Transient
+	public String getFilter_pay() {
+		return filter_pay;
+	}
+	public void setFilter_pay(String filter_pay) {
+		this.filter_pay = filter_pay;
 	}
 	//---for report end
 	public ShipmentModel() {

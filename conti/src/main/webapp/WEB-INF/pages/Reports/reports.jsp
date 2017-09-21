@@ -376,14 +376,22 @@
 				<div class="col-lg-12 noPaddingLeft report_padding" data-ng-show="filter_billto">
 					
 					<div class="col-lg-3 branchclass">
-						<span class="text-padding">Bill To </span>
+						<!-- <span class="text-padding">Username </span>
 						<select class="form-control" data-ng-model="ctrl.report.billto"
 						data-ng-change = "ctrl.filterReset()" 
 						data-ng-options = "billto for billto in ['Paid', 'To Pay']">
 							<option value = "">-- Select --</option>
-							
-							
-						</select>
+						</select>  --> 
+						<label class="radio-inline">
+                             <input type="radio" data-ng-model = "ctrl.report.billto" 
+                             data-ng-click="" value="Paid"
+                             name="billto" id="billto" > To Pay / Paid
+                        </label>
+						<label class="radio-inline">
+                             <input type="radio" data-ng-model = "ctrl.report.billto" 
+                             data-ng-click="" value="Report"
+                             name="billto" id="billto" > Report
+                        </label>
 					</div>				
 				</div>
 				
@@ -550,9 +558,10 @@
 										</div>
 										
 			           			 	</div>
-			           			 	<button type="submit" class="btn btn-primary" data-ng-disabled = "ctrl.excelFlag">	<i class="fa fa-file-excel-o"></i></button>
-			                		
+			           			 	<button type="submit" name="excel" class="btn btn-primary" data-ng-disabled = "ctrl.excelFlag">	<i class="fa fa-file-excel-o"></i></button>
+			                		<!-- <button type="submit" name="print" class="btn btn-primary" data-ng-disabled = "ctrl.excelFlag">	<i class="fa fa-print fa-lg"></i></button> -->
 			                	 </form>
+			                	
 			                	 </div>
 			                </div>
 	                	

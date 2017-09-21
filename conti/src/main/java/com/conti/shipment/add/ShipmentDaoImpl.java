@@ -165,7 +165,8 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		List<ShipmentModel> listShipment = sessionFactory.getCurrentSession()
 				.createQuery("from ShipmentModel WHERE obsolete = 'N'"
 						+ "and sender_branch.branch_id='"+branch_id+"' "
-						+ "and  status in ('Booked','Missing')" )
+						+ "and  status in ('Booked','Missing')" 
+						+ "order by IFNULL(sender_branch.branch_name,lr_number)  ASC ")
 				.setMaxResults(100).list();
 		
 		return listShipment;

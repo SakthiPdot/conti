@@ -227,7 +227,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		 
 		//---- Report 
 		 self.submit = function (){
-			 console.log($scope.filter_billto);
+			
 			 if($scope.filter_billto == 'filter_billto') {
 
 				 self.report.fromtoday = $('.datepicker3').val();
@@ -277,7 +277,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 if(self.report.username==null){
 				 self.report.username= "";
 			 }
-			 
+			 console.log(self.report);
 			 ReportService.fetch4All(self.report)
 			 	.then(
 			 			function(shipment){
@@ -287,7 +287,11 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 					self.shipmentReport = shipment;
 				 				self.excelFlag = false;	
 				 				pagination();
+				 			}else{
+				 				self.filterReport = shipment;
+			 					self.shipmentReport = shipment;
 				 			}
+			 				
 			 				no_data();
 			 			},function(errResponse){
 			 				console.log(errResponse);
@@ -318,11 +322,9 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		 
 		//---no data after filter
 		 function no_data(){
-			if(self.filterReport.length==undefined){
+			 console.log(self.filterReport.length);
+			if(self.filterReport.length==undefined || self.filterReport.length==0){
 				self.tbl_nodata = true;		
-				
-				
-				
 				$scope.currentPage = null;
 				$scope.nextDisabled = true;
 				$scope.previouseDisabled = true;

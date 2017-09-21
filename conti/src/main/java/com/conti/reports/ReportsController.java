@@ -2,13 +2,18 @@ package com.conti.reports;
 
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.codec.binary.Base64;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -44,6 +49,8 @@ import com.conti.receipt.ReceiptDetail;
 import com.conti.receipt.ReceiptModel;
 import com.conti.setting.usercontrol.User;
 import com.conti.setting.usercontrol.UsersDao;
+import com.conti.settings.company.Company;
+import com.conti.settings.company.CompanySettingDAO;
 import com.conti.shipment.add.ShipmentDao;
 import com.conti.shipment.add.ShipmentModel;
 
@@ -73,6 +80,8 @@ public class ReportsController {
 	private ReceiptDao receiptDao;
 	@Autowired
 	private ProductDAO productDao;
+	@Autowired
+	private CompanySettingDAO companySettingDao;
 	UserInformation userInformation;
 	ConstantValues constantVal = new ConstantValues();	
 	Loggerconf loggerconf = new Loggerconf();
@@ -204,6 +213,16 @@ public class ReportsController {
 				}else{
 					filterShip.get(0).setFilter_status(json.get("status").toString());
 				}
+				if(json.get("billto").toString().isEmpty()){
+					filterShip.get(0).setFilter_pay("All");
+				}else{
+					filterShip.get(0).setFilter_pay(json.get("billto").toString());
+				}
+				if(json.get("username").toString().isEmpty()){
+					filterShip.get(0).setFilter_user("All");
+				}else{
+					filterShip.get(0).setFilter_user(json.get("username").toString());
+				}
 			}
 			
 			return new ResponseEntity<List<ShipmentModel>> (filterShip, HttpStatus.OK);
@@ -214,8 +233,8 @@ public class ReportsController {
 	}
 	
 	//=================EXCEL DOWNLOAD=====================================
-	@RequestMapping(value="downloadExcelForReport",method=RequestMethod.POST)
-	public ModelAndView downloadExcelForAddManifest(@RequestParam("filterShip") String shipment,HttpServletRequest request) throws JsonParseException, JsonMappingException, IOException{
+	@RequestMapping(value="downloadExcelForReport",method=RequestMethod.POST, params={"excel","!print"})
+	public ModelAndView downloadExcelForReport(@RequestParam("filterShip") String shipment,HttpServletRequest request) throws JsonParseException, JsonMappingException, IOException{
 		
 		//change to fetch all 
 		String userid = userInformation.getUserId();
@@ -226,6 +245,38 @@ public class ReportsController {
 		return new ModelAndView("ReportExcel","shipmentList",shipmentList);		
 	}
 	//----------------------------------------------- SHIPMENT EXCEL END
+	//=================PDf DOWNLOAD=====================================
+	@RequestMapping(value="downloadExcelForReport",method=RequestMethod.POST, params={"print","!excel"})
+	public ModelAndView downloadpdfForReport(@RequestParam("filterShip") String shipment,HttpServletRequest request) throws JsonParseException, JsonMappingException, IOException, ParseException{
+		
+		//change to fetch all 
+		String userid = userInformation.getUserId();
+		User user =usersDao.get(Integer.parseInt(userid));
+		ObjectMapper mapper = new ObjectMapper();
+		List<ShipmentModel>  shipmentList = mapper.readValue(shipment, new TypeReference<List<ShipmentModel>>(){});
+		SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
+		Date fildate = dateFmt.parse(shipmentList.get(0).getShipment_date());
+		Company company = companySettingDao.getById(1);
+		String base64DataString ="";
+		if(company!=null && company.getCompany_logo()!=null){
+			byte[] encodeBase64 = Base64.encodeBase64(company.getCompany_logo());
+			try {
+				 base64DataString = new String(encodeBase64 , "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				loggerconf.saveLogger(request.getUserPrincipal().getName(),  request.getServletPath(), "Image support error", e);
+			}		
+		}else{
+			base64DataString = ConstantValues.NO_IMAGE;	
+		}
+		
+		ModelAndView model = new ModelAndView("print/report_print");
+		model.addObject("title", "Shipment");
+		model.addObject("company", company);
+		model.addObject("shipmentList", shipmentList);
+		model.addObject("image",base64DataString);
+		return model;		
+	}
+	//----------------------------------------------- PDf DOWNLOAD END
 	
 	@RequestMapping(value="getshipment4report/{lr}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String,List<ShipmentModel>>> getshipment4report(HttpServletRequest request,
