@@ -120,7 +120,7 @@
 											data-ng-options="branch.branch_id as branch.branch_name for branch in ctrl.branches"
 											data-ng-model="ctrl.manifest.frombranch">
 											<!-- 											data-ng-disabled = "ctrl.fromBranch_disable == true" > -->
-											<option value="" disabled>--Select Branch Name--</option>
+											<option value="" >--Select Branch Name--</option>
 										</select>
 									</div>
 									<div class="col-lg-3 branchclass">
@@ -128,12 +128,13 @@
 											class="form-control"
 											data-ng-options="branch.branch_id as branch.branch_name for branch in ctrl.branches"
 											data-ng-model="ctrl.manifest.tobranch">
-											<option value=''>--Select--</option>
+											<option value="">--Select Branch Name--</option>
 
 										</select>
 									</div>
 								</div>
-								<input type="hidden" id="branch_id" value="${branch_id}" /> <input
+								<input type="hidden" id="branch_id" value="${branch_id}" />
+								 <input
 									type="hidden" id="currentUserRole"
 									value="<sec:authentication property="principal.authorities[0]"/>" />
 

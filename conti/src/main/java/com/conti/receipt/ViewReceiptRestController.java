@@ -161,10 +161,9 @@ public class ViewReceiptRestController {
 		int branch_id = Integer.parseInt(userInformation.getUserBranchId());
 		int shipment_id=0;
 		ManifestModel manifestModel;
-		//ReceiptModel receipt;
-//		String flag="true";
-//		try
-//		{
+		
+		try
+		{
 			loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 			
 			User user = usersDao.get(Integer.parseInt(userid));
@@ -190,8 +189,6 @@ public class ViewReceiptRestController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-					
 				}
 				if(receiptDetail.isEmpty()) {
 					return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.NO_CONTENT);
@@ -230,12 +227,12 @@ public class ViewReceiptRestController {
 					return new ResponseEntity<List<ReceiptDetail>> (receiptDetail, HttpStatus.OK);	
 				}
 			}
-		//}
-//		catch(Exception exception)
-//		{
-//			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
-//			return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.UNPROCESSABLE_ENTITY);
-//		}
+		}
+		catch(Exception exception)
+		{
+			loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
+			return new ResponseEntity<List<ReceiptDetail>> (HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 	}
 	
 	//-------------------------------------------------------------------------------------------------------------------
@@ -412,8 +409,7 @@ public class ViewReceiptRestController {
 				if(receiptDetail==null){
 					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
 					active_flag = 1;
-				}
-				else{
+				}else{
 					Date date=new Date();
 					DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
 					receiptDetail.shipmentModel.setStatus(ConstantValues.PENDING);
@@ -486,6 +482,8 @@ public class ViewReceiptRestController {
 				String username= userInformation.getUserName();
 				int user_id=Integer.parseInt(userInformation.getUserId());
 				int active_flag=0;
+				Date date=new Date();
+				DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
 				try{
 					for(int i=0;i<id.length;i++){
 						ReceiptDetail receiptDetail=receiptDao.getAllReceiptDetailByid(id[i]);
@@ -494,31 +492,36 @@ public class ViewReceiptRestController {
 							active_flag = 1;
 						}
 						else{
-							Date date=new Date();
-							DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
 							receiptDetail.shipmentModel.setStatus(ConstantValues.RECEIVED);
 							receiptDetail.shipmentModel.setUpdated_by(user_id);
 							receiptDetail.shipmentModel.setUpdated_datetime(dateFormat.format(date));
 							receiptDetail.receiptModel.setObsolete("Y");		
 							receiptDao.saveOrUpdate(receiptDetail.receiptModel);
 							shipmentDao.saveOrUpdate(receiptDetail.shipmentModel);
-							receiptDao.delete(receiptDetail);
 							loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.SAVE_SUCCESS, null);
 						}
 					}
+					
+					for(int i=0;i<id.length;i++){
+						ReceiptDetail receiptDetail=receiptDao.getAllReceiptDetailByid(id[i]);
+						if(receiptDetail==null){
+							loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, null);
+							active_flag = 1;
+						}else{
+							receiptDao.delete(receiptDetail);
+						}
+					}
+					
 					if( active_flag == 1) {
 						return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 					} else {
 						return new ResponseEntity<Void> (HttpStatus.OK);
 					}
 				}
-			//	receiptDao.makeDelete(id);
-//				return new ResponseEntity<Void> (HttpStatus.OK);
 				catch (Exception exception) {
 					loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.SAVE_NOT_SUCCESS, exception);
 					return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
 				}
-				
 			}
 		
 	

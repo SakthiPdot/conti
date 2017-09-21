@@ -95,7 +95,7 @@ public class ReceiptDetail {
 	
 	
 	@JoinColumn(name="receipt_id")
-	@ManyToOne(cascade=CascadeType.ALL)  
+	@ManyToOne(cascade=CascadeType.MERGE)  
 	@JsonBackReference
 	public ReceiptModel getReceiptModel() {
 		return this.receiptModel;
@@ -112,7 +112,7 @@ public class ReceiptDetail {
 
 	
 	@JoinColumn(name="shipment_id",referencedColumnName="shipment_id")
-	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.MERGE)
 	public ShipmentModel getShipmentModel() {
 		return this.shipmentModel;
 	}

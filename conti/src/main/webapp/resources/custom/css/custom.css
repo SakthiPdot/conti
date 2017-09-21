@@ -222,13 +222,13 @@
         	margin-left:7px;
         } 
         .marginleftrightspace{
-        	margin-left:12	%;
-        	margin-right:8%;
+        	margin-left:12%;
+        	margin-right:0%;
         }
         
         .spacemarginleftright{
-        	margin-left: 16%;
-            margin-right: 4%;
+        	margin-left: 12%;
+            margin-right: 0%;
         }
         
         .padding-button{

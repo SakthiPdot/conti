@@ -230,7 +230,6 @@ public class ManifestDaoImpl implements ManifestDao
 		@Transactional
 		public List<ManifestModel> getOutwardManifest(int branch_id) 
 		{
-			// TODO Auto-generated method stub
 			
 			@SuppressWarnings("unchecked")
 			List<ManifestModel> listmanifest = (List<ManifestModel>) sessionFactory.getCurrentSession()
@@ -418,6 +417,14 @@ public class ManifestDaoImpl implements ManifestDao
 			return null;
 		}
 		
-		
+	//--------------------Delete Manifest detailed ----------------
+		@Override
+		@Transactional
+		public void deleteManifestDetailed(int id)
+		{
+			@SuppressWarnings("unchecked")
+			 Query query=sessionFactory.getCurrentSession().createQuery("Delete from ManifestDetailedModel where manifest_id="+id);
+			query.executeUpdate();
+		}
 		
 }

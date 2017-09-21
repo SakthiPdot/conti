@@ -55,7 +55,7 @@ import com.conti.shipment.add.ShipmentModel;
  * @File_name AddManifestDaoImpl.java
  * @author Suresh
  * @Created_date_time July 24, 2017 3:31:53 PM
- * @Updated_date_time Jly 24, 2017 3:31:53 PM
+ * @Updated_date_time July 24, 2017 3:31:53 PM
  */
 @RestController
 public class ManifestRestController 
@@ -130,22 +130,17 @@ public class ManifestRestController
 			userInformation = new UserInformation(request);
 			String username = userInformation.getUserName();
 			String branch_id = userInformation.getUserBranchId();
-			try 
-			{
+			try{
 				loggerconf.saveLogger(username, request.getServletPath(), ConstantValues.FETCH_SUCCESS, null);
 				List<ManifestModel> manifestModel = manifestDao.getAllManifest(Integer.parseInt(branch_id));
 				if(manifestModel.isEmpty()) 
 				{
 					return new ResponseEntity<List<ManifestModel>> (HttpStatus.NO_CONTENT);
-				}
-				else 
-				{
+				}else{
 					//System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy "+manifestModel);
 					return new ResponseEntity<List<ManifestModel>> (manifestModel, HttpStatus.OK);	
 				}			
-			} 
-			catch (Exception exception) 
-			{			
+			}catch (Exception exception){			
 				loggerconf.saveLogger(username,  request.getServletPath(), ConstantValues.FETCH_NOT_SUCCESS, exception);
 				return new ResponseEntity<List<ManifestModel>> (HttpStatus.UNPROCESSABLE_ENTITY);
 			}
@@ -437,6 +432,7 @@ public class ManifestRestController
 						shipmentModel.setStatus("Booked");
 						shipmentDao.saveOrUpdate(shipmentModel);
 					}
+					manifestDao.deleteManifestDetailed(id[i]);
 				}
 				return new ResponseEntity<ManifestModel>(HttpStatus.OK);
 			}

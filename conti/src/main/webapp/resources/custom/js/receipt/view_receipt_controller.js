@@ -537,16 +537,14 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 				self.confirm_msg =' make selected record(s) status as '+self.confirm_title+' ?';
 				self.confirm_btnclass = 'btn-success';
 				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-				.then(
-						function (res) {
+				.then(function (res) {
 							var active_id = [];
 			    			for(var i=0; i<self.selected_receipt.length; i++) {
 			    				active_id[i] = self.selected_receipt[i].receiptdetailid; 
 			    				console.log(active_id[i] );
 			    			}
 							ReceiptService.makeReturn(active_id)
-							.then(
-									function(response) {
+							.then(function(response) {
 										fetchAllReceipt_view();
 										self.selected_receipt = [];
 										self.message ="Selected record(s) has in Return status..!";
@@ -554,15 +552,12 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 									}, function(errResponse) {
 										console.log(errResponse);    								
 									}
-								);
+							);
 						}
 					);
 				
 			}
-
-
 		}
-		
 	}
 	
 	//--------------------- Make Receipt delete function start---------------------------------	
@@ -602,7 +597,6 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			else if(flag == 0) {
 				self.message ="Selected record(s) already in Received status..!";
 				successAnimate('.failure');
-				
 			} else {
 				self.confirm_title = 'Delete';
 				self.confirm_type = BootstrapDialog.TYPE_DANGER;
@@ -627,13 +621,9 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 								);
 						}
 					);
-				
+				}
 			}
-
-
-		
 		}
-	}
 	
 	}
 ]);
