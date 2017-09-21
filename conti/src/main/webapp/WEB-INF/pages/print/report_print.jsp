@@ -73,8 +73,12 @@
 				<div id="street">${company.company_address2}</div>
 				<div id="city">${company.location.location_name},${company.location.address.city}</div>
 				<div id="phoneno">${company.company_landlineno}</div>
-				<c:set var = "shipment_date" value="${shipmentList[0].shipment_date}" />
-				<div id="title">${fn:substring(shipment_date, 0, 8)}</div>
+				<%-- <c:set var = "shipment_date" value="${shipmentList[0].shipment_date}" />
+				<div id="title">${fn:substring(shipment_date, 0, 8)}</div> --%>
+				<div id="filter_branch">From : <c:out value="${shipmentList[0].filter_frmBranch}"/>  To :  <c:out value="${shipmentList[0].filter_toBranch}"/></div>
+				<div id="filter_username">User : <c:out value="${shipmentList[0].filter_user}"/> </div>
+				<div id="title">Date : <c:if test="${shipmentList[0].filter_pay == 'Paid' }"><c:out value="${shipmentList[0].shipment_date}"/></c:if>
+				<c:if test="${shipmentList[0].filter_pay == 'Report' }"><c:out value="${shipmentList[0].receipt_date}"/></c:if></div>
 				<div id="logo">${image}</div>
 			
 

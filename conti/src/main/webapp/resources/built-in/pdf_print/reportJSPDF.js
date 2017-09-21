@@ -18,13 +18,17 @@ examples.broman = function () {
     var logo = document.getElementById('logo').innerHTML;
     var title = document.getElementById('title').innerHTML;
     var logoimg = document.getElementById('logoimg').innerHTML;
+    var filter_branch=document.getElementById('filter_branch').innerHTML;
+    var filter_username=document.getElementById('filter_username').innerHTML;
     
     doc.text(companyname, 160, 50);
     doc.text(area, 160, 70);
     if(document.getElementById('street') == null){
     	doc.text(city, 160, 90);
     	doc.text(phoneno, 160, 110);
-    	doc.text(title,160,130);
+    	doc.text(title,40,220);
+    	doc.text(filter_branch, 40, 180);
+    	doc.text(filter_username, 40, 200);
     	
     }else {
     	/*doc.text(street, 160, 90);
@@ -33,7 +37,9 @@ examples.broman = function () {
         doc.text(title,160,150);*/
     	doc.text(city, 160, 90);
     	doc.text(phoneno, 160, 110);
-    	doc.text(title,160,130);
+    	doc.text(title,40,220);
+    	doc.text(filter_branch, 40, 180);
+    	doc.text(filter_username, 40, 200);
     }
     
    
@@ -57,7 +63,7 @@ examples.broman = function () {
     
     var elem = document.getElementById("basic-table");
     var res = doc.autoTableHtmlToJson(elem);
-    doc.autoTable(res.columns, res.data, {startY: 160,styles: {overflow: 'linebreak'},
+    doc.autoTable(res.columns, res.data, {startY: 240,styles: {overflow: 'linebreak'},
     	theme: 'grid'
     });
     return doc;

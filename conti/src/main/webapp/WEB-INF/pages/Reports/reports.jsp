@@ -559,7 +559,7 @@
 										
 			           			 	</div>
 			           			 	<button type="submit" name="excel" class="btn btn-primary" data-ng-disabled = "ctrl.excelFlag">	<i class="fa fa-file-excel-o"></i></button>
-			                		<!-- <button type="submit" name="print" class="btn btn-primary" data-ng-disabled = "ctrl.excelFlag">	<i class="fa fa-print fa-lg"></i></button> -->
+			                		<button type="submit" name="print" class="btn btn-primary" data-ng-disabled = "ctrl.excelFlag">	<i class="fa fa-print fa-lg"></i></button>
 			                	 </form>
 			                	
 			                	 </div>

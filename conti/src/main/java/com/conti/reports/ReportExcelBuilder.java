@@ -66,14 +66,16 @@ public class ReportExcelBuilder extends AbstractExcelView {
 		SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat dateFmt1 = new SimpleDateFormat("dd/MM/yyyy");
 		Date fildate = null, fildate1 = null;
-		if(shipmentList.get(0).getFilter_frmDate() != "All"){
-			fildate = dateFmt.parse(shipmentList.get(0).getFilter_frmDate());	
-		}
-		if(shipmentList.get(0).getFilter_toDate() != "All"){
-			fildate1 = dateFmt.parse(shipmentList.get(0).getFilter_toDate());	
+		if(!shipmentList.get(0).getFilter_frmDate().equals("All")){
+			fildate = dateFmt.parse(shipmentList.get(0).getFilter_frmDate());
+			fildate1 = dateFmt.parse(shipmentList.get(0).getFilter_toDate());
+			filter_date.createCell(1).setCellValue(dateFmt1.format(fildate)+" To "+dateFmt1.format(fildate1));
+		} else {
+			filter_date.createCell(1).setCellValue(shipmentList.get(0).getFilter_frmDate()+" To "+shipmentList.get(0).getFilter_frmDate());
 		}
 		
-		filter_date.createCell(1).setCellValue(dateFmt1.format(fildate)+" To "+dateFmt1.format(fildate1));
+		
+		
 		
 		HSSFRow filter_branch=sheet.createRow(rowcount++);
 		filter_branch.createCell(0).setCellValue("Branch");

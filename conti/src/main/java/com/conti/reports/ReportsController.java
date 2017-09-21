@@ -221,7 +221,8 @@ public class ReportsController {
 				if(json.get("username").toString().isEmpty()){
 					filterShip.get(0).setFilter_user("All");
 				}else{
-					filterShip.get(0).setFilter_user(json.get("username").toString());
+					User user = usersDao.get(Integer.parseInt(json.get("username").toString()));
+					filterShip.get(0).setFilter_user(user.getUsername());
 				}
 			}
 			
@@ -255,7 +256,16 @@ public class ReportsController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<ShipmentModel>  shipmentList = mapper.readValue(shipment, new TypeReference<List<ShipmentModel>>(){});
 		SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
-		Date fildate = dateFmt.parse(shipmentList.get(0).getShipment_date());
+		SimpleDateFormat dateFmt1 = new SimpleDateFormat("dd/MM/yyyy");
+		Date fildate = null;
+		if(!shipmentList.get(0).getShipment_date().equals("All")){
+			fildate = dateFmt.parse(shipmentList.get(0).getShipment_date());
+			shipmentList.get(0).setShipment_date(dateFmt1.format(fildate));
+		} else {
+			shipmentList.get(0).setShipment_date(shipmentList.get(0).getShipment_date());
+		}
+		
+		
 		Company company = companySettingDao.getById(1);
 		String base64DataString ="";
 		if(company!=null && company.getCompany_logo()!=null){
