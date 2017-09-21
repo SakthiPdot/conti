@@ -924,7 +924,7 @@
                 			      		data-ng-options ="branch.branch_id as branch.branch_name for branch in ctrl.branches"
                 			      		data-ng-model="ctrl.receipt.frombranch"
                 			      		data-ng-init="${branch_id}">
-                			      			<option value='' disabled>--Select Branch Name--</option>
+                			      			<option value=''>--Select Branch Name--</option>
                 			      		</select>
                 			      </div>
                 			      
@@ -932,7 +932,7 @@
                 			      		<span class="text-padding">To</span>
                 			      		<select class="form-control" data-ng-options ="branch.branch_id as branch.branch_name for branch in ctrl.branches" 
                 			      		data-ng-model="ctrl.receipt.tobranch">
-                			      			<option value=''>--Select --</option>
+                			      			<option value=''>-- Select Branch Name --</option>
                 			      			
                 			      		</select>
                 			      </div>

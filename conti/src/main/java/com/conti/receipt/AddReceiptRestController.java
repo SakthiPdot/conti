@@ -450,7 +450,7 @@ public class AddReceiptRestController
 			receiptTotal+=receiptDetail.getHandling_charge();
 			//set status
 			shipmentModel.setStatus(ConstantValues.DELIVERED);	
-			
+			shipmentDao.saveOrUpdate(shipmentModel);
 		}
 		
 		//set receipt total cost

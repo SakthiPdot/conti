@@ -135,33 +135,36 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	{
 		console.log(self.Filtermanifests);
 		var branch=$('#branch_id').val();
+		var currentRole=$('#currentUserRole').val();
+		currentroleflag=0;
 		console.log(branch);
-		
+		if (currentRole=='SUPER_ADMIN'){
+			currentroleflag=1;
+			}
 		var deleteflag=0;
 		var branchflag=0;
 		for(var i=0; i<self.selected_manifest.length; i++)
 		{
-			if(self.selected_manifest[i].manifest_status =='Incomplete')
+			if(self.selected_manifest[i].manifest_status =='Intransit')
 				{deleteflag=1;}
 			
 			if(self.selected_manifest[i].branchModel2.branch_id!=parseInt(branch))
 				{branchflag=1;}	
+			
 			console.log(self.selected_manifest[i].branchModel1.branch_id);
 			console.log('******************deleteflag '+deleteflag+' &&&&&&&&&&&&&&&&&&branchflag '+branchflag);
 		}
-		
-		
 		if(self.selected_manifest.length == 0 ) 
 		{
 	   		self.message ="Please select atleast one record for Delete..!";
 			successAnimate('.failure');
     	} 
-		else if(branchflag=='1')
+		else if(branchflag=='1' && currentroleflag==0)
 		{
 			self.message ="Origin branch user only can allow to Delete...!";
 			successAnimate('.failure');
 		}
-		else if(deleteflag=='1')
+		else if(deleteflag=='0')
 		{
 			self.message ="Receipt already created for selected record(s) so can not make Delele...!";
 			successAnimate('.failure');
@@ -176,12 +179,9 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			.then(function (res) 
 				{	
 					var deleted_id=[];
-					for(var i=0; i<self.selected_manifest.length; i++)
-					{
+					for(var i=0; i<self.selected_manifest.length; i++){
 						deleted_id[i]=self.selected_manifest[i].manifest_id;
-						console.log(' for delete :    '+self.selected_manifest[i].manifest_id);
 					}
-					console.log('Number of manifest id for delete :    '+deleted_id);
 					ManifestService.deleteManifest(deleted_id)
 					.then(function (manifest) 
 					{
@@ -192,13 +192,11 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 						successAnimate('.success');
 						newOrClose();
 					}, 
-					function (errResponse) 
-					{
+					function (errResponse){
 		                console.error('Error while Delete Manifest' + errResponse );
 					}
 				);
 			}
-		
 		);
 		}
 	}
