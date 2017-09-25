@@ -148,28 +148,32 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			if(self.selected_manifest[i].manifest_status =='Intransit')
 				{deleteflag=1;}
 			
-			if(self.selected_manifest[i].branchModel2.branch_id!=parseInt(branch))
+			if(self.selected_manifest[i].branchModel2.branch_id==parseInt(branch))
 				{branchflag=1;}	
 			
 			console.log(self.selected_manifest[i].branchModel1.branch_id);
-			console.log('******************deleteflag '+deleteflag+' &&&&&&&&&&&&&&&&&&branchflag '+branchflag);
+			console.log('******************deleteflag '+deleteflag+' &&&&&&&&&&&&&&&&&&branchflag '+branchflag+"  PPPPPPPPPPPPPP: "+currentroleflag);
 		}
 		if(self.selected_manifest.length == 0 ) 
 		{
 	   		self.message ="Please select atleast one record for Delete..!";
 			successAnimate('.failure');
     	} 
-		else if(branchflag=='1' && currentroleflag==0)
-		{
-			self.message ="Origin branch user only can allow to Delete...!";
-			successAnimate('.failure');
-		}
 		else if(deleteflag=='0')
 		{
 			self.message ="Receipt already created for selected record(s) so can not make Delele...!";
 			successAnimate('.failure');
 		}
-		else
+		else if(branchflag=='1' && currentroleflag==1)
+		{
+			self.message ="Origin branch user only can allow to Delete...!";
+			successAnimate('.failure');
+		}
+		else if(branchflag=='1'){
+				self.message ="Origin branch user only can allow to Delete...!";
+				successAnimate('.failure');
+		}
+		else 
 		{
 			self.confirm_title='Delete';
 			self.confirm_type=BootstrapDialog.TYPE_DANGER;

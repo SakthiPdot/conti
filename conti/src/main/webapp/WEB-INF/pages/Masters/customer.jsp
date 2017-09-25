@@ -195,7 +195,7 @@
 			             
 			             <div class="col-lg-12">
 		                <div class="col-lg-6 content-body">
-		                     <span>Location<span style="color:red">&nbsp;*</span></span>
+		                     <span>Location<span style="color:red">&nbsp; </span></span>
 			                   		<angucomplete-alt id="location_name" data-ng-model="ctrl.customer.location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
@@ -212,15 +212,32 @@
 	   											  data-trigger="focus" data-toggle="popover" 
 	   											  data-placement="top" data-content="Please enter customer location"
 	   											  
-									              input-class="form-control form-control-small" required>
+									              input-class="form-control form-control-small" >
               						</angucomplete-alt>
               						<input type="hidden" id = "location_id" name ="location_id" value = "{{location_name.originalObject}}" />
 		                
-		                 	 	<span>City </span>	         
-			                    <input type="text" id="city" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.city}}">
-			                    
+		                 	 
+		                 	 	<span>City <span style="color:red">&nbsp; *</span></span>	         
+<!-- 			                    <input type="text" id="city" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.city}}"> -->
+									<angucomplete-alt id="customer_city"
+									              placeholder="Ex : Coimbatore"
+									              pause="0"
+									              remote-url="getCity4Ship/"
+						             			  remote_url-data-field="city"
+						             			  selected-object="sender_city"
+									              search-fields="city"
+									              title-field="city"
+									              description-field="state"
+												  match-class="highlight"
+												  minlength="3"
+	   											  data-trigger="focus" data-toggle="popover" 
+	   											  data-placement="top" data-content="Please enter & select city"
+	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
+									              input-class="form-control" style="width:100%" required>
+              						</angucomplete-alt>
+			                   
 			                     <span>State </span>	         
-			                    <input type="text" id="state" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.state}}">
+			                    <input type="text" id="state" class="form-control disabled locations" tabindex="-1" id="customer_state">
 			               
 			              </div> 
 			               <div class="col-lg-6 content-body">    

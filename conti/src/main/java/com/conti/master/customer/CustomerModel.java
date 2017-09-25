@@ -22,6 +22,7 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import com.conti.address.AddressModel;
 import com.conti.master.branch.BranchModel;
 import com.conti.master.location.Location;
 
@@ -82,6 +83,18 @@ public Location location;
 		this.location = location;
 	}	
 	
+	
+	public AddressModel customer_city;
+	
+	@JoinColumn(name="customer_city")
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.MERGE)
+	public AddressModel getCustomer_city() {
+		return customer_city;
+	}
+	public void setCustomer_city(AddressModel customer_city) {
+		this.customer_city = customer_city;
+	}
+
 	public BranchModel branchModel;
 	@JoinColumn(name = "branch_id")
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

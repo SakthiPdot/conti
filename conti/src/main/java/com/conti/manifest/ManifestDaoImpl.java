@@ -422,7 +422,7 @@ public class ManifestDaoImpl implements ManifestDao
 		@Transactional
 		public void deleteManifestDetailed(int id)
 		{
-			@SuppressWarnings("unchecked")
+		
 			 Query query=sessionFactory.getCurrentSession().createQuery("Delete from ManifestDetailedModel where manifest_id="+id);
 			query.executeUpdate();
 		}
