@@ -150,6 +150,7 @@ public class AddShipmentController {
 				shipment.getSender_customer().setUpdated_by(user_id);
 				shipment.getSender_customer().setCreated_datetime(dateFormat.format(date).toString());
 				shipment.getSender_customer().setUpdated_datetime(dateFormat.format(date).toString());
+				shipment.getSender_customer().setCustomer_city(shipment.getSender_city());
 				shipment.getSender_customer().setBranchModel(shipment.getSender_branch());
 				shipment.getSender_customer().setCustomer_type(shipment.getPay_mode());
 				
@@ -172,6 +173,7 @@ public class AddShipmentController {
 				shipment.getConsignee_customer().setUpdated_by(user_id);
 				shipment.getConsignee_customer().setCreated_datetime(dateFormat.format(date).toString());
 				shipment.getConsignee_customer().setUpdated_datetime(dateFormat.format(date).toString());
+				shipment.getConsignee_customer().setCustomer_city(shipment.getConsignee_city());
 				shipment.getConsignee_customer().setBranchModel(shipment.getConsignee_branch());
 				shipment.getConsignee_customer().setCustomer_type(shipment.getPay_mode());
 				
