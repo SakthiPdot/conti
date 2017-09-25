@@ -224,7 +224,7 @@
 									              pause="0"
 									              remote-url="getCity4Ship/"
 						             			  remote_url-data-field="city"
-						             			  selected-object="sender_city"
+						             			  selected-object="customer_city"
 									              search-fields="city"
 									              title-field="city"
 									              description-field="state"
@@ -237,12 +237,12 @@
               						</angucomplete-alt>
 			                   
 			                     <span>State </span>	         
-			                    <input type="text" id="state" class="form-control disabled locations" tabindex="-1" id="customer_state">
+			                    <input type="text" id="state" class="form-control disabled locations" tabindex="-1" >
 			               
 			              </div> 
 			               <div class="col-lg-6 content-body">    
 			                     <span>Country </span>	         
-			                    <input type="text" id="country" class="form-control disabled locations" tabindex="-1" value="{{location_name.originalObject.address.country}}">
+			                    <input type="text" id="country" class="form-control disabled locations" tabindex="-1" >
 			                    
 			                     <span>Pincode </span>	         
 			                    <input type="text" id="pincode" class="form-control disabled locations" tabindex="-1" maxlength="6" onKeyPress="return CheckIsNumeric(event)" value="{{location_name.originalObject.pincode}}">

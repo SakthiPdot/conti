@@ -45,6 +45,43 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 	fetchAllBranches();
 	fetchAllLocations();
 	
+	
+	$scope.customer_city=function(customer_city){
+		console.log(customer_city);
+	
+		if(customer_city==undefined){
+			$("#customer_city").val('');
+			self.customer.customer_city=null;
+			$("#state").val('');
+			$("#country").val('');
+		}else{
+			self.customer.customer_city=customer_city.originalObject;
+			$("#customer_city").val(customer_city.originalObject.city);
+			$("#state").val(customer_city.originalObject.state);
+			$("#country").val(customer_city.originalObject.country);
+		}
+	}
+	
+	
+	$scope.location_name=function(location_name){
+		console.log(location_name);
+		if(location_name==undefined){
+			self.customer.location_name=null;
+			$("#customer_city").val('');
+			self.customer.customer_city=null;
+			$("#state").val('');
+ 	    	$("#country").val('');
+ 	    	$("#pincode").val('');
+		}else{
+			self.customer.customer_city=customer_city.originalObject;
+			self.customer.location_name=location_name.originalObject;
+			$("#customer_city").val(customer_city.originalObject.address.city);
+			$("#state").val(customer_city.originalObject.address.state);
+			$("#country").val(customer_city.originalObject.address.country);
+			$("#pincode").val(customer_city.originalObject.pincode);
+		}
+	}
+	
 	function reset () 
 	{
 		   self.customer = {};
