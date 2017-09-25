@@ -277,8 +277,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
  	    	/*$("#sender_city").val(sender_location_name.originalObject.address.city);*/
  	    	self.shipment.consignee_city = consignee_city.originalObject;
  	    	$("#consignee_city_value").val(consignee_city.originalObject.city);
- 	    	$("#sender_state").val(consignee_city.originalObject.state);
- 	    	$("#sender_country").val(consignee_city.originalObject.country);
+ 	    	$("#consignee_state").val(consignee_city.originalObject.state);
+ 	    	$("#consignee_country").val(consignee_city.originalObject.country);
  	    	
  	    }
     	
@@ -574,7 +574,11 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//----------------------------- Price by product weight begin
 	self.priceby_weight = function (index) {
-		fetch_price(index);
+		/*if(self.shipment.shipmentDetail[index].weight != undefined){
+			
+		}*/
+		
+		fetch_price(index);	
 		
 	}
 	//----------------------------- Price by product weight end
@@ -609,9 +613,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			chargeabled_weight = chargeabled_weight + self.shipment.shipmentDetail[i].weight; 
 		}
 		
-		
 		self.shipment.delivery_charge = delivery_charge.toFixed(2);		
-		self.shipment.chargeable_weight = chargeabled_weight.toFixed(2);	
+		self.shipment.chargeable_weight = parseFloat(chargeabled_weight).toFixed(2);	
 		
 		self.calc_discount(); // call discount
 	}
@@ -640,7 +643,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		} else {// if discount is not applicable
 			self.shipment.total_amount = parseFloat(self.shipment.delivery_charge) + parseFloat(self.shipment.handling_charge);			
 		}
-		
+		console.log("inside discount");
 		
 		fetch_gsts(); // calculate gsts (CGST / SGST / IGST)
 	}

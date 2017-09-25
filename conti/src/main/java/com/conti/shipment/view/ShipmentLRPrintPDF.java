@@ -155,58 +155,75 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    consignee.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    customer_tbl.addCell(consignee);
 	    String send_cus = null, consignee_cus = null;
+	    String send_add1 = "", send_add2="", send_loc="", send_state="";
+	    
+	    if(shipment.getSendercustomer_address1()!=null){
+	    	send_add1="\nAddress : "+shipment.getSendercustomer_address1();
+	    }
+	    if(shipment.getSendercustomer_address2()!=null){
+	    	send_add2=", "+shipment.getSendercustomer_address2();
+	    }
+	    if(shipment.getSender_location()!=null){
+	    	send_loc=", "+shipment.getSender_location().getLocation_name()+
+					",\n"+shipment.getSender_location().address.getCity()+
+					" - "+shipment.getSender_location().getPincode();
+	    	send_state=", \nState :"+shipment.getSender_customer().location.address.getState()+
+					", State Code :"+shipment.getSender_customer().location.address.getStateCode();
+	    }else{
+	    	send_loc=",\n"+shipment.getSender_city().getCity();
+	    	send_state=", \nState :"+shipment.getSender_city().getState() +
+					", State Code :"+shipment.getSender_city().getStateCode();
+	    }
+	    
 	    if(shipment.getSender_customer().getGstin_number() != null) {
 	    	
 	    	send_cus = "Name : "+shipment.getSender_customer().getCustomer_name()+" "+
-    				"\nAddress : "+shipment.getSendercustomer_address1()+
-					/*", "+shipment.getSender_customer().getCustomer_addressline2()+*/
-					", "+shipment.getSender_location().getLocation_name()+
-					",\n"+shipment.getSender_location().address.getCity()+
-					" - "+shipment.getSender_location().getPincode()+
+	    			send_add1+send_add2+send_loc+
 					", \nPh :"+shipment.getSender_customer().getCustomer_mobileno()+
 					/*", \nEmail :"+shipment.getSender_customer().getCustomer_email()+*/
-					", \nState :"+shipment.getSender_customer().location.address.getState()+
-					", State Code :"+shipment.getSender_customer().location.address.getStateCode()+
-					"\nGSTIN Number :"+shipment.getSender_customer().getGstin_number();
+					send_state+"\nGSTIN Number :"+shipment.getSender_customer().getGstin_number();
 	    } else {
 	    	send_cus = "Name : "+shipment.getSender_customer().getCustomer_name()+" "+
-    				"\nAddress : "+shipment.getSendercustomer_address1()+
-					/*", "+shipment.getSender_customer().getCustomer_addressline2()+*/
-					", "+shipment.getSender_location().getLocation_name()+
-					",\n"+shipment.getSender_location().address.getCity()+
-					" - "+shipment.getSender_location().getPincode()+
+	    			send_add1+send_add2+send_loc+
 					", \nPh :"+shipment.getSender_customer().getCustomer_mobileno()+
 					/*", \nEmail :"+shipment.getSender_customer().getCustomer_email()+*/
-					", \nState :"+shipment.getSender_customer().location.address.getState()+
-					", State Code :"+shipment.getSender_customer().location.address.getStateCode();
+					send_state;
 	    }
+	    String consignee_add1 = "", consignee_add2="", consignee_loc="", consignee_state="";
+	    if(shipment.getConsigneecustomer_address1()!=null){
+	    	consignee_add1="\nAddress : "+shipment.getConsigneecustomer_address1();
+	    }
+	    if(shipment.getSendercustomer_address2()!=null){
+	    	consignee_add2=", "+shipment.getConsigneecustomer_address2();
+	    }
+	    if(shipment.getConsignee_location()!=null){
+	    	consignee_loc=", "+shipment.getConsignee_location().getLocation_name()+
+					",\n"+shipment.getConsignee_location().address.getCity()+
+					" - "+shipment.getConsignee_location().getPincode();
+	    	consignee_state=", \nState :"+shipment.getConsignee_customer().location.address.getState()+
+					", State Code :"+shipment.getConsignee_customer().location.address.getStateCode();
+	    }else{
+	    	consignee_loc=",\n"+shipment.getConsignee_city().getCity();
+	    	consignee_state=", \nState :"+shipment.getConsignee_city().getState() +
+					", State Code :"+shipment.getConsignee_city().getStateCode();
+	    }
+	    
 	    Cell sender_add = new Cell(
 	    		new Phrase(send_cus ,address_font)
 	    		);
 	    
 	    if(shipment.getConsignee_customer().getGstin_number() != null) {
 	    	consignee_cus = "Name : "+shipment.getConsignee_customer().getCustomer_name()+" "+
-    				"\nAddress : "+shipment.getConsigneecustomer_address1()+
-					/*", "+shipment.getConsignee_customer().getCustomer_addressline2()+*/
-					", "+shipment.getConsignee_location().getLocation_name()+
-					",\n"+shipment.getConsignee_location().address.getCity()+
-					" - "+shipment.getConsignee_location().getPincode()+
+	    			consignee_add1+consignee_add2+consignee_loc+
 					", \nPh :"+shipment.getConsignee_customer().getCustomer_mobileno()+
 					/*", \nEmail :"+shipment.getConsignee_customer().getCustomer_email()+*/
-					", \nState :"+shipment.getConsignee_customer().location.address.getState()+
-					", State Code :"+shipment.getConsignee_customer().location.address.getStateCode()+
-					"\nGSTIN Number :"+shipment.getConsignee_customer().getGstin_number();
+					consignee_state+"\nGSTIN Number :"+shipment.getConsignee_customer().getGstin_number();
 	    } else {
 	    	consignee_cus = "Name : "+shipment.getConsignee_customer().getCustomer_name()+" "+
-    				"\nAddress : "+shipment.getConsigneecustomer_address1()+
-					/*", "+shipment.getConsignee_customer().getCustomer_addressline2()+*/
-					", "+shipment.getConsignee_location().getLocation_name()+
-					",\n"+shipment.getConsignee_location().address.getCity()+
-					" - "+shipment.getConsignee_location().getPincode()+
+	    			consignee_add1+consignee_add2+consignee_loc+
 					", \nPh :"+shipment.getConsignee_customer().getCustomer_mobileno()+
 					/*", \nEmail :"+shipment.getConsignee_customer().getCustomer_email()+*/
-					", \nState :"+shipment.getConsignee_customer().location.address.getState()+
-					", State Code :"+shipment.getConsignee_customer().location.address.getStateCode();
+					consignee_state;
 	    }
 	    Cell consignee_add = new Cell(
 	    		new Phrase(consignee_cus,address_font));

@@ -616,7 +616,7 @@
                                             <td data-ng-show = "setting_consignee">{{report.consignee_customer.customer_name}}</td>
                                             <td data-ng-show = "setting_totparcel">{{report.numberof_parcel}}</td>                                           
                                             <td data-ng-show = "setting_service">{{report.service.service_name}}</td>
-                                            <td data-ng-show = "setting_receiptdate">{{report.receipt_date}}</td>
+                                            <td data-ng-show = "setting_receiptdate">{{report.receipt_date.slice(0,-10)}}</td>
                                             <td data-ng-show = "setting_receiptno">{{report.receipt_no}}</td>
                                             <td data-ng-show = "setting_billto">{{report.bill_to}}</td>
                                             <td data-ng-show = "setting_paymode">{{report.pay_mode}}</td>

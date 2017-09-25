@@ -334,12 +334,13 @@ public class ReceiptDaoImpl implements ReceiptDao
 		
 		@Override
 		@Transactional
-		public List<ReceiptModel> getReceiptbyDate(String from_Date)
+		public List<ReceiptModel> getReceiptbyDate(String from_Date, int user_id)
 		{
 			@SuppressWarnings("unchecked")
 			List<ReceiptModel> listreceipt = (List<ReceiptModel>) sessionFactory.getCurrentSession()
 					.createQuery("FROM ReceiptModel WHERE obsolete ='N' "
-					+" AND created_datetime BETWEEN '"+from_Date+" 00:00:00' AND '"+from_Date+" 23:59:59'")
+					+" AND created_datetime BETWEEN '"+from_Date+" 00:00:00' AND '"+from_Date+" 23:59:59'"
+					+ " AND created_by="+user_id)
 					.list();
 			return listreceipt;
 		}

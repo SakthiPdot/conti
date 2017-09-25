@@ -288,6 +288,18 @@ contiApp.controller('ViewShipmentController', [
 	 self.view1Shipmet = function (shipment) {
 		 self.shipment = shipment;
 		 
+		 if(self.shipment.sender_location==null){
+			//self.shipment.sender_location.address.city = self.shipment.sender_city.city;
+			$('#sender_city').val(self.shipment.sender_city.city);
+			$('#sender_state').val(self.shipment.sender_city.state);
+			$('#sender_country').val(self.shipment.sender_city.country);
+		 }
+		 if(self.shipment.consignee_location==null){
+				//self.shipment.sender_location.address.city = self.shipment.sender_city.city;
+				$('#consignee_city').val(self.shipment.consignee_city.city);
+				$('#consignee_state').val(self.shipment.consignee_city.state);
+				$('#consignee_country').val(self.shipment.consignee_city.country);
+			 }
 		 viewShipment_Animate('.shipment_View', 'OPEN');
 	 }
 	 

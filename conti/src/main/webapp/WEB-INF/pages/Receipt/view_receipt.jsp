@@ -215,6 +215,7 @@
                        			 <input type="text" class="form-control"
                        		    	data-ng-model = "ctrl.shipment.sender_location.address.city"
                        		    	data-ng-disabled = "true"
+                       		    	id="sender_city"
                        		     /> 
                        		    
                        		</div>
@@ -226,6 +227,7 @@
                        		     <input type="text" class="form-control"
                        		    	data-ng-model = "ctrl.shipment.sender_location.address.state"
                        		    	data-ng-disabled = "true"
+                       		    	id="sender_state"
                        		     /> 
                        		    
                        		</div>
@@ -237,6 +239,7 @@
                        		     <input type="text" class="form-control" 
                        		    	data-ng-model = "ctrl.shipment.sender_location.address.country"
                        		    	data-ng-disabled = "true"
+                       		    	id="sender_country"
                        		     /> 
                        		    
                        		</div>
@@ -349,6 +352,7 @@
                             			<input type="text" class="form-control" maxlength="50"
 	                            		    	data-ng-model = "ctrl.shipment.consignee_location.address.city"
 	                            		    	data-ng-disabled = "true"
+	                            		    	id="consignee_city"
 	                            		    />   
                             		    
                             		</div>
@@ -360,6 +364,7 @@
                             		   <input type="text" class="form-control" maxlength="50"
 	                            		    	data-ng-model = "ctrl.shipment.consignee_location.address.state"
 	                            		    	data-ng-disabled = "true"
+	                            		    	id="consignee_state"
 	                            		    /> 
                             		    
                             		</div>
@@ -371,6 +376,7 @@
                             		     <input type="text" class="form-control" maxlength="50"
 	                            		    	data-ng-model = "ctrl.shipment.consignee_location.address.country"
 	                            		    	data-ng-disabled = "true"
+	                            		    	id="consignee_country"
 	                            		    /> 
                             		    
                             		</div>
