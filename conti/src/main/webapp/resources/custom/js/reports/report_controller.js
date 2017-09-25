@@ -281,7 +281,6 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			 ReportService.fetch4All(self.report)
 			 	.then(
 			 			function(shipment){
-			 				console.log(shipment);
 			 				if(shipment.length!=0) {
 			 					self.filterReport = shipment;
 			 					self.shipmentReport = shipment;

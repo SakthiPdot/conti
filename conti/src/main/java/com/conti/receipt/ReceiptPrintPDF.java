@@ -160,12 +160,43 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	    customer_tbl.addCell(consignee);
 	    
 	    String send_cus = null, consignee_cus = null; 
+	    String send_add1 = "", send_add2="", send_loc="", send_state="";
+	    if(receiptModel.getReceiptDetailList().get(0)
+			 	.shipmentModel.getSendercustomer_address1()!=null){
+	    	send_add1="\nAddress : "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSendercustomer_address1();
+	    }
+	    if(receiptModel.getReceiptDetailList().get(0)
+			 	.shipmentModel.getSendercustomer_address2()!=null){
+	    	send_add2=", "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSendercustomer_address2();
+	    }
+	    if(receiptModel.getReceiptDetailList().get(0)
+			 	.shipmentModel.getSender_location()!=null){
+	    	send_loc=", "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_location().getLocation_name()+
+					",\n"+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_location().address.getCity()+
+					" - "+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_location().getPincode();
+	    	send_state=", \nState :"+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_customer().location.address.getState()+
+					", State Code :"+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_customer().location.address.getStateCode();
+	    }else{
+	    	send_loc=",\n"+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_city().getCity();
+	    	send_state=", \nState :"+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_city().getState() +
+					", State Code :"+receiptModel.getReceiptDetailList().get(0)
+    			 	.shipmentModel.getSender_city().getStateCode();
+	    }
 	    
 	    if(receiptModel.getReceiptDetailList().get(0)
 	    		.shipmentModel.getSender_customer().getGstin_number() != null) {
 	    	send_cus = "Name : "+receiptModel.getReceiptDetailList().get(0)
     			 	.shipmentModel.getSender_customer().getCustomer_name()+
-    			 "\nAddress : "+receiptModel.getReceiptDetailList().get(0)
+    			 /*"\nAddress : "+receiptModel.getReceiptDetailList().get(0)
     			 	.shipmentModel.getSendercustomer_address1().toString()+
     			 ",\n"+receiptModel.getReceiptDetailList().get(0)
     			 	.shipmentModel.getSender_location().getLocation_name()+
@@ -176,7 +207,8 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 			 	"\n"+receiptModel.getReceiptDetailList().get(0)
 			 	.shipmentModel.getSender_location().address.getState()+	
 			 	" - "+receiptModel.getReceiptDetailList().get(0)
-			 	.shipmentModel.getSender_location().address.getStateCode()+	
+			 	.shipmentModel.getSender_location().address.getStateCode()+	*/
+    			 	send_add1+send_add2+send_loc+
     			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
     			 	.shipmentModel.getSender_customer().getCustomer_mobileno()+	
     			 "\nGSTIN Number :"+receiptModel.getReceiptDetailList().get(0)
@@ -184,7 +216,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	    } else {
 	    	send_cus = "Name : "+receiptModel.getReceiptDetailList().get(0)
     			 	.shipmentModel.getSender_customer().getCustomer_name()+
-    			 "\nAddress : "+receiptModel.getReceiptDetailList().get(0)
+    			/* "\nAddress : "+receiptModel.getReceiptDetailList().get(0)
     			 	.shipmentModel.getSendercustomer_address1().toString()+
     			 ",\n"+receiptModel.getReceiptDetailList().get(0)
     			 	.shipmentModel.getSender_location().getLocation_name()+
@@ -195,19 +227,52 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 			 	"\n"+receiptModel.getReceiptDetailList().get(0)
 			 	.shipmentModel.getSender_location().address.getState()+	
 			 	" - "+receiptModel.getReceiptDetailList().get(0)
-			 	.shipmentModel.getSender_location().address.getStateCode()+	
+			 	.shipmentModel.getSender_location().address.getStateCode()+	*/
+    			 	send_add1+send_add2+send_loc+
     			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
     			 	.shipmentModel.getSender_customer().getCustomer_mobileno();
 	    }
 	    
     	 Cell sender_add = new Cell(new Phrase(send_cus,address_font));
     	 customer_tbl.addCell(sender_add);
-	    
+    	 String consignee_add1 = "", consignee_add2="", consignee_loc="", consignee_state="";
     	 if(receiptModel.getReceiptDetailList().get(0)
  			 	.shipmentModel.getConsignee_customer().getGstin_number() !=  null){
+    		 
+    		 if(receiptModel.getReceiptDetailList().get(0)
+    	 			 	.shipmentModel.getConsigneecustomer_address1()!=null){
+    		    	consignee_add1="\nAddress : "+receiptModel.getReceiptDetailList().get(0)
+    		 			 	.shipmentModel.getConsigneecustomer_address1();
+    		    }
+    		    if(receiptModel.getReceiptDetailList().get(0)
+    	 			 	.shipmentModel.getSendercustomer_address2()!=null){
+    		    	consignee_add2=", "+receiptModel.getReceiptDetailList().get(0)
+    		 			 	.shipmentModel.getConsigneecustomer_address2();
+    		    }
+    		    if(receiptModel.getReceiptDetailList().get(0)
+    	 			 	.shipmentModel.getConsignee_location()!=null){
+    		    	consignee_loc=", "+receiptModel.getReceiptDetailList().get(0)
+    		 			 	.shipmentModel.getConsignee_location().getLocation_name()+
+    						",\n"+receiptModel.getReceiptDetailList().get(0)
+    		 			 	.shipmentModel.getConsignee_location().address.getCity()+
+    						" - "+receiptModel.getReceiptDetailList().get(0)
+    		 			 	.shipmentModel.getConsignee_location().getPincode();
+    		    	consignee_state=", \nState :"+receiptModel.getReceiptDetailList().get(0)
+    		 			 	.shipmentModel.getConsignee_customer().location.address.getState()+
+    						", State Code :"+receiptModel.getReceiptDetailList().get(0)
+    		 			 	.shipmentModel.getConsignee_customer().location.address.getStateCode();
+    		    }else{
+    		    	consignee_loc=",\n"+receiptModel.getReceiptDetailList().get(0)
+    		 			 	.shipmentModel.getConsignee_city().getCity();
+    		    	consignee_state=", \nState :"+receiptModel.getReceiptDetailList().get(0)
+    		 			 	.shipmentModel.getConsignee_city().getState() +
+    						", State Code :"+receiptModel.getReceiptDetailList().get(0)
+    		 			 	.shipmentModel.getConsignee_city().getStateCode();
+    		    }
+    		    
     		 consignee_cus = "Name : "+receiptModel.getReceiptDetailList().get(0)
      			 	.shipmentModel.getConsignee_customer().getCustomer_name()+
-       			 "\nAddress : "+receiptModel.getReceiptDetailList().get(0)
+       			 /*"\nAddress : "+receiptModel.getReceiptDetailList().get(0)
        			 	.shipmentModel.getConsigneecustomer_address1().toString()+
        			 ",\n"+receiptModel.getReceiptDetailList().get(0)
        			 	.shipmentModel.getConsignee_location().getLocation_name()+
@@ -218,7 +283,8 @@ public class ReceiptPrintPDF extends AbstractPdfView {
    			 	"\n"+receiptModel.getReceiptDetailList().get(0)
    			 	.shipmentModel.getConsignee_location().address.getState()+	
    			 	" - "+receiptModel.getReceiptDetailList().get(0)
-   			 	.shipmentModel.getConsignee_location().address.getStateCode()+		
+   			 	.shipmentModel.getConsignee_location().address.getStateCode()+	*/
+     			 	consignee_add1+consignee_add2+consignee_loc+
        			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
        			 	.shipmentModel.getConsignee_customer().getCustomer_mobileno()+	
        			 "\nGSTIN Number :"+receiptModel.getReceiptDetailList().get(0)
@@ -226,7 +292,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
     	 } else {
     		 consignee_cus = "Name : "+receiptModel.getReceiptDetailList().get(0)
       			 	.shipmentModel.getConsignee_customer().getCustomer_name()+
-        			 "\nAddress : "+receiptModel.getReceiptDetailList().get(0)
+        			 /*"\nAddress : "+receiptModel.getReceiptDetailList().get(0)
         			 	.shipmentModel.getConsigneecustomer_address1().toString()+
         			 ",\n"+receiptModel.getReceiptDetailList().get(0)
         			 	.shipmentModel.getConsignee_location().getLocation_name()+
@@ -237,7 +303,8 @@ public class ReceiptPrintPDF extends AbstractPdfView {
     			 	"\n"+receiptModel.getReceiptDetailList().get(0)
     			 	.shipmentModel.getConsignee_location().address.getState()+	
     			 	" - "+receiptModel.getReceiptDetailList().get(0)
-    			 	.shipmentModel.getConsignee_location().address.getStateCode()+		
+    			 	.shipmentModel.getConsignee_location().address.getStateCode()+*/
+      			 	consignee_add1+consignee_add2+consignee_loc+
         			 "\nPh : "+receiptModel.getReceiptDetailList().get(0)
         			 	.shipmentModel.getConsignee_customer().getCustomer_mobileno();
     	 }

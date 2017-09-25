@@ -141,7 +141,7 @@ public class ReportsController {
 			}else{
 				
 				List<ShipmentModel> receiptShipment = new ArrayList<ShipmentModel>();
-				List<ReceiptModel> receiptList = receiptDao.getReceiptbyDate((json.get("fromtoday").toString()));
+				List<ReceiptModel> receiptList = receiptDao.getReceiptbyDate((json.get("fromtoday").toString()),Integer.parseInt(json.get("username").toString()));
 				for(ReceiptModel receipt : receiptList){
 					for(int i=0; i < receipt.getReceiptDetailList().size(); i++){
 						receiptShipment.add(receipt.getReceiptDetailList().get(i).shipmentModel);
@@ -152,8 +152,7 @@ public class ReportsController {
 				while(shipIte.hasNext()){
 					ShipmentModel shipNext = shipIte.next();
 					if(shipNext.getSender_branch().getBranch_id() != Integer.parseInt(json.get("frombranch").toString()) ||
-					   shipNext.getConsignee_branch().getBranch_id() != Integer.parseInt(json.get("tobranch").toString())||
-					   shipNext.getCreated_by() != Integer.parseInt(json.get("username").toString())){
+					   shipNext.getConsignee_branch().getBranch_id() != Integer.parseInt(json.get("tobranch").toString())){
 						shipIte.remove();
 					}
 				}

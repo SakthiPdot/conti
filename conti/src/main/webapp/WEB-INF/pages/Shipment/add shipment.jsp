@@ -202,6 +202,7 @@
 									              match-class="highlight"
 									              search-fields="customer_mobileno"
 									              title-field="customer_mobileno"
+									              description-field="customer_name"
 									              minlength="5"
 									              field-required="true"
 												  data-trigger="focus" data-toggle="popover" 
@@ -261,13 +262,13 @@
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Address line1 <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Address line1 <!-- <span class="required">*</span> --></span>
                             		   <input type="text" class="form-control" maxlength="50"
                             		    	data-ng-model = "ctrl.shipment.sender_customer.customer_addressline1"
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer address"
 											placeholder = "Ex: #111, Kamaraj street"
-                            		    required />                             		    
+                            		     />                             		    
                             		    
                             		</div>
                             	
@@ -413,6 +414,7 @@
 									              match-class="highlight"
 									              search-fields="customer_mobileno"
 									              title-field="customer_mobileno"
+									              description-field="customer_name"
 									              minlength="5"
 									              field-required="true"
 												  data-trigger="focus" data-toggle="popover" 
@@ -483,13 +485,13 @@
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Address line1 <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Address line1 <span class="required" data-ng-show="ctrl.serviceDoor">*</span></span>
                             		   <input type="text" class="form-control" maxlength="50"
                             		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_addressline1"
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer address"
 											placeholder = "Ex: #111, Kamaraj street"
-                            		    required />                             		    
+                            		    data-ng-required="ctrl.serviceDoor" />                             		    
                             		    
                             		</div>
                             	
