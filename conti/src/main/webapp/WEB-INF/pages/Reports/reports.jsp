@@ -109,23 +109,23 @@
                                    </label>
                                    <label class="radio-inline">
                                        <input type="radio"  data-ng-model = "filter_branch" value="filter_branch"
-                                       data-ng-click="filter_date= false;filter_lr=false;filter_all=false;ctrl.date_required=false;ctrl.filterReset();ctrl.resetDate();"
+                                       data-ng-click="filter_date= false;filter_lr=false;filter_all=false;filter_billto=false;ctrl.date_required=false;ctrl.filterReset();ctrl.resetDate();"
                                        name="optionsRadiosInline" id="optionsRadiosInline2"> Branch Wise
                                    </label>
                                    <label class="radio-inline">
                                        <input type="radio" data-ng-model="filter_lr"  value="filter_lr" 
-                                       data-ng-click="filter_branch=false;filter_date=false;filter_all=false;ctrl.date_required=false;ctrl.filterReset();ctrl.resetDate();"
+                                       data-ng-click="filter_branch=false;filter_date=false;filter_all=false;filter_billto=false;ctrl.date_required=false;ctrl.filterReset();ctrl.resetDate();"
                                         name="optionsRadiosInline" id="optionsRadiosInline3" > LR No Wise
                                    </label>
                                    <label class="radio-inline">
-                                   	<input type="radio"  data-ng-model ="filter_all" data-ng-init="filter_all=true" value="filter_all" 
+                                   	<input type="radio"  data-ng-model ="filter_all"  value="filter_all" 
                                    	 data-ng-click="filter_branch=true;filter_date=true;filter_lr=true;filter_billto = false;ctrl.date_required=true;ctrl.filterReset();"
-                                   	name="optionsRadiosInline" id="optionsRadiosInline4" data-ng-checked="true"> All
+                                   	name="optionsRadiosInline" id="optionsRadiosInline4"> All
                                    </label>
                                    <label class="radio-inline">
-                                   	<input type="radio"  data-ng-model ="filter_billto"  value="filter_billto" 
+                                   	<input type="radio"  data-ng-model ="filter_billto" data-ng-init="filter_billto=true"  value="filter_billto" 
                                    	 data-ng-click="filter_branch=true;filter_date=false;filter_lr=false;filter_all=false;ctrl.date_required=false;ctrl.filterReset();"
-                                   	name="optionsRadiosInline" id="optionsRadiosInline5"> Daily Hand over
+                                   	name="optionsRadiosInline" id="optionsRadiosInline5"  data-ng-checked="true"> Daily Hand over
                                    </label>
 						
 						</div>
@@ -224,7 +224,7 @@
 				To Date : {{todate |date:'yyyy-MM-dd' }}<br> -->
 				
 				<!-- End Date : {{ curr2 | date:'yyyy-MM-dd' }}  -->
-				<div class="col-lg-12 noPaddingLeft report_padding" data-ng-hide="filter_all || filter_branch">
+				<div class="col-lg-12 noPaddingLeft report_padding" data-ng-hide="filter_all || filter_branch || filter_billto">
 					
 					<div class="col-lg-3 branchclass">
 						<b class="text-padding">Branch </b>
@@ -236,12 +236,13 @@
 					</div>				
 				</div>
 				
-				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_all || filter_branch">
+				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_all || filter_branch || filter_billto">
 					<div class="sec-padding">Branch</div>
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">From </span>
 						<select class="form-control" data-ng-options = "branch.branch_id as branch.branch_name for branch in ctrl.branches"
 						data-ng-change = "ctrl.filterReset()"
+						data-ng-required = "filter_billto"
 						data-ng-model = "ctrl.report.frombranch">
 							<option value="">-- Select --</option>							
 						</select>
@@ -251,6 +252,7 @@
 						<span class="text-padding">To </span>
 						<select class="form-control" data-ng-options = "branch.branch_id as branch.branch_name for branch in ctrl.branches"
 						data-ng-change = "ctrl.filterReset()"
+						data-ng-required = "filter_billto"
 						data-ng-model="ctrl.report.tobranch">
 							<option value="">-- Select --</option>
 							
@@ -385,12 +387,13 @@
 						<label class="radio-inline">
                              <input type="radio" data-ng-model = "ctrl.report.billto" 
                              data-ng-click="" value="Paid"
-                             name="billto" id="billto" > To Pay / Paid
+                             data-ng-checked="true"
+                             name="billto" id="billto" data-ng-required = "filter_billto"> To Pay / Paid
                         </label>
 						<label class="radio-inline">
                              <input type="radio" data-ng-model = "ctrl.report.billto" 
-                             data-ng-click="" value="Report"
-                             name="billto" id="billto" > Report
+                             data-ng-click="" value="Receipt"
+                             name="billto" id="billto" data-ng-required = "filter_billto"> Receipt
                         </label>
 					</div>				
 				</div>
@@ -402,6 +405,7 @@
 						<span class="text-padding">Username </span>
 						<select class="form-control" data-ng-model="ctrl.report.username"
 						data-ng-change = "ctrl.filterReset()" data-ng-disabled="user_disable"
+						data-ng-required = "filter_billto"
 						data-ng-options = "user.user_id as user.username for user in ctrl.users">
 							<option value = "">-- Select --</option>
 							

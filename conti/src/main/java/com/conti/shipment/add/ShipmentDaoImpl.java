@@ -834,8 +834,13 @@ public class ShipmentDaoImpl implements ShipmentDao {
 		if(paymentmode!=null && !paymentmode.trim().isEmpty()){
 			queryString.append( lrcondition + " pay_mode='" + paymentmode+"'");
 		}
-	/*	if(billto!=null && !billto.trim().isEmpty())
-			queryString.append(" AND bill_to='" + billto + "'");*/
+		if(billto!=null && !billto.trim().isEmpty()){
+			if(billto.equals("Receipt")){
+				queryString.append(" AND status='Delivered'");	
+			}
+			
+		}
+			
 		if(username!=null && !username.trim().isEmpty())
 			queryString.append(" AND created_by=" + username + "");
 		if(status!=null && !status.trim().isEmpty())

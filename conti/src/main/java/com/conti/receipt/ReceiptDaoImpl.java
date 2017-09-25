@@ -331,6 +331,19 @@ public class ReceiptDaoImpl implements ReceiptDao
 			}
 			return null;
 		}
+		
+		@Override
+		@Transactional
+		public List<ReceiptModel> getReceiptbyDate(String from_Date)
+		{
+			@SuppressWarnings("unchecked")
+			List<ReceiptModel> listreceipt = (List<ReceiptModel>) sessionFactory.getCurrentSession()
+					.createQuery("FROM ReceiptModel WHERE obsolete ='N' "
+					+" AND created_datetime BETWEEN '"+from_Date+" 00:00:00' AND '"+from_Date+" 23:59:59'")
+					.list();
+			return listreceipt;
+		}
+
 			
 	//===================================================================================================
 }

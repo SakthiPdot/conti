@@ -16,7 +16,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		fetchAllBranches();
 		fetchAllShipmentforView();
 		self.users=[];
-		self.date_required = true;
+		self.date_required = false;
 		
 		self.report = {
 				datecondition : 'AND',
@@ -28,8 +28,8 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 				lrcondition : 'AND',
 				product_id : '',
 				paymentmode : '',
-				status : ''
-				
+				status : '',
+				billto : 'Paid'
 		};
 		
 	$scope.shownoofrec = 10;	
@@ -38,7 +38,7 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 	self.excelFlag = true;
 	$scope.nextDisabled = false;
 	$scope.previouseDisabled = true;
-	
+	$scope.filter_billto = 'filter_billto';
 	$scope.user_disable = false;
 	//============ Fetch All Branches Function Begin =======//	
 		function fetchAllBranches() {
@@ -227,8 +227,8 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		 
 		//---- Report 
 		 self.submit = function (){
-			
-			 if($scope.filter_billto == 'filter_billto') {
+			 console.log($scope.filter_billto);
+			 if($scope.filter_billto == 'filter_billto' || $scope.filter_billto == true) {
 
 				 self.report.fromtoday = $('.datepicker3').val();
 				 self.report.todate = $('.datepicker3').val();
@@ -300,16 +300,19 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 		 }
 		 
 		 //--reset
+		 
 		 self.filterReset = function(){
+			 console.log($scope.filter_billto);
 			 self.filterReport = {};
 			 self.excelFlag = true;
 			 self.tbl_nodata = false;
 			 no_data();
-			 if($scope.filter_billto == 'filter_billto') {
+			 if($scope.filter_billto == 'filter_billto' || $scope.filter_billto == true) {
 				 fetch_user(self.report.frombranch);
 			 }
 			 
 		 }
+		 self.filterReset();
 		 $scope.fRest = function(){
 			 self.filterReset();
 		 }

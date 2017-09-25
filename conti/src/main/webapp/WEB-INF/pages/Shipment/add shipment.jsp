@@ -285,7 +285,7 @@
                             		</div>
                             		
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Location <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Location <!-- <span class="required">*</span> --></span>
                             		   <angucomplete-alt id="sender_location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
@@ -308,9 +308,24 @@
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">City</span> 
-                            			<input type="text" class="form-control disabled" tabindex = "-1" id = "sender_city"/>
-                            		    
+                            			<span class="text-paddingwidth">City <span class="required">*</span></span> 
+                            			<!-- <input type="text" class="form-control disabled" tabindex = "-1" id = "sender_city"/> -->
+                            		     <angucomplete-alt id="sender_city"
+									              placeholder="Ex : Coimbatore"
+									              pause="0"
+									              remote-url="getCity4Ship/"
+						             			  remote_url-data-field="city"
+						             			  selected-object="sender_city"
+									              search-fields="city"
+									              title-field="city"
+									              description-field="state"
+												  match-class="highlight"
+												  minlength="3"
+	   											  data-trigger="focus" data-toggle="popover" 
+	   											  data-placement="top" data-content="Please enter & select city"
+	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
+									              input-class="form-control" style="width:100%">
+              							</angucomplete-alt>   
                             		</div>
                             	
                             	
@@ -490,7 +505,7 @@
 	                            		</div>
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">Location <span class="required">*</span></span>
+                            			<span class="text-paddingwidth">Location <span class="required" data-ng-show="ctrl.serviceDoor">*</span></span>
                             		    <angucomplete-alt id="consignee_location_name"
 									              placeholder="Ex : Coimbatore"
 									              pause="0"
@@ -513,9 +528,24 @@
                             	
                             	
                             		<div class="col-md-12 branchclass">
-                            			<span class="text-paddingwidth">City</span> 
-                            			<input type="text" class="form-control disabled" tabindex = "-1" id = "consignee_city"/>
-                            		    
+                            			<span class="text-paddingwidth">City <span class="required" data-ng-show="!ctrl.serviceDoor">*</span></span> 
+                            			<!-- <input type="text" class="form-control disabled" tabindex = "-1" id = "consignee_city"/> -->
+                            		     <angucomplete-alt id="consignee_city"
+									              placeholder="Ex : Coimbatore"
+									              pause="0"
+									              remote-url="getCity4Ship/"
+						             			  remote_url-data-field="city"
+						             			  selected-object="consignee_city"
+									              search-fields="city"
+									              title-field="city"
+									              description-field="state"
+												  match-class="highlight"
+												  minlength="3"
+	   											  data-trigger="focus" data-toggle="popover" 
+	   											  data-placement="top" data-content="Please enter & select city"
+	   											  onKeyPress="return CheckIsAlphaNumericWithspace(event,this.value)" 
+									              input-class="form-control" style="width:100%">
+              							</angucomplete-alt>   
                             		</div>
                             	
                             	

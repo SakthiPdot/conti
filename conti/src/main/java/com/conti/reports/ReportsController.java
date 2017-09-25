@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.conti.config.SessionListener;
-import com.conti.master.location.Location;
 import com.conti.master.product.Product;
 import com.conti.master.product.ProductDAO;
 import com.conti.others.ConstantValues;
@@ -53,6 +52,8 @@ import com.conti.settings.company.Company;
 import com.conti.settings.company.CompanySettingDAO;
 import com.conti.shipment.add.ShipmentDao;
 import com.conti.shipment.add.ShipmentModel;
+
+import javassist.bytecode.Descriptor.Iterator;
 
 /**
  * @Project_Name conti
@@ -114,27 +115,53 @@ public class ReportsController {
 
 		JSONObject json = new JSONObject(shipment);
 			List<ShipmentModel> filterShip = new ArrayList<ShipmentModel>();
-			List<ShipmentModel> shipmentList = shipmentDao.getShipment4Report(json.get("fromtoday").toString(), json.get("todate").toString(), 
-					json.get("datecondition").toString(), json.get("frombranch").toString(), json.get("tobranch").toString(), json.get("branchcondition").toString(), 
-					json.get("from_lrno").toString(), json.get("to_lrno").toString(), json.get("lrcondition").toString(), json.get("product_id").toString(), 
-					json.get("paymentmode").toString(), json.get("status").toString(), json.get("billto").toString(), json.get("username").toString());
 			
-			if(!json.get("product_id").toString().isEmpty()){
-				if(!shipmentList.isEmpty()){
-					for(ShipmentModel shipmentM : shipmentList){
-						for(int i=0; i<shipmentM.getShipmentDetail().size();i++){
-							if(shipmentM.getShipmentDetail().get(i).getProduct().getProduct_id() == Integer.parseInt(json.get("product_id").toString())){
-								filterShip.add(shipmentM);
+			if(json.get("billto").toString().equals("Paid")){ 
+				List<ShipmentModel> shipmentList = shipmentDao.getShipment4Report(json.get("fromtoday").toString(), json.get("todate").toString(), 
+						json.get("datecondition").toString(), json.get("frombranch").toString(), json.get("tobranch").toString(), json.get("branchcondition").toString(), 
+						json.get("from_lrno").toString(), json.get("to_lrno").toString(), json.get("lrcondition").toString(), json.get("product_id").toString(), 
+						json.get("paymentmode").toString(), json.get("status").toString(), json.get("billto").toString(), json.get("username").toString());
+				
+				if(!json.get("product_id").toString().isEmpty()){
+					if(!shipmentList.isEmpty()){
+						for(ShipmentModel shipmentM : shipmentList){
+							for(int i=0; i<shipmentM.getShipmentDetail().size();i++){
+								if(shipmentM.getShipmentDetail().get(i).getProduct().getProduct_id() == Integer.parseInt(json.get("product_id").toString())){
+									filterShip.add(shipmentM);
+								}
 							}
 						}
+					}else{
+						filterShip.addAll(shipmentList);
 					}
-				}else{
+					
+				} else {
 					filterShip.addAll(shipmentList);
 				}
+			}else{
 				
-			} else {
-				filterShip.addAll(shipmentList);
+				List<ShipmentModel> receiptShipment = new ArrayList<ShipmentModel>();
+				List<ReceiptModel> receiptList = receiptDao.getReceiptbyDate((json.get("fromtoday").toString()));
+				for(ReceiptModel receipt : receiptList){
+					for(int i=0; i < receipt.getReceiptDetailList().size(); i++){
+						receiptShipment.add(receipt.getReceiptDetailList().get(i).shipmentModel);
+					}
+				}
+				
+				java.util.Iterator<ShipmentModel> shipIte = receiptShipment.iterator();
+				while(shipIte.hasNext()){
+					ShipmentModel shipNext = shipIte.next();
+					if(shipNext.getSender_branch().getBranch_id() != Integer.parseInt(json.get("frombranch").toString()) ||
+					   shipNext.getConsignee_branch().getBranch_id() != Integer.parseInt(json.get("tobranch").toString())||
+					   shipNext.getCreated_by() != Integer.parseInt(json.get("username").toString())){
+						shipIte.remove();
+					}
+				}
+				//receiptShipment.removeIf(ship->ship.getSender_branch().equals(json.get("frombranch").toString()));
+				filterShip.addAll(receiptShipment);
+				
 			}
+			
 			
 			if(filterShip.size() != 0){
 				for(int i=0;i<filterShip.size();i++){
@@ -226,6 +253,14 @@ public class ReportsController {
 				}
 			}
 			
+
+		/*	for sort  
+		 * Collections.sort(filterShip, new Comparator<ShipmentModel>(){
+			  public int compare(ShipmentModel sm1, ShipmentModel sm2){
+			    return sm1.getReceipt_date().compareTo(sm2.getReceipt_date());
+			  }
+			});
+			Collections.sort(filterShip, (ShipmentModel sm1, ShipmentModel sm2) -> sm1.getReceipt_date().compareTo(sm2.getReceipt_date()));*/
 			return new ResponseEntity<List<ShipmentModel>> (filterShip, HttpStatus.OK);
 
 		/*}catch(Exception e){
@@ -258,11 +293,11 @@ public class ReportsController {
 		SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat dateFmt1 = new SimpleDateFormat("dd/MM/yyyy");
 		Date fildate = null;
-		if(!shipmentList.get(0).getShipment_date().equals("All")){
-			fildate = dateFmt.parse(shipmentList.get(0).getShipment_date());
-			shipmentList.get(0).setShipment_date(dateFmt1.format(fildate));
+		if(!shipmentList.get(0).getFilter_frmDate().equals(null)){
+			fildate = dateFmt.parse(shipmentList.get(0).getFilter_frmDate());
+			shipmentList.get(0).setFilter_frmDate(dateFmt1.format(fildate)); 
 		} else {
-			shipmentList.get(0).setShipment_date(shipmentList.get(0).getShipment_date());
+			shipmentList.get(0).setFilter_frmDate(shipmentList.get(0).getFilter_frmDate());
 		}
 		
 		

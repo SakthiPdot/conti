@@ -77,13 +77,14 @@
 				<div id="title">${fn:substring(shipment_date, 0, 8)}</div> --%>
 				<div id="filter_branch">From : <c:out value="${shipmentList[0].filter_frmBranch}"/>  To :  <c:out value="${shipmentList[0].filter_toBranch}"/></div>
 				<div id="filter_username">User : <c:out value="${shipmentList[0].filter_user}"/> </div>
-				<div id="title">Date : <c:if test="${shipmentList[0].filter_pay == 'Paid' }"><c:out value="${shipmentList[0].shipment_date}"/></c:if>
-				<c:if test="${shipmentList[0].filter_pay == 'Report' }"><c:out value="${shipmentList[0].receipt_date}"/></c:if></div>
+				<div id="title">Date : <c:out value="${shipmentList[0].filter_frmDate}"/> ${shipmentList[0].filter_pay}</div>
 				<div id="logo">${image}</div>
 			
 
 	<!--====================================================== Shipment table START=========================================-->
-				<table id="basic-table" border="2">
+	<c:choose>
+		<c:when test="${shipmentList[0].filter_pay=='Paid'}">
+			<table id="basic-table" border="2">
 					<thead>
 						<tr>
 							<th>S.No</th>
@@ -138,6 +139,51 @@
 							</tr>
 					</tbody>
 				</table>
+		</c:when>
+		<c:otherwise>
+				<table id="basic-table" border="2">
+					<thead>
+						<tr>
+							<th>S.No</th>
+							<th>L.R. No.</th>
+							<th>L.R. Freight Charge</th>
+							<th>Handling Charge</th>
+							<th>Local Transport Charge</th>
+							<th>Receipt Charge</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:set var="tot_FC" value="${0}"></c:set>
+						<c:set var="tot_HC" value="${0}"></c:set>
+						<c:set var="tot_TC" value="${0}"></c:set>
+						<c:set var="tot_RC" value="${0}"></c:set> 
+						<c:forEach var="Shipment" items="${shipmentList}" varStatus="loop">
+							<tr>
+								<td><c:out value="${loop.count}" />
+								<td>${Shipment.lrno_prefix}</td>
+								<td>${Shipment.total_charges}</td>
+								<td>${Shipment.receipt_handling}</td>
+								<td>${Shipment.receipt_transport}</td>
+								<td>${Shipment.receipt_charge}</td>									
+							</tr>
+							<c:set var="tot_FC" value="${tot_FC +Shipment.total_charges}"></c:set>
+							<c:set var="tot_HC" value="${tot_HC +Shipment.receipt_handling}"></c:set>
+							<c:set var="tot_TC" value="${tot_TC +Shipment.receipt_transport}"></c:set>
+							<c:set var="tot_RC" value="${tot_TC +Shipment.receipt_charge}"></c:set>
+						</c:forEach>
+							<tr>
+								<td></td>
+								<td>Total</td>
+								<td><fmt:formatNumber type="number" maxFractionDigits="2" value = "${tot_FC}" /></td>
+								<td><fmt:formatNumber type="number" maxFractionDigits="2" value = "${tot_HC}" /></td>
+								<td><fmt:formatNumber type="number" maxFractionDigits="2" value = "${tot_TC}" /></td>
+								<td><fmt:formatNumber type="number" maxFractionDigits="2" value = "${tot_RC}" /></td>
+							</tr>
+					</tbody>
+				</table>
+		</c:otherwise>
+	</c:choose>
+				
 
 	<!--====================================================== Shipment table END=========================================-->
 

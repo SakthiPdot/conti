@@ -18,6 +18,7 @@ import javax.persistence.Transient;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonManagedReference;
 
+import com.conti.address.AddressModel;
 import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerModel;
 import com.conti.master.location.Location;
@@ -248,7 +249,25 @@ public class ShipmentModel {
 		this.consignee_location = consignee_location;
 	}
 
-	
+	private AddressModel sender_city;
+	@JoinColumn(name="sendercustomer_city_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	public AddressModel getSender_city() {
+		return sender_city;
+	}
+	public void setSender_city(AddressModel sender_city) {
+		this.sender_city = sender_city;
+	}
+	private AddressModel consignee_city;
+	@JoinColumn(name="consigneecustomer_city_id")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	public AddressModel getConsignee_city() {
+		return consignee_city;
+	}
+	public void setConsignee_city(AddressModel consignee_city) {
+		this.consignee_city = consignee_city;
+	}
+
 	//----------------- Service
 	private ServiceMaster service;
 	@JoinColumn(name = "service_id", referencedColumnName = "service_id")

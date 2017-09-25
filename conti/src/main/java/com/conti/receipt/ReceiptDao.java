@@ -36,4 +36,6 @@ public interface ReceiptDao
 	public void makeDelete(int receipt_id);
 	
 	public ReceiptDetail getReceiptbyShipment(int shipment_id);
+	
+	public List<ReceiptModel> getReceiptbyDate(String from_Date);
 }

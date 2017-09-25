@@ -26,6 +26,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	var sender_taxin_payable = null;
 	var consignee_taxin_payable = null;
+	self.serviceDoor = false;//for required for location and city
+
 	/*self.shipment.hsns = {};*/
 	
 /*	self.shipment.sender_customer = {};
@@ -89,6 +91,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		var consignee_taxin_payable = null;
 		self.disable_save = true;
 		fetchMAXLRno();
+		self.serviceDoor = false;
 	}
 	
 	//------------------------------- Reset end
@@ -143,8 +146,10 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     	
     	$("#sender_location_name_value").val(sender_search_mbl.originalObject.location.location_name);
     	self.shipment.sender_customer.location = sender_search_mbl.originalObject.location;
-    	
-    	$("#sender_city").val(sender_search_mbl.originalObject.location.address.city);
+    	//sender_city_value
+    	/*$("#sender_city").val(sender_search_mbl.originalObject.location.address.city);*/
+    	$("#sender_city_value").val(sender_search_mbl.originalObject.location.address.city);
+    	self.shipment.sender_city = sender_search_mbl.originalObject.location.address;
     	$("#sender_state").val(sender_search_mbl.originalObject.location.address.state);
     	$("#sender_country").val(sender_search_mbl.originalObject.location.address.country);
     	$("#sender_pincode").val(sender_search_mbl.originalObject.location.pincode);
@@ -159,19 +164,47 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//------------------------ Sender address begin
     $scope.sender_location_name = function (sender_location_name) {
+    	console.log(sender_location_name);
  	    if(sender_location_name == undefined){
  	    	self.shipment.sender_customer.location = null;
- 	    	$("#sender_city").val('');
+ 	    	/*$("#sender_city").val('');*/
+ 	    	$("#sender_city_value").val('');
+ 	    	self.shipment.sender_city = null;
  	    	$("#sender_state").val('');
  	    	$("#sender_country").val('');
  	    	$("#sender_pincode").val('');
  	    } else{
  	    	self.shipment.sender_customer.location = sender_location_name.originalObject;
  	    	
- 	    	$("#sender_city").val(sender_location_name.originalObject.address.city);
+ 	    	/*$("#sender_city").val(sender_location_name.originalObject.address.city);*/
+ 	    	self.shipment.sender_city = sender_location_name.originalObject.address;
+ 	    	$("#sender_city_value").val(sender_location_name.originalObject.address.city);
  	    	$("#sender_state").val(sender_location_name.originalObject.address.state);
  	    	$("#sender_country").val(sender_location_name.originalObject.address.country);
  	    	$("#sender_pincode").val(sender_location_name.originalObject.pincode);	
+ 	    }
+    	
+    	
+	};	
+	
+	$scope.sender_city = function (sender_city) {
+    	console.log(sender_city);
+ 	    if(sender_city == undefined){
+ 	    	
+ 	    	/*$("#sender_city").val('');*/
+ 	    	$("#sender_city_value").val('');
+ 	    	self.shipment.sender_city = null;
+ 	    	$("#sender_state").val('');
+ 	    	$("#sender_country").val('');
+ 	    	
+ 	    } else{
+ 	    	
+ 	    	/*$("#sender_city").val(sender_location_name.originalObject.address.city);*/
+ 	    	self.shipment.sender_city = sender_city.originalObject;
+ 	    	$("#sender_city_value").val(sender_city.originalObject.city);
+ 	    	$("#sender_state").val(sender_city.originalObject.state);
+ 	    	$("#sender_country").val(sender_city.originalObject.country);
+ 	    	
  	    }
     	
     	
@@ -187,8 +220,10 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     	self.shipment.consignee_customer.customer_addressline1 = consignee_search_mbl.originalObject.customer_addressline1;
     	self.shipment.consignee_customer.customer_addressline2 = consignee_search_mbl.originalObject.customer_addressline2;
     	
-    	
-    	$("#consignee_city").val(consignee_search_mbl.originalObject.location.address.city);
+    	//consignee_city_value
+    	//$("#consignee_city").val(consignee_search_mbl.originalObject.location.address.city);
+    	self.shipment.consignee_city = consignee_search_mbl.originalObject.location.address;
+    	$("#consignee_city_value").val(consignee_search_mbl.originalObject.location.address.city);
     	$("#consignee_state").val(consignee_search_mbl.originalObject.location.address.state);
     	$("#consignee_country").val(consignee_search_mbl.originalObject.location.address.country);
     	$("#consignee_pincode").val(consignee_search_mbl.originalObject.location.pincode);
@@ -208,17 +243,43 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     $scope.consignee_location_name = function (consignee_location_name) {
  	    if(consignee_location_name == undefined){
  	    	self.shipment.consignee_customer.location = null;
- 	    	$("#consignee_city").val('');
+ 	    	/*$("#consignee_city").val('');*/
+ 	    	self.shipment.consignee_city = null;
+ 	    	$("#consignee_city_value").val('');
  	    	$("#consignee_state").val('');
  	    	$("#consignee_country").val('');
  	    	$("#consignee_pincode").val('');
  	    }else{
  	    	self.shipment.consignee_customer.location = consignee_location_name.originalObject;
  	    	
- 	    	$("#consignee_city").val(consignee_location_name.originalObject.address.city);
+ 	    	/*$("#consignee_city").val(consignee_location_name.originalObject.address.city);*/
+ 	    	self.shipment.consignee_city = consignee_location_name.originalObject.address;
+ 	    	$("#consignee_city_value").val(consignee_location_name.originalObject.address.city);
  	    	$("#consignee_state").val(consignee_location_name.originalObject.address.state);
  	    	$("#consignee_country").val(consignee_location_name.originalObject.address.country);
  	    	$("#consignee_pincode").val(consignee_location_name.originalObject.pincode);
+ 	    }
+    	
+    	
+	};	
+	
+	$scope.consignee_city = function (consignee_city) {
+ 	    if(consignee_city == undefined){
+ 	    	
+ 	    	/*$("#sender_city").val('');*/
+ 	    	$("#consignee_city_value").val('');
+ 	    	self.shipment.consignee_city = null;
+ 	    	$("#sender_state").val('');
+ 	    	$("#sender_country").val('');
+ 	    	
+ 	    } else{
+ 	    	
+ 	    	/*$("#sender_city").val(sender_location_name.originalObject.address.city);*/
+ 	    	self.shipment.consignee_city = consignee_city.originalObject;
+ 	    	$("#consignee_city_value").val(consignee_city.originalObject.city);
+ 	    	$("#sender_state").val(consignee_city.originalObject.state);
+ 	    	$("#sender_country").val(consignee_city.originalObject.country);
+ 	    	
  	    }
     	
     	
@@ -317,6 +378,11 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	}*/
 	self.statusChange = function (service) {
 		self.shipment.service = service;
+		if(self.shipment.service.service_name == 'Door Delivery'){
+			self.serviceDoor = true;
+		}else{
+			self.serviceDoor = false;
+		}
 		makeenable_shipmentDetail_add();
 	}
 	function fetchAllService() {
@@ -496,6 +562,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 						self.shipment.shipmentDetail[index].unit_price = parseFloat(res.price);
 						
 						self.checkQuantity(index);
+						
 					}, function(errResponse) {
 						console.log(errResponse);
 					}
@@ -508,6 +575,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//----------------------------- Price by product weight begin
 	self.priceby_weight = function (index) {
 		fetch_price(index);
+		
 	}
 	//----------------------------- Price by product weight end
 	
@@ -731,54 +799,74 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------- Create new shipment end ----------------------------------------------//  
     
 	self.submit = function () {
+		//sender_city_value
+		console.log(self.shipment);
 		
-		
-		if ( $('#sender_location_name_value').val().length == 0 || self.shipment.sender_customer.location == null) {
-			console.log(self.shipment.sender_location);
-			$("#sender_location_name_value").focus();
+		if ( $('#sender_city_value').val().length == 0 || self.shipment.sender_city == null) {
+			$("#sender_city_value").focus();
+		/*if ( $('#sender_location_name_value').val().length == 0 || self.shipment.sender_customer.location == null) {
+			$("#sender_location_name_value").focus();*/
 		} else if ( $('#consignee_branch_name_value').val().length == 0) {
 			$("#consignee_branch_name_value").focus();
-		} else if ( $("#consignee_location_name_value").val().length == 0 || self.shipment.consignee_customer.location == null) {
+		}
+		
+		
+		/*else if ( $("#consignee_location_name_value").val().length == 0 || self.shipment.consignee_customer.location == null) {
 			$("#consignee_location_name_value").focus();
-		} /*else if ( $("#service_name_value").val().length == 0 ) {
+		}*/ /*else if ( $("#service_name_value").val().length == 0 ) {
 			$("#service_name_value").focus();
 		}*/ else {
-			self.shipment.lr_number = $('#lr_number').val();
-			delete self.shipment.forpricesetting;
-			for(var i=0; i<self.shipment.shipmentDetail.length; i++ ) {
-				delete self.shipment.shipmentDetail[i].product_type;	
-				delete self.shipment.shipmentDetail[i].viewHSNDetail_link;
-			}
-			self.shipment.sendercustomer_address1 = self.shipment.sender_customer.customer_addressline1;
-			self.shipment.sendercustomer_address2 = self.shipment.sender_customer.customer_addressline2;
-			self.shipment.consigneecustomer_address1 = self.shipment.consignee_customer.customer_addressline1;
-			self.shipment.consigneecustomer_address2 = self.shipment.consignee_customer.customer_addressline2;
-			self.shipment.sender_location = self.shipment.sender_customer.location;
-			self.shipment.consignee_location = self.shipment.consignee_customer.location;
-			
-			/*if(self.shipment.sender_customer.gstin_number == null) {
-				self.shipment.sender_customer.gstin_number = 0;
-			}
-			if(self.shipment.consignee_customer.gstin_number == null) {
-				self.shipment.consignee_customer.gstin_number = 0;
-			}*/
-			
-			if( self.shipment.shipment_id == null ) {
+			  var submit_flag = true;
+			  if(self.shipment.service.service_name == 'Door Delivery'){
+					if ( $("#consignee_location_name_value").val().length == 0 || self.shipment.consignee_customer.location == null) {
+						$("#consignee_location_name_value").focus();
+						submit_flag = false;
+					}
+				} else if(self.shipment.service.service_name == 'Counter'){
+					if ( $("#consignee_city_value").val().length == 0 || self.shipment.consignee_city == null) {
+						$("#consignee_city_value").focus();
+						submit_flag = false;
+					}
+				}
+			if(submit_flag){
+				self.shipment.lr_number = $('#lr_number').val();
+				delete self.shipment.forpricesetting;
+				for(var i=0; i<self.shipment.shipmentDetail.length; i++ ) {
+					delete self.shipment.shipmentDetail[i].product_type;	
+					delete self.shipment.shipmentDetail[i].viewHSNDetail_link;
+				}
+				self.shipment.sendercustomer_address1 = self.shipment.sender_customer.customer_addressline1;
+				self.shipment.sendercustomer_address2 = self.shipment.sender_customer.customer_addressline2;
+				self.shipment.consigneecustomer_address1 = self.shipment.consignee_customer.customer_addressline1;
+				self.shipment.consigneecustomer_address2 = self.shipment.consignee_customer.customer_addressline2;
+				self.shipment.sender_location = self.shipment.sender_customer.location;
+				self.shipment.consignee_location = self.shipment.consignee_customer.location;
 				
-				self.confirm_title = 'Save';
-				self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
-				self.confirm_msg = self.confirm_title+ ' shipment?';
-				self.confirm_btnclass = 'btn-success';
-				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-					.then(
-							function (res) {
-										 	    		
-								createShipment(self.shipment);  
-								
-							}
-						);
+				/*if(self.shipment.sender_customer.gstin_number == null) {
+					self.shipment.sender_customer.gstin_number = 0;
+				}
+				if(self.shipment.consignee_customer.gstin_number == null) {
+					self.shipment.consignee_customer.gstin_number = 0;
+				}*/
 				
+				if( self.shipment.shipment_id == null ) {
+					
+					self.confirm_title = 'Save';
+					self.confirm_type = BootstrapDialog.TYPE_SUCCESS;
+					self.confirm_msg = self.confirm_title+ ' shipment?';
+					self.confirm_btnclass = 'btn-success';
+					ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+						.then(
+								function (res) {
+											 	    		
+									createShipment(self.shipment);  
+									
+								}
+							);
+					
+				}
 			}
+			
 		}
 				
 	}
