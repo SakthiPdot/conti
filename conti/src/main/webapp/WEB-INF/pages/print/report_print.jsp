@@ -79,15 +79,17 @@
 				<c:choose>
 					<c:when test="${shipmentList[0].filter_pay=='Paid'}">
 						<c:set var="pay" value="Pay / To Pay"/>
+						<c:set var="sDate" value="Shipment Date"/>
 					</c:when>
 					<c:otherwise>
 						<c:set var="pay" value="Receipt"/>
+						<c:set var="sDate" value="Receipt Date"/>
 					</c:otherwise>
 				</c:choose>
 				<div id="head"><c:out value="${pay}" /></div>
 				<div id="filter_branch">From : <c:out value="${shipmentList[0].filter_frmBranch}"/>  To :  <c:out value="${shipmentList[0].filter_toBranch}"/></div>
 				<div id="filter_username">User : <c:out value="${shipmentList[0].filter_user}"/> </div>
-				<div id="title">Shipment Date : <c:out value="${shipmentList[0].filter_frmDate}"/></div>
+				<div id="title"><c:out value="${sDate}"/> : <c:out value="${shipmentList[0].filter_frmDate}"/></div>
 				<div id="logo">${image}</div>
 			
 
