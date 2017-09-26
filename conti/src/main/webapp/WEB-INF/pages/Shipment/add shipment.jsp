@@ -947,8 +947,8 @@
                           
                           <div class="col-lg-12">
                           
-                                    <a class="btn btn-primary " data-ng-click = "ctrl.addProduct()" data-ng-disabled = "ctrl.disable_add_product"><i class="fa fa-plus-circle"></i></a>
-							 		<a class="btn btn-primary " data-ng-click = "ctrl.removeProduct()"><i class="fa fa-minus-circle"></i></a>
+                                    <a class="btn btn-primary" data-ng-click = "ctrl.addProduct()" data-ng-disabled = "ctrl.disable_add_product"><i class="fa fa-plus-circle"></i></a>
+							 		<a class="btn btn-primary " id="addprod" data-ng-click = "ctrl.removeProduct()"><i class="fa fa-minus-circle"></i></a>
 							 		
 										 		
 						 </div>

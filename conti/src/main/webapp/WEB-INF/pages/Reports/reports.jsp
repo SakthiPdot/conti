@@ -236,7 +236,7 @@
 					</div>				
 				</div>
 				
-				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_all || filter_branch || filter_billto">
+				<div class="col-lg-6 noPaddingLeft" data-ng-show="filter_all || filter_branch || filter_billto">
 					<div class="sec-padding">Branch</div>
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">From </span>
@@ -259,6 +259,18 @@
 						</select>
 					</div>
 					
+					<!-- <div class="col-lg-3 branchclass">
+						<span class="text-padding">Condition</span>
+						<select class="form-control" data-ng-model = "ctrl.report.branchcondition"
+						data-ng-change = "ctrl.filterReset()" 
+						data-ng-options="branchcondition for branchcondition in ['AND','OR']">
+							<option value="">-- Select --</option>
+							
+						</select>
+					</div> -->
+					
+				</div>
+				<div class="col-lg-6 noPaddingLeft" data-ng-show="filter_all || filter_branch || !filter_billto">
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Condition</span>
 						<select class="form-control" data-ng-model = "ctrl.report.branchcondition"
@@ -268,9 +280,7 @@
 							
 						</select>
 					</div>
-					
 				</div>
-				
 				
 				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_lr || filter_all">
 					<div class="sec-padding">LR No</div>

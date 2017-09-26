@@ -192,7 +192,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
  	    if(sender_city == undefined){
  	    	
  	    	/*$("#sender_city").val('');*/
- 	    	$("#sender_city_value").val('');
+ 	    	/*$("#sender_city_value").val('');*/
  	    	self.shipment.sender_city = null;
  	    	$("#sender_state").val('');
  	    	$("#sender_country").val('');
@@ -267,7 +267,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
  	    if(consignee_city == undefined){
  	    	
  	    	/*$("#sender_city").val('');*/
- 	    	$("#consignee_city_value").val('');
+ 	    	/*$("#consignee_city_value").val('');*/
  	    	self.shipment.consignee_city = null;
  	    	$("#sender_state").val('');
  	    	$("#sender_country").val('');
@@ -444,8 +444,9 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------ CHECK shipment detail if consignee branch, service and no of parcel != 0 end
 	
 	//--------------------------------------------- Compare quantity and no of parcel beging
+	
 	self.checkQuantity = function (index) {
-		/*self.disable_add_product = false;*/
+		
 		makeenable_shipmentDetail_add();  // make enable shipment detail 
 		
 		var quantity = 0;
@@ -464,21 +465,23 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 				self.disable_add_product = true;
 				self.disable_save = false;
 			} else if( quantity > self.shipment.numberof_parcel ) {
-				self.disable_save = true;
-				self.confirm_title = 'Change No.of Parcel';
-				self.confirm_type = BootstrapDialog.TYPE_WARNING;
-				self.confirm_msg = self.confirm_title+ '?';
-				self.confirm_btnclass = 'btn-warning';
-				ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
-					.then(
-							function (res) {
-								self.shipment.numberof_parcel = quantity;
-								self.disable_add_product = true;
-								self.disable_save = false;
-							}, function (reject) {
-								self.shipment.shipmentDetail[i].quantity = null;
-							}
-						);
+				
+					self.disable_save = true;
+					self.confirm_title = 'Change No.of Parcel';
+					self.confirm_type = BootstrapDialog.TYPE_WARNING;
+					self.confirm_msg = self.confirm_title+ '?';
+					self.confirm_btnclass = 'btn-warning';
+					ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type, self.confirm_msg, self.confirm_btnclass)
+						.then(
+								function (res) {
+									self.shipment.numberof_parcel = quantity;
+									self.disable_add_product = true;
+									self.disable_save = false;
+								}, function (reject) {
+									self.shipment.shipmentDetail[i].quantity = null;
+								}
+							);
+				 
 				break;
 			} else {
 				self.disable_save = true;
@@ -502,10 +505,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		var index = this.$parent.$index;
 		
 		if(selected == null) {
-			/*if($('#product_name'+index+'_value').val().length == 0) {
-				console.log("null..!");
-			}*/
 			
+			self.shipment.shipmentDetail[index].product = null;
 			self.shipment.shipmentDetail[index].product_type = null;
 			self.shipment.shipmentDetail[index].height = null;
 			self.shipment.shipmentDetail[index].width = null;
@@ -789,7 +790,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
             				bill_open(lr_details.shipment_id);
             	    	}, 5000);  
             			
-            			console.log(lr_details);
             		},
            
             function(errResponse){
@@ -803,7 +803,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     
 	self.submit = function () {
 		//sender_city_value
-		console.log(self.shipment);
 		
 		if ( $('#sender_city_value').val().length == 0 || self.shipment.sender_city == null) {
 			$("#sender_city_value").focus();
@@ -831,6 +830,14 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 						submit_flag = false;
 					}
 				}
+			  for(i=0;i<self.shipment.shipmentDetail.length;i++){
+				  if(self.shipment.shipmentDetail[i].product == null || $('#product_name'+i+'_value').val().length == 0){
+					  $('#product_name'+i+'_value').focus();
+					  submit_flag = false;
+				  }
+			  }
+			  
+			  
 			if(submit_flag){
 				self.shipment.lr_number = $('#lr_number').val();
 				delete self.shipment.forpricesetting;

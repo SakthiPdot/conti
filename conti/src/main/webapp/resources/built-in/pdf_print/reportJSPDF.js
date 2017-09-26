@@ -18,6 +18,7 @@ examples.broman = function () {
     var logo = document.getElementById('logo').innerHTML;
     var title = document.getElementById('title').innerHTML;
     var logoimg = document.getElementById('logoimg').innerHTML;
+    var head=document.getElementById('head').innerHTML;
     var filter_branch=document.getElementById('filter_branch').innerHTML;
     var filter_username=document.getElementById('filter_username').innerHTML;
     
@@ -26,9 +27,10 @@ examples.broman = function () {
     if(document.getElementById('street') == null){
     	doc.text(city, 160, 90);
     	doc.text(phoneno, 160, 110);
-    	doc.text(title,40,220);
-    	doc.text(filter_branch, 40, 180);
-    	doc.text(filter_username, 40, 200);
+    	doc.text(head, 250, 180);
+    	doc.text(filter_branch, 40, 200);
+    	doc.text(filter_username, 40, 220);
+    	doc.text(title,40,240);
     	
     }else {
     	/*doc.text(street, 160, 90);
@@ -37,9 +39,10 @@ examples.broman = function () {
         doc.text(title,160,150);*/
     	doc.text(city, 160, 90);
     	doc.text(phoneno, 160, 110);
-    	doc.text(title,40,220);
-    	doc.text(filter_branch, 40, 180);
-    	doc.text(filter_username, 40, 200);
+    	doc.text(head, 250, 180);
+    	doc.text(filter_branch, 40, 200);
+    	doc.text(filter_username, 40, 220);
+    	doc.text(title,40,240);
     }
     
    
@@ -63,9 +66,10 @@ examples.broman = function () {
     
     var elem = document.getElementById("basic-table");
     var res = doc.autoTableHtmlToJson(elem);
-    doc.autoTable(res.columns, res.data, {startY: 240,styles: {overflow: 'linebreak'},
+    doc.autoTable(res.columns, res.data, {startY: 260,styles: {overflow: 'linebreak'},
     	theme: 'grid'
     });
+  
     return doc;
 };
 

@@ -16,6 +16,7 @@
 	    <link rel="stylesheet" href="resources/built-in/pdf_print/pure-min.css">	
 	    <link rel="stylesheet" href="resources/built-in/pdf_print/grids-responsive-min.css">
 	     <link href="resources/custom/css/print.css" rel="stylesheet"> 
+	     <link href="resources/built-in/assets/css/font-awesome.css" rel="stylesheet" />
 	 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -75,9 +76,18 @@
 				<div id="phoneno">${company.company_landlineno}</div>
 				<%-- <c:set var = "shipment_date" value="${shipmentList[0].shipment_date}" />
 				<div id="title">${fn:substring(shipment_date, 0, 8)}</div> --%>
+				<c:choose>
+					<c:when test="${shipmentList[0].filter_pay=='Paid'}">
+						<c:set var="pay" value="Pay / To Pay"/>
+					</c:when>
+					<c:otherwise>
+						<c:set var="pay" value="Receipt"/>
+					</c:otherwise>
+				</c:choose>
+				<div id="head"><c:out value="${pay}" /></div>
 				<div id="filter_branch">From : <c:out value="${shipmentList[0].filter_frmBranch}"/>  To :  <c:out value="${shipmentList[0].filter_toBranch}"/></div>
 				<div id="filter_username">User : <c:out value="${shipmentList[0].filter_user}"/> </div>
-				<div id="title">Date : <c:out value="${shipmentList[0].filter_frmDate}"/> ${shipmentList[0].filter_pay}</div>
+				<div id="title">Shipment Date : <c:out value="${shipmentList[0].filter_frmDate}"/></div>
 				<div id="logo">${image}</div>
 			
 
@@ -146,10 +156,10 @@
 						<tr>
 							<th>S.No</th>
 							<th>L.R. No.</th>
-							<th>L.R. Freight Charge</th>
-							<th>Handling Charge</th>
-							<th>Local Transport Charge</th>
-							<th>Receipt Charge</th>
+							<th>L.R. Freight Charge (Rs.)</th>
+							<th>Handling Charge (Rs.)</th>
+							<th>Local Transport Charge (Rs.)</th>
+							<th>Receipt Charge (Rs.)</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -161,26 +171,35 @@
 							<tr>
 								<td><c:out value="${loop.count}" />
 								<td>${Shipment.lrno_prefix}</td>
-								<td>${Shipment.total_charges}</td>
-								<td>${Shipment.receipt_handling}</td>
-								<td>${Shipment.receipt_transport}</td>
-								<td>${Shipment.receipt_charge}</td>									
+								<td align="right"><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.total_charges}" /></td>
+								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.receipt_handling}" /></td>
+								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.receipt_transport}" /></td>
+								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.receipt_charge}" /></td>									
 							</tr>
 							<c:set var="tot_FC" value="${tot_FC +Shipment.total_charges}"></c:set>
 							<c:set var="tot_HC" value="${tot_HC +Shipment.receipt_handling}"></c:set>
 							<c:set var="tot_TC" value="${tot_TC +Shipment.receipt_transport}"></c:set>
-							<c:set var="tot_RC" value="${tot_TC +Shipment.receipt_charge}"></c:set>
+							<c:set var="tot_RC" value="${tot_RC +Shipment.receipt_charge}"></c:set>
 						</c:forEach>
 							<tr>
 								<td></td>
 								<td>Total</td>
-								<td><fmt:formatNumber type="number" maxFractionDigits="2" value = "${tot_FC}" /></td>
-								<td><fmt:formatNumber type="number" maxFractionDigits="2" value = "${tot_HC}" /></td>
-								<td><fmt:formatNumber type="number" maxFractionDigits="2" value = "${tot_TC}" /></td>
-								<td><fmt:formatNumber type="number" maxFractionDigits="2" value = "${tot_RC}" /></td>
+								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${tot_FC}" /></td>
+								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${tot_HC}" /></td>
+								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${tot_TC}" /></td>
+								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${tot_RC}" /></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>Grand Total : </td>
+								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${tot_FC + tot_HC + tot_TC + tot_RC}" /></td>
 							</tr>
 					</tbody>
 				</table>
+
 		</c:otherwise>
 	</c:choose>
 				
@@ -193,6 +212,7 @@
 	<script src="resources/built-in/pdf_print/jspdf.min.js"></script>
 	<script src="resources/built-in/pdf_print/jspdf.plugin.autotable.src.js"></script>
 	<script src="resources/built-in/pdf_print/reportJSPDF.js"></script>
+	
 	<script>
 
 	//====== Back Function=====//
