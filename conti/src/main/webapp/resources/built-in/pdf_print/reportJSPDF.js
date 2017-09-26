@@ -66,7 +66,7 @@ examples.broman = function () {
     
     var elem = document.getElementById("basic-table");
     var res = doc.autoTableHtmlToJson(elem);
-    doc.autoTable(res.columns, res.data, {startY: 260,styles: {overflow: 'linebreak'},
+    doc.autoTable(res.columns, res.data, {startY: 260,styles: {overflow: 'linebreak',halign: 'right'},
     	theme: 'grid'
     });
   
