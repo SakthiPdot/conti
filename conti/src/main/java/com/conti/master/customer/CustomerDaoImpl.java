@@ -190,7 +190,7 @@ public class CustomerDaoImpl implements CustomerDao
 		@SuppressWarnings("unchecked")
 		
 		List<CustomerModel> listcust = (List<CustomerModel>) sessionFactory.getCurrentSession()
-		.createQuery("from CustomerModel WHERE obsolete ='N' and customer_mobileno  LIKE '%" + search_key + "%'").list();
+		.createQuery("from CustomerModel WHERE obsolete ='N' and customer_name LIKE '%" + search_key + "%' OR customer_mobileno LIKE '%" + search_key + "%'").list();
 		return listcust;
 		
 	}

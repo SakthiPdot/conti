@@ -51,7 +51,26 @@
 */	    	}, 5000);
 	    } 
 	//------------------------- Success animate end ---------------------------------- //	
-	    
+	    //--load begin
+	    function loadwhilefetchOpen(element){
+	    	
+	    	$('body').addClass('scrollHidden');
+	    	window.setTimeout( function(){
+	    		$('.screenload').removeClass('hideme');
+	    		animationOpenClick('.screenload','fadeIn');
+	    		
+	    	}, 200);
+	    }
+	    function loadwhilefetchClose(element){
+
+	    	$('body').removeClass('scrollHidden');
+	    	window.setTimeout( function(){
+	    		animationOpenClick('.screenload','fadeOut');
+	    		$('.screenload').addClass('hideme');
+	    			
+	    	}, 200);
+	    }
+	    //--load end
 		//------------------------- Success animate begin ---------------------------------- //    
 	    function viewShipment_Animate(element, action){
 	    	

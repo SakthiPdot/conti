@@ -65,6 +65,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 				
 				"sender_customer" : {},
 				"consignee_customer" : {},
+				"sender_city":{},
+				"consignee_city":{},
 				"sender_branch" : {},
 				"consignee_branch" : {},
 				"service" : {},
@@ -84,9 +86,12 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		$('#sender_location_name_value').val('');
 		$('#consignee_branch_name_value').val('');
 		$('#consignee_location_name_value').val('');
+		
 		/*$('#service_name_value').val('');*/
 		$('#product_name0_value').val('');
 		
+		$('#sender_city_value').val('');
+		$('#consignee_city_value').val('');
 		var sender_taxin_payable = null;
 		var consignee_taxin_payable = null;
 		self.disable_save = true;

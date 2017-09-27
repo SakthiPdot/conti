@@ -51,9 +51,14 @@
 
 <body style="overflow-x:hidden;"data-ng-app="contiApp" data-ng-controller = "ReportController as ctrl">
  
- <!-- ------------------  Overlay for message begin ----------- -->
- 		<div class="overlay hideme"></div>
- <!-- ------------------  Overlay for message end ------------- -->
+ <!-- ------------------  loading for message begin ----------- -->
+ 		<div class="screenload hideme">
+ 			<div class="load-cont">
+		 		<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+				<span class="sr-only">Loading...</span>
+			</div>
+ 		</div>
+ <!-- ------------------  loading for message end ------------- -->
  
  <!-- ------------------  Success message begin --------------- -->
  		<div class="success hideme">
@@ -107,11 +112,11 @@
                                        data-ng-click="filter_branch=false;filter_lr=false;filter_billto=false;filter_all=false;ctrl.date_required=true;ctrl.filterReset();"value="filter_date"
                                        name="optionsRadiosInline" id="optionsRadiosInline1" > Date Wise
                                    </label>
-                                   <label class="radio-inline">
+                                   <!-- <label class="radio-inline">
                                        <input type="radio"  data-ng-model = "filter_branch" value="filter_branch"
                                        data-ng-click="filter_date= false;filter_lr=false;filter_all=false;filter_billto=false;ctrl.date_required=false;ctrl.filterReset();ctrl.resetDate();"
                                        name="optionsRadiosInline" id="optionsRadiosInline2"> Branch Wise
-                                   </label>
+                                   </label> -->
                                    <label class="radio-inline">
                                        <input type="radio" data-ng-model="filter_lr"  value="filter_lr" 
                                        data-ng-click="filter_branch=false;filter_date=false;filter_all=false;filter_billto=false;ctrl.date_required=false;ctrl.filterReset();ctrl.resetDate();"
@@ -213,7 +218,7 @@
 					
 					<div class="col-lg-3 report_class">
 						<span>Date Filter</span>
-					       <select class="form-control" data-ng-model="datefilter" data-ng-options="datefilter for datefilter in ['Today','This Week','This Month','This Quater']" 
+					       <select class="form-control" data-ng-model="datefilter" data-ng-options="datefilter for datefilter in ['Today','This Week','This Month']" 
 					       data-ng-change="ctrl.dateformat(datefilter)">
 					       		<option value="" >-- Select --</option>					      
 					       </select>
@@ -236,7 +241,7 @@
 					</div>				
 				</div>
 				
-				<div class="col-lg-6 noPaddingLeft" data-ng-show="filter_all || filter_branch || filter_billto">
+				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_all || filter_branch || filter_billto">
 					<div class="sec-padding">Branch</div>
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">From </span>
@@ -259,7 +264,7 @@
 						</select>
 					</div>
 					
-					<!-- <div class="col-lg-3 branchclass">
+					 <div class="col-lg-3 branchclass" data-ng-hide="filter_billto">
 						<span class="text-padding">Condition</span>
 						<select class="form-control" data-ng-model = "ctrl.report.branchcondition"
 						data-ng-change = "ctrl.filterReset()" 
@@ -267,10 +272,10 @@
 							<option value="">-- Select --</option>
 							
 						</select>
-					</div> -->
+					</div>
 					
 				</div>
-				<div class="col-lg-6 noPaddingLeft" data-ng-show="filter_all || filter_branch || !filter_billto">
+				<!-- <div class="col-lg-6 noPaddingLeft" data-ng-show="filter_all || filter_branch || !filter_billto">
 					<div class="col-lg-3 branchclass">
 						<span class="text-padding">Condition</span>
 						<select class="form-control" data-ng-model = "ctrl.report.branchcondition"
@@ -280,7 +285,7 @@
 							
 						</select>
 					</div>
-				</div>
+				</div> -->
 				
 				<div class="col-lg-12 noPaddingLeft" data-ng-show="filter_lr || filter_all">
 					<div class="sec-padding">LR No</div>
@@ -648,7 +653,7 @@
                                			 of {{totalnof_records}} entries
                                		</div>
                                		<div class="pull-left" data-ng-show="ctrl.tbl_nodata">
-                               			 Showing NaN to of entries
+                               			 Showing 0 entries
                                		</div>
                                 </div>
 									<div class="col-lg-6 icons-button"></div>

@@ -194,20 +194,20 @@
 	                            		     data-trigger="focus" data-toggle="popover" data-placement="top" data-content="Please enter customer mobile number" placeholder="Mobile No"> -->
 	                            		     
 	                            		     <angucomplete-alt id="sender_search_mbl"
-									              placeholder="Ex : 9876543210"
+									              placeholder="Ex : 9876543210 / Sachin"
 									              pause="100"
 									              selected-object="sender_search_mbl"
 									              remote-url="fetchAllCustomer4Search/"
 						            			  remote_url-data-field="Customers"
 									              match-class="highlight"
-									              search-fields="customer_mobileno"
+									              search-fields="customer_name,customer_mobileno"
 									              title-field="customer_mobileno"
 									              description-field="customer_name"
-									              minlength="5"
+									              minlength="3"
 									              field-required="true"
 												  data-trigger="focus" data-toggle="popover" 
 												  data-placement="top" data-content="Please enter customer mobileno"
-												  onKeyPress="return CheckIsNumeric(event)"
+												  
 									              input-class="form-control form-control-small searchbar" style="width:100%">
               							</angucomplete-alt>
 	                            		     
@@ -225,10 +225,8 @@
                             			<span class="text-paddingwidth"> Name <span class="required">*</span></span>
                             		    <input type="text" class="form-control" maxlength="50"
                             		    	data-ng-model = "ctrl.shipment.sender_customer.customer_name"
-                            		    	onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer name"
-											onKeyPress="return CheckIsNumeric(event)"	
 											placeholder = "Ex: Sachin"
                             		    required />                            		    
                             		</div>
@@ -237,10 +235,8 @@
                             			<span class="text-paddingwidth"> Company Name </span>
                             		    <input type="text" class="form-control" maxlength="50"
                             		    	data-ng-model = "ctrl.shipment.sender_customer.company_name"
-                            		    	onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter company name"
-											onKeyPress="return CheckIsNumeric(event)"	
 											placeholder = "Ex: Conti Cargo"
                             		    />                            		    
                             		</div>
@@ -406,16 +402,16 @@
                             			<div class=" col-md-6 branchclass">
 	                            			<span class="searchcls"> Search </span>
 	                            		    <angucomplete-alt id="consignee_search_mbl"
-									              placeholder="Ex : 9876543210"
+									              placeholder="Ex : 9876543210 / Sachin"
 									              pause="0"
 									              selected-object="consignee_search_mbl"
 									              remote-url="fetchAllCustomer4Search/"
 						            			  remote_url-data-field="Customers"
 									              match-class="highlight"
-									              search-fields="customer_mobileno"
+									              search-fields="customer_name,customer_mobileno"
 									              title-field="customer_mobileno"
 									              description-field="customer_name"
-									              minlength="5"
+									              minlength="3"
 									              field-required="true"
 												  data-trigger="focus" data-toggle="popover" 
 												  data-placement="top" data-content="Please enter customer mobileno"
@@ -448,10 +444,10 @@
                             			<span class="text-paddingwidth"> Name <span class="required">*</span></span>
                             		    <input type="text" class="form-control" maxlength="50"
                             		    	data-ng-model = "ctrl.shipment.consignee_customer.customer_name"
-                            		    	onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
+                            		    	
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter customer name"
-											onKeyPress="return CheckIsNumeric(event)"	
+												
 											placeholder = "Ex: Dravid"
                             		    required />                            		    
                             		</div>
@@ -460,10 +456,8 @@
                             			<span class="text-paddingwidth"> Company Name </span>
                             		    <input type="text" class="form-control" maxlength="50"
                             		    	data-ng-model = "ctrl.shipment.consignee_customer.company_name"
-                            		    	onKeyPress="return CheckIsCharacterWithspace(event,this.value)"
                             		    	data-trigger="focus" data-toggle="popover" 
 											data-placement="top" data-content="Please enter company name"
-											onKeyPress="return CheckIsNumeric(event)"	
 											placeholder = "Ex: Conti Cargo"
                             		    />                            		    
                             		</div>

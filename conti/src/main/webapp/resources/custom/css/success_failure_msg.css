@@ -126,7 +126,21 @@
 				z-index: 301;
 				color:white;
 			}
-			
+			.screenload {
+				position:absolute;
+				top:0;
+				left:0;
+				right:0;
+				bottom:0;
+				background-color:rgba(255, 255, 255, 0.57);
+				z-index: 301;
+				color:#0f9cd1;
+				text-align:center;
+				
+			}
+			.screenload .load-cont{
+				margin-top: 20%;
+			}
 			.shipment_View {
   			background-color: #FFF;
 		    padding: 25px;

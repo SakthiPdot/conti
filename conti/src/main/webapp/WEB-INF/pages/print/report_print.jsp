@@ -78,7 +78,7 @@
 				<div id="title">${fn:substring(shipment_date, 0, 8)}</div> --%>
 				<c:choose>
 					<c:when test="${shipmentList[0].filter_pay=='Paid'}">
-						<c:set var="pay" value="Pay / To Pay"/>
+						<c:set var="pay" value="Paid / To Pay"/>
 						<c:set var="sDate" value="Shipment Date"/>
 					</c:when>
 					<c:otherwise>
@@ -115,19 +115,19 @@
 								<td align="right">
 									<c:choose>
 										<c:when test="${Shipment.bill_to == 'Paid'}">
-											${Shipment.total_charges}
+											<fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.total_charges}" />
 											<c:set var="paid_total" value="${paid_total + Shipment.total_charges}"/>	
 										</c:when>
 										<c:otherwise>
 											-
 										</c:otherwise>
-									</c:choose>
+									</c:choose> 
 									
 								</td>
-								<td align="right"> 
+								<td> 
 									<c:choose>
 										<c:when test="${Shipment.bill_to == 'To Pay'}">
-											${Shipment.total_charges}
+											<fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.total_charges}" />
 											<c:set var="topay_total" value="${topay_total + Shipment.total_charges}"/>
 										</c:when>
 										<c:otherwise>
@@ -135,18 +135,18 @@
 										</c:otherwise>
 									</c:choose>
 									
+									
 								</td>											
 							</tr>
 							
 						</c:forEach>
 							<tr>
 								<td></td><td>Total</td>
-								<td align="right">
-									<fmt:formatNumber type="number" maxFractionDigits="2" value = "${paid_total}" />
+								<td>
+									<fmt:formatNumber type="number" minFractionDigits="2" value = "${paid_total}" />
 								</td>
-								<td align="right">
-									<fmt:formatNumber type="number" maxFractionDigits="2" value = "${topay_total}" />
-									<%-- <c:out value="${tot}" /> --%>
+								<td>
+									<fmt:formatNumber type="number" minFractionDigits="2" value = "${topay_total}" />
 								</td>
 							</tr>
 					</tbody>
@@ -173,7 +173,7 @@
 							<tr>
 								<td><c:out value="${loop.count}" />
 								<td>${Shipment.lrno_prefix}</td>
-								<td align="right"><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.total_charges}" /></td>
+								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.total_charges}" /></td>
 								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.receipt_handling}" /></td>
 								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.receipt_transport}" /></td>
 								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.receipt_charge}" /></td>									
