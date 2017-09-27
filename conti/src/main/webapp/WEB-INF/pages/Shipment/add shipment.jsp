@@ -415,7 +415,7 @@
 									              field-required="true"
 												  data-trigger="focus" data-toggle="popover" 
 												  data-placement="top" data-content="Please enter customer mobileno"
-												  onKeyPress="return CheckIsNumeric(event)"
+												  
 									              input-class="form-control form-control-small searchbar" style="width:100%">
               								</angucomplete-alt>
                             		    </div>
