@@ -437,10 +437,12 @@ contiApp.controller('ReportController',['$scope','$http','$q','$timeout','Branch
 			    				function(users){
 			    					self.users = users;
 			    					if($('#currentUserRole').val() == 'STAFF'){
-			    						self.report.user = parseInt($('#currentuserid').val());
-			    						console.log($('#currentuserid').val());
-			    						console.log(self.report.user);
-			    						//$scope.user_disable = true;
+			    						
+			    						window.setTimeout( function(){
+			    							self.report.username = parseInt($('#currentuserid').val());
+			    							$scope.user_disable = true;
+						 				}, 10);
+			    						
 			    					}
 			    					
 			    				},function(errRes){
