@@ -67,18 +67,19 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 		console.log(location_name);
 		if(location_name==undefined){
 			self.customer.location_name=null;
-			$("#customer_city").val('');
+			$("#customer_city_value").val('');
 			self.customer.customer_city=null;
 			$("#state").val('');
  	    	$("#country").val('');
  	    	$("#pincode").val('');
 		}else{
-			self.customer.customer_city=customer_city.originalObject;
+			$('#location_id').val(JSON.stringify(location_name.originalObject));
+			self.customer.customer_city=location_name.originalObject;
 			self.customer.location_name=location_name.originalObject;
-			$("#customer_city").val(customer_city.originalObject.address.city);
-			$("#state").val(customer_city.originalObject.address.state);
-			$("#country").val(customer_city.originalObject.address.country);
-			$("#pincode").val(customer_city.originalObject.pincode);
+			$("#customer_city_value").val(location_name.originalObject.address.city);
+			$("#state").val(location_name.originalObject.address.state);
+			$("#country").val(location_name.originalObject.address.country);
+			$("#pincode").val(location_name.originalObject.pincode);
 		}
 	}
 	
@@ -87,6 +88,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 		   self.customer = {};
 		   $('#branch_name_value').val('');
 		   $('#location_name_value').val('');
+		   $('#customer_city_value').val('');
 		   $('.locations').val('');
 
 	    	self.heading = "Master";
@@ -114,8 +116,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 			resetSorting();
 			$scope[x]=status;
 			CustomerService.sortBy(x,status?"ASC":"DESC")
-			.then(
-					function(response){
+			.then(function(response){
 						self.customers=response;
 						self.Filtercustomers =response;
 						
@@ -161,7 +162,8 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 					function (customer) {
 						self.customers = customer;
 						self.Filtercustomers=self.customers;
-						/*fetchAllBranches();
+						console.log(customer);
+						/*fetchAllBranches();	
 						fetchAllLocations();	*/	
 						pagination();
 					}, 
@@ -220,15 +222,15 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 	//-------------------------- Selected branch details end ---------------------//	
 	
 	//------------------------ Location block changes begin ----------------------//
-    $scope.location_name = function (loc_selected) {
+   /* $scope.location_name = function (loc_selected) {
     	
     	$('#location_id').val(JSON.stringify(loc_selected.originalObject));
-    	$('#city').val(loc_selected.originalObject.address.city);
+    	$('#customer_city').val(loc_selected.originalObject.address.city);
     	$('#country').val(loc_selected.originalObject.address.country);
     	$('#state').val(loc_selected.originalObject.address.state);
     	$('#pincode').val(loc_selected.originalObject.pincode);
 	    	    
-	};	
+	};*/	
 	//------------------------ Location block changes end ----------------------//
 	
 	
@@ -248,8 +250,8 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     	CustomerService.createCustomer(customer)
             .then(
             		function () {
-                        fetchAllCustomers();
-                      
+//                        fetchAllCustomers();
+//                      
             			self.message = customer.customer_name+" customer created..!";
             			successAnimate('.success');            			
             		},
@@ -294,10 +296,10 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     		
     		if( $("#branch_id").val() == "" || $("#branch_id").val() == null || $("#branch_name_value").val() == "" || $("#branch_name_value").val() == null) {
     			$("#branch_name_value").focus();
-    		
-    		} else if ($("#location_id").val() == "" || $("#location_id").val() =="" || $("#location_name_value").val() == "" || $("#location_name_value").val() == null) {
-    			$("#location_name_value").focus();
-    		} 
+    		}
+//    		 else if ($("#location_id").val() == "" || $("#location_id").val() =="" || $("#location_name_value").val() == "" || $("#location_name_value").val() == null) {
+//    			$("#location_name_value").focus();
+//    		} 
     		
     		else {
     			
@@ -311,7 +313,10 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
         				.then(
         						function (res) {
         							self.customer.branchModel = JSON.parse($("#branch_id").val());
-        			 	    		self.customer.location = JSON.parse($("#location_id").val());    	
+        							if(self.customer.location!=null){
+        			 	    		self.customer.location = JSON.parse($("#location_id").val());}    	
+        							
+        							console.log(self.customer);
         			 	        	createCustomer(self.customer);  
         			 	        	reset();
         			 	        	window.setTimeout( function(){	 	        		
@@ -358,20 +363,41 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     function updateCustomer(customer) 
     {
     	self.customer = customer;
-    	(self.customer.customer_name).length> 15?
-				self.heading="- "+(self.customer.customer_name).substr(0,14)+"..."
-				:self.heading="- "+self.customer.customer_name;
-		$('#branch_id').val(JSON.stringify(self.customer.branchModel));
-    	$('#location_id').val(JSON.stringify(self.customer.location));
-    	$('#city').val(self.customer.location.address.city);
-    	$('#country').val(self.customer.location.address.country);
-    	$('#state').val(self.customer.location.address.state);
-    	$('#pincode').val(self.customer.location.pincode);
+    	console.log(customer);
+    	if(self.customer.location!=null){
+    		$('#location_id').val(JSON.stringify(self.customer.location));
+  		
+	    	$('#customer_city_value').val(self.customer.customer_city.city);
+	    	$('#country').val(self.customer.customer_city.country);
+	    	$('#state').val(self.customer.customer_city.state);
+	    	$('#pincode').val(self.customer.location.pincode);
+	    	$('#location_name_value').val(self.customer.location.location_name);
+    	}else{
+    		$('#customer_city_value').val(self.customer.customer_city.city);
+	    	$('#country').val(self.customer.customer_city.country);
+	    	$('#state').val(self.customer.customer_city.state);
+    	}
+//    	(self.customer.customer_name).length> 15?
+//				self.heading="- "+(self.customer.customer_name).substr(0,14)+"..."
+//				:self.heading="- "+self.customer.customer_name;
+//		$('#branch_id').val(JSON.stringify(self.customer.branchModel));
+//		if($('#location_id').val()!=''){
+//	    	$('#location_id').val(JSON.stringify(self.customer.location));
+//	    	$('#customer_city').val(self.customer.customer_city);
+//	    	$('#country').val(self.customer.location.address.country);
+//	    	$('#state').val(self.customer.location.address.state);
+//	    	$('#pincode').val(self.customer.location.pincode);
+//	    	$('#location_name_value').val(self.customer.location.location_name);
+//		}else{
+//			self.customer.customer_city=customer_city.originalObject;
+//			$("#customer_city").val(customer_city.city);
+//			$("#state").val(customer_city.state);
+//			$("#country").val(customer_city.country);
+	//	}
     	
-    	//$('#empcategory_value').val(self.employee.empcategory);
-    	
+    	$('#branch_id').val(JSON.stringify(self.customer.branchModel));
     	 $('#branch_name_value').val(self.customer.branchModel.branch_name);
-		 $('#location_name_value').val(self.customer.location.location_name);
+		// $('#location_name_value').val(self.customer.location.location_name);
 		 
     	drawerOpen('.drawer');
     }
@@ -557,18 +583,14 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
    //-------------------------- Record Count begin -----------------------//
 	
 	function findrecord_count() {
-		
 		CustomerService.findrecord_count()
-		.then(
-				function (record_count) {
-					console.log(record_count);
-					$scope.totalnof_records  = record_count;
-				}, 
-				function (errResponse) {
-					console.log('Error while fetching record count');
-				}
-			);
-		
+		.then(function (record_count) {
+				$scope.totalnof_records  = record_count;
+			}, 
+			function (errResponse) {
+				console.log('Error while fetching record count');
+			}
+		);
 	}
 	
 	//-------------------------- Record Count end -----------------------//
@@ -612,8 +634,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     	if(self.Filtercustomers.length == 0) 
     	{
     		CustomerService.pagination_byPage($scope.currentPage)
-    		.then(
-    				function (filterCust) 
+    		.then(function (filterCust) 
     				{
     					if ( filterCust.length == 0 ) 
     					{
@@ -742,7 +763,7 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     function registerSearch(searchkey) {
     	if ( searchkey.length == 0 ) {
     		self.Filtercustomers = self.customers;
-    	}else if( searchkey.length > 2 ) {
+    	}else if( searchkey.length > 3 ) {
     		CustomerService.registerSearch(searchkey)
 	    		.then(function (filterCust) {
 					self.Filtercustomers =filterCust;
@@ -762,14 +783,10 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
     function searchUtil(item,toSearch)
 	{
     	var success = false;
-		if ((item.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
-//				|| (item.customer_code.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
-				|| (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
-				|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
-				|| (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
-				|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
-				|| (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
-			//	|| (item.customer_email.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)) {
+    	if ((String(item.customer_name).toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+				|| (item.customer_city.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
+				|| (item.customer_city.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
+				|| (item.customer_city.country.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
 				||((String(item.customer_mobileno)).indexOf(toSearch) > -1 ))
 			
 		{
@@ -779,6 +796,37 @@ contiApp.controller('CustomerController', ['$http', '$scope','$q','$timeout', '$
 		{
 			success = false;
 		}
+    	/*if(item.location==null){
+			if ((item.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+					|| (item.customer_city.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
+					|| (item.customer_city.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
+					|| (item.customer_city.country.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
+					||((String(item.customer_mobileno)).indexOf(toSearch) > -1 ))
+				
+			{
+				success = true;
+			} 
+			else
+			{
+				success = false;
+			}
+		}else{
+			if ((item.customer_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+					|| (item.branchModel.branch_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+					|| (item.location.location_name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+					|| (item.location.address.city.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+					|| (item.location.address.district.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) 
+					|| (item.location.address.state.toLowerCase().indexOf(toSearch.toLowerCase()) > -1)
+					||((String(item.customer_mobileno)).indexOf(toSearch) > -1 ))
+				
+			{
+				success = true;
+			} 
+			else
+			{
+				success = false;
+			}
+		}*/
 		return success;
 	}
     //---------------------------- Register search end ---------------------------------------//
