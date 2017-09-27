@@ -510,13 +510,20 @@
                                             
                                        
                                             <td data-ng-show = "setting_custaddress">
-                                           		<div data-ng-if="!cust.customer_addressline1==''">{{cust.customer_addressline1}},</div>
+                                            	<div data-ng-if="!cust.customer_addressline1==''">{{cust.customer_addressline1}},</div>
                                            		<div data-ng-if="!cust.customer_addressline2==''">{{cust.customer_addressline2}},</div>
-                                           		<div data-ng-if="cust.location.location_name!=''">{{cust.location.location_name}},</div>
-                                           		<div data-ng-if="cust.location.address.city!=''">{{cust.location.address.city}},</div>
-<!--                                            		<div data-ng-if="cust.location.address.district!=''">{{cust.location.address.district}},</div> -->
-                                           		<div data-ng-if="cust.location.address.state!=''">{{cust.location.address.state}},</div>
-                                           		<div data-ng-if="cust.location.pincode!=''">{{cust.location.pincode}}.</div>
+                                           		
+                                           		<div data-ng-if="cust.location!=null">
+	                                           		<div>{{cust.location.location_name}},</div>
+	                                           		<div>{{cust.location.address.city}},</div>
+	                                           		<div>{{cust.location.address.state}},</div>
+	                                           		<div>{{cust.location.pincode}}.</div>
+												</div>
+                                          		
+                                          		<div data-ng-if="cust.location==null">
+                                           			<div>{{cust.customer_city.city}},</div>
+                                           			<div>{{cust.customer_city.state}}.</div>
+												</div>
                                             </td>
                                             
                                             <td data-ng-show = "setting_custphone">{{cust.customer_mobileno}}</td>
