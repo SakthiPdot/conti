@@ -123,16 +123,13 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	//------------------------ FETCH MAX LR NO BEGIN
 	$scope.maxlrno = null;
 	function fetchMAXLRno() {
-		console.log("inside fetchmaxlrno");
 		ShipmentService.fetchMAXLRno($('#sender_branch_id').val())
 			.then(
 					function (maxlrno) {
-						console.log(maxlrno);
-						
 						$scope.maxlrno = maxlrno;
 					}, function (errRes) {
 						$scope.maxlrno = null;
-						console.log(errRes);
+						
 					}
 				);
 		
@@ -148,16 +145,25 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     	self.shipment.sender_customer.customer_mobileno = sender_search_mbl.originalObject.customer_mobileno;
     	self.shipment.sender_customer.customer_addressline1 = sender_search_mbl.originalObject.customer_addressline1;
     	self.shipment.sender_customer.customer_addressline2 = sender_search_mbl.originalObject.customer_addressline2;
+
+    	if(sender_search_mbl.originalObject.location!=null){
+    		console.log(sender_search_mbl.originalObject.location.location_name);
+    		$("#sender_location_name_value").val(sender_search_mbl.originalObject.location.location_name);
+        	self.shipment.sender_customer.location = sender_search_mbl.originalObject.location;
+        	$("#sender_city_value").val(sender_search_mbl.originalObject.location.address.city);
+        	self.shipment.sender_city = sender_search_mbl.originalObject.location.address;
+        	$("#sender_state").val(sender_search_mbl.originalObject.location.address.state);
+        	$("#sender_country").val(sender_search_mbl.originalObject.location.address.country);
+        	$("#sender_pincode").val(sender_search_mbl.originalObject.location.pincode);
+    	}else{
+    		$("#sender_location_name_value").val('');
+    		self.shipment.sender_customer.location = null;
+    		self.shipment.sender_city=sender_search_mbl.originalObject.customer_city;
+    		$("#sender_city_value").val(sender_search_mbl.originalObject.customer_city.city);
+    		$("#sender_state").val(sender_search_mbl.originalObject.customer_city.state);
+        	$("#sender_country").val(sender_search_mbl.originalObject.customer_city.country);  
+    	}
     	
-    	$("#sender_location_name_value").val(sender_search_mbl.originalObject.location.location_name);
-    	self.shipment.sender_customer.location = sender_search_mbl.originalObject.location;
-    	//sender_city_value
-    	/*$("#sender_city").val(sender_search_mbl.originalObject.location.address.city);*/
-    	$("#sender_city_value").val(sender_search_mbl.originalObject.location.address.city);
-    	self.shipment.sender_city = sender_search_mbl.originalObject.location.address;
-    	$("#sender_state").val(sender_search_mbl.originalObject.location.address.state);
-    	$("#sender_country").val(sender_search_mbl.originalObject.location.address.country);
-    	$("#sender_pincode").val(sender_search_mbl.originalObject.location.pincode);
     	
     	self.shipment.sender_customer.customer_email = sender_search_mbl.originalObject.customer_email;
     	self.shipment.sender_customer.gstin_number = sender_search_mbl.originalObject.gstin_number;
@@ -169,7 +175,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//------------------------ Sender address begin
     $scope.sender_location_name = function (sender_location_name) {
-    	console.log(sender_location_name);
  	    if(sender_location_name == undefined){
  	    	self.shipment.sender_customer.location = null;
  	    	/*$("#sender_city").val('');*/
@@ -193,7 +198,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	};	
 	
 	$scope.sender_city = function (sender_city) {
-    	console.log(sender_city);
  	    if(sender_city == undefined){
  	    	
  	    	/*$("#sender_city").val('');*/
@@ -227,17 +231,29 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
     	
     	//consignee_city_value
     	//$("#consignee_city").val(consignee_search_mbl.originalObject.location.address.city);
-    	self.shipment.consignee_city = consignee_search_mbl.originalObject.location.address;
-    	$("#consignee_city_value").val(consignee_search_mbl.originalObject.location.address.city);
-    	$("#consignee_state").val(consignee_search_mbl.originalObject.location.address.state);
-    	$("#consignee_country").val(consignee_search_mbl.originalObject.location.address.country);
-    	$("#consignee_pincode").val(consignee_search_mbl.originalObject.location.pincode);
-    	
-    	self.shipment.consignee_customer.customer_email = consignee_search_mbl.originalObject.customer_email;
-    	self.shipment.consignee_customer.gstin_number = consignee_search_mbl.originalObject.gstin_number;
-    	
-    	$("#consignee_location_name_value").val(consignee_search_mbl.originalObject.location.location_name);
-    	self.shipment.consignee_customer.location = consignee_search_mbl.originalObject.location;
+    	if(consignee_search_mbl.originalObject.location != null){
+    		console.log(consignee_search_mbl.originalObject.location.location_name);
+    		$("#consignee_location_name_value").val(consignee_search_mbl.originalObject.location.location_name);
+        	self.shipment.consignee_customer.location = consignee_search_mbl.originalObject.location;
+    		self.shipment.consignee_city = consignee_search_mbl.originalObject.location.address;
+        	$("#consignee_city_value").val(consignee_search_mbl.originalObject.location.address.city);
+        	$("#consignee_state").val(consignee_search_mbl.originalObject.location.address.state);
+        	$("#consignee_country").val(consignee_search_mbl.originalObject.location.address.country);
+        	$("#consignee_pincode").val(consignee_search_mbl.originalObject.location.pincode);
+        	
+        	self.shipment.consignee_customer.customer_email = consignee_search_mbl.originalObject.customer_email;
+        	self.shipment.consignee_customer.gstin_number = consignee_search_mbl.originalObject.gstin_number;
+        	
+        	
+    	}else{
+    		$("#consignee_location_name_value").val('');
+    		self.shipment.consignee_customer.location = null;
+    		self.shipment.consignee_city = consignee_search_mbl.originalObject.customer_city;
+    		$("#consignee_city_value").val(consignee_search_mbl.originalObject.customer_city.city);
+        	$("#consignee_state").val(consignee_search_mbl.originalObject.customer_city.state);
+        	$("#consignee_country").val(consignee_search_mbl.originalObject.customer_city.country);
+    	}
+
 
     	consignee_taxin_payable = consignee_search_mbl.originalObject.taxin_payable;
     	self.tax_payable(); // Tax payable on Reverse Charge
@@ -305,9 +321,8 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			.then(
 					function(branch) {
 						self.shipment.sender_branch = branch;
-						console.log(self.shipment.sender_branch);
 					}, function (errres) {
-						console.log(errres);
+						
 					}
 			)
 			
@@ -396,7 +411,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 					function (services) {
 						self.services=services;
 					}, function (errRes) {
-						console.log(errRes);
+						
 					}
 				);
 	}
@@ -570,7 +585,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 						self.checkQuantity(index);
 						
 					}, function(errResponse) {
-						console.log(errResponse);
+						
 					}
 				);
 		
@@ -595,7 +610,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		if( self.shipment.bill_to == "Paid" ) {
 			self.shipment.taxin_payable = sender_taxin_payable;
 		} else if( self.shipment.bill_to == "To Pay" ) {
-			console.log(consignee_taxin_payable);
 			self.shipment.taxin_payable = consignee_taxin_payable;
 		} else {
 			self.shipment.taxin_payable = null;
@@ -649,7 +663,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		} else {// if discount is not applicable
 			self.shipment.total_amount = parseFloat(self.shipment.delivery_charge) + parseFloat(self.shipment.handling_charge);			
 		}
-		console.log("inside discount");
 		
 		fetch_gsts(); // calculate gsts (CGST / SGST / IGST)
 	}
@@ -687,7 +700,6 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 								
 							} else {// if total amt less than slab amount
 								
-								console.log("inside else");
 								self.shipment.cgst = ( parseFloat(0) );
 								self.shipment.sgst = ( parseFloat(0) );
 								self.shipment.igst = ( parseFloat(0) );
@@ -703,7 +715,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 						}
 						
 					}, function (errRes) {
-						console.log(errRes);
+						
 					} 
 				);
 	}
@@ -791,9 +803,10 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
                         self.message = " Shipment(L.R. No."+ lr_details.lrno_prefix +") created. ";
             			successAnimate('.success');  
             			reset();
-            			window.setTimeout( function(){
+            			bill_open(lr_details.shipment_id);
+            			/*window.setTimeout( function(){
             				bill_open(lr_details.shipment_id);
-            	    	}, 5000);  
+            	    	}, 5000);  */
             			
             		},
            

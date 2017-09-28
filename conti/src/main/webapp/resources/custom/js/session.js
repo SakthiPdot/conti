@@ -177,12 +177,11 @@
 //			  console.log(e);
 //		  }
 		 
-			window.onbeforeunload = function(e) {	
-				console.log(e);
+			/*window.onbeforeunload = function(e) {	
 	 	        if( !valid ){
 	 	        	force_logout();
 	 	        }
-	 	       } 
+	 	       } */
 			 
 			$("button").on("click", function() {
 				console.log(valid);
@@ -210,6 +209,16 @@
 	 		        if( event.keyCode == 82 && event.ctrlKey && event.shiftKey ) { valid = true; }
 	 		});
 			
+	 		 function disableBackButton()
+	 		{
+	 			 console.log("Inside disable button");
+	 		window.history.forward()
+	 		}  
+	 		disableBackButton();  
+	 		window.onload=disableBackButton();  
+	 		window.onpageshow=function(evt) { if(evt.persisted) disableBackButton() }  
+	 		window.onunload=function() { void(0) }  
+	 		 
 	 		 function setValidtrue(){
 	 			 valid = true;
 }
