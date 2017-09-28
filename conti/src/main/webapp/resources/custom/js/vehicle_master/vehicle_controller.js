@@ -53,7 +53,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 		
 		// ===================================sort table====================================
 		$scope.sortTable=function(x,status){
-			console.log("filer by---"+x,"status---"+status);
+			/*console.log("filer by---"+x,"status---"+status);*/
 			if(!$scope.disableSorting){
 				$scope.lastSorted = x;	
 				resetSorting();
@@ -65,7 +65,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 							self.Filtervehicles=response;					
 						}, 
 						function (errResponse) {
-							console.log('Error while fetching vehicles');
+							/*console.log('Error while fetching vehicles');*/
 						}
 					);
 			}
@@ -96,7 +96,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 						}, function(errResponse) {
 							$scope.nameWrong = false;
 							self.vehicle.vehicle_regno = null;
-							console.log("error checking name");
+							/*console.log("error checking name");*/
 						
 					});
 			}
@@ -160,10 +160,10 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 								self.vehicles = vehicle;
 								self.Filtervehicles = self.vehicles;							
 								pagination();
-								console.log(self.vehicles);
+								/*console.log(self.vehicles);*/
 							},
 							function (errResponse) {
-								console.log('Error while fetching vehicles');
+								/*console.log('Error while fetching vehicles');*/
 							}
 					      );
 			}
@@ -175,10 +175,10 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 					.then(
 							function (branches) {
 								self.branches = branches;
-								console.log(branches);						
+								/*console.log(branches);*/						
 							}, 
 							function (errResponse) {
-								console.log('Error while fetching branches');
+								/*console.log('Error while fetching branches');*/
 							}
 						);
 			}
@@ -192,7 +192,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			
 			
 			function newOrClose() {
-				console.log(self.save);
+				/*console.log(self.save);*/
 				if(self.save == "saveclose"){
 					drawerClose('.drawer');
 				}
@@ -210,7 +210,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			            		},
 			           
 			            function (errResponse) {
-			                console.error('Error while creating vehicle' + vehicle.vehicle_regno);
+			                /*console.error('Error while creating vehicle' + vehicle.vehicle_regno);*/
 			            }
 			        );
 			    } 
@@ -243,7 +243,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 										self.vehicle.branchModel = JSON.parse($("#branch_id").val());
 										
 										self.vehicle.vehicle_type = $("#vehicle_type_value").val();
-										console.log(self.vehicle);
+										/*console.log(self.vehicle);*/
 										createVehicle(self.vehicle);										
 										reset();
 										window.setTimeout( function(){
@@ -431,7 +431,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 														successAnimate('.success');
 														
 													}, function (errResponse) {
-														console.log(errResponse);
+														/*console.log(errResponse);*/
 													}
 											     );
 									}
@@ -481,7 +481,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 													self.message = " Selected record(s) has in inactive status..!";
 													successAnimate('.success');
 												}, function(errResponse) {
-													console.log(errResponse);
+													/*console.log(errResponse);*/
 												}
 										     );
 									}
@@ -536,7 +536,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 									self.Filtervehicles = filterVehicle;
 								},
 								function (errResponse) {
-									console.log('Error while fetching services');
+									/*console.log('Error while fetching services');*/
 								}
 						      );
 				} else {
@@ -573,11 +573,11 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 				VehicleService.findrecord_count()
 					.then(
 								function (record_count) {
-									console.log(record_count);
+									/*console.log(record_count);*/
 									$scope.totalnoof_records = record_count;
 								},
 								function (errResponse) {
-									console.log('Error while fetching record count');
+									/*console.log('Error while fetching record count');*/
 								}
 					      );
 			}
@@ -611,19 +611,19 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 			
 			
 			$scope.paginate = function(nextPrevMultiplier) {
-				console.log($scope.currentPage);
+				/*console.log($scope.currentPage);*/
 				$scope.selectall = false;
 				$scope.currentPage += (nextPrevMultiplier * 1);
 				self.Filtervehicles = self.vehicles.slice($scope.currentPage*$scope.pageSize);
-				console.log(self.vehicles.length);
-				console.log(self.Filtervehicles.length);
+				/*console.log(self.vehicles.length);
+				console.log(self.Filtervehicles.length);*/
 				
 				if(self.Filtervehicles.length == 0) {
-					console.log("empty")
+					/*console.log("empty")*/
 					VehicleService.pagination_byPage($scope.currentPage)
 					.then(
 							function (filterVehicle) {
-								console.log(filterVehicle);
+								/*console.log(filterVehicle);*/
 								
 								if(filterVehicle.length == 0 ) {
 									$scope.nextDisabled = true;
@@ -635,7 +635,7 @@ contiApp.controller('VehicleController', ['$scope', '$timeout', 'VehicleService'
 								}
 							},
 							function (errResponse) {
-								console.log('Error while pagination');
+								/*console.log('Error while pagination');*/
 							}
 					      );
 				}
@@ -677,7 +677,7 @@ $scope.firstlastPaginate = function (page) {
 					/*fetchAllVehicles();*/
 				} else {
 					$scope.currentPage = ( (Math.ceil(self.Filtervehicles.length/$scope.pageSize)) - 1 );
-					console.log($scope.currentPage);
+					/*console.log($scope.currentPage);*/
 					$scope.previousDisabled = false;
 					$scope.nextDisabled = true;
 					
@@ -688,10 +688,10 @@ $scope.firstlastPaginate = function (page) {
 						.then(
 								function (filterVehicle) {
 									self.Filtervehicles = filterVehicle;
-									console.log(filterVehicle);
+									/*console.log(filterVehicle);*/
 								},
 								function (errResponse) {
-									console.log("Error while fetching services");
+									/*console.log("Error while fetching services");*/
 								}
 						      );
 					}
