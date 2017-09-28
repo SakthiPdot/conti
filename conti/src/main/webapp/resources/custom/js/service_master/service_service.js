@@ -25,7 +25,7 @@ contiApp.factory('ServiceService',['$http','$q', function ($http,$q){
 		
 		//=============================sort by name====================================
 		function sortBy(name,status){	
-			console.log(name,status);
+			/*console.log(name,status);*/
 			var deferred=$q.defer();
 			$http({
 				method:'POST',
@@ -36,7 +36,7 @@ contiApp.factory('ServiceService',['$http','$q', function ($http,$q){
 					function(response){
 						deferred.resolve(response.data);
 					},function(errResponse){
-						console.log("status change failed");
+						/*console.log("status change failed");*/
 						deferred.reject(errResponse);
 					}
 			);
@@ -55,11 +55,11 @@ contiApp.factory('ServiceService',['$http','$q', function ($http,$q){
 				})
 				.then (
 						function (response) {
-							console.log(response);
+							/*console.log(response);*/
 							deferred.resolve(response.status);
 						},
 						function(errResponse) {
-							console.log(errResponse);
+							/*console.log(errResponse);*/
 							deferred.reject(errResponse);
 						}
 				       );
@@ -77,12 +77,12 @@ contiApp.factory('ServiceService',['$http','$q', function ($http,$q){
 				$http.get('services/')
 					.then(
 							function (response) {
-								console.log(response)
+								/*console.log(response)*/
 								deferred.resolve(response.data);
 							},
 							
 							function (errResponse) {
-								console.log("Error while fetching services");
+								/*console.log("Error while fetching services");*/
 								deferred.reject(errResponse);
 							}
 					     );
@@ -248,7 +248,7 @@ contiApp.factory('ServiceService',['$http','$q', function ($http,$q){
 					})
 					.then (
 							function (response) {
-								console.log(response);
+								/*console.log(response);*/
 								deferred.resolve(response.data);
 							},
 							function (errResponse) {
@@ -271,7 +271,7 @@ contiApp.factory('ServiceService',['$http','$q', function ($http,$q){
 									deferred.resolve(response.data);
 								},
 								function(errResponse) {
-									console.log("Error while fetching service record count");
+									/*console.log("Error while fetching service record count");*/
 									deferred.reject(errResponse);
 								}
 						      );

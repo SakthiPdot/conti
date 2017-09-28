@@ -61,7 +61,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	
 	// ===================================sort table (Monu)====================================
 	$scope.sortTable=function(x,status){
-		console.log("filer by---"+x,"status---"+status);
+		/*console.log("filer by---"+x,"status---"+status);*/
 		if(!$scope.disableSorting){
 			$scope.lastSorted = x;	
 			resetSorting();
@@ -73,7 +73,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 						self.Filterservices = response;
 					},					
 					function(errResponse){
-						console.log("error sorting table"+errResponse);
+						/*console.log("error sorting table"+errResponse);*/
 					}
 				  );
 		}
@@ -100,7 +100,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 						}, function(errResponse){
 							$scope.nameWrong = false;
 							self.service.service_name = null;
-							console.log("error checking name");
+							/*console.log("error checking name");*/
 						});
 				}
 			}
@@ -157,10 +157,10 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 						self.services = service;
 						self.Filterservices = self.services;				
 						pagination();
-						console.log(service);
+						/*console.log(service);*/
 					},
 					function (errResponse) {
-						console.log('Error while fetching services')
+						/*console.log('Error while fetching services')*/
 					}
 				  );
 	}
@@ -173,7 +173,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 	}
 	
 	function newOrClose() {
-		console.log(self.save);
+		/*console.log(self.save);*/
 		if(self.save == "saveclose"){
 			drawerClose('.drawer');
 		}
@@ -212,7 +212,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 			ConfirmDialogService.confirmBox(self.confirm_title, self.confirm_type,self.confirm_msg,self.confirm_btnclass)
 				.then(
 						function (res) {
-							console.log(self.service);
+							/*console.log(self.service);*/
 							createService(self.service);
 							reset();
 							window.setTimeout( function(){
@@ -388,7 +388,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 																		self.message = " Selected record(s) has in active status..!";
 																		successAnimate('.success');
 																	}, function (errResponse) {
-																		console.log(errResponse);
+																		/*console.log(errResponse);*/
 																	}
 																 );
 													}
@@ -437,7 +437,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 																	self.message = "Selected record(s) has in inactive status..!";
 																	successAnimate('.success');													
 																}, function(errResponse) {
-																	console.log(errResponse);
+																	/*console.log(errResponse);*/
 																}
 														     );
 													}
@@ -481,7 +481,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 												self.Filterservices = filterService;
 											},
 											function (errResponse) {
-												console.log('Error while fetching services');
+												/*console.log('Error while fetching services');*/
 											}
 									      );
 							} else {
@@ -522,11 +522,11 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 							ServiceService.findrecord_count()
 								.then(
 											function(record_count) {
-												console.log(record_count);
+												/*console.log(record_count);*/
 												$scope.totalnoof_records = record_count;
 											},
 											function (errResponse) {
-												console.log('Error while fetching record count');
+												/*console.log('Error while fetching record count');*/
 											}
 								      );
 						}
@@ -563,21 +563,21 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 						
 						
 						$scope.paginate = function(nextPrevMultiplier) {
-							console.log($scope.currentPage);
+							/*console.log($scope.currentPage);*/
 							$scope.selectall = false;
 							$scope.currentPage += (nextPrevMultiplier * 1);
 							
 							self.Filterservices = self.services.slice($scope.currentPage*$scope.pageSize);
-							console.log(self.services.length);
-							console.log(self.Filterservices.length);
+							/*console.log(self.services.length);*/
+							/*console.log(self.Filterservices.length);*/
 							
 							
 							if(self.Filterservices.length == 0) {
-								console.log("empty");
+								/*console.log("empty");*/
 								ServiceService.pagination_byPage($scope.currentPage)
 								.then(
 										function (filterService) {
-											console.log(filterService);
+											/*console.log(filterService);*/
 											if(filterService.length == 0 ) {
 												$scope.nextDisabled = true;
 											} else if (filterService.length < 10 ) {
@@ -588,7 +588,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 											}
 										},
 										function (errResponse) {
-											console.log('Error while pagination');
+											/*console.log('Error while pagination');*/
 										}
 								      );
 							}
@@ -628,7 +628,7 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 								/*fetchAllServices();*/
 							} else {
 								$scope.currentPage = ((Math.ceil(self.Filterservices.length/$scope.pageSize)) - 1 );
-								console.log($scope.currentPage);
+								/*console.log($scope.currentPage);*/
 								$scope.previousDisabled = false;
 								$scope.nextDisabled = true;
 								
@@ -640,10 +640,10 @@ contiApp.controller('ServiceController',['$scope', '$timeout','ServiceService','
 									.then(
 											function (filterService) {
 												self.Filterservices = filterService;
-												console.log(filterService);
+												/*console.log(filterService);*/
 											},
 											function (errResponse) {
-												console.log("Error while fetching services");
+												/*console.log("Error while fetching services");*/
 											}
 									      );
 								}

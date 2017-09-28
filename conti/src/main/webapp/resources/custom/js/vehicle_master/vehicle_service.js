@@ -21,7 +21,7 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 		
 		//=============================sort by name====================================
 		function sortBy(name,status){	
-			console.log(name,status);
+			/*console.log(name,status);*/
 			var deferred=$q.defer();
 			$http({
 				method:'POST',
@@ -32,7 +32,7 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 					function(response){
 						deferred.resolve(response.data);
 					},function(errResponse){
-						console.log("status change failed");
+						/*console.log("status change failed");*/
 						deferred.reject(errResponse);
 					}
 			);
@@ -54,12 +54,12 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 					.then (
 							
 							function (response) {
-									console.log(response);
+									/*console.log(response);*/
 									deferred.resolve(response.status);
 									
 								},
 								function(errResponse) {
-									console.log(errResponse);
+									/*console.log(errResponse);*/
 									deferred.reject(errResponse);
 								}
 					       );
@@ -74,12 +74,12 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 					$http.get('vehicles/')
 						.then(
 								function (response) {
-									console.log(response)
+									/*console.log(response)*/
 									deferred.resolve(response.data);
 								},
 								
 								function (errResponse) {
-									console.log('Error while fetching vehicles');
+									/*console.log('Error while fetching vehicles');*/
 									deferred.reject(errResponse);
 								}
 							  );
@@ -191,7 +191,7 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 			
 					function makeinActive(id) {
 						
-						console.log(id);
+						/*console.log(id);*/
 						var deferred = $q.defer();
 						
 						$http({
@@ -254,7 +254,7 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 						})
 						.then (
 								function (response) {
-									console.log(response);
+									/*console.log(response);*/
 									deferred.resolve(response.data);
 								},
 								function (errResponse) {
@@ -277,7 +277,7 @@ contiApp.factory('VehicleService',['$http', '$q', function ($http,$q){
 										deferred.resolve(response.data);
 									},
 									function (errResponse) {
-										console.log('Error while fetching vehicle record count');
+										/*console.log('Error while fetching vehicle record count');*/
 										deferred.reject(errResponse);
 									}
 							     );
