@@ -97,7 +97,7 @@ data-ng-controller="priceSettingRegisterController as psrctrl">
 							<div class="col-xs-6 icons-button">
                                    <div class="pull-right">
                                    
-                                   <form name="selectedPriceSettingForm" method="POST" action="priceSetting_Print" class="padding-button">
+                                   <form name="selectedPriceSettingForm" target="_blank" method="POST" action="priceSetting_Print" class="padding-button">
                                    <!--=============== settings============== -->                                   
                                       <a type="button" class="btn btn-primary dropdown-toggle"
                                      data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>

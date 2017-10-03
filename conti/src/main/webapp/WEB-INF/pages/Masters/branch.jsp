@@ -304,7 +304,7 @@
                                
                                 <div class="col-xs-6 icons-button">
                                    <div class="pull-right">
-                                    <form name="branchPrint" method = "POST" action = "branch_print" class="padding-button" >
+                                    <form name="branchPrint" target="_blank" method = "POST" action = "branch_print" class="padding-button" >
                                      <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a> 
                                      	<div class="dropdown-menu regSettings pull-right" style="padding-right: 5px;">
 	                                     	<div class ="checkbox">

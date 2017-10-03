@@ -253,7 +253,7 @@
 											<div class="col-xs-6 icons-button">
 												<div class="pull-right">
 
-													<form name="manifestPrint" method="POST"
+													<form name="manifestPrint" target="_blank" method="POST"
 														action="manifest_print" class="padding-button">
 														<a type="button" class="btn btn-primary dropdown-toggle"
 															data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>

@@ -466,7 +466,7 @@
 	                	
 		                	 <div class="col-xs-6 icons-button">
 		                	 	<div class="pull-right">
-			           			 <form name="shipmentPrint" method = "POST" action = "downloadExcelForReport" class="padding-button">
+			           			 <form name="shipmentPrint" target="_blank" method = "POST" action = "downloadExcelForReport" class="padding-button">
 			           			 	<input type="hidden" name="filterShip" value = "{{ctrl.filterReport}}" />
 			           			 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			           			 	<a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
