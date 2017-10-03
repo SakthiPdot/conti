@@ -171,7 +171,7 @@ public class ReportsController {
 						if(receipt!=null){
 							filterShip.get(i).setReceipt_date(receipt.getCreated_datetime());
 							filterShip.get(i).setReceipt_no(receipt.getReceipt_prefix());
-							filterShip.get(i).setReceipt_charge(receiptDetail.net_freight_charges);
+							filterShip.get(i).setReceipt_charge(receipt.getReceipt_total());
 							filterShip.get(i).setReceipt_handling(receiptDetail.getHandling_charge());
 							filterShip.get(i).setReceipt_transport(receipt.getLocal_transport());
 						}else{

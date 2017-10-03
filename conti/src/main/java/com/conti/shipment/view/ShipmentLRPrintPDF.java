@@ -91,6 +91,7 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    
 	    //for company address
 	    Font address_font = new Font(Font.COURIER, 8);
+	    Font font_bold = new Font(Font.COURIER, 8, Font.BOLD);
 	    Cell address_cell = new Cell(
 	    		new Phrase(
 	    		branch.getBranch_addressline1()+", "+
@@ -135,11 +136,11 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    Date date = dateFormat.parse(shipment_date.substring(0, shipment_date.length()-2));
 	    
 	    SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
-	    	    //shipment.getShipment_date()
+	    	    //shipment.getShipment_date() font_bold
 	    Cell lrno_cell = new Cell(
-	    		new Phrase("L.R. No: "+shipment.getLrno_prefix()
-	    		+ "\nDate: " + dateFormat1.format(date), address_font));
-	    
+	    		new Phrase("L.R. No: "+shipment.getLrno_prefix(), font_bold));
+	    lrno_cell.addElement(
+	    		new Phrase("\nDate: " + dateFormat1.format(date), address_font));
 	    company_tbl.addCell(lrno_cell);
 	
 	    
@@ -348,10 +349,10 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    amtWord.setColspan(3);
 	    desc_tbl.addCell(amtWord);
 	    
-	    Cell total_amt = new Cell (new Phrase ("Net Amount", address_font));
+	    Cell total_amt = new Cell (new Phrase ("Net Amount", font_bold));
 	    total_amt.setHorizontalAlignment(Element.ALIGN_CENTER);
 	    desc_tbl.addCell(total_amt);
-	    Cell total_amtno = new Cell (new Phrase (df.format(shipment.getTotal_charges()), address_font));
+	    Cell total_amtno = new Cell (new Phrase (df.format(shipment.getTotal_charges()), font_bold));
 	    total_amtno.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	    desc_tbl.addCell(total_amtno);
 	    

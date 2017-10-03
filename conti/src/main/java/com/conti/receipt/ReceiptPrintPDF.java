@@ -94,6 +94,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 		    
 		    //for company address
 		    Font address_font = new Font(Font.COURIER, 8);
+		    Font font_bold = new Font(Font.COURIER, 9, Font.BOLD);
 		    Cell address_cell = new Cell(
 		    		new Phrase(
 		    		branch.getBranch_addressline1()+", "+
@@ -141,10 +142,11 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	    	    //shipment.getShipment_date()
 	    Cell lrno_cell = new Cell(
 	    		new Phrase(
-	    				"Receipt No. : " + receiptModel.getReceipt_prefix() +
+	    				"Receipt No. : " + receiptModel.getReceipt_prefix(),
+	    				 font_bold));
+	    lrno_cell.addElement(new Phrase(
 	    				"\nDate: " + dateFormat1.format(date), 
 	    				address_font));
-	    
 	    company_tbl.addCell(lrno_cell);
 	    
 	  //customer table
@@ -424,7 +426,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	   net_blank.setColspan(4);
 	   desc_tbl.addCell(net_blank);*/
 	   
-	   Cell net_charge = new Cell(new Phrase("Net Charge ",address_font));
+	   Cell net_charge = new Cell(new Phrase("Net Charge ",font_bold));
 	   net_charge.setColspan(5);
 	   net_charge.setHorizontalAlignment(Element.ALIGN_CENTER);
 	   desc_tbl.addCell(net_charge);
@@ -434,7 +436,7 @@ public class ReceiptPrintPDF extends AbstractPdfView {
 	   Cell net_amt = new Cell(new Phrase(
 			   /*Float.toString(receiptModel.getReceipt_total())*/
 			   df.format(receiptModel.getReceipt_total())
-			   ,address_font));
+			   ,font_bold));
 	   net_amt.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	   desc_tbl.addCell(net_amt);
 	   
