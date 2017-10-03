@@ -446,6 +446,7 @@ public class AddReceiptRestController
 			//set freight charge if to pay
 			if (shipmentModel.getBill_to().trim().equals(ConstantValues.TO_PAY.trim())) {
 				receiptDetail.setNet_freight_charges(shipmentModel.getTotal_charges());
+				receiptTotal+=receiptDetail.getNet_freight_charges();
 			}
 			receiptTotal+=receiptDetail.getHandling_charge();
 			//set status
