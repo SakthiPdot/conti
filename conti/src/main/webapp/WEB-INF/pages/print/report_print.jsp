@@ -32,7 +32,7 @@
 			            <li style="color:white;">Conti</li>
 			        </ul>
 			        <button id="download-btn" class="pure-button">Download PDF</button>
-			        <button id="clearback" class="pure-button">Back</button>
+<!-- 			        <button id="clearback" class="pure-button">Back</button> -->
 			    </div>
 			    <div id="wrapper" class="pure-u-1 pure-u-md-4-5">
 			        <iframe id="output"></iframe>
@@ -165,20 +165,27 @@
 						</tr>
 					</thead>
 					<tbody>
+						
 						<c:set var="tot_FC" value="${0}"></c:set>
 						<c:set var="tot_HC" value="${0}"></c:set>
 						<c:set var="tot_TC" value="${0}"></c:set>
 						<c:set var="tot_RC" value="${0}"></c:set> 
 						<c:forEach var="Shipment" items="${shipmentList}" varStatus="loop">
+							<c:set var="LR_FC" value="${0}"></c:set>
+							<c:if test="${Shipment.bill_to=='To Pay'}">
+								<c:set var="LR_FC" value="${Shipment.total_charges}"></c:set>
+							</c:if>
 							<tr>
 								<td><c:out value="${loop.count}" />
 								<td>${Shipment.lrno_prefix}</td>
-								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.total_charges}" /></td>
+								<%-- <td><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.total_charges}" /></td> --%>
+								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${LR_FC}" /></td>
 								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.receipt_handling}" /></td>
 								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.receipt_transport}" /></td>
 								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${Shipment.receipt_charge}" /></td>									
 							</tr>
-							<c:set var="tot_FC" value="${tot_FC +Shipment.total_charges}"></c:set>
+							<%-- <c:set var="tot_FC" value="${tot_FC +Shipment.total_charges}"></c:set> --%>
+							<c:set var="tot_FC" value="${tot_FC +LR_FC}"></c:set>
 							<c:set var="tot_HC" value="${tot_HC +Shipment.receipt_handling}"></c:set>
 							<c:set var="tot_TC" value="${tot_TC +Shipment.receipt_transport}"></c:set>
 							<c:set var="tot_RC" value="${tot_RC +Shipment.receipt_charge}"></c:set>
@@ -191,14 +198,14 @@
 								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${tot_TC}" /></td>
 								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${tot_RC}" /></td>
 							</tr>
-							<tr>
+							<%-- <tr>
 								<td></td>
 								<td></td>
 								<td></td>
 								<td></td>
 								<td>Grand Total : </td>
 								<td><fmt:formatNumber type="number" minFractionDigits="2" value = "${tot_FC + tot_HC + tot_TC + tot_RC}" /></td>
-							</tr>
+							</tr> --%>
 					</tbody>
 				</table>
 
@@ -218,9 +225,9 @@
 	<script>
 
 	//====== Back Function=====//
-   document.getElementById('clearback').onclick = function(){		    	
-    	history.go(-1);
-    };
+//    document.getElementById('clearback').onclick = function(){		    	
+//     	history.go(-1);
+//     };
     
 	
 	//========= download Function====//
