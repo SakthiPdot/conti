@@ -200,8 +200,8 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    	consignee_loc=", "+shipment.getConsignee_location().getLocation_name()+
 					",\n"+shipment.getConsignee_location().address.getCity()+
 					" - "+shipment.getConsignee_location().getPincode();
-	    	consignee_state=", \nState :"+shipment.getConsignee_customer().location.address.getState()+
-					", State Code :"+shipment.getConsignee_customer().location.address.getStateCode();
+	    	consignee_state=", \nState :"+shipment.getConsignee_location().address.getState()+
+					", State Code :"+shipment.getConsignee_location().address.getStateCode();
 	    }else{
 	    	consignee_loc=",\n"+shipment.getConsignee_city().getCity();
 	    	consignee_state=", \nState :"+shipment.getConsignee_city().getState() +
