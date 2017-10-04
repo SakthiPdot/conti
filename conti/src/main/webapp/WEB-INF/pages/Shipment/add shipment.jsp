@@ -182,7 +182,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                           Sender Info
+                           Sender Info <a type="button" class="btn btn-info" style="float:right;" data-ng-click="ctrl.senderClear();" data-dismiss="modal"><i class="fa fa-ban"></i> Clear</a>
                         </div>
                         <div class="panel-body">
                             		
@@ -393,7 +393,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                          Consignee Info
+                          Consignee Info <span class="sss"><a type="button" class="btn btn-info"  data-ng-click="ctrl.consigneeClear();" ><i class="fa fa-ban"></i> Clear</a></span>
                         </div>
                         <div class="panel-body">
                         

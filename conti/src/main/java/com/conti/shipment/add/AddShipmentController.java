@@ -32,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.conti.master.branch.BranchDao;
 import com.conti.master.branch.BranchModel;
 import com.conti.master.customer.CustomerDao;
+import com.conti.master.customer.CustomerModel;
 import com.conti.others.ConstantValues;
 import com.conti.others.Loggerconf;
 import com.conti.others.NumberToWord;
@@ -163,7 +164,22 @@ public class AddShipmentController {
 				}
 				
 				customerDao.saveOrUpdate(shipment.getSender_customer());
-			}
+			}/*else{
+				
+				CustomerModel send_customer = customerDao.getCustomerbyId(shipment.getSender_customer().getCustomer_id());
+				
+				shipment.getSender_customer().setUpdated_by(user_id);
+				shipment.getSender_customer().setUpdated_datetime(dateFormat.format(date).toString());
+				if(send_customer!=null){
+					shipment.getSender_customer().setCustomer_addressline1(send_customer.getCustomer_addressline1());
+					shipment.getSender_customer().setCustomer_addressline2(send_customer.getCustomer_addressline2());
+					shipment.getSender_customer().setCustomer_city(send_customer.getCustomer_city());
+					shipment.getSender_customer().setBranchModel(send_customer.getBranchModel());
+					shipment.getSender_customer().setLocation(send_customer.getLocation());
+				}
+				
+				customerDao.saveOrUpdate(shipment.getSender_customer());
+			}*/
 			
 			//NEW CUSTOMER SAVE FOR CONSIGNEE
 			if(shipment.getConsignee_customer().getCustomer_id() == 0) {
