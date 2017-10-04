@@ -358,9 +358,15 @@ public class ShipmentLRPrintPDF extends AbstractPdfView{
 	    
 	    Cell sign = new Cell (new Phrase ("For Conti Cargo Service"
 	    		+ "\n\nSignature", address_font));
-	    sign.setColspan(3);
+	    sign.setColspan(2);
 	    
 	    desc_tbl.addCell(sign);
+	    
+	    Cell service = new Cell (new Phrase (shipment.getService().getService_name(), address_font));
+	    service.setHorizontalAlignment(Element.ALIGN_CENTER);
+	    service.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	    desc_tbl.addCell(service);
+	    
 	    String bill_to = null;
 	    	    
 	    Cell topay = new Cell (new Phrase (shipment.getBill_to(), address_font));

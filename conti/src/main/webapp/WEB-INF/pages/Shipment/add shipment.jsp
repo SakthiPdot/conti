@@ -182,7 +182,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                           Sender Info <a type="button" class="btn btn-info" style="float:right;" data-ng-click="ctrl.senderClear();" data-dismiss="modal"><i class="fa fa-ban"></i> Clear</a>
+                           Sender Info <span type="button" class="btn btn-info" data-ng-click="ctrl.senderClear();"><i class="fa fa-ban"></i> Clear</span>
                         </div>
                         <div class="panel-body">
                             		
@@ -207,7 +207,7 @@
 									              field-required="true"
 												  data-trigger="focus" data-toggle="popover" 
 												  data-placement="top" data-content="Please enter customer mobileno"
-												  
+												  override-suggestions="true"
 									              input-class="form-control form-control-small searchbar" style="width:100%">
               							</angucomplete-alt>
 	                            		     
@@ -393,7 +393,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                          Consignee Info <span class="sss"><a type="button" class="btn btn-info"  data-ng-click="ctrl.consigneeClear();" ><i class="fa fa-ban"></i> Clear</a></span>
+                          Consignee Info <a class="btn btn-info searchcls" data-ng-click="ctrl.consigneeClear();" ><i class="fa fa-ban"></i> Clear</a>
                         </div>
                         <div class="panel-body">
                         
@@ -415,9 +415,10 @@
 									              field-required="true"
 												  data-trigger="focus" data-toggle="popover" 
 												  data-placement="top" data-content="Please enter customer mobileno"
-												  
+												  override-suggestions="true"
 									              input-class="form-control form-control-small searchbar" style="width:100%">
               								</angucomplete-alt>
+              								
                             		    </div>
                           	
                           		   <div class="col-md-12 branchclass">

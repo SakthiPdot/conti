@@ -139,44 +139,52 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//------------------------ Sender customer search by mobileno begin
     $scope.sender_search_mbl = function (sender_search_mbl) {
-    	if(sender_search_mbl != undefined){
-    		self.shipment.sender_customer.customer_id = sender_search_mbl.originalObject.customer_id;
-        	self.shipment.sender_customer.customer_name = sender_search_mbl.originalObject.customer_name;
-        	self.shipment.sender_customer.company_name = sender_search_mbl.originalObject.company_name;
-        	self.shipment.sender_customer.customer_mobileno = sender_search_mbl.originalObject.customer_mobileno;
-        	self.shipment.sender_customer.customer_addressline1 = sender_search_mbl.originalObject.customer_addressline1;
-        	self.shipment.sender_customer.customer_addressline2 = sender_search_mbl.originalObject.customer_addressline2;
+    	
+    	if(typeof sender_search_mbl.originalObject == "object"){
+    		if(self.shipment.consignee_customer.customer_id != sender_search_mbl.originalObject.customer_id){
+    			self.shipment.sender_customer.customer_id = sender_search_mbl.originalObject.customer_id;
+            	self.shipment.sender_customer.customer_name = sender_search_mbl.originalObject.customer_name;
+            	self.shipment.sender_customer.company_name = sender_search_mbl.originalObject.company_name;
+            	self.shipment.sender_customer.customer_mobileno = sender_search_mbl.originalObject.customer_mobileno;
+            	self.shipment.sender_customer.customer_addressline1 = sender_search_mbl.originalObject.customer_addressline1;
+            	self.shipment.sender_customer.customer_addressline2 = sender_search_mbl.originalObject.customer_addressline2;
 
-        	/*self.shipment.sender_customer.customer_code = sender_search_mbl.originalObject.customer_code;
-        	self.shipment.sender_customer.created_datetime = sender_search_mbl.originalObject.created_datetime;
-        	self.shipment.sender_customer.created_by = sender_search_mbl.originalObject.created_by;
-        	self.shipment.sender_customer.obsolete = sender_search_mbl.originalObject.obsolete;
-        	self.shipment.sender_customer.active = sender_search_mbl.originalObject.active;*/
-        	
-        	if(sender_search_mbl.originalObject.location!=null){
-        		console.log(sender_search_mbl.originalObject.location.location_name);
-        		$("#sender_location_name_value").val(sender_search_mbl.originalObject.location.location_name);
-            	self.shipment.sender_customer.location = sender_search_mbl.originalObject.location;
-            	$("#sender_city_value").val(sender_search_mbl.originalObject.location.address.city);
-            	self.shipment.sender_city = sender_search_mbl.originalObject.location.address;
-            	$("#sender_state").val(sender_search_mbl.originalObject.location.address.state);
-            	$("#sender_country").val(sender_search_mbl.originalObject.location.address.country);
-            	$("#sender_pincode").val(sender_search_mbl.originalObject.location.pincode);
-        	}else{
-        		$("#sender_location_name_value").val('');
-        		self.shipment.sender_customer.location = null;
-        		self.shipment.sender_city=sender_search_mbl.originalObject.customer_city;
-        		$("#sender_city_value").val(sender_search_mbl.originalObject.customer_city.city);
-        		$("#sender_state").val(sender_search_mbl.originalObject.customer_city.state);
-            	$("#sender_country").val(sender_search_mbl.originalObject.customer_city.country);  
+            	/*self.shipment.sender_customer.customer_code = sender_search_mbl.originalObject.customer_code;
+            	self.shipment.sender_customer.created_datetime = sender_search_mbl.originalObject.created_datetime;
+            	self.shipment.sender_customer.created_by = sender_search_mbl.originalObject.created_by;
+            	self.shipment.sender_customer.obsolete = sender_search_mbl.originalObject.obsolete;
+            	self.shipment.sender_customer.active = sender_search_mbl.originalObject.active;*/
+            	
+            	if(sender_search_mbl.originalObject.location!=null){
+            		$("#sender_location_name_value").val(sender_search_mbl.originalObject.location.location_name);
+                	self.shipment.sender_customer.location = sender_search_mbl.originalObject.location;
+                	$("#sender_city_value").val(sender_search_mbl.originalObject.location.address.city);
+                	self.shipment.sender_city = sender_search_mbl.originalObject.location.address;
+                	$("#sender_state").val(sender_search_mbl.originalObject.location.address.state);
+                	$("#sender_country").val(sender_search_mbl.originalObject.location.address.country);
+                	$("#sender_pincode").val(sender_search_mbl.originalObject.location.pincode);
+            	}else{
+            		$("#sender_location_name_value").val('');
+            		self.shipment.sender_customer.location = null;
+            		self.shipment.sender_city=sender_search_mbl.originalObject.customer_city;
+            		$("#sender_city_value").val(sender_search_mbl.originalObject.customer_city.city);
+            		$("#sender_state").val(sender_search_mbl.originalObject.customer_city.state);
+                	$("#sender_country").val(sender_search_mbl.originalObject.customer_city.country);  
+            	}
+            	
+            	
+            	self.shipment.sender_customer.customer_email = sender_search_mbl.originalObject.customer_email;
+            	self.shipment.sender_customer.gstin_number = sender_search_mbl.originalObject.gstin_number;
+            	
+            	sender_taxin_payable = sender_search_mbl.originalObject.taxin_payable;
+    		}else{
+    			BootstrapDialog.alert('Sender and Consignee info should not be same..!');
+    			self.senderClear();
         	}
-        	
-        	
-        	self.shipment.sender_customer.customer_email = sender_search_mbl.originalObject.customer_email;
-        	self.shipment.sender_customer.gstin_number = sender_search_mbl.originalObject.gstin_number;
-        	
-        	sender_taxin_payable = sender_search_mbl.originalObject.taxin_payable;
     		
+    		
+    	}else{
+    		self.senderClear();
     	}
     	
     	self.tax_payable(); // Tax payable on Reverse Charge
@@ -232,41 +240,51 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//------------------------ Consignee customer search by mobileno begin
     $scope.consignee_search_mbl = function (consignee_search_mbl) {
-    	if(consignee_search_mbl != undefined){
-    		self.shipment.consignee_customer.customer_id = consignee_search_mbl.originalObject.customer_id;
-        	self.shipment.consignee_customer.customer_name = consignee_search_mbl.originalObject.customer_name;
-        	self.shipment.consignee_customer.company_name = consignee_search_mbl.originalObject.company_name;
-        	self.shipment.consignee_customer.customer_mobileno = consignee_search_mbl.originalObject.customer_mobileno;
-        	self.shipment.consignee_customer.customer_addressline1 = consignee_search_mbl.originalObject.customer_addressline1;
-        	self.shipment.consignee_customer.customer_addressline2 = consignee_search_mbl.originalObject.customer_addressline2;
-        	
-        	//consignee_city_value
-        	//$("#consignee_city").val(consignee_search_mbl.originalObject.location.address.city);
-        	if(consignee_search_mbl.originalObject.location != null){
-        		console.log(consignee_search_mbl.originalObject.location.location_name);
-        		$("#consignee_location_name_value").val(consignee_search_mbl.originalObject.location.location_name);
-            	self.shipment.consignee_customer.location = consignee_search_mbl.originalObject.location;
-        		self.shipment.consignee_city = consignee_search_mbl.originalObject.location.address;
-            	$("#consignee_city_value").val(consignee_search_mbl.originalObject.location.address.city);
-            	$("#consignee_state").val(consignee_search_mbl.originalObject.location.address.state);
-            	$("#consignee_country").val(consignee_search_mbl.originalObject.location.address.country);
-            	$("#consignee_pincode").val(consignee_search_mbl.originalObject.location.pincode);
+    	
+    	if(typeof consignee_search_mbl.originalObject == "object"){
+
+    		if(self.shipment.sender_customer.customer_id != consignee_search_mbl.originalObject.customer_id){
+    			
+    			self.shipment.consignee_customer.customer_id = consignee_search_mbl.originalObject.customer_id;
+            	self.shipment.consignee_customer.customer_name = consignee_search_mbl.originalObject.customer_name;
+            	self.shipment.consignee_customer.company_name = consignee_search_mbl.originalObject.company_name;
+            	self.shipment.consignee_customer.customer_mobileno = consignee_search_mbl.originalObject.customer_mobileno;
+            	self.shipment.consignee_customer.customer_addressline1 = consignee_search_mbl.originalObject.customer_addressline1;
+            	self.shipment.consignee_customer.customer_addressline2 = consignee_search_mbl.originalObject.customer_addressline2;
             	
-            	self.shipment.consignee_customer.customer_email = consignee_search_mbl.originalObject.customer_email;
-            	self.shipment.consignee_customer.gstin_number = consignee_search_mbl.originalObject.gstin_number;
-            	
-            	
-        	}else{
-        		$("#consignee_location_name_value").val('');
-        		self.shipment.consignee_customer.location = null;
-        		self.shipment.consignee_city = consignee_search_mbl.originalObject.customer_city;
-        		$("#consignee_city_value").val(consignee_search_mbl.originalObject.customer_city.city);
-            	$("#consignee_state").val(consignee_search_mbl.originalObject.customer_city.state);
-            	$("#consignee_country").val(consignee_search_mbl.originalObject.customer_city.country);
-        	}
+            	//consignee_city_value
+            	//$("#consignee_city").val(consignee_search_mbl.originalObject.location.address.city);
+            	if(consignee_search_mbl.originalObject.location != null){
+            		$("#consignee_location_name_value").val(consignee_search_mbl.originalObject.location.location_name);
+                	self.shipment.consignee_customer.location = consignee_search_mbl.originalObject.location;
+            		self.shipment.consignee_city = consignee_search_mbl.originalObject.location.address;
+                	$("#consignee_city_value").val(consignee_search_mbl.originalObject.location.address.city);
+                	$("#consignee_state").val(consignee_search_mbl.originalObject.location.address.state);
+                	$("#consignee_country").val(consignee_search_mbl.originalObject.location.address.country);
+                	$("#consignee_pincode").val(consignee_search_mbl.originalObject.location.pincode);
+                	
+                	self.shipment.consignee_customer.customer_email = consignee_search_mbl.originalObject.customer_email;
+                	self.shipment.consignee_customer.gstin_number = consignee_search_mbl.originalObject.gstin_number;
+                	
+                	
+            	}else{
+            		$("#consignee_location_name_value").val('');
+            		self.shipment.consignee_customer.location = null;
+            		self.shipment.consignee_city = consignee_search_mbl.originalObject.customer_city;
+            		$("#consignee_city_value").val(consignee_search_mbl.originalObject.customer_city.city);
+                	$("#consignee_state").val(consignee_search_mbl.originalObject.customer_city.state);
+                	$("#consignee_country").val(consignee_search_mbl.originalObject.customer_city.country);
+            	}
 
 
-        	consignee_taxin_payable = consignee_search_mbl.originalObject.taxin_payable;
+            	consignee_taxin_payable = consignee_search_mbl.originalObject.taxin_payable;
+    		}else{
+    			BootstrapDialog.alert('Sender and Consignee info should not be same..!');
+    			self.consigneeClear();
+    		}
+    		
+    	}else{
+    		self.consigneeClear();
     	}
     	
     	self.tax_payable(); // Tax payable on Reverse Charge
@@ -926,7 +944,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		$("#sender_state").val('');
     	$("#sender_country").val('');
     	$("#sender_pincode").val('');
-		console.log(self.shipment);
+
 	}
 	 //-----------------consignee clear begin
 	self.consigneeClear = function(){
@@ -938,7 +956,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 		$("#consignee_state").val('');
     	$("#consignee_country").val('');
     	$("#consignee_pincode").val('');
-		console.log(self.shipment);
+
 	}
 	
 
