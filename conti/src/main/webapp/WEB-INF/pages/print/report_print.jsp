@@ -32,7 +32,7 @@
 			            <li style="color:white;">Conti</li>
 			        </ul>
 			        <button id="download-btn" class="pure-button">Download PDF</button>
-			        <button id="clearback" class="pure-button">Back</button>
+<!-- 			        <button id="clearback" class="pure-button">Back</button> -->
 			    </div>
 			    <div id="wrapper" class="pure-u-1 pure-u-md-4-5">
 			        <iframe id="output"></iframe>
@@ -225,9 +225,9 @@
 	<script>
 
 	//====== Back Function=====//
-   document.getElementById('clearback').onclick = function(){		    	
-    	history.go(-1);
-    };
+//    document.getElementById('clearback').onclick = function(){		    	
+//     	history.go(-1);
+//     };
     
 	
 	//========= download Function====//
