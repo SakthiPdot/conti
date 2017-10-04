@@ -411,7 +411,6 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 			
 		}else{
 			self.Filterreceipts=_.filter(self.receipts,function(item){
-				console.log("call ")
 				return searchUtil(item,key)
 				//return String((item.shipmentModel.lrno_prefix.toLowerCase()).indexOf(key.toLowerCase()) > -1);
 			});
@@ -422,8 +421,8 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 	
 	function searchUtil(item,key){
 		var success=false;
-		if((item.shipmentModel.lrno_prefix.toLowerCase()).indexOf(key.LowerCase())>-1 ||
-				(item.receiptModel.receipt_prefix.toLowerCase()).indexOf(key.LowerCase())>-1 ){
+		if((item.shipmentModel.lrno_prefix.toLowerCase()).indexOf(String(key))>-1 ||
+				(item.temp_receiptno.toLowerCase()).indexOf(String(key))>-1 ){
 			success=true;
 		}else{
 			success=false;
@@ -436,8 +435,6 @@ contiApp.controller('ReceiptController',['$scope','$http','$q','$timeout','Recei
 		   		self.message ="Please select atleast one record..!";
 				successAnimate('.failure');
 	    	} else {
-	    			
-	    		console.log(self.selected_receipt);
 	    		$http.get('http://localhost:8080/Conti/listprint');
 	    	}
 	    }
