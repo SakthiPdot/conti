@@ -35,7 +35,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		self.makeReceived=makeReceived;
 		self.shipment = {}; // for individual view shipment
 		$scope.shownoofrec=10;
-		
+		pagination();
 		self.manifestId=$('#manifest_id').val(); 
 		var manifest_id=$('#manifest_id').val();
 		var branch_flag=$('#branch_flag').val();
@@ -45,9 +45,8 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		{
 			console.log("call detailed manifest and id: " +manifest_id);
 			manifestDetailed(manifest_id);
-			
 		}
-		
+		shownoofRecord();
 		function reset()
 		{
 			self.manifest={};
@@ -134,7 +133,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			  		self.manifests = manifestdetailed;
 					  self.Filtermanifests=self.manifests;
 					  console.log(self.Filtermanifests)
-					 pagination();
+					// pagination();
 				  },
 				  function(errResponse){
 					  console.log('Error while Manifest detailed get')
@@ -187,8 +186,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 		
 		function findrecord_count(){
 			BranchService.findrecord_count()
-			.then(
-					function (record_count) {
+			.then(function (record_count) {
 						console.log(record_count);
 						$scope.totalnof_records  = record_count;
 					}, 
@@ -218,13 +216,10 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			if( self.Filtermanifests.length < 100 ) 
 			{
 				$scope.totalnof_records  = self.Filtermanifests.length;
-				console.log(self.Filtermanifests.length);
-			
 			} else {
 				findrecord_count();
 			}
-						
-	    }
+		 }
 	  
 		  
 	  $scope.paginate = function(nextPrevMultiplier)  {
@@ -242,7 +237,6 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 	    					} else {
 	    						self.Filtermanifests = filterManifest;
 	    					}
-	    					
 	    				}, 
 	    				function (errResponse) {
 	    					console.log('Error while pagination');

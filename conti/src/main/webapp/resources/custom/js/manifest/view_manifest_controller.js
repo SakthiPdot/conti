@@ -233,7 +233,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 				self.manifest.todate = $('.datepicker2').val();	
 			} 
 	    	
-	    	console.log(self.manifest);
+	    	//console.log(self.manifest);
 	    	ManifestService.manifestFilter(self.manifest)
 	    	.then(
 	    			function(manifest)
@@ -406,8 +406,7 @@ contiApp.controller('ManifestController',['$scope','$http','$q','$timeout','Mani
 			} else {
 				findrecord_count();
 			}
-						
-	    }
+		}
 	  
 		  
 	  $scope.paginate = function(nextPrevMultiplier){

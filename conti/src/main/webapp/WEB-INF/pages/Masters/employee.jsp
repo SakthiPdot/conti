@@ -595,7 +595,7 @@
 										<button class="btn btn-primary" type = "button" data-ng-disabled="nextDisabled" data-ng-click = "firstlastPaginate(0)">Last</button>
                                 	</div>
                                 </div>
-                            </div>
+                             </div>
 
                         </div>
                     </div>
