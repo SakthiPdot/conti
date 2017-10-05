@@ -182,11 +182,12 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                           Sender Info <span type="button" class="btn btn-info" data-ng-click="ctrl.senderClear();"><i class="fa fa-ban"></i> Clear</span>
+                           Sender Info 
                         </div>
                         <div class="panel-body">
                             		
                             			<div class="col-md-6">
+                            				<span type="button" class="btn btn-info" data-ng-click="ctrl.senderClear();"><i class="fa fa-ban"></i> Clear</span>
                             			</div>
                             			<div class=" col-md-6 branchclass">
 	                            			<span class="searchcls"> Search </span>
@@ -393,11 +394,12 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                          Consignee Info <a class="btn btn-info searchcls" data-ng-click="ctrl.consigneeClear();" ><i class="fa fa-ban"></i> Clear</a>
+                          Consignee Info 
                         </div>
                         <div class="panel-body">
                         
                                         <div class="col-md-6">
+                                        	<a class="btn btn-info searchcls" data-ng-click="ctrl.consigneeClear();" ><i class="fa fa-ban"></i> Clear</a>
                             			</div>
                             			<div class=" col-md-6 branchclass">
 	                            			<span class="searchcls"> Search </span>
@@ -725,8 +727,8 @@
                    
                           
                             <div class="col-md-12">
-                            <div class="table-responsive">                    
-                                
+                           <!--  <div class="table-responsive">  -->                   
+                                 <div> 
                                 
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>

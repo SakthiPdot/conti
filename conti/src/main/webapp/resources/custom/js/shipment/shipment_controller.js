@@ -341,9 +341,16 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	
 	//------------------------ Consignee branch begin
     $scope.consignee_branch_name = function (consignee_branch_name) {
+
+    	if(consignee_branch_name == null){
+    		self.shipment.consignee_branch = null;
+    	}else{
+    		self.shipment.consignee_branch = consignee_branch_name.originalObject;
+        	sender_branch($('#sender_branch_id').val());
+    	}
+    	
     	makeenable_shipmentDetail_add();  // make enable shipment detail 
-    	self.shipment.consignee_branch = consignee_branch_name.originalObject;
-    	sender_branch($('#sender_branch_id').val());
+    	
 	};	
 	//------------------------ Consignee branch end
 	
@@ -858,7 +865,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 			$("#sender_city_value").focus();
 		/*if ( $('#sender_location_name_value').val().length == 0 || self.shipment.sender_customer.location == null) {
 			$("#sender_location_name_value").focus();*/
-		} else if ( $('#consignee_branch_name_value').val().length == 0) {
+		} else if ( $('#consignee_branch_name_value').val().length == 0 || self.shipment.consignee_branch == null) {
 			$("#consignee_branch_name_value").focus();
 		}
 		
@@ -938,7 +945,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	self.senderClear = function(){
 		self.shipment.sender_customer={};
 		self.shipment.sender_city={};
-		$('#sender_search_mbl_value').val('')
+		$('#sender_search_mbl_value').val('');
 		$('#sender_location_name_value').val('');
 		$('#sender_city_value').val('');
 		$("#sender_state").val('');
@@ -950,7 +957,7 @@ contiApp.controller('ShipmentController', ['$http', '$filter', '$scope','$q','$t
 	self.consigneeClear = function(){
 		self.shipment.consignee_customer={};
 		self.shipment.consignee_city={};
-		$('#consignee_search_mbl_value').val('')
+		$('#consignee_search_mbl_value').val('');
 		$('#consignee_location_name_value').val('');
 		$('#consignee_city_value').val('');
 		$("#consignee_state").val('');
